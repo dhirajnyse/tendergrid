@@ -38,6 +38,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Grid polish with stronger selected-row highlighting, a visible "Showing 1-N of total" range hint, Comfortable/Compact density controls, and a collapsible right detail panel.
 - Tracker toolbar uses explicit filter/action rows so density controls, New row, and Export CSV remain visible beside the detail panel.
 - Sticky sheet header keeps filters, actions, range hint, and column labels visible while scrolling through the expanded Tenders and Projects grids.
+- Sheet/Board mode lets users keep the spreadsheet tracker or switch to a visual operating board, with tender lanes for Active Pipeline, Due Watch, Awarded, and Closed/Regret, plus project lanes for Ongoing, Due Watch, Completed, and Stopped/Regret.
 
 ## Production Notes
 

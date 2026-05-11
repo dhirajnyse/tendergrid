@@ -1,4 +1,4 @@
-PursuitDesk v28 sticky sheet header upload steps
+PursuitDesk v29 board view upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v28 sticky sheet header upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v28 sticky sheet header
+   PursuitDesk v29 board view
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and keeps the tracker toolbar, range hint, and column labels visible while scrolling records.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds Sheet/Board mode for Tenders and Projects while keeping the sticky tracker toolbar and range hint.
 
 Demo login:
 admin@pursuitdesk.app

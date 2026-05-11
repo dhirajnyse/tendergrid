@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=28";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=28";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=29";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=29";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -110,6 +110,7 @@
     quickSearchOpen: false,
     quickSearch: "",
     tableDensity: "Comfortable",
+    trackerMode: "Sheet",
     detailCollapsed: false,
   };
 
@@ -1867,10 +1868,17 @@
     const categories = uniqueOptions("category");
     const statuses = Array.from(new Set([...STATUS_OPTIONS, ...uniqueOptions("status")]));
     const typeOptions = isProjectSection() ? ["All", "Project"] : ["All", "EOI", "Tender"];
+    const isBoardMode = state.trackerMode === "Board";
+    const boardLanes = isBoardMode ? buildBoardLanes(records) : [];
     const visibleDepth = state.tableDensity === "Compact" ? 28 : 21;
     const visibleEnd = Math.min(records.length, visibleDepth);
+    const trackerMeta = isBoardMode
+      ? `${records.length} cards across ${boardLanes.length} lanes`
+      : records.length
+        ? `Showing 1-${visibleEnd} of ${records.length}`
+        : "No records";
     return `
-      <section class="tracker-layout density-${state.tableDensity.toLowerCase()} ${state.detailCollapsed ? "detail-collapsed" : ""}">
+      <section class="tracker-layout density-${state.tableDensity.toLowerCase()} mode-${state.trackerMode.toLowerCase()} ${state.detailCollapsed ? "detail-collapsed" : ""}">
         <aside class="left-rail">
           ${renderCommandPanel(records)}
           ${renderMixPanel(records)}
@@ -1886,6 +1894,17 @@
               ${renderSelect("lane", LANE_OPTIONS, state.filters.lane || "All lanes", "filter-select lane-select")}
             </div>
             <div class="toolbar-actions">
+              <div class="mode-toggle" role="group" aria-label="Tracker view">
+                ${["Sheet", "Board"]
+                  .map(
+                    (mode) => `
+                      <button class="${state.trackerMode === mode ? "active" : ""}" type="button" data-tracker-mode="${mode}">
+                        ${mode}
+                      </button>
+                    `,
+                  )
+                  .join("")}
+              </div>
               <div class="density-toggle" role="group" aria-label="Grid density">
                 ${["Comfortable", "Compact"]
                   .map(
@@ -1911,9 +1930,12 @@
               </div>
               <div class="table-head-meta">
                 <span>${records.length} visible</span>
-                <strong>${records.length ? `Showing 1-${visibleEnd} of ${records.length}` : "No records"}</strong>
+                <strong>${trackerMeta}</strong>
               </div>
-              <div class="column-guide" aria-hidden="true">
+              ${
+                isBoardMode
+                  ? ""
+                  : `<div class="column-guide" aria-hidden="true">
                 <span>Reference</span>
                 <span>Client</span>
                 <span>Title</span>
@@ -1921,14 +1943,19 @@
                 <span>Due / Last</span>
                 <span>Value</span>
                 <span>Actions</span>
-              </div>
+              </div>`
+              }
             </div>
-            <div class="table-wrap">
-              ${records.length ? renderTable(records) : `<div class="empty-state">No matching records.</div>`}
-            </div>
-            <div class="mobile-records">
-              ${records.length ? records.map(renderMobileRecord).join("") : `<div class="empty-state">No matching records.</div>`}
-            </div>
+            ${
+              isBoardMode
+                ? renderTrackerBoard(boardLanes)
+                : `<div class="table-wrap">
+                    ${records.length ? renderTable(records) : `<div class="empty-state">No matching records.</div>`}
+                  </div>
+                  <div class="mobile-records">
+                    ${records.length ? records.map(renderMobileRecord).join("") : `<div class="empty-state">No matching records.</div>`}
+                  </div>`
+            }
           </div>
         </section>
 
@@ -2088,6 +2115,109 @@
         </span>
         <span class="record-title">${escapeHtml(record.title || "Untitled record")}</span>
         <span class="record-meta">${escapeHtml(record.client || "No client")} / ${escapeHtml(record.type)} / ${escapeHtml(record.owner || "No owner")}</span>
+      </button>
+    `;
+  }
+
+  function buildBoardLanes(records) {
+    const configs = isProjectSection()
+      ? [
+          { key: "Ongoing", title: "Ongoing", hint: "Live delivery items", tone: "blue" },
+          { key: "Due Watch", title: "Due watch", hint: "Past due and next 30 days", tone: "amber" },
+          { key: "Completed", title: "Completed", hint: "Closed delivery records", tone: "green" },
+          { key: "Closed", title: "Stopped / regret", hint: "Cancelled or regretted", tone: "red" },
+        ]
+      : [
+          { key: "Active Pipeline", title: "Active pipeline", hint: "Bids that still need movement", tone: "teal" },
+          { key: "Due Watch", title: "Due watch", hint: "Past due and next 30 days", tone: "amber" },
+          { key: "Awarded", title: "Awarded", hint: "LOA and win records", tone: "green" },
+          { key: "Closed", title: "Closed / regret", hint: "Completed, cancelled, or regret", tone: "red" },
+        ];
+    const lanes = configs.map((config) => ({ ...config, records: [] }));
+    records.forEach((record) => {
+      const target = boardLaneKey(record);
+      const lane = lanes.find((item) => item.key === target) || lanes[0];
+      lane.records.push(record);
+    });
+    return lanes;
+  }
+
+  function boardLaneKey(record) {
+    if (isProjectSection()) {
+      if (record.status === "Completed") return "Completed";
+      if (["Cancelled", "Regret"].includes(record.status)) return "Closed";
+      if (isDueWatchRecord(record)) return "Due Watch";
+      return "Ongoing";
+    }
+    if (record.status === "Awarded") return "Awarded";
+    if (["Completed", "Cancelled", "Regret"].includes(record.status)) return "Closed";
+    if (isDueWatchRecord(record)) return "Due Watch";
+    return "Active Pipeline";
+  }
+
+  function isDueWatchRecord(record) {
+    if (isClosedRecord(record)) return false;
+    const date = parseRecordDate(record.endDate);
+    if (!date) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const nextThirty = new Date(today);
+    nextThirty.setDate(nextThirty.getDate() + 30);
+    return date <= nextThirty;
+  }
+
+  function renderTrackerBoard(lanes) {
+    const total = lanes.reduce((sum, lane) => sum + lane.records.length, 0);
+    if (!total) return `<div class="board-panel"><div class="empty-state">No matching records.</div></div>`;
+    return `
+      <div class="board-panel" aria-label="${escapeHtml(state.view)} board">
+        ${lanes
+          .map(
+            (lane) => `
+              <section class="board-lane lane-${lane.tone}">
+                <div class="board-lane-head">
+                  <span>
+                    <strong>${escapeHtml(lane.title)}</strong>
+                    <em>${escapeHtml(lane.hint)}</em>
+                  </span>
+                  <b>${lane.records.length}</b>
+                </div>
+                <div class="board-cards">
+                  ${
+                    lane.records.length
+                      ? lane.records.map(renderBoardCard).join("")
+                      : `<div class="board-empty">No records in this lane.</div>`
+                  }
+                </div>
+              </section>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderBoardCard(record) {
+    const selected = record.id === state.selectedId ? "selected-card" : "";
+    const dueLabel = formatDate(record.endDate) || "No due date";
+    const valueLabel = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "No value";
+    const rounds = (record.rounds || []).length;
+    return `
+      <button class="board-card ${selected}" type="button" data-action="select" data-id="${escapeHtml(record.id)}">
+        <span class="board-card-top">
+          <strong>${escapeHtml(record.reference || "No reference")}</strong>
+          <span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span>
+        </span>
+        <span class="board-title">${escapeHtml(record.title || "Untitled record")}</span>
+        <span class="board-client">${escapeHtml(record.client || "No client")}</span>
+        <span class="board-card-grid">
+          <span><em>Due / last</em><strong>${escapeHtml(dueLabel)}</strong></span>
+          <span><em>Value</em><strong>${escapeHtml(valueLabel)}</strong></span>
+        </span>
+        <span class="board-tags">
+          <span>${escapeHtml([record.type, record.category].filter(Boolean).join(" / ") || "No category")}</span>
+          <span>${rounds ? `${rounds} rounds` : escapeHtml(record.owner || "No owner")}</span>
+        </span>
       </button>
     `;
   }
@@ -2732,7 +2862,7 @@
 
   document.addEventListener("click", (event) => {
     const button = event.target.closest(
-      "[data-action], [data-view], [data-quick-status], [data-insight-lens], [data-membership-plan], [data-billing-term], [data-density]",
+      "[data-action], [data-view], [data-quick-status], [data-insight-lens], [data-membership-plan], [data-billing-term], [data-density], [data-tracker-mode]",
     );
     const row = event.target.closest(".tracker-table tbody tr");
     if (event.target.classList.contains("quick-search-backdrop")) {
@@ -2777,6 +2907,12 @@
 
     if (button.dataset.density) {
       state.tableDensity = button.dataset.density;
+      render();
+      return;
+    }
+
+    if (button.dataset.trackerMode) {
+      state.trackerMode = button.dataset.trackerMode;
       render();
       return;
     }
