@@ -43,6 +43,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Action Queue scans the current Tender or Project view and surfaces the top next moves for overdue records, due-watch items, missing dates, missing values, high-value work, and negotiation follow-ups.
 - Counter fix keeps the command rail and mix panels based on the full current section, so clicking a status filter changes visible rows without resetting the other counter values to zero.
 - Smart Record Brief appears inside the right detail panel for selected records, showing health score, readiness, due signal, value, negotiation depth, missing data, next move, and a short management line.
+- Client Memory appears at the top of the selected-record detail panel, summarizing account history across tenders and projects with open work, same-unit count, value, latest touch, and clickable related records.
 
 ## Production Notes
 

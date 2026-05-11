@@ -1,4 +1,4 @@
-PursuitDesk v33 smart record brief upload steps
+PursuitDesk v34 client memory upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v33 smart record brief upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v33 smart record brief
+   PursuitDesk v34 client memory
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Smart Record Brief inside the selected record detail panel.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds Client Memory at the top of the selected-record detail panel so selected records show account history and related tender/project records.
 
 Demo login:
 admin@pursuitdesk.app

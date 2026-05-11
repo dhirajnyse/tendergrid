@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=33";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=33";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=34";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=34";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -2705,6 +2705,123 @@
     `;
   }
 
+  function recordHistoryTime(record) {
+    return (
+      parseRecordDate(record.endDate)?.getTime() ||
+      parseRecordDate(record.startDate)?.getTime() ||
+      0
+    );
+  }
+
+  function buildClientMemory(record) {
+    const accountLabel = String(record.clientGroup || record.client || "Unassigned client").trim();
+    const unitLabel = String(record.client || accountLabel).trim();
+    const accountKey = normalize(accountLabel);
+    const unitKey = normalize(unitLabel);
+    const records = companyRecords().filter((item) => {
+      const itemAccountKey = normalize(item.clientGroup || item.client);
+      const itemUnitKey = normalize(item.client);
+      return accountKey ? itemAccountKey === accountKey : itemUnitKey === unitKey;
+    });
+    const fallbackRecords = records.length
+      ? records
+      : companyRecords().filter((item) => normalize(item.client) === unitKey);
+    const memoryRecords = fallbackRecords.length ? fallbackRecords : [record];
+    const sorted = [...memoryRecords].sort((a, b) => recordHistoryTime(b) - recordHistoryTime(a));
+    const openRecords = memoryRecords.filter((item) => !isClosedRecord(item));
+    const wonRecords = memoryRecords.filter((item) => ["Awarded", "Completed"].includes(item.status));
+    const overdueRecords = openRecords.filter((item) => {
+      const days = recordDueDays(item);
+      return days !== null && days < 0;
+    });
+    const related = sorted.filter((item) => item.id !== record.id).slice(0, 5);
+    const unitRecords = memoryRecords.filter((item) => normalize(item.client) === unitKey);
+    const tenderCount = memoryRecords.filter((item) => item.type === "Tender" || item.type === "EOI").length;
+    const projectCount = memoryRecords.filter((item) => item.type === "Project").length;
+    const pulse =
+      memoryRecords.length >= 18
+        ? "Strategic account"
+        : openRecords.length >= 5
+          ? "Active relationship"
+          : wonRecords.length >= 3
+            ? "Proven buyer"
+            : related.length
+              ? "Growing history"
+              : "New relationship";
+    const latest = sorted[0];
+    const note = `${accountLabel} has ${memoryRecords.length} workspace record${memoryRecords.length === 1 ? "" : "s"}: ${tenderCount} tender-side and ${projectCount} project-side, with ${openRecords.length} still open.`;
+    return {
+      accountLabel,
+      unitLabel,
+      pulse,
+      note,
+      latest,
+      records: memoryRecords,
+      related,
+      unitCount: unitRecords.length,
+      openCount: openRecords.length,
+      wonCount: wonRecords.length,
+      overdueCount: overdueRecords.length,
+      totalValue: sumAmounts(memoryRecords),
+    };
+  }
+
+  function renderClientMemoryRow(record) {
+    const meta = [record.reference, record.type, record.status].filter(Boolean).join(" / ");
+    const value = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "-";
+    return `
+      <button class="client-memory-row" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">
+        <span>
+          <strong>${escapeHtml(record.title || "Untitled record")}</strong>
+          <em>${escapeHtml(meta || "No record metadata")}</em>
+        </span>
+        <b>${escapeHtml(value)}</b>
+      </button>
+    `;
+  }
+
+  function renderClientMemory(record) {
+    const memory = buildClientMemory(record);
+    const latestLabel = memory.latest
+      ? `${memory.latest.type} / ${memory.latest.status} / ${formatDate(memory.latest.endDate) || "No date"}`
+      : "No activity yet";
+    const overdueText = memory.overdueCount ? `${memory.overdueCount} overdue` : `${memory.wonCount} won or done`;
+    return `
+      <section class="client-memory">
+        <div class="client-memory-head">
+          <div>
+            <span class="panel-label">Client memory</span>
+            <h3>${escapeHtml(memory.accountLabel)}</h3>
+            <p>${escapeHtml(memory.unitLabel === memory.accountLabel ? memory.pulse : `${memory.pulse} / ${memory.unitLabel}`)}</p>
+          </div>
+          <strong>${memory.records.length}</strong>
+        </div>
+        <div class="client-memory-stats">
+          <div><span>Open</span><strong>${memory.openCount}</strong></div>
+          <div><span>Same unit</span><strong>${memory.unitCount}</strong></div>
+          <div><span>Signal</span><strong>${escapeHtml(overdueText)}</strong></div>
+          <div><span>Value</span><strong>${escapeHtml(formatCompactMoney(memory.totalValue))}</strong></div>
+        </div>
+        <div class="client-pulse">
+          <span>Latest touch</span>
+          <strong>${escapeHtml(latestLabel)}</strong>
+          <p>${escapeHtml(memory.note)}</p>
+        </div>
+        <div class="client-memory-list">
+          <div class="client-memory-list-head">
+            <span>Related records</span>
+            <strong>${Math.max(0, memory.records.length - 1)} linked</strong>
+          </div>
+          ${
+            memory.related.length
+              ? memory.related.map(renderClientMemoryRow).join("")
+              : `<div class="readonly-note">No other records for this client yet.</div>`
+          }
+        </div>
+      </section>
+    `;
+  }
+
   function renderDetail(record) {
     if (!record) {
       return `
@@ -2721,6 +2838,7 @@
           <p>${escapeHtml(record.reference || "No reference")} / ${escapeHtml(record.client || "No client")}</p>
         </div>
         <div class="detail-body">
+          ${renderClientMemory(record)}
           ${renderSmartBrief(record)}
 
           <div class="detail-grid">
@@ -3310,6 +3428,10 @@
       return;
     }
     if (action === "open-search-result") {
+      openSearchResult(button.dataset.id);
+      return;
+    }
+    if (action === "open-related-record") {
       openSearchResult(button.dataset.id);
       return;
     }
