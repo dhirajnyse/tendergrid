@@ -38,6 +38,9 @@
     message: "",
     pricingSeats: 10,
     insightLens: "Open",
+    membershipPlan: "Team Workspace",
+    quickSearchOpen: false,
+    quickSearch: "",
   };
 
   function clone(value) {
@@ -340,10 +343,14 @@
         ? "Opportunity pipeline"
         : state.view === "Insights"
           ? "Pipeline insights"
+          : state.view === "Membership"
+            ? "Membership model"
           : state.view;
     const viewCopy =
       state.view === "Insights"
         ? "Turn tender records into management signals: follow-up risk, workload, category concentration, and value exposure."
+        : state.view === "Membership"
+          ? "Manage launch pricing, seats, subscription packaging, and the upgrade path from demo workspace to paid company plan."
         : `${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.`;
     app.innerHTML = `
       <div class="shell">
@@ -358,9 +365,9 @@
           <div class="status-strip">
             <span class="status-pill is-live">Live demo</span>
             <span class="status-pill">${stats.totalRecords} records</span>
-            <span class="status-pill">AED ${company.pricePerUser}/seat</span>
           </div>
           <div class="topbar-actions">
+            <button class="membership-btn ${state.view === "Membership" ? "active" : ""}" type="button" data-view="Membership">Membership Model</button>
             <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
             <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
             <button class="secondary-btn" type="button" data-action="logout">Logout</button>
@@ -393,24 +400,32 @@
               .join("")}
           </nav>
 
-          <section class="analytics">
-            <div class="metric"><span>Active tenders</span><strong>${stats.activeTenders}</strong><small>${stats.totalRecords} total records</small></div>
-            <div class="metric"><span>Ongoing projects</span><strong>${stats.ongoingProjects}</strong><small>Software and telecom</small></div>
-            <div class="metric"><span>Awarded tenders</span><strong>${stats.awarded}</strong><small>LOA or award status</small></div>
-            <div class="metric"><span>Seat bill</span><strong>AED ${stats.bill}</strong><small>${stats.seats} users at AED ${company.pricePerUser}/month</small></div>
-          </section>
+          ${
+            state.view === "Membership"
+              ? ""
+              : `<section class="analytics">
+                  <div class="metric"><span>Active tenders</span><strong>${stats.activeTenders}</strong><small>${stats.totalRecords} total records</small></div>
+                  <div class="metric"><span>Ongoing projects</span><strong>${stats.ongoingProjects}</strong><small>Software and telecom</small></div>
+                  <div class="metric"><span>Awarded tenders</span><strong>${stats.awarded}</strong><small>LOA or award status</small></div>
+                  <div class="metric"><span>Seat bill</span><strong>AED ${stats.bill}</strong><small>${stats.seats} users at AED ${company.pricePerUser}/month</small></div>
+                </section>`
+          }
 
           ${
             state.view === "Team & Billing"
               ? renderTeamBilling()
               : state.view === "Insights"
                 ? renderInsights()
+                : state.view === "Membership"
+                  ? renderMembershipPage(stats, company)
                 : renderTracker(records, selected, stats)
           }
-          ${renderPricingSection(stats, company)}
         </main>
+        ${renderFloatingTools()}
+        ${renderQuickSearchOverlay()}
       </div>
     `;
+    focusQuickSearch();
   }
 
   function isClosedRecord(record) {
@@ -1098,6 +1113,126 @@
     `;
   }
 
+  function membershipProjection(company = state.data.company) {
+    const seats = pricingProjection(company).seats;
+    const selected = state.membershipPlan || "Team Workspace";
+    const plan = {
+      "Sample Workspace": {
+        label: "Sample Workspace",
+        base: 0,
+        perUser: 0,
+        note: "Prototype access for stakeholder testing.",
+        cta: "Open demo workspace",
+      },
+      "Team Workspace": {
+        label: "Team Workspace",
+        base: 0,
+        perUser: company.pricePerUser,
+        note: "Launch membership for company teams using shared tender control.",
+        cta: "Activate Team membership",
+      },
+      "Business Plus": {
+        label: "Business Plus",
+        base: 99,
+        perUser: company.pricePerUser,
+        note: "Adds governance, audit history, import refresh, and reminders after MVP validation.",
+        cta: "Reserve Plus roadmap",
+      },
+      "Control Desk": {
+        label: "Control Desk",
+        base: null,
+        perUser: null,
+        note: "Annual enterprise deployment for multi-company governance and approvals.",
+        cta: "Request custom proposal",
+      },
+    }[selected];
+    const monthly = plan.base === null ? null : plan.base + seats * plan.perUser;
+    return {
+      ...plan,
+      seats,
+      monthly,
+      annual: monthly === null ? null : monthly * 12,
+      isCustom: monthly === null,
+    };
+  }
+
+  function renderMembershipPage(stats, company) {
+    const membership = membershipProjection(company);
+    return `
+      <section class="membership-page" aria-labelledby="membershipTitle">
+        <div class="membership-console">
+          <div class="membership-copy">
+            <span class="panel-label">Membership console</span>
+            <h2 id="membershipTitle">Turn the demo into a paid company workspace.</h2>
+            <p>Keep pricing simple for the first customers, then graduate them into governance, auditability, reminders, and controlled deployment.</p>
+            <div class="membership-actions">
+              <button class="secondary-btn" type="button" data-action="subscription-request">${escapeHtml(membership.cta)}</button>
+              <button class="ghost-btn" type="button" data-view="Team & Billing">Review team seats</button>
+            </div>
+          </div>
+          <div class="subscription-card">
+            <span class="metric-label">Selected membership</span>
+            <strong id="membershipPlanName">${escapeHtml(membership.label)}</strong>
+            <p id="membershipPlanNote">${escapeHtml(membership.note)}</p>
+            <div class="subscription-total">
+              <span>Monthly estimate</span>
+              <strong id="membershipMonthly">${membership.isCustom ? "Custom" : `AED ${membership.monthly}`}</strong>
+              <small id="membershipAnnual">${membership.isCustom ? "Annual proposal" : `AED ${membership.annual} annual run-rate`}</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="membership-grid">
+          <article class="membership-panel">
+            <span class="metric-label">Subscription builder</span>
+            <h3>Plan, seats, and billing estimate</h3>
+            <div class="subscription-form-grid">
+              <label>
+                <span>Plan</span>
+                <select data-membership="plan" aria-label="Membership plan">
+                  ${["Sample Workspace", "Team Workspace", "Business Plus", "Control Desk"]
+                    .map(
+                      (plan) =>
+                        `<option value="${escapeHtml(plan)}" ${plan === state.membershipPlan ? "selected" : ""}>${escapeHtml(plan)}</option>`,
+                    )
+                    .join("")}
+                </select>
+              </label>
+              <label class="membership-seat-slider">
+                <span><strong id="membershipSeatCount">${membership.seats}</strong> seats</span>
+                <input type="range" min="1" max="100" value="${membership.seats}" data-pricing="seats" aria-label="Membership seats">
+              </label>
+              <div class="subscription-mini">
+                <span>Current demo seats</span>
+                <strong>${stats.seats}</strong>
+                <small>Admin, editor, and viewer users</small>
+              </div>
+              <div class="subscription-mini">
+                <span>Launch price</span>
+                <strong>AED ${company.pricePerUser}</strong>
+                <small>per active user / month</small>
+              </div>
+            </div>
+          </article>
+
+          <article class="membership-panel">
+            <span class="metric-label">Subscription request</span>
+            <h3>Static MVP checkout preview</h3>
+            <div class="request-preview">
+              <div><span>Company</span><strong>${escapeHtml(company.name)}</strong></div>
+              <div><span>Account owner</span><strong>${escapeHtml(state.user.name)}</strong></div>
+              <div><span>Billing cycle</span><strong>Monthly</strong></div>
+              <div><span>Status</span><strong id="subscriptionStatus">Ready for pilot invoice</strong></div>
+            </div>
+            <p class="subscription-disclaimer">This demo prepares the membership request. A production version should connect payment, invoices, trials, and tenant provisioning to a backend.</p>
+          </article>
+        </div>
+
+        ${renderPricingSection(stats, company)}
+      </section>
+    `;
+  }
+
   function renderPricingSection(stats, company) {
     const projection = pricingProjection(company);
     return `
@@ -1157,7 +1292,7 @@
               <li>Local browser storage and CSV export</li>
               <li>Visual proof for stakeholder feedback</li>
             </ul>
-            <button class="plan-link" type="button" data-view="All">Open demo tracker</button>
+            <button class="plan-link" type="button" data-membership-plan="Sample Workspace">Choose demo</button>
           </article>
 
           <article class="pricing-card is-featured">
@@ -1172,7 +1307,7 @@
               <li>Quick analytics, filters, notes, and export</li>
               <li>Monthly seat billing that stays easy to explain</li>
             </ul>
-            <button class="plan-link" type="button" data-view="Team & Billing">Open billing view</button>
+            <button class="plan-link" type="button" data-membership-plan="Team Workspace">Choose Team</button>
           </article>
 
           <article class="pricing-card growth-card">
@@ -1186,7 +1321,7 @@
               <li>Excel import refresh and attachment roadmap</li>
               <li>Email reminders for due dates and next actions</li>
             </ul>
-            <span class="plan-link muted">Production roadmap</span>
+            <button class="plan-link muted" type="button" data-membership-plan="Business Plus">Choose Plus</button>
           </article>
 
           <article class="pricing-card enterprise-card">
@@ -1200,7 +1335,7 @@
               <li>Custom reporting and management dashboards</li>
               <li>Priority implementation and support</li>
             </ul>
-            <span class="plan-link muted">Custom deployment</span>
+            <button class="plan-link muted" type="button" data-membership-plan="Control Desk">Request Control</button>
           </article>
         </div>
 
@@ -1462,6 +1597,93 @@
         <span class="record-meta">${escapeHtml(record.client || "No client")} / ${escapeHtml(record.type)} / ${escapeHtml(record.owner || "No owner")}</span>
       </button>
     `;
+  }
+
+  function quickSearchResults() {
+    const query = normalize(state.quickSearch);
+    const records = companyRecords();
+    const source = query
+      ? records.filter((record) =>
+          [
+            record.reference,
+            record.client,
+            record.clientGroup,
+            record.title,
+            record.category,
+            record.status,
+            record.owner,
+            record.latestActivity,
+          ]
+            .map(normalize)
+            .join(" ")
+            .includes(query),
+        )
+      : records.filter((record) => !isClosedRecord(record));
+    return source.slice(0, 8);
+  }
+
+  function renderFloatingTools() {
+    return `
+      <div class="floating-tools" aria-label="Quick tools">
+        <button class="float-btn search-float" type="button" data-action="open-quick-search" aria-label="Open quick search" title="Search records">
+          <span class="search-icon" aria-hidden="true"></span>
+        </button>
+        <button class="float-btn arrow-float" type="button" data-action="scroll-page" aria-label="Scroll page" title="Scroll">
+          <span class="arrow-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    `;
+  }
+
+  function renderQuickSearchOverlay() {
+    if (!state.quickSearchOpen) return "";
+    const results = quickSearchResults();
+    return `
+      <div class="quick-search-backdrop">
+        <section class="quick-search-panel" role="dialog" aria-modal="true" aria-labelledby="quickSearchTitle">
+          <div class="quick-search-head">
+            <div>
+              <span class="panel-label">Quick search</span>
+              <h2 id="quickSearchTitle">Find a tender, project, client, or owner.</h2>
+            </div>
+            <button class="mini-btn" type="button" data-action="close-quick-search">Close</button>
+          </div>
+          <input class="quick-search-input" type="search" placeholder="Search reference, client, title, category, status..." value="${escapeHtml(state.quickSearch)}" data-quick-search-input autocomplete="off">
+          <div class="quick-search-results">
+            ${
+              results.length
+                ? results.map(renderQuickSearchResult).join("")
+                : `<div class="empty-state compact">No matching records.</div>`
+            }
+          </div>
+        </section>
+      </div>
+    `;
+  }
+
+  function renderQuickSearchResult(record) {
+    return `
+      <button class="quick-result" type="button" data-action="open-search-result" data-id="${escapeHtml(record.id)}">
+        <span>
+          <strong>${escapeHtml(record.reference || "No reference")}</strong>
+          <em>${escapeHtml(record.client || "No client")}</em>
+        </span>
+        <span>
+          <strong>${escapeHtml(record.title || "Untitled record")}</strong>
+          <em>${escapeHtml([record.type, record.status, record.owner].filter(Boolean).join(" / "))}</em>
+        </span>
+        <span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span>
+      </button>
+    `;
+  }
+
+  function focusQuickSearch() {
+    if (!state.quickSearchOpen) return;
+    requestAnimationFrame(() => {
+      const input = document.querySelector("[data-quick-search-input]");
+      input?.focus();
+      input?.select();
+    });
   }
 
   function renderDateCell(value) {
@@ -1853,14 +2075,56 @@
     requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   }
 
+  function scrollPageEdge() {
+    const nearBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 120;
+    requestAnimationFrame(() =>
+      window.scrollTo({
+        top: nearBottom ? 0 : document.documentElement.scrollHeight,
+        left: 0,
+        behavior: "smooth",
+      }),
+    );
+  }
+
+  function openSearchResult(id) {
+    const record = state.data.records.find((item) => item.id === id);
+    if (!record) return;
+    state.quickSearchOpen = false;
+    state.quickSearch = "";
+    state.view = record.type === "Project" ? "Projects" : "All";
+    state.filters.search = "";
+    state.filters.type = "All";
+    state.filters.status = "All";
+    state.filters.category = "All";
+    state.filters.lane = "All lanes";
+    state.selectedId = id;
+    render();
+    requestAnimationFrame(() => document.querySelector(`[data-id="${CSS.escape(id)}"]`)?.scrollIntoView({ block: "center" }));
+  }
+
   function updatePricingCalculator() {
     const projection = pricingProjection();
+    const membership = membershipProjection();
     const seatCount = document.getElementById("pricingSeatCount");
     const monthly = document.getElementById("pricingMonthly");
     const annual = document.getElementById("pricingAnnual");
+    const membershipSeatCount = document.getElementById("membershipSeatCount");
+    const membershipPlanName = document.getElementById("membershipPlanName");
+    const membershipPlanNote = document.getElementById("membershipPlanNote");
+    const membershipMonthly = document.getElementById("membershipMonthly");
+    const membershipAnnual = document.getElementById("membershipAnnual");
     if (seatCount) seatCount.textContent = projection.seats;
     if (monthly) monthly.textContent = `AED ${projection.monthly}`;
     if (annual) annual.textContent = `AED ${projection.annual}`;
+    if (membershipSeatCount) membershipSeatCount.textContent = membership.seats;
+    if (membershipPlanName) membershipPlanName.textContent = membership.label;
+    if (membershipPlanNote) membershipPlanNote.textContent = membership.note;
+    if (membershipMonthly) membershipMonthly.textContent = membership.isCustom ? "Custom" : `AED ${membership.monthly}`;
+    if (membershipAnnual) {
+      membershipAnnual.textContent = membership.isCustom
+        ? "Annual proposal"
+        : `AED ${membership.annual} annual run-rate`;
+    }
   }
 
   document.addEventListener("submit", (event) => {
@@ -1897,8 +2161,16 @@
   });
 
   document.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-action], [data-view], [data-quick-status], [data-insight-lens]");
+    const button = event.target.closest(
+      "[data-action], [data-view], [data-quick-status], [data-insight-lens], [data-membership-plan]",
+    );
     const row = event.target.closest(".tracker-table tbody tr");
+    if (event.target.classList.contains("quick-search-backdrop")) {
+      state.quickSearchOpen = false;
+      state.quickSearch = "";
+      render();
+      return;
+    }
     if (!button && row && !event.target.closest("button, select, input, textarea, [contenteditable]")) {
       state.selectedId = row.dataset.id;
       render();
@@ -1920,6 +2192,13 @@
       return;
     }
 
+    if (button.dataset.membershipPlan) {
+      state.membershipPlan = button.dataset.membershipPlan;
+      render();
+      requestAnimationFrame(() => document.getElementById("membershipTitle")?.scrollIntoView({ block: "start" }));
+      return;
+    }
+
     if (button.dataset.view) {
       state.view = button.dataset.view;
       state.selectedId = null;
@@ -1929,14 +2208,40 @@
     }
     if (action === "logout") {
       state.user = null;
+      state.quickSearchOpen = false;
+      state.quickSearch = "";
       persistSession(null);
       render();
+      return;
+    }
+    if (action === "open-quick-search") {
+      state.quickSearchOpen = true;
+      render();
+      return;
+    }
+    if (action === "close-quick-search") {
+      state.quickSearchOpen = false;
+      state.quickSearch = "";
+      render();
+      return;
+    }
+    if (action === "open-search-result") {
+      openSearchResult(button.dataset.id);
+      return;
+    }
+    if (action === "scroll-page") {
+      scrollPageEdge();
       return;
     }
     if (action === "reset") resetDemo();
     if (action === "add") addRecord();
     if (action === "export") exportCsv();
     if (action === "export-insights") exportInsightsPack();
+    if (action === "subscription-request") {
+      const status = document.getElementById("subscriptionStatus");
+      if (status) status.textContent = "Membership request prepared";
+      window.alert("Membership request prepared for this demo. Production checkout can connect invoices and payment later.");
+    }
     if (action === "select") {
       state.selectedId = button.dataset.id;
       if (state.view === "Insights") state.view = "All";
@@ -1960,6 +2265,25 @@
     if (event.target.matches("textarea[data-field]")) {
       updateRecord(event.target.dataset.id, event.target.dataset.field, event.target.value);
     }
+    if (event.target.matches("[data-quick-search-input]")) {
+      state.quickSearch = event.target.value;
+      renderShell();
+      return;
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && state.quickSearchOpen) {
+      state.quickSearchOpen = false;
+      state.quickSearch = "";
+      render();
+      return;
+    }
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k" && state.user) {
+      event.preventDefault();
+      state.quickSearchOpen = true;
+      render();
+    }
   });
 
   document.addEventListener("change", (event) => {
@@ -1968,6 +2292,11 @@
       state.filters[filter] = event.target.value;
       state.selectedId = null;
       render();
+      return;
+    }
+    if (event.target.dataset.membership === "plan") {
+      state.membershipPlan = event.target.value;
+      updatePricingCalculator();
       return;
     }
     if (event.target.dataset.field) {
