@@ -304,16 +304,16 @@
         </header>
 
         <main class="main">
-          <section class="workspace-hero">
-            <div class="hero-copy">
-              <span class="panel-label">Procurement command desk</span>
-              <h1>From EOI to award, every live opportunity has a clear next move.</h1>
-              <p>A flatter, sharper workspace inspired by the Research Desk pattern: signals on the left, editable grid in the center, record intelligence on the right.</p>
+          <section class="workspace-header">
+            <div class="workspace-title">
+              <span class="panel-label">Tender control room</span>
+              <h1>${state.view === "All" ? "Opportunity pipeline" : escapeHtml(state.view)}</h1>
+              <p>${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.</p>
             </div>
-            <div class="hero-proof">
-              <div><strong>${stats.activeTenders}</strong><span>active tender motions</span></div>
-              <div><strong>${stats.ongoingProjects}</strong><span>ongoing delivery records</span></div>
-              <div><strong>${stats.winProgress}%</strong><span>awarded or completed</span></div>
+            <div class="header-summary">
+              <div><span>Active</span><strong>${stats.activeTenders}</strong></div>
+              <div><span>Projects</span><strong>${stats.ongoingProjects}</strong></div>
+              <div><span>Closed</span><strong>${stats.winProgress}%</strong></div>
             </div>
           </section>
 
@@ -337,8 +337,96 @@
           </section>
 
           ${state.view === "Team & Billing" ? renderTeamBilling() : renderTracker(records, selected, stats)}
+          ${renderPricingSection(stats, company)}
         </main>
       </div>
+    `;
+  }
+
+  function renderPricingSection(stats, company) {
+    return `
+      <section id="pricing" class="pricing-band" aria-labelledby="pricingTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Membership model</p>
+            <h2 id="pricingTitle">Light monthly fee, serious tender discipline.</h2>
+          </div>
+          <span class="status-chip">AED ${company.pricePerUser}/user launch price</span>
+        </div>
+
+        <div class="pricing-grid" aria-label="TenderGrid pricing plan preview">
+          <article class="pricing-card">
+            <span class="plan-kicker">Demo</span>
+            <h3>Sample Workspace</h3>
+            <p class="plan-price"><strong>AED 0</strong><span>prototype access</span></p>
+            <p class="price-note">For evaluating the Excel-to-online workflow before production hosting.</p>
+            <ul class="pricing-feature-list">
+              <li>Imported sample tender and project records</li>
+              <li>Admin, editor, and viewer demo roles</li>
+              <li>Local browser storage and CSV export</li>
+              <li>Visual proof for stakeholder feedback</li>
+            </ul>
+          </article>
+
+          <article class="pricing-card is-featured">
+            <span class="plan-kicker">Recommended</span>
+            <h3>Team Workspace</h3>
+            <p class="plan-price"><strong>AED ${company.pricePerUser}</strong><span>per user / month</span></p>
+            <p class="annual-price">Current demo bill: AED ${stats.bill}/month for ${stats.seats} users</p>
+            <p class="price-note">The simple launch plan for small companies that need shared tender control without heavy software.</p>
+            <ul class="pricing-feature-list">
+              <li>Company-scoped tender and project tracker</li>
+              <li>Role-based access for admin, editor, and viewer</li>
+              <li>Quick analytics, filters, notes, and export</li>
+              <li>Monthly seat billing that stays easy to explain</li>
+            </ul>
+          </article>
+
+          <article class="pricing-card growth-card">
+            <span class="plan-kicker">Next phase</span>
+            <h3>Business Plus</h3>
+            <p class="plan-price"><strong>AED 99</strong><span>company base / month</span></p>
+            <p class="price-note">For teams that need production-grade workflow controls after the MVP is validated.</p>
+            <ul class="pricing-feature-list">
+              <li>Backend database and secure authentication</li>
+              <li>Audit history for edits and user activity</li>
+              <li>Excel import refresh and attachment roadmap</li>
+              <li>Email reminders for due dates and next actions</li>
+            </ul>
+          </article>
+
+          <article class="pricing-card enterprise-card">
+            <span class="plan-kicker">Enterprise</span>
+            <h3>Control Desk</h3>
+            <p class="plan-price"><strong>Custom</strong><span>annual contract</span></p>
+            <p class="price-note">For larger groups needing deeper governance, multiple companies, and stricter controls.</p>
+            <ul class="pricing-feature-list">
+              <li>Multi-company workspace governance</li>
+              <li>Advanced permissions and approval trails</li>
+              <li>Custom reporting and management dashboards</li>
+              <li>Priority implementation and support</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="pricing-note-grid" aria-label="TenderGrid pricing principles">
+          <article class="pricing-note">
+            <span class="metric-label">Launch principle</span>
+            <strong>Keep the entry price obvious</strong>
+            <p>AED 10/user/month is easy for customers to understand, approve, and expand as more users join.</p>
+          </article>
+          <article class="pricing-note">
+            <span class="metric-label">Value anchor</span>
+            <strong>Replace messy spreadsheet coordination</strong>
+            <p>The buyer is paying for one shared source of truth, safer handoffs, and faster follow-up on live opportunities.</p>
+          </article>
+          <article class="pricing-note">
+            <span class="metric-label">Upgrade path</span>
+            <strong>Sell governance after trust</strong>
+            <p>Once teams rely on TenderGrid daily, audit logs, imports, reminders, and controls become natural paid upgrades.</p>
+          </article>
+        </div>
+      </section>
     `;
   }
 
@@ -375,6 +463,9 @@
             <div class="table-wrap">
               ${records.length ? renderTable(records) : `<div class="empty-state">No matching records.</div>`}
             </div>
+            <div class="mobile-records">
+              ${records.length ? records.map(renderMobileRecord).join("") : `<div class="empty-state">No matching records.</div>`}
+            </div>
           </div>
         </section>
 
@@ -389,10 +480,10 @@
       ["Active", "Pending", "Submitted", "Ongoing"].includes(record.status),
     ).length;
     const signalRows = [
-      ["Pending action", stats.pending],
-      ["Submitted", stats.submitted],
-      ["Awarded", stats.awarded],
-      ["Risk / regret", stats.risk],
+      ["Active", "Active", stats.activeTenders],
+      ["Pending", "Pending", stats.pending],
+      ["Submitted", "Submitted", stats.submitted],
+      ["Awarded", "Awarded", stats.awarded],
     ];
     return `
       <div class="panel command-panel">
@@ -408,11 +499,11 @@
         <div class="signal-list">
           ${signalRows
             .map(
-              ([label, value]) => `
-                <div class="signal-row">
+              ([label, status, value]) => `
+                <button class="signal-row ${state.filters.status === status ? "active" : ""}" type="button" data-quick-status="${escapeHtml(status)}">
                   <span>${label}</span>
                   <strong>${value}</strong>
-                </div>
+                </button>
               `,
             )
             .join("")}
@@ -515,6 +606,20 @@
           </div>
         </td>
       </tr>
+    `;
+  }
+
+  function renderMobileRecord(record) {
+    const selected = record.id === state.selectedId ? "selected-card" : "";
+    return `
+      <button class="record-card ${selected}" type="button" data-id="${escapeHtml(record.id)}" data-action="select">
+        <span class="record-card-top">
+          <strong>${escapeHtml(record.reference || "No reference")}</strong>
+          <span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span>
+        </span>
+        <span class="record-title">${escapeHtml(record.title || "Untitled record")}</span>
+        <span class="record-meta">${escapeHtml(record.client || "No client")} / ${escapeHtml(record.type)} / ${escapeHtml(record.owner || "No owner")}</span>
+      </button>
     `;
   }
 
@@ -860,6 +965,10 @@
     }
   }
 
+  function scrollToTop() {
+    requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+  }
+
   document.addEventListener("submit", (event) => {
     if (event.target.id === "loginForm") {
       event.preventDefault();
@@ -884,6 +993,7 @@
       state.message = "";
       persistSession(state.user);
       render();
+      scrollToTop();
     }
 
     if (event.target.id === "teamForm") {
@@ -893,14 +1003,28 @@
   });
 
   document.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-action], [data-view]");
+    const button = event.target.closest("[data-action], [data-view], [data-quick-status]");
+    const row = event.target.closest(".tracker-table tbody tr");
+    if (!button && row && !event.target.closest("button, select, input, textarea, [contenteditable]")) {
+      state.selectedId = row.dataset.id;
+      render();
+      return;
+    }
     if (!button) return;
     const action = button.dataset.action;
+
+    if (button.dataset.quickStatus) {
+      state.filters.status = state.filters.status === button.dataset.quickStatus ? "All" : button.dataset.quickStatus;
+      state.selectedId = null;
+      render();
+      return;
+    }
 
     if (button.dataset.view) {
       state.view = button.dataset.view;
       state.selectedId = null;
       render();
+      scrollToTop();
       return;
     }
     if (action === "logout") {
