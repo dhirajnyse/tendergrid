@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=29";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=29";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=33";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=33";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -1865,23 +1865,28 @@
   }
 
   function renderTracker(records, selected, stats) {
+    const counterRecords = sectionRecords();
     const categories = uniqueOptions("category");
     const statuses = Array.from(new Set([...STATUS_OPTIONS, ...uniqueOptions("status")]));
     const typeOptions = isProjectSection() ? ["All", "Project"] : ["All", "EOI", "Tender"];
     const isBoardMode = state.trackerMode === "Board";
+    const isTimelineMode = state.trackerMode === "Timeline";
     const boardLanes = isBoardMode ? buildBoardLanes(records) : [];
+    const timelineBuckets = isTimelineMode ? buildTimelineBuckets(records) : [];
     const visibleDepth = state.tableDensity === "Compact" ? 28 : 21;
     const visibleEnd = Math.min(records.length, visibleDepth);
     const trackerMeta = isBoardMode
       ? `${records.length} cards across ${boardLanes.length} lanes`
-      : records.length
-        ? `Showing 1-${visibleEnd} of ${records.length}`
-        : "No records";
+      : isTimelineMode
+        ? `${records.length} records across ${timelineBuckets.length} date lanes`
+        : records.length
+          ? `Showing 1-${visibleEnd} of ${records.length}`
+          : "No records";
     return `
       <section class="tracker-layout density-${state.tableDensity.toLowerCase()} mode-${state.trackerMode.toLowerCase()} ${state.detailCollapsed ? "detail-collapsed" : ""}">
         <aside class="left-rail">
-          ${renderCommandPanel(records)}
-          ${renderMixPanel(records)}
+          ${renderCommandPanel(records, counterRecords)}
+          ${renderMixPanel(counterRecords)}
         </aside>
 
         <section class="workbench">
@@ -1895,7 +1900,7 @@
             </div>
             <div class="toolbar-actions">
               <div class="mode-toggle" role="group" aria-label="Tracker view">
-                ${["Sheet", "Board"]
+                ${["Sheet", "Board", "Timeline"]
                   .map(
                     (mode) => `
                       <button class="${state.trackerMode === mode ? "active" : ""}" type="button" data-tracker-mode="${mode}">
@@ -1922,6 +1927,8 @@
             </div>
           </section>
 
+          ${renderActionQueue(records)}
+
           <div class="table-panel">
             <div class="table-head">
               <div>
@@ -1933,7 +1940,7 @@
                 <strong>${trackerMeta}</strong>
               </div>
               ${
-                isBoardMode
+                isBoardMode || isTimelineMode
                   ? ""
                   : `<div class="column-guide" aria-hidden="true">
                 <span>Reference</span>
@@ -1949,7 +1956,9 @@
             ${
               isBoardMode
                 ? renderTrackerBoard(boardLanes)
-                : `<div class="table-wrap">
+                : isTimelineMode
+                  ? renderTrackerTimeline(timelineBuckets)
+                  : `<div class="table-wrap">
                     ${records.length ? renderTable(records) : `<div class="empty-state">No matching records.</div>`}
                   </div>
                   <div class="mobile-records">
@@ -1964,11 +1973,11 @@
     `;
   }
 
-  function renderCommandPanel(records) {
-    const attention = records.filter((record) =>
+  function renderCommandPanel(visibleRecords, counterRecords) {
+    const attention = counterRecords.filter((record) =>
       ["Active", "Pending", "Submitted", "Ongoing"].includes(record.status),
     ).length;
-    const countStatus = (status) => records.filter((record) => record.status === status).length;
+    const countStatus = (status) => counterRecords.filter((record) => record.status === status).length;
     const signalRows = isProjectSection()
       ? [
           ["Ongoing", "Ongoing", countStatus("Ongoing")],
@@ -1986,7 +1995,7 @@
       <div class="panel command-panel">
         <div class="panel-heading">
           <h2>Command rail</h2>
-          <span>${records.length} shown</span>
+          <span>${visibleRecords.length} shown</span>
         </div>
         <div class="focus-card">
           <span>Needs movement</span>
@@ -2119,6 +2128,137 @@
     `;
   }
 
+  function renderActionQueue(records) {
+    const items = buildActionQueue(records).slice(0, 5);
+    const openCount = records.filter((record) => !isClosedRecord(record)).length;
+    const queueLabel = items.length ? `Top ${items.length}` : "Clear";
+    return `
+      <section class="action-queue" aria-label="Action queue">
+        <div class="action-queue-head">
+          <div>
+            <span class="panel-label">Action queue</span>
+            <h2>${isProjectSection() ? "Project next moves" : "Tender next moves"}</h2>
+            <p>${openCount} open records scanned for due dates, missing values, high-value work, and negotiation movement.</p>
+          </div>
+          <strong>${queueLabel}</strong>
+        </div>
+        ${
+          items.length
+            ? `<div class="action-card-grid">${items.map(renderActionCard).join("")}</div>`
+            : `<div class="empty-state">No urgent action signals in the current view.</div>`
+        }
+      </section>
+    `;
+  }
+
+  function buildActionQueue(records) {
+    const highValueFloor = highValueThreshold(companyRecords());
+    return records
+      .map((record) => actionSignal(record, highValueFloor))
+      .filter(Boolean)
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          a.dueSort - b.dueSort ||
+          String(a.record.title || "").localeCompare(String(b.record.title || "")),
+      );
+  }
+
+  function actionSignal(record, highValueFloor) {
+    if (isClosedRecord(record)) return null;
+    const date = parseRecordDate(record.endDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const nextThirty = new Date(today);
+    nextThirty.setDate(nextThirty.getDate() + 30);
+    const amount = Number(record.valueAmount) || 0;
+    const rounds = (record.rounds || []).length;
+    const dueSort = date ? date.getTime() : Number.MAX_SAFE_INTEGER;
+    if (date && date < today) {
+      return {
+        record,
+        dueSort,
+        score: 100 + rounds,
+        tone: "red",
+        label: "Overdue",
+        nextMove: isProjectSection() ? "Escalate delivery date and confirm owner update." : "Confirm bid status and update the submission or negotiation date.",
+      };
+    }
+    if (date && date <= nextThirty) {
+      return {
+        record,
+        dueSort,
+        score: 90 + rounds,
+        tone: "amber",
+        label: "Due watch",
+        nextMove: isProjectSection() ? "Review next milestone before the date passes." : "Prepare the next tender follow-up before the due date.",
+      };
+    }
+    if (!record.endDate) {
+      return {
+        record,
+        dueSort,
+        score: 78,
+        tone: "blue",
+        label: "No due date",
+        nextMove: "Add a target date so the record can enter the operating rhythm.",
+      };
+    }
+    if (rounds) {
+      return {
+        record,
+        dueSort,
+        score: 70 + rounds,
+        tone: "teal",
+        label: `${rounds} negotiation${rounds === 1 ? "" : "s"}`,
+        nextMove: "Review last negotiation note and decide the next commercial move.",
+      };
+    }
+    if (amount >= highValueFloor && amount > 0) {
+      return {
+        record,
+        dueSort,
+        score: 62,
+        tone: "green",
+        label: "High value",
+        nextMove: "Give this record a commercial review before the next status change.",
+      };
+    }
+    if (!amount) {
+      return {
+        record,
+        dueSort,
+        score: 54,
+        tone: "blue",
+        label: "Missing value",
+        nextMove: "Capture the expected value so reports and prioritization improve.",
+      };
+    }
+    return null;
+  }
+
+  function renderActionCard(item) {
+    const record = item.record;
+    const selected = record.id === state.selectedId ? "selected-card" : "";
+    const dueLabel = formatDate(record.endDate) || "No due date";
+    const valueLabel = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "No value";
+    return `
+      <button class="action-card action-${item.tone} ${selected}" type="button" data-action="select" data-id="${escapeHtml(record.id)}">
+        <span class="action-card-top">
+          <b>${escapeHtml(item.label)}</b>
+          <i>${escapeHtml(record.status)}</i>
+        </span>
+        <strong>${escapeHtml(record.title || "Untitled record")}</strong>
+        <em>${escapeHtml(record.reference || "No reference")} / ${escapeHtml(record.client || "No client")}</em>
+        <span class="action-card-meta">
+          <span>${escapeHtml(dueLabel)}</span>
+          <span>${escapeHtml(valueLabel)}</span>
+        </span>
+        <small>${escapeHtml(item.nextMove)}</small>
+      </button>
+    `;
+  }
+
   function buildBoardLanes(records) {
     const configs = isProjectSection()
       ? [
@@ -2217,6 +2357,106 @@
         <span class="board-tags">
           <span>${escapeHtml([record.type, record.category].filter(Boolean).join(" / ") || "No category")}</span>
           <span>${rounds ? `${rounds} rounds` : escapeHtml(record.owner || "No owner")}</span>
+        </span>
+      </button>
+    `;
+  }
+
+  function buildTimelineBuckets(records) {
+    const configs = [
+      { key: "past", title: "Past due", hint: "Dates already passed", tone: "red" },
+      { key: "thisMonth", title: "This month", hint: "Current month dates", tone: "teal" },
+      { key: "next30", title: "Next 30", hint: "Near-term actions", tone: "amber" },
+      { key: "nextQuarter", title: "Next quarter", hint: "Upcoming 90-day work", tone: "blue" },
+      { key: "later", title: "Later", hint: "Longer-range schedule", tone: "green" },
+      { key: "noDate", title: "No date", hint: "Needs a target date", tone: "neutral" },
+    ];
+    const buckets = configs.map((config) => ({ ...config, records: [] }));
+    records.forEach((record) => {
+      const key = timelineBucketKey(record);
+      const bucket = buckets.find((item) => item.key === key) || buckets[buckets.length - 1];
+      bucket.records.push(record);
+    });
+    buckets.forEach((bucket) => {
+      bucket.records.sort((a, b) => {
+        const aDate = parseRecordDate(a.endDate)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        const bDate = parseRecordDate(b.endDate)?.getTime() ?? Number.MAX_SAFE_INTEGER;
+        return aDate - bDate || String(a.title || "").localeCompare(String(b.title || ""));
+      });
+    });
+    return buckets;
+  }
+
+  function timelineBucketKey(record) {
+    const date = parseRecordDate(record.endDate);
+    if (!date) return "noDate";
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const thisMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+    const nextMonthStart = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    const nextThirty = new Date(today);
+    nextThirty.setDate(nextThirty.getDate() + 30);
+    const nextQuarter = new Date(today);
+    nextQuarter.setDate(nextQuarter.getDate() + 90);
+    if (date < today) return "past";
+    if (date >= thisMonthStart && date < nextMonthStart) return "thisMonth";
+    if (date <= nextThirty) return "next30";
+    if (date <= nextQuarter) return "nextQuarter";
+    return "later";
+  }
+
+  function renderTrackerTimeline(buckets) {
+    const total = buckets.reduce((sum, bucket) => sum + bucket.records.length, 0);
+    if (!total) return `<div class="timeline-panel"><div class="empty-state">No matching records.</div></div>`;
+    return `
+      <div class="timeline-panel" aria-label="${escapeHtml(state.view)} timeline">
+        ${buckets
+          .map(
+            (bucket) => `
+              <section class="timeline-lane lane-${bucket.tone}">
+                <div class="timeline-lane-head">
+                  <span>
+                    <strong>${escapeHtml(bucket.title)}</strong>
+                    <em>${escapeHtml(bucket.hint)}</em>
+                  </span>
+                  <b>${bucket.records.length}</b>
+                </div>
+                <div class="timeline-cards">
+                  ${
+                    bucket.records.length
+                      ? bucket.records.slice(0, 10).map(renderTimelineCard).join("")
+                      : `<div class="timeline-empty">No dated records here.</div>`
+                  }
+                  ${bucket.records.length > 10 ? `<div class="timeline-more">${bucket.records.length - 10} more in this lane</div>` : ""}
+                </div>
+              </section>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderTimelineCard(record) {
+    const selected = record.id === state.selectedId ? "selected-card" : "";
+    const date = parseRecordDate(record.endDate);
+    const day = date ? date.toLocaleDateString("en-GB", { day: "2-digit" }) : "--";
+    const month = date ? date.toLocaleDateString("en-GB", { month: "short", year: "2-digit" }) : "No date";
+    const valueLabel = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "No value";
+    return `
+      <button class="timeline-card ${selected}" type="button" data-action="select" data-id="${escapeHtml(record.id)}">
+        <span class="timeline-date">
+          <strong>${escapeHtml(day)}</strong>
+          <em>${escapeHtml(month)}</em>
+        </span>
+        <span class="timeline-card-body">
+          <span class="timeline-card-top">
+            <b>${escapeHtml(record.reference || "No reference")}</b>
+            <i class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</i>
+          </span>
+          <strong>${escapeHtml(record.title || "Untitled record")}</strong>
+          <em>${escapeHtml(record.client || "No client")}</em>
+          <small>${escapeHtml([record.type, record.category, valueLabel].filter(Boolean).join(" / "))}</small>
         </span>
       </button>
     `;
@@ -2354,6 +2594,117 @@
     `;
   }
 
+  function buildRecordBrief(record) {
+    const floor = highValueThreshold(companyRecords());
+    const scored = scoreRecord(record, floor);
+    const signal = actionSignal(record, floor);
+    const amount = Number(record.valueAmount) || 0;
+    const missing = [
+      ["Reference", record.reference],
+      ["Client", record.client],
+      ["Title", record.title],
+      ["Owner", record.owner],
+      ["Category", record.category],
+      ["Due date", record.endDate],
+      ["Value", amount > 0],
+    ].filter(([, value]) => !value);
+    const completed = 7 - missing.length;
+    const readiness = Math.round((completed / 7) * 100);
+    const dueDays = recordDueDays(record);
+    const dueLabel =
+      dueDays === null
+        ? "No due date"
+        : dueDays < 0
+          ? `${Math.abs(dueDays)} days past due`
+          : dueDays === 0
+            ? "Due today"
+            : `${dueDays} days left`;
+    const valueLabel = amount > 0 ? formatCompactMoney(amount) : "No value";
+    const healthLabel = isClosedRecord(record)
+      ? "Closed record"
+      : dueDays !== null && dueDays < 0
+        ? "Overdue watch"
+        : dueDays === null
+          ? "Needs date"
+          : !amount
+            ? "Needs value"
+            : scored.score >= 72
+        ? "Healthy"
+        : scored.score >= 52
+          ? "Needs watch"
+          : "Needs cleanup";
+    const displayTone = isClosedRecord(record)
+      ? "green"
+      : dueDays !== null && dueDays < 0
+        ? "red"
+        : dueDays === null || !amount
+          ? "amber"
+          : scored.tone;
+    const nextMove = signal?.nextMove || closedRecordMove(record) || "Keep monitoring this record and refresh the next date, value, or owner when it changes.";
+    const managementLine = `${record.reference || "This record"} for ${record.client || "the client"} is ${record.status || "unassigned"} with ${valueLabel} and ${dueLabel.toLowerCase()}. Next move: ${nextMove}`;
+    return {
+      ...scored,
+      tone: displayTone,
+      healthLabel,
+      nextMove,
+      managementLine,
+      missing,
+      readiness,
+      dueLabel,
+      valueLabel,
+      rounds: (record.rounds || []).length,
+    };
+  }
+
+  function closedRecordMove(record) {
+    if (record.status === "Awarded") return "Prepare the handover path from pursuit to contract or delivery ownership.";
+    if (record.status === "Completed") return "Archive completion notes, final value, and any lessons for future similar work.";
+    if (["Cancelled", "Regret"].includes(record.status)) return "Capture the loss or stop reason so future pursuit decisions improve.";
+    return "";
+  }
+
+  function renderSmartBrief(record) {
+    const brief = buildRecordBrief(record);
+    const missingLabel = brief.missing.length
+      ? brief.missing.slice(0, 4).map(([label]) => `<span>${escapeHtml(label)}</span>`).join("")
+      : "<span>Core data complete</span>";
+    const reasons = brief.reasons.length
+      ? brief.reasons.map((reason) => `<span>${escapeHtml(reason)}</span>`).join("")
+      : "<span>No major flags</span>";
+    return `
+      <section class="smart-brief brief-${brief.tone}">
+        <div class="brief-head">
+          <div>
+            <span class="panel-label">Smart brief</span>
+            <h3>${escapeHtml(brief.healthLabel)}</h3>
+          </div>
+          <strong>${brief.score}</strong>
+        </div>
+        <div class="brief-meter" aria-hidden="true"><span style="width: ${brief.score}%"></span></div>
+        <div class="brief-stat-grid">
+          <div><span>Readiness</span><strong>${brief.readiness}%</strong></div>
+          <div><span>Due signal</span><strong>${escapeHtml(brief.dueLabel)}</strong></div>
+          <div><span>Value</span><strong>${escapeHtml(brief.valueLabel)}</strong></div>
+          <div><span>Rounds</span><strong>${brief.rounds}</strong></div>
+        </div>
+        <div class="brief-next">
+          <span>Next move</span>
+          <strong>${escapeHtml(brief.nextMove)}</strong>
+        </div>
+        <div class="brief-chip-row">
+          ${reasons}
+        </div>
+        <div class="brief-chip-row brief-missing">
+          ${missingLabel}
+        </div>
+        <div class="management-line">
+          <span>Management line</span>
+          <p>${escapeHtml(brief.managementLine)}</p>
+        </div>
+      </section>
+    `;
+  }
+
   function renderDetail(record) {
     if (!record) {
       return `
@@ -2370,6 +2721,8 @@
           <p>${escapeHtml(record.reference || "No reference")} / ${escapeHtml(record.client || "No client")}</p>
         </div>
         <div class="detail-body">
+          ${renderSmartBrief(record)}
+
           <div class="detail-grid">
             <div class="detail-item"><span>Status</span><strong><span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span></strong></div>
             <div class="detail-item"><span>Category</span><strong>${escapeHtml(record.category)}</strong></div>
