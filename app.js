@@ -37,7 +37,7 @@
     selectedId: null,
     message: "",
     pricingSeats: 10,
-    insightLens: "Open",
+    insightLens: "Tendering",
     membershipPlan: "Team Workspace",
     quickSearchOpen: false,
     quickSearch: "",
@@ -342,13 +342,13 @@
       state.view === "All"
         ? "Opportunity pipeline"
         : state.view === "Insights"
-          ? "Pipeline insights"
+          ? "Insights desk"
           : state.view === "Membership"
             ? "Membership model"
           : state.view;
     const viewCopy =
       state.view === "Insights"
-        ? "Turn tender records into management signals: follow-up risk, workload, category concentration, and value exposure."
+        ? "Separate tendering and project performance into clean operating views with the statistics directly underneath."
         : state.view === "Membership"
           ? "Manage launch pricing, seats, subscription packaging, and the upgrade path from demo workspace to paid company plan."
         : `${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.`;
@@ -367,7 +367,9 @@
             <span class="status-pill">${stats.totalRecords} records</span>
           </div>
           <div class="topbar-actions">
-            <button class="membership-btn ${state.view === "Membership" ? "active" : ""}" type="button" data-view="Membership">Membership Model</button>
+            <button class="mode-btn ${!["Insights", "Membership"].includes(state.view) ? "active" : ""}" type="button" data-view="All">Tender Control Room</button>
+            <button class="mode-btn ${state.view === "Insights" ? "active" : ""}" type="button" data-view="Insights">Insights</button>
+            <button class="mode-btn ${state.view === "Membership" ? "active" : ""}" type="button" data-view="Membership">Membership Model</button>
             <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
             <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
             <button class="secondary-btn" type="button" data-action="logout">Logout</button>
@@ -377,47 +379,53 @@
         <main class="main">
           <section class="workspace-header">
             <div class="workspace-title">
-              <span class="panel-label">Tender control room</span>
+              ${["Insights", "Membership"].includes(state.view) ? "" : `<span class="panel-label">Tender control room</span>`}
               <h1>${escapeHtml(viewTitle)}</h1>
               <p>${escapeHtml(viewCopy)}</p>
             </div>
-            <div class="header-summary">
-              <div><span>Active</span><strong>${stats.activeTenders}</strong></div>
-              <div><span>Projects</span><strong>${stats.ongoingProjects}</strong></div>
-              <div><span>Closed</span><strong>${stats.winProgress}%</strong></div>
-            </div>
+            ${
+              ["Insights", "Membership"].includes(state.view)
+                ? ""
+                : `<div class="header-summary">
+                    <div><span>Active</span><strong>${stats.activeTenders}</strong></div>
+                    <div><span>Projects</span><strong>${stats.ongoingProjects}</strong></div>
+                    <div><span>Closed</span><strong>${stats.winProgress}%</strong></div>
+                  </div>`
+            }
           </section>
 
-          <nav class="tabs" aria-label="Primary views">
-            ${["All", "Tenders", "Projects", "Insights", "Team & Billing"]
-              .map(
-                (view) => `
-                  <button class="tab-btn ${state.view === view ? "active" : ""}" type="button" data-view="${view}">
-                    ${view}
-                  </button>
-                `,
-              )
-              .join("")}
-          </nav>
+          ${
+            ["Insights", "Membership"].includes(state.view)
+              ? ""
+              : `<nav class="tabs" aria-label="Primary views">
+                  ${["All", "Tenders", "Projects"]
+                    .map(
+                      (view) => `
+                        <button class="tab-btn ${state.view === view ? "active" : ""}" type="button" data-view="${view}">
+                          ${view}
+                        </button>
+                      `,
+                    )
+                    .join("")}
+                </nav>`
+          }
 
           ${
-            state.view === "Membership"
+            ["Insights", "Membership"].includes(state.view)
               ? ""
               : `<section class="analytics">
                   <div class="metric"><span>Active tenders</span><strong>${stats.activeTenders}</strong><small>${stats.totalRecords} total records</small></div>
                   <div class="metric"><span>Ongoing projects</span><strong>${stats.ongoingProjects}</strong><small>Software and telecom</small></div>
                   <div class="metric"><span>Awarded tenders</span><strong>${stats.awarded}</strong><small>LOA or award status</small></div>
-                  <div class="metric"><span>Seat bill</span><strong>AED ${stats.bill}</strong><small>${stats.seats} users at AED ${company.pricePerUser}/month</small></div>
+                  <div class="metric"><span>Decision watch</span><strong>${stats.pending + stats.submitted}</strong><small>Pending and submitted records</small></div>
                 </section>`
           }
 
           ${
-            state.view === "Team & Billing"
-              ? renderTeamBilling()
-              : state.view === "Insights"
-                ? renderInsights()
-                : state.view === "Membership"
-                  ? renderMembershipPage(stats, company)
+            state.view === "Insights"
+              ? renderInsights()
+              : state.view === "Membership"
+                ? renderMembershipPage(stats, company)
                 : renderTracker(records, selected, stats)
           }
         </main>
@@ -519,10 +527,12 @@
 
   function insightRecords() {
     const records = companyRecords();
-    const lens = state.insightLens || "Open";
+    const lens = state.insightLens || "Tendering";
     if (lens === "All") return records;
     if (lens === "Open") return records.filter((record) => !isClosedRecord(record));
-    if (lens === "Tenders") return records.filter((record) => record.type === "Tender" || record.type === "EOI");
+    if (lens === "Tendering" || lens === "Tenders") {
+      return records.filter((record) => record.type === "Tender" || record.type === "EOI");
+    }
     if (lens === "Projects") return records.filter((record) => record.type === "Project");
     if (lens === "High value") {
       const floor = highValueThreshold(records);
@@ -659,6 +669,7 @@
 
   function insightModel(records) {
     const stats = metrics();
+    const lens = state.insightLens || "Tendering";
     const openRecords = records.filter((record) => !isClosedRecord(record));
     const tenderRecords = records.filter((record) => record.type === "Tender" || record.type === "EOI");
     const dueBuckets = buildDueBuckets(records);
@@ -690,26 +701,42 @@
         ),
       ),
     );
-    const funnel = [
-      { label: "Tender and EOI universe", value: tenderRecords.length },
-      {
-        label: "Active attention",
-        value: tenderRecords.filter((record) => !isClosedRecord(record)).length,
-      },
-      { label: "Submitted", value: tenderRecords.filter((record) => record.status === "Submitted").length },
-      {
-        label: "Awarded or completed",
-        value: records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length,
-      },
-      {
-        label: "Regret or cancelled",
-        value: records.filter((record) => ["Regret", "Cancelled"].includes(record.status)).length,
-      },
-    ];
+    const funnel =
+      lens === "Projects"
+        ? [
+            { label: "Project universe", value: records.length },
+            { label: "Ongoing delivery", value: records.filter((record) => !isClosedRecord(record)).length },
+            { label: "Due-date watch", value: overdue + dueBuckets.find((bucket) => bucket.label === "Next 30 days").value },
+            {
+              label: "Completed or awarded",
+              value: records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length,
+            },
+            {
+              label: "Cancelled or regret",
+              value: records.filter((record) => ["Regret", "Cancelled"].includes(record.status)).length,
+            },
+          ]
+        : [
+            { label: "Tender and EOI universe", value: tenderRecords.length },
+            {
+              label: "Active attention",
+              value: tenderRecords.filter((record) => !isClosedRecord(record)).length,
+            },
+            { label: "Submitted", value: tenderRecords.filter((record) => record.status === "Submitted").length },
+            {
+              label: "Awarded or completed",
+              value: records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length,
+            },
+            {
+              label: "Regret or cancelled",
+              value: records.filter((record) => ["Regret", "Cancelled"].includes(record.status)).length,
+            },
+          ];
     return {
       stats,
-      lens: state.insightLens || "Open",
+      lens,
       scopedRecords: records.length,
+      openRecords: openRecords.length,
       healthScore,
       totalValue,
       openValue,
@@ -751,31 +778,69 @@
     };
   }
 
-  function renderInsights() {
-    const model = insightModel(insightRecords());
+  function insightAreaSummaries() {
+    const records = companyRecords();
+    const dueWatchCount = (items) => {
+      const due = buildDueBuckets(items);
+      return due.find((bucket) => bucket.label === "Past due").value + due.find((bucket) => bucket.label === "Next 30 days").value;
+    };
+    const tendering = records.filter((record) => record.type === "Tender" || record.type === "EOI");
+    const projects = records.filter((record) => record.type === "Project");
+    return [
+      {
+        lens: "Tendering",
+        label: "Tendering",
+        eyebrow: "EOI and tender pipeline",
+        records: tendering.length,
+        open: tendering.filter((record) => !isClosedRecord(record)).length,
+        value: sumAmounts(tendering),
+        dueWatch: dueWatchCount(tendering),
+      },
+      {
+        lens: "Projects",
+        label: "Projects",
+        eyebrow: "Ongoing delivery control",
+        records: projects.length,
+        open: projects.filter((record) => !isClosedRecord(record)).length,
+        value: sumAmounts(projects),
+        dueWatch: dueWatchCount(projects),
+      },
+    ];
+  }
+
+  function renderInsightAreaCards(activeLens) {
     return `
-      <section class="insights-layout">
-        <div class="insight-hero cockpit-hero">
-          <div>
-            <span class="panel-label">Bid command cockpit</span>
-            <h2>From sheet tracking to pursuit control.</h2>
-            <p>Qualification, deadline pressure, value exposure, owner load, and submission readiness in one operating view.</p>
-            ${renderLensSwitch(model.lens)}
-            <div class="hero-actions">
-              <button class="secondary-btn" type="button" data-action="export-insights">Export board pack</button>
-              <button class="ghost-btn" type="button" data-view="All">Open tracker</button>
-            </div>
-          </div>
-          <div class="score-ring" style="--score: ${model.healthScore}">
-            <strong>${model.healthScore}</strong>
-            <span>Pipeline score</span>
-          </div>
-        </div>
+      <div class="insight-focus-grid" aria-label="Insight areas">
+        ${insightAreaSummaries()
+          .map(
+            (area) => `
+              <button class="insight-focus-card ${activeLens === area.lens ? "active" : ""}" type="button" data-insight-lens="${escapeHtml(area.lens)}">
+                <span>${escapeHtml(area.eyebrow)}</span>
+                <strong>${escapeHtml(area.label)}</strong>
+                <small>${area.records} records / ${area.open} open / ${escapeHtml(formatCompactMoney(area.value))}</small>
+                <em>${area.dueWatch} due-watch items</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderInsights() {
+    const activeLens = state.insightLens === "Projects" ? "Projects" : "Tendering";
+    if (state.insightLens !== activeLens) state.insightLens = activeLens;
+    const model = insightModel(insightRecords());
+    const isProjectLens = activeLens === "Projects";
+    const areaTitle = isProjectLens ? "Project insight" : "Tendering insight";
+    return `
+      <section class="insights-layout insights-clean">
+        ${renderInsightAreaCards(activeLens)}
 
         <div class="insight-kpis">
+          ${renderInsightKpi("Insight score", `${model.healthScore}/100`, `${areaTitle} readiness`)}
           ${renderInsightKpi("Captured value", formatCompactMoney(model.totalValue), `${model.recordsWithValue} records with value`)}
-          ${renderInsightKpi("Open value", formatCompactMoney(model.openValue), "Active, pending, submitted, and ongoing")}
-          ${renderInsightKpi("Closed value", formatCompactMoney(model.awardedValue), "Awarded and completed records")}
+          ${renderInsightKpi("Open records", `${model.openRecords}`, `${model.scopedRecords} records in ${activeLens.toLowerCase()}`)}
           ${renderInsightKpi("Negotiation depth", `${model.averageRounds} rounds`, `${model.negotiationRecords} records with rounds`)}
         </div>
 
@@ -783,10 +848,10 @@
           <article class="info-panel decision-panel">
             <div class="info-head">
               <div>
-                <span class="metric-label">Go / no-go queue</span>
-                <h3>Decision-ready pursuits</h3>
+                <span class="metric-label">${isProjectLens ? "Delivery queue" : "Go / no-go queue"}</span>
+                <h3>${isProjectLens ? "Project attention list" : "Decision-ready pursuits"}</h3>
               </div>
-              <span>${model.scopedRecords} in lens</span>
+              <span>${model.scopedRecords} in view</span>
             </div>
             ${renderDecisionBoard(model.decisionRows)}
           </article>
@@ -795,7 +860,7 @@
             <div class="info-head">
               <div>
                 <span class="metric-label">Risk map</span>
-                <h3>What needs management attention</h3>
+                <h3>Management attention</h3>
               </div>
             </div>
             ${renderRiskMatrix(model.riskMatrix)}
@@ -804,21 +869,11 @@
           <article class="info-panel">
             <div class="info-head">
               <div>
-                <span class="metric-label">Submission readiness</span>
+                <span class="metric-label">${isProjectLens ? "Project hygiene" : "Submission readiness"}</span>
                 <h3>Record completeness</h3>
               </div>
             </div>
             ${renderComplianceRows(model.complianceRows)}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Product roadmap</span>
-                <h3>Peer-inspired workflow</h3>
-              </div>
-            </div>
-            ${renderPlaybookRows(model.playbookRows)}
           </article>
         </div>
 
@@ -826,10 +881,10 @@
           <article class="info-panel info-panel-wide">
             <div class="info-head">
               <div>
-                <span class="metric-label">Opportunity funnel</span>
-                <h3>Bid movement at a glance</h3>
+                <span class="metric-label">${isProjectLens ? "Project flow" : "Opportunity funnel"}</span>
+                <h3>${isProjectLens ? "Delivery movement at a glance" : "Bid movement at a glance"}</h3>
               </div>
-              <span>${model.stats.totalRecords} total records</span>
+              <span>${model.scopedRecords} records</span>
             </div>
             ${renderFunnel(model.funnel)}
           </article>
@@ -888,7 +943,7 @@
             <div class="info-head">
               <div>
                 <span class="metric-label">Value exposure</span>
-                <h3>Largest open opportunities</h3>
+                <h3>Largest open records</h3>
               </div>
             </div>
             ${renderValueList(model.highValueOpen)}
@@ -907,6 +962,14 @@
               `,
             )
             .join("")}
+          <article class="action-card action-card-buttons">
+            <span class="metric-label">Board output</span>
+            <strong>${escapeHtml(areaTitle)}</strong>
+            <div class="action-buttons">
+              <button class="secondary-btn" type="button" data-action="export-insights">Export pack</button>
+              <button class="ghost-btn" type="button" data-view="All">Open tracker</button>
+            </div>
+          </article>
         </div>
       </section>
     `;
@@ -1167,7 +1230,7 @@
             <p>Keep pricing simple for the first customers, then graduate them into governance, auditability, reminders, and controlled deployment.</p>
             <div class="membership-actions">
               <button class="secondary-btn" type="button" data-action="subscription-request">${escapeHtml(membership.cta)}</button>
-              <button class="ghost-btn" type="button" data-view="Team & Billing">Review team seats</button>
+              <button class="ghost-btn" type="button" data-action="review-seats">Review team seats</button>
             </div>
           </div>
           <div class="subscription-card">
@@ -1183,7 +1246,7 @@
         </div>
 
         <div class="membership-grid">
-          <article class="membership-panel">
+          <article class="membership-panel" id="membershipSeatSection">
             <span class="metric-label">Subscription builder</span>
             <h3>Plan, seats, and billing estimate</h3>
             <div class="subscription-form-grid">
@@ -2199,8 +2262,14 @@
       return;
     }
 
+    if (action === "review-seats") {
+      document.getElementById("membershipSeatSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
     if (button.dataset.view) {
       state.view = button.dataset.view;
+      if (state.view === "Insights") state.insightLens = "Tendering";
       state.selectedId = null;
       render();
       scrollToTop();

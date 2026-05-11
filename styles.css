@@ -416,7 +416,7 @@ textarea:disabled {
   justify-content: flex-end;
 }
 
-.membership-btn {
+.mode-btn {
   min-height: 38px;
   padding: 0 13px;
   border: 1px solid rgba(13, 111, 97, 0.26);
@@ -427,7 +427,7 @@ textarea:disabled {
   font-weight: 950;
 }
 
-.membership-btn.active {
+.mode-btn.active {
   color: #ffffff;
   background: var(--teal);
 }
@@ -576,6 +576,72 @@ textarea:disabled {
   display: grid;
   gap: 12px;
   margin-bottom: 18px;
+}
+
+.insight-focus-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.insight-focus-card {
+  min-height: 154px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-bottom: 3px solid transparent;
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.insight-focus-card:hover {
+  border-color: rgba(13, 111, 97, 0.32);
+  background: #f7fbf8;
+}
+
+.insight-focus-card.active {
+  border-color: rgba(13, 111, 97, 0.32);
+  border-bottom-color: var(--teal);
+  background: #edf8f4;
+}
+
+.insight-focus-card span {
+  color: var(--teal-dark);
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.insight-focus-card strong {
+  color: var(--ink);
+  font-size: 32px;
+  line-height: 1;
+}
+
+.insight-focus-card small {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.insight-focus-card em {
+  width: fit-content;
+  margin-top: 4px;
+  padding: 6px 9px;
+  border: 1px solid rgba(185, 123, 38, 0.24);
+  border-radius: 7px;
+  color: #7b4b09;
+  background: #fff6e6;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 900;
 }
 
 .insight-hero,
@@ -1173,6 +1239,17 @@ textarea:disabled {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+.action-card-buttons {
+  align-content: start;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .action-card {
@@ -2696,6 +2773,7 @@ tr.selected-row td {
   }
 
   .insight-kpis,
+  .insight-focus-grid,
   .cockpit-grid,
   .action-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2818,6 +2896,7 @@ tr.selected-row td {
   .pricing-grid,
   .request-preview,
   .insight-kpis,
+  .insight-focus-grid,
   .cockpit-grid,
   .infographic-grid,
   .left-rail {
@@ -2874,6 +2953,7 @@ tr.selected-row td {
   .membership-grid,
   .subscription-form-grid,
   .request-preview,
+  .insight-focus-grid,
   .insight-kpis,
   .cockpit-grid,
   .infographic-grid,
