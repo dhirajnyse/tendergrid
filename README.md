@@ -1,0 +1,22 @@
+# Capsa Tender Tracker
+
+A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects in a spreadsheet-style workspace.
+
+## Demo Login
+
+- `admin@capsa.ae` / `demo123`
+- `editor@capsa.ae` / `demo123`
+- `viewer@capsa.ae` / `demo123`
+
+## What Is Included
+
+- Company-scoped records seeded from the two supplied Excel workbooks.
+- Inline table editing for Admin and Editor users.
+- Viewer-only role.
+- Tender, EOI, and project record types.
+- Search, status/category/type filters, details panel, notes, CSV export.
+- Team and billing screen using AED 10 per active user per month.
+
+## Production Notes
+
+This is a local browser prototype. A hosted version should move authentication, company isolation, record storage, billing, and audit history into a backend database and API.
