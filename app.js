@@ -22,11 +22,15 @@
     "Missing value",
   ];
   const BILLING_CURRENCY = "USD";
-  const BILLING_PRICE_PER_USER = 3;
-  const BUSINESS_PLUS_BASE = 29;
+  const BILLING_PRICE_PER_USER = 5;
+  const BUSINESS_PLUS_BASE = 49;
+  const ANNUAL_BILLABLE_MONTHS = 10;
+  const BILLING_TERMS = ["Monthly", "Annual"];
   const ACCESS_SECTIONS = [
-    { key: "control", label: "Tender Control Room", view: "Tenders" },
-    { key: "insights", label: "Insights", view: "Insights" },
+    { key: "tenders", label: "Tenders", view: "Tenders" },
+    { key: "tenderInsights", label: "Tender Insights", view: "Tender Insights" },
+    { key: "projects", label: "Projects", view: "Projects" },
+    { key: "projectInsights", label: "Project Insights", view: "Project Insights" },
     { key: "membership", label: "Membership Model", view: "Membership" },
   ];
 
@@ -47,6 +51,7 @@
     pricingSeats: 10,
     insightLens: "Tendering",
     membershipPlan: "Team Workspace",
+    billingTerm: "Monthly",
     quickSearchOpen: false,
     quickSearch: "",
   };
@@ -89,14 +94,21 @@
 
   function defaultAccessForRole(role) {
     if (role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
-    if (role === "Editor") return ["control", "insights"];
-    return ["control"];
+    if (role === "Editor") return ["tenders", "tenderInsights", "projects", "projectInsights"];
+    return ["tenders", "projects"];
   }
 
   function normalizeUserAccess(user) {
     const valid = new Set(ACCESS_SECTIONS.map((section) => section.key));
     if (user.role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
-    const requested = Array.isArray(user.access) ? user.access.filter((key) => valid.has(key)) : [];
+    const legacyMap = {
+      control: ["tenders", "projects"],
+      insights: ["tenderInsights", "projectInsights"],
+      membership: ["membership"],
+    };
+    const requested = Array.isArray(user.access)
+      ? user.access.flatMap((key) => legacyMap[key] || key).filter((key) => valid.has(key))
+      : [];
     return requested.length ? requested : defaultAccessForRole(user.role);
   }
 
@@ -144,10 +156,25 @@
     return `${billingCurrency(company)} ${Number(amount || 0).toLocaleString("en-US")}`;
   }
 
+  function isTenderSection(view = state.view) {
+    return view === "Tenders" || view === "Tender Insights";
+  }
+
+  function isProjectSection(view = state.view) {
+    return view === "Projects" || view === "Project Insights";
+  }
+
+  function isInsightSection(view = state.view) {
+    return view === "Tender Insights" || view === "Project Insights";
+  }
+
   function sectionForView(view) {
-    if (view === "Insights") return "insights";
+    if (view === "Tender Insights") return "tenderInsights";
+    if (view === "Project Insights") return "projectInsights";
+    if (view === "Projects") return "projects";
+    if (view === "Tenders") return "tenders";
     if (view === "Membership") return "membership";
-    return "control";
+    return "tenders";
   }
 
   function userAccess(user = state.user) {
@@ -193,6 +220,7 @@
     refreshSessionUser();
     if (!state.user) return;
     if (state.view === "All") state.view = "Tenders";
+    if (state.view === "Insights") state.view = "Tender Insights";
     if (!canAccessView(state.view)) state.view = defaultViewForUser() || "No Access";
   }
 
@@ -238,10 +266,10 @@
 
   function filterRecords() {
     let records = companyRecords();
-    if (state.view === "Tenders") {
+    if (isTenderSection()) {
       records = records.filter((record) => record.type === "Tender" || record.type === "EOI");
     }
-    if (state.view === "Projects") {
+    if (isProjectSection()) {
       records = records.filter((record) => record.type === "Project");
     }
     if (state.filters.type !== "All") {
@@ -346,11 +374,19 @@
   function pricingProjection(company = state.data.company) {
     const seats = Math.min(100, Math.max(1, Number(state.pricingSeats) || 10));
     const monthly = seats * company.pricePerUser;
+    const annualRunRate = monthly * 12;
+    const annualPrepay = monthly * ANNUAL_BILLABLE_MONTHS;
+    const annualSavings = annualRunRate - annualPrepay;
+    const billingTerm = BILLING_TERMS.includes(state.billingTerm) ? state.billingTerm : "Monthly";
     return {
       seats,
       monthly,
-      annual: monthly * 12,
+      annual: annualRunRate,
+      annualPrepay,
+      annualSavings,
       perUser: company.pricePerUser,
+      billingTerm,
+      dueNow: billingTerm === "Annual" ? annualPrepay : monthly,
     };
   }
 
@@ -423,10 +459,7 @@
   function renderModeButtons() {
     return ACCESS_SECTIONS.map((section) => {
       if (!hasSectionAccess(section.key)) return "";
-      const active =
-        section.key === "control"
-          ? ["Tenders", "Projects"].includes(state.view)
-          : sectionForView(state.view) === section.key;
+      const active = state.view === section.view;
       return `
         <button class="mode-btn ${active ? "active" : ""}" type="button" data-view="${section.view}">
           ${escapeHtml(section.label)}
@@ -435,25 +468,104 @@
     }).join("");
   }
 
+  function sectionRecords(view = state.view) {
+    const records = companyRecords();
+    if (isTenderSection(view)) return records.filter((record) => record.type === "Tender" || record.type === "EOI");
+    if (isProjectSection(view)) return records.filter((record) => record.type === "Project");
+    return records;
+  }
+
+  function sectionMetrics(records) {
+    const due = buildDueBuckets(records);
+    const dueWatch = due.find((bucket) => bucket.label === "Past due").value + due.find((bucket) => bucket.label === "Next 30 days").value;
+    const closed = records.filter(isClosedRecord).length;
+    return {
+      total: records.length,
+      active: records.filter((record) => record.status === "Active").length,
+      ongoing: records.filter((record) => record.status === "Ongoing").length,
+      pending: records.filter((record) => record.status === "Pending").length,
+      submitted: records.filter((record) => record.status === "Submitted").length,
+      awarded: records.filter((record) => record.status === "Awarded").length,
+      completed: records.filter((record) => record.status === "Completed").length,
+      closed,
+      dueWatch,
+      open: records.filter((record) => !isClosedRecord(record)).length,
+      value: sumAmounts(records),
+    };
+  }
+
+  function renderHeaderSummaryForView(view, metrics) {
+    if (isInsightSection(view) || view === "Membership") return "";
+    const boxes = isProjectSection(view)
+      ? [
+          ["Ongoing", metrics.ongoing],
+          ["Completed", metrics.completed],
+          ["Due Watch", metrics.dueWatch],
+        ]
+      : [
+          ["Active", metrics.active],
+          ["Submitted", metrics.submitted],
+          ["Awarded", metrics.awarded],
+        ];
+    return `
+      <div class="header-summary">
+        ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+      </div>
+    `;
+  }
+
+  function renderMetricsForView(view, metrics) {
+    if (isInsightSection(view) || view === "Membership") return "";
+    const cards = isProjectSection(view)
+      ? [
+          ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`],
+          ["Completed projects", metrics.completed, "Closed delivery records"],
+          ["Due watch", metrics.dueWatch, "Past due and next 30 days"],
+          ["Captured value", formatCompactMoney(metrics.value), "Project value captured"],
+        ]
+      : [
+          ["Active tenders", metrics.active, `${metrics.total} tender and EOI records`],
+          ["Submitted", metrics.submitted, "Submitted tender records"],
+          ["Awarded tenders", metrics.awarded, "LOA or award status"],
+          ["Captured value", formatCompactMoney(metrics.value), "Tender value captured"],
+        ];
+    return `
+      <section class="analytics">
+        ${cards
+          .map(
+            ([label, value, note]) => `
+              <div class="metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong><small>${escapeHtml(note)}</small></div>
+            `,
+          )
+          .join("")}
+      </section>
+    `;
+  }
+
   function renderShell() {
     ensureAccessibleView();
     const company = state.data.company;
     const records = filterRecords();
     const selected = getSelected(records);
     const stats = metrics();
+    const scopedMetrics = sectionMetrics(sectionRecords());
     const viewTitle =
       state.view === "Tenders"
         ? "Tendering workspace"
         : state.view === "Projects"
           ? "Project workspace"
-        : state.view === "Insights"
-          ? "Insights desk"
+        : state.view === "Tender Insights"
+          ? "Tender insights"
+        : state.view === "Project Insights"
+          ? "Project insights"
           : state.view === "Membership"
             ? "Membership model"
           : state.view;
     const viewCopy =
-      state.view === "Insights"
-        ? "Separate tendering and project performance into clean operating views with the statistics directly underneath."
+      state.view === "Tender Insights"
+        ? "Tender-only management signals for follow-up risk, submission readiness, value exposure, and bid decisions."
+        : state.view === "Project Insights"
+          ? "Project-only management signals for delivery movement, due-date pressure, owner load, and completion health."
         : state.view === "Membership"
           ? "Manage launch pricing, seats, subscription packaging, and the upgrade path from demo workspace to paid company plan."
         : `${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.`;
@@ -469,7 +581,6 @@
           </div>
           <div class="status-strip">
             <span class="status-pill is-live">Live demo</span>
-            <span class="status-pill">${stats.totalRecords} records</span>
           </div>
           <div class="topbar-actions">
             ${renderModeButtons()}
@@ -482,40 +593,17 @@
         <main class="main">
           <section class="workspace-header">
             <div class="workspace-title">
-              ${["Insights", "Membership"].includes(state.view) ? "" : `<span class="panel-label">Tender control room</span>`}
+              ${isInsightSection(state.view) || state.view === "Membership" ? "" : `<span class="panel-label">${isProjectSection() ? "Project control room" : "Tender control room"}</span>`}
               <h1>${escapeHtml(viewTitle)}</h1>
               <p>${escapeHtml(viewCopy)}</p>
             </div>
-            ${
-              ["Insights", "Membership"].includes(state.view)
-                ? ""
-                : `<div class="header-summary">
-                    <div><span>Active</span><strong>${stats.activeTenders}</strong></div>
-                    <div><span>Projects</span><strong>${stats.ongoingProjects}</strong></div>
-                    <div><span>Closed</span><strong>${stats.winProgress}%</strong></div>
-                  </div>`
-            }
+            ${renderHeaderSummaryForView(state.view, scopedMetrics)}
           </section>
 
-          ${
-            ["Insights", "Membership"].includes(state.view)
-              ? ""
-              : renderControlAreaCards(stats)
-          }
+          ${renderMetricsForView(state.view, scopedMetrics)}
 
           ${
-            ["Insights", "Membership"].includes(state.view)
-              ? ""
-              : `<section class="analytics">
-                  <div class="metric"><span>Active tenders</span><strong>${stats.activeTenders}</strong><small>${stats.totalRecords} total records</small></div>
-                  <div class="metric"><span>Ongoing projects</span><strong>${stats.ongoingProjects}</strong><small>Software and telecom</small></div>
-                  <div class="metric"><span>Awarded tenders</span><strong>${stats.awarded}</strong><small>LOA or award status</small></div>
-                  <div class="metric"><span>Decision watch</span><strong>${stats.pending + stats.submitted}</strong><small>Pending and submitted records</small></div>
-                </section>`
-          }
-
-          ${
-            state.view === "Insights"
+            isInsightSection(state.view)
               ? renderInsights()
               : state.view === "Membership"
                 ? renderMembershipPage(stats, company)
@@ -963,15 +1051,14 @@
   }
 
   function renderInsights() {
-    const activeLens = state.insightLens === "Projects" ? "Projects" : "Tendering";
+    const activeLens = state.view === "Project Insights" ? "Projects" : "Tendering";
     if (state.insightLens !== activeLens) state.insightLens = activeLens;
     const model = insightModel(insightRecords());
     const isProjectLens = activeLens === "Projects";
     const areaTitle = isProjectLens ? "Project insight" : "Tendering insight";
+    const trackerView = isProjectLens ? "Projects" : "Tenders";
     return `
       <section class="insights-layout insights-clean">
-        ${renderInsightAreaCards(activeLens)}
-
         <div class="insight-kpis">
           ${renderInsightKpi("Insight score", `${model.healthScore}/100`, `${areaTitle} readiness`)}
           ${renderInsightKpi("Captured value", formatCompactMoney(model.totalValue), `${model.recordsWithValue} records with value`)}
@@ -1102,7 +1189,7 @@
             <strong>${escapeHtml(areaTitle)}</strong>
             <div class="action-buttons">
               <button class="secondary-btn" type="button" data-action="export-insights">Export pack</button>
-              <button class="ghost-btn" type="button" data-view="All">Open tracker</button>
+              <button class="ghost-btn" type="button" data-view="${trackerView}">Open tracker</button>
             </div>
           </article>
         </div>
@@ -1312,7 +1399,8 @@
   }
 
   function membershipProjection(company = state.data.company) {
-    const seats = pricingProjection(company).seats;
+    const projection = pricingProjection(company);
+    const seats = projection.seats;
     const selected = state.membershipPlan || "Team Workspace";
     const plan = {
       "Sample Workspace": {
@@ -1345,11 +1433,17 @@
       },
     }[selected];
     const monthly = plan.base === null ? null : plan.base + seats * plan.perUser;
+    const annualRunRate = monthly === null ? null : monthly * 12;
+    const annualPrepay = monthly === null ? null : monthly * ANNUAL_BILLABLE_MONTHS;
     return {
       ...plan,
       seats,
       monthly,
-      annual: monthly === null ? null : monthly * 12,
+      annual: annualRunRate,
+      annualPrepay,
+      annualSavings: monthly === null ? null : annualRunRate - annualPrepay,
+      dueNow: monthly === null ? null : projection.billingTerm === "Annual" ? annualPrepay : monthly,
+      billingTerm: projection.billingTerm,
       isCustom: monthly === null,
     };
   }
@@ -1373,9 +1467,9 @@
             <strong id="membershipPlanName">${escapeHtml(membership.label)}</strong>
             <p id="membershipPlanNote">${escapeHtml(membership.note)}</p>
             <div class="subscription-total">
-              <span>Monthly estimate</span>
-              <strong id="membershipMonthly">${membership.isCustom ? "Custom" : formatBilling(membership.monthly, company)}</strong>
-              <small id="membershipAnnual">${membership.isCustom ? "Annual proposal" : `${formatBilling(membership.annual, company)} annual run-rate`}</small>
+              <span id="membershipBillingLabel">${membership.billingTerm === "Annual" ? "Annual prepaid" : "Monthly estimate"}</span>
+              <strong id="membershipMonthly">${membership.isCustom ? "Custom" : formatBilling(membership.dueNow, company)}</strong>
+              <small id="membershipAnnual">${membership.isCustom ? "Annual proposal" : membership.billingTerm === "Annual" ? `${formatBilling(membership.annualSavings, company)} saved vs monthly` : `${formatBilling(membership.annual, company)} annual run-rate`}</small>
             </div>
           </div>
         </div>
@@ -1400,6 +1494,19 @@
                 <span><strong id="membershipSeatCount">${membership.seats}</strong> seats</span>
                 <input type="range" min="1" max="100" value="${membership.seats}" data-pricing="seats" aria-label="Membership seats">
               </label>
+              <div class="billing-term-box">
+                <span>Billing term</span>
+                <div class="billing-term-toggle" role="group" aria-label="Billing term">
+                  ${BILLING_TERMS.map(
+                    (term) => `
+                      <button class="${membership.billingTerm === term ? "active" : ""}" type="button" data-billing-term="${term}">
+                        ${term}
+                      </button>
+                    `,
+                  ).join("")}
+                </div>
+                <small>${membership.billingTerm === "Annual" ? "2 months free on annual prepaid billing" : "Monthly billing keeps the first pilot flexible"}</small>
+              </div>
               <div class="subscription-mini">
                 <span>Current demo seats</span>
                 <strong>${stats.seats}</strong>
@@ -1419,7 +1526,8 @@
             <div class="request-preview">
               <div><span>Company</span><strong>${escapeHtml(company.name)}</strong></div>
               <div><span>Account owner</span><strong>${escapeHtml(state.user.name)}</strong></div>
-              <div><span>Billing cycle</span><strong>Monthly</strong></div>
+              <div><span>Billing cycle</span><strong id="requestBillingCycle">${escapeHtml(membership.billingTerm)}</strong></div>
+              <div><span>Due now</span><strong id="requestDueNow">${membership.isCustom ? "Custom" : formatBilling(membership.dueNow, company)}</strong></div>
               <div><span>Status</span><strong id="subscriptionStatus">Ready for pilot invoice</strong></div>
             </div>
             <p class="subscription-disclaimer">This demo prepares the membership request. A production version should connect payment, invoices, trials, and tenant provisioning to a backend.</p>
@@ -1498,6 +1606,11 @@
             <strong>${formatBilling(company.pricePerUser * 100, company)}/mo</strong>
             <p>A realistic milestone once several companies are active.</p>
           </article>
+          <article>
+            <span class="metric-label">Annual prepaid</span>
+            <strong>${formatBilling(projection.annualPrepay, company)}</strong>
+            <p>10 months charged upfront, saving ${formatBilling(projection.annualSavings, company)} for a ${projection.seats}-seat team.</p>
+          </article>
         </div>
 
         <div class="seat-calculator" aria-label="TenderGrid seat price calculator">
@@ -1512,8 +1625,9 @@
           </label>
           <div class="calculator-results">
             <div><span>Monthly</span><strong id="pricingMonthly">${formatBilling(projection.monthly, company)}</strong></div>
-            <div><span>Annual run-rate</span><strong id="pricingAnnual">${formatBilling(projection.annual, company)}</strong></div>
+            <div><span>Annual prepaid</span><strong id="pricingAnnual">${formatBilling(projection.annualPrepay, company)}</strong></div>
             <div><span>Price per user</span><strong>${formatBilling(projection.perUser, company)}</strong></div>
+            <div><span>Annual saving</span><strong id="pricingSavings">${formatBilling(projection.annualSavings, company)}</strong></div>
           </div>
         </div>
 
@@ -1542,7 +1656,7 @@
               <li>Company-scoped tender and project tracker</li>
               <li>Role-based access for admin, editor, and viewer</li>
               <li>Quick analytics, filters, notes, and export</li>
-              <li>Monthly seat billing that stays easy to explain</li>
+              <li>Monthly or annual prepaid billing that stays easy to explain</li>
             </ul>
             <button class="plan-link" type="button" data-membership-plan="Team Workspace">Choose Team</button>
           </article>
@@ -1614,6 +1728,7 @@
               ["Shared tender grid", "Yes", "Yes", "Yes", "Yes"],
               ["Role access", "Demo", "Included", "Advanced", "Custom"],
               ["Monthly seat billing", "No", `${formatBilling(company.pricePerUser, company)}/user`, "Base + seats", "Contract"],
+              ["Annual prepaid option", "No", "2 months free", "Included", "Custom"],
               ["Audit history", "No", "Roadmap", "Included", "Custom"],
               ["Import automation", "Manual", "Roadmap", "Included", "Custom"],
             ]
@@ -1652,17 +1767,18 @@
   function renderTracker(records, selected, stats) {
     const categories = uniqueOptions("category");
     const statuses = Array.from(new Set([...STATUS_OPTIONS, ...uniqueOptions("status")]));
+    const typeOptions = isProjectSection() ? ["All", "Project"] : ["All", "EOI", "Tender"];
     return `
       <section class="tracker-layout">
         <aside class="left-rail">
-          ${renderCommandPanel(records, stats)}
-          ${renderMixPanel(stats)}
+          ${renderCommandPanel(records)}
+          ${renderMixPanel(records)}
         </aside>
 
         <section class="workbench">
           <section class="toolbar" aria-label="Tracker controls">
             <input class="filter-input" type="search" placeholder="Search records" value="${escapeHtml(state.filters.search)}" data-filter="search">
-            ${renderSelect("type", ["All", ...TYPE_OPTIONS], state.filters.type, "filter-select")}
+            ${renderSelect("type", typeOptions, typeOptions.includes(state.filters.type) ? state.filters.type : "All", "filter-select")}
             ${renderSelect("status", ["All", ...statuses], state.filters.status, "filter-select")}
             ${renderSelect("category", ["All", ...categories], state.filters.category, "filter-select")}
             ${renderSelect("lane", LANE_OPTIONS, state.filters.lane || "All lanes", "filter-select lane-select")}
@@ -1694,17 +1810,24 @@
     `;
   }
 
-  function renderCommandPanel(records, stats) {
-    const allRecords = companyRecords();
-    const attention = allRecords.filter((record) =>
+  function renderCommandPanel(records) {
+    const attention = records.filter((record) =>
       ["Active", "Pending", "Submitted", "Ongoing"].includes(record.status),
     ).length;
-    const signalRows = [
-      ["Active", "Active", stats.activeTenders],
-      ["Pending", "Pending", stats.pending],
-      ["Submitted", "Submitted", stats.submitted],
-      ["Awarded", "Awarded", stats.awarded],
-    ];
+    const countStatus = (status) => records.filter((record) => record.status === status).length;
+    const signalRows = isProjectSection()
+      ? [
+          ["Ongoing", "Ongoing", countStatus("Ongoing")],
+          ["Completed", "Completed", countStatus("Completed")],
+          ["Cancelled", "Cancelled", countStatus("Cancelled")],
+          ["Regret", "Regret", countStatus("Regret")],
+        ]
+      : [
+          ["Active", "Active", countStatus("Active")],
+          ["Pending", "Pending", countStatus("Pending")],
+          ["Submitted", "Submitted", countStatus("Submitted")],
+          ["Awarded", "Awarded", countStatus("Awarded")],
+        ];
     return `
       <div class="panel command-panel">
         <div class="panel-heading">
@@ -1714,7 +1837,7 @@
         <div class="focus-card">
           <span>Needs movement</span>
           <strong>${attention}</strong>
-          <small>active, pending, submitted, and ongoing records</small>
+          <small>${isProjectSection() ? "ongoing project records needing delivery attention" : "active, pending, and submitted tender records"}</small>
         </div>
         <div class="signal-list">
           ${signalRows
@@ -1732,18 +1855,24 @@
     `;
   }
 
-  function renderMixPanel(stats) {
-    const total = Math.max(stats.totalRecords, 1);
-    const rows = [
-      ["Tender", stats.tenders, "teal"],
-      ["EOI", stats.eois, "amber"],
-      ["Project", stats.projects, "blue"],
-    ];
+  function renderMixPanel(records) {
+    const total = Math.max(records.length, 1);
+    const rows = isProjectSection()
+      ? [
+          ["Ongoing", records.filter((record) => record.status === "Ongoing").length, "blue"],
+          ["Completed", records.filter((record) => record.status === "Completed").length, "green"],
+          ["Due Watch", sectionMetrics(records).dueWatch, "amber"],
+        ]
+      : [
+          ["Tender", records.filter((record) => record.type === "Tender").length, "teal"],
+          ["EOI", records.filter((record) => record.type === "EOI").length, "amber"],
+          ["Awarded", records.filter((record) => record.status === "Awarded").length, "green"],
+        ];
     return `
       <div class="panel">
         <div class="panel-heading">
-          <h2>Record mix</h2>
-          <span>${stats.totalRecords} total</span>
+          <h2>${isProjectSection() ? "Project mix" : "Tender mix"}</h2>
+          <span>${records.length} total</span>
         </div>
         <div class="mix-bars">
           ${rows
@@ -2127,9 +2256,9 @@
           <span>Section access</span>
           <div class="access-checks form-access-checks">
             ${ACCESS_SECTIONS.map(
-              (section, index) => `
+              (section) => `
                 <label>
-                  <input type="checkbox" name="access" value="${escapeHtml(section.key)}" ${index < 2 ? "checked" : ""}>
+                  <input type="checkbox" name="access" value="${escapeHtml(section.key)}" ${section.key !== "membership" ? "checked" : ""}>
                   <span>${escapeHtml(section.label)}</span>
                 </label>
               `,
@@ -2396,23 +2525,35 @@
     const seatCount = document.getElementById("pricingSeatCount");
     const monthly = document.getElementById("pricingMonthly");
     const annual = document.getElementById("pricingAnnual");
+    const savings = document.getElementById("pricingSavings");
     const membershipSeatCount = document.getElementById("membershipSeatCount");
     const membershipPlanName = document.getElementById("membershipPlanName");
     const membershipPlanNote = document.getElementById("membershipPlanNote");
+    const membershipBillingLabel = document.getElementById("membershipBillingLabel");
     const membershipMonthly = document.getElementById("membershipMonthly");
     const membershipAnnual = document.getElementById("membershipAnnual");
+    const requestBillingCycle = document.getElementById("requestBillingCycle");
+    const requestDueNow = document.getElementById("requestDueNow");
     if (seatCount) seatCount.textContent = projection.seats;
     if (monthly) monthly.textContent = formatBilling(projection.monthly);
-    if (annual) annual.textContent = formatBilling(projection.annual);
+    if (annual) annual.textContent = formatBilling(projection.annualPrepay);
+    if (savings) savings.textContent = formatBilling(projection.annualSavings);
     if (membershipSeatCount) membershipSeatCount.textContent = membership.seats;
     if (membershipPlanName) membershipPlanName.textContent = membership.label;
     if (membershipPlanNote) membershipPlanNote.textContent = membership.note;
-    if (membershipMonthly) membershipMonthly.textContent = membership.isCustom ? "Custom" : formatBilling(membership.monthly);
+    if (membershipBillingLabel) {
+      membershipBillingLabel.textContent = membership.billingTerm === "Annual" ? "Annual prepaid" : "Monthly estimate";
+    }
+    if (membershipMonthly) membershipMonthly.textContent = membership.isCustom ? "Custom" : formatBilling(membership.dueNow);
     if (membershipAnnual) {
       membershipAnnual.textContent = membership.isCustom
         ? "Annual proposal"
-        : `${formatBilling(membership.annual)} annual run-rate`;
+        : membership.billingTerm === "Annual"
+          ? `${formatBilling(membership.annualSavings)} saved vs monthly`
+          : `${formatBilling(membership.annual)} annual run-rate`;
     }
+    if (requestBillingCycle) requestBillingCycle.textContent = membership.billingTerm;
+    if (requestDueNow) requestDueNow.textContent = membership.isCustom ? "Custom" : formatBilling(membership.dueNow);
   }
 
   document.addEventListener("submit", (event) => {
@@ -2451,7 +2592,7 @@
 
   document.addEventListener("click", (event) => {
     const button = event.target.closest(
-      "[data-action], [data-view], [data-quick-status], [data-insight-lens], [data-membership-plan]",
+      "[data-action], [data-view], [data-quick-status], [data-insight-lens], [data-membership-plan], [data-billing-term]",
     );
     const row = event.target.closest(".tracker-table tbody tr");
     if (event.target.classList.contains("quick-search-backdrop")) {
@@ -2488,6 +2629,12 @@
       return;
     }
 
+    if (button.dataset.billingTerm) {
+      state.billingTerm = button.dataset.billingTerm;
+      render();
+      return;
+    }
+
     if (action === "review-seats") {
       document.getElementById("membershipSeatSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
@@ -2499,7 +2646,10 @@
         return;
       }
       state.view = button.dataset.view;
-      if (state.view === "Insights") state.insightLens = "Tendering";
+      if (state.view === "Tender Insights") state.insightLens = "Tendering";
+      if (state.view === "Project Insights") state.insightLens = "Projects";
+      const typeOptions = isProjectSection() ? ["All", "Project"] : ["All", "EOI", "Tender"];
+      if (!typeOptions.includes(state.filters.type)) state.filters.type = "All";
       state.selectedId = null;
       render();
       scrollToTop();
@@ -2543,7 +2693,10 @@
     }
     if (action === "select") {
       state.selectedId = button.dataset.id;
-      if (state.view === "Insights") state.view = "All";
+      if (isInsightSection()) {
+        const record = state.data.records.find((item) => item.id === button.dataset.id);
+        state.view = record?.type === "Project" ? "Projects" : "Tenders";
+      }
       render();
     }
     if (action === "delete") deleteRecord(button.dataset.id);

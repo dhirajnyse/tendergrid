@@ -1,4 +1,4 @@
-TenderGrid v16 global pricing and access control upload steps
+TenderGrid v18 split tender project sections upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -21,7 +21,7 @@ TenderGrid v16 global pricing and access control upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   TenderGrid v16 global pricing and access control
+   TenderGrid v18 split tender project sections
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/

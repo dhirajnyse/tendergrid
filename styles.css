@@ -2118,11 +2118,16 @@ tr.selected-row td {
 
 .subscription-form-grid {
   display: grid;
-  grid-template-columns: minmax(220px, 0.9fr) minmax(260px, 1.1fr) repeat(2, minmax(145px, 0.55fr));
+  grid-template-columns: minmax(170px, 0.9fr) minmax(200px, 1fr) minmax(180px, 0.9fr) repeat(2, minmax(120px, 0.65fr));
   gap: 10px;
 }
 
+.subscription-form-grid > * {
+  min-width: 0;
+}
+
 .subscription-form-grid label,
+.billing-term-box,
 .subscription-mini,
 .request-preview div {
   min-height: 86px;
@@ -2136,6 +2141,7 @@ tr.selected-row td {
 }
 
 .subscription-form-grid label span,
+.billing-term-box > span,
 .subscription-mini span,
 .request-preview span {
   color: var(--muted);
@@ -2153,6 +2159,34 @@ tr.selected-row td {
   background: #ffffff;
   color: var(--ink);
   font-weight: 850;
+}
+
+.billing-term-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.billing-term-toggle button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--muted);
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.billing-term-toggle button.active {
+  color: #ffffff;
+  border-color: var(--teal);
+  background: var(--teal);
+}
+
+.billing-term-box small {
+  color: var(--subtle);
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .membership-seat-slider input {
@@ -2250,7 +2284,7 @@ tr.selected-row td {
 
 .pricing-snapshot {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 12px;
 }
@@ -2333,7 +2367,7 @@ tr.selected-row td {
 
 .calculator-results {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
 
