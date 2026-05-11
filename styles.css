@@ -1454,7 +1454,7 @@ textarea:disabled {
 .toolbar {
   min-width: 0;
   display: grid;
-  grid-template-columns: minmax(160px, 1fr) repeat(4, minmax(90px, 1fr)) auto;
+  grid-template-columns: 1fr;
   gap: 9px;
   align-items: center;
   padding: 10px;
@@ -1464,9 +1464,17 @@ textarea:disabled {
   box-shadow: var(--shadow);
 }
 
+.toolbar-filters {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(180px, 1.2fr) repeat(4, minmax(96px, 0.8fr));
+  gap: 9px;
+  align-items: center;
+}
+
 .toolbar-actions {
   justify-content: flex-end;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 }
 
 .density-toggle {
@@ -3265,6 +3273,10 @@ tr.selected-row td:first-child {
   }
 
   .toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar-filters {
     grid-template-columns: 1fr;
   }
 

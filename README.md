@@ -36,6 +36,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Main section navigation resets the viewport to the top so Tenders, Projects, Insights, and Membership never open halfway down the page.
 - Expanded desktop tracker grid so Tenders and Projects show roughly a working-sheet depth of records before internal table scrolling begins.
 - Grid polish with stronger selected-row highlighting, a visible "Showing 1-N of total" range hint, Comfortable/Compact density controls, and a collapsible right detail panel.
+- Tracker toolbar uses explicit filter/action rows so density controls, New row, and Export CSV remain visible beside the detail panel.
 
 ## Production Notes
 

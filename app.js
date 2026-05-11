@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=25";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=25";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=27";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=27";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -1878,11 +1878,13 @@
 
         <section class="workbench">
           <section class="toolbar" aria-label="Tracker controls">
-            <input class="filter-input" type="search" placeholder="Search records" value="${escapeHtml(state.filters.search)}" data-filter="search">
-            ${renderSelect("type", typeOptions, typeOptions.includes(state.filters.type) ? state.filters.type : "All", "filter-select")}
-            ${renderSelect("status", ["All", ...statuses], state.filters.status, "filter-select")}
-            ${renderSelect("category", ["All", ...categories], state.filters.category, "filter-select")}
-            ${renderSelect("lane", LANE_OPTIONS, state.filters.lane || "All lanes", "filter-select lane-select")}
+            <div class="toolbar-filters">
+              <input class="filter-input" type="search" placeholder="Search records" value="${escapeHtml(state.filters.search)}" data-filter="search">
+              ${renderSelect("type", typeOptions, typeOptions.includes(state.filters.type) ? state.filters.type : "All", "filter-select")}
+              ${renderSelect("status", ["All", ...statuses], state.filters.status, "filter-select")}
+              ${renderSelect("category", ["All", ...categories], state.filters.category, "filter-select")}
+              ${renderSelect("lane", LANE_OPTIONS, state.filters.lane || "All lanes", "filter-select lane-select")}
+            </div>
             <div class="toolbar-actions">
               <div class="density-toggle" role="group" aria-label="Grid density">
                 ${["Comfortable", "Compact"]
