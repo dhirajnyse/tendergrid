@@ -1,4 +1,4 @@
-PursuitDesk v22 cache refresh upload steps
+PursuitDesk v23 section top fix upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v22 cache refresh upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v22 cache refresh
+   PursuitDesk v23 section top fix
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version also includes cache-busting file links so the browser loads the latest PursuitDesk JavaScript and CSS.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and resets each main section to the top after navigation.
 
 Demo login:
 admin@pursuitdesk.app

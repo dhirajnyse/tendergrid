@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=22";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=22";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=23";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=23";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -2592,7 +2592,14 @@
   }
 
   function scrollToTop() {
-    requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
+    const jump = () => {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    };
+    jump();
+    requestAnimationFrame(jump);
+    window.setTimeout(jump, 40);
   }
 
   function scrollPageEdge() {
