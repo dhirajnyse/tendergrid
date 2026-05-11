@@ -35,6 +35,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.
 - Main section navigation resets the viewport to the top so Tenders, Projects, Insights, and Membership never open halfway down the page.
 - Expanded desktop tracker grid so Tenders and Projects show roughly a working-sheet depth of records before internal table scrolling begins.
+- Grid polish with stronger selected-row highlighting, a visible "Showing 1-N of total" range hint, Comfortable/Compact density controls, and a collapsible right detail panel.
 
 ## Production Notes
 

@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=24";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=24";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=25";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=25";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -109,6 +109,8 @@
     billingTerm: "Monthly",
     quickSearchOpen: false,
     quickSearch: "",
+    tableDensity: "Comfortable",
+    detailCollapsed: false,
   };
 
   function clone(value) {
@@ -1865,8 +1867,10 @@
     const categories = uniqueOptions("category");
     const statuses = Array.from(new Set([...STATUS_OPTIONS, ...uniqueOptions("status")]));
     const typeOptions = isProjectSection() ? ["All", "Project"] : ["All", "EOI", "Tender"];
+    const visibleDepth = state.tableDensity === "Compact" ? 28 : 21;
+    const visibleEnd = Math.min(records.length, visibleDepth);
     return `
-      <section class="tracker-layout">
+      <section class="tracker-layout density-${state.tableDensity.toLowerCase()} ${state.detailCollapsed ? "detail-collapsed" : ""}">
         <aside class="left-rail">
           ${renderCommandPanel(records)}
           ${renderMixPanel(records)}
@@ -1880,6 +1884,18 @@
             ${renderSelect("category", ["All", ...categories], state.filters.category, "filter-select")}
             ${renderSelect("lane", LANE_OPTIONS, state.filters.lane || "All lanes", "filter-select lane-select")}
             <div class="toolbar-actions">
+              <div class="density-toggle" role="group" aria-label="Grid density">
+                ${["Comfortable", "Compact"]
+                  .map(
+                    (density) => `
+                      <button class="${state.tableDensity === density ? "active" : ""}" type="button" data-density="${density}">
+                        ${density}
+                      </button>
+                    `,
+                  )
+                  .join("")}
+              </div>
+              <button class="ghost-btn" type="button" data-action="toggle-detail">${state.detailCollapsed ? "Show detail" : "Hide detail"}</button>
               <button class="secondary-btn" type="button" data-action="add" ${canEdit() ? "" : "disabled"}>New row</button>
               <button class="ghost-btn" type="button" data-action="export">Export CSV</button>
             </div>
@@ -1891,7 +1907,10 @@
                 <span class="panel-label">Editable tracker</span>
                 <h2>${state.view === "Projects" ? "Projects" : "Tenders"}</h2>
               </div>
-              <span>${records.length} visible</span>
+              <div class="table-head-meta">
+                <span>${records.length} visible</span>
+                <strong>${records.length ? `Showing 1-${visibleEnd} of ${records.length}` : "No records"}</strong>
+              </div>
             </div>
             <div class="table-wrap">
               ${records.length ? renderTable(records) : `<div class="empty-state">No matching records.</div>`}
@@ -1902,7 +1921,7 @@
           </div>
         </section>
 
-        ${renderDetail(selected)}
+        ${state.detailCollapsed ? "" : renderDetail(selected)}
       </section>
     `;
   }
@@ -2702,7 +2721,7 @@
 
   document.addEventListener("click", (event) => {
     const button = event.target.closest(
-      "[data-action], [data-view], [data-quick-status], [data-insight-lens], [data-membership-plan], [data-billing-term]",
+      "[data-action], [data-view], [data-quick-status], [data-insight-lens], [data-membership-plan], [data-billing-term], [data-density]",
     );
     const row = event.target.closest(".tracker-table tbody tr");
     if (event.target.classList.contains("quick-search-backdrop")) {
@@ -2741,6 +2760,12 @@
 
     if (button.dataset.billingTerm) {
       state.billingTerm = button.dataset.billingTerm;
+      render();
+      return;
+    }
+
+    if (button.dataset.density) {
+      state.tableDensity = button.dataset.density;
       render();
       return;
     }
@@ -2790,6 +2815,11 @@
     }
     if (action === "scroll-page") {
       scrollPageEdge();
+      return;
+    }
+    if (action === "toggle-detail") {
+      state.detailCollapsed = !state.detailCollapsed;
+      render();
       return;
     }
     if (action === "reset") resetDemo();
