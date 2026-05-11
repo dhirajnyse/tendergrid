@@ -26,6 +26,7 @@
     },
     selectedId: null,
     message: "",
+    pricingSeats: 10,
   };
 
   function clone(value) {
@@ -210,6 +211,17 @@
     };
   }
 
+  function pricingProjection(company = state.data.company) {
+    const seats = Math.min(100, Math.max(1, Number(state.pricingSeats) || 10));
+    const monthly = seats * company.pricePerUser;
+    return {
+      seats,
+      monthly,
+      annual: monthly * 12,
+      perUser: company.pricePerUser,
+    };
+  }
+
   function getSelected(records) {
     if (!records.length) return null;
     const current = records.find((record) => record.id === state.selectedId);
@@ -281,6 +293,16 @@
     const records = filterRecords();
     const selected = getSelected(records);
     const stats = metrics();
+    const viewTitle =
+      state.view === "All"
+        ? "Opportunity pipeline"
+        : state.view === "Insights"
+          ? "Pipeline insights"
+          : state.view;
+    const viewCopy =
+      state.view === "Insights"
+        ? "Turn tender records into management signals: follow-up risk, workload, category concentration, and value exposure."
+        : `${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.`;
     app.innerHTML = `
       <div class="shell">
         <header class="topbar">
@@ -307,8 +329,8 @@
           <section class="workspace-header">
             <div class="workspace-title">
               <span class="panel-label">Tender control room</span>
-              <h1>${state.view === "All" ? "Opportunity pipeline" : escapeHtml(state.view)}</h1>
-              <p>${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.</p>
+              <h1>${escapeHtml(viewTitle)}</h1>
+              <p>${escapeHtml(viewCopy)}</p>
             </div>
             <div class="header-summary">
               <div><span>Active</span><strong>${stats.activeTenders}</strong></div>
@@ -318,7 +340,7 @@
           </section>
 
           <nav class="tabs" aria-label="Primary views">
-            ${["All", "Tenders", "Projects", "Team & Billing"]
+            ${["All", "Tenders", "Projects", "Insights", "Team & Billing"]
               .map(
                 (view) => `
                   <button class="tab-btn ${state.view === view ? "active" : ""}" type="button" data-view="${view}">
@@ -336,14 +358,402 @@
             <div class="metric"><span>Seat bill</span><strong>AED ${stats.bill}</strong><small>${stats.seats} users at AED ${company.pricePerUser}/month</small></div>
           </section>
 
-          ${state.view === "Team & Billing" ? renderTeamBilling() : renderTracker(records, selected, stats)}
+          ${
+            state.view === "Team & Billing"
+              ? renderTeamBilling()
+              : state.view === "Insights"
+                ? renderInsights()
+                : renderTracker(records, selected, stats)
+          }
           ${renderPricingSection(stats, company)}
         </main>
       </div>
     `;
   }
 
+  function isClosedRecord(record) {
+    return ["Awarded", "Completed", "Cancelled", "Regret"].includes(record.status);
+  }
+
+  function parseRecordDate(value) {
+    if (!value) return null;
+    const date = new Date(`${value}T00:00:00`);
+    return Number.isNaN(date.getTime()) ? null : date;
+  }
+
+  function sumAmounts(records) {
+    return records.reduce((total, record) => total + (Number(record.valueAmount) || 0), 0);
+  }
+
+  function formatCompactMoney(value) {
+    const currency = state.data.company.currency || "AED";
+    const amount = Number(value) || 0;
+    const abs = Math.abs(amount);
+    if (abs >= 1000000000) return `${currency} ${(amount / 1000000000).toFixed(1)}B`;
+    if (abs >= 1000000) return `${currency} ${(amount / 1000000).toFixed(1)}M`;
+    if (abs >= 1000) return `${currency} ${Math.round(amount / 1000)}K`;
+    return `${currency} ${Math.round(amount).toLocaleString("en-US")}`;
+  }
+
+  function topBreakdown(records, field, limit = 5, fallback = "Unassigned") {
+    const counts = new Map();
+    records.forEach((record) => {
+      const label = String(record[field] || fallback).trim() || fallback;
+      counts.set(label, (counts.get(label) || 0) + 1);
+    });
+    return Array.from(counts, ([label, value]) => ({ label, value }))
+      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+      .slice(0, limit);
+  }
+
+  function buildStatusRows(records) {
+    const extras = topBreakdown(records, "status", records.length)
+      .map((row) => row.label)
+      .filter((status) => !STATUS_OPTIONS.includes(status));
+    return [...STATUS_OPTIONS, ...extras]
+      .map((status) => ({
+        label: status,
+        value: records.filter((record) => record.status === status).length,
+      }))
+      .filter((row) => row.value > 0);
+  }
+
+  function buildDueBuckets(records) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const buckets = {
+      overdue: 0,
+      next30: 0,
+      next90: 0,
+      later: 0,
+      noDate: 0,
+    };
+    records
+      .filter((record) => !isClosedRecord(record))
+      .forEach((record) => {
+        const date = parseRecordDate(record.endDate);
+        if (!date) {
+          buckets.noDate += 1;
+          return;
+        }
+        const days = Math.ceil((date.getTime() - today.getTime()) / 86400000);
+        if (days < 0) buckets.overdue += 1;
+        else if (days <= 30) buckets.next30 += 1;
+        else if (days <= 90) buckets.next90 += 1;
+        else buckets.later += 1;
+      });
+    return [
+      { label: "Past due", value: buckets.overdue, tone: "red" },
+      { label: "Next 30 days", value: buckets.next30, tone: "amber" },
+      { label: "Next 90 days", value: buckets.next90, tone: "blue" },
+      { label: "Later", value: buckets.later, tone: "green" },
+      { label: "No date", value: buckets.noDate, tone: "muted" },
+    ];
+  }
+
+  function insightModel(records) {
+    const stats = metrics();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const tenderRecords = records.filter((record) => record.type === "Tender" || record.type === "EOI");
+    const dueBuckets = buildDueBuckets(records);
+    const overdue = dueBuckets.find((bucket) => bucket.label === "Past due").value;
+    const noDate = dueBuckets.find((bucket) => bucket.label === "No date").value;
+    const totalValue = sumAmounts(records);
+    const openValue = sumAmounts(openRecords);
+    const awardedValue = sumAmounts(records.filter((record) => ["Awarded", "Completed"].includes(record.status)));
+    const negotiationRecords = records.filter((record) => (record.rounds || []).length > 0);
+    const totalRounds = negotiationRecords.reduce((total, record) => total + (record.rounds || []).length, 0);
+    const highValueOpen = openRecords
+      .filter((record) => Number(record.valueAmount) > 0)
+      .sort((a, b) => Number(b.valueAmount) - Number(a.valueAmount))
+      .slice(0, 4);
+    const ownerRows = topBreakdown(openRecords, "owner", 5, "Unassigned");
+    const topOwner = ownerRows[0] || { label: "No owner", value: 0 };
+    const openCount = Math.max(openRecords.length, 1);
+    const totalCount = Math.max(records.length, 1);
+    const healthScore = Math.max(
+      38,
+      Math.min(
+        94,
+        Math.round(
+          78 +
+            Math.min(10, stats.winProgress / 3) -
+            Math.min(28, (overdue / openCount) * 34) -
+            Math.min(14, (noDate / openCount) * 16) -
+            Math.min(12, (stats.risk / totalCount) * 24),
+        ),
+      ),
+    );
+    const funnel = [
+      { label: "Tender and EOI universe", value: tenderRecords.length },
+      {
+        label: "Active attention",
+        value: tenderRecords.filter((record) => !isClosedRecord(record)).length,
+      },
+      { label: "Submitted", value: tenderRecords.filter((record) => record.status === "Submitted").length },
+      {
+        label: "Awarded or completed",
+        value: records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length,
+      },
+      {
+        label: "Regret or cancelled",
+        value: records.filter((record) => ["Regret", "Cancelled"].includes(record.status)).length,
+      },
+    ];
+    return {
+      stats,
+      healthScore,
+      totalValue,
+      openValue,
+      awardedValue,
+      recordsWithValue: records.filter((record) => Number(record.valueAmount) > 0).length,
+      negotiationRecords: negotiationRecords.length,
+      averageRounds: negotiationRecords.length ? (totalRounds / negotiationRecords.length).toFixed(1) : "0",
+      dueBuckets,
+      statusRows: buildStatusRows(records),
+      categoryRows: topBreakdown(records, "category", 6, "Uncategorized"),
+      clientRows: topBreakdown(records, "client", 6, "No client"),
+      ownerRows,
+      highValueOpen,
+      topOwner,
+      funnel,
+      actionCards: [
+        {
+          label: "Date hygiene",
+          value: `${overdue + noDate} records`,
+          note: "Open items with old or missing end dates should be refreshed before the weekly review.",
+        },
+        {
+          label: "High-value focus",
+          value: highValueOpen.length ? formatCompactMoney(highValueOpen[0].valueAmount) : "AED 0",
+          note: highValueOpen.length
+            ? `${highValueOpen[0].client || "Top client"} is the largest active value in the current data.`
+            : "No active record has a captured value yet.",
+        },
+        {
+          label: "Workload owner",
+          value: topOwner.label,
+          note: `${topOwner.value} open records sit with this owner in the sample workspace.`,
+        },
+      ],
+    };
+  }
+
+  function renderInsights() {
+    const model = insightModel(companyRecords());
+    return `
+      <section class="insights-layout">
+        <div class="insight-hero">
+          <div>
+            <span class="panel-label">Analytics desk</span>
+            <h2>Management signals from the tender sheet.</h2>
+            <p>These visuals convert the imported Excel records into a quick operating view for follow-up, value concentration, workload, and bid movement.</p>
+          </div>
+          <div class="score-ring" style="--score: ${model.healthScore}">
+            <strong>${model.healthScore}</strong>
+            <span>Pipeline score</span>
+          </div>
+        </div>
+
+        <div class="insight-kpis">
+          ${renderInsightKpi("Captured value", formatCompactMoney(model.totalValue), `${model.recordsWithValue} records with value`)}
+          ${renderInsightKpi("Open value", formatCompactMoney(model.openValue), "Active, pending, submitted, and ongoing")}
+          ${renderInsightKpi("Closed value", formatCompactMoney(model.awardedValue), "Awarded and completed records")}
+          ${renderInsightKpi("Negotiation depth", `${model.averageRounds} rounds`, `${model.negotiationRecords} records with rounds`)}
+        </div>
+
+        <div class="infographic-grid">
+          <article class="info-panel info-panel-wide">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Opportunity funnel</span>
+                <h3>Bid movement at a glance</h3>
+              </div>
+              <span>${model.stats.totalRecords} total records</span>
+            </div>
+            ${renderFunnel(model.funnel)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Status mix</span>
+                <h3>Where records stand</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.statusRows, "teal")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Due-date radar</span>
+                <h3>Follow-up pressure</h3>
+              </div>
+            </div>
+            ${renderDueCards(model.dueBuckets)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Category mix</span>
+                <h3>Business concentration</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.categoryRows, "amber")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client heat</span>
+                <h3>Most active clients</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.clientRows, "blue")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Owner load</span>
+                <h3>Open work distribution</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.ownerRows, "green")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Value exposure</span>
+                <h3>Largest open opportunities</h3>
+              </div>
+            </div>
+            ${renderValueList(model.highValueOpen)}
+          </article>
+        </div>
+
+        <div class="action-grid">
+          ${model.actionCards
+            .map(
+              (card) => `
+                <article class="action-card">
+                  <span class="metric-label">${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(card.value)}</strong>
+                  <p>${escapeHtml(card.note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderInsightKpi(label, value, note) {
+    return `
+      <div class="insight-kpi">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(value)}</strong>
+        <small>${escapeHtml(note)}</small>
+      </div>
+    `;
+  }
+
+  function renderFunnel(rows) {
+    const max = Math.max(...rows.map((row) => row.value), 1);
+    return `
+      <div class="funnel-list">
+        ${rows
+          .map((row) => {
+            const width = Math.max(5, Math.round((row.value / max) * 100));
+            return `
+              <div class="funnel-row">
+                <div class="funnel-meta">
+                  <span>${escapeHtml(row.label)}</span>
+                  <strong>${row.value}</strong>
+                </div>
+                <div class="funnel-track">
+                  <i class="funnel-fill" style="width: ${width}%"></i>
+                </div>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderRankBars(rows, tone) {
+    if (!rows.length) return `<div class="empty-state compact">No records available.</div>`;
+    const max = Math.max(...rows.map((row) => row.value), 1);
+    return `
+      <div class="rank-list">
+        ${rows
+          .map((row) => {
+            const width = Math.max(5, Math.round((row.value / max) * 100));
+            return `
+              <div class="rank-row">
+                <div class="rank-meta">
+                  <span>${escapeHtml(row.label)}</span>
+                  <strong>${row.value}</strong>
+                </div>
+                <div class="rank-track">
+                  <i class="rank-fill tone-${escapeHtml(tone)}" style="width: ${width}%"></i>
+                </div>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderDueCards(rows) {
+    return `
+      <div class="due-grid">
+        ${rows
+          .map(
+            (row) => `
+              <div class="due-card tone-${escapeHtml(row.tone)}">
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${row.value}</strong>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderValueList(records) {
+    if (!records.length) return `<div class="empty-state compact">No open value captured yet.</div>`;
+    return `
+      <div class="value-list">
+        ${records
+          .map(
+            (record) => `
+              <div class="value-row">
+                <div>
+                  <strong>${escapeHtml(record.client || record.reference || "Open opportunity")}</strong>
+                  <span>${escapeHtml(record.title || "Untitled record")}</span>
+                </div>
+                <div>
+                  <em>${escapeHtml(formatCompactMoney(record.valueAmount))}</em>
+                  <span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span>
+                </div>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
   function renderPricingSection(stats, company) {
+    const projection = pricingProjection(company);
     return `
       <section id="pricing" class="pricing-band" aria-labelledby="pricingTitle">
         <div class="section-heading">
@@ -352,6 +762,41 @@
             <h2 id="pricingTitle">Light monthly fee, serious tender discipline.</h2>
           </div>
           <span class="status-chip">AED ${company.pricePerUser}/user launch price</span>
+        </div>
+
+        <div class="pricing-snapshot" aria-label="TenderGrid pricing economics">
+          <article>
+            <span class="metric-label">Current demo bill</span>
+            <strong>AED ${stats.bill}/mo</strong>
+            <p>${stats.seats} active users at AED ${company.pricePerUser}/user/month.</p>
+          </article>
+          <article>
+            <span class="metric-label">10-user company</span>
+            <strong>AED ${company.pricePerUser * 10}/mo</strong>
+            <p>A simple first sales target for small tender and project teams.</p>
+          </article>
+          <article>
+            <span class="metric-label">100-seat base</span>
+            <strong>AED ${company.pricePerUser * 100}/mo</strong>
+            <p>A realistic milestone once several companies are active.</p>
+          </article>
+        </div>
+
+        <div class="seat-calculator" aria-label="TenderGrid seat price calculator">
+          <div>
+            <span class="metric-label">Seat calculator</span>
+            <h3>Model the monthly bill before talking to a customer.</h3>
+            <p>Use the launch price of AED ${company.pricePerUser}/user/month and show the buyer how the bill changes as their team grows.</p>
+          </div>
+          <label class="seat-slider">
+            <span><strong id="pricingSeatCount">${projection.seats}</strong> users</span>
+            <input type="range" min="1" max="100" value="${projection.seats}" data-pricing="seats" aria-label="Pricing seats">
+          </label>
+          <div class="calculator-results">
+            <div><span>Monthly</span><strong id="pricingMonthly">AED ${projection.monthly}</strong></div>
+            <div><span>Annual run-rate</span><strong id="pricingAnnual">AED ${projection.annual}</strong></div>
+            <div><span>Price per user</span><strong>AED ${projection.perUser}</strong></div>
+          </div>
         </div>
 
         <div class="pricing-grid" aria-label="TenderGrid pricing plan preview">
@@ -366,6 +811,7 @@
               <li>Local browser storage and CSV export</li>
               <li>Visual proof for stakeholder feedback</li>
             </ul>
+            <button class="plan-link" type="button" data-view="All">Open demo tracker</button>
           </article>
 
           <article class="pricing-card is-featured">
@@ -380,6 +826,7 @@
               <li>Quick analytics, filters, notes, and export</li>
               <li>Monthly seat billing that stays easy to explain</li>
             </ul>
+            <button class="plan-link" type="button" data-view="Team & Billing">Open billing view</button>
           </article>
 
           <article class="pricing-card growth-card">
@@ -393,6 +840,7 @@
               <li>Excel import refresh and attachment roadmap</li>
               <li>Email reminders for due dates and next actions</li>
             </ul>
+            <span class="plan-link muted">Production roadmap</span>
           </article>
 
           <article class="pricing-card enterprise-card">
@@ -406,6 +854,7 @@
               <li>Custom reporting and management dashboards</li>
               <li>Priority implementation and support</li>
             </ul>
+            <span class="plan-link muted">Custom deployment</span>
           </article>
         </div>
 
@@ -424,6 +873,58 @@
             <span class="metric-label">Upgrade path</span>
             <strong>Sell governance after trust</strong>
             <p>Once teams rely on TenderGrid daily, audit logs, imports, reminders, and controls become natural paid upgrades.</p>
+          </article>
+        </div>
+
+        <div class="pricing-compare" aria-label="TenderGrid plan comparison">
+          <div class="compare-head">
+            <div>
+              <span class="metric-label">Plan comparison</span>
+              <strong>Keep the first sale simple, then grow into governance.</strong>
+            </div>
+            <span class="status-chip">Buyer-ready packaging</span>
+          </div>
+          <div class="compare-grid">
+            <div class="compare-row compare-row-head">
+              <span>Capability</span>
+              <span>Demo</span>
+              <span>Team</span>
+              <span>Plus</span>
+              <span>Control</span>
+            </div>
+            ${[
+              ["Shared tender grid", "Yes", "Yes", "Yes", "Yes"],
+              ["Role access", "Demo", "Included", "Advanced", "Custom"],
+              ["Monthly seat billing", "No", "AED 10/user", "Base + seats", "Contract"],
+              ["Audit history", "No", "Roadmap", "Included", "Custom"],
+              ["Import automation", "Manual", "Roadmap", "Included", "Custom"],
+            ]
+              .map(
+                (row) => `
+                  <div class="compare-row">
+                    ${row.map((cell) => `<span>${escapeHtml(cell)}</span>`).join("")}
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <div class="billing-faq-grid" aria-label="TenderGrid billing notes">
+          <article>
+            <span class="metric-label">Billing rule</span>
+            <strong>Charge active users only</strong>
+            <p>Admin, editor, and viewer seats are counted the same at launch so invoices stay easy.</p>
+          </article>
+          <article>
+            <span class="metric-label">Upgrade trigger</span>
+            <strong>Add controls when teams ask for trust</strong>
+            <p>Audit logs, reminders, approvals, and import refresh can become the paid governance layer.</p>
+          </article>
+          <article>
+            <span class="metric-label">Sales line</span>
+            <strong>One shared tender sheet for AED 10/user/month</strong>
+            <p>The offer should be simple enough for a first call and credible enough for a pilot invoice.</p>
           </article>
         </div>
       </section>
@@ -969,6 +1470,16 @@
     requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   }
 
+  function updatePricingCalculator() {
+    const projection = pricingProjection();
+    const seatCount = document.getElementById("pricingSeatCount");
+    const monthly = document.getElementById("pricingMonthly");
+    const annual = document.getElementById("pricingAnnual");
+    if (seatCount) seatCount.textContent = projection.seats;
+    if (monthly) monthly.textContent = `AED ${projection.monthly}`;
+    if (annual) annual.textContent = `AED ${projection.annual}`;
+  }
+
   document.addEventListener("submit", (event) => {
     if (event.target.id === "loginForm") {
       event.preventDefault();
@@ -1046,6 +1557,11 @@
 
   document.addEventListener("input", (event) => {
     const filter = event.target.dataset.filter;
+    if (event.target.dataset.pricing === "seats") {
+      state.pricingSeats = Number(event.target.value) || 10;
+      updatePricingCalculator();
+      return;
+    }
     if (filter === "search") {
       state.filters.search = event.target.value;
       renderShell();

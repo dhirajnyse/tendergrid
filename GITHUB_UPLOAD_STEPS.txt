@@ -1,4 +1,4 @@
-TenderGrid v5 pricing refresh upload steps
+TenderGrid v9 analytics infographics upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -16,11 +16,12 @@ TenderGrid v5 pricing refresh upload steps
    - app.js
    - styles.css
    - README.md
+   - GITHUB_UPLOAD_STEPS.txt
 
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   TenderGrid v5 pricing refresh
+   TenderGrid v9 analytics infographics
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
