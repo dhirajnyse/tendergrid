@@ -1,0 +1,32 @@
+TenderGrid v2 upload steps
+
+1. Open this GitHub page:
+   https://github.com/dhirajnyse/tendergrid
+
+2. Click Add file, then Upload files.
+
+3. Drag only the contents of this folder into GitHub:
+   C:\Users\dhiraj\Documents\New project\tendergrid-upload-ready
+
+   Upload these items:
+   - assets
+   - data
+   - .gitignore
+   - index.html
+   - app.js
+   - styles.css
+   - README.md
+
+   Do not upload analysis, source-excels, node_modules, log files, or old project folders.
+
+4. Commit message:
+   TenderGrid v2 brand refresh
+
+5. Wait one or two minutes, then open:
+   https://dhirajnyse.github.io/tendergrid/
+
+6. If the old page appears, press Ctrl + F5.
+
+Demo login:
+admin@tendergrid.app
+demo123

@@ -1,6 +1,6 @@
 (function () {
-  const STORE_KEY = "capsaTenderTracker:data:v1";
-  const SESSION_KEY = "capsaTenderTracker:session:v1";
+  const STORE_KEY = "tenderGrid:data:v2";
+  const SESSION_KEY = "tenderGrid:session:v2";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
   const STATUS_OPTIONS = [
     "Active",
@@ -36,12 +36,26 @@
     const saved = localStorage.getItem(STORE_KEY);
     if (saved) {
       try {
-        return JSON.parse(saved);
+        return normalizeData(JSON.parse(saved));
       } catch (error) {
         localStorage.removeItem(STORE_KEY);
       }
     }
-    return clone(window.SEED_DATA);
+    return normalizeData(clone(window.SEED_DATA));
+  }
+
+  function normalizeData(data) {
+    const demoUsers = {
+      "u-admin": ["TenderGrid Admin", "admin@tendergrid.app"],
+      "u-editor": ["TenderGrid Editor", "editor@tendergrid.app"],
+      "u-viewer": ["TenderGrid Viewer", "viewer@tendergrid.app"],
+    };
+    data.users = data.users.map((user) => {
+      const demo = demoUsers[user.id];
+      if (!demo) return user;
+      return { ...user, name: demo[0], email: demo[1] };
+    });
+    return data;
   }
 
   function persistData() {
@@ -198,14 +212,17 @@
         <section class="login-panel">
           <div class="login-copy">
             <div class="brand-row">
-              <div class="brand-mark">C</div>
+              <div class="brand-mark"><img src="assets/tendergrid-mark.svg" alt=""></div>
               <div>
                 <div class="brand-name">TenderGrid</div>
-                <div class="company-pill">Tender, EOI, and project workspace</div>
+                <div class="company-pill">Track every bid from EOI to award</div>
               </div>
             </div>
-            <h1>Simple sheet control for tenders and ongoing projects.</h1>
-            <p>Imported from the current Excel trackers and shaped into a flat multi-user workspace with quick analytics, role access, and AED 10 per user monthly billing.</p>
+            <div class="logo-showcase">
+              <img src="assets/tendergrid-logo-3d.png" alt="TenderGrid 3D logo">
+            </div>
+            <h1>Track tenders, negotiations, and projects in one simple grid.</h1>
+            <p>A lightweight company workspace shaped from real Excel trackers, with quick analytics, role access, and AED 10 per user monthly billing.</p>
             <div class="login-stats">
               <div class="login-stat"><strong>${totalRecords}</strong><span>Sample records</span></div>
               <div class="login-stat"><strong>${tenders}</strong><span>Tender records</span></div>
@@ -217,7 +234,7 @@
             <form id="loginForm">
               <div class="field">
                 <label for="email">Email</label>
-                <input id="email" name="email" type="email" value="admin@capsa.ae" autocomplete="username" required>
+                <input id="email" name="email" type="email" value="admin@tendergrid.app" autocomplete="username" required>
               </div>
               <div class="field">
                 <label for="password">Password</label>
@@ -228,7 +245,7 @@
             </form>
             <div class="demo-users">
               <strong>Demo users</strong><br>
-              <code>admin@capsa.ae</code>, <code>editor@capsa.ae</code>, <code>viewer@capsa.ae</code><br>
+              <code>admin@tendergrid.app</code>, <code>editor@tendergrid.app</code>, <code>viewer@tendergrid.app</code><br>
               Password: <code>demo123</code>
             </div>
           </div>
@@ -246,7 +263,7 @@
       <div class="shell">
         <header class="topbar">
           <div class="brand-row">
-            <div class="brand-mark">C</div>
+            <div class="brand-mark"><img src="assets/tendergrid-mark.svg" alt=""></div>
             <div>
               <div class="brand-name">TenderGrid</div>
               <div class="company-pill">${escapeHtml(company.name)}</div>
@@ -658,7 +675,7 @@
     const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "capsa-tracker-export.csv";
+    link.download = "tendergrid-export.csv";
     link.click();
     URL.revokeObjectURL(link.href);
   }
@@ -707,7 +724,7 @@
     const confirmed = window.confirm("Reset local demo data back to the imported Excel sample?");
     if (!confirmed) return;
     localStorage.removeItem(STORE_KEY);
-    state.data = clone(window.SEED_DATA);
+    state.data = normalizeData(clone(window.SEED_DATA));
     state.selectedId = null;
     render();
   }

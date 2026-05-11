@@ -10,24 +10,24 @@ window.SEED_DATA = {
     {
       "id": "u-admin",
       "companyId": "capsa",
-      "name": "Capsa Admin",
-      "email": "admin@capsa.ae",
+      "name": "TenderGrid Admin",
+      "email": "admin@tendergrid.app",
       "role": "Admin",
       "password": "demo123"
     },
     {
       "id": "u-editor",
       "companyId": "capsa",
-      "name": "Project Editor",
-      "email": "editor@capsa.ae",
+      "name": "TenderGrid Editor",
+      "email": "editor@tendergrid.app",
       "role": "Editor",
       "password": "demo123"
     },
     {
       "id": "u-viewer",
       "companyId": "capsa",
-      "name": "Read Only",
-      "email": "viewer@capsa.ae",
+      "name": "TenderGrid Viewer",
+      "email": "viewer@tendergrid.app",
       "role": "Viewer",
       "password": "demo123"
     }

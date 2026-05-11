@@ -10,9 +10,9 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 
 ## Demo Login
 
-- `admin@capsa.ae` / `demo123`
-- `editor@capsa.ae` / `demo123`
-- `viewer@capsa.ae` / `demo123`
+- `admin@tendergrid.app` / `demo123`
+- `editor@tendergrid.app` / `demo123`
+- `viewer@tendergrid.app` / `demo123`
 
 ## What Is Included
 
