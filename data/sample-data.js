@@ -11,8 +11,8 @@ window.SEED_DATA = {
     {
       "id": "u-admin",
       "companyId": "capsa",
-      "name": "TenderGrid Admin",
-      "email": "admin@tendergrid.app",
+      "name": "PursuitDesk Admin",
+      "email": "admin@pursuitdesk.app",
       "role": "Admin",
       "password": "demo123",
       "access": ["tenders", "tenderInsights", "projects", "projectInsights", "membership"]
@@ -20,8 +20,8 @@ window.SEED_DATA = {
     {
       "id": "u-editor",
       "companyId": "capsa",
-      "name": "TenderGrid Editor",
-      "email": "editor@tendergrid.app",
+      "name": "PursuitDesk Editor",
+      "email": "editor@pursuitdesk.app",
       "role": "Editor",
       "password": "demo123",
       "access": ["tenders", "tenderInsights", "projects", "projectInsights"]
@@ -29,8 +29,8 @@ window.SEED_DATA = {
     {
       "id": "u-viewer",
       "companyId": "capsa",
-      "name": "TenderGrid Viewer",
-      "email": "viewer@tendergrid.app",
+      "name": "PursuitDesk Viewer",
+      "email": "viewer@pursuitdesk.app",
       "role": "Viewer",
       "password": "demo123",
       "access": ["tenders", "projects"]

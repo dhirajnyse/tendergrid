@@ -2226,6 +2226,122 @@ tr.selected-row td {
   line-height: 1.45;
 }
 
+.platform-roadmap {
+  min-width: 0;
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(223, 242, 237, 0.86), rgba(255, 255, 255, 0.96) 44%, rgba(255, 249, 237, 0.74)),
+    #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.roadmap-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.roadmap-summary article {
+  min-height: 118px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.roadmap-summary strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 21px;
+  line-height: 1.15;
+}
+
+.roadmap-summary p {
+  margin: 9px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.module-card {
+  min-height: 190px;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.module-card.is-live {
+  border-color: rgba(13, 111, 97, 0.42);
+  background: #ffffff;
+  box-shadow: inset 0 0 0 3px rgba(13, 111, 97, 0.06);
+}
+
+.module-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.module-code {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  color: #ffffff;
+  background: var(--teal);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.module-stage {
+  min-height: 26px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--panel-strong);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.module-card strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.module-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.42;
+}
+
+.module-card small {
+  align-self: end;
+  color: #76480e;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
 .pricing-band {
   min-width: 0;
   max-width: 100%;
@@ -2856,6 +2972,10 @@ tr.selected-row td {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .left-rail {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2882,6 +3002,7 @@ tr.selected-row td {
   .subscription-form-grid,
   .pricing-snapshot,
   .pricing-note-grid,
+  .roadmap-summary,
   .billing-faq-grid {
     grid-template-columns: 1fr;
   }
@@ -3012,6 +3133,7 @@ tr.selected-row td {
   .pricing-snapshot,
   .calculator-results,
   .pricing-grid,
+  .module-grid,
   .request-preview,
   .insight-kpis,
   .insight-focus-grid,
@@ -3070,6 +3192,8 @@ tr.selected-row td {
   .billing-summary,
   .membership-grid,
   .subscription-form-grid,
+  .roadmap-summary,
+  .module-grid,
   .request-preview,
   .insight-focus-grid,
   .insight-kpis,

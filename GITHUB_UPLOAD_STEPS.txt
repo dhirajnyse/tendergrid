@@ -1,7 +1,9 @@
-TenderGrid v18 split tender project sections upload steps
+PursuitDesk v21 platform roadmap upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
+
+   The current repository can stay as tendergrid for this live demo URL. The product brand inside the app is now PursuitDesk.
 
 2. Click Add file, then Upload files.
 
@@ -21,7 +23,7 @@ TenderGrid v18 split tender project sections upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   TenderGrid v18 split tender project sections
+   PursuitDesk v21 platform roadmap
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
@@ -29,5 +31,5 @@ TenderGrid v18 split tender project sections upload steps
 6. If the old page appears, press Ctrl + F5.
 
 Demo login:
-admin@tendergrid.app
+admin@pursuitdesk.app
 demo123

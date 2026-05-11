@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-labelledby="title desc">
+  <title id="title">PursuitDesk mark</title>
+  <desc id="desc">A PD monogram with pursuit tiles and an approval signal.</desc>
+  <defs>
+    <linearGradient id="bg" x1="10" y1="8" x2="86" y2="88" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#179886"/>
+      <stop offset=".58" stop-color="#0D7D6F"/>
+      <stop offset="1" stop-color="#092A26"/>
+    </linearGradient>
+    <filter id="lift" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="5" stdDeviation="3" flood-color="#061B19" flood-opacity=".34"/>
+    </filter>
+  </defs>
+  <rect width="96" height="96" rx="18" fill="url(#bg)"/>
+  <g filter="url(#lift)">
+    <path d="M20 20h30c12.2 0 21 8.3 21 20s-8.8 20-21 20H34v16H20V20Zm14 13v14h15.6c4.4 0 7.4-2.7 7.4-7s-3-7-7.4-7H34Z" fill="#F7F8F3"/>
+    <path d="M55 25h5.5C73.8 25 84 35.5 84 49s-10.2 24-23.5 24H48V60h12.2C66.3 60 71 55.1 71 49s-4.7-11-10.8-11H55V25Z" fill="#0B211F" opacity=".95"/>
+    <rect x="20" y="61" width="12" height="12" rx="2.5" fill="#DDF4EE"/>
+    <rect x="35" y="61" width="12" height="12" rx="2.5" fill="#85DCCB"/>
+    <rect x="50" y="61" width="12" height="12" rx="2.5" fill="#C98216"/>
+    <path d="m53.5 66.7 4 4 8.3-9.2" fill="none" stroke="#fff" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

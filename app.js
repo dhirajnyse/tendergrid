@@ -1,6 +1,10 @@
 (function () {
-  const STORE_KEY = "tenderGrid:data:v2";
-  const SESSION_KEY = "tenderGrid:session:v2";
+  const BRAND_NAME = "PursuitDesk";
+  const BRAND_DOMAIN = "pursuitdesk.app";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg";
+  const STORE_KEY = "pursuitDesk:data:v1";
+  const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
   const STATUS_OPTIONS = [
     "Active",
@@ -28,10 +32,61 @@
   const BILLING_TERMS = ["Monthly", "Annual"];
   const ACCESS_SECTIONS = [
     { key: "tenders", label: "Tenders", view: "Tenders" },
-    { key: "tenderInsights", label: "Tender Insights", view: "Tender Insights" },
+    { key: "tenderInsights", label: "Tenders Insights", view: "Tenders Insights" },
     { key: "projects", label: "Projects", view: "Projects" },
     { key: "projectInsights", label: "Project Insights", view: "Project Insights" },
     { key: "membership", label: "Membership Model", view: "Membership" },
+  ];
+  const PLATFORM_MODULES = [
+    {
+      name: "Tenders",
+      code: "TD",
+      stage: "Live foundation",
+      summary: "EOI, tender, negotiation, due-date, owner, and bid status control.",
+      signal: "Core workspace",
+    },
+    {
+      name: "Projects",
+      code: "PR",
+      stage: "Live foundation",
+      summary: "Ongoing project movement, delivery status, client handover, and completion health.",
+      signal: "Core workspace",
+    },
+    {
+      name: "Contracts",
+      code: "CT",
+      stage: "Next module",
+      summary: "Agreement numbers, award history, contract value, renewal dates, and obligations.",
+      signal: "Commercial control",
+    },
+    {
+      name: "Clients",
+      code: "CL",
+      stage: "Next module",
+      summary: "Client profiles, contact owners, relationship notes, and opportunity history.",
+      signal: "Relationship memory",
+    },
+    {
+      name: "Documents",
+      code: "DC",
+      stage: "Roadmap",
+      summary: "Tender files, submissions, commercial clarifications, attachments, and document trails.",
+      signal: "Evidence locker",
+    },
+    {
+      name: "Reminders",
+      code: "RM",
+      stage: "Roadmap",
+      summary: "Submission dates, follow-ups, negotiation tasks, renewals, and escalation nudges.",
+      signal: "Action engine",
+    },
+    {
+      name: "Reports",
+      code: "RP",
+      stage: "Roadmap",
+      summary: "Management reports, win-rate packs, project summaries, and executive exports.",
+      signal: "Decision layer",
+    },
   ];
 
   const app = document.getElementById("app");
@@ -74,9 +129,9 @@
 
   function normalizeData(data) {
     const demoUsers = {
-      "u-admin": ["TenderGrid Admin", "admin@tendergrid.app"],
-      "u-editor": ["TenderGrid Editor", "editor@tendergrid.app"],
-      "u-viewer": ["TenderGrid Viewer", "viewer@tendergrid.app"],
+      "u-admin": [`${BRAND_NAME} Admin`, `admin@${BRAND_DOMAIN}`],
+      "u-editor": [`${BRAND_NAME} Editor`, `editor@${BRAND_DOMAIN}`],
+      "u-viewer": [`${BRAND_NAME} Viewer`, `viewer@${BRAND_DOMAIN}`],
     };
     data.company = {
       ...data.company,
@@ -157,7 +212,7 @@
   }
 
   function isTenderSection(view = state.view) {
-    return view === "Tenders" || view === "Tender Insights";
+    return view === "Tenders" || view === "Tender Insights" || view === "Tenders Insights";
   }
 
   function isProjectSection(view = state.view) {
@@ -165,11 +220,11 @@
   }
 
   function isInsightSection(view = state.view) {
-    return view === "Tender Insights" || view === "Project Insights";
+    return view === "Tender Insights" || view === "Tenders Insights" || view === "Project Insights";
   }
 
   function sectionForView(view) {
-    if (view === "Tender Insights") return "tenderInsights";
+    if (view === "Tender Insights" || view === "Tenders Insights") return "tenderInsights";
     if (view === "Project Insights") return "projectInsights";
     if (view === "Projects") return "projects";
     if (view === "Tenders") return "tenders";
@@ -220,7 +275,7 @@
     refreshSessionUser();
     if (!state.user) return;
     if (state.view === "All") state.view = "Tenders";
-    if (state.view === "Insights") state.view = "Tender Insights";
+    if (state.view === "Insights" || state.view === "Tender Insights") state.view = "Tenders Insights";
     if (!canAccessView(state.view)) state.view = defaultViewForUser() || "No Access";
   }
 
@@ -406,20 +461,20 @@
       <main class="login-page">
         <section class="login-panel">
           <div class="login-copy">
-            <div class="login-kicker">TenderGrid / Bid workspace</div>
+            <div class="login-kicker">${BRAND_NAME} / Opportunity workspace</div>
             <div class="brand-row">
-              <div class="brand-mark"><img src="assets/tendergrid-mark.svg" alt=""></div>
+              <div class="brand-mark"><img src="${BRAND_MARK}" alt=""></div>
               <div>
-                <div class="brand-name">TenderGrid</div>
-                <div class="company-pill">Track every bid from EOI to award</div>
+                <div class="brand-name">${BRAND_NAME}</div>
+                <div class="company-pill">From opportunity to delivery</div>
               </div>
             </div>
-            <h1>The operating desk for tenders, EOIs, negotiations, and active projects.</h1>
-            <p>Turn the current Excel trackers into a governed company workspace with clean editing, role access, fast filters, and ${formatBilling(state.data.company.pricePerUser)} per user monthly billing.</p>
+            <h1>The operating desk for pursuits, tenders, and active projects.</h1>
+            <p>Turn the current Excel trackers into a governed company workspace with clean editing, role access, fast filters, focused insights, and controlled membership management.</p>
             <div class="login-signal-strip">
               <span class="status-pill is-live">Excel-ready MVP</span>
               <span class="status-pill">Role access</span>
-              <span class="status-pill">${formatBilling(state.data.company.pricePerUser)}/user</span>
+              <span class="status-pill">Tender + project desk</span>
             </div>
             <div class="login-stats">
               <div class="login-stat"><strong>${totalRecords}</strong><span>Sample records</span></div>
@@ -429,14 +484,14 @@
           </div>
           <div class="login-form-wrap">
             <div class="logo-showcase">
-              <img src="assets/tendergrid-logo-3d.png" alt="TenderGrid 3D logo">
+              <img src="${BRAND_LOGO_3D}" alt="${BRAND_NAME} 3D logo">
             </div>
             <span class="panel-label">Secure workspace</span>
             <h2>Sign in</h2>
             <form id="loginForm">
               <div class="field">
                 <label for="email">Email</label>
-                <input id="email" name="email" type="email" value="admin@tendergrid.app" autocomplete="username" required>
+                <input id="email" name="email" type="email" value="admin@${BRAND_DOMAIN}" autocomplete="username" required>
               </div>
               <div class="field">
                 <label for="password">Password</label>
@@ -447,7 +502,7 @@
             </form>
             <div class="demo-users">
               <strong>Demo users</strong><br>
-              <code>admin@tendergrid.app</code>, <code>editor@tendergrid.app</code>, <code>viewer@tendergrid.app</code><br>
+              <code>admin@${BRAND_DOMAIN}</code>, <code>editor@${BRAND_DOMAIN}</code>, <code>viewer@${BRAND_DOMAIN}</code><br>
               Password: <code>demo123</code>
             </div>
           </div>
@@ -551,18 +606,18 @@
     const scopedMetrics = sectionMetrics(sectionRecords());
     const viewTitle =
       state.view === "Tenders"
-        ? "Tendering workspace"
+        ? "Tenders workspace"
         : state.view === "Projects"
           ? "Project workspace"
-        : state.view === "Tender Insights"
-          ? "Tender insights"
+        : state.view === "Tenders Insights"
+          ? "Tenders insights"
         : state.view === "Project Insights"
           ? "Project insights"
           : state.view === "Membership"
             ? "Membership model"
           : state.view;
     const viewCopy =
-      state.view === "Tender Insights"
+      state.view === "Tenders Insights"
         ? "Tender-only management signals for follow-up risk, submission readiness, value exposure, and bid decisions."
         : state.view === "Project Insights"
           ? "Project-only management signals for delivery movement, due-date pressure, owner load, and completion health."
@@ -573,9 +628,9 @@
       <div class="shell">
         <header class="topbar">
           <div class="brand-row topbar-brand">
-            <div class="brand-mark"><img src="assets/tendergrid-mark.svg" alt=""></div>
+            <div class="brand-mark"><img src="${BRAND_MARK}" alt=""></div>
             <div>
-              <div class="brand-name">TenderGrid</div>
+              <div class="brand-name">${BRAND_NAME}</div>
               <div class="company-pill">${escapeHtml(company.name)}</div>
             </div>
           </div>
@@ -593,7 +648,6 @@
         <main class="main">
           <section class="workspace-header">
             <div class="workspace-title">
-              ${isInsightSection(state.view) || state.view === "Membership" ? "" : `<span class="panel-label">${isProjectSection() ? "Project control room" : "Tender control room"}</span>`}
               <h1>${escapeHtml(viewTitle)}</h1>
               <p>${escapeHtml(viewCopy)}</p>
             </div>
@@ -1055,7 +1109,7 @@
     if (state.insightLens !== activeLens) state.insightLens = activeLens;
     const model = insightModel(insightRecords());
     const isProjectLens = activeLens === "Projects";
-    const areaTitle = isProjectLens ? "Project insight" : "Tendering insight";
+    const areaTitle = isProjectLens ? "Project insight" : "Tenders insight";
     const trackerView = isProjectLens ? "Projects" : "Tenders";
     return `
       <section class="insights-layout insights-clean">
@@ -1536,7 +1590,50 @@
 
         ${renderMembershipAccessPanel(company)}
 
+        ${renderPlatformRoadmapSection()}
+
         ${renderPricingSection(stats, company)}
+      </section>
+    `;
+  }
+
+  function renderPlatformRoadmapSection() {
+    return `
+      <section class="platform-roadmap" aria-labelledby="platformRoadmapTitle">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Platform roadmap</p>
+            <h2 id="platformRoadmapTitle">Grow from pursuit tracking into a full operating desk.</h2>
+          </div>
+          <span class="status-chip">Module-ready vision</span>
+        </div>
+        <div class="roadmap-summary">
+          <article>
+            <span class="metric-label">Current product</span>
+            <strong>Tenders + Projects</strong>
+            <p>The MVP stays focused on the two daily work areas while proving the shared workspace, access control, analytics, and membership model.</p>
+          </article>
+          <article>
+            <span class="metric-label">Expansion logic</span>
+            <strong>One workspace, many records</strong>
+            <p>Contracts, clients, documents, reminders, and reports can be added as modules around the same company data model.</p>
+          </article>
+        </div>
+        <div class="module-grid" aria-label="${BRAND_NAME} future modules">
+          ${PLATFORM_MODULES.map(
+            (module) => `
+              <article class="module-card ${module.stage === "Live foundation" ? "is-live" : ""}">
+                <div class="module-card-head">
+                  <span class="module-code">${escapeHtml(module.code)}</span>
+                  <span class="module-stage">${escapeHtml(module.stage)}</span>
+                </div>
+                <strong>${escapeHtml(module.name)}</strong>
+                <p>${escapeHtml(module.summary)}</p>
+                <small>${escapeHtml(module.signal)}</small>
+              </article>
+            `,
+          ).join("")}
+        </div>
       </section>
     `;
   }
@@ -1590,7 +1687,7 @@
           <span class="status-chip">${formatBilling(company.pricePerUser, company)}/user launch price</span>
         </div>
 
-        <div class="pricing-snapshot" aria-label="TenderGrid pricing economics">
+        <div class="pricing-snapshot" aria-label="${BRAND_NAME} pricing economics">
           <article>
             <span class="metric-label">Current demo bill</span>
             <strong>${formatBilling(stats.bill, company)}/mo</strong>
@@ -1613,7 +1710,7 @@
           </article>
         </div>
 
-        <div class="seat-calculator" aria-label="TenderGrid seat price calculator">
+        <div class="seat-calculator" aria-label="${BRAND_NAME} seat price calculator">
           <div>
             <span class="metric-label">Seat calculator</span>
             <h3>Model the monthly bill before talking to a customer.</h3>
@@ -1631,7 +1728,7 @@
           </div>
         </div>
 
-        <div class="pricing-grid" aria-label="TenderGrid pricing plan preview">
+        <div class="pricing-grid" aria-label="${BRAND_NAME} pricing plan preview">
           <article class="pricing-card">
             <span class="plan-kicker">Demo</span>
             <h3>Sample Workspace</h3>
@@ -1690,7 +1787,7 @@
           </article>
         </div>
 
-        <div class="pricing-note-grid" aria-label="TenderGrid pricing principles">
+        <div class="pricing-note-grid" aria-label="${BRAND_NAME} pricing principles">
           <article class="pricing-note">
             <span class="metric-label">Launch principle</span>
             <strong>Keep the entry price obvious</strong>
@@ -1704,11 +1801,11 @@
           <article class="pricing-note">
             <span class="metric-label">Upgrade path</span>
             <strong>Sell governance after trust</strong>
-            <p>Once teams rely on TenderGrid daily, audit logs, imports, reminders, and controls become natural paid upgrades.</p>
+            <p>Once teams rely on ${BRAND_NAME} daily, audit logs, imports, reminders, and controls become natural paid upgrades.</p>
           </article>
         </div>
 
-        <div class="pricing-compare" aria-label="TenderGrid plan comparison">
+        <div class="pricing-compare" aria-label="${BRAND_NAME} plan comparison">
           <div class="compare-head">
             <div>
               <span class="metric-label">Plan comparison</span>
@@ -1743,7 +1840,7 @@
           </div>
         </div>
 
-        <div class="billing-faq-grid" aria-label="TenderGrid billing notes">
+        <div class="billing-faq-grid" aria-label="${BRAND_NAME} billing notes">
           <article>
             <span class="metric-label">Billing rule</span>
             <strong>Charge active users only</strong>
@@ -1792,7 +1889,7 @@
             <div class="table-head">
               <div>
                 <span class="panel-label">Editable tracker</span>
-                <h2>${state.view === "Projects" ? "Projects" : "Tendering"}</h2>
+                <h2>${state.view === "Projects" ? "Projects" : "Tenders"}</h2>
               </div>
               <span>${records.length} visible</span>
             </div>
@@ -1967,7 +2064,7 @@
 
   function quickSearchResults() {
     const query = normalize(state.quickSearch);
-    const records = companyRecords();
+    const records = isTenderSection() || isProjectSection() ? sectionRecords() : companyRecords();
     const source = query
       ? records.filter((record) =>
           [
@@ -1986,6 +2083,12 @@
         )
       : records.filter((record) => !isClosedRecord(record));
     return source.slice(0, 8);
+  }
+
+  function quickSearchScopeLabel() {
+    if (isProjectSection()) return "projects";
+    if (isTenderSection()) return "tenders";
+    return "all records";
   }
 
   function renderFloatingTools() {
@@ -2010,7 +2113,7 @@
           <div class="quick-search-head">
             <div>
               <span class="panel-label">Quick search</span>
-              <h2 id="quickSearchTitle">Find a tender, project, client, or owner.</h2>
+              <h2 id="quickSearchTitle">Find ${escapeHtml(quickSearchScopeLabel())} by reference, client, or owner.</h2>
             </div>
             <button class="mini-btn" type="button" data-action="close-quick-search">Close</button>
           </div>
@@ -2370,7 +2473,7 @@
     const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "tendergrid-export.csv";
+    link.download = "pursuitdesk-export.csv";
     link.click();
     URL.revokeObjectURL(link.href);
   }
@@ -2378,7 +2481,7 @@
   function exportInsightsPack() {
     const model = insightModel(insightRecords());
     const lines = [
-      "TenderGrid Board Pack",
+      `${BRAND_NAME} Board Pack`,
       `Company: ${state.data.company.name}`,
       `Lens: ${model.lens}`,
       `Pipeline score: ${model.healthScore}`,
@@ -2404,7 +2507,7 @@
     const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "tendergrid-board-pack.txt";
+    link.download = "pursuitdesk-board-pack.txt";
     link.click();
     URL.revokeObjectURL(link.href);
   }
@@ -2646,7 +2749,7 @@
         return;
       }
       state.view = button.dataset.view;
-      if (state.view === "Tender Insights") state.insightLens = "Tendering";
+      if (state.view === "Tenders Insights") state.insightLens = "Tendering";
       if (state.view === "Project Insights") state.insightLens = "Projects";
       const typeOptions = isProjectSection() ? ["All", "Project"] : ["All", "EOI", "Tender"];
       if (!typeOptions.includes(state.filters.type)) state.filters.type = "All";
