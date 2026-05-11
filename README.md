@@ -7,6 +7,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Product name: TenderGrid
 - Tagline: Track every bid from EOI to award.
 - 3D logo asset: `assets/tendergrid-logo-3d.png`
+- UI direction: compact Research Desk-style command workspace with KPIs, signal rail, editable grid, and record detail panel.
 
 ## Demo Login
 

@@ -1,4 +1,4 @@
-TenderGrid v2 upload steps
+TenderGrid v3 UI refresh upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -20,7 +20,7 @@ TenderGrid v2 upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   TenderGrid v2 brand refresh
+   TenderGrid v3 UI refresh
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/

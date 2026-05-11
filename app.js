@@ -184,14 +184,29 @@
       (record) => record.type === "Project" && normalize(record.status) === "ongoing",
     ).length;
     const awarded = records.filter((record) => record.status === "Awarded").length;
+    const completed = records.filter((record) => record.status === "Completed").length;
+    const tenders = records.filter((record) => record.type === "Tender").length;
+    const eois = records.filter((record) => record.type === "EOI").length;
+    const projects = records.filter((record) => record.type === "Project").length;
+    const pending = records.filter((record) => record.status === "Pending").length;
+    const submitted = records.filter((record) => record.status === "Submitted").length;
+    const risk = records.filter((record) => ["Cancelled", "Regret"].includes(record.status)).length;
     const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
     return {
       activeTenders,
       ongoingProjects,
       awarded,
+      completed,
+      tenders,
+      eois,
+      projects,
+      pending,
+      submitted,
+      risk,
       seats: users.length,
       bill: users.length * state.data.company.pricePerUser,
       totalRecords: records.length,
+      winProgress: records.length ? Math.round(((awarded + completed) / records.length) * 100) : 0,
     };
   }
 
@@ -211,6 +226,7 @@
       <main class="login-page">
         <section class="login-panel">
           <div class="login-copy">
+            <div class="login-kicker">TenderGrid / Bid workspace</div>
             <div class="brand-row">
               <div class="brand-mark"><img src="assets/tendergrid-mark.svg" alt=""></div>
               <div>
@@ -218,11 +234,13 @@
                 <div class="company-pill">Track every bid from EOI to award</div>
               </div>
             </div>
-            <div class="logo-showcase">
-              <img src="assets/tendergrid-logo-3d.png" alt="TenderGrid 3D logo">
+            <h1>The operating desk for tenders, EOIs, negotiations, and active projects.</h1>
+            <p>Turn the current Excel trackers into a governed company workspace with clean editing, role access, fast filters, and AED 10 per user monthly billing.</p>
+            <div class="login-signal-strip">
+              <span class="status-pill is-live">Excel-ready MVP</span>
+              <span class="status-pill">Role access</span>
+              <span class="status-pill">AED 10/user</span>
             </div>
-            <h1>Track tenders, negotiations, and projects in one simple grid.</h1>
-            <p>A lightweight company workspace shaped from real Excel trackers, with quick analytics, role access, and AED 10 per user monthly billing.</p>
             <div class="login-stats">
               <div class="login-stat"><strong>${totalRecords}</strong><span>Sample records</span></div>
               <div class="login-stat"><strong>${tenders}</strong><span>Tender records</span></div>
@@ -230,6 +248,10 @@
             </div>
           </div>
           <div class="login-form-wrap">
+            <div class="logo-showcase">
+              <img src="assets/tendergrid-logo-3d.png" alt="TenderGrid 3D logo">
+            </div>
+            <span class="panel-label">Secure workspace</span>
             <h2>Sign in</h2>
             <form id="loginForm">
               <div class="field">
@@ -262,21 +284,39 @@
     app.innerHTML = `
       <div class="shell">
         <header class="topbar">
-          <div class="brand-row">
+          <div class="brand-row topbar-brand">
             <div class="brand-mark"><img src="assets/tendergrid-mark.svg" alt=""></div>
             <div>
               <div class="brand-name">TenderGrid</div>
               <div class="company-pill">${escapeHtml(company.name)}</div>
             </div>
           </div>
-          <div class="user-pill">${escapeHtml(state.user.name)} · ${escapeHtml(state.user.role)}</div>
+          <div class="status-strip">
+            <span class="status-pill is-live">Live demo</span>
+            <span class="status-pill">${stats.totalRecords} records</span>
+            <span class="status-pill">AED ${company.pricePerUser}/seat</span>
+          </div>
           <div class="topbar-actions">
+            <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
             <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
             <button class="secondary-btn" type="button" data-action="logout">Logout</button>
           </div>
         </header>
 
         <main class="main">
+          <section class="workspace-hero">
+            <div class="hero-copy">
+              <span class="panel-label">Procurement command desk</span>
+              <h1>From EOI to award, every live opportunity has a clear next move.</h1>
+              <p>A flatter, sharper workspace inspired by the Research Desk pattern: signals on the left, editable grid in the center, record intelligence on the right.</p>
+            </div>
+            <div class="hero-proof">
+              <div><strong>${stats.activeTenders}</strong><span>active tender motions</span></div>
+              <div><strong>${stats.ongoingProjects}</strong><span>ongoing delivery records</span></div>
+              <div><strong>${stats.winProgress}%</strong><span>awarded or completed</span></div>
+            </div>
+          </section>
+
           <nav class="tabs" aria-label="Primary views">
             ${["All", "Tenders", "Projects", "Team & Billing"]
               .map(
@@ -296,35 +336,118 @@
             <div class="metric"><span>Seat bill</span><strong>AED ${stats.bill}</strong><small>${stats.seats} users at AED ${company.pricePerUser}/month</small></div>
           </section>
 
-          ${state.view === "Team & Billing" ? renderTeamBilling() : renderTracker(records, selected)}
+          ${state.view === "Team & Billing" ? renderTeamBilling() : renderTracker(records, selected, stats)}
         </main>
       </div>
     `;
   }
 
-  function renderTracker(records, selected) {
+  function renderTracker(records, selected, stats) {
     const categories = uniqueOptions("category");
     const statuses = Array.from(new Set([...STATUS_OPTIONS, ...uniqueOptions("status")]));
     return `
-      <section class="toolbar" aria-label="Tracker controls">
-        <input class="filter-input" type="search" placeholder="Search tender, client, title, owner" value="${escapeHtml(state.filters.search)}" data-filter="search">
-        ${renderSelect("type", ["All", ...TYPE_OPTIONS], state.filters.type, "filter-select")}
-        ${renderSelect("status", ["All", ...statuses], state.filters.status, "filter-select")}
-        ${renderSelect("category", ["All", ...categories], state.filters.category, "filter-select")}
-        <div class="toolbar-actions">
-          <button class="secondary-btn" type="button" data-action="add" ${canEdit() ? "" : "disabled"}>New row</button>
-          <button class="ghost-btn" type="button" data-action="export">Export CSV</button>
-        </div>
-      </section>
+      <section class="tracker-layout">
+        <aside class="left-rail">
+          ${renderCommandPanel(records, stats)}
+          ${renderMixPanel(stats)}
+        </aside>
 
-      <section class="workbench">
-        <div class="table-panel">
-          <div class="table-wrap">
-            ${records.length ? renderTable(records) : `<div class="empty-state">No matching records.</div>`}
+        <section class="workbench">
+          <section class="toolbar" aria-label="Tracker controls">
+            <input class="filter-input" type="search" placeholder="Search records" value="${escapeHtml(state.filters.search)}" data-filter="search">
+            ${renderSelect("type", ["All", ...TYPE_OPTIONS], state.filters.type, "filter-select")}
+            ${renderSelect("status", ["All", ...statuses], state.filters.status, "filter-select")}
+            ${renderSelect("category", ["All", ...categories], state.filters.category, "filter-select")}
+            <div class="toolbar-actions">
+              <button class="secondary-btn" type="button" data-action="add" ${canEdit() ? "" : "disabled"}>New row</button>
+              <button class="ghost-btn" type="button" data-action="export">Export CSV</button>
+            </div>
+          </section>
+
+          <div class="table-panel">
+            <div class="table-head">
+              <div>
+                <span class="panel-label">Editable tracker</span>
+                <h2>${state.view === "All" ? "All records" : escapeHtml(state.view)}</h2>
+              </div>
+              <span>${records.length} visible</span>
+            </div>
+            <div class="table-wrap">
+              ${records.length ? renderTable(records) : `<div class="empty-state">No matching records.</div>`}
+            </div>
           </div>
-        </div>
+        </section>
+
         ${renderDetail(selected)}
       </section>
+    `;
+  }
+
+  function renderCommandPanel(records, stats) {
+    const allRecords = companyRecords();
+    const attention = allRecords.filter((record) =>
+      ["Active", "Pending", "Submitted", "Ongoing"].includes(record.status),
+    ).length;
+    const signalRows = [
+      ["Pending action", stats.pending],
+      ["Submitted", stats.submitted],
+      ["Awarded", stats.awarded],
+      ["Risk / regret", stats.risk],
+    ];
+    return `
+      <div class="panel command-panel">
+        <div class="panel-heading">
+          <h2>Command rail</h2>
+          <span>${records.length} shown</span>
+        </div>
+        <div class="focus-card">
+          <span>Needs movement</span>
+          <strong>${attention}</strong>
+          <small>active, pending, submitted, and ongoing records</small>
+        </div>
+        <div class="signal-list">
+          ${signalRows
+            .map(
+              ([label, value]) => `
+                <div class="signal-row">
+                  <span>${label}</span>
+                  <strong>${value}</strong>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderMixPanel(stats) {
+    const total = Math.max(stats.totalRecords, 1);
+    const rows = [
+      ["Tender", stats.tenders, "teal"],
+      ["EOI", stats.eois, "amber"],
+      ["Project", stats.projects, "blue"],
+    ];
+    return `
+      <div class="panel">
+        <div class="panel-heading">
+          <h2>Record mix</h2>
+          <span>${stats.totalRecords} total</span>
+        </div>
+        <div class="mix-bars">
+          ${rows
+            .map(([label, value, tone]) => {
+              const width = Math.max(4, Math.round((value / total) * 100));
+              return `
+                <div class="mix-row">
+                  <div class="mix-meta"><span>${label}</span><strong>${value}</strong></div>
+                  <div class="mix-track"><i class="mix-fill tone-${tone}" style="width: ${width}%"></i></div>
+                </div>
+              `;
+            })
+            .join("")}
+        </div>
+      </div>
     `;
   }
 
@@ -438,7 +561,7 @@
       <aside class="detail-panel">
         <div class="detail-head">
           <h2>${escapeHtml(record.title || "Untitled record")}</h2>
-          <p>${escapeHtml(record.reference || "No reference")} · ${escapeHtml(record.client || "No client")}</p>
+          <p>${escapeHtml(record.reference || "No reference")} / ${escapeHtml(record.client || "No client")}</p>
         </div>
         <div class="detail-body">
           <div class="detail-grid">
@@ -474,7 +597,7 @@
       .join(" | ");
     return `
       <div class="round-item">
-        <strong>${escapeHtml(round.label || `Round ${round.round}`)} · ${escapeHtml(formatDate(round.receivedDate))}</strong>
+        <strong>${escapeHtml(round.label || `Round ${round.round}`)} / ${escapeHtml(formatDate(round.receivedDate))}</strong>
         <span>${escapeHtml(money || "No price captured")}</span>
         <span>${escapeHtml(round.response || "No response captured")}</span>
       </div>
