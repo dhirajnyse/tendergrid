@@ -12,6 +12,15 @@
     "Cancelled",
     "Regret",
   ];
+  const LANE_OPTIONS = [
+    "All lanes",
+    "Needs decision",
+    "Past due",
+    "No due date",
+    "High value",
+    "Has negotiations",
+    "Missing value",
+  ];
 
   const app = document.getElementById("app");
   const state = {
@@ -23,10 +32,12 @@
       type: "All",
       status: "All",
       category: "All",
+      lane: "All lanes",
     },
     selectedId: null,
     message: "",
     pricingSeats: 10,
+    insightLens: "Open",
   };
 
   function clone(value) {
@@ -152,6 +163,10 @@
     if (state.filters.category !== "All") {
       records = records.filter((record) => record.category === state.filters.category);
     }
+    const lane = state.filters.lane || "All lanes";
+    if (lane !== "All lanes") {
+      records = records.filter((record) => recordMatchesLane(record, lane));
+    }
     const search = normalize(state.filters.search);
     if (search) {
       records = records.filter((record) =>
@@ -172,6 +187,33 @@
       );
     }
     return records;
+  }
+
+  function recordMatchesLane(record, lane) {
+    const date = parseRecordDate(record.endDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const amount = Number(record.valueAmount) || 0;
+    const highValueFloor = highValueThreshold(companyRecords());
+    if (lane === "Needs decision") {
+      return !isClosedRecord(record) && ["Active", "Pending", "Submitted"].includes(record.status);
+    }
+    if (lane === "Past due") {
+      return !isClosedRecord(record) && date && date < today;
+    }
+    if (lane === "No due date") {
+      return !isClosedRecord(record) && !record.endDate;
+    }
+    if (lane === "High value") {
+      return amount >= highValueFloor && amount > 0;
+    }
+    if (lane === "Has negotiations") {
+      return (record.rounds || []).length > 0;
+    }
+    if (lane === "Missing value") {
+      return !amount;
+    }
+    return true;
   }
 
   function metrics() {
@@ -385,6 +427,15 @@
     return records.reduce((total, record) => total + (Number(record.valueAmount) || 0), 0);
   }
 
+  function highValueThreshold(records) {
+    const values = records
+      .map((record) => Number(record.valueAmount) || 0)
+      .filter((value) => value > 0)
+      .sort((a, b) => b - a);
+    if (!values.length) return Number.POSITIVE_INFINITY;
+    return values[Math.min(values.length - 1, Math.max(0, Math.floor(values.length * 0.25)))];
+  }
+
   function formatCompactMoney(value) {
     const currency = state.data.company.currency || "AED";
     const amount = Number(value) || 0;
@@ -451,6 +502,146 @@
     ];
   }
 
+  function insightRecords() {
+    const records = companyRecords();
+    const lens = state.insightLens || "Open";
+    if (lens === "All") return records;
+    if (lens === "Open") return records.filter((record) => !isClosedRecord(record));
+    if (lens === "Tenders") return records.filter((record) => record.type === "Tender" || record.type === "EOI");
+    if (lens === "Projects") return records.filter((record) => record.type === "Project");
+    if (lens === "High value") {
+      const floor = highValueThreshold(records);
+      return records.filter((record) => (Number(record.valueAmount) || 0) >= floor);
+    }
+    return records;
+  }
+
+  function recordDueDays(record) {
+    const date = parseRecordDate(record.endDate);
+    if (!date) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.ceil((date.getTime() - today.getTime()) / 86400000);
+  }
+
+  function scoreRecord(record, valueFloor) {
+    const amount = Number(record.valueAmount) || 0;
+    const days = recordDueDays(record);
+    const hasCore = [
+      record.reference,
+      record.client,
+      record.title,
+      record.category,
+      record.owner,
+      record.endDate,
+      amount > 0 ? "value" : "",
+    ].filter(Boolean).length;
+    let score = 42 + hasCore * 5;
+    const reasons = [];
+    if (amount >= valueFloor && amount > 0) {
+      score += 12;
+      reasons.push("High value");
+    }
+    if ((record.rounds || []).length > 0) {
+      score += 8;
+      reasons.push("Negotiated");
+    }
+    if (["Submitted", "Awarded"].includes(record.status)) score += 8;
+    if (record.status === "Pending") {
+      score -= 5;
+      reasons.push("Pending");
+    }
+    if (days === null) {
+      score -= 12;
+      reasons.push("No due date");
+    } else if (days < 0) {
+      score -= 20;
+      reasons.push("Past due");
+    } else if (days <= 14) {
+      score += 3;
+      reasons.push("Urgent");
+    }
+    if (!amount) {
+      score -= 7;
+      reasons.push("No value");
+    }
+    if (!record.owner) {
+      score -= 8;
+      reasons.push("No owner");
+    }
+    const finalScore = Math.max(5, Math.min(98, Math.round(score)));
+    return {
+      score: finalScore,
+      recommendation: finalScore >= 72 ? "Bid focus" : finalScore >= 52 ? "Watch" : "No-bid review",
+      tone: finalScore >= 72 ? "green" : finalScore >= 52 ? "amber" : "red",
+      reasons: reasons.slice(0, 3),
+      days,
+    };
+  }
+
+  function buildDecisionRows(records) {
+    const floor = highValueThreshold(companyRecords());
+    return records
+      .filter((record) => !isClosedRecord(record))
+      .map((record) => ({ record, ...scoreRecord(record, floor) }))
+      .sort((a, b) => {
+        const aUrgency = a.days === null ? 9999 : a.days;
+        const bUrgency = b.days === null ? 9999 : b.days;
+        return a.score - b.score || aUrgency - bUrgency;
+      })
+      .slice(0, 6);
+  }
+
+  function buildComplianceRows(records) {
+    const checks = [
+      ["Reference", (record) => record.reference],
+      ["Client", (record) => record.client],
+      ["Tender title", (record) => record.title],
+      ["Owner", (record) => record.owner],
+      ["Due date", (record) => record.endDate],
+      ["Value", (record) => Number(record.valueAmount) > 0],
+      ["Status", (record) => record.status],
+      ["Category", (record) => record.category],
+    ];
+    const total = Math.max(records.length, 1);
+    return checks.map(([label, getter]) => {
+      const ready = records.filter((record) => Boolean(getter(record))).length;
+      return { label, value: Math.round((ready / total) * 100), ready };
+    });
+  }
+
+  function buildRiskMatrix(records) {
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const floor = highValueThreshold(companyRecords());
+    const cells = [
+      { label: "Urgent value", note: "High value with past or near due date", tone: "red", count: 0 },
+      { label: "Clean pursuits", note: "High score and clear ownership", tone: "green", count: 0 },
+      { label: "Decision gaps", note: "Missing value, date, or owner", tone: "amber", count: 0 },
+      { label: "Monitor", note: "Lower pressure open records", tone: "blue", count: 0 },
+    ];
+    openRecords.forEach((record) => {
+      const amount = Number(record.valueAmount) || 0;
+      const days = recordDueDays(record);
+      const scored = scoreRecord(record, floor);
+      const missing = !record.endDate || !record.owner || !amount;
+      if (amount >= floor && (days === null || days <= 30)) cells[0].count += 1;
+      else if (scored.score >= 72 && !missing) cells[1].count += 1;
+      else if (missing || scored.score < 52) cells[2].count += 1;
+      else cells[3].count += 1;
+    });
+    return cells;
+  }
+
+  function buildPlaybookRows() {
+    return [
+      ["Qualify", "Go/no-go queue", "Live"],
+      ["Analyze", "Risk and due-date radar", "Live"],
+      ["Compare", "Offer comparison workspace", "Next"],
+      ["Clarify", "Supplier/client Q&A log", "Next"],
+      ["Submit", "Compliance pack checklist", "Next"],
+    ];
+  }
+
   function insightModel(records) {
     const stats = metrics();
     const openRecords = records.filter((record) => !isClosedRecord(record));
@@ -502,6 +693,8 @@
     ];
     return {
       stats,
+      lens: state.insightLens || "Open",
+      scopedRecords: records.length,
       healthScore,
       totalValue,
       openValue,
@@ -517,6 +710,10 @@
       highValueOpen,
       topOwner,
       funnel,
+      decisionRows: buildDecisionRows(records),
+      complianceRows: buildComplianceRows(records),
+      riskMatrix: buildRiskMatrix(records),
+      playbookRows: buildPlaybookRows(),
       actionCards: [
         {
           label: "Date hygiene",
@@ -540,14 +737,19 @@
   }
 
   function renderInsights() {
-    const model = insightModel(companyRecords());
+    const model = insightModel(insightRecords());
     return `
       <section class="insights-layout">
-        <div class="insight-hero">
+        <div class="insight-hero cockpit-hero">
           <div>
-            <span class="panel-label">Analytics desk</span>
-            <h2>Management signals from the tender sheet.</h2>
-            <p>These visuals convert the imported Excel records into a quick operating view for follow-up, value concentration, workload, and bid movement.</p>
+            <span class="panel-label">Bid command cockpit</span>
+            <h2>From sheet tracking to pursuit control.</h2>
+            <p>Qualification, deadline pressure, value exposure, owner load, and submission readiness in one operating view.</p>
+            ${renderLensSwitch(model.lens)}
+            <div class="hero-actions">
+              <button class="secondary-btn" type="button" data-action="export-insights">Export board pack</button>
+              <button class="ghost-btn" type="button" data-view="All">Open tracker</button>
+            </div>
           </div>
           <div class="score-ring" style="--score: ${model.healthScore}">
             <strong>${model.healthScore}</strong>
@@ -560,6 +762,49 @@
           ${renderInsightKpi("Open value", formatCompactMoney(model.openValue), "Active, pending, submitted, and ongoing")}
           ${renderInsightKpi("Closed value", formatCompactMoney(model.awardedValue), "Awarded and completed records")}
           ${renderInsightKpi("Negotiation depth", `${model.averageRounds} rounds`, `${model.negotiationRecords} records with rounds`)}
+        </div>
+
+        <div class="cockpit-grid">
+          <article class="info-panel decision-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Go / no-go queue</span>
+                <h3>Decision-ready pursuits</h3>
+              </div>
+              <span>${model.scopedRecords} in lens</span>
+            </div>
+            ${renderDecisionBoard(model.decisionRows)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Risk map</span>
+                <h3>What needs management attention</h3>
+              </div>
+            </div>
+            ${renderRiskMatrix(model.riskMatrix)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Submission readiness</span>
+                <h3>Record completeness</h3>
+              </div>
+            </div>
+            ${renderComplianceRows(model.complianceRows)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Product roadmap</span>
+                <h3>Peer-inspired workflow</h3>
+              </div>
+            </div>
+            ${renderPlaybookRows(model.playbookRows)}
+          </article>
         </div>
 
         <div class="infographic-grid">
@@ -649,6 +894,107 @@
             .join("")}
         </div>
       </section>
+    `;
+  }
+
+  function renderLensSwitch(activeLens) {
+    return `
+      <div class="lens-switch" aria-label="Insights lens">
+        ${["Open", "All", "Tenders", "Projects", "High value"]
+          .map(
+            (lens) => `
+              <button class="${activeLens === lens ? "active" : ""}" type="button" data-insight-lens="${escapeHtml(lens)}">
+                ${escapeHtml(lens)}
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderDecisionBoard(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No open pursuits in this lens.</div>`;
+    return `
+      <div class="decision-list">
+        ${rows
+          .map(({ record, score, recommendation, tone, reasons, days }) => {
+            const dueText = days === null ? "No due date" : days < 0 ? `${Math.abs(days)}d late` : `${days}d left`;
+            return `
+              <button class="decision-row" type="button" data-action="select" data-id="${escapeHtml(record.id)}">
+                <span class="decision-score tone-${escapeHtml(tone)}">${score}</span>
+                <span class="decision-main">
+                  <strong>${escapeHtml(record.client || record.reference || "Open pursuit")}</strong>
+                  <em>${escapeHtml(record.title || "Untitled record")}</em>
+                  <small>${escapeHtml([record.type, record.status, dueText].filter(Boolean).join(" / "))}</small>
+                </span>
+                <span class="decision-rec">
+                  <strong>${escapeHtml(recommendation)}</strong>
+                  <small>${escapeHtml(reasons.length ? reasons.join(" / ") : "Clean record")}</small>
+                </span>
+              </button>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderRiskMatrix(rows) {
+    return `
+      <div class="risk-matrix">
+        ${rows
+          .map(
+            (row) => `
+              <div class="risk-cell tone-${escapeHtml(row.tone)}">
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${row.count}</strong>
+                <small>${escapeHtml(row.note)}</small>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderComplianceRows(rows) {
+    return `
+      <div class="compliance-list">
+        ${rows
+          .map(
+            (row) => `
+              <div class="compliance-row">
+                <div class="compliance-meta">
+                  <span>${escapeHtml(row.label)}</span>
+                  <strong>${row.value}%</strong>
+                </div>
+                <div class="rank-track">
+                  <i class="rank-fill tone-teal" style="width: ${Math.max(4, row.value)}%"></i>
+                </div>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderPlaybookRows(rows) {
+    return `
+      <div class="playbook-list">
+        ${rows
+          .map(
+            ([stage, item, status]) => `
+              <div class="playbook-row">
+                <span>${escapeHtml(stage)}</span>
+                <strong>${escapeHtml(item)}</strong>
+                <em class="${status === "Live" ? "is-live" : ""}">${escapeHtml(status)}</em>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
     `;
   }
 
@@ -947,6 +1293,7 @@
             ${renderSelect("type", ["All", ...TYPE_OPTIONS], state.filters.type, "filter-select")}
             ${renderSelect("status", ["All", ...statuses], state.filters.status, "filter-select")}
             ${renderSelect("category", ["All", ...categories], state.filters.category, "filter-select")}
+            ${renderSelect("lane", LANE_OPTIONS, state.filters.lane || "All lanes", "filter-select lane-select")}
             <div class="toolbar-actions">
               <button class="secondary-btn" type="button" data-action="add" ${canEdit() ? "" : "disabled"}>New row</button>
               <button class="ghost-btn" type="button" data-action="export">Export CSV</button>
@@ -1061,18 +1408,12 @@
       <table class="tracker-table">
         <thead>
           <tr>
-            <th class="col-type">Type</th>
             <th class="col-ref">Reference</th>
             <th class="col-client">Client</th>
             <th class="col-title">Title</th>
-            <th class="col-category">Category</th>
             <th class="col-status">Status</th>
-            <th class="col-date">Start</th>
-            <th class="col-date">End / Last</th>
+            <th class="col-date">Due / Last</th>
             <th class="col-value">Value</th>
-            <th class="col-owner">Owner</th>
-            <th class="col-activity">Latest activity</th>
-            <th class="col-source">Source</th>
             <th class="col-actions">Actions</th>
           </tr>
         </thead>
@@ -1088,18 +1429,17 @@
     const selected = record.id === state.selectedId ? "selected-row" : "";
     return `
       <tr class="${selected}" data-id="${escapeHtml(record.id)}">
-        <td>${renderRecordSelect(record, "type", TYPE_OPTIONS, editable)}</td>
         <td>${editableCell(record, "reference", "mono")}</td>
         <td>${editableCell(record, "client")}</td>
-        <td>${editableCell(record, "title")}</td>
-        <td>${editableCell(record, "category")}</td>
+        <td>
+          <div class="cell-stack">
+            ${editableCell(record, "title")}
+            <span>${escapeHtml([record.type, record.category, record.owner].filter(Boolean).join(" / ") || "No metadata")}</span>
+          </div>
+        </td>
         <td>${renderRecordSelect(record, "status", STATUS_OPTIONS, editable, true)}</td>
-        <td>${editableCell(record, "startDate")}</td>
-        <td>${editableCell(record, "endDate")}</td>
-        <td>${editableCell(record, "valueText")}</td>
-        <td>${editableCell(record, "owner")}</td>
-        <td>${editableCell(record, "latestActivity")}</td>
-        <td><span class="cell-edit">${escapeHtml(record.sourceSheet || record.sourceWorkbook || "")}</span></td>
+        <td>${renderDateCell(record.endDate)}</td>
+        <td>${renderMoneyCell(record)}</td>
         <td>
           <div class="row-actions">
             <button class="mini-btn" type="button" data-action="select" data-id="${escapeHtml(record.id)}">View</button>
@@ -1122,6 +1462,15 @@
         <span class="record-meta">${escapeHtml(record.client || "No client")} / ${escapeHtml(record.type)} / ${escapeHtml(record.owner || "No owner")}</span>
       </button>
     `;
+  }
+
+  function renderDateCell(value) {
+    return `<span class="cell-plain">${escapeHtml(formatDate(value) || "-")}</span>`;
+  }
+
+  function renderMoneyCell(record) {
+    const label = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : record.valueText || "-";
+    return `<span class="cell-money" title="${escapeHtml(record.valueText || "")}">${escapeHtml(label)}</span>`;
   }
 
   function editableCell(record, field) {
@@ -1409,6 +1758,40 @@
     URL.revokeObjectURL(link.href);
   }
 
+  function exportInsightsPack() {
+    const model = insightModel(insightRecords());
+    const lines = [
+      "TenderGrid Board Pack",
+      `Company: ${state.data.company.name}`,
+      `Lens: ${model.lens}`,
+      `Pipeline score: ${model.healthScore}`,
+      `Captured value: ${formatCompactMoney(model.totalValue)}`,
+      `Open value: ${formatCompactMoney(model.openValue)}`,
+      `Closed value: ${formatCompactMoney(model.awardedValue)}`,
+      "",
+      "Go / No-Go Queue",
+      ...model.decisionRows.map(
+        ({ record, score, recommendation, reasons }) =>
+          `- ${record.client || record.reference || "Open pursuit"} | ${record.status} | ${score}/100 | ${recommendation} | ${reasons.join(", ") || "Clean record"}`,
+      ),
+      "",
+      "Risk Map",
+      ...model.riskMatrix.map((row) => `- ${row.label}: ${row.count} (${row.note})`),
+      "",
+      "Largest Open Opportunities",
+      ...model.highValueOpen.map(
+        (record) =>
+          `- ${record.client || record.reference || "Open opportunity"} | ${formatCompactMoney(record.valueAmount)} | ${record.status} | ${record.title || ""}`,
+      ),
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "tendergrid-board-pack.txt";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
   function addUser(form) {
     if (!canAdmin()) return;
     const formData = new FormData(form);
@@ -1514,7 +1897,7 @@
   });
 
   document.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-action], [data-view], [data-quick-status]");
+    const button = event.target.closest("[data-action], [data-view], [data-quick-status], [data-insight-lens]");
     const row = event.target.closest(".tracker-table tbody tr");
     if (!button && row && !event.target.closest("button, select, input, textarea, [contenteditable]")) {
       state.selectedId = row.dataset.id;
@@ -1527,6 +1910,12 @@
     if (button.dataset.quickStatus) {
       state.filters.status = state.filters.status === button.dataset.quickStatus ? "All" : button.dataset.quickStatus;
       state.selectedId = null;
+      render();
+      return;
+    }
+
+    if (button.dataset.insightLens) {
+      state.insightLens = button.dataset.insightLens;
       render();
       return;
     }
@@ -1547,8 +1936,10 @@
     if (action === "reset") resetDemo();
     if (action === "add") addRecord();
     if (action === "export") exportCsv();
+    if (action === "export-insights") exportInsightsPack();
     if (action === "select") {
       state.selectedId = button.dataset.id;
+      if (state.view === "Insights") state.view = "All";
       render();
     }
     if (action === "delete") deleteRecord(button.dataset.id);

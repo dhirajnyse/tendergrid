@@ -21,8 +21,9 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Inline table editing for Admin and Editor users.
 - Viewer-only role.
 - Tender, EOI, and project record types.
-- Search, status/category/type filters, details panel, notes, CSV export.
-- Insights tab with KPI cards, opportunity funnel, status mix, due-date radar, category/client concentration, owner load, value exposure, and action prompts.
+- Compact daily-use tracker grid with type/category/owner metadata moved into the title cell to reduce horizontal scrolling.
+- Search, status/category/type filters, smarter action lanes, details panel, notes, CSV export.
+- Bid command cockpit with KPI cards, go/no-go queue, risk map, submission readiness, opportunity funnel, status mix, due-date radar, category/client concentration, owner load, value exposure, action prompts, and board-pack export.
 - Team and billing screen using AED 10 per active user per month.
 - Bottom pricing section styled after the India Research Desk membership model, including seat-price economics, plan actions, an interactive seat calculator, plan comparison, and billing FAQ cards.
 

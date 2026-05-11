@@ -583,6 +583,21 @@ textarea:disabled {
   border-bottom: 3px solid var(--teal);
 }
 
+.cockpit-hero {
+  color: #ffffff;
+  background:
+    linear-gradient(135deg, rgba(13, 111, 97, 0.84), rgba(17, 24, 21, 0.98)),
+    var(--ink);
+  border-color: rgba(255, 255, 255, 0.18);
+  border-bottom-color: var(--amber);
+}
+
+.cockpit-hero .panel-label {
+  color: #dff8ee;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
 .insight-hero h2 {
   max-width: 780px;
   margin: 14px 0 0;
@@ -591,12 +606,65 @@ textarea:disabled {
   line-height: 1.05;
 }
 
+.cockpit-hero h2 {
+  color: #ffffff;
+}
+
 .insight-hero p {
   max-width: 740px;
   margin: 12px 0 0;
   color: var(--muted);
   font-size: 15px;
   line-height: 1.55;
+}
+
+.cockpit-hero p {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.lens-switch {
+  width: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 18px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lens-switch button {
+  min-height: 30px;
+  padding: 0 11px;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.72);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.lens-switch button.active {
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.cockpit-hero .ghost-btn {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.cockpit-hero .secondary-btn {
+  color: var(--ink);
+  background: #ffffff;
 }
 
 .score-ring {
@@ -682,6 +750,16 @@ textarea:disabled {
   gap: 12px;
 }
 
+.cockpit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.decision-panel {
+  grid-column: span 2;
+}
+
 .info-panel {
   min-height: 286px;
   padding: 14px;
@@ -715,9 +793,210 @@ textarea:disabled {
 
 .funnel-list,
 .rank-list,
-.value-list {
+.value-list,
+.decision-list,
+.compliance-list,
+.playbook-list {
   display: grid;
   gap: 10px;
+}
+
+.decision-row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) minmax(150px, 0.42fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-strong);
+  color: var(--ink);
+  text-align: left;
+}
+
+.decision-row:hover {
+  border-color: var(--line-strong);
+  background: #ffffff;
+}
+
+.decision-score {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.decision-score.tone-green {
+  background: var(--green);
+}
+
+.decision-score.tone-amber {
+  background: var(--amber);
+}
+
+.decision-score.tone-red {
+  background: var(--red);
+}
+
+.decision-main,
+.decision-rec {
+  min-width: 0;
+}
+
+.decision-main strong,
+.decision-main em,
+.decision-main small,
+.decision-rec strong,
+.decision-rec small {
+  display: block;
+}
+
+.decision-main strong,
+.decision-rec strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.decision-main em {
+  margin-top: 4px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  font-style: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.decision-main small,
+.decision-rec small {
+  margin-top: 5px;
+  color: var(--subtle);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.risk-matrix {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.risk-cell {
+  min-height: 118px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-strong);
+}
+
+.risk-cell span,
+.risk-cell small,
+.playbook-row span,
+.playbook-row em {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.risk-cell strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink);
+  font-size: 32px;
+  line-height: 1;
+}
+
+.risk-cell small {
+  margin-top: 10px;
+  color: var(--muted);
+  line-height: 1.35;
+  text-transform: none;
+}
+
+.risk-cell.tone-red {
+  background: var(--red-soft);
+  border-color: rgba(179, 59, 48, 0.24);
+}
+
+.risk-cell.tone-amber {
+  background: var(--amber-soft);
+  border-color: rgba(184, 110, 23, 0.28);
+}
+
+.risk-cell.tone-green {
+  background: var(--green-soft);
+  border-color: rgba(36, 119, 71, 0.24);
+}
+
+.risk-cell.tone-blue {
+  background: var(--blue-soft);
+  border-color: rgba(49, 95, 147, 0.24);
+}
+
+.compliance-row {
+  display: grid;
+  gap: 7px;
+}
+
+.compliance-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.compliance-meta span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.compliance-meta strong {
+  color: var(--ink);
+  font-size: 12px;
+}
+
+.playbook-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr) 54px;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-strong);
+}
+
+.playbook-row strong {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.playbook-row em {
+  min-height: 24px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--amber-soft);
+  color: var(--amber);
+  font-style: normal;
+}
+
+.playbook-row em.is-live {
+  background: var(--teal-soft);
+  color: var(--teal);
 }
 
 .funnel-row,
@@ -906,7 +1185,7 @@ textarea:disabled {
 
 .tracker-layout {
   display: grid;
-  grid-template-columns: 245px minmax(0, 1fr) 345px;
+  grid-template-columns: 220px minmax(0, 1fr) 320px;
   gap: 12px;
   align-items: start;
 }
@@ -1076,8 +1355,9 @@ textarea:disabled {
 }
 
 .toolbar {
+  min-width: 0;
   display: grid;
-  grid-template-columns: minmax(185px, 1fr) repeat(3, minmax(116px, 152px)) auto;
+  grid-template-columns: minmax(160px, 1fr) repeat(4, minmax(90px, 1fr)) auto;
   gap: 9px;
   align-items: center;
   padding: 10px;
@@ -1095,6 +1375,7 @@ textarea:disabled {
 .table-panel,
 .detail-panel,
 .team-panel {
+  min-width: 0;
   overflow: hidden;
 }
 
@@ -1127,7 +1408,7 @@ table {
 }
 
 .tracker-table {
-  min-width: 1420px;
+  min-width: 846px;
   table-layout: fixed;
 }
 
@@ -1167,43 +1448,33 @@ tr.selected-row td {
   background: #f0f7f3;
 }
 
-.col-type {
-  width: 92px;
-}
-
 .col-ref {
-  width: 132px;
+  width: 120px;
 }
 
 .col-client {
-  width: 210px;
+  width: 110px;
 }
 
 .col-title {
-  width: 300px;
-}
-
-.col-category,
-.col-status,
-.col-date,
-.col-owner {
-  width: 128px;
-}
-
-.col-value {
-  width: 155px;
-}
-
-.col-activity {
   width: 250px;
 }
 
-.col-source {
-  width: 142px;
+.col-status,
+.col-date {
+  width: 88px;
+}
+
+.col-date {
+  width: 100px;
+}
+
+.col-value {
+  width: 100px;
 }
 
 .col-actions {
-  width: 116px;
+  width: 78px;
 }
 
 .cell-edit {
@@ -1218,6 +1489,40 @@ tr.selected-row td {
 .cell-edit[contenteditable="true"]:hover {
   border-color: var(--line);
   background: #ffffff;
+}
+
+.cell-plain,
+.cell-money {
+  min-height: 31px;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 7px;
+  color: var(--ink-soft);
+  line-height: 1.2;
+}
+
+.cell-money {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.cell-stack {
+  display: grid;
+  gap: 5px;
+}
+
+.cell-stack > span {
+  width: fit-content;
+  min-height: 22px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 7px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--panel-strong);
+  font-size: 11px;
+  font-weight: 850;
 }
 
 .table-select {
@@ -1927,10 +2232,12 @@ tr.selected-row td {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .cockpit-grid,
   .infographic-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .decision-panel,
   .info-panel-wide {
     grid-column: span 2;
   }
@@ -1974,8 +2281,13 @@ tr.selected-row td {
   }
 
   .insight-kpis,
+  .cockpit-grid,
   .action-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .decision-panel {
+    grid-column: 1 / -1;
   }
 
   .section-heading {
@@ -2089,6 +2401,7 @@ tr.selected-row td {
   .calculator-results,
   .pricing-grid,
   .insight-kpis,
+  .cockpit-grid,
   .infographic-grid,
   .left-rail {
     grid-template-columns: 1fr 1fr;
@@ -2142,11 +2455,25 @@ tr.selected-row td {
   .pricing-grid,
   .billing-summary,
   .insight-kpis,
+  .cockpit-grid,
   .infographic-grid,
   .action-grid,
+  .risk-matrix,
   .due-grid,
   .detail-grid,
   .left-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-row {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .decision-rec {
+    grid-column: 2;
+  }
+
+  .playbook-row {
     grid-template-columns: 1fr;
   }
 

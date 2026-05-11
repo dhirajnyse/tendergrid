@@ -1,4 +1,4 @@
-TenderGrid v9 analytics infographics upload steps
+TenderGrid v10 bid command cockpit upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -21,7 +21,7 @@ TenderGrid v9 analytics infographics upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   TenderGrid v9 analytics infographics
+   TenderGrid v10 bid command cockpit
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
