@@ -1,4201 +1,819 @@
-window.SEED_DATA = {
-  "company": {
-    "id": "capsa",
-    "name": "Capsa Engineering & Contracting LLC",
-    "currency": "AED",
-    "pricePerUser": 10,
-    "billingCycle": "monthly"
-  },
-  "users": [
-    {
-      "id": "u-admin",
-      "companyId": "capsa",
-      "name": "Capsa Admin",
-      "email": "admin@capsa.ae",
-      "role": "Admin",
-      "password": "demo123"
+(function () {
+  const STORE_KEY = "capsaTenderTracker:data:v1";
+  const SESSION_KEY = "capsaTenderTracker:session:v1";
+  const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
+  const STATUS_OPTIONS = [
+    "Active",
+    "Ongoing",
+    "Submitted",
+    "Pending",
+    "Awarded",
+    "Completed",
+    "Cancelled",
+    "Regret",
+  ];
+
+  const app = document.getElementById("app");
+  const state = {
+    data: loadData(),
+    user: loadSession(),
+    view: "All",
+    filters: {
+      search: "",
+      type: "All",
+      status: "All",
+      category: "All",
     },
-    {
-      "id": "u-editor",
-      "companyId": "capsa",
-      "name": "Project Editor",
-      "email": "editor@capsa.ae",
-      "role": "Editor",
-      "password": "demo123"
-    },
-    {
-      "id": "u-viewer",
-      "companyId": "capsa",
-      "name": "Read Only",
-      "email": "viewer@capsa.ae",
-      "role": "Viewer",
-      "password": "demo123"
+    selectedId: null,
+    message: "",
+  };
+
+  function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  function loadData() {
+    const saved = localStorage.getItem(STORE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (error) {
+        localStorage.removeItem(STORE_KEY);
+      }
     }
-  ],
-  "records": [
-    {
-      "id": "TDR-0001",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "60000118079",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "FACILITIES MAINTENANCE (ICV NEGOTIATION)",
-      "status": "Active",
-      "startDate": "2025-09-08",
-      "endDate": "2025-11-19",
-      "valueText": "AED 191,595,366.93",
-      "valueAmount": 191595366.93,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -3 / Provided the best discount / AED 1 73,275,981.42",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-08",
-          "submittedPrice": "",
-          "targetPrice": "AED 60,000,000",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-09-11",
-          "submittedPrice": "",
-          "targetPrice": "detailed breakdown of the Target Fees",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-11-19",
-          "submittedPrice": "",
-          "targetPrice": "providing maximum possible reduction",
-          "providedPrice": "AED 1 73,275,981.42",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0002",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000114155",
-      "clientGroup": "ADNOC",
-      "client": "GAS",
-      "title": "Realtime Measurement and Display of Thermal Work Limit (TWL)",
-      "status": "Awarded",
-      "startDate": "2025-09-11",
-      "endDate": "2025-10-09",
-      "valueText": "AED 1,923,720.00",
-      "valueAmount": 1923720.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -4 / Match the Price / AED 996,800.00",
-      "notes": "",
-      "agreementNo": "4700028085",
-      "loaReceived": "NO",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-11",
-          "submittedPrice": "",
-          "targetPrice": "AED 905,500",
-          "providedPrice": "AED 820,500",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-09-12",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "AED 1,120,000",
-          "response": "Match the Price"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-10-01",
-          "submittedPrice": "",
-          "targetPrice": "15% Discount",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 4,
-          "label": "Negotiation -4",
-          "receivedDate": "2025-10-09",
-          "submittedPrice": "",
-          "targetPrice": "11% Discount",
-          "providedPrice": "AED 996,800.00",
-          "response": "Match the Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0003",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000086257",
-      "clientGroup": "ADNOC",
-      "client": "GAS",
-      "title": "Miscellaneous Electrical Services for all ADNOC GAS O and M SITES",
-      "status": "Awarded",
-      "startDate": "2025-09-19",
-      "endDate": "2025-09-19",
-      "valueText": "AED 114,007,322.20",
-      "valueAmount": 114007322.2,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Received LOA",
-      "notes": "",
-      "agreementNo": "4700028100",
-      "loaReceived": "YES",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-19",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "",
-          "response": "Received LOA"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0004",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000115533",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "HV-LV SYSTEM UPGRADATION AT AL DHANNAH CITY",
-      "status": "Awarded",
-      "startDate": "2025-09-26",
-      "endDate": "2025-10-03",
-      "valueText": "AED 27,437,041.10",
-      "valueAmount": 27437041.1,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Provided the best discount / AED 5,250,000",
-      "notes": "",
-      "agreementNo": "4700028124",
-      "loaReceived": "YES",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-26",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "AED 5,318,217",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-10-03",
-          "submittedPrice": "",
-          "targetPrice": "Best Discounted price",
-          "providedPrice": "AED 5,250,000",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0005",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000115540",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "Upgradation of Fire and Life Safety Systems (FLS)",
-      "status": "Active",
-      "startDate": "2025-10-03",
-      "endDate": "2025-10-27",
-      "valueText": "AED 39,411,581",
-      "valueAmount": 39411581.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -6 / Provided the best discount / AED 19,594,639.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-10-03",
-          "submittedPrice": "",
-          "targetPrice": "revised price",
-          "providedPrice": "AED 39,861,581",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-10-08",
-          "submittedPrice": "",
-          "targetPrice": "AED 15,980,000.00",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-10-10",
-          "submittedPrice": "",
-          "targetPrice": "Revised Offer",
-          "providedPrice": "AED 34,994,678.57",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 4,
-          "label": "Negotiation -4",
-          "receivedDate": "2025-10-17",
-          "submittedPrice": "",
-          "targetPrice": "Revised BOQ",
-          "providedPrice": "AED 23,052,427.49",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 5,
-          "label": "Negotiation -5",
-          "receivedDate": "2025-10-24",
-          "submittedPrice": "",
-          "targetPrice": "AED 15,980,000.00",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 6,
-          "label": "Negotiation -6",
-          "receivedDate": "2025-10-27",
-          "submittedPrice": "",
-          "targetPrice": "Best Discounted Offer",
-          "providedPrice": "AED 19,594,639.00",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0006",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000106556",
-      "clientGroup": "ADNOC",
-      "client": "GAS",
-      "title": "UPGRADE OF ASAB-3 CHILLER CONTROL SYSTEM RETROFIT AND SUPPORT FOR ADNOC GAS",
-      "status": "Awarded",
-      "startDate": "2025-10-27",
-      "endDate": "2025-10-27",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Match the Price / USD 1,492,412.69",
-      "notes": "",
-      "agreementNo": "4700028039",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-10-27",
-          "submittedPrice": "",
-          "targetPrice": "24 % Discount",
-          "providedPrice": "USD 1,492,412.69",
-          "response": "Match the Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0007",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000115631",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "MECHANICAL SYSTEMS UPGRADATION, AL DHANNAH CITY",
-      "status": "Active",
-      "startDate": "2025-10-28",
-      "endDate": "2025-11-08",
-      "valueText": "AED 13,223,364.00",
-      "valueAmount": 13223364.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Regret / AED 4,300,000",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-10-28",
-          "submittedPrice": "",
-          "targetPrice": "AED 4,000,000",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-11-08",
-          "submittedPrice": "",
-          "targetPrice": "AED 4,300,000",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0008",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000123008",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "SUPPORT SERVICES FOR MAINTENANCE OF CRITICAL EQUIPMENT AT RUWAIS REFINERY –I",
-      "status": "Cancelled",
-      "startDate": "2025-11-07",
-      "endDate": "2025-11-12",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Provided the best discount / AED 2,648,682.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-07",
-          "submittedPrice": "",
-          "targetPrice": "AED 1,221,030.00",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-11-12",
-          "submittedPrice": "",
-          "targetPrice": "maximum possible reduction",
-          "providedPrice": "AED 2,648,682.00",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0009",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000120031",
-      "clientGroup": "ADNOC",
-      "client": "ONSHORE",
-      "title": "Replacement of Conventional Lighting and Explosion Proof Outdoor Electrical Distribution Boards in GAS BAB",
-      "status": "Awarded",
-      "startDate": "2025-11-07",
-      "endDate": "2025-11-07",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Match the Price / PACKAGE 1: $807,784.00 PACKAGE 2: $138,798.00",
-      "notes": "",
-      "agreementNo": "4700028258",
-      "loaReceived": "YES",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-07",
-          "submittedPrice": "",
-          "targetPrice": "PACKAGE 1: $807,838.00 PACKAGE 2: $138,799.00",
-          "providedPrice": "PACKAGE 1: $807,784.00 PACKAGE 2: $138,798.00",
-          "response": "Match the Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0010",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000118164",
-      "clientGroup": "ADNOC",
-      "client": "DRILLING",
-      "title": "Purchase Hello Light System",
-      "status": "Active",
-      "startDate": "2025-11-18",
-      "endDate": "2025-11-18",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / USD 5,333,700.00 USD 354,000.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-18",
-          "submittedPrice": "",
-          "targetPrice": "USD 5,333,700.00 USD 354,000.00",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0011",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000125913",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "Disturbance Fault Recorders of Qualitrol",
-      "status": "Awarded",
-      "startDate": "2025-11-26",
-      "endDate": "2025-12-09",
-      "valueText": "AED 806,922.90 AED 379,942.53",
-      "valueAmount": 806922.9,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -3 / Regret / Discount of 25%",
-      "notes": "",
-      "agreementNo": "4700028408",
-      "loaReceived": "NO",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-26",
-          "submittedPrice": "",
-          "targetPrice": "Price Matching",
-          "providedPrice": "",
-          "response": "Accept the Price"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-12-03",
-          "submittedPrice": "",
-          "targetPrice": "additional discount of 26%",
-          "providedPrice": "",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-12-09",
-          "submittedPrice": "",
-          "targetPrice": "Discount of 25%",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0012",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000120574",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "Upgrade of Phase 2 Protection Relays and IPCS System of CUB - ASB at Ruwais Area Services for ADNOC Refining",
-      "status": "Active",
-      "startDate": "2025-11-29",
-      "endDate": "2025-11-29",
-      "valueText": "AED 18,172,251.00",
-      "valueAmount": 18172251.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / AED 10,500,000",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-29",
-          "submittedPrice": "",
-          "targetPrice": "AED 10,500,000",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0013",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000083993",
-      "clientGroup": "ADNOC",
-      "client": "GAS",
-      "title": "EPC for Replacement of LMLS",
-      "status": "Active",
-      "startDate": "2025-12-12",
-      "endDate": "2025-12-16",
-      "valueText": "R0- $46,265,201.49 R1-$45,348,941.14",
-      "valueAmount": 46265201.49,
-      "currency": "USD",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Provided the best discount / 39287415.93",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-12-12",
-          "submittedPrice": "",
-          "targetPrice": "USD 18,430,000.00",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-12-16",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "39287415.93",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0014",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000131618",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "Restoration Services for LT Make PC_415V_1028-PC-010B-A AT RUWAIS REFINERY (WEST)",
-      "status": "Awarded",
-      "startDate": "2025-12-16",
-      "endDate": "2025-12-16",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Match the Price / AED 356,382.00",
-      "notes": "",
-      "agreementNo": "4700028618",
-      "loaReceived": "YES",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-12-16",
-          "submittedPrice": "",
-          "targetPrice": "best reduced price",
-          "providedPrice": "AED 356,382.00",
-          "response": "Match the Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0015",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000125000",
-      "clientGroup": "ADNOC",
-      "client": "SOUR GAS",
-      "title": "Camp Facilities Management",
-      "status": "Active",
-      "startDate": "2025-12-24",
-      "endDate": "2025-12-26",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Regret / attached discounted rates",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-12-24",
-          "submittedPrice": "",
-          "targetPrice": "88.3% reduction",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-12-26",
-          "submittedPrice": "",
-          "targetPrice": "attached discounted rates",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0016",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000105057",
-      "clientGroup": "ADNOC",
-      "client": "OFFSHORE",
-      "title": "Replacement of Faulty Instruments at Das",
-      "status": "Active",
-      "startDate": "2026-01-06",
-      "endDate": "2026-01-06",
-      "valueText": "USD 643,978.00",
-      "valueAmount": 643978.0,
-      "currency": "USD",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / 66% Discount",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-06",
-          "submittedPrice": "",
-          "targetPrice": "66% Discount",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0017",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000128135",
-      "clientGroup": "ADNOC",
-      "client": "DISTRIBUTION",
-      "title": "REPLACEMNT OF POWER CABLE ADNOC DIST",
-      "status": "Active",
-      "startDate": "2026-01-15",
-      "endDate": "2026-01-15",
-      "valueText": "AED 1,357,433.00",
-      "valueAmount": 1357433.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / 83% Discount",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-15",
-          "submittedPrice": "",
-          "targetPrice": "83% Discount",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0018",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000129539",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "SYDE Park Utility TIE-IN Works at AL Dhannah City",
-      "status": "Active",
-      "startDate": "2026-01-19",
-      "endDate": "2026-03-02",
-      "valueText": "AED 4,727,343.00",
-      "valueAmount": 4727343.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -4 / Regret / AED 1,400,000",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-19",
-          "submittedPrice": "",
-          "targetPrice": "AED 1,207,066.00",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2026-01-20",
-          "submittedPrice": "",
-          "targetPrice": "Revised Offer",
-          "providedPrice": "AED 4,503,234.00",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2026-02-09",
-          "submittedPrice": "",
-          "targetPrice": "AED 1,328,000.00",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 4,
-          "label": "Negotiation -4",
-          "receivedDate": "2026-03-02",
-          "submittedPrice": "",
-          "targetPrice": "AED 1,400,000",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0019",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "3000093905",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "CONVERTING WGC AND MAB HYUNDAI N5000 VSD SYSTEM TO DOL",
-      "status": "Awarded",
-      "startDate": "2026-02-02",
-      "endDate": "2026-02-05",
-      "valueText": "AED 656,148.00",
-      "valueAmount": 656148.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Provided the best discount / AED 651,972",
-      "notes": "",
-      "agreementNo": "4700028787",
-      "loaReceived": "NO",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-02",
-          "submittedPrice": "",
-          "targetPrice": "maximum possible reduction",
-          "providedPrice": "AED 654,040.00",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2026-02-05",
-          "submittedPrice": "",
-          "targetPrice": "Revised Offer",
-          "providedPrice": "AED 651,972",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0020",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000130326",
-      "clientGroup": "ADNOC",
-      "client": "ONSHORE",
-      "title": "Renovation of 1st floor tower for ADNOC Onshore",
-      "status": "Active",
-      "startDate": "2026-02-06",
-      "endDate": "2026-02-06",
-      "valueText": "AED 23,109,980.00",
-      "valueAmount": 23109980.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / AED 2,154,185.20",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-06",
-          "submittedPrice": "",
-          "targetPrice": "AED 2,154,185.20",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0021",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000131398",
-      "clientGroup": "ADNOC",
-      "client": "GAS",
-      "title": "Installation of Ultrasonic Clamp on flow_Rev1",
-      "status": "Active",
-      "startDate": "2026-02-10",
-      "endDate": "2026-02-10",
-      "valueText": "USD 932,876",
-      "valueAmount": 932876.0,
-      "currency": "USD",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / USD 307,965.64",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-10",
-          "submittedPrice": "",
-          "targetPrice": "USD 307,965.64",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0022",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000127778",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "Position Monitoring Systems Berths",
-      "status": "Active",
-      "startDate": "2026-02-19",
-      "endDate": "2026-02-23",
-      "valueText": "AED 3,012,081",
-      "valueAmount": 3012081.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Provided the best discount / AED 2,243,040.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-19",
-          "submittedPrice": "",
-          "targetPrice": "AED 1,450,250",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2026-02-23",
-          "submittedPrice": "",
-          "targetPrice": "Revised Offer",
-          "providedPrice": "AED 2,243,040.00",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0023",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000127171",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "REPLACEMENT OF EXISTING OPEN-DOOR SWITCHGEARS WITH NEW INTERNAL ARC TESTED CLOSED DOOR SWITCHGEARS",
-      "status": "Active",
-      "startDate": "2026-02-19",
-      "endDate": "2026-02-23",
-      "valueText": "AED 51,337,539.00",
-      "valueAmount": 51337539.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Provided the best discount / AED 50,179,367",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-19",
-          "submittedPrice": "",
-          "targetPrice": "AED 36.5 million",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2026-02-23",
-          "submittedPrice": "",
-          "targetPrice": "Revised Offer",
-          "providedPrice": "AED 50,179,367",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0024",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000106454",
-      "clientGroup": "ADNOC",
-      "client": "ONSHORE",
-      "title": "Energy Consumption Optimization in BAB field",
-      "status": "Active",
-      "startDate": "2026-02-24",
-      "endDate": "2026-02-24",
-      "valueText": "USD 9,516,604.00",
-      "valueAmount": 9516604.0,
-      "currency": "USD",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / USD 5,182,980",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-24",
-          "submittedPrice": "",
-          "targetPrice": "USD 5,182,980",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0025",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000121277",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "Replacement of Synch CCR and AVR SWI1 GUP",
-      "status": "Active",
-      "startDate": "2026-05-06",
-      "endDate": "2026-05-06",
-      "valueText": "AED 3,354,246.00",
-      "valueAmount": 3354246.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Provided the best discount / AED 3,350,000.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-05-06",
-          "submittedPrice": "",
-          "targetPrice": "Maximum Discount",
-          "providedPrice": "AED 3,350,000.00",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0026",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "E&I",
-      "department": "E&I",
-      "reference": "6000138185",
-      "clientGroup": "BOROUGE",
-      "client": "BOROUGE",
-      "title": "B1 Transformer Life Extension",
-      "status": "Active",
-      "startDate": "2026-05-06",
-      "endDate": "2026-05-07",
-      "valueText": "AED 3,907,042.00",
-      "valueAmount": 3907042.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Provided the best discount / AED 3,823,648.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations E & I",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-05-06",
-          "submittedPrice": "",
-          "targetPrice": "AED 1,500,000",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2026-05-07",
-          "submittedPrice": "",
-          "targetPrice": "Revised Offer",
-          "providedPrice": "AED 3,823,648.00",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0027",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000111713",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "Design and Construction of Landscape Associated Works at Jabal Dannah Road (7 Km long)",
-      "status": "Awarded",
-      "startDate": "2025-09-02",
-      "endDate": "2025-09-02",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Received LOA",
-      "notes": "",
-      "agreementNo": "4700027601",
-      "loaReceived": "YES",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-02",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "",
-          "response": "Received LOA"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0028",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000116257",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "Al Dhannah City HSE, Civil Upgradation",
-      "status": "Active",
-      "startDate": "2025-09-23",
-      "endDate": "2025-09-29",
-      "valueText": "AED 14,206,388.10",
-      "valueAmount": 14206388.1,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Regret / AED 4,300,000",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-23",
-          "submittedPrice": "",
-          "targetPrice": "AED3,963,058",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-09-29",
-          "submittedPrice": "",
-          "targetPrice": "AED 4,300,000",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0029",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000113625",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "DESIGN AND CONSTRUCTION OF OLD CENTRAL SOUQ ENHANCEMENT WORKS AT AL DANNAH CITY",
-      "status": "Active",
-      "startDate": "2025-09-25",
-      "endDate": "2025-10-29",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -3 / Regret / 0.109",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-25",
-          "submittedPrice": "",
-          "targetPrice": "AED4,970,000",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-09-26",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "AED5,363,000",
-          "response": "Match the Price"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-10-29",
-          "submittedPrice": "",
-          "targetPrice": "0.109",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0030",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "Construction of External Car Parking and Other Civil Activities",
-      "status": "Awarded",
-      "startDate": "2025-09-26",
-      "endDate": "2025-10-30",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -4 / Match the Price / AED 7,000,000",
-      "notes": "",
-      "agreementNo": "4700028171",
-      "loaReceived": "YES",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-26",
-          "submittedPrice": "",
-          "targetPrice": "Missing Unit Price in Bill No.5",
-          "providedPrice": "",
-          "response": "Submitted"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-09-30",
-          "submittedPrice": "",
-          "targetPrice": "AED 7,092,265.00 AED 7,041,423.00",
-          "providedPrice": "AED 7,092,265.00 AED 7,041,423.00",
-          "response": "Match the Price"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-10-24",
-          "submittedPrice": "",
-          "targetPrice": "revised Daywork Schedule",
-          "providedPrice": "",
-          "response": "Match the Price"
-        },
-        {
-          "round": 4,
-          "label": "Negotiation -4",
-          "receivedDate": "2025-10-30",
-          "submittedPrice": "",
-          "targetPrice": "AED 7,000,000",
-          "providedPrice": "AED 7,000,000",
-          "response": "Match the Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0031",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000119158",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "Design and Construction of Indoor Padel Court at Al Dhannah City",
-      "status": "Active",
-      "startDate": "2025-10-06",
-      "endDate": "2025-10-14",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Regret / AED 8,200,000",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-10-06",
-          "submittedPrice": "",
-          "targetPrice": "AED 7,000,000",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-10-14",
-          "submittedPrice": "",
-          "targetPrice": "AED 8,200,000",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0032",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000123053",
-      "clientGroup": "ADNOC",
-      "client": "DRILLING",
-      "title": "Extension and Renovation of Existing Masjid Caravan at Four Central Camps",
-      "status": "Awarded",
-      "startDate": "2025-10-06",
-      "endDate": "2025-11-13",
-      "valueText": "AED 3,680,242.00",
-      "valueAmount": 3680242.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -4 / Regret",
-      "notes": "",
-      "agreementNo": "4700028097",
-      "loaReceived": "NO",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-10-06",
-          "submittedPrice": "",
-          "targetPrice": "AED 1,340,000.00",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-10-28",
-          "submittedPrice": "",
-          "targetPrice": "possible discount you can extend",
-          "providedPrice": "AED 1,803,328.00",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-11-10",
-          "submittedPrice": "",
-          "targetPrice": "providing a special discount",
-          "providedPrice": "AED 1,787,328.00",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 4,
-          "label": "Negotiation -4",
-          "receivedDate": "2025-11-13",
-          "submittedPrice": "",
-          "targetPrice": "0.26",
-          "providedPrice": "Regret",
-          "response": ""
-        }
-      ]
-    },
-    {
-      "id": "TDR-0033",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000123050",
-      "clientGroup": "ADNOC",
-      "client": "DRILLING",
-      "title": "ACCOMMODATION CARAVANS FOR SENIOR STAFF IN FOUR CENTRAL CAMPS OF ADNOC DRILLING",
-      "status": "Awarded",
-      "startDate": "2025-10-27",
-      "endDate": "2025-11-13",
-      "valueText": "AED 46,946,300.00",
-      "valueAmount": 46946300.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -4 / Regret",
-      "notes": "",
-      "agreementNo": "4700028617",
-      "loaReceived": "NO",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-10-27",
-          "submittedPrice": "",
-          "targetPrice": "AED 17,377,356",
-          "providedPrice": "AED 17,377,356",
-          "response": "Match the Price"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-11-05",
-          "submittedPrice": "",
-          "targetPrice": "AED 10,961,300",
-          "providedPrice": "AED 16,557,356.00",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-11-07",
-          "submittedPrice": "",
-          "targetPrice": "providing a special discount",
-          "providedPrice": "AED 16,517,356.00",
-          "response": "Provided the best discount"
-        },
-        {
-          "round": 4,
-          "label": "Negotiation -4",
-          "receivedDate": "2025-11-13",
-          "submittedPrice": "",
-          "targetPrice": "0.34",
-          "providedPrice": "Regret",
-          "response": ""
-        }
-      ]
-    },
-    {
-      "id": "TDR-0034",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000119296",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "Parking facilities modification for SKEC 1 and SKEC 2",
-      "status": "Active",
-      "startDate": "2025-10-30",
-      "endDate": "2025-10-31",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Provided the best discount / AED 3,039,736.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-10-30",
-          "submittedPrice": "",
-          "targetPrice": "AED 1,200,000",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-10-31",
-          "submittedPrice": "",
-          "targetPrice": "Best Offer",
-          "providedPrice": "AED 3,039,736.00",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0035",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000120805",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "Design and Construction of ADNOC Plot Enhancement at Sas Al Nakhl",
-      "status": "Active",
-      "startDate": "2025-11-05",
-      "endDate": "2025-11-17",
-      "valueText": "AED 47,450,747.00",
-      "valueAmount": 47450747.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Regret / AED 24,780,236",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-05",
-          "submittedPrice": "",
-          "targetPrice": "AED 24,780,236",
-          "providedPrice": "",
-          "response": "Regret"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-11-17",
-          "submittedPrice": "",
-          "targetPrice": "AED 24,780,236",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0036",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000121109",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "Asphalt Pavement For ATA Internal Roads Negotiation",
-      "status": "Active",
-      "startDate": "2025-11-17",
-      "endDate": "2025-11-17",
-      "valueText": "AED 3,025,580.94",
-      "valueAmount": 3025580.94,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Match the Price / 31% AED 2,087,689.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-17",
-          "submittedPrice": "",
-          "targetPrice": "Reduction of AED 937,402.50",
-          "providedPrice": "31% AED 2,087,689.00",
-          "response": "Match the Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0037",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000128238",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "Lakeside Development at Al Dhannah City",
-      "status": "Active",
-      "startDate": "2026-01-03",
-      "endDate": "2026-01-03",
-      "valueText": "AED 47,450,747.00",
-      "valueAmount": 47450747.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / AED 14,500,000",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-03",
-          "submittedPrice": "",
-          "targetPrice": "AED 14,500,000",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0038",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "60000123899",
-      "clientGroup": "ADNOC",
-      "client": "REFINING",
-      "title": "Repair of Damaged 7 Nos. Landfill in BeAAT",
-      "status": "Active",
-      "startDate": "2026-01-12",
-      "endDate": "2026-01-12",
-      "valueText": "AED 11,003,100.00",
-      "valueAmount": 11003100.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / AED 3,200,000",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-12",
-          "submittedPrice": "",
-          "targetPrice": "AED 3,200,000",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0039",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000133840",
-      "clientGroup": "ADNOC",
-      "client": "DISTRIBUTION",
-      "title": "CONSTRUCTION OF SLOPE PROTECTION FOR SEEH AL MAHAB 186 EXISTING SERVICE STATION AT SHARJAH",
-      "status": "Active",
-      "startDate": "2026-02-24",
-      "endDate": "2026-02-24",
-      "valueText": "AED 5,065,777.00",
-      "valueAmount": 5065777.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Regret / AED 857,581",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-24",
-          "submittedPrice": "",
-          "targetPrice": "AED 857,581",
-          "providedPrice": "",
-          "response": "Regret"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0040",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000131386",
-      "clientGroup": "ADNOC",
-      "client": "DISTRIBUTION",
-      "title": "Supply and installation of Fire Rated Portable office at CNG MAHWI SS#163",
-      "status": "Awarded",
-      "startDate": "2026-03-09",
-      "endDate": "2026-03-09",
-      "valueText": "AED 855,142.00",
-      "valueAmount": 855142.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Match the Price / AED 411,800.00",
-      "notes": "",
-      "agreementNo": "4700029361",
-      "loaReceived": "NO",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-03-09",
-          "submittedPrice": "",
-          "targetPrice": "AED 411,800.00",
-          "providedPrice": "AED 411,800.00",
-          "response": "Match the Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0041",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "CPECC/RFT/AiP5/2025/SBC/045",
-      "clientGroup": "CPECC",
-      "client": "CPECC",
-      "title": "D,F,T,I & Commissioning of First Aid Clinic at BU HASA Camp",
-      "status": "Active",
-      "startDate": "2026-04-03",
-      "endDate": "2026-04-03",
-      "valueText": "USD 501,368.00",
-      "valueAmount": 501368.0,
-      "currency": "USD",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Provided the best discount / USD 439,478.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-04-03",
-          "submittedPrice": "",
-          "targetPrice": "Revised Offer",
-          "providedPrice": "USD 439,478.00",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0042",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000131557",
-      "clientGroup": "ADNOC",
-      "client": "ADNOC",
-      "title": "BUHASA ACCOMMODATION DEMOLITION AND EARLY CIVIL WORKS (ECW) DESIGN AND BUILD",
-      "status": "Active",
-      "startDate": "2026-04-17",
-      "endDate": "2026-04-17",
-      "valueText": "USD 8,859,775.00",
-      "valueAmount": 8859775.0,
-      "currency": "USD",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Provided the best discount / USD 2,337,084.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-04-17",
-          "submittedPrice": "",
-          "targetPrice": "USD 1,950,605.49",
-          "providedPrice": "USD 2,337,084.00",
-          "response": "Provided the best discount"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0043",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Civil",
-      "department": "Civil",
-      "reference": "6000138430",
-      "clientGroup": "ADNOC",
-      "client": "DISTRIBUTION",
-      "title": "Waterproofing works for ADD Service Station Building Roofs and Petrol Canopy in UAE",
-      "status": "Awarded",
-      "startDate": "2026-04-20",
-      "endDate": "2026-04-20",
-      "valueText": "Unit Rate AED 106",
-      "valueAmount": 106.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Match the Price / Unit Rate AED 65",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "YES",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiation Civil",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-04-20",
-          "submittedPrice": "",
-          "targetPrice": "Unit Rate AED 65",
-          "providedPrice": "Unit Rate AED 65",
-          "response": "Match the Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0044",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000114007",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Enhancement Of CCTV Core Switch",
-      "status": "Active",
-      "startDate": "2025-08-14",
-      "endDate": "2025-09-11",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / We Provide dioscounted Price / USD 972,999.50",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-08-14",
-          "submittedPrice": "",
-          "targetPrice": "1024210",
-          "providedPrice": "1024210",
-          "response": "Matched Target Price"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-09-11",
-          "submittedPrice": "",
-          "targetPrice": "USD 734,000.00",
-          "providedPrice": "USD 972,999.50",
-          "response": "We Provide dioscounted Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0045",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000105403",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Public Address and General Alarm (PAGA) System Upgrade",
-      "status": "Active",
-      "startDate": "20-Sept-25",
-      "endDate": "20-Sept-25",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Matched Target Price / USD 550,000.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "20-Sept-25",
-          "submittedPrice": "",
-          "targetPrice": "USD 550,000.00",
-          "providedPrice": "USD 550,000.00",
-          "response": "Matched Target Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0046",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000124403",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "URTO Software Maintenance Support (APC)",
-      "status": "Active",
-      "startDate": "2025-09-30",
-      "endDate": "2025-10-06",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -3 / USD 265,186.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-09-30",
-          "submittedPrice": "",
-          "targetPrice": "USD 207,750.00",
-          "providedPrice": "NA",
-          "response": "We Regret To Provide"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-10-01",
-          "submittedPrice": "",
-          "targetPrice": "USD 220,500.00",
-          "providedPrice": "USD 277,245.00",
-          "response": "We Provide dioscounted Price"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-10-06",
-          "submittedPrice": "",
-          "targetPrice": "Not Given Target Price asking Further Discount",
-          "providedPrice": "USD 265,186.00",
-          "response": ""
-        }
-      ]
-    },
-    {
-      "id": "TDR-0047",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000121930",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "DIGITAL TWIN GEN AI SOLUTION FOR COKE DRUMS AND CFP REACTOR",
-      "status": "Active",
-      "startDate": "2025-10-24",
-      "endDate": "2025-10-24",
-      "valueText": "AED 6,190,632.00",
-      "valueAmount": 6190632.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / We Regret To Provide / NA",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-10-24",
-          "submittedPrice": "AED 6,190,632.00",
-          "targetPrice": "AED 2,813,350.00",
-          "providedPrice": "NA",
-          "response": "We Regret To Provide"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0048",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000119972",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "RFT ADNOC eLearning Platform",
-      "status": "Active",
-      "startDate": "2025-11-04",
-      "endDate": "2025-11-04",
-      "valueText": "AED 7,035,498",
-      "valueAmount": 7035498.0,
-      "currency": "AED",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / We Provide dioscounted Price / 5856040",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-04",
-          "submittedPrice": "AED 7,035,498",
-          "targetPrice": "AED 4,010,194",
-          "providedPrice": "5856040",
-          "response": "We Provide dioscounted Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0049",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000119970",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "ADNOC Bynder Solution",
-      "status": "Active",
-      "startDate": "2025-11-07",
-      "endDate": "46073",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -4 / We Provide dioscounted Price / AED 6,339,067.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-07",
-          "submittedPrice": "AED 7,652,094",
-          "targetPrice": "AED 6,385,965.00",
-          "providedPrice": "AED 6,385,965.00",
-          "response": "Matched Target Price"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-12-11",
-          "submittedPrice": "",
-          "targetPrice": "Further disount",
-          "providedPrice": "NA",
-          "response": "We Regret To Provide"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "2025-12-15",
-          "submittedPrice": "",
-          "targetPrice": "Further disount",
-          "providedPrice": "AED 6,340,045.00",
-          "response": "We Provide dioscounted Price"
-        },
-        {
-          "round": 4,
-          "label": "Negotiation -4",
-          "receivedDate": "46073",
-          "submittedPrice": "",
-          "targetPrice": "Further disount",
-          "providedPrice": "AED 6,339,067.00",
-          "response": "We Provide dioscounted Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0050",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000122134",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Make it with ADNOC Support and Maintenance",
-      "status": "Active",
-      "startDate": "2025-11-17",
-      "endDate": "2025-11-21",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / We Provide dioscounted Price / AED 6,127,302.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-11-17",
-          "submittedPrice": "",
-          "targetPrice": "AED 6,155,000.00",
-          "providedPrice": "AED 6,155,000.00",
-          "response": "Matched Target Price"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2025-11-21",
-          "submittedPrice": "",
-          "targetPrice": "Not Given Target Price asking Further Discount",
-          "providedPrice": "AED 6,127,302.00",
-          "response": "We Provide dioscounted Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0051",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000126049",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "RFT VR TRAINING",
-      "status": "Active",
-      "startDate": "2025-12-11",
-      "endDate": "2025-12-11",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / We Provide dioscounted Price",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-12-11",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "",
-          "response": "We Provide dioscounted Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0052",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000126689",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Enhancement of CCTV Core switch",
-      "status": "Active",
-      "startDate": "2025-12-15",
-      "endDate": "2025-12-15",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / We Regret To Provide / NA",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2025-12-15",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "NA",
-          "response": "We Regret To Provide"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0053",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000129929",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "DIGITAL ANALYTICS AI AND BI SERVICES",
-      "status": "Active",
-      "startDate": "2026-01-08",
-      "endDate": "2026-01-08",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Matched Target Price",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-08",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "",
-          "response": "Matched Target Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0054",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000129780",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Customization and Integration of ChatBOT",
-      "status": "Active",
-      "startDate": "2026-01-08",
-      "endDate": "2026-02-16",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Matched Target Price / AED 900,000",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-08",
-          "submittedPrice": "",
-          "targetPrice": "AED 1316864.2",
-          "providedPrice": "AED 1316864.2",
-          "response": "Matched Target Price"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2026-02-16",
-          "submittedPrice": "",
-          "targetPrice": "AED 900,000",
-          "providedPrice": "",
-          "response": "Matched Target Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0055",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000130435",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Digital Automations Solutions Services",
-      "status": "Active",
-      "startDate": "2026-01-13",
-      "endDate": "2026-01-13",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Matched Target Price",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-13",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "",
-          "response": "Matched Target Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0056",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000130632",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Digital Corporate Solution Services",
-      "status": "Active",
-      "startDate": "2026-02-01",
-      "endDate": "2026-02-01",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Matched Target Price",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-01",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "",
-          "response": "Matched Target Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0057",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000131040",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Digital Mobile and Web Services",
-      "status": "Active",
-      "startDate": "2026-02-03",
-      "endDate": "2026-02-03",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Matched Target Price",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-03",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "",
-          "response": "Matched Target Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0058",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000130352",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "IT CLIENT SUPPORT PROFESSIONAL SERVICES",
-      "status": "Active",
-      "startDate": "2026-01-23",
-      "endDate": "2026-02-10",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / We Regret To Provide / COUNTER-OFFER",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-01-23",
-          "submittedPrice": "",
-          "targetPrice": "best possible discount",
-          "providedPrice": "",
-          "response": "We Provide dioscounted Price"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2026-02-10",
-          "submittedPrice": "",
-          "targetPrice": "COUNTER-OFFER",
-          "providedPrice": "",
-          "response": "We Regret To Provide"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0059",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000130867",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "CCTV-PA SYSTEM MAINTENANCE SERVICES AT MIRFA",
-      "status": "Active",
-      "startDate": "2026-02-16",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -3 / Awarded to Other Bidder",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-02-16",
-          "submittedPrice": "",
-          "targetPrice": "DISCOUNT of 85%",
-          "providedPrice": "",
-          "response": "We Provide dioscounted Price"
-        },
-        {
-          "round": 3,
-          "label": "Negotiation -3",
-          "receivedDate": "",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "Awarded to Other Bidder",
-          "response": ""
-        }
-      ]
-    },
-    {
-      "id": "TDR-0060",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000133826",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "Artificial Intelligence (AI) Hydrogen Network Optimization",
-      "status": "Active",
-      "startDate": "2026-03-25",
-      "endDate": "2026-03-25",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / Matched Target Price / AED 2,485,500.00",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-03-25",
-          "submittedPrice": "",
-          "targetPrice": "AED 2,485,500.00",
-          "providedPrice": "AED 2,485,500.00",
-          "response": "Matched Target Price"
-        }
-      ]
-    },
-    {
-      "id": "TDR-0061",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000132850",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "ADNOC Passive Network Infrastructure FWA.",
-      "status": "Active",
-      "startDate": "2026-04-15",
-      "endDate": "2026-04-29",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -2 / Further disount",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-04-15",
-          "submittedPrice": "",
-          "targetPrice": "",
-          "providedPrice": "",
-          "response": "We Provide dioscounted Price"
-        },
-        {
-          "round": 2,
-          "label": "Negotiation -2",
-          "receivedDate": "2026-04-29",
-          "submittedPrice": "",
-          "targetPrice": "Further disount",
-          "providedPrice": "",
-          "response": ""
-        }
-      ]
-    },
-    {
-      "id": "TDR-0062",
-      "companyId": "capsa",
-      "type": "Tender",
-      "category": "Digital & Telecom",
-      "department": "Digital & Telecom",
-      "reference": "6000133421",
-      "clientGroup": "",
-      "client": "Digital & Telecom",
-      "title": "NOZZLEPRO SOFTWARE",
-      "status": "Active",
-      "startDate": "2026-04-22",
-      "endDate": "2026-04-22",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Commercial",
-      "latestActivity": "Negotiation -1 / We Provide dioscounted Price / 25% DISCOUNT",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Negotiation List -Digital.xlsx",
-      "sourceSheet": "Negotiations Digital & Telecom",
-      "rounds": [
-        {
-          "round": 1,
-          "label": "Negotiation -1",
-          "receivedDate": "2026-04-22",
-          "submittedPrice": "",
-          "targetPrice": "25% DISCOUNT",
-          "providedPrice": "",
-          "response": "We Provide dioscounted Price"
-        }
-      ]
-    },
-    {
-      "id": "PRJ-SOF-001",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700021872",
-      "clientGroup": "",
-      "client": "ABU DHABI NATIONAL OIL COMPANY FOR DISTRIBUTION PJSC",
-      "title": "PCI-DSS COMPLIANCE MAINTENANCE SERVICES CALL OFF ORDER",
-      "status": "Ongoing",
-      "startDate": "",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700021872",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-002",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700022287",
-      "clientGroup": "",
-      "client": "ADNOC HQ",
-      "title": "WISTLEBLOWER PLATFORM",
-      "status": "Ongoing",
-      "startDate": "2023-12-01",
-      "endDate": "2026-11-30",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700022287",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-003",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700023120",
-      "clientGroup": "",
-      "client": "ABU DHABI NATIONAL OIL COMPANY",
-      "title": "GROUP CODE QUALITY AND UNIFIED COLLABORATION PLATFORMS – NEW LICENSE",
-      "status": "Ongoing",
-      "startDate": "2024-03-26",
-      "endDate": "2027-03-26",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700023120",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-004",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700023748",
-      "clientGroup": "",
-      "client": "ADNOC DSITRIBUTION",
-      "title": "DIGITAL AUTOMATION SOLUTION SERVICES",
-      "status": "Ongoing",
-      "startDate": "2024-07-08",
-      "endDate": "2027-07-07",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700023748",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-005",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700024222",
-      "clientGroup": "",
-      "client": "ADNOC DISTRIBUTION",
-      "title": "DIGITAL ANALYTICAL SOULTION SERVICES",
-      "status": "Ongoing",
-      "startDate": "2024-07-09",
-      "endDate": "2027-07-08",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700024222",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-006",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700024130",
-      "clientGroup": "",
-      "client": "ADNOC ONSHORE",
-      "title": "SOFTWARE DEVELOPMENT SERVICES",
-      "status": "Ongoing",
-      "startDate": "2024-08-01",
-      "endDate": "2029-07-31",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700024130",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-007",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700024205",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "ASSET DATA MANAGEMENT",
-      "status": "Ongoing",
-      "startDate": "2024-08-21",
-      "endDate": "2025-08-20",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700024205",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-008",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700024460",
-      "clientGroup": "",
-      "client": "ADNOC DISTRIBUTION",
-      "title": "DIGITAL CORPORATE SOLUTIONS SERVICES.",
-      "status": "Ongoing",
-      "startDate": "2024-09-16",
-      "endDate": "2027-09-15",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700024460",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-009",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700025503",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "ENTERPRISE CONTENT DELIVERY NETWORK (ECDN)",
-      "status": "Ongoing",
-      "startDate": "2025-01-15",
-      "endDate": "2028-01-14",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700025503",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-010",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700026047",
-      "clientGroup": "",
-      "client": "ADNOC REFINING",
-      "title": "MAINTENANCE AGREEMENT FOR NOZZLEPRO SOFTWARE",
-      "status": "Ongoing",
-      "startDate": "2025-03-10",
-      "endDate": "2026-02-09",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700026047",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-011",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "",
-      "clientGroup": "",
-      "client": "TECHNIP ENERGIES FRANCE, QATAR BRANCH",
-      "title": "PURCHASING SOFTWARE (CHEMWATCH) FOR CHEMICAL MANAGEMENT",
-      "status": "Ongoing",
-      "startDate": "",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-012",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "",
-      "clientGroup": "",
-      "client": "UAEU",
-      "title": "COMPUTER SOFTWARE FOR LABORATORIES - ATLAS 3 YEARS",
-      "status": "Ongoing",
-      "startDate": "2025-06-10",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-013",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700027187",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "4700027187 - PROCESS QUALITY AND SATISFACTION MANAGEMENT",
-      "status": "Ongoing",
-      "startDate": "2025-07-23",
-      "endDate": "2025-07-28",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700027187",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-014",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700027310",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "6000107042 B - Desktop Managed Services",
-      "status": "Ongoing",
-      "startDate": "2025-09-19",
-      "endDate": "2029-09-18",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700027310",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-015",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700027340",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "6000114099_Board Management System",
-      "status": "Ongoing",
-      "startDate": "2025-07-31",
-      "endDate": "2028-07-30",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700027340",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-016",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700027704",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "6000107042 A On-Call Digital Corporate Implementation Services",
-      "status": "Ongoing",
-      "startDate": "2025-10-01",
-      "endDate": "2029-09-30",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700027704",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-017",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700027703",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "6000107042 C - On-Call Technical Managed Services",
-      "status": "Ongoing",
-      "startDate": "2025-10-01",
-      "endDate": "2029-09-30",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700027703",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-018",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700028073",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "URTO SOFTWARE MAINTENANCE SUPPORT (APC)",
-      "status": "Ongoing",
-      "startDate": "2025-11-11",
-      "endDate": "2029-11-10",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700028073",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-019",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700028578",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "IMPLEMENTATION AND SUPPORT AGREEMENT FOR MAKE IT WITH ADNOC SUPPORT & MAINTENANCE",
-      "status": "Ongoing",
-      "startDate": "2026-01-23",
-      "endDate": "2029-01-23",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700028578",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-020",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700028692",
-      "clientGroup": "",
-      "client": "ADNOC DISTRIBUTION",
-      "title": "6000129929 - DIGITAL ANALYTICS AI AND BI SERVICES - CAPSA",
-      "status": "Ongoing",
-      "startDate": "2026-02-04",
-      "endDate": "2029-02-03",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700028692",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-021",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700028796",
-      "clientGroup": "",
-      "client": "ADNOC DISTRIBUTION",
-      "title": "6000130435 DIGITAL AUTOMATIONS SOLUTIONS SERVICES",
-      "status": "Ongoing",
-      "startDate": "2026-02-04",
-      "endDate": "2029-02-03",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700028796",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-022",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700028844",
-      "clientGroup": "",
-      "client": "ADNOC DISTRIBUTION",
-      "title": "6000130632 DIGITAL CORPORATE SOLUTIONS SERVICES",
-      "status": "Ongoing",
-      "startDate": "2026-02-11",
-      "endDate": "2029-02-10",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700028844",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-023",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700028850",
-      "clientGroup": "",
-      "client": "ADNOC DISTRIBUTION",
-      "title": "6000131040 DIGITAL MOBILE AND WEB SERVICES",
-      "status": "Ongoing",
-      "startDate": "2026-02-12",
-      "endDate": "2029-02-11",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700028850",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-024",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700028940",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "4700028940 - ADNOC BYNDER SOLUTION MAINTENANCE & SUPPORT",
-      "status": "Ongoing",
-      "startDate": "2025-12-12",
-      "endDate": "2028-12-11",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700028940",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-025",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700029205",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "SOFTWARE IMPLEMENTATION AND SUPPORT AGREEMENT FOR CUSTOMISED AI CHATBOT",
-      "status": "Ongoing",
-      "startDate": "2026-04-20",
-      "endDate": "2029-04-19",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700029205",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-026",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "N110813",
-      "clientGroup": "",
-      "client": "Technip Energies France, Qatar Branch",
-      "title": "Purchasing software (chemwatch) for Chemical Management, program can provide risk assessment on the chemicals and the end user (subcontractors) can print",
-      "status": "Completed",
-      "startDate": "2025-05-06",
-      "endDate": "00:00:00",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Software",
-      "notes": "",
-      "agreementNo": "N110813",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-027",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700029438",
-      "clientGroup": "",
-      "client": "ADNOC REFINING",
-      "title": "MAINTENANCE AGREEMENT FOR NOZZLEPRO SOFTWARE",
-      "status": "Ongoing",
-      "startDate": "2026-04-30",
-      "endDate": "2029-04-29",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700029438",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-028",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700029378",
-      "clientGroup": "",
-      "client": "ADNOC REFINING",
-      "title": "FOR Artificial Intelligence (AI) Hydrogen Network Optimization",
-      "status": "Ongoing",
-      "startDate": "2026-04-20",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700029378",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-SOF-029",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Software",
-      "department": "Software",
-      "reference": "4700029205",
-      "clientGroup": "",
-      "client": "ADNOC",
-      "title": "SOFTWARE IMPLEMENTATION AND SUPPORT AGREEMENT FOR CUSTOMISED AI CHATBOT",
-      "status": "Ongoing",
-      "startDate": "2026-04-20",
-      "endDate": "2029-04-19",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Software",
-      "notes": "",
-      "agreementNo": "4700029205",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Software",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-001",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700021477",
-      "clientGroup": "",
-      "client": "ABU DHABI COMPANY FOR ONSHORE PETROLEUM OPERATIONS LTD. (ADNOC ONSHORE)",
-      "title": "MAINTENANCE SUPPORT SERVICES FOR COMPANY TELECOM NETWORK - 3 YEARS",
-      "status": "Ongoing",
-      "startDate": "2023-10-31",
-      "endDate": "2026-10-30",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700021477",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-002",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "7500118236 & 7500118238",
-      "clientGroup": "",
-      "client": "TECNIMONT PRIVATE LIMITED",
-      "title": "FIBRE OPTIC CABLE SPLICING &TESTING WORK",
-      "status": "Ongoing",
-      "startDate": "2023-12-21",
-      "endDate": "2025-12-31",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "7500118236 & 7500118238",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-003",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700016893",
-      "clientGroup": "",
-      "client": "ABU DHABI COMPANY FOR ONSHORE PETROLEUM OPERATIONS LTD",
-      "title": "MANPOWER SUPPLY AGREEM-ENT SPECIALIST RESOURCES - FOR INFRASTRUCTURE & APPLICATION SUPPORT SERVICE",
-      "status": "Ongoing",
-      "startDate": "2023-01-10",
-      "endDate": "2026-01-09",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700016893",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-004",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700022455",
-      "clientGroup": "",
-      "client": "ADNOC DRILLING COMPANY",
-      "title": "LOW VALUE SERVICES AGREEMENT FOR INSTALLING CCTV SYSTEM",
-      "status": "Ongoing",
-      "startDate": "2024-01-23",
-      "endDate": "2025-01-22",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700022455",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-005",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "SS-PO-13684",
-      "clientGroup": "",
-      "client": "SYSSENSE COMPUTERS LLC - OPC",
-      "title": "TSI SERVICES FOR FUJAIRAH MOT CONTROL ROOM BUILDING PROJECT OF ADNOC ONSHORE - EMIRATES NATIONAL WORK ORDER - PO NO. SS-PO-13684",
-      "status": "Completed",
-      "startDate": "",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Telecom",
-      "notes": "",
-      "agreementNo": "SS-PO-13684",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-006",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700024164",
-      "clientGroup": "",
-      "client": "ADNOC L & S",
-      "title": "CCTV AND ACCESS CONTROL SYSTEM ANNUAL MAINTENANCE CONTRACT RENEWAL",
-      "status": "Completed",
-      "startDate": "2024-08-01",
-      "endDate": "2025-07-31",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700024164",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-007",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700024692",
-      "clientGroup": "",
-      "client": "BOROUGE",
-      "title": "ANALOGUE CCTV SYSTEM UPGRADE TO IP - PA-21 B1-2-3 CCTV SYSTEM PARTIAL UPGRADE FROM ANALOGUE TO IP,LDPE CCTV CAMERA UPGRADATION AND INSTALLATION OF 3 NEW CAMERA IN LDPE REACTOR AREA",
-      "status": "Ongoing",
-      "startDate": "2024-10-21",
-      "endDate": "2026-04-20",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700024692",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-008",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700025296",
-      "clientGroup": "",
-      "client": "ADNOC REFINING",
-      "title": "RR III - RUWAIS REFINERY 3 PROCESS AREA CCTV SYSTEM UPGRADE",
-      "status": "Ongoing",
-      "startDate": "2024-11-18",
-      "endDate": "2025-11-17",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700025296",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-009",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700025333",
-      "clientGroup": "",
-      "client": "BOROUGE",
-      "title": "OPERATION AND MAINTENANCE SERVICES FOR CCTV & ACCESS CONTROL SYSTEMS-2]",
-      "status": "Ongoing",
-      "startDate": "2024-12-16",
-      "endDate": "2027-12-15",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700025333",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-010",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "1506744",
-      "clientGroup": "",
-      "client": "SIPEM",
-      "title": "1506744_PREDICTIVE EMISSION MONITORING SYSTEM (PEMS) - HAIL & GHASHA DEVELOPMENT PROJECT PACKAGE 1 OFFSHORE FACILITIES PROJECT",
-      "status": "Ongoing",
-      "startDate": "2024-12-13",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "1506744",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-011",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "24025-24026-2025-008R1",
-      "clientGroup": "",
-      "client": "BIN ASHEER",
-      "title": "CONSTRUCTION OF CENTRAL WAREHOUSE 04102-SA-150-1 PHASE 3 ADNOC BAB INDUSTRIAL BUILDING COMPLEX - LOW CURRENT, ELV, TELECOM (Including TSI) & DATA",
-      "status": "Ongoing",
-      "startDate": "2025-01-08",
-      "endDate": "2026-04-10",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "24025-24026-2025-008R1",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-012",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "33576",
-      "clientGroup": "",
-      "client": "ITM O&M COMPANY LIMITED, P.O. BOX:46421",
-      "title": "INSTALLATION OF CCTV CAMERAS IN THE STORES INSTALLATION OF CCTV CAMERAS IN THE STORES",
-      "status": "Ongoing",
-      "startDate": "2025-03-04",
-      "endDate": "2025-04-04",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "33576",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-013",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "33536",
-      "clientGroup": "",
-      "client": "ITM O&M COMPANY LIMITED, P.O. BOX:46421",
-      "title": "IT NETWORK RACKS CABLE RE-ARRANGEMENTS, MULTIPLE SITES THE VENDOR SHOULD HAVE A VALID CICPA PASS TO ACCESS OUR SITE.",
-      "status": "Ongoing",
-      "startDate": "2025-02-24",
-      "endDate": "2025-03-14",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "33536",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-014",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "",
-      "clientGroup": "",
-      "client": "ADNOC DRILLING",
-      "title": "CCTV ENGINEER FOR TROUBLESHOOTING",
-      "status": "Ongoing",
-      "startDate": "2025-04-29",
-      "endDate": "2028-04-28",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-015",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700027595",
-      "clientGroup": "",
-      "client": "ADNOC L & S",
-      "title": "ACCESS CONTROL SYSTEM FOR ADNOC L&S",
-      "status": "Ongoing",
-      "startDate": "2025-09-10",
-      "endDate": "2025-11-10",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700027595",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-016",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700027947",
-      "clientGroup": "",
-      "client": "ABU DHABI CHEMICAL DERIVATIVES COMPANY RSC LTD (TA’ZIZ)",
-      "title": "LIVE STREAMING OF CONSTRUCTION PROGRESS WITHIN TA’ZIZ PARK IN RUWAIS",
-      "status": "Ongoing",
-      "startDate": "2025-10-20",
-      "endDate": "2027-01-19",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700027947",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-017",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "6000105403",
-      "clientGroup": "",
-      "client": "Abu Dhabi Polymers Co. Ltd (Borouge) Sole Proprietorship LL.C",
-      "title": "Public Address and General Alarm (PAGA) System Upgrade to Elemec3",
-      "status": "Ongoing",
-      "startDate": "2025-12-11",
-      "endDate": "2027-12-10",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "6000105403",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-018",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "HGM-024-SC-1606-0",
-      "clientGroup": "",
-      "client": "LAHOUD ENGINEERING COMPANY - L.L.C - S.P.C",
-      "title": "EXECUTION OF FIBRE OPTIC CABLE TESTING, GLANDING AND TERMINATION WORKS FOR ELECTRICAL & INSTRUMENTATION SYSTEM.",
-      "status": "Ongoing",
-      "startDate": "2025-11-24",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "HGM-024-SC-1606-0",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-019",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700028537",
-      "clientGroup": "",
-      "client": "ADNOC REFINING",
-      "title": "CCTV, SPRINKLER SYSTEM AND F&G SYSTEMS UPGRADE IN RR-II CBDC UNITS",
-      "status": "Ongoing",
-      "startDate": "2026-02-01",
-      "endDate": "2028-07-31",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700028537",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-020",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "JF:5135: MR-112501590",
-      "clientGroup": "",
-      "client": "CYLINGAS",
-      "title": "CCTV , PAGA, DATA & TELEPHONE SYSTEM - ADNOC Airport Facilities",
-      "status": "Ongoing",
-      "startDate": "",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "JF:5135: MR-112501590",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-021",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "WO/BA/24026-2026-015",
-      "clientGroup": "",
-      "client": "BIN ASHEER/Archirodon",
-      "title": "BAB Industrial Building, Substations and Miscellaneous Utility Works- Fire station & Associated works. - For Low Current, ELV, Telecom (including TSI) & Data",
-      "status": "Ongoing",
-      "startDate": "2026-03-05",
-      "endDate": "2026-09-15",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "WO/BA/24026-2026-015",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-022",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "",
-      "clientGroup": "",
-      "client": "Al Nasr Contracting Co LLC",
-      "title": "On-site -Telecom Tower maintenance (Certified Rigger services",
-      "status": "Ongoing",
-      "startDate": "2026-04-02",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Ongoing project imported from Telecom",
-      "notes": "",
-      "agreementNo": "",
-      "loaReceived": "",
-      "agreementReceived": "",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-023",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "5300000146",
-      "clientGroup": "",
-      "client": "Abu Dhabi Gas Development Company LTD (ADNOC Sour Gas)",
-      "title": "Software and Hardware Support Agreement for Security System Maintenance",
-      "status": "Completed",
-      "startDate": "2019-02-03",
-      "endDate": "2024-08-02",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Telecom",
-      "notes": "",
-      "agreementNo": "5300000146",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-024",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700017995",
-      "clientGroup": "",
-      "client": "Abu Dhabi Gas Industries LTD (ADNOC Gas Processing)",
-      "title": "OT SECURITY LOCK AND DOOR REPLACEMENT.",
-      "status": "Completed",
-      "startDate": "2023-04-28",
-      "endDate": "2023-12-28",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700017995",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-025",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "4700001562",
-      "clientGroup": "",
-      "client": "ABU DHABI POLYMERS CO. LTD (BOROUGE) SOLE PROPRIETORSHIP LLC",
-      "title": "BOROUGE INNOVATION CENTRE BUILDING CCTV UPGRADATION",
-      "status": "Completed",
-      "startDate": "2023-09-25",
-      "endDate": "2024-03-25",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Telecom",
-      "notes": "",
-      "agreementNo": "4700001562",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-026",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "FLC-135-23",
-      "clientGroup": "",
-      "client": "Falco Security & Technology LLC",
-      "title": "Cunsultancy Support Services for Supply,Installation & Configuration of Active Components for ICT System and Integrating with CISCO Active components by extending lines from HQ",
-      "status": "Completed",
-      "startDate": "2023-12-11",
-      "endDate": "2024-01-31",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Telecom",
-      "notes": "",
-      "agreementNo": "FLC-135-23",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-027",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "20250806001",
-      "clientGroup": "",
-      "client": "Creowave Digital Technologies -ADNOC Sour Gas",
-      "title": "Creowave - ADNOC Sour Gas",
-      "status": "Completed",
-      "startDate": "3 month",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Telecom",
-      "notes": "",
-      "agreementNo": "20250806001",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
-    },
-    {
-      "id": "PRJ-TEL-028",
-      "companyId": "capsa",
-      "type": "Project",
-      "category": "Telecom",
-      "department": "Telecom",
-      "reference": "2402103 & 401449",
-      "clientGroup": "",
-      "client": "Nasser Saeed Al Hajri & Partners Contracting Co.",
-      "title": "Supply of certified termination Technician",
-      "status": "Completed",
-      "startDate": "Open order",
-      "endDate": "",
-      "valueText": "",
-      "valueAmount": null,
-      "currency": "",
-      "owner": "Operations",
-      "latestActivity": "Completed project imported from Telecom",
-      "notes": "",
-      "agreementNo": "2402103 & 401449",
-      "loaReceived": "",
-      "agreementReceived": "YES",
-      "sourceWorkbook": "Telecom and Software Projects.xlsx",
-      "sourceSheet": "Telecom",
-      "rounds": []
+    return clone(window.SEED_DATA);
+  }
+
+  function persistData() {
+    localStorage.setItem(STORE_KEY, JSON.stringify(state.data));
+  }
+
+  function loadSession() {
+    const saved = localStorage.getItem(SESSION_KEY);
+    if (!saved) return null;
+    try {
+      return JSON.parse(saved);
+    } catch (error) {
+      localStorage.removeItem(SESSION_KEY);
+      return null;
     }
-  ]
-};
+  }
+
+  function persistSession(user) {
+    if (!user) {
+      localStorage.removeItem(SESSION_KEY);
+      return;
+    }
+    localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+  }
+
+  function companyRecords() {
+    if (!state.user) return [];
+    return state.data.records.filter((record) => record.companyId === state.user.companyId);
+  }
+
+  function canEdit() {
+    return state.user && state.user.role !== "Viewer";
+  }
+
+  function canAdmin() {
+    return state.user && state.user.role === "Admin";
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function normalize(value) {
+    return String(value ?? "").trim().toLowerCase();
+  }
+
+  function formatDate(value) {
+    if (!value) return "";
+    const date = new Date(`${value}T00:00:00`);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
+  function statusClass(status) {
+    const key = normalize(status).replaceAll(" ", "-");
+    if (["active", "ongoing", "submitted", "pending"].includes(key)) return `status-${key}`;
+    if (["awarded", "completed"].includes(key)) return `status-${key}`;
+    if (["cancelled", "regret"].includes(key)) return `status-${key}`;
+    return "status-default";
+  }
+
+  function uniqueOptions(field) {
+    const values = companyRecords()
+      .map((record) => record[field])
+      .filter(Boolean)
+      .map(String);
+    return Array.from(new Set(values)).sort((a, b) => a.localeCompare(b));
+  }
+
+  function filterRecords() {
+    let records = companyRecords();
+    if (state.view === "Tenders") {
+      records = records.filter((record) => record.type === "Tender" || record.type === "EOI");
+    }
+    if (state.view === "Projects") {
+      records = records.filter((record) => record.type === "Project");
+    }
+    if (state.filters.type !== "All") {
+      records = records.filter((record) => record.type === state.filters.type);
+    }
+    if (state.filters.status !== "All") {
+      records = records.filter((record) => record.status === state.filters.status);
+    }
+    if (state.filters.category !== "All") {
+      records = records.filter((record) => record.category === state.filters.category);
+    }
+    const search = normalize(state.filters.search);
+    if (search) {
+      records = records.filter((record) =>
+        [
+          record.reference,
+          record.client,
+          record.clientGroup,
+          record.title,
+          record.category,
+          record.status,
+          record.owner,
+          record.latestActivity,
+          record.sourceSheet,
+        ]
+          .map(normalize)
+          .join(" ")
+          .includes(search),
+      );
+    }
+    return records;
+  }
+
+  function metrics() {
+    const records = companyRecords();
+    const activeTenders = records.filter(
+      (record) =>
+        (record.type === "Tender" || record.type === "EOI") &&
+        !["Awarded", "Completed", "Cancelled", "Regret"].includes(record.status),
+    ).length;
+    const ongoingProjects = records.filter(
+      (record) => record.type === "Project" && normalize(record.status) === "ongoing",
+    ).length;
+    const awarded = records.filter((record) => record.status === "Awarded").length;
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    return {
+      activeTenders,
+      ongoingProjects,
+      awarded,
+      seats: users.length,
+      bill: users.length * state.data.company.pricePerUser,
+      totalRecords: records.length,
+    };
+  }
+
+  function getSelected(records) {
+    if (!records.length) return null;
+    const current = records.find((record) => record.id === state.selectedId);
+    if (current) return current;
+    state.selectedId = records[0].id;
+    return records[0];
+  }
+
+  function renderLogin() {
+    const totalRecords = window.SEED_DATA.records.length;
+    const tenders = window.SEED_DATA.records.filter((record) => record.type === "Tender").length;
+    const projects = window.SEED_DATA.records.filter((record) => record.type === "Project").length;
+    app.innerHTML = `
+      <main class="login-page">
+        <section class="login-panel">
+          <div class="login-copy">
+            <div class="brand-row">
+              <div class="brand-mark">C</div>
+              <div>
+                <div class="brand-name">TenderGrid</div>
+                <div class="company-pill">Tender, EOI, and project workspace</div>
+              </div>
+            </div>
+            <h1>Simple sheet control for tenders and ongoing projects.</h1>
+            <p>Imported from the current Excel trackers and shaped into a flat multi-user workspace with quick analytics, role access, and AED 10 per user monthly billing.</p>
+            <div class="login-stats">
+              <div class="login-stat"><strong>${totalRecords}</strong><span>Sample records</span></div>
+              <div class="login-stat"><strong>${tenders}</strong><span>Tender records</span></div>
+              <div class="login-stat"><strong>${projects}</strong><span>Project records</span></div>
+            </div>
+          </div>
+          <div class="login-form-wrap">
+            <h2>Sign in</h2>
+            <form id="loginForm">
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" value="admin@capsa.ae" autocomplete="username" required>
+              </div>
+              <div class="field">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" value="demo123" autocomplete="current-password" required>
+              </div>
+              <button class="primary-btn" type="submit">Sign in</button>
+              <p class="message">${escapeHtml(state.message)}</p>
+            </form>
+            <div class="demo-users">
+              <strong>Demo users</strong><br>
+              <code>admin@capsa.ae</code>, <code>editor@capsa.ae</code>, <code>viewer@capsa.ae</code><br>
+              Password: <code>demo123</code>
+            </div>
+          </div>
+        </section>
+      </main>
+    `;
+  }
+
+  function renderShell() {
+    const company = state.data.company;
+    const records = filterRecords();
+    const selected = getSelected(records);
+    const stats = metrics();
+    app.innerHTML = `
+      <div class="shell">
+        <header class="topbar">
+          <div class="brand-row">
+            <div class="brand-mark">C</div>
+            <div>
+              <div class="brand-name">TenderGrid</div>
+              <div class="company-pill">${escapeHtml(company.name)}</div>
+            </div>
+          </div>
+          <div class="user-pill">${escapeHtml(state.user.name)} · ${escapeHtml(state.user.role)}</div>
+          <div class="topbar-actions">
+            <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
+            <button class="secondary-btn" type="button" data-action="logout">Logout</button>
+          </div>
+        </header>
+
+        <main class="main">
+          <nav class="tabs" aria-label="Primary views">
+            ${["All", "Tenders", "Projects", "Team & Billing"]
+              .map(
+                (view) => `
+                  <button class="tab-btn ${state.view === view ? "active" : ""}" type="button" data-view="${view}">
+                    ${view}
+                  </button>
+                `,
+              )
+              .join("")}
+          </nav>
+
+          <section class="analytics">
+            <div class="metric"><span>Active tenders</span><strong>${stats.activeTenders}</strong><small>${stats.totalRecords} total records</small></div>
+            <div class="metric"><span>Ongoing projects</span><strong>${stats.ongoingProjects}</strong><small>Software and telecom</small></div>
+            <div class="metric"><span>Awarded tenders</span><strong>${stats.awarded}</strong><small>LOA or award status</small></div>
+            <div class="metric"><span>Seat bill</span><strong>AED ${stats.bill}</strong><small>${stats.seats} users at AED ${company.pricePerUser}/month</small></div>
+          </section>
+
+          ${state.view === "Team & Billing" ? renderTeamBilling() : renderTracker(records, selected)}
+        </main>
+      </div>
+    `;
+  }
+
+  function renderTracker(records, selected) {
+    const categories = uniqueOptions("category");
+    const statuses = Array.from(new Set([...STATUS_OPTIONS, ...uniqueOptions("status")]));
+    return `
+      <section class="toolbar" aria-label="Tracker controls">
+        <input class="filter-input" type="search" placeholder="Search tender, client, title, owner" value="${escapeHtml(state.filters.search)}" data-filter="search">
+        ${renderSelect("type", ["All", ...TYPE_OPTIONS], state.filters.type, "filter-select")}
+        ${renderSelect("status", ["All", ...statuses], state.filters.status, "filter-select")}
+        ${renderSelect("category", ["All", ...categories], state.filters.category, "filter-select")}
+        <div class="toolbar-actions">
+          <button class="secondary-btn" type="button" data-action="add" ${canEdit() ? "" : "disabled"}>New row</button>
+          <button class="ghost-btn" type="button" data-action="export">Export CSV</button>
+        </div>
+      </section>
+
+      <section class="workbench">
+        <div class="table-panel">
+          <div class="table-wrap">
+            ${records.length ? renderTable(records) : `<div class="empty-state">No matching records.</div>`}
+          </div>
+        </div>
+        ${renderDetail(selected)}
+      </section>
+    `;
+  }
+
+  function renderSelect(name, options, value, className) {
+    return `
+      <select class="${className}" data-filter="${name}" aria-label="${escapeHtml(name)}">
+        ${options
+          .map(
+            (option) =>
+              `<option value="${escapeHtml(option)}" ${option === value ? "selected" : ""}>${escapeHtml(option)}</option>`,
+          )
+          .join("")}
+      </select>
+    `;
+  }
+
+  function renderTable(records) {
+    return `
+      <table class="tracker-table">
+        <thead>
+          <tr>
+            <th class="col-type">Type</th>
+            <th class="col-ref">Reference</th>
+            <th class="col-client">Client</th>
+            <th class="col-title">Title</th>
+            <th class="col-category">Category</th>
+            <th class="col-status">Status</th>
+            <th class="col-date">Start</th>
+            <th class="col-date">End / Last</th>
+            <th class="col-value">Value</th>
+            <th class="col-owner">Owner</th>
+            <th class="col-activity">Latest activity</th>
+            <th class="col-source">Source</th>
+            <th class="col-actions">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${records.map(renderRow).join("")}
+        </tbody>
+      </table>
+    `;
+  }
+
+  function renderRow(record) {
+    const editable = canEdit();
+    const selected = record.id === state.selectedId ? "selected-row" : "";
+    return `
+      <tr class="${selected}" data-id="${escapeHtml(record.id)}">
+        <td>${renderRecordSelect(record, "type", TYPE_OPTIONS, editable)}</td>
+        <td>${editableCell(record, "reference", "mono")}</td>
+        <td>${editableCell(record, "client")}</td>
+        <td>${editableCell(record, "title")}</td>
+        <td>${editableCell(record, "category")}</td>
+        <td>${renderRecordSelect(record, "status", STATUS_OPTIONS, editable, true)}</td>
+        <td>${editableCell(record, "startDate")}</td>
+        <td>${editableCell(record, "endDate")}</td>
+        <td>${editableCell(record, "valueText")}</td>
+        <td>${editableCell(record, "owner")}</td>
+        <td>${editableCell(record, "latestActivity")}</td>
+        <td><span class="cell-edit">${escapeHtml(record.sourceSheet || record.sourceWorkbook || "")}</span></td>
+        <td>
+          <div class="row-actions">
+            <button class="mini-btn" type="button" data-action="select" data-id="${escapeHtml(record.id)}">View</button>
+            <button class="mini-btn danger" type="button" data-action="delete" data-id="${escapeHtml(record.id)}" ${editable ? "" : "disabled"}>Del</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+
+  function editableCell(record, field) {
+    const editable = canEdit() ? "true" : "false";
+    const value = record[field] ?? "";
+    return `
+      <div class="cell-edit" contenteditable="${editable}" data-id="${escapeHtml(record.id)}" data-field="${field}" spellcheck="false">
+        ${escapeHtml(value)}
+      </div>
+    `;
+  }
+
+  function renderRecordSelect(record, field, options, editable, status = false) {
+    if (!editable) {
+      if (status) {
+        return `<span class="status-badge ${statusClass(record[field])}">${escapeHtml(record[field])}</span>`;
+      }
+      return `<span class="cell-edit">${escapeHtml(record[field])}</span>`;
+    }
+    return `
+      <select class="table-select ${status ? statusClass(record[field]) : ""}" data-id="${escapeHtml(record.id)}" data-field="${field}">
+        ${Array.from(new Set([record[field], ...options]))
+          .filter(Boolean)
+          .map(
+            (option) =>
+              `<option value="${escapeHtml(option)}" ${option === record[field] ? "selected" : ""}>${escapeHtml(option)}</option>`,
+          )
+          .join("")}
+      </select>
+    `;
+  }
+
+  function renderDetail(record) {
+    if (!record) {
+      return `
+        <aside class="detail-panel">
+          <div class="empty-state">Select a row to view details.</div>
+        </aside>
+      `;
+    }
+    const rounds = record.rounds || [];
+    return `
+      <aside class="detail-panel">
+        <div class="detail-head">
+          <h2>${escapeHtml(record.title || "Untitled record")}</h2>
+          <p>${escapeHtml(record.reference || "No reference")} · ${escapeHtml(record.client || "No client")}</p>
+        </div>
+        <div class="detail-body">
+          <div class="detail-grid">
+            <div class="detail-item"><span>Status</span><strong><span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span></strong></div>
+            <div class="detail-item"><span>Category</span><strong>${escapeHtml(record.category)}</strong></div>
+            <div class="detail-item"><span>Start date</span><strong>${escapeHtml(formatDate(record.startDate))}</strong></div>
+            <div class="detail-item"><span>End or last date</span><strong>${escapeHtml(formatDate(record.endDate))}</strong></div>
+            <div class="detail-item"><span>Agreement no</span><strong>${escapeHtml(record.agreementNo || "-")}</strong></div>
+            <div class="detail-item"><span>Source sheet</span><strong>${escapeHtml(record.sourceSheet || "-")}</strong></div>
+          </div>
+
+          <div class="rounds">
+            <h3>Negotiation rounds</h3>
+            ${
+              rounds.length
+                ? `<div class="round-list">${rounds.map(renderRound).join("")}</div>`
+                : `<div class="readonly-note">No negotiation rounds recorded for this item.</div>`
+            }
+          </div>
+
+          <div class="notes">
+            <h3>Notes</h3>
+            <textarea data-id="${escapeHtml(record.id)}" data-field="notes" ${canEdit() ? "" : "disabled"}>${escapeHtml(record.notes || "")}</textarea>
+          </div>
+        </div>
+      </aside>
+    `;
+  }
+
+  function renderRound(round) {
+    const money = [round.submittedPrice, round.targetPrice, round.providedPrice]
+      .filter(Boolean)
+      .join(" | ");
+    return `
+      <div class="round-item">
+        <strong>${escapeHtml(round.label || `Round ${round.round}`)} · ${escapeHtml(formatDate(round.receivedDate))}</strong>
+        <span>${escapeHtml(money || "No price captured")}</span>
+        <span>${escapeHtml(round.response || "No response captured")}</span>
+      </div>
+    `;
+  }
+
+  function renderTeamBilling() {
+    const company = state.data.company;
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const bill = users.length * company.pricePerUser;
+    return `
+      <section class="team-layout">
+        <div class="team-panel">
+          <div class="team-head">
+            <h2>${escapeHtml(company.name)}</h2>
+            <p>Company workspace, user roles, and monthly seat billing.</p>
+          </div>
+          <div class="team-body">
+            <div class="billing-summary">
+              <div class="billing-box"><span>Active users</span><strong>${users.length}</strong></div>
+              <div class="billing-box"><span>Price per user</span><strong>AED ${company.pricePerUser}</strong></div>
+              <div class="billing-box"><span>Monthly total</span><strong>AED ${bill}</strong></div>
+            </div>
+            <table class="team-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${users.map(renderUserRow).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        ${
+          canAdmin()
+            ? renderUserForm()
+            : `<div class="readonly-note">Only admins can add users or change billing seats.</div>`
+        }
+      </section>
+    `;
+  }
+
+  function renderUserRow(user) {
+    return `
+      <tr>
+        <td>${escapeHtml(user.name)}</td>
+        <td>${escapeHtml(user.email)}</td>
+        <td>
+          <select class="table-select" data-user-id="${escapeHtml(user.id)}" data-user-field="role" ${canAdmin() ? "" : "disabled"}>
+            ${["Admin", "Editor", "Viewer"]
+              .map(
+                (role) =>
+                  `<option value="${role}" ${role === user.role ? "selected" : ""}>${role}</option>`,
+              )
+              .join("")}
+          </select>
+        </td>
+        <td>
+          <button class="mini-btn danger" type="button" data-action="delete-user" data-user-id="${escapeHtml(user.id)}" ${canAdmin() && user.id !== state.user.id ? "" : "disabled"}>
+            Remove
+          </button>
+        </td>
+      </tr>
+    `;
+  }
+
+  function renderUserForm() {
+    return `
+      <form class="team-form" id="teamForm">
+        <h3>Add user</h3>
+        <div class="field">
+          <label for="newName">Name</label>
+          <input id="newName" name="name" required>
+        </div>
+        <div class="field">
+          <label for="newEmail">Email</label>
+          <input id="newEmail" name="email" type="email" required>
+        </div>
+        <div class="field">
+          <label for="newRole">Role</label>
+          <select id="newRole" name="role">
+            <option>Editor</option>
+            <option>Viewer</option>
+            <option>Admin</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="newPassword">Password</label>
+          <input id="newPassword" name="password" value="demo123" required>
+        </div>
+        <button class="primary-btn" type="submit">Add user</button>
+      </form>
+    `;
+  }
+
+  function updateRecord(id, field, value) {
+    const record = state.data.records.find((item) => item.id === id);
+    if (!record || !canEdit()) return;
+    record[field] = value;
+    if (field === "valueText") record.valueAmount = parseAmount(value);
+    persistData();
+  }
+
+  function parseAmount(value) {
+    const matches = String(value || "").match(/[-+]?\d[\d,\s]*(?:\.\d+)?/g);
+    if (!matches) return null;
+    const values = matches
+      .map((item) => Number(item.replaceAll(",", "").replaceAll(" ", "")))
+      .filter((item) => Number.isFinite(item));
+    return values.length ? Math.max(...values) : null;
+  }
+
+  function addRecord() {
+    if (!canEdit()) return;
+    const preferredType =
+      state.filters.type !== "All"
+        ? state.filters.type
+        : state.view === "Projects"
+          ? "Project"
+          : state.view === "Tenders"
+            ? "Tender"
+            : "Tender";
+    const prefix = preferredType === "Project" ? "PRJ" : preferredType === "EOI" ? "EOI" : "TDR";
+    const id = `${prefix}-NEW-${Date.now().toString().slice(-7)}`;
+    const record = {
+      id,
+      companyId: state.user.companyId,
+      type: preferredType,
+      category: preferredType === "Project" ? "Software" : "Digital & Telecom",
+      department: preferredType === "Project" ? "Software" : "Digital & Telecom",
+      reference: "",
+      clientGroup: "",
+      client: "",
+      title: "",
+      status: preferredType === "Project" ? "Ongoing" : "Active",
+      startDate: "",
+      endDate: "",
+      valueText: "",
+      valueAmount: null,
+      currency: "AED",
+      owner: state.user.name,
+      latestActivity: "",
+      notes: "",
+      agreementNo: "",
+      loaReceived: "",
+      agreementReceived: "",
+      sourceWorkbook: "Manual entry",
+      sourceSheet: "Manual entry",
+      rounds: [],
+    };
+    state.data.records.unshift(record);
+    state.selectedId = id;
+    persistData();
+    render();
+  }
+
+  function deleteRecord(id) {
+    if (!canEdit()) return;
+    const record = state.data.records.find((item) => item.id === id);
+    if (!record) return;
+    const confirmed = window.confirm(`Delete ${record.reference || record.title || "this record"}?`);
+    if (!confirmed) return;
+    state.data.records = state.data.records.filter((item) => item.id !== id);
+    if (state.selectedId === id) state.selectedId = null;
+    persistData();
+    render();
+  }
+
+  function exportCsv() {
+    const rows = filterRecords();
+    const columns = [
+      "type",
+      "reference",
+      "client",
+      "title",
+      "category",
+      "status",
+      "startDate",
+      "endDate",
+      "valueText",
+      "owner",
+      "latestActivity",
+      "sourceSheet",
+    ];
+    const csvRows = [
+      columns.join(","),
+      ...rows.map((record) =>
+        columns
+          .map((column) => `"${String(record[column] ?? "").replaceAll('"', '""')}"`)
+          .join(","),
+      ),
+    ];
+    const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "capsa-tracker-export.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  function addUser(form) {
+    if (!canAdmin()) return;
+    const formData = new FormData(form);
+    const email = String(formData.get("email") || "").trim().toLowerCase();
+    if (state.data.users.some((user) => user.email.toLowerCase() === email)) {
+      window.alert("A user with this email already exists.");
+      return;
+    }
+    state.data.users.push({
+      id: `u-${Date.now()}`,
+      companyId: state.user.companyId,
+      name: String(formData.get("name") || "").trim(),
+      email,
+      role: String(formData.get("role") || "Editor"),
+      password: String(formData.get("password") || "demo123"),
+    });
+    persistData();
+    render();
+  }
+
+  function deleteUser(id) {
+    if (!canAdmin() || id === state.user.id) return;
+    state.data.users = state.data.users.filter((user) => user.id !== id);
+    persistData();
+    render();
+  }
+
+  function updateUser(id, field, value) {
+    if (!canAdmin()) return;
+    const user = state.data.users.find((item) => item.id === id);
+    if (!user) return;
+    user[field] = value;
+    if (user.id === state.user.id) {
+      state.user[field] = value;
+      persistSession(state.user);
+    }
+    persistData();
+    render();
+  }
+
+  function resetDemo() {
+    const confirmed = window.confirm("Reset local demo data back to the imported Excel sample?");
+    if (!confirmed) return;
+    localStorage.removeItem(STORE_KEY);
+    state.data = clone(window.SEED_DATA);
+    state.selectedId = null;
+    render();
+  }
+
+  function render() {
+    if (!state.user) {
+      renderLogin();
+    } else {
+      renderShell();
+    }
+  }
+
+  document.addEventListener("submit", (event) => {
+    if (event.target.id === "loginForm") {
+      event.preventDefault();
+      const form = new FormData(event.target);
+      const email = String(form.get("email") || "").trim().toLowerCase();
+      const password = String(form.get("password") || "");
+      const user = state.data.users.find(
+        (item) => item.email.toLowerCase() === email && item.password === password,
+      );
+      if (!user) {
+        state.message = "Email or password did not match.";
+        render();
+        return;
+      }
+      state.user = {
+        id: user.id,
+        companyId: user.companyId,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      };
+      state.message = "";
+      persistSession(state.user);
+      render();
+    }
+
+    if (event.target.id === "teamForm") {
+      event.preventDefault();
+      addUser(event.target);
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-action], [data-view]");
+    if (!button) return;
+    const action = button.dataset.action;
+
+    if (button.dataset.view) {
+      state.view = button.dataset.view;
+      state.selectedId = null;
+      render();
+      return;
+    }
+    if (action === "logout") {
+      state.user = null;
+      persistSession(null);
+      render();
+      return;
+    }
+    if (action === "reset") resetDemo();
+    if (action === "add") addRecord();
+    if (action === "export") exportCsv();
+    if (action === "select") {
+      state.selectedId = button.dataset.id;
+      render();
+    }
+    if (action === "delete") deleteRecord(button.dataset.id);
+    if (action === "delete-user") deleteUser(button.dataset.userId);
+  });
+
+  document.addEventListener("input", (event) => {
+    const filter = event.target.dataset.filter;
+    if (filter === "search") {
+      state.filters.search = event.target.value;
+      renderShell();
+    }
+    if (event.target.matches("textarea[data-field]")) {
+      updateRecord(event.target.dataset.id, event.target.dataset.field, event.target.value);
+    }
+  });
+
+  document.addEventListener("change", (event) => {
+    const filter = event.target.dataset.filter;
+    if (filter && filter !== "search") {
+      state.filters[filter] = event.target.value;
+      state.selectedId = null;
+      render();
+      return;
+    }
+    if (event.target.dataset.field) {
+      updateRecord(event.target.dataset.id, event.target.dataset.field, event.target.value);
+      render();
+      return;
+    }
+    if (event.target.dataset.userField) {
+      updateUser(event.target.dataset.userId, event.target.dataset.userField, event.target.value);
+    }
+  });
+
+  document.addEventListener("focusout", (event) => {
+    const cell = event.target.closest('[contenteditable="true"][data-field]');
+    if (!cell) return;
+    updateRecord(cell.dataset.id, cell.dataset.field, cell.innerText.trim());
+  });
+
+  render();
+})();
