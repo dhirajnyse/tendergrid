@@ -1487,8 +1487,8 @@ textarea:disabled {
 
 .table-wrap {
   overflow: auto;
-  max-height: calc(100vh - 340px);
-  min-height: 410px;
+  max-height: 2100px;
+  min-height: 960px;
 }
 
 .mobile-records {
