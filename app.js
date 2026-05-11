@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=27";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=27";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=28";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=28";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -1912,6 +1912,15 @@
               <div class="table-head-meta">
                 <span>${records.length} visible</span>
                 <strong>${records.length ? `Showing 1-${visibleEnd} of ${records.length}` : "No records"}</strong>
+              </div>
+              <div class="column-guide" aria-hidden="true">
+                <span>Reference</span>
+                <span>Client</span>
+                <span>Title</span>
+                <span>Status</span>
+                <span>Due / Last</span>
+                <span>Value</span>
+                <span>Actions</span>
               </div>
             </div>
             <div class="table-wrap">
