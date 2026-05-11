@@ -2033,6 +2033,89 @@ tr.selected-row td {
   line-height: 1.2;
 }
 
+.access-panel {
+  margin-top: 12px;
+}
+
+.access-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.access-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+  gap: 12px;
+  align-items: start;
+}
+
+.access-table-wrap {
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.access-table {
+  min-width: 760px;
+}
+
+.access-table td strong,
+.access-table td span {
+  display: block;
+}
+
+.access-table td > span,
+.access-table td strong + span {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.access-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.access-checks label {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--panel-strong);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.access-checks input {
+  width: 14px;
+  height: 14px;
+  accent-color: var(--teal);
+}
+
+.access-field {
+  display: grid;
+  gap: 8px;
+}
+
+.access-field > span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.form-access-checks {
+  gap: 6px;
+}
+
 .subscription-form-grid {
   display: grid;
   grid-template-columns: minmax(220px, 0.9fr) minmax(260px, 1.1fr) repeat(2, minmax(145px, 0.55fr));
@@ -2758,6 +2841,7 @@ tr.selected-row td {
   .login-panel,
   .workspace-header,
   .team-layout,
+  .access-layout,
   .insight-hero,
   .membership-console,
   .membership-grid,

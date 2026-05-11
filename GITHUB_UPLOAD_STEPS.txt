@@ -1,4 +1,4 @@
-TenderGrid v15 membership-only billing upload steps
+TenderGrid v16 global pricing and access control upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -21,7 +21,7 @@ TenderGrid v15 membership-only billing upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   TenderGrid v15 membership-only billing
+   TenderGrid v16 global pricing and access control
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/

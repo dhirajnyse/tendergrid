@@ -3,7 +3,8 @@ window.SEED_DATA = {
     "id": "capsa",
     "name": "Capsa Engineering & Contracting LLC",
     "currency": "AED",
-    "pricePerUser": 10,
+    "billingCurrency": "USD",
+    "pricePerUser": 3,
     "billingCycle": "monthly"
   },
   "users": [
@@ -13,7 +14,8 @@ window.SEED_DATA = {
       "name": "TenderGrid Admin",
       "email": "admin@tendergrid.app",
       "role": "Admin",
-      "password": "demo123"
+      "password": "demo123",
+      "access": ["control", "insights", "membership"]
     },
     {
       "id": "u-editor",
@@ -21,7 +23,8 @@ window.SEED_DATA = {
       "name": "TenderGrid Editor",
       "email": "editor@tendergrid.app",
       "role": "Editor",
-      "password": "demo123"
+      "password": "demo123",
+      "access": ["control", "insights"]
     },
     {
       "id": "u-viewer",
@@ -29,7 +32,8 @@ window.SEED_DATA = {
       "name": "TenderGrid Viewer",
       "email": "viewer@tendergrid.app",
       "role": "Viewer",
-      "password": "demo123"
+      "password": "demo123",
+      "access": ["control"]
     }
   ],
   "records": [

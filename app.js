@@ -21,12 +21,20 @@
     "Has negotiations",
     "Missing value",
   ];
+  const BILLING_CURRENCY = "USD";
+  const BILLING_PRICE_PER_USER = 3;
+  const BUSINESS_PLUS_BASE = 29;
+  const ACCESS_SECTIONS = [
+    { key: "control", label: "Tender Control Room", view: "Tenders" },
+    { key: "insights", label: "Insights", view: "Insights" },
+    { key: "membership", label: "Membership Model", view: "Membership" },
+  ];
 
   const app = document.getElementById("app");
   const state = {
     data: loadData(),
     user: loadSession(),
-    view: "All",
+    view: "Tenders",
     filters: {
       search: "",
       type: "All",
@@ -65,12 +73,31 @@
       "u-editor": ["TenderGrid Editor", "editor@tendergrid.app"],
       "u-viewer": ["TenderGrid Viewer", "viewer@tendergrid.app"],
     };
+    data.company = {
+      ...data.company,
+      billingCurrency: BILLING_CURRENCY,
+      pricePerUser: BILLING_PRICE_PER_USER,
+      billingCycle: "monthly",
+    };
     data.users = data.users.map((user) => {
       const demo = demoUsers[user.id];
-      if (!demo) return user;
-      return { ...user, name: demo[0], email: demo[1] };
+      const normalized = demo ? { ...user, name: demo[0], email: demo[1] } : user;
+      return { ...normalized, access: normalizeUserAccess(normalized) };
     });
     return data;
+  }
+
+  function defaultAccessForRole(role) {
+    if (role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
+    if (role === "Editor") return ["control", "insights"];
+    return ["control"];
+  }
+
+  function normalizeUserAccess(user) {
+    const valid = new Set(ACCESS_SECTIONS.map((section) => section.key));
+    if (user.role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
+    const requested = Array.isArray(user.access) ? user.access.filter((key) => valid.has(key)) : [];
+    return requested.length ? requested : defaultAccessForRole(user.role);
   }
 
   function persistData() {
@@ -107,6 +134,66 @@
 
   function canAdmin() {
     return state.user && state.user.role === "Admin";
+  }
+
+  function billingCurrency(company = state.data.company) {
+    return company.billingCurrency || BILLING_CURRENCY;
+  }
+
+  function formatBilling(amount, company = state.data.company) {
+    return `${billingCurrency(company)} ${Number(amount || 0).toLocaleString("en-US")}`;
+  }
+
+  function sectionForView(view) {
+    if (view === "Insights") return "insights";
+    if (view === "Membership") return "membership";
+    return "control";
+  }
+
+  function userAccess(user = state.user) {
+    if (!user) return [];
+    if (user.role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
+    return normalizeUserAccess(user);
+  }
+
+  function hasSectionAccess(key, user = state.user) {
+    return userAccess(user).includes(key);
+  }
+
+  function canAccessView(view, user = state.user) {
+    return hasSectionAccess(sectionForView(view), user);
+  }
+
+  function defaultViewForUser(user = state.user) {
+    const access = userAccess(user);
+    const section = ACCESS_SECTIONS.find((item) => access.includes(item.key));
+    return section ? section.view : null;
+  }
+
+  function refreshSessionUser() {
+    if (!state.user) return;
+    const current = state.data.users.find((user) => user.id === state.user.id);
+    if (!current) {
+      state.user = null;
+      persistSession(null);
+      return;
+    }
+    state.user = {
+      id: current.id,
+      companyId: current.companyId,
+      name: current.name,
+      email: current.email,
+      role: current.role,
+      access: normalizeUserAccess(current),
+    };
+    persistSession(state.user);
+  }
+
+  function ensureAccessibleView() {
+    refreshSessionUser();
+    if (!state.user) return;
+    if (state.view === "All") state.view = "Tenders";
+    if (!canAccessView(state.view)) state.view = defaultViewForUser() || "No Access";
   }
 
   function escapeHtml(value) {
@@ -292,11 +379,11 @@
               </div>
             </div>
             <h1>The operating desk for tenders, EOIs, negotiations, and active projects.</h1>
-            <p>Turn the current Excel trackers into a governed company workspace with clean editing, role access, fast filters, and AED 10 per user monthly billing.</p>
+            <p>Turn the current Excel trackers into a governed company workspace with clean editing, role access, fast filters, and ${formatBilling(state.data.company.pricePerUser)} per user monthly billing.</p>
             <div class="login-signal-strip">
               <span class="status-pill is-live">Excel-ready MVP</span>
               <span class="status-pill">Role access</span>
-              <span class="status-pill">AED 10/user</span>
+              <span class="status-pill">${formatBilling(state.data.company.pricePerUser)}/user</span>
             </div>
             <div class="login-stats">
               <div class="login-stat"><strong>${totalRecords}</strong><span>Sample records</span></div>
@@ -333,14 +420,32 @@
     `;
   }
 
+  function renderModeButtons() {
+    return ACCESS_SECTIONS.map((section) => {
+      if (!hasSectionAccess(section.key)) return "";
+      const active =
+        section.key === "control"
+          ? ["Tenders", "Projects"].includes(state.view)
+          : sectionForView(state.view) === section.key;
+      return `
+        <button class="mode-btn ${active ? "active" : ""}" type="button" data-view="${section.view}">
+          ${escapeHtml(section.label)}
+        </button>
+      `;
+    }).join("");
+  }
+
   function renderShell() {
+    ensureAccessibleView();
     const company = state.data.company;
     const records = filterRecords();
     const selected = getSelected(records);
     const stats = metrics();
     const viewTitle =
-      state.view === "All"
-        ? "Opportunity pipeline"
+      state.view === "Tenders"
+        ? "Tendering workspace"
+        : state.view === "Projects"
+          ? "Project workspace"
         : state.view === "Insights"
           ? "Insights desk"
           : state.view === "Membership"
@@ -367,9 +472,7 @@
             <span class="status-pill">${stats.totalRecords} records</span>
           </div>
           <div class="topbar-actions">
-            <button class="mode-btn ${!["Insights", "Membership"].includes(state.view) ? "active" : ""}" type="button" data-view="All">Tender Control Room</button>
-            <button class="mode-btn ${state.view === "Insights" ? "active" : ""}" type="button" data-view="Insights">Insights</button>
-            <button class="mode-btn ${state.view === "Membership" ? "active" : ""}" type="button" data-view="Membership">Membership Model</button>
+            ${renderModeButtons()}
             <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
             <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
             <button class="secondary-btn" type="button" data-action="logout">Logout</button>
@@ -397,17 +500,7 @@
           ${
             ["Insights", "Membership"].includes(state.view)
               ? ""
-              : `<nav class="tabs" aria-label="Primary views">
-                  ${["All", "Tenders", "Projects"]
-                    .map(
-                      (view) => `
-                        <button class="tab-btn ${state.view === view ? "active" : ""}" type="button" data-view="${view}">
-                          ${view}
-                        </button>
-                      `,
-                    )
-                    .join("")}
-                </nav>`
+              : renderControlAreaCards(stats)
           }
 
           ${
@@ -434,6 +527,48 @@
       </div>
     `;
     focusQuickSearch();
+  }
+
+  function renderControlAreaCards(stats) {
+    const records = companyRecords();
+    const tendering = records.filter((record) => record.type === "Tender" || record.type === "EOI");
+    const projects = records.filter((record) => record.type === "Project");
+    const cards = [
+      {
+        view: "Tenders",
+        label: "Tendering",
+        eyebrow: "EOI and tender control",
+        records: tendering.length,
+        open: stats.activeTenders,
+        note: "Active tendering items",
+        value: sumAmounts(tendering),
+      },
+      {
+        view: "Projects",
+        label: "Projects",
+        eyebrow: "Ongoing project control",
+        records: projects.length,
+        open: stats.ongoingProjects,
+        note: "Ongoing project items",
+        value: sumAmounts(projects),
+      },
+    ];
+    return `
+      <div class="insight-focus-grid control-focus-grid" aria-label="Tender control room areas">
+        ${cards
+          .map(
+            (card) => `
+              <button class="insight-focus-card ${state.view === card.view ? "active" : ""}" type="button" data-view="${escapeHtml(card.view)}">
+                <span>${escapeHtml(card.eyebrow)}</span>
+                <strong>${escapeHtml(card.label)}</strong>
+                <small>${card.records} records / ${card.open} active / ${escapeHtml(formatCompactMoney(card.value))}</small>
+                <em>${escapeHtml(card.note)}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
   }
 
   function isClosedRecord(record) {
@@ -1196,7 +1331,7 @@
       },
       "Business Plus": {
         label: "Business Plus",
-        base: 99,
+        base: BUSINESS_PLUS_BASE,
         perUser: company.pricePerUser,
         note: "Adds governance, audit history, import refresh, and reminders after MVP validation.",
         cta: "Reserve Plus roadmap",
@@ -1239,8 +1374,8 @@
             <p id="membershipPlanNote">${escapeHtml(membership.note)}</p>
             <div class="subscription-total">
               <span>Monthly estimate</span>
-              <strong id="membershipMonthly">${membership.isCustom ? "Custom" : `AED ${membership.monthly}`}</strong>
-              <small id="membershipAnnual">${membership.isCustom ? "Annual proposal" : `AED ${membership.annual} annual run-rate`}</small>
+              <strong id="membershipMonthly">${membership.isCustom ? "Custom" : formatBilling(membership.monthly, company)}</strong>
+              <small id="membershipAnnual">${membership.isCustom ? "Annual proposal" : `${formatBilling(membership.annual, company)} annual run-rate`}</small>
             </div>
           </div>
         </div>
@@ -1272,7 +1407,7 @@
               </div>
               <div class="subscription-mini">
                 <span>Launch price</span>
-                <strong>AED ${company.pricePerUser}</strong>
+                <strong>${formatBilling(company.pricePerUser, company)}</strong>
                 <small>per active user / month</small>
               </div>
             </div>
@@ -1291,8 +1426,47 @@
           </article>
         </div>
 
+        ${renderMembershipAccessPanel(company)}
+
         ${renderPricingSection(stats, company)}
       </section>
+    `;
+  }
+
+  function renderMembershipAccessPanel(company) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    return `
+      <article class="membership-panel access-panel" aria-labelledby="accessTitle">
+        <div class="access-head">
+          <div>
+            <span class="metric-label">User access control</span>
+            <h3 id="accessTitle">Choose which sections each user can open</h3>
+          </div>
+          <span class="status-chip">${formatBilling(company.pricePerUser)}/user monthly</span>
+        </div>
+        <div class="access-layout">
+          <div class="access-table-wrap">
+            <table class="team-table access-table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Section access</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${users.map(renderUserRow).join("")}
+              </tbody>
+            </table>
+          </div>
+          ${
+            canAdmin()
+              ? renderUserForm()
+              : `<div class="readonly-note">Only admins can create users or change section access.</div>`
+          }
+        </div>
+      </article>
     `;
   }
 
@@ -1305,23 +1479,23 @@
             <p class="eyebrow">Membership model</p>
             <h2 id="pricingTitle">Light monthly fee, serious tender discipline.</h2>
           </div>
-          <span class="status-chip">AED ${company.pricePerUser}/user launch price</span>
+          <span class="status-chip">${formatBilling(company.pricePerUser, company)}/user launch price</span>
         </div>
 
         <div class="pricing-snapshot" aria-label="TenderGrid pricing economics">
           <article>
             <span class="metric-label">Current demo bill</span>
-            <strong>AED ${stats.bill}/mo</strong>
-            <p>${stats.seats} active users at AED ${company.pricePerUser}/user/month.</p>
+            <strong>${formatBilling(stats.bill, company)}/mo</strong>
+            <p>${stats.seats} active users at ${formatBilling(company.pricePerUser, company)}/user/month.</p>
           </article>
           <article>
             <span class="metric-label">10-user company</span>
-            <strong>AED ${company.pricePerUser * 10}/mo</strong>
+            <strong>${formatBilling(company.pricePerUser * 10, company)}/mo</strong>
             <p>A simple first sales target for small tender and project teams.</p>
           </article>
           <article>
             <span class="metric-label">100-seat base</span>
-            <strong>AED ${company.pricePerUser * 100}/mo</strong>
+            <strong>${formatBilling(company.pricePerUser * 100, company)}/mo</strong>
             <p>A realistic milestone once several companies are active.</p>
           </article>
         </div>
@@ -1330,16 +1504,16 @@
           <div>
             <span class="metric-label">Seat calculator</span>
             <h3>Model the monthly bill before talking to a customer.</h3>
-            <p>Use the launch price of AED ${company.pricePerUser}/user/month and show the buyer how the bill changes as their team grows.</p>
+            <p>Use the launch price of ${formatBilling(company.pricePerUser, company)}/user/month and show the buyer how the bill changes as their team grows.</p>
           </div>
           <label class="seat-slider">
             <span><strong id="pricingSeatCount">${projection.seats}</strong> users</span>
             <input type="range" min="1" max="100" value="${projection.seats}" data-pricing="seats" aria-label="Pricing seats">
           </label>
           <div class="calculator-results">
-            <div><span>Monthly</span><strong id="pricingMonthly">AED ${projection.monthly}</strong></div>
-            <div><span>Annual run-rate</span><strong id="pricingAnnual">AED ${projection.annual}</strong></div>
-            <div><span>Price per user</span><strong>AED ${projection.perUser}</strong></div>
+            <div><span>Monthly</span><strong id="pricingMonthly">${formatBilling(projection.monthly, company)}</strong></div>
+            <div><span>Annual run-rate</span><strong id="pricingAnnual">${formatBilling(projection.annual, company)}</strong></div>
+            <div><span>Price per user</span><strong>${formatBilling(projection.perUser, company)}</strong></div>
           </div>
         </div>
 
@@ -1347,7 +1521,7 @@
           <article class="pricing-card">
             <span class="plan-kicker">Demo</span>
             <h3>Sample Workspace</h3>
-            <p class="plan-price"><strong>AED 0</strong><span>prototype access</span></p>
+            <p class="plan-price"><strong>${formatBilling(0, company)}</strong><span>prototype access</span></p>
             <p class="price-note">For evaluating the Excel-to-online workflow before production hosting.</p>
             <ul class="pricing-feature-list">
               <li>Imported sample tender and project records</li>
@@ -1361,8 +1535,8 @@
           <article class="pricing-card is-featured">
             <span class="plan-kicker">Recommended</span>
             <h3>Team Workspace</h3>
-            <p class="plan-price"><strong>AED ${company.pricePerUser}</strong><span>per user / month</span></p>
-            <p class="annual-price">Current demo bill: AED ${stats.bill}/month for ${stats.seats} users</p>
+            <p class="plan-price"><strong>${formatBilling(company.pricePerUser, company)}</strong><span>per user / month</span></p>
+            <p class="annual-price">Current demo bill: ${formatBilling(stats.bill, company)}/month for ${stats.seats} users</p>
             <p class="price-note">The simple launch plan for small companies that need shared tender control without heavy software.</p>
             <ul class="pricing-feature-list">
               <li>Company-scoped tender and project tracker</li>
@@ -1376,7 +1550,7 @@
           <article class="pricing-card growth-card">
             <span class="plan-kicker">Next phase</span>
             <h3>Business Plus</h3>
-            <p class="plan-price"><strong>AED 99</strong><span>company base / month</span></p>
+            <p class="plan-price"><strong>${formatBilling(BUSINESS_PLUS_BASE, company)}</strong><span>company base / month</span></p>
             <p class="price-note">For teams that need production-grade workflow controls after the MVP is validated.</p>
             <ul class="pricing-feature-list">
               <li>Backend database and secure authentication</li>
@@ -1406,7 +1580,7 @@
           <article class="pricing-note">
             <span class="metric-label">Launch principle</span>
             <strong>Keep the entry price obvious</strong>
-            <p>AED 10/user/month is easy for customers to understand, approve, and expand as more users join.</p>
+            <p>${formatBilling(company.pricePerUser, company)}/user/month is easy for customers to understand, approve, and expand as more users join.</p>
           </article>
           <article class="pricing-note">
             <span class="metric-label">Value anchor</span>
@@ -1439,7 +1613,7 @@
             ${[
               ["Shared tender grid", "Yes", "Yes", "Yes", "Yes"],
               ["Role access", "Demo", "Included", "Advanced", "Custom"],
-              ["Monthly seat billing", "No", "AED 10/user", "Base + seats", "Contract"],
+              ["Monthly seat billing", "No", `${formatBilling(company.pricePerUser, company)}/user`, "Base + seats", "Contract"],
               ["Audit history", "No", "Roadmap", "Included", "Custom"],
               ["Import automation", "Manual", "Roadmap", "Included", "Custom"],
             ]
@@ -1467,7 +1641,7 @@
           </article>
           <article>
             <span class="metric-label">Sales line</span>
-            <strong>One shared tender sheet for AED 10/user/month</strong>
+            <strong>One shared tender sheet for ${formatBilling(company.pricePerUser, company)}/user/month</strong>
             <p>The offer should be simple enough for a first call and credible enough for a pilot invoice.</p>
           </article>
         </div>
@@ -1502,7 +1676,7 @@
             <div class="table-head">
               <div>
                 <span class="panel-label">Editable tracker</span>
-                <h2>${state.view === "All" ? "All records" : escapeHtml(state.view)}</h2>
+                <h2>${state.view === "Projects" ? "Projects" : "Tendering"}</h2>
               </div>
               <span>${records.length} visible</span>
             </div>
@@ -1858,8 +2032,8 @@
           <div class="team-body">
             <div class="billing-summary">
               <div class="billing-box"><span>Active users</span><strong>${users.length}</strong></div>
-              <div class="billing-box"><span>Price per user</span><strong>AED ${company.pricePerUser}</strong></div>
-              <div class="billing-box"><span>Monthly total</span><strong>AED ${bill}</strong></div>
+              <div class="billing-box"><span>Price per user</span><strong>${formatBilling(company.pricePerUser, company)}</strong></div>
+              <div class="billing-box"><span>Monthly total</span><strong>${formatBilling(bill, company)}</strong></div>
             </div>
             <table class="team-table">
               <thead>
@@ -1886,10 +2060,14 @@
   }
 
   function renderUserRow(user) {
+    const access = new Set(normalizeUserAccess(user));
+    const locked = !canAdmin() || user.role === "Admin";
     return `
       <tr>
-        <td>${escapeHtml(user.name)}</td>
-        <td>${escapeHtml(user.email)}</td>
+        <td>
+          <strong>${escapeHtml(user.name)}</strong>
+          <span>${escapeHtml(user.email)}</span>
+        </td>
         <td>
           <select class="table-select" data-user-id="${escapeHtml(user.id)}" data-user-field="role" ${canAdmin() ? "" : "disabled"}>
             ${["Admin", "Editor", "Viewer"]
@@ -1899,6 +2077,18 @@
               )
               .join("")}
           </select>
+        </td>
+        <td>
+          <div class="access-checks">
+            ${ACCESS_SECTIONS.map(
+              (section) => `
+                <label>
+                  <input type="checkbox" data-user-id="${escapeHtml(user.id)}" data-user-access="${escapeHtml(section.key)}" ${access.has(section.key) ? "checked" : ""} ${locked ? "disabled" : ""}>
+                  <span>${escapeHtml(section.label)}</span>
+                </label>
+              `,
+            ).join("")}
+          </div>
         </td>
         <td>
           <button class="mini-btn danger" type="button" data-action="delete-user" data-user-id="${escapeHtml(user.id)}" ${canAdmin() && user.id !== state.user.id ? "" : "disabled"}>
@@ -1912,7 +2102,7 @@
   function renderUserForm() {
     return `
       <form class="team-form" id="teamForm">
-        <h3>Add user</h3>
+        <h3>Add user and section access</h3>
         <div class="field">
           <label for="newName">Name</label>
           <input id="newName" name="name" required>
@@ -1932,6 +2122,19 @@
         <div class="field">
           <label for="newPassword">Password</label>
           <input id="newPassword" name="password" value="demo123" required>
+        </div>
+        <div class="field access-field">
+          <span>Section access</span>
+          <div class="access-checks form-access-checks">
+            ${ACCESS_SECTIONS.map(
+              (section, index) => `
+                <label>
+                  <input type="checkbox" name="access" value="${escapeHtml(section.key)}" ${index < 2 ? "checked" : ""}>
+                  <span>${escapeHtml(section.label)}</span>
+                </label>
+              `,
+            ).join("")}
+          </div>
         </div>
         <button class="primary-btn" type="submit">Add user</button>
       </form>
@@ -2085,14 +2288,18 @@
       window.alert("A user with this email already exists.");
       return;
     }
-    state.data.users.push({
+    const role = String(formData.get("role") || "Editor");
+    const requestedAccess = formData.getAll("access").map(String);
+    const user = {
       id: `u-${Date.now()}`,
       companyId: state.user.companyId,
       name: String(formData.get("name") || "").trim(),
       email,
-      role: String(formData.get("role") || "Editor"),
+      role,
       password: String(formData.get("password") || "demo123"),
-    });
+      access: role === "Admin" ? defaultAccessForRole("Admin") : requestedAccess,
+    };
+    state.data.users.push({ ...user, access: normalizeUserAccess(user) });
     persistData();
     render();
   }
@@ -2109,9 +2316,27 @@
     const user = state.data.users.find((item) => item.id === id);
     if (!user) return;
     user[field] = value;
+    if (field === "role") user.access = normalizeUserAccess(user);
     if (user.id === state.user.id) {
       state.user[field] = value;
+      state.user.access = normalizeUserAccess(user);
       persistSession(state.user);
+    }
+    persistData();
+    render();
+  }
+
+  function updateUserAccess(id, key, checked) {
+    if (!canAdmin()) return;
+    const user = state.data.users.find((item) => item.id === id);
+    if (!user || user.role === "Admin") return;
+    const access = new Set(normalizeUserAccess(user));
+    if (checked) access.add(key);
+    else access.delete(key);
+    user.access = Array.from(access).filter((item) => ACCESS_SECTIONS.some((section) => section.key === item));
+    if (!user.access.length) {
+      window.alert("Please keep at least one section enabled for each user.");
+      user.access = normalizeUserAccess(user);
     }
     persistData();
     render();
@@ -2154,7 +2379,7 @@
     if (!record) return;
     state.quickSearchOpen = false;
     state.quickSearch = "";
-    state.view = record.type === "Project" ? "Projects" : "All";
+    state.view = record.type === "Project" ? "Projects" : "Tenders";
     state.filters.search = "";
     state.filters.type = "All";
     state.filters.status = "All";
@@ -2177,16 +2402,16 @@
     const membershipMonthly = document.getElementById("membershipMonthly");
     const membershipAnnual = document.getElementById("membershipAnnual");
     if (seatCount) seatCount.textContent = projection.seats;
-    if (monthly) monthly.textContent = `AED ${projection.monthly}`;
-    if (annual) annual.textContent = `AED ${projection.annual}`;
+    if (monthly) monthly.textContent = formatBilling(projection.monthly);
+    if (annual) annual.textContent = formatBilling(projection.annual);
     if (membershipSeatCount) membershipSeatCount.textContent = membership.seats;
     if (membershipPlanName) membershipPlanName.textContent = membership.label;
     if (membershipPlanNote) membershipPlanNote.textContent = membership.note;
-    if (membershipMonthly) membershipMonthly.textContent = membership.isCustom ? "Custom" : `AED ${membership.monthly}`;
+    if (membershipMonthly) membershipMonthly.textContent = membership.isCustom ? "Custom" : formatBilling(membership.monthly);
     if (membershipAnnual) {
       membershipAnnual.textContent = membership.isCustom
         ? "Annual proposal"
-        : `AED ${membership.annual} annual run-rate`;
+        : `${formatBilling(membership.annual)} annual run-rate`;
     }
   }
 
@@ -2210,6 +2435,7 @@
         name: user.name,
         email: user.email,
         role: user.role,
+        access: normalizeUserAccess(user),
       };
       state.message = "";
       persistSession(state.user);
@@ -2268,6 +2494,10 @@
     }
 
     if (button.dataset.view) {
+      if (!canAccessView(button.dataset.view)) {
+        window.alert("This section is not enabled for your user.");
+        return;
+      }
       state.view = button.dataset.view;
       if (state.view === "Insights") state.insightLens = "Tendering";
       state.selectedId = null;
@@ -2375,6 +2605,10 @@
     }
     if (event.target.dataset.userField) {
       updateUser(event.target.dataset.userId, event.target.dataset.userField, event.target.value);
+      return;
+    }
+    if (event.target.dataset.userAccess) {
+      updateUserAccess(event.target.dataset.userId, event.target.dataset.userAccess, event.target.checked);
     }
   });
 
