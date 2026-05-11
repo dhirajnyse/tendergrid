@@ -30,8 +30,9 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Commercial and seat-billing material contained inside the dedicated Membership Model page, priced globally at USD 5/user/month.
 - Monthly and annual prepaid billing views, with annual showing a two-month saving.
 - Admin-managed section access for each user across Tenders, Tenders Insights, Projects, Project Insights, and Membership Model.
-- Dedicated Membership Model page with top-level Tender Control Room navigation, subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
+- Dedicated Membership Model page with top-level product navigation, subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
 - Platform roadmap section showing how PursuitDesk can grow into future modules for contracts, clients, documents, reminders, and reports while keeping tenders and projects as the current foundation.
+- Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.
 
 ## Production Notes
 
