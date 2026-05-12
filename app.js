@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=34";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=34";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=35";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=35";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -35,6 +35,7 @@
     { key: "tenderInsights", label: "Tenders Insights", view: "Tenders Insights" },
     { key: "projects", label: "Projects", view: "Projects" },
     { key: "projectInsights", label: "Project Insights", view: "Project Insights" },
+    { key: "clients", label: "Clients", view: "Clients" },
     { key: "membership", label: "Membership Model", view: "Membership" },
   ];
   const PLATFORM_MODULES = [
@@ -152,7 +153,7 @@
 
   function defaultAccessForRole(role) {
     if (role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
-    if (role === "Editor") return ["tenders", "tenderInsights", "projects", "projectInsights"];
+    if (role === "Editor") return ["tenders", "tenderInsights", "projects", "projectInsights", "clients"];
     return ["tenders", "projects"];
   }
 
@@ -222,6 +223,10 @@
     return view === "Projects" || view === "Project Insights";
   }
 
+  function isClientSection(view = state.view) {
+    return view === "Clients";
+  }
+
   function isInsightSection(view = state.view) {
     return view === "Tender Insights" || view === "Tenders Insights" || view === "Project Insights";
   }
@@ -231,6 +236,7 @@
     if (view === "Project Insights") return "projectInsights";
     if (view === "Projects") return "projects";
     if (view === "Tenders") return "tenders";
+    if (view === "Clients") return "clients";
     if (view === "Membership") return "membership";
     return "tenders";
   }
@@ -554,6 +560,19 @@
 
   function renderHeaderSummaryForView(view, metrics) {
     if (isInsightSection(view) || view === "Membership") return "";
+    if (isClientSection(view)) {
+      const portfolio = buildClientPortfolioModel();
+      const boxes = [
+        ["Accounts", portfolio.accounts.length],
+        ["Active", portfolio.activeAccounts],
+        ["Due Watch", portfolio.dueWatch],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
     const boxes = isProjectSection(view)
       ? [
           ["Ongoing", metrics.ongoing],
@@ -573,7 +592,7 @@
   }
 
   function renderMetricsForView(view, metrics) {
-    if (isInsightSection(view) || view === "Membership") return "";
+    if (isInsightSection(view) || view === "Membership" || isClientSection(view)) return "";
     const cards = isProjectSection(view)
       ? [
           ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`],
@@ -616,14 +635,18 @@
           ? "Tenders insights"
         : state.view === "Project Insights"
           ? "Project insights"
-          : state.view === "Membership"
-            ? "Membership model"
+        : state.view === "Clients"
+          ? "Clients portfolio"
+        : state.view === "Membership"
+          ? "Membership model"
           : state.view;
     const viewCopy =
       state.view === "Tenders Insights"
         ? "Tender-only management signals for follow-up risk, submission readiness, value exposure, and bid decisions."
         : state.view === "Project Insights"
           ? "Project-only management signals for delivery movement, due-date pressure, owner load, and completion health."
+        : state.view === "Clients"
+          ? "Relationship intelligence across client accounts, business units, active work, value exposure, and follow-up pressure."
         : state.view === "Membership"
           ? "Manage launch pricing, seats, subscription packaging, and the upgrade path from demo workspace to paid company plan."
         : `${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.`;
@@ -662,6 +685,8 @@
           ${
             isInsightSection(state.view)
               ? renderInsights()
+              : state.view === "Clients"
+                ? renderClientPortfolioPage()
               : state.view === "Membership"
                 ? renderMembershipPage(stats, company)
                 : renderTracker(records, selected, stats)
@@ -1251,6 +1276,263 @@
           </article>
         </div>
       </section>
+    `;
+  }
+
+  function accountLabelForRecord(record) {
+    return String(record.clientGroup || record.client || "Unassigned client").trim() || "Unassigned client";
+  }
+
+  function clientRecommendation(account) {
+    if (account.overdueCount > 0) return "Refresh overdue follow-ups and confirm the next owner action.";
+    if (account.noDateCount > 0) return "Add missing dates so the account stays visible in due-watch reviews.";
+    if (account.openCount >= 6) return "Assign a weekly account review because multiple records are moving together.";
+    if (account.totalValue > 0 && account.wonCount > 0) return "Convert the winning history into contract and renewal memory.";
+    if (account.projectCount > 0 && account.tenderCount > 0) return "Connect pursuit handover with delivery status for this relationship.";
+    return "Keep the account warm and capture the next commercial touch.";
+  }
+
+  function buildClientPortfolioModel() {
+    const records = companyRecords();
+    const accountsMap = new Map();
+    records.forEach((record) => {
+      const label = accountLabelForRecord(record);
+      const key = normalize(label);
+      if (!accountsMap.has(key)) {
+        accountsMap.set(key, {
+          label,
+          records: [],
+          units: new Map(),
+          tenderCount: 0,
+          projectCount: 0,
+          openCount: 0,
+          wonCount: 0,
+          overdueCount: 0,
+          dueWatchCount: 0,
+          noDateCount: 0,
+          totalValue: 0,
+        });
+      }
+      const account = accountsMap.get(key);
+      const unit = String(record.client || label).trim() || label;
+      const days = recordDueDays(record);
+      const open = !isClosedRecord(record);
+      account.records.push(record);
+      account.units.set(unit, (account.units.get(unit) || 0) + 1);
+      if (record.type === "Project") account.projectCount += 1;
+      if (record.type === "Tender" || record.type === "EOI") account.tenderCount += 1;
+      if (open) account.openCount += 1;
+      if (["Awarded", "Completed"].includes(record.status)) account.wonCount += 1;
+      if (open && days === null) account.noDateCount += 1;
+      if (open && days !== null && days < 0) account.overdueCount += 1;
+      if (open && (days === null || days <= 30)) account.dueWatchCount += 1;
+      account.totalValue += Number(record.valueAmount) || 0;
+    });
+    const rawAccounts = Array.from(accountsMap.values());
+    const maxValue = Math.max(...rawAccounts.map((account) => account.totalValue), 1);
+    const accounts = rawAccounts
+      .map((account) => {
+        const latest = [...account.records].sort((a, b) => recordHistoryTime(b) - recordHistoryTime(a))[0] || null;
+        const unitRows = Array.from(account.units, ([label, value]) => ({ label, value }))
+          .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label));
+        const pulse =
+          account.records.length >= 16 || account.totalValue / maxValue > 0.58
+            ? "Strategic account"
+            : account.openCount >= 6
+              ? "Active relationship"
+              : account.wonCount >= 3
+                ? "Proven buyer"
+                : account.projectCount && account.tenderCount
+                  ? "Pursuit to delivery"
+                  : "Developing account";
+        const score = Math.round(
+          Math.min(100, account.records.length * 4 + account.openCount * 5 + account.wonCount * 4 + (account.totalValue / maxValue) * 28),
+        );
+        return {
+          ...account,
+          latest,
+          unitRows,
+          pulse,
+          score,
+          recommendation: clientRecommendation(account),
+        };
+      })
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          b.openCount - a.openCount ||
+          b.totalValue - a.totalValue ||
+          a.label.localeCompare(b.label),
+      );
+    return {
+      accounts,
+      activeAccounts: accounts.filter((account) => account.openCount > 0).length,
+      totalRecords: records.length,
+      totalValue: sumAmounts(records),
+      openRecords: records.filter((record) => !isClosedRecord(record)).length,
+      dueWatch: accounts.reduce((total, account) => total + account.dueWatchCount, 0),
+      overdue: accounts.reduce((total, account) => total + account.overdueCount, 0),
+      topAccounts: accounts.slice(0, 10),
+      moveAccounts: accounts
+        .filter((account) => account.openCount || account.dueWatchCount || account.noDateCount)
+        .sort((a, b) => b.dueWatchCount - a.dueWatchCount || b.openCount - a.openCount || b.score - a.score)
+        .slice(0, 5),
+    };
+  }
+
+  function renderClientPortfolioPage() {
+    const model = buildClientPortfolioModel();
+    return `
+      <section class="client-portfolio">
+        <div class="client-kpis">
+          ${renderInsightKpi("Client accounts", `${model.accounts.length}`, `${model.activeAccounts} active relationships`)}
+          ${renderInsightKpi("Open work", `${model.openRecords}`, `${model.totalRecords} total records`)}
+          ${renderInsightKpi("Account value", formatCompactMoney(model.totalValue), "Captured tender and project value")}
+          ${renderInsightKpi("Due watch", `${model.dueWatch}`, `${model.overdue} overdue items`)}
+        </div>
+
+        <div class="client-portfolio-grid">
+          <section class="client-portfolio-main">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client portfolio</span>
+                <h3>Relationship map</h3>
+              </div>
+              <span>${model.topAccounts.length} shown</span>
+            </div>
+            <div class="client-card-grid">
+              ${model.topAccounts.map(renderClientPortfolioCard).join("")}
+            </div>
+          </section>
+
+          <aside class="client-portfolio-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Account heat</span>
+                  <h3>Most active relationships</h3>
+                </div>
+              </div>
+              ${renderClientHeatRows(model.accounts.slice(0, 7))}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Next moves</span>
+                  <h3>Relationship follow-up</h3>
+                </div>
+              </div>
+              ${renderClientMoveRows(model.moveAccounts)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="client-roadmap-strip">
+          ${[
+            ["Clients", "Live portfolio"],
+            ["Contracts", "Award memory"],
+            ["Documents", "Evidence trail"],
+            ["Reminders", "Follow-up engine"],
+            ["Reports", "Board pack"],
+          ]
+            .map(
+              ([label, note]) => `
+                <div>
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(note)}</strong>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderClientPortfolioCard(account) {
+    const latestMeta = account.latest
+      ? [account.latest.type, account.latest.status, formatDate(account.latest.endDate) || "No date"].filter(Boolean).join(" / ")
+      : "No activity";
+    const units = account.unitRows
+      .slice(0, 3)
+      .map((unit) => `<span>${escapeHtml(unit.label)} <b>${unit.value}</b></span>`)
+      .join("");
+    return `
+      <article class="client-card">
+        <div class="client-card-head">
+          <div>
+            <span>${escapeHtml(account.pulse)}</span>
+            <h3>${escapeHtml(account.label)}</h3>
+          </div>
+          <strong>${account.score}</strong>
+        </div>
+        <div class="client-card-stats">
+          <div><span>Records</span><strong>${account.records.length}</strong></div>
+          <div><span>Open</span><strong>${account.openCount}</strong></div>
+          <div><span>Due</span><strong>${account.dueWatchCount}</strong></div>
+          <div><span>Value</span><strong>${escapeHtml(formatCompactMoney(account.totalValue))}</strong></div>
+        </div>
+        <div class="client-card-mix">
+          <span>Tenders <b>${account.tenderCount}</b></span>
+          <span>Projects <b>${account.projectCount}</b></span>
+          <span>Won/done <b>${account.wonCount}</b></span>
+        </div>
+        <div class="client-card-latest">
+          <span>Latest touch</span>
+          <strong>${escapeHtml(account.latest?.title || "No latest record")}</strong>
+          <em>${escapeHtml(latestMeta)}</em>
+        </div>
+        <div class="client-unit-row">
+          ${units || `<span>${escapeHtml(account.label)} <b>${account.records.length}</b></span>`}
+        </div>
+        <div class="client-card-footer">
+          <p>${escapeHtml(account.recommendation)}</p>
+          <button class="mini-btn" type="button" data-action="open-related-record" data-id="${escapeHtml(account.latest?.id || "")}" ${account.latest ? "" : "disabled"}>Open latest</button>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderClientHeatRows(accounts) {
+    if (!accounts.length) return `<div class="empty-state compact">No client records available.</div>`;
+    const max = Math.max(...accounts.map((account) => account.records.length), 1);
+    return `
+      <div class="client-heat-list">
+        ${accounts
+          .map((account) => {
+            const width = Math.max(6, Math.round((account.records.length / max) * 100));
+            return `
+              <button class="client-heat-row" type="button" data-action="open-related-record" data-id="${escapeHtml(account.latest?.id || "")}" ${account.latest ? "" : "disabled"}>
+                <span>
+                  <strong>${escapeHtml(account.label)}</strong>
+                  <em>${account.records.length} records / ${account.openCount} open / ${escapeHtml(formatCompactMoney(account.totalValue))}</em>
+                </span>
+                <i><b style="width: ${width}%"></b></i>
+              </button>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderClientMoveRows(accounts) {
+    if (!accounts.length) return `<div class="empty-state compact">No relationship follow-up needed.</div>`;
+    return `
+      <div class="client-move-list">
+        ${accounts
+          .map(
+            (account) => `
+              <button class="client-move-row" type="button" data-action="open-related-record" data-id="${escapeHtml(account.latest?.id || "")}" ${account.latest ? "" : "disabled"}>
+                <strong>${escapeHtml(account.label)}</strong>
+                <span>${account.openCount} open / ${account.dueWatchCount} due-watch / ${account.noDateCount} no-date</span>
+                <p>${escapeHtml(account.recommendation)}</p>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
     `;
   }
 

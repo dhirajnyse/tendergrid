@@ -15,7 +15,7 @@ window.SEED_DATA = {
       "email": "admin@pursuitdesk.app",
       "role": "Admin",
       "password": "demo123",
-      "access": ["tenders", "tenderInsights", "projects", "projectInsights", "membership"]
+      "access": ["tenders", "tenderInsights", "projects", "projectInsights", "clients", "membership"]
     },
     {
       "id": "u-editor",
@@ -24,7 +24,7 @@ window.SEED_DATA = {
       "email": "editor@pursuitdesk.app",
       "role": "Editor",
       "password": "demo123",
-      "access": ["tenders", "tenderInsights", "projects", "projectInsights"]
+      "access": ["tenders", "tenderInsights", "projects", "projectInsights", "clients"]
     },
     {
       "id": "u-viewer",
