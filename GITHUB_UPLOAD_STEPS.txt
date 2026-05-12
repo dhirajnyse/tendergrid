@@ -1,4 +1,4 @@
-PursuitDesk v69 executive tracker surface upload steps
+PursuitDesk v75 decision ledger upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v69 executive tracker surface upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v69 executive tracker surface
+   PursuitDesk v75 decision ledger
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, a denser tracker toolbar, slimmer operational work-scope strip, shorter insights handoff, and a cleaner record profile strip in the right detail panel.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Decision Ledger to Tenders Insights plus Project Insights, showing decision, owner, due signal, expected output, and direct record actions in the screen and management export.
 
 Demo login:
 admin@pursuitdesk.app

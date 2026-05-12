@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=69";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=69";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=75";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=75";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -2738,6 +2738,478 @@
     `;
   }
 
+  function insightDueValue(model, label) {
+    return model.dueBuckets.find((bucket) => bucket.label === label)?.value || 0;
+  }
+
+  function insightPosture(model) {
+    const overdue = insightDueValue(model, "Past due");
+    const noDate = insightDueValue(model, "No date");
+    if (model.healthScore >= 76 && overdue <= 4 && noDate <= 3) {
+      return { label: "Board ready", tone: "green", note: "Use this page for weekly management review and client-facing confidence." };
+    }
+    if (model.healthScore >= 58) {
+      return { label: "Review with controls", tone: "amber", note: "Clear dates, owners, and value gaps before presenting the final position." };
+    }
+    return { label: "Intervention needed", tone: "red", note: "Keep the review tactical until overdue, owner, and missing-value signals are repaired." };
+  }
+
+  function renderInsightExecutiveRoom(model, isProjectLens, trackerView, areaTitle) {
+    const posture = insightPosture(model);
+    const overdue = insightDueValue(model, "Past due");
+    const next30 = insightDueValue(model, "Next 30 days");
+    const noDate = insightDueValue(model, "No date");
+    const leadLine = isProjectLens
+      ? "Delivery management room for project movement, owner pressure, dates, completion posture, and value exposure."
+      : "Tender management room for bid movement, submission pressure, negotiation depth, owner load, and value exposure.";
+    const cards = [
+      {
+        label: "Management posture",
+        value: posture.label,
+        note: posture.note,
+        tone: posture.tone,
+      },
+      {
+        label: "Review queue",
+        value: `${model.decisionRows.length} items`,
+        note: `${overdue} overdue / ${next30} due in 30 days / ${noDate} no-date`,
+        tone: overdue ? "red" : next30 || noDate ? "amber" : "green",
+      },
+      {
+        label: "Value exposure",
+        value: formatCompactMoney(model.openValue),
+        note: model.highValueOpen[0]
+          ? `${model.highValueOpen[0].client || "Top account"} leads open value.`
+          : "No open value captured in this lens yet.",
+        tone: model.openValue ? "blue" : "amber",
+      },
+      {
+        label: "Owner pressure",
+        value: model.topOwner.label,
+        note: `${model.topOwner.value} open records sit with this owner.`,
+        tone: model.topOwner.value >= 8 ? "amber" : "teal",
+      },
+    ];
+    return `
+      <section class="insight-executive-room">
+        <div class="insight-executive-lead">
+          <div>
+            <span class="panel-label">${escapeHtml(isProjectLens ? "Project management room" : "Tender management room")}</span>
+            <h2>${escapeHtml(areaTitle)} command brief</h2>
+            <p>${escapeHtml(leadLine)}</p>
+            <div class="hero-actions">
+              <button class="secondary-btn" type="button" data-action="export-insights">Export pack</button>
+              <button class="ghost-btn" type="button" data-view="${escapeHtml(trackerView)}">Open tracker</button>
+            </div>
+          </div>
+          <div class="score-ring insight-executive-score" style="--score: ${model.healthScore}">
+            <div>
+              <strong>${model.healthScore}</strong>
+              <span>Score</span>
+            </div>
+          </div>
+        </div>
+        <div class="insight-executive-cards">
+          ${cards
+            .map(
+              (card) => `
+                <article class="insight-exec-card tone-${escapeHtml(card.tone)}">
+                  <span>${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(card.value)}</strong>
+                  <small>${escapeHtml(card.note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderInsightReviewQueue(rows, isProjectLens) {
+    const items = rows.slice(0, 4);
+    if (!items.length) return `<div class="empty-state compact">No urgent management items in this lens.</div>`;
+    return `
+      <div class="insight-review-list">
+        ${items
+          .map(({ record, recommendation, tone, reasons, days }) => {
+            const dueText = days === null ? "No date" : days < 0 ? `${Math.abs(days)}d late` : `${days}d left`;
+            return `
+              <button class="insight-review-row tone-${escapeHtml(tone)}" type="button" data-action="select" data-id="${escapeHtml(record.id)}">
+                <span>${escapeHtml(isProjectLens ? "Delivery move" : "Bid move")}</span>
+                <strong>${escapeHtml(record.title || record.reference || "Untitled record")}</strong>
+                <em>${escapeHtml([record.client, record.status, dueText].filter(Boolean).join(" / "))}</em>
+                <small>${escapeHtml(recommendation)}${reasons.length ? ` / ${escapeHtml(reasons.join(" / "))}` : ""}</small>
+              </button>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderInsightBrief(model, isProjectLens) {
+    return `
+      <div class="insight-brief-list">
+        ${insightBriefLines(model, isProjectLens).map((line) => `<div>${escapeHtml(line)}</div>`).join("")}
+      </div>
+    `;
+  }
+
+  function renderInsightControlChecklist(model, isProjectLens) {
+    return `
+      <div class="insight-checklist">
+        ${insightChecklistRows(model, isProjectLens)
+          .map(
+            ([label, value, note]) => `
+              <div>
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(value)}</strong>
+                <small>${escapeHtml(note)}</small>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function insightBriefLines(model, isProjectLens) {
+    const overdue = insightDueValue(model, "Past due");
+    const noDate = insightDueValue(model, "No date");
+    const next30 = insightDueValue(model, "Next 30 days");
+    return [
+      `${model.openRecords} open ${isProjectLens ? "project" : "tender"} records need management visibility.`,
+      `${overdue + next30} records sit in due-watch pressure; ${noDate} have no control date.`,
+      `${formatCompactMoney(model.openValue)} remains open in this lens, with ${model.recordsWithValue} valued records.`,
+      `${model.topOwner.label} carries the largest owner load with ${model.topOwner.value} open records.`,
+    ];
+  }
+
+  function insightChecklistRows(model, isProjectLens) {
+    return [
+      ["Dates", `${insightDueValue(model, "Past due") + insightDueValue(model, "No date")} issues`, "Confirm next action, submission, delivery, or review date."],
+      ["Owners", model.topOwner.label, "Check workload concentration and assign support where needed."],
+      ["Value", formatCompactMoney(model.openValue), "Keep commercial exposure in insights, forecast, contracts, and reports."],
+      [
+        isProjectLens ? "Completion" : "Bid decision",
+        `${model.healthScore}/100`,
+        isProjectLens ? "Confirm delivery movement and closeout posture." : "Confirm bid/no-bid, submission readiness, and negotiation next step.",
+      ],
+    ];
+  }
+
+  function buildInsightActionPack(model, isProjectLens, trackerView) {
+    const first = model.decisionRows[0];
+    const overdue = insightDueValue(model, "Past due");
+    const noDate = insightDueValue(model, "No date");
+    const next30 = insightDueValue(model, "Next 30 days");
+    const datePressure = overdue + noDate;
+    const firstDueText = first
+      ? first.days === null
+        ? "No control date"
+        : first.days < 0
+          ? `${Math.abs(first.days)} days late`
+          : `${first.days} days left`
+      : "No urgent item";
+    return [
+      {
+        label: isProjectLens ? "First delivery move" : "First bid move",
+        title: first ? first.record.title || first.record.reference || "Open record" : "No urgent record",
+        note: first
+          ? `${first.record.client || "No client"} / ${first.record.status} / ${firstDueText}`
+          : "The current lens has no open management queue item.",
+        meta: first ? first.recommendation : "Queue clear",
+        tone: first?.tone || "green",
+        actionLabel: first ? "Open record" : `Open ${trackerView}`,
+        recordId: first?.record.id || "",
+        view: trackerView,
+      },
+      {
+        label: "Owner handoff",
+        title: model.topOwner.label,
+        note: `${model.topOwner.value} open records sit with this owner. Use the tracker for accountability and the insight room for management review.`,
+        meta: model.topOwner.value >= 8 ? "Load check" : "Balanced",
+        tone: model.topOwner.value >= 8 ? "amber" : "green",
+        actionLabel: `Open ${trackerView}`,
+        recordId: "",
+        view: trackerView,
+      },
+      {
+        label: "Control gate",
+        title: datePressure ? `${datePressure} date issues` : "Dates controlled",
+        note: `${overdue} overdue, ${next30} due in 30 days, and ${noDate} without a control date.`,
+        meta: datePressure ? "Clean before review" : "Ready rhythm",
+        tone: overdue ? "red" : noDate || next30 ? "amber" : "green",
+        actionLabel: `Open ${trackerView}`,
+        recordId: "",
+        view: trackerView,
+      },
+      {
+        label: "Board output",
+        title: "Export review pack",
+        note: "Download a text pack with score, exposure, review queue, talking points, checklist, risk map, and largest open records.",
+        meta: `${model.healthScore}/100 score`,
+        tone: "blue",
+        actionLabel: "Export pack",
+        recordId: "",
+        action: "export-insights",
+      },
+    ];
+  }
+
+  function renderInsightActionPack(model, isProjectLens, trackerView) {
+    const rows = buildInsightActionPack(model, isProjectLens, trackerView);
+    return `
+      <section class="insight-action-pack">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Action pack</span>
+            <h3>${escapeHtml(isProjectLens ? "Project review handoff" : "Tender review handoff")}</h3>
+          </div>
+          <span>${rows.length} moves</span>
+        </div>
+        <div class="insight-action-grid">
+          ${rows
+            .map((item) => {
+              const attrs = item.action
+                ? `data-action="${escapeHtml(item.action)}"`
+                : item.recordId
+                  ? `data-action="select" data-id="${escapeHtml(item.recordId)}"`
+                  : `data-view="${escapeHtml(item.view)}"`;
+              return `
+                <article class="insight-action-card tone-${escapeHtml(item.tone)}">
+                  <span>${escapeHtml(item.label)}</span>
+                  <strong>${escapeHtml(item.title)}</strong>
+                  <p>${escapeHtml(item.note)}</p>
+                  <div>
+                    <em>${escapeHtml(item.meta)}</em>
+                    <button class="mini-btn" type="button" ${attrs}>${escapeHtml(item.actionLabel)}</button>
+                  </div>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function buildInsightRunSheet(model, isProjectLens, trackerView) {
+    const posture = insightPosture(model);
+    const first = model.decisionRows[0];
+    const second = model.decisionRows[1];
+    const topValue = model.highValueOpen[0];
+    const overdue = insightDueValue(model, "Past due");
+    const noDate = insightDueValue(model, "No date");
+    const next30 = insightDueValue(model, "Next 30 days");
+    const datePressure = overdue + noDate;
+    const firstTitle = first?.record.title || first?.record.reference || "No urgent item";
+    const secondTitle = second?.record.title || second?.record.reference || "No second item";
+    return [
+      {
+        step: "01",
+        time: "0-3 min",
+        label: "Open posture",
+        title: posture.label,
+        note: posture.note,
+        output: `${model.healthScore}/100 review score aligned`,
+        tone: posture.tone,
+      },
+      {
+        step: "02",
+        time: "3-7 min",
+        label: isProjectLens ? "Delivery decision" : "Bid decision",
+        title: firstTitle,
+        note: first ? `${first.record.client || "No client"} / ${first.recommendation}` : "No urgent record is waiting in the review queue.",
+        output: first ? "Assign next action and owner" : "Confirm queue stays clear",
+        tone: first?.tone || "green",
+        actionLabel: first ? "Open record" : `Open ${trackerView}`,
+        recordId: first?.record.id || "",
+        view: trackerView,
+      },
+      {
+        step: "03",
+        time: "7-10 min",
+        label: "Owner handoff",
+        title: model.topOwner.label,
+        note: `${model.topOwner.value} open records need movement from this ownership lane.`,
+        output: model.topOwner.value >= 8 ? "Decide capacity support" : "Confirm owner rhythm",
+        tone: model.topOwner.value >= 8 ? "amber" : "green",
+        actionLabel: `Open ${trackerView}`,
+        view: trackerView,
+      },
+      {
+        step: "04",
+        time: "10-13 min",
+        label: "Date control",
+        title: datePressure ? `${datePressure} control issues` : "Dates controlled",
+        note: `${overdue} overdue / ${next30} next 30 days / ${noDate} no-date records.`,
+        output: datePressure ? "Date cleanup owner agreed" : "No date intervention needed",
+        tone: overdue ? "red" : next30 || noDate ? "amber" : "green",
+        actionLabel: `Open ${trackerView}`,
+        view: trackerView,
+      },
+      {
+        step: "05",
+        time: "13-16 min",
+        label: "Exposure check",
+        title: topValue ? `${formatCompactMoney(topValue.valueAmount)} / ${topValue.client || "Top account"}` : "No open value captured",
+        note: topValue
+          ? topValue.title || "Largest open record in this lens."
+          : isProjectLens
+            ? "Project values can stay in Project Insights once commercial capture is added."
+            : "Add value only in management rooms, never in frontline tracker views.",
+        output: topValue ? "Escalate, protect, or watch" : "Confirm value capture plan",
+        tone: topValue ? "blue" : "amber",
+        actionLabel: topValue ? "Open record" : "Export pack",
+        recordId: topValue?.id || "",
+        action: topValue ? "" : "export-insights",
+      },
+      {
+        step: "06",
+        time: "16-18 min",
+        label: "Close review",
+        title: second ? secondTitle : "Send management pack",
+        note: second ? `${second.record.client || "No client"} is the next item after the first move.` : "Close with export and share the agreed review pack.",
+        output: "Review pack ready for circulation",
+        tone: "teal",
+        actionLabel: "Export pack",
+        action: "export-insights",
+      },
+    ];
+  }
+
+  function renderInsightRunSheet(model, isProjectLens, trackerView) {
+    const rows = buildInsightRunSheet(model, isProjectLens, trackerView);
+    return `
+      <section class="insight-run-sheet">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Management run sheet</span>
+            <h3>${escapeHtml(isProjectLens ? "18-minute project review" : "18-minute tender review")}</h3>
+          </div>
+          <span>${rows.length} steps</span>
+        </div>
+        <div class="insight-run-list">
+          ${rows
+            .map((item) => {
+              const attrs = item.action
+                ? `data-action="${escapeHtml(item.action)}"`
+                : item.recordId
+                  ? `data-action="select" data-id="${escapeHtml(item.recordId)}"`
+                  : item.view
+                    ? `data-view="${escapeHtml(item.view)}"`
+                    : "";
+              return `
+                <article class="insight-run-row tone-${escapeHtml(item.tone)}">
+                  <div>
+                    <span>${escapeHtml(item.step)}</span>
+                    <em>${escapeHtml(item.time)}</em>
+                  </div>
+                  <section>
+                    <small>${escapeHtml(item.label)}</small>
+                    <strong>${escapeHtml(item.title)}</strong>
+                    <p>${escapeHtml(item.note)}</p>
+                  </section>
+                  <footer>
+                    <b>${escapeHtml(item.output)}</b>
+                    ${item.actionLabel ? `<button class="mini-btn" type="button" ${attrs}>${escapeHtml(item.actionLabel)}</button>` : ""}
+                  </footer>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function buildInsightDecisionLedger(model, isProjectLens) {
+    const rows = model.decisionRows.slice(0, 6).map(({ record, recommendation, tone, reasons, days, score }, index) => {
+      const dueSignal = days === null ? "No control date" : days < 0 ? `${Math.abs(days)} days late` : days <= 30 ? `${days} days left` : formatDate(record.endDate);
+      const decision = isProjectLens
+        ? days !== null && days < 0
+          ? "Recover delivery date"
+          : record.status === "Completed"
+            ? "Confirm closeout"
+            : "Confirm delivery move"
+        : recommendation === "No-bid review"
+          ? "Bid/no-bid call"
+          : record.status === "Submitted"
+            ? "Clarification watch"
+            : "Confirm bid posture";
+      return {
+        no: String(index + 1).padStart(2, "0"),
+        decision,
+        record,
+        owner: record.owner || model.topOwner.label || "Unassigned",
+        dueSignal,
+        output: reasons.length ? reasons.join(" / ") : `${score}/100 score`,
+        tone,
+      };
+    });
+    if (rows.length) return rows;
+    return [
+      {
+        no: "01",
+        decision: "Confirm clean rhythm",
+        record: null,
+        owner: model.topOwner.label || "Management",
+        dueSignal: "No urgent item",
+        output: "Review pack can be circulated",
+        tone: "green",
+      },
+    ];
+  }
+
+  function renderInsightDecisionLedger(model, isProjectLens) {
+    const rows = buildInsightDecisionLedger(model, isProjectLens);
+    return `
+      <section class="insight-decision-ledger">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Decision ledger</span>
+            <h3>${escapeHtml(isProjectLens ? "Project decisions to close" : "Tender decisions to close")}</h3>
+          </div>
+          <span>${rows.length} items</span>
+        </div>
+        <div class="insight-ledger-table">
+          <div class="insight-ledger-head">
+            <span>No</span>
+            <span>Decision</span>
+            <span>Owner</span>
+            <span>Due signal</span>
+            <span>Output</span>
+            <span>Action</span>
+          </div>
+          ${rows
+            .map((item) => {
+              const recordTitle = item.record?.title || item.record?.reference || "Management rhythm";
+              return `
+                <div class="insight-ledger-row tone-${escapeHtml(item.tone)}">
+                  <span>${escapeHtml(item.no)}</span>
+                  <strong>
+                    ${escapeHtml(item.decision)}
+                    <small>${escapeHtml(recordTitle)}</small>
+                  </strong>
+                  <em>${escapeHtml(item.owner)}</em>
+                  <em>${escapeHtml(item.dueSignal)}</em>
+                  <em>${escapeHtml(item.output)}</em>
+                  ${
+                    item.record
+                      ? `<button class="mini-btn" type="button" data-action="select" data-id="${escapeHtml(item.record.id)}">Open</button>`
+                      : `<button class="mini-btn" type="button" data-action="export-insights">Export</button>`
+                  }
+                </div>
+              `;
+            })
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
   function renderInsights() {
     const activeLens = state.view === "Project Insights" ? "Projects" : "Tendering";
     if (state.insightLens !== activeLens) state.insightLens = activeLens;
@@ -2747,12 +3219,53 @@
     const trackerView = isProjectLens ? "Projects" : "Tenders";
     return `
       <section class="insights-layout insights-clean">
+        ${renderInsightExecutiveRoom(model, isProjectLens, trackerView, areaTitle)}
+
         <div class="insight-kpis">
           ${renderInsightKpi("Insight score", `${model.healthScore}/100`, `${areaTitle} readiness`)}
           ${renderInsightKpi("Captured value", formatCompactMoney(model.totalValue), `${model.recordsWithValue} records with value`)}
           ${renderInsightKpi("Open records", `${model.openRecords}`, `${model.scopedRecords} records in ${activeLens.toLowerCase()}`)}
           ${renderInsightKpi("Negotiation depth", `${model.averageRounds} rounds`, `${model.negotiationRecords} records with rounds`)}
         </div>
+
+        <div class="insight-management-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Today first</span>
+                <h3>Management review queue</h3>
+              </div>
+              <span>${model.decisionRows.length} shown</span>
+            </div>
+            ${renderInsightReviewQueue(model.decisionRows, isProjectLens)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Executive brief</span>
+                <h3>What to say in review</h3>
+              </div>
+            </div>
+            ${renderInsightBrief(model, isProjectLens)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Control checklist</span>
+                <h3>Before sending the pack</h3>
+              </div>
+            </div>
+            ${renderInsightControlChecklist(model, isProjectLens)}
+          </article>
+        </div>
+
+        ${renderInsightActionPack(model, isProjectLens, trackerView)}
+
+        ${renderInsightRunSheet(model, isProjectLens, trackerView)}
+
+        ${renderInsightDecisionLedger(model, isProjectLens)}
 
         <div class="cockpit-grid">
           <article class="info-panel decision-panel">
@@ -8765,15 +9278,15 @@
                   .map(
                     (density) => `
                       <button class="${state.tableDensity === density ? "active" : ""}" type="button" data-density="${density}">
-                        ${density}
+                        ${density === "Comfortable" ? "Roomy" : density}
                       </button>
                     `,
                   )
                   .join("")}
               </div>
               <button class="ghost-btn" type="button" data-action="toggle-detail">${state.detailCollapsed ? "Show detail" : "Hide detail"}</button>
-              <button class="secondary-btn" type="button" data-action="add" ${canEdit() ? "" : "disabled"}>New row</button>
-              <button class="ghost-btn" type="button" data-action="export">Export CSV</button>
+              <button class="secondary-btn" type="button" data-action="add" ${canEdit() ? "" : "disabled"}>New</button>
+              <button class="ghost-btn" type="button" data-action="export">Export</button>
             </div>
           </section>
 
@@ -8854,9 +9367,9 @@
           <small>Admins decide who can open tracker rooms versus management rooms.</small>
         </div>
         <div class="tracker-privacy-action">
-          <span>Management handoff</span>
           <button class="ghost-btn" type="button" data-view="${escapeHtml(insightView)}" ${canAccessView(insightView) ? "" : "disabled"}>
-            Open ${escapeHtml(insightView)}
+            <strong>Open Insights</strong>
+            <small>Management handoff</small>
           </button>
         </div>
       </section>
@@ -8935,9 +9448,8 @@
             <small>Admins control who sees tracker rooms and insight rooms.</small>
           </div>
           <button class="ghost-btn work-scope-insight-btn" type="button" data-view="${escapeHtml(insightView)}" aria-label="Open ${escapeHtml(insightView)}" ${canAccessView(insightView) ? "" : "disabled"}>
-            <span>Management handoff</span>
             <strong>Open Insights</strong>
-            <small>${escapeHtml(insightView)}</small>
+            <small>Management handoff</small>
           </button>
         </div>
         <div class="work-scope-head">
@@ -9230,17 +9742,60 @@
     `;
   }
 
+  function rowOperatingSignal(record) {
+    if (["Awarded", "Completed"].includes(record.status)) {
+      return { label: record.status, tone: "green" };
+    }
+    if (["Cancelled", "Regret"].includes(record.status)) {
+      return { label: record.status, tone: "red" };
+    }
+    const days = recordDueDays(record);
+    if (days !== null && days < 0) return { label: "Overdue", tone: "red" };
+    if (days !== null && days <= 30) return { label: "Due watch", tone: "amber" };
+    if (!record.endDate) return { label: "No date", tone: "blue" };
+    if (!String(record.owner || "").trim()) return { label: "No owner", tone: "red" };
+    if (!record.reference || !record.client || !record.title || !record.category) {
+      return { label: "Data gap", tone: "blue" };
+    }
+    return { label: "Ready", tone: "green" };
+  }
+
+  function renderRowChips(record) {
+    const signal = rowOperatingSignal(record);
+    const scope = [record.type, record.category].filter(Boolean).join(" / ") || "No scope";
+    const owner = String(record.owner || "").trim();
+    const chips = [
+      { label: scope, tone: "neutral", className: "scope-chip-inline" },
+      { label: owner || "No owner", tone: owner ? "teal" : "red", className: "owner-chip-inline" },
+      { label: signal.label, tone: signal.tone, className: "signal-chip" },
+    ];
+    return `
+      <div class="cell-chip-row" aria-label="Row operating signals">
+        ${chips
+          .map(
+            (chip) => `
+              <span class="cell-chip tone-${escapeHtml(chip.tone)} ${escapeHtml(chip.className)}">
+                ${escapeHtml(chip.label)}
+              </span>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
   function renderRow(record) {
     const editable = canEdit();
     const selected = record.id === state.selectedId ? "selected-row" : "";
+    const signal = rowOperatingSignal(record);
     return `
-      <tr class="${selected}" data-id="${escapeHtml(record.id)}">
+      <tr class="${selected} row-signal-${escapeHtml(signal.tone)}" data-id="${escapeHtml(record.id)}">
         <td>${editableCell(record, "reference", "mono")}</td>
         <td>${editableCell(record, "client")}</td>
         <td>
           <div class="cell-stack">
             ${editableCell(record, "title")}
-            <span>${escapeHtml([record.type, record.category, record.owner].filter(Boolean).join(" / ") || "No metadata")}</span>
+            ${renderRowChips(record)}
           </div>
         </td>
         <td>${renderRecordSelect(record, "status", STATUS_OPTIONS, editable, true)}</td>
@@ -9265,6 +9820,7 @@
         </span>
         <span class="record-title">${escapeHtml(record.title || "Untitled record")}</span>
         <span class="record-meta">${escapeHtml(record.client || "No client")} / ${escapeHtml(record.type)} / ${escapeHtml(record.owner || "No owner")}</span>
+        ${renderRowChips(record)}
       </button>
     `;
   }
@@ -10433,16 +10989,39 @@
 
   function exportInsightsPack() {
     const model = insightModel(insightRecords());
+    const isProjectLens = model.lens === "Projects";
+    const trackerView = isProjectLens ? "Projects" : "Tenders";
+    const actionPack = buildInsightActionPack(model, isProjectLens, trackerView);
+    const runSheet = buildInsightRunSheet(model, isProjectLens, trackerView);
+    const decisionLedger = buildInsightDecisionLedger(model, isProjectLens);
     const lines = [
-      `${BRAND_NAME} Board Pack`,
+      `${BRAND_NAME} Management Review Pack`,
       `Company: ${state.data.company.name}`,
-      `Lens: ${model.lens}`,
-      `Pipeline score: ${model.healthScore}`,
+      `Lens: ${isProjectLens ? "Project Insights" : "Tenders Insights"}`,
+      `Insight score: ${model.healthScore}/100`,
       `Captured value: ${formatCompactMoney(model.totalValue)}`,
       `Open value: ${formatCompactMoney(model.openValue)}`,
       `Closed value: ${formatCompactMoney(model.awardedValue)}`,
       "",
-      "Go / No-Go Queue",
+      "Executive Brief",
+      ...insightBriefLines(model, isProjectLens).map((line) => `- ${line}`),
+      "",
+      "Control Checklist",
+      ...insightChecklistRows(model, isProjectLens).map(([label, value, note]) => `- ${label}: ${value} | ${note}`),
+      "",
+      "Action Pack",
+      ...actionPack.map((item) => `- ${item.label}: ${item.title} | ${item.meta} | ${item.note}`),
+      "",
+      "Management Run Sheet",
+      ...runSheet.map((item) => `- ${item.time} | ${item.label}: ${item.title} | Output: ${item.output} | ${item.note}`),
+      "",
+      "Decision Ledger",
+      ...decisionLedger.map((item) => {
+        const recordTitle = item.record?.title || item.record?.reference || "Management rhythm";
+        return `- ${item.no} | ${item.decision} | ${recordTitle} | Owner: ${item.owner} | Due: ${item.dueSignal} | Output: ${item.output}`;
+      }),
+      "",
+      isProjectLens ? "Project Review Queue" : "Tender Review Queue",
       ...model.decisionRows.map(
         ({ record, score, recommendation, reasons }) =>
           `- ${record.client || record.reference || "Open pursuit"} | ${record.status} | ${score}/100 | ${recommendation} | ${reasons.join(", ") || "Clean record"}`,

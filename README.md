@@ -56,6 +56,12 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Tracker pages now use a sheet-first density pass: compact KPI tiles and shorter command controls bring the editable records higher on desktop.
 - Tracker sheets now remove the duplicated column-guide row and rely on the real sticky table header for a cleaner spreadsheet feel.
 - v69 tightens the tracker surface with a denser toolbar, slimmer work-scope command strip, shorter insight handoff, and a compact record profile strip in the detail panel.
+- v70 sharpens the tracker controls again with shorter action labels, a flatter toolbar, and a simplified Open Insights handoff button.
+- v71 adds row-level operating chips in Tenders and Projects so each sheet row shows scope, owner, and live signal without exposing commercial fields.
+- v72 upgrades Tenders Insights and Project Insights into management-room pages with an executive command brief, management review queue, review talking points, and a control checklist above the analytics.
+- v73 adds an Insight Action Pack to Tenders Insights and Project Insights with first move, owner handoff, control gate, and board output cards, plus richer management review exports.
+- v74 adds a Management Run Sheet to Tenders Insights and Project Insights, turning each room into an 18-minute review flow for posture, decision, owner handoff, date control, exposure check, and pack closeout.
+- v75 adds a Decision Ledger to Tenders Insights and Project Insights, showing decision, owner, due signal, expected output, and direct record actions, with the ledger included in management exports.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
@@ -79,7 +85,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Main section navigation resets the viewport to the top so Tenders, Projects, Insights, and Membership never open halfway down the page.
 - Expanded desktop tracker grid so Tenders and Projects show roughly a working-sheet depth of records before internal table scrolling begins.
 - Grid polish with stronger selected-row highlighting, a visible "Showing 1-N of total" range hint, Comfortable/Compact density controls, and a collapsible right detail panel.
-- Tracker toolbar uses explicit filter/action rows so density controls, New row, and Export CSV remain visible beside the detail panel.
+- Tracker toolbar uses explicit filter/action rows so density controls, New, and Export remain visible beside the detail panel.
 - Sticky sheet header keeps filters, actions, range hint, and column labels visible while scrolling through the expanded Tenders and Projects grids.
 - Sheet/Board mode lets users keep the spreadsheet tracker or switch to a visual operating board, with tender lanes for Active Pipeline, Due Watch, Awarded, and Closed/Regret, plus project lanes for Ongoing, Due Watch, Completed, and Stopped/Regret.
 - Timeline mode turns the same Tender and Project records into date lanes for Past Due, This Month, Next 30, Next Quarter, Later, and No Date, making schedule pressure visible without leaving the tracker.
