@@ -1,4 +1,4 @@
-PursuitDesk v56 command layout upload steps
+PursuitDesk v57 soft card system upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v56 command layout upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v56 command center layout polish
+   PursuitDesk v57 soft card color system
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, keeps Membership Model admin-only beside the account control, improves dark command-card text contrast, and removes the large Command Center gap by letting analytics begin directly below the pulse cards.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, keeps Membership Model admin-only beside the account control, standardizes operating cards with light report-style color surfaces and strong text, and adds a Command Center Signal Legend.
 
 Demo login:
 admin@pursuitdesk.app

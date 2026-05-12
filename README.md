@@ -51,6 +51,8 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Membership Model is no longer grantable to editors or viewers; it appears only for company admins and is blocked by the same access guard if a non-admin tries to open it directly.
 - Command cockpit dark cards now use contrast-safe foreground colors so teal, blue, and amber boards remain readable.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
+- Operating cards now follow a unified soft status-color system inspired by the Reports Calendar Pressure cards: light red, amber, blue, green, and teal surfaces with strong dark text.
+- Command Center includes a Signal Legend so users understand critical, decision, evidence, healthy, and active card colors consistently across the product.
 - Demo Editor now starts as an operations-only user for realistic frontline testing, while Admin keeps full workspace access.
 - Platform roadmap section showing how PursuitDesk can grow into future modules for contracts, clients, documents, reminders, and reports while keeping tenders and projects as the current foundation.
 - Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.

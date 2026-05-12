@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=56";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=56";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=57";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=57";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -3177,6 +3177,16 @@
               </div>
               ${renderCommandBrief(model.brief)}
             </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Visual standard</span>
+                  <h3>Signal legend</h3>
+                </div>
+              </div>
+              ${renderSignalLegend()}
+            </article>
           </aside>
         </div>
       </section>
@@ -3250,6 +3260,31 @@
     return `
       <div class="command-brief-list">
         ${rows.map((row) => `<p>${escapeHtml(row)}</p>`).join("")}
+      </div>
+    `;
+  }
+
+  function renderSignalLegend() {
+    const rows = [
+      ["red", "Critical / overdue", "Clear first before review"],
+      ["amber", "Needs decision", "Manager or owner movement"],
+      ["blue", "Evidence / data", "Proof, source, or document signal"],
+      ["green", "Healthy / ready", "Good to progress"],
+      ["teal", "Active / default", "Normal operating movement"],
+    ];
+    return `
+      <div class="signal-legend">
+        ${rows
+          .map(
+            ([tone, label, note]) => `
+              <div class="signal-legend-row tone-${escapeHtml(tone)}">
+                <i aria-hidden="true"></i>
+                <strong>${escapeHtml(label)}</strong>
+                <span>${escapeHtml(note)}</span>
+              </div>
+            `,
+          )
+          .join("")}
       </div>
     `;
   }

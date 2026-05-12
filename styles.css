@@ -6233,6 +6233,333 @@ textarea:disabled {
   background: var(--blue);
 }
 
+.command-module-card.tone-teal,
+.command-row.tone-teal,
+.report-action-row.tone-teal,
+.reminder-card.tone-teal,
+.advisor-card.tone-teal,
+.advisor-decision-card.tone-teal,
+.risk-card.tone-teal,
+.weekly-agenda-row.tone-teal,
+.weekly-action-row.tone-teal,
+.weekly-decision-card.tone-teal,
+.intake-request-row.tone-teal,
+.bid-row.tone-teal,
+.forecast-window-row.tone-teal,
+.calendar-mini-event.tone-teal,
+.calendar-event-card.tone-teal,
+.audit-row.tone-teal,
+.data-guard-card.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  color: var(--ink);
+  background: var(--teal-soft);
+}
+
+.command-module-card.tone-red,
+.command-row.tone-red,
+.report-action-row.tone-red,
+.reminder-card.tone-red,
+.advisor-card.tone-red,
+.advisor-decision-card.tone-red,
+.risk-card.tone-red,
+.weekly-agenda-row.tone-red,
+.weekly-action-row.tone-red,
+.weekly-decision-card.tone-red,
+.intake-request-row.tone-red,
+.bid-row.tone-red,
+.forecast-window-row.tone-red,
+.calendar-mini-event.tone-red,
+.calendar-event-card.tone-red,
+.audit-row.tone-red,
+.data-guard-card.tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  color: var(--ink);
+  background: var(--red-soft);
+}
+
+.command-module-card.tone-amber,
+.command-row.tone-amber,
+.report-action-row.tone-amber,
+.reminder-card.tone-amber,
+.advisor-card.tone-amber,
+.advisor-decision-card.tone-amber,
+.risk-card.tone-amber,
+.weekly-agenda-row.tone-amber,
+.weekly-action-row.tone-amber,
+.weekly-decision-card.tone-amber,
+.intake-request-row.tone-amber,
+.bid-row.tone-amber,
+.forecast-window-row.tone-amber,
+.calendar-mini-event.tone-amber,
+.calendar-event-card.tone-amber,
+.audit-row.tone-amber,
+.data-guard-card.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  color: var(--ink);
+  background: var(--amber-soft);
+}
+
+.command-module-card.tone-blue,
+.command-row.tone-blue,
+.report-action-row.tone-blue,
+.reminder-card.tone-blue,
+.advisor-card.tone-blue,
+.advisor-decision-card.tone-blue,
+.risk-card.tone-blue,
+.weekly-agenda-row.tone-blue,
+.weekly-action-row.tone-blue,
+.weekly-decision-card.tone-blue,
+.intake-request-row.tone-blue,
+.bid-row.tone-blue,
+.forecast-window-row.tone-blue,
+.calendar-mini-event.tone-blue,
+.calendar-event-card.tone-blue,
+.audit-row.tone-blue,
+.data-guard-card.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  color: var(--ink);
+  background: var(--blue-soft);
+}
+
+.command-module-card.tone-green,
+.command-row.tone-green,
+.report-action-row.tone-green,
+.reminder-card.tone-green,
+.advisor-card.tone-green,
+.advisor-decision-card.tone-green,
+.risk-card.tone-green,
+.weekly-agenda-row.tone-green,
+.weekly-action-row.tone-green,
+.weekly-decision-card.tone-green,
+.intake-request-row.tone-green,
+.bid-row.tone-green,
+.forecast-window-row.tone-green,
+.calendar-mini-event.tone-green,
+.calendar-event-card.tone-green,
+.audit-row.tone-green,
+.data-guard-card.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  color: var(--ink);
+  background: var(--green-soft);
+}
+
+.command-module-card[class*="tone-"] span,
+.command-module-card[class*="tone-"] strong,
+.command-module-card[class*="tone-"] small,
+.command-row[class*="tone-"] strong,
+.command-row[class*="tone-"] em,
+.report-action-row[class*="tone-"] strong,
+.report-action-row[class*="tone-"] em,
+.reminder-card[class*="tone-"] strong,
+.reminder-card[class*="tone-"] em,
+.reminder-card[class*="tone-"] p,
+.advisor-card[class*="tone-"] strong,
+.advisor-card[class*="tone-"] em,
+.advisor-card[class*="tone-"] small,
+.advisor-card[class*="tone-"] p,
+.advisor-decision-card[class*="tone-"] strong,
+.advisor-decision-card[class*="tone-"] small,
+.risk-card[class*="tone-"] strong,
+.risk-card[class*="tone-"] em,
+.risk-card[class*="tone-"] small,
+.risk-card[class*="tone-"] p,
+.weekly-decision-card[class*="tone-"] strong,
+.weekly-decision-card[class*="tone-"] small,
+.weekly-agenda-row[class*="tone-"] strong,
+.weekly-agenda-row[class*="tone-"] em,
+.weekly-action-row[class*="tone-"] strong,
+.weekly-action-row[class*="tone-"] em,
+.weekly-action-row[class*="tone-"] small,
+.intake-request-row[class*="tone-"] strong,
+.intake-request-row[class*="tone-"] em,
+.intake-request-row[class*="tone-"] small,
+.bid-row[class*="tone-"] strong,
+.bid-row[class*="tone-"] em,
+.forecast-window-row[class*="tone-"] span,
+.forecast-window-row[class*="tone-"] strong,
+.forecast-window-row[class*="tone-"] small,
+.calendar-mini-event[class*="tone-"] strong,
+.calendar-mini-event[class*="tone-"] em,
+.calendar-event-card[class*="tone-"] strong,
+.calendar-event-card[class*="tone-"] em {
+  color: var(--ink);
+}
+
+.command-module-card[class*="tone-"] small,
+.command-row[class*="tone-"] em,
+.report-action-row[class*="tone-"] em,
+.reminder-card[class*="tone-"] em,
+.reminder-card[class*="tone-"] p,
+.advisor-card[class*="tone-"] em,
+.advisor-card[class*="tone-"] small,
+.risk-card[class*="tone-"] em,
+.risk-card[class*="tone-"] small,
+.weekly-decision-card[class*="tone-"] small,
+.weekly-agenda-row[class*="tone-"] em,
+.weekly-action-row[class*="tone-"] em,
+.weekly-action-row[class*="tone-"] small,
+.intake-request-row[class*="tone-"] em,
+.intake-request-row[class*="tone-"] small,
+.bid-row[class*="tone-"] em,
+.forecast-window-row[class*="tone-"] small,
+.calendar-mini-event[class*="tone-"] em,
+.calendar-event-card[class*="tone-"] em {
+  color: var(--ink-soft);
+}
+
+.command-module-card.tone-teal em,
+.command-row.tone-teal span,
+.report-action-row.tone-teal span,
+.reminder-card.tone-teal span,
+.advisor-card.tone-teal span,
+.advisor-decision-card.tone-teal span,
+.risk-card.tone-teal span,
+.intake-request-row.tone-teal span,
+.bid-row.tone-teal span {
+  color: var(--teal-dark);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.command-module-card.tone-red em,
+.command-row.tone-red span,
+.report-action-row.tone-red span,
+.reminder-card.tone-red span,
+.advisor-card.tone-red span,
+.advisor-decision-card.tone-red span,
+.risk-card.tone-red span,
+.intake-request-row.tone-red span,
+.bid-row.tone-red span {
+  color: var(--red);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.command-module-card.tone-amber em,
+.command-row.tone-amber span,
+.report-action-row.tone-amber span,
+.reminder-card.tone-amber span,
+.advisor-card.tone-amber span,
+.advisor-decision-card.tone-amber span,
+.risk-card.tone-amber span,
+.intake-request-row.tone-amber span,
+.bid-row.tone-amber span {
+  color: #8a4300;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.command-module-card.tone-blue em,
+.command-row.tone-blue span,
+.report-action-row.tone-blue span,
+.reminder-card.tone-blue span,
+.advisor-card.tone-blue span,
+.advisor-decision-card.tone-blue span,
+.risk-card.tone-blue span,
+.intake-request-row.tone-blue span,
+.bid-row.tone-blue span {
+  color: var(--blue);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.command-module-card.tone-green em,
+.command-row.tone-green span,
+.report-action-row.tone-green span,
+.reminder-card.tone-green span,
+.advisor-card.tone-green span,
+.advisor-decision-card.tone-green span,
+.risk-card.tone-green span,
+.intake-request-row.tone-green span,
+.bid-row.tone-green span {
+  color: var(--green);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.signal-legend {
+  display: grid;
+  gap: 8px;
+}
+
+.signal-legend-row {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  gap: 4px 9px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: var(--panel-strong);
+}
+
+.signal-legend-row i {
+  grid-row: span 2;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--teal);
+}
+
+.signal-legend-row strong {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.signal-legend-row span {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.signal-legend-row.tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.signal-legend-row.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.signal-legend-row.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.signal-legend-row.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.signal-legend-row.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.signal-legend-row.tone-red i {
+  background: var(--red);
+}
+
+.signal-legend-row.tone-amber i {
+  background: var(--amber);
+}
+
+.signal-legend-row.tone-blue i {
+  background: var(--blue);
+}
+
+.signal-legend-row.tone-green i {
+  background: var(--green);
+}
+
 .toolbar {
   position: sticky;
   top: 76px;
