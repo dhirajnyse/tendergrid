@@ -1,4 +1,4 @@
-PursuitDesk v48 pursuit advisor upload steps
+PursuitDesk v50 navigation shell upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v48 pursuit advisor upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v48 pursuit advisor
+   PursuitDesk v50 navigation shell
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds Pursuit Advisor, a top-level decision layer that turns Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminder signals into ranked next-best actions, management brief lines, decision prompts, and operating recommendations.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and improves the product navigation shell: Command, Advisor, Weekly Review, Tenders, Projects, Reports, and Membership stay visible, while specialist modules move into a compact Rooms launcher.
 
 Demo login:
 admin@pursuitdesk.app

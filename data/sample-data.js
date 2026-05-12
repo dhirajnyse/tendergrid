@@ -15,7 +15,7 @@ window.SEED_DATA = {
       "email": "admin@pursuitdesk.app",
       "role": "Admin",
       "password": "demo123",
-      "access": ["command", "advisor", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports", "membership"]
+      "access": ["command", "advisor", "review", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports", "membership"]
     },
     {
       "id": "u-editor",
@@ -24,7 +24,7 @@ window.SEED_DATA = {
       "email": "editor@pursuitdesk.app",
       "role": "Editor",
       "password": "demo123",
-      "access": ["command", "advisor", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"]
+      "access": ["command", "advisor", "review", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"]
     },
     {
       "id": "u-viewer",

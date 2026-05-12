@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=48";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=48";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=50";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=50";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -31,9 +31,11 @@
   const ANNUAL_BILLABLE_MONTHS = 10;
   const BILLING_TERMS = ["Monthly", "Annual"];
   const IMPORT_COLUMNS = ["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "sourceSheet"];
+  const PRIMARY_NAV_KEYS = ["command", "advisor", "review", "tenders", "projects", "reports", "membership"];
   const ACCESS_SECTIONS = [
     { key: "command", label: "Command", view: "Command" },
     { key: "advisor", label: "Advisor", view: "Advisor" },
+    { key: "review", label: "Weekly Review", view: "Weekly Review" },
     { key: "intake", label: "Intake", view: "Intake" },
     { key: "import", label: "Import", view: "Import" },
     { key: "governance", label: "Governance", view: "Governance" },
@@ -66,6 +68,13 @@
       stage: "Live pursuit advisor",
       summary: "Next-best actions, management brief, decision prompts, and operating recommendations from live PursuitDesk signals.",
       signal: "Decision layer",
+    },
+    {
+      name: "Weekly Review",
+      code: "WR",
+      stage: "Live review room",
+      summary: "Meeting agenda, owner workload, decision log, action register, and closeout rhythm for weekly management reviews.",
+      signal: "Operating cadence",
     },
     {
       name: "Intake",
@@ -187,6 +196,7 @@
     billingTerm: "Monthly",
     quickSearchOpen: false,
     quickSearch: "",
+    roomsOpen: false,
     tableDensity: "Comfortable",
     trackerMode: "Sheet",
     detailCollapsed: false,
@@ -299,7 +309,7 @@
 
   function defaultAccessForRole(role) {
     if (role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
-    if (role === "Editor") return ["command", "advisor", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"];
+    if (role === "Editor") return ["command", "advisor", "review", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"];
     return ["tenders", "projects"];
   }
 
@@ -316,13 +326,14 @@
       : [];
     if (user.role === "Editor" && requested.length && !requested.includes("command")) requested.unshift("command");
     if (user.role === "Editor" && requested.length && !requested.includes("advisor")) requested.splice(1, 0, "advisor");
-    if (user.role === "Editor" && requested.length && !requested.includes("intake")) requested.splice(2, 0, "intake");
-    if (user.role === "Editor" && requested.length && !requested.includes("import")) requested.splice(3, 0, "import");
-    if (user.role === "Editor" && requested.length && !requested.includes("governance")) requested.splice(4, 0, "governance");
-    if (user.role === "Editor" && requested.length && !requested.includes("bidDesk")) requested.splice(5, 0, "bidDesk");
-    if (user.role === "Editor" && requested.length && !requested.includes("calendar")) requested.splice(6, 0, "calendar");
-    if (user.role === "Editor" && requested.length && !requested.includes("risk")) requested.splice(7, 0, "risk");
-    if (user.role === "Editor" && requested.length && !requested.includes("forecast")) requested.splice(Math.min(requested.length, 12), 0, "forecast");
+    if (user.role === "Editor" && requested.length && !requested.includes("review")) requested.splice(2, 0, "review");
+    if (user.role === "Editor" && requested.length && !requested.includes("intake")) requested.splice(3, 0, "intake");
+    if (user.role === "Editor" && requested.length && !requested.includes("import")) requested.splice(4, 0, "import");
+    if (user.role === "Editor" && requested.length && !requested.includes("governance")) requested.splice(5, 0, "governance");
+    if (user.role === "Editor" && requested.length && !requested.includes("bidDesk")) requested.splice(6, 0, "bidDesk");
+    if (user.role === "Editor" && requested.length && !requested.includes("calendar")) requested.splice(7, 0, "calendar");
+    if (user.role === "Editor" && requested.length && !requested.includes("risk")) requested.splice(8, 0, "risk");
+    if (user.role === "Editor" && requested.length && !requested.includes("forecast")) requested.splice(Math.min(requested.length, 13), 0, "forecast");
     return requested.length ? requested : defaultAccessForRole(user.role);
   }
 
@@ -380,6 +391,10 @@
 
   function isAdvisorSection(view = state.view) {
     return view === "Advisor";
+  }
+
+  function isWeeklyReviewSection(view = state.view) {
+    return view === "Weekly Review";
   }
 
   function isIntakeSection(view = state.view) {
@@ -441,6 +456,7 @@
   function sectionForView(view) {
     if (view === "Command") return "command";
     if (view === "Advisor") return "advisor";
+    if (view === "Weekly Review") return "review";
     if (view === "Intake") return "intake";
     if (view === "Import") return "import";
     if (view === "Governance") return "governance";
@@ -741,10 +757,14 @@
   }
 
   function renderModeButtons() {
+    const visibleSections = ACCESS_SECTIONS.filter((section) => hasSectionAccess(section.key));
+    const primarySections = visibleSections.filter((section) => PRIMARY_NAV_KEYS.includes(section.key));
+    const roomSections = visibleSections.filter((section) => !PRIMARY_NAV_KEYS.includes(section.key));
+    const roomsActive = roomSections.some((section) => section.view === state.view);
     return `
-      <nav class="mode-nav" aria-label="${BRAND_NAME} sections">
-        ${ACCESS_SECTIONS.map((section) => {
-          if (!hasSectionAccess(section.key)) return "";
+      <div class="nav-shell">
+        <nav class="mode-nav" aria-label="${BRAND_NAME} primary sections">
+          ${primarySections.map((section) => {
           const active = state.view === section.view;
           return `
             <button class="mode-btn ${active ? "active" : ""}" type="button" data-view="${section.view}">
@@ -752,8 +772,63 @@
             </button>
           `;
         }).join("")}
-      </nav>
+        </nav>
+        ${
+          roomSections.length
+            ? `
+              <div class="rooms-launcher">
+                <button class="mode-btn rooms-btn ${roomsActive || state.roomsOpen ? "active" : ""}" type="button" data-action="toggle-rooms" aria-expanded="${state.roomsOpen ? "true" : "false"}">
+                  Rooms
+                </button>
+                ${
+                  state.roomsOpen
+                    ? `
+                      <div class="rooms-menu" role="menu" aria-label="${BRAND_NAME} specialist rooms">
+                        <div class="rooms-menu-head">
+                          <span>Specialist rooms</span>
+                          <button class="mini-btn" type="button" data-action="close-rooms">Close</button>
+                        </div>
+                        <div class="rooms-menu-grid">
+                          ${roomSections
+                            .map((section) => {
+                              const active = state.view === section.view;
+                              return `
+                                <button class="rooms-menu-card ${active ? "active" : ""}" type="button" data-view="${escapeHtml(section.view)}" role="menuitem">
+                                  <span>${escapeHtml(section.label)}</span>
+                                  <small>${escapeHtml(roomNavNote(section.view))}</small>
+                                </button>
+                              `;
+                            })
+                            .join("")}
+                        </div>
+                      </div>
+                    `
+                    : ""
+                }
+              </div>
+            `
+            : ""
+        }
+      </div>
     `;
+  }
+
+  function roomNavNote(view) {
+    return {
+      Intake: "Request front door",
+      Import: "Excel import control",
+      Governance: "Audit and access",
+      "Bid Desk": "Bid/no-bid execution",
+      Calendar: "Dates and pressure",
+      Risk: "Risk register",
+      "Tenders Insights": "Tender analytics",
+      "Project Insights": "Project analytics",
+      Forecast: "Weighted pipeline",
+      Clients: "Relationship heat",
+      Contracts: "Commercial proof",
+      Documents: "Evidence packs",
+      Reminders: "Follow-up queue",
+    }[view] || "Operating room";
   }
 
   function sectionRecords(view = state.view) {
@@ -803,6 +878,19 @@
         ["Score", `${advisor.advisorScore}%`],
         ["Actions", advisor.recommendations.length],
         ["Now", advisor.doNow.length],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isWeeklyReviewSection(view)) {
+      const review = buildWeeklyReviewModel();
+      const boxes = [
+        ["Ready", `${review.reviewScore}%`],
+        ["Agenda", review.agenda.length],
+        ["Actions", review.actionRegister.length],
       ];
       return `
         <div class="header-summary">
@@ -985,7 +1073,7 @@
   }
 
   function renderMetricsForView(view, metrics) {
-    if (isInsightSection(view) || view === "Membership" || isCommandSection(view) || isAdvisorSection(view) || isIntakeSection(view) || isImportSection(view) || isGovernanceSection(view) || isBidDeskSection(view) || isCalendarSection(view) || isRiskSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isReportSection(view)) return "";
+    if (isInsightSection(view) || view === "Membership" || isCommandSection(view) || isAdvisorSection(view) || isWeeklyReviewSection(view) || isIntakeSection(view) || isImportSection(view) || isGovernanceSection(view) || isBidDeskSection(view) || isCalendarSection(view) || isRiskSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isReportSection(view)) return "";
     const cards = isProjectSection(view)
       ? [
           ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`],
@@ -1024,6 +1112,8 @@
         ? "Command center"
         : state.view === "Advisor"
         ? "Pursuit advisor"
+        : state.view === "Weekly Review"
+        ? "Weekly review room"
         : state.view === "Intake"
         ? "Intake desk"
         : state.view === "Import"
@@ -1064,6 +1154,8 @@
         ? "One morning screen for operating priorities, pursuit health, evidence gaps, client heat, contract movement, and management-ready actions."
         : state.view === "Advisor"
         ? "Recommended next actions, decision prompts, and management talking points generated from the live PursuitDesk rooms."
+        : state.view === "Weekly Review"
+        ? "A meeting-ready operating room for weekly agenda, owner workload, decisions, follow-ups, and closeout discipline."
         : state.view === "Intake"
         ? "Capture new tender and project requests through a controlled front door, validate required fields, and convert clean requests into live workspace rows."
         : state.view === "Import"
@@ -1134,6 +1226,8 @@
               ? renderCommandCenterPage()
             : state.view === "Advisor"
               ? renderPursuitAdvisorPage()
+            : state.view === "Weekly Review"
+              ? renderWeeklyReviewPage()
             : state.view === "Intake"
               ? renderIntakeDeskPage()
             : state.view === "Import"
@@ -2583,6 +2677,7 @@
     const calendar = buildReviewCalendarModel();
     const risk = buildRiskControlModel();
     const advisor = buildPursuitAdvisorModel();
+    const weeklyReview = buildWeeklyReviewModel();
     const openRecords = records.filter((record) => !isClosedRecord(record));
     const closedGood = records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length;
     const closedBad = records.filter((record) => ["Cancelled", "Regret"].includes(record.status)).length;
@@ -2608,6 +2703,14 @@
         note: `${advisor.doNow.length} do-now / ${advisor.recommendations.length} recommendations`,
         signal: `${formatCompactMoney(advisor.recommendationValue)} touched`,
         tone: "green",
+      },
+      {
+        label: "Weekly Review",
+        view: "Weekly Review",
+        value: `${weeklyReview.reviewScore}%`,
+        note: `${weeklyReview.actionRegister.length} actions / ${weeklyReview.agenda.length} agenda blocks`,
+        signal: `${formatCompactMoney(weeklyReview.reviewValue)} in review`,
+        tone: "teal",
       },
       {
         label: "Bid Desk",
@@ -2734,6 +2837,7 @@
       calendar,
       risk,
       advisor,
+      weeklyReview,
       winRate,
       healthScore,
       actionScore,
@@ -2768,7 +2872,7 @@
             <p>Start here, clear the pressure, then jump into the room that needs movement. The command center reads from the same records, so every signal stays tied to the actual tender or project.</p>
             <div class="command-actions">
               <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
-              <button class="ghost-btn" type="button" data-view="Risk">Open risk control</button>
+              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
               <button class="ghost-btn" type="button" data-view="Documents">Review evidence gaps</button>
             </div>
           </div>
@@ -4454,6 +4558,401 @@
   function renderAdvisorPlaybook(rows) {
     return `
       <div class="advisor-playbook">
+        ${rows
+          .map(
+            ([title, note]) => `
+              <div>
+                <strong>${escapeHtml(title)}</strong>
+                <span>${escapeHtml(note)}</span>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function buildWeeklyReviewModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const advisor = buildPursuitAdvisorModel();
+    const report = buildReportModel();
+    const reminders = buildReminderModel();
+    const calendar = buildReviewCalendarModel();
+    const risk = buildRiskControlModel();
+    const bidDesk = buildBidDeskModel();
+    const forecast = buildForecastModel();
+    const contracts = buildContractsModel();
+    const documents = buildDocumentsModel();
+    const governance = buildGovernanceModel();
+    const reviewDate = new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+    const commercialScore = contracts.records.length
+      ? Math.max(0, Math.round(((contracts.records.length - contracts.gapCount) / contracts.records.length) * 100))
+      : 100;
+    const reviewScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          advisor.advisorScore * 0.24 +
+            risk.controlScore * 0.18 +
+            calendar.focusScore * 0.16 +
+            forecast.confidence * 0.14 +
+            documents.sourceCoverage * 0.12 +
+            governance.governanceScore * 0.1 +
+            commercialScore * 0.06,
+        ),
+      ),
+    );
+    const actionRegister = advisor.recommendations.slice(0, 14).map((item, index) => {
+      const record = item.record;
+      return {
+        rank: index + 1,
+        source: item.source,
+        owner: record?.owner || (item.lane === "Do now" ? "Management" : "Unassigned"),
+        title: item.title,
+        action: item.action,
+        due: record ? dueLabel(recordDueDays(record)) : "This review",
+        value: record ? formatCompactMoney(record.valueAmount) : item.impact,
+        client: record ? accountLabelForRecord(record) : "Operating team",
+        tone: item.tone,
+        record,
+        view: item.view,
+      };
+    });
+    const decisionLog = [
+      {
+        label: "Bid/no-bid",
+        value: bidDesk.watchRows.length,
+        ask: bidDesk.watchRows.length ? "Move watch items into Bid or No-bid." : "No watch decisions waiting.",
+        view: "Bid Desk",
+        tone: bidDesk.watchRows.length ? "amber" : "green",
+      },
+      {
+        label: "Critical risk",
+        value: risk.critical.length,
+        ask: risk.critical.length ? "Confirm owners, next date, and mitigation for red risks." : "No critical risks in this review.",
+        view: "Risk",
+        tone: risk.critical.length ? "red" : "green",
+      },
+      {
+        label: "No-date records",
+        value: calendar.noDate.length,
+        ask: calendar.noDate.length ? "Assign review dates so work enters the calendar rhythm." : "Calendar coverage is clean.",
+        view: "Calendar",
+        tone: calendar.noDate.length ? "blue" : "green",
+      },
+      {
+        label: "Commercial proof",
+        value: contracts.gapCount,
+        ask: contracts.gapCount ? "Close agreement, LOA, value, or handover proof gaps." : "Commercial register is controlled.",
+        view: "Contracts",
+        tone: contracts.gapCount ? "amber" : "green",
+      },
+      {
+        label: "Evidence gaps",
+        value: documents.totalGaps,
+        ask: documents.totalGaps ? "Complete source, agreement, LOA, date, and negotiation evidence." : "Document evidence is controlled.",
+        view: "Documents",
+        tone: documents.totalGaps ? "blue" : "green",
+      },
+      {
+        label: "Forecast risk",
+        value: forecast.atRiskItems.length,
+        ask: forecast.atRiskItems.length ? "Clean past-due, no-date, and value assumptions before reporting." : "Forecast risk is contained.",
+        view: "Forecast",
+        tone: forecast.atRiskItems.length ? "amber" : "green",
+      },
+    ];
+    const agenda = [
+      {
+        slot: "00-05",
+        title: "Open the room",
+        note: `${reviewScore}% review readiness with ${openRecords.length} open records and ${advisor.recommendations.length} advisor actions.`,
+        view: "Command",
+        tone: "green",
+      },
+      {
+        slot: "05-15",
+        title: "Red and overdue",
+        note: `${risk.critical.length} critical risks, ${risk.high.length} high risks, and ${reminders.overdue} overdue follow-ups.`,
+        view: "Risk",
+        tone: risk.critical.length ? "red" : "amber",
+      },
+      {
+        slot: "15-25",
+        title: "Bid decisions",
+        note: `${bidDesk.watchRows.length} watch decisions, ${bidDesk.due14} due-soon submissions, ${bidDesk.readyRows.length} packs ready.`,
+        view: "Bid Desk",
+        tone: bidDesk.watchRows.length ? "amber" : "green",
+      },
+      {
+        slot: "25-35",
+        title: "Dates and forecast",
+        note: `${calendar.noDate.length} no-date records, ${calendar.next30.length} next-30 events, ${forecast.atRiskItems.length} forecast risks.`,
+        view: "Calendar",
+        tone: calendar.noDate.length ? "blue" : "green",
+      },
+      {
+        slot: "35-45",
+        title: "Commercial evidence",
+        note: `${contracts.gapCount} commercial gaps and ${documents.totalGaps} document gaps before management pack sharing.`,
+        view: "Contracts",
+        tone: contracts.gapCount || documents.totalGaps ? "amber" : "green",
+      },
+      {
+        slot: "45-55",
+        title: "Owner commitments",
+        note: `${actionRegister.length} ranked actions need owner, date, and closeout status before the next review.`,
+        view: "Reminders",
+        tone: "teal",
+      },
+    ];
+    const ownerRows = advisor.ownerRows.length
+      ? advisor.ownerRows
+      : advisorBreakdown(actionRegister, (item) => item.owner, 6);
+    const sourceRows = advisor.sourceRows.length
+      ? advisor.sourceRows
+      : advisorBreakdown(actionRegister, (item) => item.source, 6);
+    const briefLines = [
+      `${records.length} records are in the review base; ${openRecords.length} remain open across tenders and projects.`,
+      `${advisor.doNow.length} do-now actions should be cleared before the team moves into routine updates.`,
+      `${formatCompactMoney(advisor.recommendationValue)} is tied to the ranked action register for this weekly cycle.`,
+      `${forecast.confidence}% forecast confidence and ${documents.sourceCoverage}% document source coverage shape the reporting posture.`,
+    ];
+    const closeout = [
+      ["Owners", "Every red, amber, and watch item has a named owner before the meeting closes."],
+      ["Dates", "Every open item has a next review, submission, or delivery date."],
+      ["Decisions", "Watch bids are converted into Bid, No-bid, or a dated decision hold."],
+      ["Evidence", "Commercial and document gaps are assigned to the next owner."],
+      ["Report", "Reports room is ready for print once action owners are accepted."],
+    ];
+    return {
+      reviewDate,
+      reviewScore,
+      advisor,
+      report,
+      risk,
+      calendar,
+      bidDesk,
+      forecast,
+      contracts,
+      documents,
+      governance,
+      agenda,
+      actionRegister,
+      decisionLog,
+      ownerRows,
+      sourceRows,
+      briefLines,
+      closeout,
+      reviewValue: advisor.recommendationValue,
+      openRecords: openRecords.length,
+    };
+  }
+
+  function renderWeeklyReviewPage() {
+    const model = buildWeeklyReviewModel();
+    return `
+      <section class="weekly-review-room">
+        <section class="weekly-console">
+          <div>
+            <span class="panel-label">Weekly review room</span>
+            <h2>Turn the weekly meeting into an operating system.</h2>
+            <p>Generated on ${escapeHtml(model.reviewDate)} from Advisor, Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, Reminders, and Reports.</p>
+            <div class="weekly-actions">
+              <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+              <button class="ghost-btn" type="button" data-action="print-report">Print review</button>
+            </div>
+          </div>
+          <div class="weekly-score-card">
+            <span>Review readiness</span>
+            <strong>${model.reviewScore}%</strong>
+            <small>${model.actionRegister.length} action lines / ${model.decisionLog.reduce((sum, item) => sum + Number(item.value || 0), 0)} decision signals</small>
+          </div>
+        </section>
+
+        <div class="weekly-kpis">
+          ${renderInsightKpi("Review value", formatCompactMoney(model.reviewValue), "Value connected to the action register")}
+          ${renderInsightKpi("Do-now actions", `${model.advisor.doNow.length}`, "Clear before routine updates")}
+          ${renderInsightKpi("Open records", `${model.openRecords}`, "Tenders and projects still moving")}
+          ${renderInsightKpi("Forecast confidence", `${model.forecast.confidence}%`, "Weighted by dates, values, and status quality")}
+        </div>
+
+        <div class="weekly-layout">
+          <section class="weekly-main">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Meeting agenda</span>
+                  <h3>55-minute review flow</h3>
+                </div>
+                <span>${model.agenda.length} blocks</span>
+              </div>
+              ${renderWeeklyAgenda(model.agenda)}
+            </article>
+
+            <article class="info-panel weekly-register-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Action register</span>
+                  <h3>Owner-ready follow-through</h3>
+                </div>
+                <span>${model.actionRegister.length} ranked</span>
+              </div>
+              ${renderWeeklyActionRegister(model.actionRegister)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Leadership decisions</span>
+                  <h3>What needs a yes, no, or owner</h3>
+                </div>
+              </div>
+              ${renderWeeklyDecisionLog(model.decisionLog)}
+            </article>
+          </section>
+
+          <aside class="weekly-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Opening brief</span>
+                  <h3>Read this first</h3>
+                </div>
+              </div>
+              ${renderWeeklyBrief(model.briefLines)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Owner focus</span>
+                  <h3>Where help is needed</h3>
+                </div>
+              </div>
+              ${renderRankBars(model.ownerRows, "teal")}
+            </article>
+          </aside>
+        </div>
+
+        <div class="weekly-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Source mix</span>
+                <h3>Signal origin</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.sourceRows, "green")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Closeout checklist</span>
+                <h3>Before leaving the room</h3>
+              </div>
+            </div>
+            ${renderWeeklyCloseout(model.closeout)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Report handoff</span>
+                <h3>Management pack status</h3>
+              </div>
+            </div>
+            <div class="weekly-posture">
+              <strong>${model.reviewScore >= 72 ? "Ready to run" : model.reviewScore >= 48 ? "Run with controls" : "Needs intervention"}</strong>
+              <span>${model.reviewScore >= 72 ? "Use Reports after owner commitments are accepted." : model.reviewScore >= 48 ? "Clear red risks, watch bids, dates, and evidence gaps before sharing." : "Keep the review tactical until core controls are repaired."}</span>
+              <button class="mini-btn" type="button" data-view="Reports">Open weekly pack</button>
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderWeeklyAgenda(rows) {
+    return `
+      <div class="weekly-agenda">
+        ${rows
+          .map(
+            (row) => `
+              <button class="weekly-agenda-row tone-${escapeHtml(row.tone)}" type="button" data-view="${escapeHtml(row.view)}">
+                <span>${escapeHtml(row.slot)}</span>
+                <strong>${escapeHtml(row.title)}</strong>
+                <em>${escapeHtml(row.note)}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderWeeklyActionRegister(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No action register items for this review.</div>`;
+    return `
+      <div class="weekly-action-list">
+        ${rows.map(renderWeeklyActionRow).join("")}
+      </div>
+    `;
+  }
+
+  function renderWeeklyActionRow(row) {
+    const attrs = row.record
+      ? `data-action="open-related-record" data-id="${escapeHtml(row.record.id)}"`
+      : `data-view="${escapeHtml(row.view)}"`;
+    return `
+      <button class="weekly-action-row tone-${escapeHtml(row.tone)}" type="button" ${attrs}>
+        <span>${row.rank}</span>
+        <div>
+          <strong>${escapeHtml(row.title)}</strong>
+          <em>${escapeHtml(row.action)}</em>
+          <small>${escapeHtml([row.owner, row.client, row.due, row.value].filter(Boolean).join(" / "))}</small>
+        </div>
+      </button>
+    `;
+  }
+
+  function renderWeeklyDecisionLog(rows) {
+    return `
+      <div class="weekly-decision-grid">
+        ${rows
+          .map(
+            (row) => `
+              <button class="weekly-decision-card tone-${escapeHtml(row.tone)}" type="button" data-view="${escapeHtml(row.view)}">
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${escapeHtml(row.value)}</strong>
+                <small>${escapeHtml(row.ask)}</small>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderWeeklyBrief(rows) {
+    return `
+      <div class="weekly-brief-list">
+        ${rows.map((row) => `<p>${escapeHtml(row)}</p>`).join("")}
+      </div>
+    `;
+  }
+
+  function renderWeeklyCloseout(rows) {
+    return `
+      <div class="weekly-closeout">
         ${rows
           .map(
             ([title, note]) => `
@@ -9343,6 +9842,18 @@
       return;
     }
 
+    if (action === "toggle-rooms") {
+      state.roomsOpen = !state.roomsOpen;
+      render();
+      return;
+    }
+
+    if (action === "close-rooms") {
+      state.roomsOpen = false;
+      render();
+      return;
+    }
+
     if (action === "review-seats") {
       document.getElementById("membershipSeatSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
@@ -9354,6 +9865,7 @@
         return;
       }
       state.view = button.dataset.view;
+      state.roomsOpen = false;
       if (state.view === "Tenders Insights") state.insightLens = "Tendering";
       if (state.view === "Project Insights") state.insightLens = "Projects";
       const typeOptions = isProjectSection() ? ["All", "Project"] : ["All", "EOI", "Tender"];
@@ -9367,6 +9879,7 @@
       state.user = null;
       state.quickSearchOpen = false;
       state.quickSearch = "";
+      state.roomsOpen = false;
       persistSession(null);
       render();
       return;
@@ -9499,6 +10012,11 @@
   });
 
   document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && state.roomsOpen) {
+      state.roomsOpen = false;
+      render();
+      return;
+    }
     if (event.key === "Escape" && state.quickSearchOpen) {
       state.quickSearchOpen = false;
       state.quickSearch = "";
