@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=68";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=68";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=69";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=69";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -8921,25 +8921,27 @@
         <div class="work-scope-privacy-row">
           <div>
             <span>Operational privacy</span>
-            <strong>Commercial fields locked</strong>
-            <small>${commercialRecords} records protected from the frontline sheet.</small>
+            <strong>${commercialRecords} protected records</strong>
+            <small>Value, agreement, and negotiation fields stay in insights.</small>
           </div>
           <div>
             <span>Frontline readiness</span>
-            <strong>${coreReady}/${openRecords.length || 0} ready</strong>
-            <small>Core tracker fields remain visible for daily updates.</small>
+            <strong>${coreReady}/${openRecords.length || 0} core ready</strong>
+            <small>Reference, client, title, status, owner, category, and date.</small>
           </div>
           <div>
             <span>Access split</span>
-            <strong>${operationalUsers} ops / ${commercialUsers} commercial</strong>
-            <small>Admins control who sees management rooms.</small>
+            <strong>${operationalUsers} ops / ${commercialUsers} mgmt</strong>
+            <small>Admins control who sees tracker rooms and insight rooms.</small>
           </div>
-          <button class="ghost-btn" type="button" data-view="${escapeHtml(insightView)}" ${canAccessView(insightView) ? "" : "disabled"}>
-            Open ${escapeHtml(insightView)}
+          <button class="ghost-btn work-scope-insight-btn" type="button" data-view="${escapeHtml(insightView)}" aria-label="Open ${escapeHtml(insightView)}" ${canAccessView(insightView) ? "" : "disabled"}>
+            <span>Management handoff</span>
+            <strong>Open Insights</strong>
+            <small>${escapeHtml(insightView)}</small>
           </button>
         </div>
         <div class="work-scope-head">
-          <span>Frontline work scopes</span>
+          <span>Work scopes</span>
           <strong>${escapeHtml(activeLane === "All lanes" ? "All records" : activeLane)}</strong>
         </div>
         <div class="work-scope-buttons">
@@ -9895,7 +9897,7 @@
       const days = recordDueDays(item);
       return days !== null && days < 0;
     });
-    const related = sorted.filter((item) => item.id !== record.id).slice(0, 5);
+    const related = sorted.filter((item) => item.id !== record.id).slice(0, 3);
     const unitRecords = memoryRecords.filter((item) => normalize(item.client) === unitKey);
     const tenderCount = memoryRecords.filter((item) => item.type === "Tender" || item.type === "EOI").length;
     const projectCount = memoryRecords.filter((item) => item.type === "Project").length;
@@ -9992,11 +9994,17 @@
       `;
     }
     const rounds = record.rounds || [];
+    const brief = buildRecordBrief(record);
     return `
       <aside class="detail-panel">
         <div class="detail-head">
           <h2>${escapeHtml(record.title || "Untitled record")}</h2>
           <p>${escapeHtml(record.reference || "No reference")} / ${escapeHtml(record.client || "No client")}</p>
+        </div>
+        <div class="detail-command-strip">
+          <div><span>Status</span><strong><span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span></strong></div>
+          <div><span>Owner</span><strong>${escapeHtml(record.owner || "No owner")}</strong></div>
+          <div><span>Due signal</span><strong>${escapeHtml(brief.dueLabel)}</strong></div>
         </div>
         <div class="detail-body">
           ${renderClientMemory(record)}

@@ -55,6 +55,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Tracker pages now use a compact command surface that combines privacy, readiness, access split, and work scopes above the sheet while moving owner/action intelligence below the table.
 - Tracker pages now use a sheet-first density pass: compact KPI tiles and shorter command controls bring the editable records higher on desktop.
 - Tracker sheets now remove the duplicated column-guide row and rely on the real sticky table header for a cleaner spreadsheet feel.
+- v69 tightens the tracker surface with a denser toolbar, slimmer work-scope command strip, shorter insight handoff, and a compact record profile strip in the detail panel.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
