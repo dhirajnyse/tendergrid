@@ -1,4 +1,4 @@
-PursuitDesk v65 frontline work scopes upload steps
+PursuitDesk v67 sheet-first tracker density upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v65 frontline work scopes upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v65 frontline work scopes
+   PursuitDesk v67 sheet-first tracker density
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, Frontline Work Scopes in Tenders and Projects, an Owner Focus panel for operational workload, and the existing commercial privacy and Membership access controls.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, compact tracker KPI tiles, shorter privacy/work-scope controls, and a sheet-first tracker layout so daily users reach the editable records faster.
 
 Demo login:
 admin@pursuitdesk.app

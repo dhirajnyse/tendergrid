@@ -52,6 +52,8 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Tenders and Projects now include an operational privacy panel that confirms commercial fields are locked away from the frontline tracker while showing readiness, user split, and a controlled Insights handoff.
 - Tenders and Projects now include Frontline Work Scopes for all records, due watch, no date, missing owner, and ready rhythm so daily users can jump straight to the right operational list.
 - Tenders and Projects now include an Owner Focus panel showing the highest-load owners, due-watch counts, no-date counts, and one-click owner filtering.
+- Tracker pages now use a compact command surface that combines privacy, readiness, access split, and work scopes above the sheet while moving owner/action intelligence below the table.
+- Tracker pages now use a sheet-first density pass: compact KPI tiles and shorter command controls bring the editable records higher on desktop.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.

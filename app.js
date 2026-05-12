@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=65";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=65";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=67";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=67";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -1208,7 +1208,7 @@
           ["Due watch", metrics.dueWatch, "Past due and next 30 days", "amber"],
         ];
     return `
-      <section class="analytics">
+      <section class="analytics tracker-kpi-strip">
         ${cards
           .map(
             ([label, value, note, tone]) => `
@@ -8777,15 +8777,7 @@
             </div>
           </section>
 
-          ${renderTrackerPrivacyPanel(counterRecords)}
-
           ${renderWorkScopePanel(counterRecords)}
-
-          ${renderTrackerFocusStrip(counterRecords)}
-
-          ${renderOwnerFocusPanel(counterRecords)}
-
-          ${renderActionQueue(records)}
 
           <div class="table-panel">
             <div class="table-head">
@@ -8823,6 +8815,10 @@
                   </div>`
             }
           </div>
+
+          ${renderOwnerFocusPanel(counterRecords)}
+
+          ${renderActionQueue(records)}
         </section>
 
         ${state.detailCollapsed ? "" : renderDetail(selected)}
@@ -8922,8 +8918,38 @@
   function renderWorkScopePanel(records) {
     const rows = workScopeRows(records);
     const activeLane = state.filters.lane || "All lanes";
+    const insightView = isProjectSection() ? "Project Insights" : "Tenders Insights";
+    const sectionKey = sectionForView(state.view);
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const operationalUsers = users.filter((user) => normalizeUserAccess(user).includes(sectionKey)).length;
+    const commercialUsers = users.filter(userHasCommercialAccess).length;
+    const commercialRecords = records.filter(recordHasCommercialFields).length;
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const coreReady = openRecords.filter(
+      (record) => record.reference && record.client && record.title && record.status && record.owner && record.category && record.endDate,
+    ).length;
     return `
       <section class="work-scope-panel" aria-label="${escapeHtml(state.view)} work scopes">
+        <div class="work-scope-privacy-row">
+          <div>
+            <span>Operational privacy</span>
+            <strong>Commercial fields locked</strong>
+            <small>${commercialRecords} records protected from the frontline sheet.</small>
+          </div>
+          <div>
+            <span>Frontline readiness</span>
+            <strong>${coreReady}/${openRecords.length || 0} ready</strong>
+            <small>Core tracker fields remain visible for daily updates.</small>
+          </div>
+          <div>
+            <span>Access split</span>
+            <strong>${operationalUsers} ops / ${commercialUsers} commercial</strong>
+            <small>Admins control who sees management rooms.</small>
+          </div>
+          <button class="ghost-btn" type="button" data-view="${escapeHtml(insightView)}" ${canAccessView(insightView) ? "" : "disabled"}>
+            Open ${escapeHtml(insightView)}
+          </button>
+        </div>
         <div class="work-scope-head">
           <span>Frontline work scopes</span>
           <strong>${escapeHtml(activeLane === "All lanes" ? "All records" : activeLane)}</strong>
