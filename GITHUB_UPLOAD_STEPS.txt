@@ -1,4 +1,4 @@
-PursuitDesk v67 sheet-first tracker density upload steps
+PursuitDesk v68 clean sheet header upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v67 sheet-first tracker density upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v67 sheet-first tracker density
+   PursuitDesk v68 clean sheet header
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, compact tracker KPI tiles, shorter privacy/work-scope controls, and a sheet-first tracker layout so daily users reach the editable records faster.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, a cleaner tracker sheet header, removal of the duplicated column-guide row, and a stronger sticky table header for the spreadsheet view.
 
 Demo login:
 admin@pursuitdesk.app

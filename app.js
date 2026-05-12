@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=67";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=67";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=68";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=68";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -8789,18 +8789,6 @@
                 <span>${records.length} visible</span>
                 <strong>${trackerMeta}</strong>
               </div>
-              ${
-                isBoardMode || isTimelineMode
-                  ? ""
-                  : `<div class="column-guide" aria-hidden="true">
-                <span>Reference</span>
-                <span>Client</span>
-                <span>Title</span>
-                <span>Status</span>
-                <span>Due / Last</span>
-                <span>Actions</span>
-              </div>`
-              }
             </div>
             ${
               isBoardMode
