@@ -7,6 +7,7 @@ window.SEED_DATA = {
     "pricePerUser": 5,
     "billingCycle": "monthly"
   },
+  "accessModelVersion": 53,
   "users": [
     {
       "id": "u-admin",
@@ -24,7 +25,7 @@ window.SEED_DATA = {
       "email": "editor@pursuitdesk.app",
       "role": "Editor",
       "password": "demo123",
-      "access": ["command", "advisor", "review", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"]
+      "access": ["tenders", "projects"]
     },
     {
       "id": "u-viewer",

@@ -24,6 +24,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Intake Desk for controlled tender/project request capture, required-field validation, priority scoring, rework routing, and conversion into live records.
 - Import Studio for CSV or Excel-copied rows, template download, source workbook health, field coverage, duplicate reference checks, missing-field cleanup, preview before commit, and controlled clean-row import.
 - Governance Desk for audit trail, high-value review queue, access control visibility, policy health checks, and review approvals.
+- Governance Data Architecture panel separates Operational Tracker, Commercial Intelligence, and Governance Evidence layers with readiness, users, fields, and guard checks.
 - Bid Desk for bid/no-bid decisions, submission readiness scoring, pack-ready status, deadline pressure, low-readiness cleanup, and audit-backed tender execution.
 - Review Calendar for overdue work, this-week movement, next-30-day pressure, eight-week planning, high-value diary checks, and no-date cleanup.
 - Risk Control Room for schedule, bid, commercial, delivery, value, and data risks with severity lanes, risk exposure, heatmap, critical queue, and mitigation rhythm.
@@ -42,7 +43,12 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Tenders and Projects are operational trackers only: commercial values, pricing, and negotiation money stay out of frontline worklists and live inside Insights, Forecast, Contracts, Reports, Advisor, and management rooms.
 - Monthly and annual prepaid billing views, with annual showing a two-month saving.
 - Admin-managed section access for each user across Command, Advisor, Weekly Review, Intake, Import, Governance, Bid Desk, Calendar, Risk, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, Reports, and Membership Model.
+- New users now default to operational tracker access only, while admins can deliberately add Insights, Forecast, Contracts, Reports, Governance, Import, Documents, or Membership access.
 - Dedicated Membership Model page with top-level product navigation, subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
+- Membership access blueprints show Operations User, Pursuit Manager, and Control Admin templates so buyers can understand who should see operational, commercial, and governance rooms.
+- Admins can apply those access templates directly to users from the Membership access table, with changes written into the audit trail.
+- Admins can preview any non-admin user's workspace from Membership, seeing the exact enabled navigation and access profile with a clear Exit Preview control.
+- Demo Editor now starts as an operations-only user for realistic frontline testing, while Admin keeps full workspace access.
 - Platform roadmap section showing how PursuitDesk can grow into future modules for contracts, clients, documents, reminders, and reports while keeping tenders and projects as the current foundation.
 - Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.
 - Main section navigation resets the viewport to the top so Tenders, Projects, Insights, and Membership never open halfway down the page.

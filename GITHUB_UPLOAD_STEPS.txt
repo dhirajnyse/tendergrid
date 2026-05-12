@@ -1,4 +1,4 @@
-PursuitDesk v51 commercial separation upload steps
+PursuitDesk v54 access preview upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v51 commercial separation upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v51 commercial separation
+   PursuitDesk v54 access preview
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and separates frontline operations from commercial analytics: Tenders and Projects now work as clean operational trackers, while value, pricing, and commercial analysis stay inside Insights and management rooms.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds Admin Access Preview in Membership: admins can preview any non-admin user's workspace, confirm the visible navigation and access profile, then exit back to admin control.
 
 Demo login:
 admin@pursuitdesk.app

@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=51";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=51";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=54";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=54";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -29,6 +29,7 @@
   const BILLING_PRICE_PER_USER = 5;
   const BUSINESS_PLUS_BASE = 49;
   const ANNUAL_BILLABLE_MONTHS = 10;
+  const ACCESS_MODEL_VERSION = 53;
   const BILLING_TERMS = ["Monthly", "Annual"];
   const IMPORT_COLUMNS = ["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "sourceSheet"];
   const PRIMARY_NAV_KEYS = ["command", "advisor", "review", "tenders", "projects", "reports", "membership"];
@@ -53,6 +54,64 @@
     { key: "reminders", label: "Reminders", view: "Reminders" },
     { key: "reports", label: "Reports", view: "Reports" },
     { key: "membership", label: "Membership Model", view: "Membership" },
+  ];
+  const DEFAULT_OPERATION_ACCESS_KEYS = ["tenders", "projects"];
+  const COMMERCIAL_ACCESS_KEYS = ["tenderInsights", "projectInsights", "forecast", "clients", "contracts", "reports", "advisor", "command"];
+  const GOVERNANCE_ACCESS_KEYS = ["governance", "import", "documents", "membership"];
+  const DATA_ARCHITECTURE_LAYERS = [
+    {
+      key: "operations",
+      label: "Operational tracker",
+      owner: "Frontline team",
+      tone: "teal",
+      sections: ["Tenders", "Projects"],
+      fields: ["Reference", "Client", "Title", "Status", "Category", "Owner", "Start date", "Due / last date"],
+      rule: "Daily users work the record without value, pricing, agreement, or negotiation money.",
+    },
+    {
+      key: "commercial",
+      label: "Commercial intelligence",
+      owner: "Managers",
+      tone: "amber",
+      sections: ["Tenders Insights", "Project Insights", "Forecast", "Contracts", "Reports"],
+      fields: ["Value", "Currency", "Negotiation amounts", "Agreement no", "LOA", "Forecast weight", "Commercial gaps"],
+      rule: "Commercial fields stay in controlled analysis and review rooms.",
+    },
+    {
+      key: "governance",
+      label: "Governance evidence",
+      owner: "Admin / control",
+      tone: "blue",
+      sections: ["Governance", "Import", "Documents", "Membership"],
+      fields: ["Source workbook", "Source sheet", "Audit trail", "Access rights", "Review status", "Billing seats"],
+      rule: "Trust fields explain where the data came from, who can see it, and what changed.",
+    },
+  ];
+  const ACCESS_BLUEPRINTS = [
+    {
+      key: "operations",
+      label: "Operations user",
+      access: ["tenders", "projects"],
+      sections: ["Tenders", "Projects"],
+      commercial: "No commercial access",
+      note: "Best for coordinators who update status, owner, dates, and notes.",
+    },
+    {
+      key: "manager",
+      label: "Pursuit manager",
+      access: ["command", "advisor", "review", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "reminders", "reports"],
+      sections: ["Tenders", "Tenders Insights", "Projects", "Project Insights", "Reports"],
+      commercial: "Commercial dashboards",
+      note: "Best for managers who review value, forecast, and pipeline decisions.",
+    },
+    {
+      key: "control",
+      label: "Control admin",
+      access: ["command", "governance", "import", "documents", "membership", "reports"],
+      sections: ["Governance", "Import", "Documents", "Membership"],
+      commercial: "Access and trust control",
+      note: "Best for admins who manage users, imports, audit trail, and evidence.",
+    },
   ];
   const PLATFORM_MODULES = [
     {
@@ -203,6 +262,7 @@
     importText: "",
     importPreview: null,
     importMessage: "",
+    previewAdmin: null,
   };
 
   function clone(value) {
@@ -288,6 +348,7 @@
       "u-editor": [`${BRAND_NAME} Editor`, `editor@${BRAND_DOMAIN}`],
       "u-viewer": [`${BRAND_NAME} Viewer`, `viewer@${BRAND_DOMAIN}`],
     };
+    const shouldMigrateAccess = Number(data.accessModelVersion || 0) < ACCESS_MODEL_VERSION;
     data.company = {
       ...data.company,
       billingCurrency: BILLING_CURRENCY,
@@ -296,9 +357,16 @@
     };
     data.users = data.users.map((user) => {
       const demo = demoUsers[user.id];
-      const normalized = demo ? { ...user, name: demo[0], email: demo[1] } : user;
+      const migratedAccess =
+        shouldMigrateAccess && user.id === "u-editor"
+          ? DEFAULT_OPERATION_ACCESS_KEYS
+          : shouldMigrateAccess && user.id === "u-viewer"
+            ? DEFAULT_OPERATION_ACCESS_KEYS
+            : user.access;
+      const normalized = demo ? { ...user, name: demo[0], email: demo[1], access: migratedAccess } : { ...user, access: migratedAccess };
       return { ...normalized, access: normalizeUserAccess(normalized) };
     });
+    data.accessModelVersion = ACCESS_MODEL_VERSION;
     data.audit = Array.isArray(data.audit) && data.audit.length ? data.audit : seedAuditFromRecords(data.records);
     data.governanceReviews = data.governanceReviews && typeof data.governanceReviews === "object" ? data.governanceReviews : {};
     data.intakeRequests = Array.isArray(data.intakeRequests) ? data.intakeRequests : seedIntakeRequestsFromRecords(data.records);
@@ -309,8 +377,8 @@
 
   function defaultAccessForRole(role) {
     if (role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
-    if (role === "Editor") return ["command", "advisor", "review", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"];
-    return ["tenders", "projects"];
+    if (role === "Editor") return DEFAULT_OPERATION_ACCESS_KEYS;
+    return DEFAULT_OPERATION_ACCESS_KEYS;
   }
 
   function normalizeUserAccess(user) {
@@ -324,16 +392,6 @@
     const requested = Array.isArray(user.access)
       ? user.access.flatMap((key) => legacyMap[key] || key).filter((key) => valid.has(key))
       : [];
-    if (user.role === "Editor" && requested.length && !requested.includes("command")) requested.unshift("command");
-    if (user.role === "Editor" && requested.length && !requested.includes("advisor")) requested.splice(1, 0, "advisor");
-    if (user.role === "Editor" && requested.length && !requested.includes("review")) requested.splice(2, 0, "review");
-    if (user.role === "Editor" && requested.length && !requested.includes("intake")) requested.splice(3, 0, "intake");
-    if (user.role === "Editor" && requested.length && !requested.includes("import")) requested.splice(4, 0, "import");
-    if (user.role === "Editor" && requested.length && !requested.includes("governance")) requested.splice(5, 0, "governance");
-    if (user.role === "Editor" && requested.length && !requested.includes("bidDesk")) requested.splice(6, 0, "bidDesk");
-    if (user.role === "Editor" && requested.length && !requested.includes("calendar")) requested.splice(7, 0, "calendar");
-    if (user.role === "Editor" && requested.length && !requested.includes("risk")) requested.splice(8, 0, "risk");
-    if (user.role === "Editor" && requested.length && !requested.includes("forecast")) requested.splice(Math.min(requested.length, 13), 0, "forecast");
     return requested.length ? requested : defaultAccessForRole(user.role);
   }
 
@@ -371,6 +429,33 @@
 
   function canAdmin() {
     return state.user && state.user.role === "Admin";
+  }
+
+  function isAccessPreviewing() {
+    return Boolean(state.previewAdmin);
+  }
+
+  function accessHasAny(access, keys) {
+    return keys.some((key) => access.includes(key));
+  }
+
+  function userHasCommercialAccess(user) {
+    return accessHasAny(normalizeUserAccess(user), COMMERCIAL_ACCESS_KEYS);
+  }
+
+  function userHasGovernanceAccess(user) {
+    return accessHasAny(normalizeUserAccess(user), GOVERNANCE_ACCESS_KEYS);
+  }
+
+  function accessBlueprintByKey(key) {
+    return ACCESS_BLUEPRINTS.find((blueprint) => blueprint.key === key) || ACCESS_BLUEPRINTS[0];
+  }
+
+  function accessLabelForKeys(keys) {
+    return keys
+      .map((key) => ACCESS_SECTIONS.find((section) => section.key === key)?.label)
+      .filter(Boolean)
+      .join(", ");
   }
 
   function billingCurrency(company = state.data.company) {
@@ -506,7 +591,7 @@
     const current = state.data.users.find((user) => user.id === state.user.id);
     if (!current) {
       state.user = null;
-      persistSession(null);
+      if (!isAccessPreviewing()) persistSession(null);
       return;
     }
     state.user = {
@@ -517,7 +602,7 @@
       role: current.role,
       access: normalizeUserAccess(current),
     };
-    persistSession(state.user);
+    if (!isAccessPreviewing()) persistSession(state.user);
   }
 
   function ensureAccessibleView() {
@@ -1205,14 +1290,13 @@
           <div class="topbar-actions">
             ${renderModeButtons()}
             <div class="account-actions">
-              <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
-              <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
-              <button class="secondary-btn" type="button" data-action="logout">Logout</button>
+              ${renderAccountActions()}
             </div>
           </div>
         </header>
 
         <main class="main">
+          ${renderPreviewBanner()}
           <section class="workspace-header">
             <div class="workspace-title">
               <h1>${escapeHtml(viewTitle)}</h1>
@@ -1266,6 +1350,34 @@
       </div>
     `;
     focusQuickSearch();
+  }
+
+  function renderAccountActions() {
+    if (isAccessPreviewing()) {
+      return `
+        <div class="user-pill preview-pill">Previewing ${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
+        <button class="secondary-btn preview-exit-btn" type="button" data-action="exit-preview">Exit preview</button>
+      `;
+    }
+    return `
+      <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
+      <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
+      <button class="secondary-btn" type="button" data-action="logout">Logout</button>
+    `;
+  }
+
+  function renderPreviewBanner() {
+    if (!isAccessPreviewing()) return "";
+    return `
+      <section class="preview-banner" aria-label="Access preview mode">
+        <div>
+          <span>Access preview</span>
+          <strong>${escapeHtml(state.previewAdmin.name)} is viewing ${escapeHtml(state.user.name)}'s workspace.</strong>
+        </div>
+        <p>Navigation, edit rights, and enabled rooms are shown through this user's access profile. Exit preview to return to admin control.</p>
+        <button class="mini-btn primary-mini" type="button" data-action="exit-preview">Exit preview</button>
+      </section>
+    `;
   }
 
   function renderControlAreaCards(stats) {
@@ -2097,6 +2209,77 @@
     return reasons;
   }
 
+  function buildDataArchitectureModel(records, users) {
+    const total = Math.max(records.length, 1);
+    const operationalReady = records.filter((record) =>
+      Boolean(record.reference && record.client && record.title && record.status && record.category && record.owner && record.endDate),
+    ).length;
+    const commercialReady = records.filter((record) =>
+      Boolean(Number(record.valueAmount) > 0 || record.valueText || record.agreementNo || record.loaReceived || record.agreementReceived || (record.rounds || []).length),
+    ).length;
+    const evidenceReady = records.filter((record) => record.sourceWorkbook && record.sourceSheet).length;
+    const commercialUsers = users.filter(userHasCommercialAccess).length;
+    const governanceUsers = users.filter(userHasGovernanceAccess).length;
+    const operationUsers = users.filter((user) => {
+      const access = normalizeUserAccess(user);
+      return access.includes("tenders") || access.includes("projects");
+    }).length;
+    const layerCounts = {
+      operations: {
+        readiness: Math.round((operationalReady / total) * 100),
+        count: operationalReady,
+        users: operationUsers,
+      },
+      commercial: {
+        readiness: Math.round((commercialReady / total) * 100),
+        count: commercialReady,
+        users: commercialUsers,
+      },
+      governance: {
+        readiness: Math.round((evidenceReady / total) * 100),
+        count: evidenceReady,
+        users: governanceUsers,
+      },
+    };
+    const guardRows = [
+      {
+        label: "Tracker separation",
+        value: 100,
+        tone: "green",
+        note: "Tenders and Projects keep commercial values out of the worklist.",
+      },
+      {
+        label: "Operational readiness",
+        value: layerCounts.operations.readiness,
+        tone: layerCounts.operations.readiness >= 80 ? "green" : "amber",
+        note: `${records.length - operationalReady} records still need core tracker cleanup`,
+      },
+      {
+        label: "Commercial vault coverage",
+        value: layerCounts.commercial.readiness,
+        tone: layerCounts.commercial.readiness >= 60 ? "teal" : "amber",
+        note: `${commercialReady} records carry commercial intelligence fields`,
+      },
+      {
+        label: "Evidence trace",
+        value: layerCounts.governance.readiness,
+        tone: layerCounts.governance.readiness >= 80 ? "green" : "amber",
+        note: `${records.length - evidenceReady} records need source traceability`,
+      },
+    ];
+    const layers = DATA_ARCHITECTURE_LAYERS.map((layer) => ({
+      ...layer,
+      ...(layerCounts[layer.key] || { readiness: 0, count: 0, users: 0 }),
+    }));
+    return {
+      layers,
+      guardRows,
+      commercialUsers,
+      governanceUsers,
+      operationUsers,
+    };
+  }
+
   function buildGovernanceModel() {
     ensureGovernanceStores();
     const records = companyRecords();
@@ -2106,6 +2289,7 @@
       .sort((a, b) => new Date(b.ts).getTime() - new Date(a.ts).getTime())
       .slice(0, 60);
     const floor = highValueThreshold(records);
+    const dataArchitecture = buildDataArchitectureModel(records, users);
     const reviewRows = records
       .map((record) => {
         const reasons = reviewSignalsForRecord(record, floor);
@@ -2125,8 +2309,8 @@
         user,
         access,
         auditCount: auditRows.filter((entry) => entry.actorId === user.id).length,
-        commercial: access.includes("membership"),
-        governance: access.includes("governance"),
+        commercial: userHasCommercialAccess(user),
+        governance: userHasGovernanceAccess(user),
       };
     });
     const recordsWithSource = records.filter((record) => record.sourceSheet && record.sourceWorkbook).length;
@@ -2173,6 +2357,7 @@
       ownerCoverage: records.length ? Math.round((recordsWithOwner / records.length) * 100) : 100,
       actorRows: topAuditActors(auditRows, users),
       actionRows: topAuditActions(auditRows),
+      dataArchitecture,
     };
   }
 
@@ -5566,6 +5751,8 @@
           ${renderInsightKpi("Owner coverage", `${model.ownerCoverage}%`, "Records with an accountable owner")}
         </div>
 
+        ${renderDataArchitecturePanel(model.dataArchitecture)}
+
         <div class="governance-layout">
           <section class="governance-main">
             <article class="info-panel governance-review-panel">
@@ -5731,6 +5918,52 @@
           </div>
         `).join("")}
       </div>
+    `;
+  }
+
+  function renderDataArchitecturePanel(model) {
+    return `
+      <section class="data-architecture-panel info-panel" aria-label="${BRAND_NAME} data architecture">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Data architecture</span>
+            <h3>Separate daily trackers from commercial intelligence</h3>
+          </div>
+          <span>${model.layers.length} layers</span>
+        </div>
+        <div class="data-guard-grid">
+          ${model.guardRows.map((row) => `
+            <div class="data-guard-card tone-${escapeHtml(row.tone)}">
+              <span>${escapeHtml(row.label)}</span>
+              <strong>${row.value}%</strong>
+              <i style="--width: ${Math.max(4, row.value)}%"></i>
+              <small>${escapeHtml(row.note)}</small>
+            </div>
+          `).join("")}
+        </div>
+        <div class="data-layer-grid">
+          ${model.layers.map((layer) => `
+            <article class="data-layer-card layer-${escapeHtml(layer.tone)}">
+              <div class="data-layer-head">
+                <span>${escapeHtml(layer.owner)}</span>
+                <strong>${escapeHtml(layer.label)}</strong>
+              </div>
+              <p>${escapeHtml(layer.rule)}</p>
+              <div class="data-layer-meta">
+                <div><span>Records ready</span><strong>${layer.count}</strong></div>
+                <div><span>Readiness</span><strong>${layer.readiness}%</strong></div>
+                <div><span>Users</span><strong>${layer.users}</strong></div>
+              </div>
+              <div class="data-chip-row">
+                ${layer.sections.map((section) => `<span>${escapeHtml(section)}</span>`).join("")}
+              </div>
+              <div class="field-chip-row">
+                ${layer.fields.map((field) => `<span>${escapeHtml(field)}</span>`).join("")}
+              </div>
+            </article>
+          `).join("")}
+        </div>
+      </section>
     `;
   }
 
@@ -7978,6 +8211,7 @@
           </div>
           <span class="status-chip">${formatBilling(company.pricePerUser)}/user monthly</span>
         </div>
+        ${renderAccessBlueprint()}
         <div class="access-layout">
           <div class="access-table-wrap">
             <table class="team-table access-table">
@@ -8001,6 +8235,23 @@
           }
         </div>
       </article>
+    `;
+  }
+
+  function renderAccessBlueprint() {
+    return `
+      <div class="access-blueprint-grid" aria-label="${BRAND_NAME} access templates">
+        ${ACCESS_BLUEPRINTS.map((blueprint) => `
+          <article>
+            <span>${escapeHtml(blueprint.commercial)}</span>
+            <strong>${escapeHtml(blueprint.label)}</strong>
+            <p>${escapeHtml(blueprint.note)}</p>
+            <div>
+              ${blueprint.sections.map((section) => `<em>${escapeHtml(section)}</em>`).join("")}
+            </div>
+          </article>
+        `).join("")}
+      </div>
     `;
   }
 
@@ -9284,6 +9535,7 @@
           </select>
         </td>
         <td>
+          ${renderAccessTemplateButtons(user, locked)}
           <div class="access-checks">
             ${ACCESS_SECTIONS.map(
               (section) => `
@@ -9296,11 +9548,36 @@
           </div>
         </td>
         <td>
-          <button class="mini-btn danger" type="button" data-action="delete-user" data-user-id="${escapeHtml(user.id)}" ${canAdmin() && user.id !== state.user.id ? "" : "disabled"}>
-            Remove
-          </button>
+          <div class="user-action-stack">
+            <button class="mini-btn" type="button" data-action="preview-user" data-user-id="${escapeHtml(user.id)}" ${canAdmin() && user.id !== state.user.id && user.role !== "Admin" ? "" : "disabled"}>
+              Preview
+            </button>
+            <button class="mini-btn danger" type="button" data-action="delete-user" data-user-id="${escapeHtml(user.id)}" ${canAdmin() && user.id !== state.user.id ? "" : "disabled"}>
+              Remove
+            </button>
+          </div>
         </td>
       </tr>
+    `;
+  }
+
+  function renderAccessTemplateButtons(user, locked) {
+    const access = normalizeUserAccess(user);
+    const currentTemplate = ACCESS_BLUEPRINTS.find((blueprint) =>
+      blueprint.access.every((key) => access.includes(key)) &&
+      access.every((key) => blueprint.access.includes(key)),
+    );
+    return `
+      <div class="access-template-row" aria-label="Access templates for ${escapeHtml(user.name)}">
+        <span>${escapeHtml(currentTemplate ? `${currentTemplate.label} template` : "Custom access")}</span>
+        <div>
+          ${ACCESS_BLUEPRINTS.map((blueprint) => `
+            <button class="mini-btn access-template-btn ${currentTemplate?.key === blueprint.key ? "active" : ""}" type="button" data-action="apply-access-template" data-user-id="${escapeHtml(user.id)}" data-template="${escapeHtml(blueprint.key)}" ${locked ? "disabled" : ""}>
+              ${escapeHtml(blueprint.label)}
+            </button>
+          `).join("")}
+        </div>
+      </div>
     `;
   }
 
@@ -9334,7 +9611,7 @@
             ${ACCESS_SECTIONS.map(
               (section) => `
                 <label>
-                  <input type="checkbox" name="access" value="${escapeHtml(section.key)}" ${section.key !== "membership" ? "checked" : ""}>
+                  <input type="checkbox" name="access" value="${escapeHtml(section.key)}" ${DEFAULT_OPERATION_ACCESS_KEYS.includes(section.key) ? "checked" : ""}>
                   <span>${escapeHtml(section.label)}</span>
                 </label>
               `,
@@ -9655,7 +9932,7 @@
     if (!user) return;
     const previous = user[field];
     user[field] = value;
-    if (field === "role") user.access = normalizeUserAccess(user);
+    if (field === "role") user.access = defaultAccessForRole(value);
     if (user.id === state.user.id) {
       state.user[field] = value;
       state.user.access = normalizeUserAccess(user);
@@ -9683,6 +9960,68 @@
     writeAudit("Access changed", user.name || user.email, `${key} ${checked ? "enabled" : "disabled"} for ${user.role}.`, "", "amber");
     persistData();
     render();
+  }
+
+  function applyAccessTemplate(id, templateKey) {
+    if (!canAdmin()) return;
+    const user = state.data.users.find((item) => item.id === id);
+    if (!user || user.role === "Admin") return;
+    const template = accessBlueprintByKey(templateKey);
+    const previous = accessLabelForKeys(normalizeUserAccess(user));
+    user.access = [...template.access];
+    const next = accessLabelForKeys(normalizeUserAccess(user));
+    writeAudit(
+      "Access template applied",
+      user.name || user.email,
+      `${template.label} applied. Access changed from ${previous || "none"} to ${next || "none"}.`,
+      "",
+      "blue",
+    );
+    persistData();
+    render();
+  }
+
+  function previewUserAccess(id) {
+    if (!canAdmin()) return;
+    const user = state.data.users.find((item) => item.id === id);
+    if (!user || user.id === state.user.id || user.role === "Admin") return;
+    const admin = { ...state.user };
+    writeAudit(
+      "Access preview started",
+      user.name || user.email,
+      `${admin.name} previewed ${user.role} access with ${normalizeUserAccess(user).length} enabled sections.`,
+      "",
+      "blue",
+    );
+    state.previewAdmin = admin;
+    state.user = {
+      id: user.id,
+      companyId: user.companyId,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      access: normalizeUserAccess(user),
+    };
+    state.view = defaultViewForUser(state.user) || "No Access";
+    state.roomsOpen = false;
+    state.quickSearchOpen = false;
+    state.selectedId = null;
+    persistData();
+    render();
+    scrollToTop();
+  }
+
+  function exitAccessPreview() {
+    if (!isAccessPreviewing()) return;
+    state.user = { ...state.previewAdmin };
+    state.previewAdmin = null;
+    state.view = canAccessView("Membership") ? "Membership" : defaultViewForUser() || "Tenders";
+    state.roomsOpen = false;
+    state.quickSearchOpen = false;
+    state.selectedId = null;
+    persistSession(state.user);
+    render();
+    scrollToTop();
   }
 
   function resetDemo() {
@@ -9885,6 +10224,11 @@
       return;
     }
 
+    if (action === "exit-preview") {
+      exitAccessPreview();
+      return;
+    }
+
     if (action === "review-seats") {
       document.getElementById("membershipSeatSection")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
@@ -9907,6 +10251,7 @@
       return;
     }
     if (action === "logout") {
+      state.previewAdmin = null;
       state.user = null;
       state.quickSearchOpen = false;
       state.quickSearch = "";
@@ -9981,6 +10326,14 @@
     }
     if (action === "mark-governance-reviewed") {
       markGovernanceReviewed(button.dataset.id);
+      return;
+    }
+    if (action === "apply-access-template") {
+      applyAccessTemplate(button.dataset.userId, button.dataset.template);
+      return;
+    }
+    if (action === "preview-user") {
+      previewUserAccess(button.dataset.userId);
       return;
     }
     if (action === "scroll-page") {
