@@ -1,4 +1,4 @@
-PursuitDesk v42 import studio upload steps
+PursuitDesk v48 pursuit advisor upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v42 import studio upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v42 import studio
+   PursuitDesk v48 pursuit advisor
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds an Import Studio for CSV or Excel-copied rows, template download, field coverage, source workbook health, duplicate reference checks, missing-field cleanup, preview before commit, and controlled clean-row import.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds Pursuit Advisor, a top-level decision layer that turns Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminder signals into ranked next-best actions, management brief lines, decision prompts, and operating recommendations.
 
 Demo login:
 admin@pursuitdesk.app

@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=42";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=42";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=48";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=48";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -33,7 +33,13 @@
   const IMPORT_COLUMNS = ["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "sourceSheet"];
   const ACCESS_SECTIONS = [
     { key: "command", label: "Command", view: "Command" },
+    { key: "advisor", label: "Advisor", view: "Advisor" },
+    { key: "intake", label: "Intake", view: "Intake" },
     { key: "import", label: "Import", view: "Import" },
+    { key: "governance", label: "Governance", view: "Governance" },
+    { key: "bidDesk", label: "Bid Desk", view: "Bid Desk" },
+    { key: "calendar", label: "Calendar", view: "Calendar" },
+    { key: "risk", label: "Risk", view: "Risk" },
     { key: "tenders", label: "Tenders", view: "Tenders" },
     { key: "tenderInsights", label: "Tenders Insights", view: "Tenders Insights" },
     { key: "projects", label: "Projects", view: "Projects" },
@@ -55,11 +61,53 @@
       signal: "Operating layer",
     },
     {
+      name: "Advisor",
+      code: "AD",
+      stage: "Live pursuit advisor",
+      summary: "Next-best actions, management brief, decision prompts, and operating recommendations from live PursuitDesk signals.",
+      signal: "Decision layer",
+    },
+    {
+      name: "Intake",
+      code: "IN",
+      stage: "Live intake desk",
+      summary: "Controlled request form, validation queue, routing, and conversion into live tender or project records.",
+      signal: "Front door",
+    },
+    {
       name: "Import",
       code: "IM",
       stage: "Live import studio",
       summary: "CSV onboarding, source workbook health, field coverage, duplicate checks, and controlled row import.",
       signal: "Data intake",
+    },
+    {
+      name: "Governance",
+      code: "GV",
+      stage: "Live governance desk",
+      summary: "Audit trail, high-value review queue, access health, and policy controls for trusted operations.",
+      signal: "Trust layer",
+    },
+    {
+      name: "Bid Desk",
+      code: "BD",
+      stage: "Live bid desk",
+      summary: "Submission readiness, bid/no-bid decisions, pack control, deadline pressure, and tender war-room actions.",
+      signal: "Bid execution",
+    },
+    {
+      name: "Calendar",
+      code: "CA",
+      stage: "Live review calendar",
+      summary: "Rolling review calendar for overdue work, upcoming submissions, project milestones, and unscheduled records.",
+      signal: "Time control",
+    },
+    {
+      name: "Risk",
+      code: "RK",
+      stage: "Live risk control",
+      summary: "Risk register, severity lanes, exposure, heatmap, mitigation rhythm, and owner/client pressure.",
+      signal: "Management control",
     },
     {
       name: "Tenders",
@@ -151,6 +199,67 @@
     return JSON.parse(JSON.stringify(value));
   }
 
+  function seedAuditFromRecords(records = []) {
+    const base = Date.now();
+    return records.slice(0, 36).map((record, index) => ({
+      id: `AUD-SEED-${index + 1}`,
+      companyId: record.companyId,
+      ts: new Date(base - index * 3600000).toISOString(),
+      actorId: "system",
+      actor: "PursuitDesk Import",
+      role: "System",
+      action: "Source row loaded",
+      target: record.reference || record.title || "Imported record",
+      detail: `${record.type || "Record"} from ${record.sourceSheet || record.sourceWorkbook || "source workbook"}`,
+      recordId: record.id,
+      tone: record.type === "Project" ? "blue" : "teal",
+    }));
+  }
+
+  function seedIntakeRequestsFromRecords(records = []) {
+    const candidates = [
+      ...records.filter((record) => record.type !== "Project").slice(0, 4),
+      ...records.filter((record) => record.type === "Project").slice(0, 3),
+    ];
+    const statuses = ["Pending", "Pending", "Approved", "Rework", "Pending", "Approved", "Pending"];
+    const channels = ["Email request", "Client portal", "Management review", "Sales lead", "Excel backlog", "Operations call", "Procurement notice"];
+    return candidates.slice(0, 7).map((record, index) => ({
+      id: `REQ-SEED-${index + 1}`,
+      companyId: record.companyId,
+      createdAt: new Date(Date.now() - (index + 1) * 86400000).toISOString(),
+      createdBy: index % 2 ? `${BRAND_NAME} Editor` : `${BRAND_NAME} Admin`,
+      status: statuses[index] || "Pending",
+      type: record.type || "Tender",
+      reference: record.reference || "",
+      client: record.client || "",
+      title: record.title || "",
+      category: record.category || "",
+      endDate: record.endDate || "",
+      valueText: record.valueText || "",
+      owner: record.owner || "Commercial",
+      channel: channels[index] || "Manual request",
+      notes: index === 3 ? "Needs clearer client scope before conversion." : "Seeded from current Excel workspace for intake demo.",
+      convertedRecordId: statuses[index] === "Approved" ? record.id : "",
+      approvedBy: statuses[index] === "Approved" ? `${BRAND_NAME} Admin` : "",
+      approvedAt: statuses[index] === "Approved" ? new Date(Date.now() - index * 7200000).toISOString() : "",
+    }));
+  }
+
+  function seedBidDecisions(records = []) {
+    const decisions = {};
+    records
+      .filter((record) => record.type === "Tender" || record.type === "EOI")
+      .slice(0, 18)
+      .forEach((record, index) => {
+        decisions[record.id] = {
+          decision: index % 5 === 0 ? "No-bid" : index % 3 === 0 ? "Bid" : "Watch",
+          by: `${BRAND_NAME} Admin`,
+          at: new Date(Date.now() - index * 5400000).toISOString(),
+        };
+      });
+    return decisions;
+  }
+
   function loadData() {
     const saved = localStorage.getItem(STORE_KEY);
     if (saved) {
@@ -180,12 +289,17 @@
       const normalized = demo ? { ...user, name: demo[0], email: demo[1] } : user;
       return { ...normalized, access: normalizeUserAccess(normalized) };
     });
+    data.audit = Array.isArray(data.audit) && data.audit.length ? data.audit : seedAuditFromRecords(data.records);
+    data.governanceReviews = data.governanceReviews && typeof data.governanceReviews === "object" ? data.governanceReviews : {};
+    data.intakeRequests = Array.isArray(data.intakeRequests) ? data.intakeRequests : seedIntakeRequestsFromRecords(data.records);
+    data.bidDecisions = data.bidDecisions && typeof data.bidDecisions === "object" ? data.bidDecisions : seedBidDecisions(data.records);
+    data.submissionReady = data.submissionReady && typeof data.submissionReady === "object" ? data.submissionReady : {};
     return data;
   }
 
   function defaultAccessForRole(role) {
     if (role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
-    if (role === "Editor") return ["command", "import", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"];
+    if (role === "Editor") return ["command", "advisor", "intake", "import", "governance", "bidDesk", "calendar", "risk", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"];
     return ["tenders", "projects"];
   }
 
@@ -201,8 +315,14 @@
       ? user.access.flatMap((key) => legacyMap[key] || key).filter((key) => valid.has(key))
       : [];
     if (user.role === "Editor" && requested.length && !requested.includes("command")) requested.unshift("command");
-    if (user.role === "Editor" && requested.length && !requested.includes("import")) requested.splice(1, 0, "import");
-    if (user.role === "Editor" && requested.length && !requested.includes("forecast")) requested.splice(Math.min(requested.length, 6), 0, "forecast");
+    if (user.role === "Editor" && requested.length && !requested.includes("advisor")) requested.splice(1, 0, "advisor");
+    if (user.role === "Editor" && requested.length && !requested.includes("intake")) requested.splice(2, 0, "intake");
+    if (user.role === "Editor" && requested.length && !requested.includes("import")) requested.splice(3, 0, "import");
+    if (user.role === "Editor" && requested.length && !requested.includes("governance")) requested.splice(4, 0, "governance");
+    if (user.role === "Editor" && requested.length && !requested.includes("bidDesk")) requested.splice(5, 0, "bidDesk");
+    if (user.role === "Editor" && requested.length && !requested.includes("calendar")) requested.splice(6, 0, "calendar");
+    if (user.role === "Editor" && requested.length && !requested.includes("risk")) requested.splice(7, 0, "risk");
+    if (user.role === "Editor" && requested.length && !requested.includes("forecast")) requested.splice(Math.min(requested.length, 12), 0, "forecast");
     return requested.length ? requested : defaultAccessForRole(user.role);
   }
 
@@ -258,8 +378,32 @@
     return view === "Command";
   }
 
+  function isAdvisorSection(view = state.view) {
+    return view === "Advisor";
+  }
+
+  function isIntakeSection(view = state.view) {
+    return view === "Intake";
+  }
+
   function isImportSection(view = state.view) {
     return view === "Import";
+  }
+
+  function isGovernanceSection(view = state.view) {
+    return view === "Governance";
+  }
+
+  function isBidDeskSection(view = state.view) {
+    return view === "Bid Desk";
+  }
+
+  function isCalendarSection(view = state.view) {
+    return view === "Calendar";
+  }
+
+  function isRiskSection(view = state.view) {
+    return view === "Risk";
   }
 
   function isProjectSection(view = state.view) {
@@ -296,7 +440,13 @@
 
   function sectionForView(view) {
     if (view === "Command") return "command";
+    if (view === "Advisor") return "advisor";
+    if (view === "Intake") return "intake";
     if (view === "Import") return "import";
+    if (view === "Governance") return "governance";
+    if (view === "Bid Desk") return "bidDesk";
+    if (view === "Calendar") return "calendar";
+    if (view === "Risk") return "risk";
     if (view === "Tender Insights" || view === "Tenders Insights") return "tenderInsights";
     if (view === "Project Insights") return "projectInsights";
     if (view === "Projects") return "projects";
@@ -647,12 +797,90 @@
         </div>
       `;
     }
+    if (isAdvisorSection(view)) {
+      const advisor = buildPursuitAdvisorModel();
+      const boxes = [
+        ["Score", `${advisor.advisorScore}%`],
+        ["Actions", advisor.recommendations.length],
+        ["Now", advisor.doNow.length],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isIntakeSection(view)) {
+      const intake = buildIntakeModel();
+      const boxes = [
+        ["Pending", intake.pending.length],
+        ["Ready", intake.cleanPending.length],
+        ["Score", `${intake.score}%`],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
     if (isImportSection(view)) {
       const importStudio = buildImportStudioModel();
       const boxes = [
         ["Sources", importStudio.sourceWorkbooks],
         ["Coverage", `${importStudio.fieldCoverage}%`],
         ["Issues", importStudio.issueCount],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isGovernanceSection(view)) {
+      const governance = buildGovernanceModel();
+      const boxes = [
+        ["Score", `${governance.governanceScore}%`],
+        ["Reviews", governance.pendingReviews.length],
+        ["Audit", governance.auditRows.length],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isBidDeskSection(view)) {
+      const bidDesk = buildBidDeskModel();
+      const boxes = [
+        ["Active", bidDesk.activeRows.length],
+        ["Ready", bidDesk.readyRows.length],
+        ["Due 14", bidDesk.due14],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isCalendarSection(view)) {
+      const calendar = buildReviewCalendarModel();
+      const boxes = [
+        ["Events", calendar.events.length],
+        ["Overdue", calendar.overdue.length],
+        ["Next 30", calendar.next30.length],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isRiskSection(view)) {
+      const risk = buildRiskControlModel();
+      const boxes = [
+        ["Risks", risk.risks.length],
+        ["Critical", risk.critical.length],
+        ["Score", `${risk.controlScore}%`],
       ];
       return `
         <div class="header-summary">
@@ -757,7 +985,7 @@
   }
 
   function renderMetricsForView(view, metrics) {
-    if (isInsightSection(view) || view === "Membership" || isCommandSection(view) || isImportSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isReportSection(view)) return "";
+    if (isInsightSection(view) || view === "Membership" || isCommandSection(view) || isAdvisorSection(view) || isIntakeSection(view) || isImportSection(view) || isGovernanceSection(view) || isBidDeskSection(view) || isCalendarSection(view) || isRiskSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isReportSection(view)) return "";
     const cards = isProjectSection(view)
       ? [
           ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`],
@@ -794,8 +1022,20 @@
     const viewTitle =
       state.view === "Command"
         ? "Command center"
+        : state.view === "Advisor"
+        ? "Pursuit advisor"
+        : state.view === "Intake"
+        ? "Intake desk"
         : state.view === "Import"
         ? "Import studio"
+        : state.view === "Governance"
+        ? "Governance desk"
+        : state.view === "Bid Desk"
+        ? "Bid desk"
+        : state.view === "Calendar"
+        ? "Review calendar"
+        : state.view === "Risk"
+        ? "Risk control"
         : state.view === "Tenders"
         ? "Tenders workspace"
         : state.view === "Projects"
@@ -822,8 +1062,20 @@
     const viewCopy =
       state.view === "Command"
         ? "One morning screen for operating priorities, pursuit health, evidence gaps, client heat, contract movement, and management-ready actions."
+        : state.view === "Advisor"
+        ? "Recommended next actions, decision prompts, and management talking points generated from the live PursuitDesk rooms."
+        : state.view === "Intake"
+        ? "Capture new tender and project requests through a controlled front door, validate required fields, and convert clean requests into live workspace rows."
         : state.view === "Import"
         ? "Bring Excel exports into PursuitDesk with CSV paste, source health checks, duplicate detection, preview, and controlled import."
+        : state.view === "Governance"
+        ? "Audit user actions, review high-value records, monitor section access, and keep trusted operating control before management reporting."
+        : state.view === "Bid Desk"
+        ? "Run bid/no-bid decisions, submission readiness, pack status, and deadline pressure for active tenders and EOIs."
+        : state.view === "Calendar"
+        ? "Plan tender submissions, project dates, overdue work, and management follow-ups from one rolling review calendar."
+        : state.view === "Risk"
+        ? "Surface schedule, commercial, bid, delivery, value, and data risks as a management-ready control register."
         : state.view === "Tenders Insights"
         ? "Tender-only management signals for follow-up risk, submission readiness, value exposure, and bid decisions."
         : state.view === "Project Insights"
@@ -880,8 +1132,20 @@
           ${
             state.view === "Command"
               ? renderCommandCenterPage()
+            : state.view === "Advisor"
+              ? renderPursuitAdvisorPage()
+            : state.view === "Intake"
+              ? renderIntakeDeskPage()
             : state.view === "Import"
               ? renderImportStudioPage()
+            : state.view === "Governance"
+              ? renderGovernancePage()
+            : state.view === "Bid Desk"
+              ? renderBidDeskPage()
+            : state.view === "Calendar"
+              ? renderReviewCalendarPage()
+            : state.view === "Risk"
+              ? renderRiskControlPage()
             : state.view === "Forecast"
               ? renderForecastPage()
               : isInsightSection(state.view)
@@ -1037,6 +1301,219 @@
       { label: "Later", value: buckets.later, tone: "green" },
       { label: "No date", value: buckets.noDate, tone: "muted" },
     ];
+  }
+
+  function intakeRequests() {
+    if (!Array.isArray(state.data.intakeRequests)) state.data.intakeRequests = [];
+    return state.data.intakeRequests.filter((request) => request.companyId === state.user.companyId);
+  }
+
+  function intakeMissingFields(request) {
+    const missing = [];
+    if (!String(request.reference || "").trim()) missing.push("reference");
+    if (!String(request.client || "").trim()) missing.push("client");
+    if (!String(request.title || "").trim()) missing.push("title");
+    if (!String(request.category || "").trim()) missing.push("category");
+    if (!String(request.endDate || "").trim()) missing.push("due date");
+    if (!String(request.owner || "").trim()) missing.push("owner");
+    return missing;
+  }
+
+  function intakeAgeDays(request) {
+    const date = new Date(request.createdAt || Date.now());
+    if (Number.isNaN(date.getTime())) return 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
+    return Math.max(0, Math.round((today.getTime() - date.getTime()) / 86400000));
+  }
+
+  function intakePriority(request) {
+    const amount = parseAmount(request.valueText);
+    const due = parseRecordDate(request.endDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let score = 40 + intakeAgeDays(request) * 4;
+    if (amount && amount >= highValueThreshold(companyRecords())) score += 25;
+    if (due) {
+      const days = Math.ceil((due.getTime() - today.getTime()) / 86400000);
+      if (days < 0) score += 25;
+      else if (days <= 14) score += 16;
+      else if (days <= 30) score += 8;
+    } else {
+      score += 10;
+    }
+    score -= intakeMissingFields(request).length * 9;
+    return Math.max(5, Math.min(99, Math.round(score)));
+  }
+
+  function buildIntakeModel() {
+    const requests = intakeRequests().sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+    const pending = requests.filter((request) => request.status === "Pending");
+    const approved = requests.filter((request) => request.status === "Approved");
+    const rework = requests.filter((request) => request.status === "Rework");
+    const cleanPending = pending.filter((request) => !intakeMissingFields(request).length);
+    const blocked = pending.filter((request) => intakeMissingFields(request).length);
+    const convertedValue = approved.reduce((sum, request) => sum + (parseAmount(request.valueText) || 0), 0);
+    const pendingValue = pending.reduce((sum, request) => sum + (parseAmount(request.valueText) || 0), 0);
+    const oldestPending = pending.reduce((max, request) => Math.max(max, intakeAgeDays(request)), 0);
+    const dueSoon = pending.filter((request) => {
+      const date = parseRecordDate(request.endDate);
+      if (!date) return false;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const days = Math.ceil((date.getTime() - today.getTime()) / 86400000);
+      return days <= 30;
+    }).length;
+    const readiness = pending.length ? Math.round((cleanPending.length / pending.length) * 100) : 100;
+    const score = Math.max(0, Math.min(100, Math.round(readiness * 0.55 + Math.max(0, 100 - oldestPending * 8) * 0.25 + Math.max(0, 100 - rework.length * 15) * 0.2)));
+    return {
+      requests,
+      pending,
+      approved,
+      rework,
+      cleanPending,
+      blocked,
+      pendingValue,
+      convertedValue,
+      oldestPending,
+      dueSoon,
+      readiness,
+      score,
+      channelRows: topRequestBreakdown(requests, "channel", 6, "Manual request"),
+      typeRows: topRequestBreakdown(requests, "type", 4, "Tender"),
+      statusRows: topRequestBreakdown(requests, "status", 5, "Pending"),
+      ownerRows: topRequestBreakdown(requests, "owner", 6, "Unassigned"),
+      priorityRows: pending
+        .map((request) => ({ request, score: intakePriority(request), missing: intakeMissingFields(request) }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 8),
+    };
+  }
+
+  function topRequestBreakdown(requests, field, limit = 5, fallback = "Unassigned") {
+    const counts = new Map();
+    requests.forEach((request) => {
+      const label = String(request[field] || fallback).trim() || fallback;
+      counts.set(label, (counts.get(label) || 0) + 1);
+    });
+    return Array.from(counts, ([label, value]) => ({ label, value }))
+      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+      .slice(0, limit);
+  }
+
+  function ensureBidStores() {
+    if (!state.data.bidDecisions || typeof state.data.bidDecisions !== "object") state.data.bidDecisions = {};
+    if (!state.data.submissionReady || typeof state.data.submissionReady !== "object") state.data.submissionReady = {};
+  }
+
+  function bidDecisionFor(record) {
+    ensureBidStores();
+    return state.data.bidDecisions[record.id] || { decision: "Watch", by: "", at: "" };
+  }
+
+  function bidChecklistFor(record) {
+    const amount = Number(record.valueAmount) || 0;
+    const decision = bidDecisionFor(record).decision;
+    return [
+      { label: "Reference", passed: Boolean(record.reference), note: record.reference || "Missing reference" },
+      { label: "Client", passed: Boolean(record.client), note: record.client || "Missing client" },
+      { label: "Scope title", passed: Boolean(record.title), note: record.title || "Missing scope title" },
+      { label: "Category", passed: Boolean(record.category), note: record.category || "Missing category" },
+      { label: "Due date", passed: Boolean(record.endDate), note: record.endDate ? formatDate(record.endDate) : "No due date" },
+      { label: "Value", passed: amount > 0, note: amount > 0 ? formatCompactMoney(amount) : "No value" },
+      { label: "Owner", passed: Boolean(record.owner), note: record.owner || "No owner" },
+      { label: "Source proof", passed: Boolean(record.sourceSheet || record.sourceWorkbook), note: record.sourceSheet || record.sourceWorkbook || "No source" },
+      { label: "Decision", passed: decision === "Bid" || decision === "No-bid", note: decision },
+    ];
+  }
+
+  function bidReadinessFor(record) {
+    const checks = bidChecklistFor(record);
+    return Math.round((checks.filter((item) => item.passed).length / checks.length) * 100);
+  }
+
+  function buildBidDeskModel() {
+    ensureBidStores();
+    const tenderRecords = sectionRecords("Tenders").filter((record) => !isClosedRecord(record));
+    const rows = tenderRecords
+      .map((record) => {
+        const decision = bidDecisionFor(record);
+        const readiness = bidReadinessFor(record);
+        const date = parseRecordDate(record.endDate);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const dueDays = date ? Math.ceil((date.getTime() - today.getTime()) / 86400000) : null;
+        const ready = Boolean(state.data.submissionReady[record.id]);
+        const amount = Number(record.valueAmount) || 0;
+        const checklist = bidChecklistFor(record);
+        const pressure =
+          dueDays === null ? 18 : dueDays < 0 ? 45 : dueDays <= 7 ? 38 : dueDays <= 14 ? 28 : dueDays <= 30 ? 16 : 8;
+        const priority = Math.max(1, Math.min(100, Math.round(pressure + (100 - readiness) * 0.45 + (amount > 0 ? 8 : 0))));
+        return { record, decision, readiness, dueDays, ready, amount, checklist, priority };
+      })
+      .sort((a, b) => {
+        const aDue = a.dueDays === null ? 9999 : a.dueDays;
+        const bDue = b.dueDays === null ? 9999 : b.dueDays;
+        return b.priority - a.priority || aDue - bDue;
+      });
+    const readyRows = rows.filter((row) => row.ready);
+    const bidRows = rows.filter((row) => row.decision.decision === "Bid");
+    const watchRows = rows.filter((row) => row.decision.decision === "Watch");
+    const noBidRows = rows.filter((row) => row.decision.decision === "No-bid");
+    const due14 = rows.filter((row) => row.dueDays !== null && row.dueDays <= 14).length;
+    const missingRows = rows.filter((row) => row.readiness < 78);
+    const totalReadiness = rows.length ? Math.round(rows.reduce((sum, row) => sum + row.readiness, 0) / rows.length) : 100;
+    return {
+      activeRows: rows,
+      readyRows,
+      bidRows,
+      watchRows,
+      noBidRows,
+      due14,
+      missingRows,
+      totalReadiness,
+      bidValue: sumAmounts(bidRows.map((row) => row.record)),
+      readyValue: sumAmounts(readyRows.map((row) => row.record)),
+      dueRows: rows.filter((row) => row.dueDays !== null && row.dueDays <= 30).slice(0, 8),
+      packRows: rows.slice(0, 10),
+      categoryRows: topBreakdown(rows.map((row) => row.record), "category", 6, "Uncategorized"),
+      clientRows: topBreakdown(rows.map((row) => row.record), "client", 6, "No client"),
+      decisionRows: [
+        { label: "Bid", value: bidRows.length },
+        { label: "Watch", value: watchRows.length },
+        { label: "No-bid", value: noBidRows.length },
+        { label: "Pack ready", value: readyRows.length },
+      ],
+    };
+  }
+
+  function setBidDecision(id, decision) {
+    if (!canEdit()) return;
+    ensureBidStores();
+    const record = state.data.records.find((item) => item.id === id && item.companyId === state.user.companyId);
+    if (!record || !["Bid", "Watch", "No-bid"].includes(decision)) return;
+    state.data.bidDecisions[id] = {
+      decision,
+      by: state.user.name,
+      at: new Date().toISOString(),
+    };
+    writeAudit("Bid decision", record.reference || record.title || "Tender", `Decision set to ${decision}.`, id, decision === "No-bid" ? "red" : decision === "Bid" ? "green" : "amber");
+    persistData();
+    render();
+  }
+
+  function toggleSubmissionReady(id) {
+    if (!canEdit()) return;
+    ensureBidStores();
+    const record = state.data.records.find((item) => item.id === id && item.companyId === state.user.companyId);
+    if (!record) return;
+    const next = !state.data.submissionReady[id];
+    if (next) state.data.submissionReady[id] = { by: state.user.name, at: new Date().toISOString() };
+    else delete state.data.submissionReady[id];
+    writeAudit("Submission pack", record.reference || record.title || "Tender", next ? "Marked submission pack ready." : "Cleared submission pack ready flag.", id, next ? "green" : "amber");
+    persistData();
+    render();
   }
 
   function buildImportStudioModel() {
@@ -1438,6 +1915,7 @@
     state.importText = "";
     state.importPreview = null;
     state.importMessage = `${records.length} row${records.length === 1 ? "" : "s"} imported into the live workspace.`;
+    writeAudit("Import committed", `${records.length} CSV rows`, `${records.length} clean rows imported through Import Studio.`, records[0].id, "green");
     persistData();
     render();
   }
@@ -1461,6 +1939,182 @@
       render();
     };
     reader.readAsText(file);
+  }
+
+  function ensureGovernanceStores() {
+    if (!Array.isArray(state.data.audit)) state.data.audit = [];
+    if (!state.data.governanceReviews || typeof state.data.governanceReviews !== "object") {
+      state.data.governanceReviews = {};
+    }
+  }
+
+  function writeAudit(action, target, detail, recordId = "", tone = "teal") {
+    if (!state.user) return;
+    ensureGovernanceStores();
+    state.data.audit.unshift({
+      id: `AUD-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+      companyId: state.user.companyId,
+      ts: new Date().toISOString(),
+      actorId: state.user.id,
+      actor: state.user.name,
+      role: state.user.role,
+      action,
+      target,
+      detail,
+      recordId,
+      tone,
+    });
+    state.data.audit = state.data.audit.slice(0, 300);
+  }
+
+  function auditFieldLabel(field) {
+    const labels = {
+      type: "Type",
+      reference: "Reference",
+      client: "Client",
+      title: "Title",
+      category: "Category",
+      status: "Status",
+      startDate: "Start date",
+      endDate: "End date",
+      valueText: "Value",
+      owner: "Owner",
+      agreementNo: "Agreement no",
+      sourceSheet: "Source sheet",
+    };
+    return labels[field] || field;
+  }
+
+  function shortAuditValue(value) {
+    const text = String(value ?? "").trim();
+    if (!text) return "blank";
+    return text.length > 42 ? `${text.slice(0, 39)}...` : text;
+  }
+
+  function reviewSignalsForRecord(record, floor = highValueThreshold(companyRecords())) {
+    const amount = Number(record.valueAmount) || 0;
+    const reasons = [];
+    if (amount >= floor && amount > 0) reasons.push("High value");
+    if (["Awarded", "Completed"].includes(record.status) && !record.agreementNo) reasons.push("Agreement gap");
+    if (record.status === "Submitted" && (record.rounds || []).length > 0) reasons.push("Negotiated submission");
+    if (!record.sourceSheet || !record.sourceWorkbook) reasons.push("Source gap");
+    return reasons;
+  }
+
+  function buildGovernanceModel() {
+    ensureGovernanceStores();
+    const records = companyRecords();
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const auditRows = state.data.audit
+      .filter((entry) => entry.companyId === state.user.companyId)
+      .sort((a, b) => new Date(b.ts).getTime() - new Date(a.ts).getTime())
+      .slice(0, 60);
+    const floor = highValueThreshold(records);
+    const reviewRows = records
+      .map((record) => {
+        const reasons = reviewSignalsForRecord(record, floor);
+        const reviewed = state.data.governanceReviews[record.id] || null;
+        return { record, reasons, reviewed };
+      })
+      .filter((item) => item.reasons.length)
+      .sort((a, b) => {
+        const aReviewed = a.reviewed ? 1 : 0;
+        const bReviewed = b.reviewed ? 1 : 0;
+        return aReviewed - bReviewed || (Number(b.record.valueAmount) || 0) - (Number(a.record.valueAmount) || 0);
+      });
+    const pendingReviews = reviewRows.filter((item) => !item.reviewed);
+    const accessRows = users.map((user) => {
+      const access = normalizeUserAccess(user);
+      return {
+        user,
+        access,
+        auditCount: auditRows.filter((entry) => entry.actorId === user.id).length,
+        commercial: access.includes("membership"),
+        governance: access.includes("governance"),
+      };
+    });
+    const recordsWithSource = records.filter((record) => record.sourceSheet && record.sourceWorkbook).length;
+    const recordsWithOwner = records.filter((record) => record.owner).length;
+    const reviewedCount = reviewRows.filter((item) => item.reviewed).length;
+    const policyRows = [
+      {
+        label: "High-value review",
+        value: reviewRows.length ? Math.round((reviewedCount / reviewRows.length) * 100) : 100,
+        note: `${pendingReviews.length} records awaiting review`,
+        tone: pendingReviews.length ? "amber" : "green",
+      },
+      {
+        label: "Source traceability",
+        value: records.length ? Math.round((recordsWithSource / records.length) * 100) : 100,
+        note: `${records.length - recordsWithSource} records without full source`,
+        tone: records.length - recordsWithSource ? "amber" : "green",
+      },
+      {
+        label: "Owner coverage",
+        value: records.length ? Math.round((recordsWithOwner / records.length) * 100) : 100,
+        note: `${records.length - recordsWithOwner} records without owner`,
+        tone: records.length - recordsWithOwner ? "red" : "green",
+      },
+      {
+        label: "Access control",
+        value: accessRows.length ? Math.round((accessRows.filter((row) => row.access.length).length / accessRows.length) * 100) : 100,
+        note: `${accessRows.filter((row) => row.governance).length} users can open Governance`,
+        tone: "teal",
+      },
+    ];
+    const governanceScore = Math.round(policyRows.reduce((sum, row) => sum + row.value, 0) / Math.max(policyRows.length, 1));
+    return {
+      records,
+      users,
+      auditRows,
+      reviewRows,
+      pendingReviews,
+      accessRows,
+      policyRows,
+      governanceScore,
+      reviewedCount,
+      sourceCoverage: records.length ? Math.round((recordsWithSource / records.length) * 100) : 100,
+      ownerCoverage: records.length ? Math.round((recordsWithOwner / records.length) * 100) : 100,
+      actorRows: topAuditActors(auditRows, users),
+      actionRows: topAuditActions(auditRows),
+    };
+  }
+
+  function topAuditActors(auditRows, users) {
+    const counts = new Map(users.map((user) => [user.name, 0]));
+    auditRows.forEach((entry) => counts.set(entry.actor, (counts.get(entry.actor) || 0) + 1));
+    return Array.from(counts, ([label, value]) => ({ label, value }))
+      .filter((row) => row.value > 0)
+      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+      .slice(0, 6);
+  }
+
+  function topAuditActions(auditRows) {
+    const counts = new Map();
+    auditRows.forEach((entry) => counts.set(entry.action, (counts.get(entry.action) || 0) + 1));
+    return Array.from(counts, ([label, value]) => ({ label, value }))
+      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+      .slice(0, 6);
+  }
+
+  function markGovernanceReviewed(id) {
+    if (!canEdit()) return;
+    ensureGovernanceStores();
+    const record = state.data.records.find((item) => item.id === id);
+    if (!record) return;
+    state.data.governanceReviews[id] = {
+      by: state.user.name,
+      at: new Date().toISOString(),
+    };
+    writeAudit(
+      "Governance review",
+      record.reference || record.title || "Record reviewed",
+      "Marked high-value or policy-sensitive record as reviewed.",
+      id,
+      "green",
+    );
+    persistData();
+    render();
   }
 
   function insightRecords() {
@@ -1922,7 +2576,13 @@
     const documents = buildDocumentsModel();
     const contracts = buildContractsModel();
     const portfolio = buildClientPortfolioModel();
+    const intake = buildIntakeModel();
     const importStudio = buildImportStudioModel();
+    const governance = buildGovernanceModel();
+    const bidDesk = buildBidDeskModel();
+    const calendar = buildReviewCalendarModel();
+    const risk = buildRiskControlModel();
+    const advisor = buildPursuitAdvisorModel();
     const openRecords = records.filter((record) => !isClosedRecord(record));
     const closedGood = records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length;
     const closedBad = records.filter((record) => ["Cancelled", "Regret"].includes(record.status)).length;
@@ -1942,12 +2602,60 @@
       .slice(0, 6);
     const moduleCards = [
       {
+        label: "Advisor",
+        view: "Advisor",
+        value: `${advisor.advisorScore}%`,
+        note: `${advisor.doNow.length} do-now / ${advisor.recommendations.length} recommendations`,
+        signal: `${formatCompactMoney(advisor.recommendationValue)} touched`,
+        tone: "green",
+      },
+      {
+        label: "Bid Desk",
+        view: "Bid Desk",
+        value: bidDesk.activeRows.length,
+        note: `${bidDesk.readyRows.length} ready / ${bidDesk.due14} due soon`,
+        signal: `${bidDesk.bidRows.length} bid decisions`,
+        tone: "blue",
+      },
+      {
+        label: "Calendar",
+        view: "Calendar",
+        value: calendar.next30.length,
+        note: `${calendar.overdue.length} overdue / ${calendar.noDate.length} no-date`,
+        signal: `${calendar.focusScore}% focus score`,
+        tone: "amber",
+      },
+      {
+        label: "Risk",
+        view: "Risk",
+        value: `${risk.controlScore}%`,
+        note: `${risk.critical.length} critical / ${risk.high.length} high`,
+        signal: `${formatCompactMoney(risk.riskExposure)} exposure`,
+        tone: "red",
+      },
+      {
+        label: "Intake",
+        view: "Intake",
+        value: intake.pending.length,
+        note: `${intake.cleanPending.length} ready / ${formatCompactMoney(intake.pendingValue)} pending`,
+        signal: `${intake.rework.length} rework items`,
+        tone: "teal",
+      },
+      {
         label: "Import",
         view: "Import",
         value: `${importStudio.fieldCoverage}%`,
         note: `${importStudio.sourceWorkbooks} source workbooks / ${importStudio.manualEntries} manual rows`,
         signal: `${importStudio.issueCount} import issues`,
         tone: "amber",
+      },
+      {
+        label: "Governance",
+        view: "Governance",
+        value: `${governance.governanceScore}%`,
+        note: `${governance.pendingReviews.length} pending reviews`,
+        signal: `${governance.auditRows.length} audit entries`,
+        tone: "green",
       },
       {
         label: "Tenders",
@@ -2023,6 +2731,9 @@
       documents,
       contracts,
       portfolio,
+      calendar,
+      risk,
+      advisor,
       winRate,
       healthScore,
       actionScore,
@@ -2056,9 +2767,9 @@
             <h2>Run the pursuit business from one morning screen.</h2>
             <p>Start here, clear the pressure, then jump into the room that needs movement. The command center reads from the same records, so every signal stays tied to the actual tender or project.</p>
             <div class="command-actions">
-              <button class="secondary-btn" type="button" data-view="Reminders">Open priority queue</button>
+              <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
+              <button class="ghost-btn" type="button" data-view="Risk">Open risk control</button>
               <button class="ghost-btn" type="button" data-view="Documents">Review evidence gaps</button>
-              <button class="ghost-btn" type="button" data-view="Reports">Open weekly pack</button>
             </div>
           </div>
           <div class="score-ring command-score" style="--score: ${model.healthScore}">
@@ -2339,6 +3050,1691 @@
           .join("")}
       </div>
     `;
+  }
+
+  function renderBidDeskPage() {
+    const model = buildBidDeskModel();
+    return `
+      <section class="bid-desk">
+        <section class="bid-console">
+          <div>
+            <span class="panel-label">Submission war room</span>
+            <h2>Move from opportunity tracking to bid execution.</h2>
+            <p>Bid Desk turns open tenders and EOIs into a controlled submission floor: readiness checks, bid/no-bid decisions, deadline pressure, pack-ready status, and audit-backed movement.</p>
+            <div class="bid-actions">
+              <button class="secondary-btn" type="button" data-view="Tenders">Open tenders</button>
+              <button class="ghost-btn" type="button" data-view="Tenders Insights">Open tender insights</button>
+              <button class="ghost-btn" type="button" data-view="Documents">Review evidence</button>
+            </div>
+          </div>
+          <div class="bid-score-card">
+            <span>Submission readiness</span>
+            <strong>${model.totalReadiness}%</strong>
+            <small>${model.readyRows.length} packs ready / ${model.due14} due in 14 days</small>
+          </div>
+        </section>
+
+        <div class="bid-kpis">
+          ${renderInsightKpi("Active bid floor", `${model.activeRows.length}`, "Open tender and EOI records")}
+          ${renderInsightKpi("Bid value", formatCompactMoney(model.bidValue), `${model.bidRows.length} records marked Bid`)}
+          ${renderInsightKpi("Pack ready", `${model.readyRows.length}`, `${formatCompactMoney(model.readyValue)} ready value`)}
+          ${renderInsightKpi("Due pressure", `${model.due14}`, "Past due or due in 14 days")}
+        </div>
+
+        <div class="bid-layout">
+          <section class="bid-main">
+            <article class="info-panel bid-board-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Bid board</span>
+                  <h3>Decision and readiness queue</h3>
+                </div>
+                <span>${model.packRows.length} shown</span>
+              </div>
+              ${renderBidBoard(model.packRows)}
+            </article>
+          </section>
+
+          <aside class="bid-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Deadline pressure</span>
+                  <h3>Next submission moves</h3>
+                </div>
+                <span>${model.dueRows.length} shown</span>
+              </div>
+              ${renderBidDueList(model.dueRows)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Pack gaps</span>
+                  <h3>Low readiness records</h3>
+                </div>
+                <span>${model.missingRows.length} total</span>
+              </div>
+              ${renderBidGapList(model.missingRows.slice(0, 8))}
+            </article>
+          </aside>
+        </div>
+
+        <div class="bid-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Decision mix</span>
+                <h3>Bid / watch / no-bid</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.decisionRows, "teal")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Category spread</span>
+                <h3>Submission concentration</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.categoryRows, "amber")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client heat</span>
+                <h3>Bid demand by client</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.clientRows, "blue")}
+          </article>
+
+          <article class="info-panel bid-playbook-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Submission rhythm</span>
+                <h3>Bid control loop</h3>
+              </div>
+            </div>
+            ${renderBidPlaybook()}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderBidBoard(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No active tenders or EOIs found.</div>`;
+    return `
+      <div class="bid-board-list">
+        ${rows.map((row) => {
+          const { record, decision, readiness, dueDays, ready, checklist } = row;
+          return `
+            <div class="bid-row tone-${escapeHtml(bidDecisionTone(decision.decision))} ${ready ? "is-ready" : ""}">
+              <div class="bid-row-main">
+                <span>${escapeHtml(decision.decision)}</span>
+                <strong>${escapeHtml(record.title || record.reference || "Untitled bid")}</strong>
+                <em>${escapeHtml([record.reference, record.client, record.category, dueLabel(dueDays), formatCompactMoney(record.valueAmount)].filter(Boolean).join(" / "))}</em>
+                <div class="bid-readiness">
+                  <i style="--width: ${Math.max(4, readiness)}%"></i>
+                  <small>${readiness}% ready / ${checklist.filter((item) => !item.passed).map((item) => item.label).slice(0, 3).join(", ") || "core pack complete"}</small>
+                </div>
+              </div>
+              <div class="bid-row-actions">
+                ${["Bid", "Watch", "No-bid"].map((option) => `
+                  <button class="mini-btn ${decision.decision === option ? "primary-mini" : ""}" type="button" data-action="set-bid-decision" data-id="${escapeHtml(record.id)}" data-decision="${escapeHtml(option)}" ${canEdit() ? "" : "disabled"}>${escapeHtml(option)}</button>
+                `).join("")}
+                <button class="mini-btn ${ready ? "primary-mini" : ""}" type="button" data-action="toggle-submission-ready" data-id="${escapeHtml(record.id)}" ${canEdit() ? "" : "disabled"}>${ready ? "Ready" : "Pack"}</button>
+                <button class="mini-btn" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">Open</button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  function renderBidDueList(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No bid deadlines in the next 30 days.</div>`;
+    return `
+      <div class="command-list">
+        ${rows.map((row) => `
+          <button class="command-row tone-${row.dueDays !== null && row.dueDays < 0 ? "red" : "amber"}" type="button" data-action="open-related-record" data-id="${escapeHtml(row.record.id)}">
+            <span>${escapeHtml(dueLabel(row.dueDays))}</span>
+            <strong>${escapeHtml(row.record.title || row.record.reference || "Untitled bid")}</strong>
+            <em>${escapeHtml([row.record.client, row.decision.decision, `${row.readiness}% ready`].join(" / "))}</em>
+          </button>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderBidGapList(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No low-readiness packs in the active bid floor.</div>`;
+    return `
+      <div class="command-list">
+        ${rows.map((row) => {
+          const gaps = row.checklist.filter((item) => !item.passed).map((item) => item.label).slice(0, 4);
+          return `
+            <button class="command-row tone-blue" type="button" data-action="open-related-record" data-id="${escapeHtml(row.record.id)}">
+              <span>${row.readiness}%</span>
+              <strong>${escapeHtml(row.record.title || row.record.reference || "Untitled bid")}</strong>
+              <em>${escapeHtml(gaps.join(" / ") || "No major gaps")}</em>
+            </button>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  function renderBidPlaybook() {
+    const rows = [
+      ["1", "Decide", "Set Bid, Watch, or No-bid before effort is spent."],
+      ["2", "Complete pack", "Close missing reference, client, due date, value, owner, and source gaps."],
+      ["3", "Mark ready", "Flag the submission pack when the team can proceed."],
+      ["4", "Audit movement", "Bid decisions and pack status are logged in Governance."],
+    ];
+    return `
+      <div class="command-rhythm bid-playbook">
+        ${rows.map(([step, title, note]) => `
+          <div>
+            <span>${escapeHtml(step)}</span>
+            <strong>${escapeHtml(title)}</strong>
+            <em>${escapeHtml(note)}</em>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function bidDecisionTone(decision) {
+    if (decision === "Bid") return "green";
+    if (decision === "No-bid") return "red";
+    return "amber";
+  }
+
+  function dueLabel(days) {
+    if (days === null) return "No date";
+    if (days < 0) return `${Math.abs(days)}d late`;
+    if (days === 0) return "Due today";
+    return `${days}d left`;
+  }
+
+  function calendarLaneFor(days) {
+    if (days === null) return "No date";
+    if (days < 0) return "Overdue";
+    if (days <= 7) return "This week";
+    if (days <= 30) return "Next 30";
+    if (days <= 90) return "Next 90";
+    return "Later";
+  }
+
+  function calendarToneFor(days) {
+    if (days === null) return "blue";
+    if (days < 0) return "red";
+    if (days <= 14) return "amber";
+    if (days <= 90) return "blue";
+    return "green";
+  }
+
+  function startOfWeek(date) {
+    const start = new Date(date);
+    start.setHours(0, 0, 0, 0);
+    const day = start.getDay();
+    const diff = day === 0 ? -6 : 1 - day;
+    start.setDate(start.getDate() + diff);
+    return start;
+  }
+
+  function formatCalendarDay(date) {
+    if (!date) return "No date";
+    return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
+  }
+
+  function formatCalendarWeek(start) {
+    const end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    return `${formatCalendarDay(start)} - ${formatCalendarDay(end)}`;
+  }
+
+  function calendarBreakdown(events, getter, limit = 6) {
+    const rows = new Map();
+    events.forEach((event) => {
+      const label = String(getter(event) || "Unassigned").trim() || "Unassigned";
+      rows.set(label, (rows.get(label) || 0) + 1);
+    });
+    return Array.from(rows, ([label, value]) => ({ label, value }))
+      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+      .slice(0, limit);
+  }
+
+  function buildReviewCalendarModel() {
+    const records = companyRecords().filter((record) => !isClosedRecord(record));
+    const floor = highValueThreshold(companyRecords());
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const currentWeek = startOfWeek(today);
+    const events = records
+      .map((record) => {
+        const date = parseRecordDate(record.endDate);
+        const days = recordDueDays(record);
+        const amount = Number(record.valueAmount) || 0;
+        const isTender = record.type === "Tender" || record.type === "EOI";
+        const kind = isTender ? "Tender submission" : "Project milestone";
+        const lane = calendarLaneFor(days);
+        const tone = calendarToneFor(days);
+        const priority =
+          (days === null ? 54 : days < 0 ? 120 + Math.min(35, Math.abs(days)) : days <= 7 ? 105 - days : days <= 30 ? 82 - Math.round(days / 2) : 45) +
+          (amount >= floor && amount > 0 ? 14 : 0) +
+          ((record.rounds || []).length ? 7 : 0);
+        return {
+          record,
+          date,
+          days,
+          amount,
+          isTender,
+          isHighValue: amount >= floor && amount > 0,
+          kind,
+          lane,
+          tone,
+          priority,
+        };
+      })
+      .sort((a, b) => {
+        const aDays = a.days === null ? 9999 : a.days;
+        const bDays = b.days === null ? 9999 : b.days;
+        return b.priority - a.priority || aDays - bDays || a.record.client.localeCompare(b.record.client);
+      });
+    const scheduled = events.filter((event) => event.date);
+    const overdue = events.filter((event) => event.days !== null && event.days < 0);
+    const next30 = events.filter((event) => event.days !== null && event.days >= 0 && event.days <= 30);
+    const noDate = events.filter((event) => event.days === null);
+    const activeWeekStarts = Array.from(new Set(scheduled.map((event) => startOfWeek(event.date).getTime()))).sort((a, b) => a - b);
+    const futureWeekStarts = activeWeekStarts.filter((stamp) => stamp >= currentWeek.getTime());
+    const selectedWeekStarts = (futureWeekStarts.length ? futureWeekStarts : activeWeekStarts.slice(-8)).slice(0, 8);
+    const weeks = selectedWeekStarts.map((stamp) => {
+      const start = new Date(stamp);
+      const end = new Date(start);
+      end.setDate(start.getDate() + 6);
+      const weekEvents = scheduled
+        .filter((event) => event.date >= start && event.date <= end)
+        .sort((a, b) => (a.days ?? 9999) - (b.days ?? 9999) || b.priority - a.priority);
+      return {
+        label: start.getTime() === currentWeek.getTime() ? "This week" : formatCalendarWeek(start),
+        dateRange: formatCalendarWeek(start),
+        start,
+        end,
+        events: weekEvents,
+        tenderCount: weekEvents.filter((event) => event.isTender).length,
+        projectCount: weekEvents.filter((event) => !event.isTender).length,
+        value: sumAmounts(weekEvents.map((event) => event.record)),
+      };
+    });
+    const laneNames = ["Overdue", "This week", "Next 30", "Next 90", "Later", "No date"];
+    const lanes = laneNames.map((name) => ({
+      name,
+      events: events.filter((event) => event.lane === name).slice(0, 8),
+      count: events.filter((event) => event.lane === name).length,
+    }));
+    const dateCoverage = records.length ? Math.round((scheduled.length / records.length) * 100) : 100;
+    const onTimeRate = scheduled.length ? Math.round(((scheduled.length - overdue.length) / scheduled.length) * 100) : 100;
+    const focusScore = Math.max(0, Math.min(100, Math.round(dateCoverage * 0.45 + onTimeRate * 0.35 + Math.max(0, 100 - noDate.length * 4) * 0.2)));
+    return {
+      records,
+      events,
+      scheduled,
+      overdue,
+      next30,
+      noDate,
+      weeks,
+      lanes,
+      focusScore,
+      dateCoverage,
+      onTimeRate,
+      highValueRows: events.filter((event) => event.isHighValue).slice(0, 8),
+      ownerRows: calendarBreakdown(events, (event) => event.record.owner, 6),
+      clientRows: calendarBreakdown(events, (event) => accountLabelForRecord(event.record), 6),
+      typeRows: calendarBreakdown(events, (event) => event.record.type, 4),
+      qualityRows: [
+        { label: "Date captured", value: dateCoverage },
+        { label: "Not overdue", value: onTimeRate },
+        { label: "Next 30 events", value: next30.length },
+        { label: "No-date records", value: noDate.length },
+      ],
+    };
+  }
+
+  function renderReviewCalendarPage() {
+    const model = buildReviewCalendarModel();
+    return `
+      <section class="calendar-desk">
+        <section class="calendar-console">
+          <div>
+            <span class="panel-label">Review calendar</span>
+            <h2>See the week before it becomes pressure.</h2>
+            <p>Calendar turns tender deadlines, project milestones, overdue items, and no-date records into one review rhythm for managers, estimators, and delivery owners.</p>
+            <div class="calendar-actions">
+              <button class="secondary-btn" type="button" data-view="Reminders">Open reminders</button>
+              <button class="ghost-btn" type="button" data-view="Bid Desk">Open Bid Desk</button>
+              <button class="ghost-btn" type="button" data-view="Projects">Open projects</button>
+            </div>
+          </div>
+          <div class="calendar-score-card">
+            <span>Calendar focus</span>
+            <strong>${model.focusScore}%</strong>
+            <small>${model.overdue.length} overdue / ${model.noDate.length} no-date records</small>
+          </div>
+        </section>
+
+        <div class="calendar-kpis">
+          ${renderInsightKpi("Scheduled records", `${model.scheduled.length}`, `${model.dateCoverage}% date coverage`)}
+          ${renderInsightKpi("Overdue", `${model.overdue.length}`, "Past due tender or project dates")}
+          ${renderInsightKpi("Next 30 days", `${model.next30.length}`, "Upcoming review pressure")}
+          ${renderInsightKpi("High-value dates", `${model.highValueRows.length}`, "Management attention candidates")}
+        </div>
+
+        <div class="calendar-layout">
+          <section class="calendar-main">
+            <article class="info-panel calendar-week-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Rolling calendar</span>
+                  <h3>Eight-week review strip</h3>
+                </div>
+                <span>${model.events.length} open events</span>
+              </div>
+              ${renderCalendarWeeks(model.weeks)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Urgency lanes</span>
+                  <h3>What needs movement</h3>
+                </div>
+                <span>${model.lanes.reduce((sum, lane) => sum + lane.count, 0)} items</span>
+              </div>
+              <div class="calendar-lanes">
+                ${model.lanes.map(renderCalendarLane).join("")}
+              </div>
+            </article>
+          </section>
+
+          <aside class="calendar-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">High-value diary</span>
+                  <h3>Management review dates</h3>
+                </div>
+                <span>${model.highValueRows.length} shown</span>
+              </div>
+              ${renderCalendarEventList(model.highValueRows, "No high-value open dates found.")}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">No-date cleanup</span>
+                  <h3>Records outside the calendar</h3>
+                </div>
+                <span>${model.noDate.length} total</span>
+              </div>
+              ${renderCalendarEventList(model.noDate.slice(0, 8), "Every open record has a date.")}
+            </article>
+          </aside>
+        </div>
+
+        <div class="calendar-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Owner diary</span>
+                <h3>Who carries dated work</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.ownerRows, "green")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client pressure</span>
+                <h3>Accounts on the calendar</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.clientRows, "blue")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Work type</span>
+                <h3>Tender vs project dates</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.typeRows, "teal")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Calendar quality</span>
+                <h3>Date hygiene signals</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.qualityRows, "amber")}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCalendarWeeks(weeks) {
+    return `
+      <div class="calendar-week-grid">
+        ${weeks
+          .map(
+            (week) => `
+              <div class="calendar-week-card">
+                <div class="calendar-week-head">
+                  <span>${escapeHtml(week.label)}</span>
+                  <strong>${week.events.length}</strong>
+                </div>
+                <small>${escapeHtml(week.dateRange)} / ${week.tenderCount} tender / ${week.projectCount} project</small>
+                <div class="calendar-mini-list">
+                  ${
+                    week.events.length
+                      ? week.events
+                          .slice(0, 3)
+                          .map(
+                            (event) => `
+                              <button class="calendar-mini-event tone-${escapeHtml(event.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(event.record.id)}">
+                                <span>${escapeHtml(formatCalendarDay(event.date))}</span>
+                                <strong>${escapeHtml(event.record.title || event.record.reference || "Untitled")}</strong>
+                              </button>
+                            `,
+                          )
+                          .join("")
+                      : `<p>No dated records</p>`
+                  }
+                </div>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCalendarLane(lane) {
+    return `
+      <article class="calendar-lane">
+        <div class="calendar-lane-head">
+          <strong>${escapeHtml(lane.name)}</strong>
+          <span>${lane.count}</span>
+        </div>
+        <div class="calendar-event-list">
+          ${lane.events.length ? lane.events.map(renderCalendarEventCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} items.</div>`}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderCalendarEventList(events, emptyCopy) {
+    if (!events.length) return `<div class="empty-state compact">${escapeHtml(emptyCopy)}</div>`;
+    return `
+      <div class="calendar-event-list">
+        ${events.map(renderCalendarEventCard).join("")}
+      </div>
+    `;
+  }
+
+  function renderCalendarEventCard(event) {
+    return `
+      <button class="calendar-event-card tone-${escapeHtml(event.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(event.record.id)}">
+        <span>${escapeHtml(event.lane)}</span>
+        <strong>${escapeHtml(event.record.title || event.record.reference || "Untitled record")}</strong>
+        <em>${escapeHtml([event.kind, event.record.client, event.date ? formatDate(event.record.endDate) : "No date", dueLabel(event.days)].filter(Boolean).join(" / "))}</em>
+        <small>${escapeHtml([event.record.type, event.record.status, event.amount ? formatCompactMoney(event.amount) : "No value"].filter(Boolean).join(" / "))}</small>
+      </button>
+    `;
+  }
+
+  function riskSeverityFor(score) {
+    if (score >= 92) return { label: "Critical", tone: "red" };
+    if (score >= 74) return { label: "High", tone: "amber" };
+    if (score >= 56) return { label: "Watch", tone: "blue" };
+    return { label: "Controlled", tone: "green" };
+  }
+
+  function pushRisk(risks, record, type, title, note, action, score, amountOverride) {
+    const severity = riskSeverityFor(score);
+    risks.push({
+      id: `${record.id}-${normalize(type).replaceAll(" ", "-")}-${risks.length}`,
+      record,
+      type,
+      title,
+      note,
+      action,
+      score: Math.max(1, Math.min(100, Math.round(score))),
+      severity: severity.label,
+      tone: severity.tone,
+      amount: amountOverride ?? (Number(record.valueAmount) || 0),
+      days: recordDueDays(record),
+    });
+  }
+
+  function riskBreakdown(risks, getter, limit = 6) {
+    const rows = new Map();
+    risks.forEach((risk) => {
+      const label = String(getter(risk) || "Unassigned").trim() || "Unassigned";
+      rows.set(label, (rows.get(label) || 0) + 1);
+    });
+    return Array.from(rows, ([label, value]) => ({ label, value }))
+      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+      .slice(0, limit);
+  }
+
+  function buildRiskControlModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const floor = highValueThreshold(records);
+    const risks = [];
+    records.forEach((record) => {
+      const isOpen = !isClosedRecord(record);
+      const isTender = record.type === "Tender" || record.type === "EOI";
+      const isProject = record.type === "Project";
+      const amount = Number(record.valueAmount) || 0;
+      const days = recordDueDays(record);
+      const highValue = amount >= floor && amount > 0;
+      const missingCore = [
+        ["reference", record.reference],
+        ["client", record.client],
+        ["title", record.title],
+        ["category", record.category],
+        ["owner", record.owner],
+        ["source", record.sourceSheet || record.sourceWorkbook],
+      ]
+        .filter(([, value]) => !String(value || "").trim())
+        .map(([label]) => label);
+
+      if (isOpen && days !== null && days < 0) {
+        pushRisk(risks, record, "Schedule", "Overdue movement", `${Math.abs(days)} days past due. Status, owner, and next date need confirmation.`, "Update due date or escalation note.", 96 + Math.min(4, Math.abs(days) / 15));
+      } else if (isOpen && days !== null && days <= 14) {
+        pushRisk(risks, record, "Schedule", "Near-date pressure", `${days === 0 ? "Due today" : `${days} days left`}. Move this before it becomes overdue.`, "Confirm submission or delivery next step.", 76 + (14 - days));
+      }
+
+      if (isOpen && days === null) {
+        pushRisk(risks, record, "Data", "No control date", "This active record is outside calendar, reminder, and forecast timing control.", "Add due, submission, or review date.", 72);
+      }
+
+      if (isOpen && !amount) {
+        pushRisk(risks, record, "Value", "Missing expected value", "Value is not captured, so prioritization and management exposure are understated.", "Add estimated value or mark as intentionally unpriced.", highValue ? 80 : 66);
+      }
+
+      if (missingCore.length >= 2) {
+        pushRisk(risks, record, "Data", "Core data gaps", `${missingCore.slice(0, 4).join(", ")} missing. Reporting quality is reduced.`, "Complete the missing core fields.", 58 + missingCore.length * 7);
+      }
+
+      if (highValue && isOpen) {
+        const score = 70 + (days === null ? 10 : days < 0 ? 20 : days <= 30 ? 12 : 4) + (!record.owner ? 8 : 0);
+        pushRisk(risks, record, "Value", "High-value control", `${formatCompactMoney(amount)} open exposure needs visible ownership and review discipline.`, "Keep owner, date, and next move current.", score, amount);
+      }
+
+      if (isTender && isOpen) {
+        const decision = bidDecisionFor(record).decision;
+        const readiness = bidReadinessFor(record);
+        const ready = Boolean(state.data.submissionReady?.[record.id]);
+        if (decision === "Watch" && (days === null || days <= 30)) {
+          pushRisk(risks, record, "Bid", "Bid decision pending", "This pursuit is still on Watch while the date is close or missing.", "Set Bid or No-bid before effort increases.", days === null ? 74 : 82);
+        }
+        if (decision === "Bid" && !ready && days !== null && days <= 14) {
+          pushRisk(risks, record, "Bid", "Submission pack not ready", "Marked Bid, but the submission pack is not ready near the due date.", "Complete and mark pack ready in Bid Desk.", 88 + Math.max(0, 14 - days));
+        }
+        if (readiness < 72) {
+          pushRisk(risks, record, "Bid", "Low bid readiness", `Submission readiness is ${readiness}%.`, "Close reference, value, owner, source, and decision gaps.", 62 + (72 - readiness) * 0.7);
+        }
+      }
+
+      if (isProject && isOpen) {
+        if (days !== null && days < 0) {
+          pushRisk(risks, record, "Delivery", "Project date slipped", `${Math.abs(days)} days past the captured project date.`, "Confirm delivery status and revised milestone.", 94);
+        } else if (days !== null && days <= 30) {
+          pushRisk(risks, record, "Delivery", "Project milestone near", `${days} days to captured project date.`, "Check delivery owner, client readiness, and next handover.", 70 + Math.max(0, 30 - days) * 0.4);
+        }
+        if (!record.owner) {
+          pushRisk(risks, record, "Delivery", "No delivery owner", "Project record has no owner, which weakens accountability.", "Assign a project owner.", 68);
+        }
+      }
+
+      if ((["Awarded", "Ongoing", "Completed"].includes(record.status) || isProject) && (!record.agreementNo || !record.loaReceived || !record.agreementReceived)) {
+        const gaps = [
+          !record.agreementNo ? "agreement no" : "",
+          !record.loaReceived ? "LOA proof" : "",
+          !record.agreementReceived ? "agreement received" : "",
+        ].filter(Boolean);
+        pushRisk(risks, record, "Commercial", "Commercial evidence gap", `${gaps.join(", ")} missing for commercial control.`, "Update contract evidence in the source record.", 62 + gaps.length * 8);
+      }
+
+      if ((record.rounds || []).length >= 2 && isOpen) {
+        pushRisk(risks, record, "Negotiation", "Negotiation trail active", `${record.rounds.length} negotiation rounds captured. Commercial movement should stay visible.`, "Review latest negotiation note and next response.", 62 + Math.min(18, record.rounds.length * 4));
+      }
+    });
+
+    const sorted = risks.sort((a, b) => b.score - a.score || (a.days ?? 9999) - (b.days ?? 9999) || a.record.client.localeCompare(b.record.client));
+    const critical = sorted.filter((risk) => risk.severity === "Critical");
+    const high = sorted.filter((risk) => risk.severity === "High");
+    const watch = sorted.filter((risk) => risk.severity === "Watch");
+    const uniqueRiskRecords = Array.from(new Map(sorted.map((risk) => [risk.record.id, risk.record])).values());
+    const riskExposure = sumAmounts(uniqueRiskRecords);
+    const severityPenalty = Math.min(55, critical.length * 0.6 + high.length * 0.35 + watch.length * 0.15);
+    const densityPenalty = Math.min(20, (sorted.length / Math.max(openRecords.length, 1)) * 5);
+    const controlScore = Math.max(15, Math.min(100, Math.round(100 - severityPenalty - densityPenalty)));
+    const riskTypes = ["Schedule", "Bid", "Commercial", "Delivery", "Data", "Value", "Negotiation"];
+    const heatRows = riskTypes
+      .map((type) => {
+        const typeRisks = sorted.filter((risk) => risk.type === type);
+        return {
+          label: type,
+          total: typeRisks.length,
+          critical: typeRisks.filter((risk) => risk.severity === "Critical").length,
+          high: typeRisks.filter((risk) => risk.severity === "High").length,
+          watch: typeRisks.filter((risk) => risk.severity === "Watch").length,
+        };
+      })
+      .filter((row) => row.total);
+    const lanes = [
+      { name: "Critical", risks: critical.slice(0, 8), count: critical.length },
+      { name: "Schedule", risks: sorted.filter((risk) => risk.type === "Schedule").slice(0, 8), count: sorted.filter((risk) => risk.type === "Schedule").length },
+      { name: "Bid", risks: sorted.filter((risk) => risk.type === "Bid").slice(0, 8), count: sorted.filter((risk) => risk.type === "Bid").length },
+      { name: "Commercial", risks: sorted.filter((risk) => risk.type === "Commercial").slice(0, 8), count: sorted.filter((risk) => risk.type === "Commercial").length },
+      { name: "Delivery", risks: sorted.filter((risk) => risk.type === "Delivery").slice(0, 8), count: sorted.filter((risk) => risk.type === "Delivery").length },
+      { name: "Data", risks: sorted.filter((risk) => risk.type === "Data" || risk.type === "Value").slice(0, 8), count: sorted.filter((risk) => risk.type === "Data" || risk.type === "Value").length },
+    ];
+    return {
+      records,
+      openRecords,
+      risks: sorted,
+      critical,
+      high,
+      watch,
+      riskExposure,
+      controlScore,
+      lanes,
+      heatRows,
+      ownerRows: riskBreakdown(sorted, (risk) => risk.record.owner, 6),
+      clientRows: riskBreakdown(sorted, (risk) => accountLabelForRecord(risk.record), 6),
+      typeRows: riskBreakdown(sorted, (risk) => risk.type, 7),
+      severityRows: [
+        { label: "Critical", value: critical.length },
+        { label: "High", value: high.length },
+        { label: "Watch", value: watch.length },
+        { label: "Controlled", value: sorted.filter((risk) => risk.severity === "Controlled").length },
+      ],
+      commercialDataRows: sorted.filter((risk) => ["Commercial", "Data", "Value"].includes(risk.type)).slice(0, 10),
+      playbook: [
+        ["Stabilize red", "Clear overdue, high-value, and pack-not-ready items before ordinary cleanup."],
+        ["Assign ownership", "Every critical or high risk needs one owner and one next date."],
+        ["Protect evidence", "Commercial gaps should be closed before weekly reporting or client escalation."],
+        ["Reduce noise", "No-date and missing-value records should not survive the weekly review."],
+      ],
+    };
+  }
+
+  function renderRiskControlPage() {
+    const model = buildRiskControlModel();
+    return `
+      <section class="risk-control">
+        <section class="risk-console">
+          <div>
+            <span class="panel-label">Risk control room</span>
+            <h2>Make the hidden problems impossible to miss.</h2>
+            <p>Risk Control reads the same pursuit and project records, then turns schedule pressure, bid gaps, commercial evidence, missing data, and delivery exposure into a register the team can act on.</p>
+            <div class="risk-actions">
+              <button class="secondary-btn" type="button" data-view="Calendar">Open calendar</button>
+              <button class="ghost-btn" type="button" data-view="Bid Desk">Open Bid Desk</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="risk-score-card">
+            <span>Control score</span>
+            <strong>${model.controlScore}%</strong>
+            <small>${model.critical.length} critical / ${model.high.length} high risks</small>
+          </div>
+        </section>
+
+        <div class="risk-kpis">
+          ${renderInsightKpi("Active risks", `${model.risks.length}`, `${model.openRecords.length} open records scanned`)}
+          ${renderInsightKpi("Critical risks", `${model.critical.length}`, "Immediate management attention")}
+          ${renderInsightKpi("Risk exposure", formatCompactMoney(model.riskExposure), "Unique record value touched by risks")}
+          ${renderInsightKpi("Commercial/data", `${model.commercialDataRows.length}`, "Evidence and hygiene risks shown")}
+        </div>
+
+        <div class="risk-layout">
+          <section class="risk-main">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Risk register</span>
+                  <h3>Severity lanes</h3>
+                </div>
+                <span>${model.risks.length} risks</span>
+              </div>
+              <div class="risk-lanes">
+                ${model.lanes.map(renderRiskLane).join("")}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Risk heatmap</span>
+                  <h3>Type and severity concentration</h3>
+                </div>
+              </div>
+              ${renderRiskHeatmap(model.heatRows)}
+            </article>
+          </section>
+
+          <aside class="risk-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Critical now</span>
+                  <h3>First risks to clear</h3>
+                </div>
+                <span>${model.critical.length} total</span>
+              </div>
+              ${renderRiskList(model.critical.slice(0, 8), "No critical risks currently detected.")}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Evidence cleanup</span>
+                  <h3>Commercial and data risks</h3>
+                </div>
+                <span>${model.commercialDataRows.length} shown</span>
+              </div>
+              ${renderRiskList(model.commercialDataRows.slice(0, 8), "No commercial or data cleanup risks detected.")}
+            </article>
+          </aside>
+        </div>
+
+        <div class="risk-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Owner exposure</span>
+                <h3>Risk by owner</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.ownerRows, "green")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client exposure</span>
+                <h3>Accounts carrying risk</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.clientRows, "blue")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Risk mix</span>
+                <h3>Primary risk types</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.typeRows, "amber")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Mitigation rhythm</span>
+                <h3>Weekly control loop</h3>
+              </div>
+            </div>
+            ${renderRiskPlaybook(model.playbook)}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderRiskLane(lane) {
+    return `
+      <article class="risk-lane">
+        <div class="risk-lane-head">
+          <strong>${escapeHtml(lane.name)}</strong>
+          <span>${lane.count}</span>
+        </div>
+        <div class="risk-card-list">
+          ${lane.risks.length ? lane.risks.map(renderRiskCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} risks.</div>`}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderRiskList(risks, emptyCopy) {
+    if (!risks.length) return `<div class="empty-state compact">${escapeHtml(emptyCopy)}</div>`;
+    return `<div class="risk-card-list">${risks.map(renderRiskCard).join("")}</div>`;
+  }
+
+  function renderRiskCard(risk) {
+    return `
+      <button class="risk-card tone-${escapeHtml(risk.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(risk.record.id)}">
+        <span>${escapeHtml(risk.severity)} / ${escapeHtml(risk.type)}</span>
+        <strong>${escapeHtml(risk.title)}</strong>
+        <em>${escapeHtml(risk.record.title || risk.record.reference || "Untitled record")}</em>
+        <small>${escapeHtml([risk.record.client, dueLabel(risk.days), risk.amount ? formatCompactMoney(risk.amount) : "No value"].filter(Boolean).join(" / "))}</small>
+        <p>${escapeHtml(risk.action)}</p>
+      </button>
+    `;
+  }
+
+  function renderRiskHeatmap(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No risk heatmap data available.</div>`;
+    const max = Math.max(...rows.map((row) => row.total), 1);
+    return `
+      <div class="risk-heatmap">
+        ${rows
+          .map((row) => {
+            const width = Math.max(6, Math.round((row.total / max) * 100));
+            return `
+              <div class="risk-heat-row">
+                <div>
+                  <strong>${escapeHtml(row.label)}</strong>
+                  <span>${row.total} total</span>
+                </div>
+                <i style="--width: ${width}%"><b></b></i>
+                <small>${row.critical} critical / ${row.high} high / ${row.watch} watch</small>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderRiskPlaybook(rows) {
+    return `
+      <div class="risk-playbook">
+        ${rows
+          .map(
+            ([title, note]) => `
+              <div>
+                <strong>${escapeHtml(title)}</strong>
+                <span>${escapeHtml(note)}</span>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function advisorBreakdown(items, getter, limit = 6) {
+    const rows = new Map();
+    items.forEach((item) => {
+      const label = String(getter(item) || "Unassigned").trim() || "Unassigned";
+      rows.set(label, (rows.get(label) || 0) + 1);
+    });
+    return Array.from(rows, ([label, value]) => ({ label, value }))
+      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+      .slice(0, limit);
+  }
+
+  function addAdvisorRecommendation(recommendations, seen, item) {
+    const key = `${item.source}-${item.record?.id || item.view || item.title}-${item.title}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    recommendations.push({
+      lane: item.lane || "Do now",
+      source: item.source || "Advisor",
+      title: item.title || "Recommended action",
+      reason: item.reason || "PursuitDesk found a signal that needs review.",
+      action: item.action || "Open the source and confirm the next move.",
+      impact: item.impact || "Operating control",
+      view: item.view || "Command",
+      record: item.record || null,
+      score: Math.max(1, Math.min(100, Math.round(item.score || 50))),
+      tone: item.tone || "blue",
+    });
+  }
+
+  function buildPursuitAdvisorModel() {
+    const records = companyRecords();
+    const risk = buildRiskControlModel();
+    const calendar = buildReviewCalendarModel();
+    const bidDesk = buildBidDeskModel();
+    const forecast = buildForecastModel();
+    const contracts = buildContractsModel();
+    const documents = buildDocumentsModel();
+    const reminders = buildReminderModel();
+    const governance = buildGovernanceModel();
+    const portfolio = buildClientPortfolioModel();
+    const recommendations = [];
+    const seen = new Set();
+
+    risk.critical.slice(0, 6).forEach((item) =>
+      addAdvisorRecommendation(recommendations, seen, {
+        lane: "Do now",
+        source: "Risk",
+        title: item.title,
+        reason: item.note,
+        action: item.action,
+        impact: item.amount ? formatCompactMoney(item.amount) : "Critical control",
+        view: "Risk",
+        record: item.record,
+        score: 100 + item.score * 0.1,
+        tone: "red",
+      }),
+    );
+
+    risk.high.slice(0, 5).forEach((item) =>
+      addAdvisorRecommendation(recommendations, seen, {
+        lane: "Do now",
+        source: "Risk",
+        title: item.title,
+        reason: item.note,
+        action: item.action,
+        impact: item.amount ? formatCompactMoney(item.amount) : "High risk",
+        view: "Risk",
+        record: item.record,
+        score: 88 + item.score * 0.05,
+        tone: item.tone,
+      }),
+    );
+
+    bidDesk.activeRows
+      .filter((row) => row.decision.decision === "Watch" && (row.dueDays === null || row.dueDays <= 30))
+      .slice(0, 5)
+      .forEach((row) =>
+        addAdvisorRecommendation(recommendations, seen, {
+          lane: "Decide",
+          source: "Bid Desk",
+          title: "Set bid/no-bid decision",
+          reason: `${row.decision.decision} decision while ${dueLabel(row.dueDays).toLowerCase()} and ${row.readiness}% ready.`,
+          action: "Decide Bid or No-bid before effort increases.",
+          impact: row.amount ? formatCompactMoney(row.amount) : "Bid effort control",
+          view: "Bid Desk",
+          record: row.record,
+          score: row.dueDays === null ? 78 : 92 - Math.max(0, row.dueDays),
+          tone: "amber",
+        }),
+      );
+
+    bidDesk.activeRows
+      .filter((row) => row.decision.decision === "Bid" && !row.ready && row.dueDays !== null && row.dueDays <= 14)
+      .slice(0, 5)
+      .forEach((row) =>
+        addAdvisorRecommendation(recommendations, seen, {
+          lane: "Decide",
+          source: "Bid Desk",
+          title: "Complete submission pack",
+          reason: `Bid is active but pack is not ready with ${dueLabel(row.dueDays).toLowerCase()}.`,
+          action: "Close readiness gaps and mark the pack ready.",
+          impact: row.amount ? formatCompactMoney(row.amount) : "Submission readiness",
+          view: "Bid Desk",
+          record: row.record,
+          score: 90,
+          tone: "red",
+        }),
+      );
+
+    calendar.noDate.slice(0, 5).forEach((event) =>
+      addAdvisorRecommendation(recommendations, seen, {
+        lane: "Schedule",
+        source: "Calendar",
+        title: "Put record on the calendar",
+        reason: "This open item has no control date, so it is invisible to time-based review.",
+        action: "Add a due, submission, or next review date.",
+        impact: event.amount ? formatCompactMoney(event.amount) : "Calendar control",
+        view: "Calendar",
+        record: event.record,
+        score: 74,
+        tone: "blue",
+      }),
+    );
+
+    contracts.gaps.slice(0, 6).forEach((item) =>
+      addAdvisorRecommendation(recommendations, seen, {
+        lane: "Commercial",
+        source: "Contracts",
+        title: item.risk,
+        reason: `${item.stage} has a commercial control gap.`,
+        action: "Update agreement number, LOA proof, agreement receipt, or value.",
+        impact: item.record.valueAmount ? formatCompactMoney(item.record.valueAmount) : "Commercial evidence",
+        view: "Contracts",
+        record: item.record,
+        score: item.risk === "Needs agreement" ? 84 : 70,
+        tone: item.risk === "Needs agreement" ? "amber" : "blue",
+      }),
+    );
+
+    forecast.atRiskItems.slice(0, 5).forEach((item) =>
+      addAdvisorRecommendation(recommendations, seen, {
+        lane: "Forecast",
+        source: "Forecast",
+        title: "Clean forecast risk",
+        reason: `${item.window.label} / ${item.probability}% probability is affecting forecast confidence.`,
+        action: "Update date, probability-driving status, or value assumptions.",
+        impact: item.amount ? formatCompactMoney(item.amount) : "Forecast quality",
+        view: "Forecast",
+        record: item.record,
+        score: item.amount ? 78 : 62,
+        tone: item.window.label === "Past due" ? "red" : "amber",
+      }),
+    );
+
+    documents.gapPacks.slice(0, 6).forEach((pack) =>
+      addAdvisorRecommendation(recommendations, seen, {
+        lane: "Clean data",
+        source: "Documents",
+        title: "Close evidence gaps",
+        reason: `${pack.gaps.slice(0, 3).join(", ")} missing from the document pack.`,
+        action: "Complete source, agreement, LOA, date, or negotiation evidence.",
+        impact: `${pack.readiness}% document readiness`,
+        view: "Documents",
+        record: pack.record,
+        score: 64 + pack.gaps.length * 4,
+        tone: "blue",
+      }),
+    );
+
+    reminders.tasks.slice(0, 5).forEach((task) =>
+      addAdvisorRecommendation(recommendations, seen, {
+        lane: task.lane === "Overdue" ? "Do now" : "Schedule",
+        source: "Reminders",
+        title: task.label,
+        reason: task.note,
+        action: "Open the source record and close the reminder loop.",
+        impact: task.record.valueAmount ? formatCompactMoney(task.record.valueAmount) : "Follow-up control",
+        view: "Reminders",
+        record: task.record,
+        score: task.priority,
+        tone: task.tone,
+      }),
+    );
+
+    if (risk.critical.length || reminders.overdue) {
+      addAdvisorRecommendation(recommendations, seen, {
+        lane: "Do now",
+        source: "Advisor",
+        title: "Run a 15-minute red review",
+        reason: `${risk.critical.length} critical risks and ${reminders.overdue} overdue reminders need a short management pass.`,
+        action: "Open Risk, clear owners, assign next dates, then review Calendar.",
+        impact: "Management rhythm",
+        view: "Risk",
+        score: 96,
+        tone: "red",
+      });
+    }
+
+    const sorted = recommendations.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+    const laneNames = ["Do now", "Decide", "Schedule", "Commercial", "Forecast", "Clean data"];
+    const lanes = laneNames.map((name) => ({
+      name,
+      items: sorted.filter((item) => item.lane === name).slice(0, 8),
+      count: sorted.filter((item) => item.lane === name).length,
+    }));
+    const commercialScore = Math.max(0, 100 - Math.min(70, contracts.gapCount));
+    const decisionScore = bidDesk.activeRows.length
+      ? Math.round(((bidDesk.bidRows.length + bidDesk.noBidRows.length) / bidDesk.activeRows.length) * 100)
+      : 100;
+    const advisorScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          risk.controlScore * 0.24 +
+            calendar.focusScore * 0.18 +
+            governance.governanceScore * 0.16 +
+            forecast.confidence * 0.14 +
+            documents.sourceCoverage * 0.12 +
+            commercialScore * 0.08 +
+            decisionScore * 0.08,
+        ),
+      ),
+    );
+    const uniqueRecommendationRecords = Array.from(
+      new Map(sorted.filter((item) => item.record).map((item) => [item.record.id, item.record])).values(),
+    );
+    const recommendationValue = sumAmounts(uniqueRecommendationRecords);
+    const topAction = sorted[0];
+    const topForecast = forecast.topItems[0];
+    const topClient = portfolio.accounts[0];
+    const brief = [
+      {
+        label: "Opening line",
+        text: `${sorted.length} advisor recommendations are active; ${risk.critical.length} are critical-risk driven and ${calendar.noDate.length} records still need dates.`,
+      },
+      {
+        label: "First move",
+        text: topAction
+          ? `${topAction.title}: ${topAction.action}`
+          : "No urgent action found; continue weekly review and keep the data clean.",
+      },
+      {
+        label: "Value line",
+        text: `${formatCompactMoney(recommendationValue)} is attached to advisor-linked records; base forecast remains ${formatCompactMoney(forecast.weightedValue)}.`,
+      },
+      {
+        label: "Client note",
+        text: topClient
+          ? `${topClient.label} carries the hottest relationship signal with ${topClient.openCount} open items.`
+          : "Client concentration will appear as relationship history grows.",
+      },
+    ];
+    const decisionStack = [
+      { label: "Risk", value: `${risk.controlScore}%`, note: `${risk.critical.length} critical / ${risk.high.length} high`, view: "Risk", tone: "red" },
+      { label: "Bid decisions", value: `${decisionScore}%`, note: `${bidDesk.watchRows.length} watch items`, view: "Bid Desk", tone: "amber" },
+      { label: "Calendar", value: `${calendar.focusScore}%`, note: `${calendar.noDate.length} no-date records`, view: "Calendar", tone: "blue" },
+      { label: "Forecast", value: formatCompactMoney(forecast.weightedValue), note: `${forecast.atRiskItems.length} at-risk items`, view: "Forecast", tone: "green" },
+      { label: "Commercial", value: `${commercialScore}%`, note: `${contracts.gapCount} gaps`, view: "Contracts", tone: "amber" },
+      { label: "Evidence", value: `${documents.sourceCoverage}%`, note: `${documents.totalGaps} document gaps`, view: "Documents", tone: "blue" },
+    ];
+    return {
+      records,
+      recommendations: sorted,
+      lanes,
+      advisorScore,
+      confidence: Math.round((governance.governanceScore + documents.sourceCoverage + forecast.confidence) / 3),
+      recommendationValue,
+      doNow: sorted.filter((item) => item.lane === "Do now"),
+      decisionStack,
+      brief,
+      sourceRows: advisorBreakdown(sorted, (item) => item.source, 8),
+      ownerRows: advisorBreakdown(sorted, (item) => item.record?.owner, 6),
+      clientRows: advisorBreakdown(sorted, (item) => (item.record ? accountLabelForRecord(item.record) : "Management"), 6),
+      playbook: [
+        ["Start red", "Open Do now and clear ownership, next dates, and evidence before anything else."],
+        ["Decide fast", "Move Watch bids into Bid or No-bid so effort is not wasted."],
+        ["Protect forecast", "Clean past-due and no-date value before management reporting."],
+        ["Close proof gaps", "Commercial and document evidence should be updated before weekly review."],
+      ],
+    };
+  }
+
+  function renderPursuitAdvisorPage() {
+    const model = buildPursuitAdvisorModel();
+    return `
+      <section class="advisor-desk">
+        <section class="advisor-console">
+          <div>
+            <span class="panel-label">Pursuit advisor</span>
+            <h2>Turn every signal into the next best move.</h2>
+            <p>Advisor reads Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminders, then ranks the moves that will improve operating control fastest.</p>
+            <div class="advisor-actions">
+              <button class="secondary-btn" type="button" data-view="Risk">Open risk control</button>
+              <button class="ghost-btn" type="button" data-view="Bid Desk">Open Bid Desk</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+            </div>
+          </div>
+          <div class="advisor-score-card">
+            <span>Advisor score</span>
+            <strong>${model.advisorScore}%</strong>
+            <small>${model.doNow.length} do-now moves / ${model.confidence}% signal confidence</small>
+          </div>
+        </section>
+
+        <div class="advisor-kpis">
+          ${renderInsightKpi("Recommendations", `${model.recommendations.length}`, "Ranked from live workspace signals")}
+          ${renderInsightKpi("Do now", `${model.doNow.length}`, "Highest priority actions")}
+          ${renderInsightKpi("Value touched", formatCompactMoney(model.recommendationValue), "Unique value connected to recommendations")}
+          ${renderInsightKpi("Signal confidence", `${model.confidence}%`, "Governance, evidence, and forecast quality")}
+        </div>
+
+        <div class="advisor-layout">
+          <section class="advisor-main">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Next best actions</span>
+                  <h3>Advisor lanes</h3>
+                </div>
+                <span>${model.recommendations.length} recommendations</span>
+              </div>
+              <div class="advisor-lanes">
+                ${model.lanes.map(renderAdvisorLane).join("")}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Decision cockpit</span>
+                  <h3>Rooms that need leadership</h3>
+                </div>
+              </div>
+              <div class="advisor-decision-grid">
+                ${model.decisionStack.map(renderAdvisorDecisionCard).join("")}
+              </div>
+            </article>
+          </section>
+
+          <aside class="advisor-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Management brief</span>
+                  <h3>What to say in review</h3>
+                </div>
+              </div>
+              ${renderAdvisorBrief(model.brief)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Operating rhythm</span>
+                  <h3>How to work the recommendations</h3>
+                </div>
+              </div>
+              ${renderAdvisorPlaybook(model.playbook)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="advisor-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Source signals</span>
+                <h3>Where advice is coming from</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.sourceRows, "teal")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Owner focus</span>
+                <h3>Who needs support</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.ownerRows, "green")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client focus</span>
+                <h3>Accounts behind recommendations</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.clientRows, "blue")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Advisor posture</span>
+                <h3>Current operating stance</h3>
+              </div>
+            </div>
+            <div class="advisor-posture">
+              <strong>${model.advisorScore >= 72 ? "Controlled push" : model.advisorScore >= 48 ? "Focused recovery" : "Management intervention"}</strong>
+              <span>${model.advisorScore >= 72 ? "Keep the weekly rhythm tight and protect high-value movement." : model.advisorScore >= 48 ? "Clear red items, decisions, and date gaps before expanding the pipeline." : "Use Risk, Calendar, and Bid Desk first; defer cosmetic cleanup until control improves."}</span>
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderAdvisorLane(lane) {
+    return `
+      <article class="advisor-lane">
+        <div class="advisor-lane-head">
+          <strong>${escapeHtml(lane.name)}</strong>
+          <span>${lane.count}</span>
+        </div>
+        <div class="advisor-card-list">
+          ${lane.items.length ? lane.items.map(renderAdvisorCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} recommendations.</div>`}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderAdvisorCard(item) {
+    const attrs = item.record
+      ? `data-action="open-related-record" data-id="${escapeHtml(item.record.id)}"`
+      : `data-view="${escapeHtml(item.view)}"`;
+    const meta = item.record
+      ? [item.record.client, dueLabel(recordDueDays(item.record)), item.impact].filter(Boolean).join(" / ")
+      : item.impact;
+    return `
+      <button class="advisor-card tone-${escapeHtml(item.tone)}" type="button" ${attrs}>
+        <span>${escapeHtml(item.source)} / ${escapeHtml(item.lane)}</span>
+        <strong>${escapeHtml(item.title)}</strong>
+        <em>${escapeHtml(item.reason)}</em>
+        <small>${escapeHtml(meta)}</small>
+        <p>${escapeHtml(item.action)}</p>
+      </button>
+    `;
+  }
+
+  function renderAdvisorDecisionCard(item) {
+    return `
+      <button class="advisor-decision-card tone-${escapeHtml(item.tone)}" type="button" data-view="${escapeHtml(item.view)}">
+        <span>${escapeHtml(item.label)}</span>
+        <strong>${escapeHtml(item.value)}</strong>
+        <small>${escapeHtml(item.note)}</small>
+      </button>
+    `;
+  }
+
+  function renderAdvisorBrief(rows) {
+    return `
+      <div class="advisor-brief-list">
+        ${rows
+          .map(
+            (row) => `
+              <div>
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${escapeHtml(row.text)}</strong>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderAdvisorPlaybook(rows) {
+    return `
+      <div class="advisor-playbook">
+        ${rows
+          .map(
+            ([title, note]) => `
+              <div>
+                <strong>${escapeHtml(title)}</strong>
+                <span>${escapeHtml(note)}</span>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderIntakeDeskPage() {
+    const model = buildIntakeModel();
+    return `
+      <section class="intake-desk">
+        <section class="intake-console">
+          <div>
+            <span class="panel-label">Request front door</span>
+            <h2>Capture opportunities before they become messy rows.</h2>
+            <p>Use Intake for controlled tender and project requests: validate the minimum information, route ownership, and convert clean submissions into the live tracker with an audit trail.</p>
+            <div class="intake-actions">
+              <button class="secondary-btn" type="button" data-action="focus-intake-form">New request</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import</button>
+            </div>
+          </div>
+          <div class="intake-score-card">
+            <span>Intake readiness</span>
+            <strong>${model.score}%</strong>
+            <small>${model.cleanPending.length} ready / ${model.pending.length} pending requests</small>
+          </div>
+        </section>
+
+        <div class="intake-kpis">
+          ${renderInsightKpi("Pending requests", `${model.pending.length}`, `${model.dueSoon} due in 30 days`)}
+          ${renderInsightKpi("Ready to convert", `${model.cleanPending.length}`, `${model.blocked.length} blocked by missing fields`)}
+          ${renderInsightKpi("Pending value", formatCompactMoney(model.pendingValue), "Value waiting at intake")}
+          ${renderInsightKpi("Converted value", formatCompactMoney(model.convertedValue), `${model.approved.length} approved requests`)}
+        </div>
+
+        <div class="intake-layout">
+          <section class="intake-main">
+            <article class="info-panel intake-form-panel" id="intakeFormPanel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">New request</span>
+                  <h3>Opportunity intake form</h3>
+                </div>
+                <span>${canEdit() ? "Editor enabled" : "Read only"}</span>
+              </div>
+              ${renderIntakeForm()}
+            </article>
+
+            <article class="info-panel intake-queue-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Request queue</span>
+                  <h3>Validate and convert</h3>
+                </div>
+                <span>${model.requests.length} requests</span>
+              </div>
+              ${renderIntakeQueue(model.requests)}
+            </article>
+          </section>
+
+          <aside class="intake-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Validation</span>
+                  <h3>Missing-field watch</h3>
+                </div>
+                <span>${model.blocked.length} blocked</span>
+              </div>
+              ${renderIntakeValidationList(model.blocked)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Priority</span>
+                  <h3>What to process first</h3>
+                </div>
+                <span>${model.priorityRows.length} shown</span>
+              </div>
+              ${renderIntakePriorityList(model.priorityRows)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="intake-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Channel mix</span>
+                <h3>Where requests arrive</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.channelRows, "teal")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Type mix</span>
+                <h3>Tender or project</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.typeRows, "blue")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Status lane</span>
+                <h3>Intake movement</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.statusRows, "amber")}
+          </article>
+
+          <article class="info-panel intake-playbook-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Intake rhythm</span>
+                <h3>Conversion loop</h3>
+              </div>
+            </div>
+            ${renderIntakePlaybook()}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderIntakeForm() {
+    const disabled = canEdit() ? "" : "disabled";
+    return `
+      <form class="intake-form" id="intakeForm">
+        <div class="intake-form-grid">
+          <label>
+            <span>Type</span>
+            <select name="type" ${disabled}>
+              ${TYPE_OPTIONS.map((type) => `<option value="${escapeHtml(type)}" ${type === "Tender" ? "selected" : ""}>${escapeHtml(type)}</option>`).join("")}
+            </select>
+          </label>
+          <label>
+            <span>Reference</span>
+            <input name="reference" placeholder="Client / tender reference" ${disabled}>
+          </label>
+          <label>
+            <span>Client</span>
+            <input name="client" placeholder="Client or account" required ${disabled}>
+          </label>
+          <label>
+            <span>Category</span>
+            <input name="category" placeholder="E&I, Software, Telecom..." required ${disabled}>
+          </label>
+          <label class="span-2">
+            <span>Title</span>
+            <input name="title" placeholder="Short opportunity or project title" required ${disabled}>
+          </label>
+          <label>
+            <span>Due / target date</span>
+            <input name="endDate" type="date" ${disabled}>
+          </label>
+          <label>
+            <span>Value</span>
+            <input name="valueText" placeholder="AED 1,250,000" ${disabled}>
+          </label>
+          <label>
+            <span>Owner</span>
+            <input name="owner" value="${escapeHtml(state.user.name)}" ${disabled}>
+          </label>
+          <label>
+            <span>Channel</span>
+            <select name="channel" ${disabled}>
+              ${["Email request", "Client portal", "Management review", "Sales lead", "Procurement notice", "Operations call", "Manual request"]
+                .map((channel) => `<option value="${escapeHtml(channel)}">${escapeHtml(channel)}</option>`)
+                .join("")}
+            </select>
+          </label>
+          <label class="span-2">
+            <span>Notes</span>
+            <textarea name="notes" placeholder="Scope, next move, commercial note..." ${disabled}></textarea>
+          </label>
+        </div>
+        <div class="intake-form-actions">
+          <button class="primary-btn" type="submit" ${disabled}>Submit request</button>
+          <button class="ghost-btn" type="reset" ${disabled}>Clear</button>
+        </div>
+      </form>
+    `;
+  }
+
+  function renderIntakeQueue(requests) {
+    if (!requests.length) return `<div class="empty-state compact">No intake requests yet.</div>`;
+    return `
+      <div class="intake-queue-list">
+        ${requests.map((request) => {
+          const missing = intakeMissingFields(request);
+          const converted = request.status === "Approved" && request.convertedRecordId;
+          const score = intakePriority(request);
+          return `
+            <div class="intake-request-row tone-${escapeHtml(intakeStatusTone(request.status))}">
+              <div>
+                <span>${escapeHtml(request.status)}</span>
+                <strong>${escapeHtml(request.title || request.reference || "Untitled request")}</strong>
+                <em>${escapeHtml([request.reference, request.client, request.type, request.channel, request.endDate ? formatDate(request.endDate) : "No date"].filter(Boolean).join(" / "))}</em>
+                <small>${missing.length ? `Missing ${missing.join(", ")}` : `Ready score ${score}/100`}${converted ? ` / Converted to ${request.convertedRecordId}` : ""}</small>
+              </div>
+              <div class="intake-row-actions">
+                ${converted ? `<button class="mini-btn" type="button" data-action="open-related-record" data-id="${escapeHtml(request.convertedRecordId)}">Open</button>` : ""}
+                <button class="mini-btn primary-mini" type="button" data-action="convert-intake" data-id="${escapeHtml(request.id)}" ${canEdit() && request.status !== "Approved" && !missing.length ? "" : "disabled"}>Convert</button>
+                <button class="mini-btn" type="button" data-action="rework-intake" data-id="${escapeHtml(request.id)}" ${canEdit() && request.status !== "Approved" ? "" : "disabled"}>Rework</button>
+                <button class="mini-btn danger" type="button" data-action="delete-intake" data-id="${escapeHtml(request.id)}" ${canEdit() ? "" : "disabled"}>Del</button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  function renderIntakeValidationList(requests) {
+    if (!requests.length) return `<div class="empty-state compact">All pending requests have the required fields.</div>`;
+    return `
+      <div class="command-list">
+        ${requests.slice(0, 8).map((request) => `
+          <div class="command-row tone-amber static-row">
+            <span>${intakeMissingFields(request).length} gaps</span>
+            <strong>${escapeHtml(request.title || request.reference || "Untitled request")}</strong>
+            <em>${escapeHtml(intakeMissingFields(request).join(" / "))}</em>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderIntakePriorityList(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No pending requests waiting.</div>`;
+    return `
+      <div class="command-list">
+        ${rows.map(({ request, score, missing }) => `
+          <div class="command-row tone-${missing.length ? "amber" : "teal"} static-row">
+            <span>${score}/100</span>
+            <strong>${escapeHtml(request.title || request.reference || "Untitled request")}</strong>
+            <em>${escapeHtml([request.client, request.type, request.endDate ? formatDate(request.endDate) : "No date"].filter(Boolean).join(" / "))}</em>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderIntakePlaybook() {
+    const rows = [
+      ["1", "Capture", "Use the form for new client, sales, or management requests."],
+      ["2", "Validate", "Reference, client, title, category, date, and owner should be clean."],
+      ["3", "Convert", "Clean requests become live tender or project records."],
+      ["4", "Govern", "Every request and conversion appears in the audit trail."],
+    ];
+    return `
+      <div class="command-rhythm intake-playbook">
+        ${rows.map(([step, title, note]) => `
+          <div>
+            <span>${escapeHtml(step)}</span>
+            <strong>${escapeHtml(title)}</strong>
+            <em>${escapeHtml(note)}</em>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function intakeStatusTone(status) {
+    if (status === "Approved") return "green";
+    if (status === "Rework") return "amber";
+    return "teal";
   }
 
   function renderImportStudioPage() {
@@ -2637,6 +5033,258 @@
           .join("")}
       </div>
     `;
+  }
+
+  function renderGovernancePage() {
+    const model = buildGovernanceModel();
+    return `
+      <section class="governance-desk">
+        <section class="governance-console">
+          <div>
+            <span class="panel-label">Trust control</span>
+            <h2>Keep every pursuit decision reviewable.</h2>
+            <p>Governance brings the hidden management layer into the product: audit trail, high-value approvals, access control visibility, and policy health for tenders, projects, imports, reports, and membership.</p>
+            <div class="governance-actions">
+              <button class="secondary-btn" type="button" data-view="Reports">Open weekly pack</button>
+              <button class="ghost-btn" type="button" data-view="Reminders">Open follow-ups</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Review users</button>
+            </div>
+          </div>
+          <div class="score-ring governance-score" style="--score: ${model.governanceScore}">
+            <div>
+              <strong>${model.governanceScore}</strong>
+              <span>Trust</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="governance-kpis">
+          ${renderInsightKpi("Pending reviews", `${model.pendingReviews.length}`, `${model.reviewRows.length} policy-sensitive records`)}
+          ${renderInsightKpi("Audit entries", `${model.auditRows.length}`, "Recent local activity ledger")}
+          ${renderInsightKpi("Source coverage", `${model.sourceCoverage}%`, "Records linked to workbook and sheet")}
+          ${renderInsightKpi("Owner coverage", `${model.ownerCoverage}%`, "Records with an accountable owner")}
+        </div>
+
+        <div class="governance-layout">
+          <section class="governance-main">
+            <article class="info-panel governance-review-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Approval queue</span>
+                  <h3>High-value and policy-sensitive records</h3>
+                </div>
+                <span>${model.pendingReviews.length} pending</span>
+              </div>
+              ${renderGovernanceReviewQueue(model.reviewRows)}
+            </article>
+
+            <article class="info-panel governance-audit-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Audit trail</span>
+                  <h3>Recent workspace activity</h3>
+                </div>
+                <span>${model.auditRows.length} entries</span>
+              </div>
+              ${renderAuditTimeline(model.auditRows)}
+            </article>
+          </section>
+
+          <aside class="governance-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Policy health</span>
+                  <h3>Control checks</h3>
+                </div>
+                <span>${model.governanceScore}%</span>
+              </div>
+              ${renderGovernancePolicyRows(model.policyRows)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Access matrix</span>
+                  <h3>User section control</h3>
+                </div>
+                <span>${model.users.length} users</span>
+              </div>
+              ${renderGovernanceAccessRows(model.accessRows)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="governance-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Actor activity</span>
+                <h3>Who changed things</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.actorRows, "teal")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Action mix</span>
+                <h3>What changed</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.actionRows, "amber")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Review state</span>
+                <h3>Approval progress</h3>
+              </div>
+            </div>
+            ${renderGovernanceReviewSummary(model)}
+          </article>
+
+          <article class="info-panel governance-playbook-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Governance rhythm</span>
+                <h3>Weekly control loop</h3>
+              </div>
+            </div>
+            ${renderGovernancePlaybook()}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderGovernanceReviewQueue(items) {
+    if (!items.length) return `<div class="empty-state compact">No governance-sensitive records found.</div>`;
+    return `
+      <div class="governance-review-list">
+        ${items.slice(0, 10).map((item) => {
+          const record = item.record;
+          const reviewed = Boolean(item.reviewed);
+          const reviewedBy = reviewed ? `${item.reviewed.by} / ${formatAuditTime(item.reviewed.at)}` : "";
+          return `
+            <div class="governance-review-row ${reviewed ? "is-reviewed" : ""}">
+              <div>
+                <span>${escapeHtml(reviewed ? "Reviewed" : "Needs review")}</span>
+                <strong>${escapeHtml(record.title || record.reference || "Untitled record")}</strong>
+                <em>${escapeHtml([record.reference, record.client, record.type, record.status, formatCompactMoney(record.valueAmount)].filter(Boolean).join(" / "))}</em>
+                <small>${escapeHtml(item.reasons.join(" / "))}${reviewed ? ` / ${escapeHtml(reviewedBy)}` : ""}</small>
+              </div>
+              <div class="governance-row-actions">
+                <button class="mini-btn" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">Open</button>
+                <button class="mini-btn ${reviewed ? "" : "primary-mini"}" type="button" data-action="mark-governance-reviewed" data-id="${escapeHtml(record.id)}" ${canEdit() && !reviewed ? "" : "disabled"}>Review</button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+  }
+
+  function renderAuditTimeline(entries) {
+    if (!entries.length) return `<div class="empty-state compact">No audit entries yet.</div>`;
+    return `
+      <div class="audit-timeline">
+        ${entries.slice(0, 16).map((entry) => `
+          <button class="audit-row tone-${escapeHtml(entry.tone || "teal")}" type="button" data-action="open-related-record" data-id="${escapeHtml(entry.recordId || "")}" ${entry.recordId ? "" : "disabled"}>
+            <span>${escapeHtml(formatAuditTime(entry.ts))}</span>
+            <strong>${escapeHtml(entry.action)}</strong>
+            <em>${escapeHtml(entry.target || "Workspace")}</em>
+            <small>${escapeHtml([entry.actor, entry.role, entry.detail].filter(Boolean).join(" / "))}</small>
+          </button>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderGovernancePolicyRows(rows) {
+    return `
+      <div class="governance-policy-list">
+        ${rows.map((row) => `
+          <div class="tone-${escapeHtml(row.tone)}">
+            <span>${escapeHtml(row.label)}</span>
+            <strong>${row.value}%</strong>
+            <i style="--width: ${Math.max(4, row.value)}%"></i>
+            <small>${escapeHtml(row.note)}</small>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderGovernanceAccessRows(rows) {
+    return `
+      <div class="governance-access-list">
+        ${rows.map((row) => `
+          <div>
+            <span>${escapeHtml(row.user.role)}</span>
+            <strong>${escapeHtml(row.user.name)}</strong>
+            <em>${row.access.length} sections / ${row.auditCount} recent actions</em>
+            <small>${row.governance ? "Governance enabled" : "No governance access"} / ${row.commercial ? "Commercial access" : "No commercial access"}</small>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderGovernanceReviewSummary(model) {
+    const reviewed = model.reviewedCount;
+    const pending = model.pendingReviews.length;
+    const total = Math.max(1, model.reviewRows.length);
+    const reviewedWidth = Math.round((reviewed / total) * 100);
+    const pendingWidth = Math.round((pending / total) * 100);
+    return `
+      <div class="governance-summary">
+        <div>
+          <span>Reviewed</span>
+          <strong>${reviewed}</strong>
+          <i style="--width: ${Math.max(4, reviewedWidth)}%"></i>
+        </div>
+        <div>
+          <span>Pending</span>
+          <strong>${pending}</strong>
+          <i class="pending" style="--width: ${Math.max(4, pendingWidth)}%"></i>
+        </div>
+        <p>${model.reviewRows.length} records currently carry high-value, source, negotiated submission, or agreement review signals.</p>
+      </div>
+    `;
+  }
+
+  function renderGovernancePlaybook() {
+    const rows = [
+      ["1", "Review high-value items", "Clear the approval queue before commercial meetings."],
+      ["2", "Check audit trail", "Confirm imports, edits, deletes, user changes, and reviews are traceable."],
+      ["3", "Tighten access", "Keep commercial and governance pages limited to the right users."],
+      ["4", "Print the pack", "Open Reports when the governance score and actions are ready."],
+    ];
+    return `
+      <div class="command-rhythm governance-playbook">
+        ${rows.map(([step, title, note]) => `
+          <div>
+            <span>${escapeHtml(step)}</span>
+            <strong>${escapeHtml(title)}</strong>
+            <em>${escapeHtml(note)}</em>
+          </div>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function formatAuditTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "Now";
+    return date.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   }
 
   function forecastProbability(record) {
@@ -6181,11 +8829,126 @@
     `;
   }
 
+  function submitIntakeForm(form) {
+    if (!canEdit()) return;
+    const formData = new FormData(form);
+    const request = {
+      id: `REQ-${Date.now()}`,
+      companyId: state.user.companyId,
+      createdAt: new Date().toISOString(),
+      createdBy: state.user.name,
+      status: "Pending",
+      type: String(formData.get("type") || "Tender"),
+      reference: String(formData.get("reference") || "").trim(),
+      client: String(formData.get("client") || "").trim(),
+      title: String(formData.get("title") || "").trim(),
+      category: String(formData.get("category") || "").trim(),
+      endDate: String(formData.get("endDate") || ""),
+      valueText: String(formData.get("valueText") || "").trim(),
+      owner: String(formData.get("owner") || state.user.name).trim(),
+      channel: String(formData.get("channel") || "Manual request"),
+      notes: String(formData.get("notes") || "").trim(),
+      convertedRecordId: "",
+      approvedBy: "",
+      approvedAt: "",
+    };
+    if (!Array.isArray(state.data.intakeRequests)) state.data.intakeRequests = [];
+    state.data.intakeRequests.unshift(request);
+    writeAudit("Intake submitted", request.reference || request.title || "New request", `${request.type} request captured from ${request.channel}.`, "", "teal");
+    persistData();
+    form.reset();
+    render();
+  }
+
+  function convertIntakeRequest(id) {
+    if (!canEdit()) return;
+    const request = intakeRequests().find((item) => item.id === id);
+    if (!request || request.status === "Approved") return;
+    const missing = intakeMissingFields(request);
+    if (missing.length) {
+      window.alert(`Please complete missing fields first: ${missing.join(", ")}`);
+      return;
+    }
+    const type = TYPE_OPTIONS.includes(request.type) ? request.type : "Tender";
+    const recordIdPrefix = type === "Project" ? "PRJ" : type === "EOI" ? "EOI" : "TDR";
+    const record = {
+      id: `${recordIdPrefix}-INT-${Date.now().toString().slice(-7)}`,
+      companyId: state.user.companyId,
+      type,
+      category: request.category,
+      department: request.category,
+      reference: request.reference,
+      clientGroup: request.client,
+      client: request.client,
+      title: request.title,
+      status: type === "Project" ? "Ongoing" : "Active",
+      startDate: new Date().toISOString().slice(0, 10),
+      endDate: request.endDate,
+      valueText: request.valueText,
+      valueAmount: parseAmount(request.valueText),
+      currency: state.data.company.currency || "AED",
+      owner: request.owner || state.user.name,
+      latestActivity: `Converted from Intake Desk / ${request.channel}`,
+      notes: request.notes || "",
+      agreementNo: type === "Project" ? request.reference : "",
+      loaReceived: "",
+      agreementReceived: "",
+      sourceWorkbook: "Intake Desk",
+      sourceSheet: request.channel || "Manual request",
+      rounds: [],
+    };
+    state.data.records.unshift(record);
+    const stored = state.data.intakeRequests.find((item) => item.id === id);
+    if (stored) {
+      stored.status = "Approved";
+      stored.convertedRecordId = record.id;
+      stored.approvedBy = state.user.name;
+      stored.approvedAt = new Date().toISOString();
+    }
+    state.selectedId = record.id;
+    writeAudit("Intake converted", request.reference || request.title || "Request", `${type} request converted into live workspace record.`, record.id, "green");
+    persistData();
+    render();
+  }
+
+  function reworkIntakeRequest(id) {
+    if (!canEdit()) return;
+    const request = state.data.intakeRequests.find((item) => item.id === id && item.companyId === state.user.companyId);
+    if (!request || request.status === "Approved") return;
+    request.status = request.status === "Rework" ? "Pending" : "Rework";
+    writeAudit("Intake rework", request.reference || request.title || "Request", `Request moved to ${request.status}.`, "", "amber");
+    persistData();
+    render();
+  }
+
+  function deleteIntakeRequest(id) {
+    if (!canEdit()) return;
+    const request = state.data.intakeRequests.find((item) => item.id === id && item.companyId === state.user.companyId);
+    if (!request) return;
+    const confirmed = window.confirm(`Delete intake request ${request.reference || request.title || id}?`);
+    if (!confirmed) return;
+    state.data.intakeRequests = state.data.intakeRequests.filter((item) => item.id !== id);
+    writeAudit("Intake deleted", request.reference || request.title || "Request", "Intake request removed from queue.", "", "red");
+    persistData();
+    render();
+  }
+
   function updateRecord(id, field, value) {
     const record = state.data.records.find((item) => item.id === id);
     if (!record || !canEdit()) return;
+    const previous = record[field];
     record[field] = value;
     if (field === "valueText") record.valueAmount = parseAmount(value);
+    const auditFields = new Set(["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "agreementNo", "sourceSheet"]);
+    if (auditFields.has(field) && String(previous ?? "") !== String(value ?? "")) {
+      writeAudit(
+        "Record updated",
+        record.reference || record.title || "Record",
+        `${auditFieldLabel(field)} changed from ${shortAuditValue(previous)} to ${shortAuditValue(value)}`,
+        id,
+        field === "status" ? "amber" : "teal",
+      );
+    }
     persistData();
   }
 
@@ -6238,6 +9001,7 @@
     };
     state.data.records.unshift(record);
     state.selectedId = id;
+    writeAudit("Record created", id, `${preferredType} row created manually.`, id, "green");
     persistData();
     render();
   }
@@ -6250,6 +9014,7 @@
     if (!confirmed) return;
     state.data.records = state.data.records.filter((item) => item.id !== id);
     if (state.selectedId === id) state.selectedId = null;
+    writeAudit("Record deleted", record.reference || record.title || "Record", `${record.type || "Record"} removed from workspace.`, "", "red");
     persistData();
     render();
   }
@@ -6340,13 +9105,16 @@
       access: role === "Admin" ? defaultAccessForRole("Admin") : requestedAccess,
     };
     state.data.users.push({ ...user, access: normalizeUserAccess(user) });
+    writeAudit("User added", user.name || user.email, `${role} created with ${normalizeUserAccess(user).length} enabled sections.`, "", "blue");
     persistData();
     render();
   }
 
   function deleteUser(id) {
     if (!canAdmin() || id === state.user.id) return;
+    const user = state.data.users.find((item) => item.id === id);
     state.data.users = state.data.users.filter((user) => user.id !== id);
+    writeAudit("User removed", user?.name || "User", "Workspace user removed by admin.", "", "red");
     persistData();
     render();
   }
@@ -6355,12 +9123,16 @@
     if (!canAdmin()) return;
     const user = state.data.users.find((item) => item.id === id);
     if (!user) return;
+    const previous = user[field];
     user[field] = value;
     if (field === "role") user.access = normalizeUserAccess(user);
     if (user.id === state.user.id) {
       state.user[field] = value;
       state.user.access = normalizeUserAccess(user);
       persistSession(state.user);
+    }
+    if (String(previous ?? "") !== String(value ?? "")) {
+      writeAudit("User updated", user.name || user.email, `${auditFieldLabel(field)} changed from ${shortAuditValue(previous)} to ${shortAuditValue(value)}.`, "", "amber");
     }
     persistData();
     render();
@@ -6378,6 +9150,7 @@
       window.alert("Please keep at least one section enabled for each user.");
       user.access = normalizeUserAccess(user);
     }
+    writeAudit("Access changed", user.name || user.email, `${key} ${checked ? "enabled" : "disabled"} for ${user.role}.`, "", "amber");
     persistData();
     render();
   }
@@ -6506,6 +9279,11 @@
       event.preventDefault();
       addUser(event.target);
     }
+
+    if (event.target.id === "intakeForm") {
+      event.preventDefault();
+      submitIntakeForm(event.target);
+    }
   });
 
   document.addEventListener("click", (event) => {
@@ -6612,6 +9390,31 @@
       openSearchResult(button.dataset.id);
       return;
     }
+    if (action === "set-bid-decision") {
+      setBidDecision(button.dataset.id, button.dataset.decision);
+      return;
+    }
+    if (action === "toggle-submission-ready") {
+      toggleSubmissionReady(button.dataset.id);
+      return;
+    }
+    if (action === "focus-intake-form") {
+      document.getElementById("intakeFormPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      requestAnimationFrame(() => document.querySelector("#intakeForm input[name='reference']")?.focus());
+      return;
+    }
+    if (action === "convert-intake") {
+      convertIntakeRequest(button.dataset.id);
+      return;
+    }
+    if (action === "rework-intake") {
+      reworkIntakeRequest(button.dataset.id);
+      return;
+    }
+    if (action === "delete-intake") {
+      deleteIntakeRequest(button.dataset.id);
+      return;
+    }
     if (action === "load-import-sample") {
       loadImportSample();
       return;
@@ -6630,6 +9433,10 @@
     }
     if (action === "download-import-template") {
       downloadImportTemplate();
+      return;
+    }
+    if (action === "mark-governance-reviewed") {
+      markGovernanceReviewed(button.dataset.id);
       return;
     }
     if (action === "scroll-page") {

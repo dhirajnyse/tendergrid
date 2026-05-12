@@ -19,7 +19,13 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- Pursuit Advisor turns live signals from Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminders into ranked next-best actions, decision prompts, management brief lines, and operating recommendations.
+- Intake Desk for controlled tender/project request capture, required-field validation, priority scoring, rework routing, and conversion into live records.
 - Import Studio for CSV or Excel-copied rows, template download, source workbook health, field coverage, duplicate reference checks, missing-field cleanup, preview before commit, and controlled clean-row import.
+- Governance Desk for audit trail, high-value review queue, access control visibility, policy health checks, and review approvals.
+- Bid Desk for bid/no-bid decisions, submission readiness scoring, pack-ready status, deadline pressure, low-readiness cleanup, and audit-backed tender execution.
+- Review Calendar for overdue work, this-week movement, next-30-day pressure, eight-week planning, high-value diary checks, and no-date cleanup.
+- Risk Control Room for schedule, bid, commercial, delivery, value, and data risks with severity lanes, risk exposure, heatmap, critical queue, and mitigation rhythm.
 - Forecast Room for weighted pipeline value, next-90-day forecast, scenario range, conversion assumptions, date-window timing, client forecast, and at-risk forecast cleanup.
 - Inline table editing for Admin and Editor users.
 - Viewer-only role.
@@ -32,7 +38,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Quick search follows the current section, so tender pages search tender/EOI records and project pages search project records.
 - Commercial and seat-billing material contained inside the dedicated Membership Model page, priced globally at USD 5/user/month.
 - Monthly and annual prepaid billing views, with annual showing a two-month saving.
-- Admin-managed section access for each user across Command, Import, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, Reports, and Membership Model.
+- Admin-managed section access for each user across Command, Advisor, Intake, Import, Governance, Bid Desk, Calendar, Risk, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, Reports, and Membership Model.
 - Dedicated Membership Model page with top-level product navigation, subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
 - Platform roadmap section showing how PursuitDesk can grow into future modules for contracts, clients, documents, reminders, and reports while keeping tenders and projects as the current foundation.
 - Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.
@@ -45,7 +51,13 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Timeline mode turns the same Tender and Project records into date lanes for Past Due, This Month, Next 30, Next Quarter, Later, and No Date, making schedule pressure visible without leaving the tracker.
 - Action Queue scans the current Tender or Project view and surfaces the top next moves for overdue records, due-watch items, missing dates, missing values, high-value work, and negotiation follow-ups.
 - Counter fix keeps the command rail and mix panels based on the full current section, so clicking a status filter changes visible rows without resetting the other counter values to zero.
+- Bid Desk actions let editors set Bid, Watch, or No-bid, mark submission packs ready, and write those movements into the Governance audit trail.
+- Review Calendar adds a rolling eight-week view, urgency lanes, date coverage score, owner diary, client pressure, work-type mix, and quality signals for dated work.
+- Risk Control Room generates a risk register from existing records, including critical/high/watch severity, exposure value, owner/client risk concentration, and commercial/data cleanup queues.
+- Pursuit Advisor adds a decision layer above the control rooms, with do-now, decide, schedule, commercial, forecast, and clean-data lanes plus value touched, source signal mix, owner focus, client focus, and a management review playbook.
+- Intake conversion turns clean requests into live Tender, EOI, or Project records with source marked as Intake Desk and full audit logging.
 - Import governance keeps new CSV rows out of the live workspace until references, core fields, duplicates, source sheet, status, and value parsing have been reviewed in the preview grid.
+- Governance audit logging captures imports, manual row creation, key record edits, deletes, user creation, role updates, section-access changes, and high-value review approvals.
 - Smart Record Brief appears inside the right detail panel for selected records, showing health score, readiness, due signal, value, negotiation depth, missing data, next move, and a short management line.
 - Client Memory appears at the top of the selected-record detail panel, summarizing account history across tenders and projects with open work, same-unit count, value, latest touch, and clickable related records.
 - Clients Portfolio adds a dedicated relationship intelligence page with account cards, active/open work signals, due-watch pressure, value exposure, related latest-record links, and a roadmap strip toward Contracts, Documents, Reminders, and Reports.
