@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=35";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=35";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=42";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=42";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -30,15 +30,37 @@
   const BUSINESS_PLUS_BASE = 49;
   const ANNUAL_BILLABLE_MONTHS = 10;
   const BILLING_TERMS = ["Monthly", "Annual"];
+  const IMPORT_COLUMNS = ["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "sourceSheet"];
   const ACCESS_SECTIONS = [
+    { key: "command", label: "Command", view: "Command" },
+    { key: "import", label: "Import", view: "Import" },
     { key: "tenders", label: "Tenders", view: "Tenders" },
     { key: "tenderInsights", label: "Tenders Insights", view: "Tenders Insights" },
     { key: "projects", label: "Projects", view: "Projects" },
     { key: "projectInsights", label: "Project Insights", view: "Project Insights" },
+    { key: "forecast", label: "Forecast", view: "Forecast" },
     { key: "clients", label: "Clients", view: "Clients" },
+    { key: "contracts", label: "Contracts", view: "Contracts" },
+    { key: "documents", label: "Documents", view: "Documents" },
+    { key: "reminders", label: "Reminders", view: "Reminders" },
+    { key: "reports", label: "Reports", view: "Reports" },
     { key: "membership", label: "Membership Model", view: "Membership" },
   ];
   const PLATFORM_MODULES = [
+    {
+      name: "Command",
+      code: "CM",
+      stage: "Live control center",
+      summary: "Morning operating cockpit for health score, priorities, module signals, and management actions.",
+      signal: "Operating layer",
+    },
+    {
+      name: "Import",
+      code: "IM",
+      stage: "Live import studio",
+      summary: "CSV onboarding, source workbook health, field coverage, duplicate checks, and controlled row import.",
+      signal: "Data intake",
+    },
     {
       name: "Tenders",
       code: "TD",
@@ -54,10 +76,17 @@
       signal: "Core workspace",
     },
     {
+      name: "Forecast",
+      code: "FC",
+      stage: "Live forecast room",
+      summary: "Weighted pipeline, scenario values, date windows, client forecast, and conversion assumptions.",
+      signal: "Forward view",
+    },
+    {
       name: "Contracts",
       code: "CT",
-      stage: "Next module",
-      summary: "Agreement numbers, award history, contract value, renewal dates, and obligations.",
+      stage: "Live contract room",
+      summary: "Agreement numbers, award handover, contract value, renewal watch, and commercial gaps.",
       signal: "Commercial control",
     },
     {
@@ -70,22 +99,22 @@
     {
       name: "Documents",
       code: "DC",
-      stage: "Roadmap",
-      summary: "Tender files, submissions, commercial clarifications, attachments, and document trails.",
+      stage: "Live evidence room",
+      summary: "Source workbooks, sheet coverage, agreement proof, LOA evidence, and document gaps.",
       signal: "Evidence locker",
     },
     {
       name: "Reminders",
       code: "RM",
-      stage: "Roadmap",
-      summary: "Submission dates, follow-ups, negotiation tasks, renewals, and escalation nudges.",
+      stage: "Live follow-up",
+      summary: "Generated follow-ups for overdue work, near dates, negotiation tasks, missing data, and high-value reviews.",
       signal: "Action engine",
     },
     {
       name: "Reports",
       code: "RP",
-      stage: "Roadmap",
-      summary: "Management reports, win-rate packs, project summaries, and executive exports.",
+      stage: "Live report room",
+      summary: "Management report room with executive summary, operating split, client heat, and follow-up actions.",
       signal: "Decision layer",
     },
   ];
@@ -94,7 +123,7 @@
   const state = {
     data: loadData(),
     user: loadSession(),
-    view: "Tenders",
+    view: "Command",
     filters: {
       search: "",
       type: "All",
@@ -113,6 +142,9 @@
     tableDensity: "Comfortable",
     trackerMode: "Sheet",
     detailCollapsed: false,
+    importText: "",
+    importPreview: null,
+    importMessage: "",
   };
 
   function clone(value) {
@@ -153,7 +185,7 @@
 
   function defaultAccessForRole(role) {
     if (role === "Admin") return ACCESS_SECTIONS.map((section) => section.key);
-    if (role === "Editor") return ["tenders", "tenderInsights", "projects", "projectInsights", "clients"];
+    if (role === "Editor") return ["command", "import", "tenders", "tenderInsights", "projects", "projectInsights", "forecast", "clients", "contracts", "documents", "reminders", "reports"];
     return ["tenders", "projects"];
   }
 
@@ -168,6 +200,9 @@
     const requested = Array.isArray(user.access)
       ? user.access.flatMap((key) => legacyMap[key] || key).filter((key) => valid.has(key))
       : [];
+    if (user.role === "Editor" && requested.length && !requested.includes("command")) requested.unshift("command");
+    if (user.role === "Editor" && requested.length && !requested.includes("import")) requested.splice(1, 0, "import");
+    if (user.role === "Editor" && requested.length && !requested.includes("forecast")) requested.splice(Math.min(requested.length, 6), 0, "forecast");
     return requested.length ? requested : defaultAccessForRole(user.role);
   }
 
@@ -219,12 +254,40 @@
     return view === "Tenders" || view === "Tender Insights" || view === "Tenders Insights";
   }
 
+  function isCommandSection(view = state.view) {
+    return view === "Command";
+  }
+
+  function isImportSection(view = state.view) {
+    return view === "Import";
+  }
+
   function isProjectSection(view = state.view) {
     return view === "Projects" || view === "Project Insights";
   }
 
+  function isForecastSection(view = state.view) {
+    return view === "Forecast";
+  }
+
   function isClientSection(view = state.view) {
     return view === "Clients";
+  }
+
+  function isContractSection(view = state.view) {
+    return view === "Contracts";
+  }
+
+  function isDocumentSection(view = state.view) {
+    return view === "Documents";
+  }
+
+  function isReminderSection(view = state.view) {
+    return view === "Reminders";
+  }
+
+  function isReportSection(view = state.view) {
+    return view === "Reports";
   }
 
   function isInsightSection(view = state.view) {
@@ -232,11 +295,18 @@
   }
 
   function sectionForView(view) {
+    if (view === "Command") return "command";
+    if (view === "Import") return "import";
     if (view === "Tender Insights" || view === "Tenders Insights") return "tenderInsights";
     if (view === "Project Insights") return "projectInsights";
     if (view === "Projects") return "projects";
     if (view === "Tenders") return "tenders";
+    if (view === "Forecast") return "forecast";
     if (view === "Clients") return "clients";
+    if (view === "Contracts") return "contracts";
+    if (view === "Documents") return "documents";
+    if (view === "Reminders") return "reminders";
+    if (view === "Reports") return "reports";
     if (view === "Membership") return "membership";
     return "tenders";
   }
@@ -521,15 +591,19 @@
   }
 
   function renderModeButtons() {
-    return ACCESS_SECTIONS.map((section) => {
-      if (!hasSectionAccess(section.key)) return "";
-      const active = state.view === section.view;
-      return `
-        <button class="mode-btn ${active ? "active" : ""}" type="button" data-view="${section.view}">
-          ${escapeHtml(section.label)}
-        </button>
-      `;
-    }).join("");
+    return `
+      <nav class="mode-nav" aria-label="${BRAND_NAME} sections">
+        ${ACCESS_SECTIONS.map((section) => {
+          if (!hasSectionAccess(section.key)) return "";
+          const active = state.view === section.view;
+          return `
+            <button class="mode-btn ${active ? "active" : ""}" type="button" data-view="${section.view}">
+              ${escapeHtml(section.label)}
+            </button>
+          `;
+        }).join("")}
+      </nav>
+    `;
   }
 
   function sectionRecords(view = state.view) {
@@ -560,12 +634,103 @@
 
   function renderHeaderSummaryForView(view, metrics) {
     if (isInsightSection(view) || view === "Membership") return "";
+    if (isCommandSection(view)) {
+      const command = buildCommandCenterModel();
+      const boxes = [
+        ["Health", `${command.healthScore}%`],
+        ["Actions", command.reminders.tasks.length],
+        ["Gaps", command.documents.totalGaps],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isImportSection(view)) {
+      const importStudio = buildImportStudioModel();
+      const boxes = [
+        ["Sources", importStudio.sourceWorkbooks],
+        ["Coverage", `${importStudio.fieldCoverage}%`],
+        ["Issues", importStudio.issueCount],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isForecastSection(view)) {
+      const forecast = buildForecastModel();
+      const boxes = [
+        ["Weighted", formatCompactMoney(forecast.weightedValue)],
+        ["Next 90", formatCompactMoney(forecast.next90Weighted)],
+        ["Confidence", `${forecast.confidence}%`],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
     if (isClientSection(view)) {
       const portfolio = buildClientPortfolioModel();
       const boxes = [
         ["Accounts", portfolio.accounts.length],
         ["Active", portfolio.activeAccounts],
         ["Due Watch", portfolio.dueWatch],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isContractSection(view)) {
+      const contracts = buildContractsModel();
+      const boxes = [
+        ["Contracts", contracts.records.length],
+        ["Agreements", contracts.withAgreement],
+        ["Gaps", contracts.gapCount],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isDocumentSection(view)) {
+      const documents = buildDocumentsModel();
+      const boxes = [
+        ["Packs", documents.packs.length],
+        ["Coverage", `${documents.sourceCoverage}%`],
+        ["Gaps", documents.totalGaps],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isReminderSection(view)) {
+      const reminders = buildReminderModel();
+      const boxes = [
+        ["Open", reminders.tasks.length],
+        ["Overdue", reminders.overdue],
+        ["High Value", reminders.highValue],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isReportSection(view)) {
+      const report = buildReportModel();
+      const boxes = [
+        ["Records", report.totalRecords],
+        ["Open", report.openRecords],
+        ["Actions", report.reminders.tasks.length],
       ];
       return `
         <div class="header-summary">
@@ -592,7 +757,7 @@
   }
 
   function renderMetricsForView(view, metrics) {
-    if (isInsightSection(view) || view === "Membership" || isClientSection(view)) return "";
+    if (isInsightSection(view) || view === "Membership" || isCommandSection(view) || isImportSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isReportSection(view)) return "";
     const cards = isProjectSection(view)
       ? [
           ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`],
@@ -627,7 +792,11 @@
     const stats = metrics();
     const scopedMetrics = sectionMetrics(sectionRecords());
     const viewTitle =
-      state.view === "Tenders"
+      state.view === "Command"
+        ? "Command center"
+        : state.view === "Import"
+        ? "Import studio"
+        : state.view === "Tenders"
         ? "Tenders workspace"
         : state.view === "Projects"
           ? "Project workspace"
@@ -635,18 +804,42 @@
           ? "Tenders insights"
         : state.view === "Project Insights"
           ? "Project insights"
+        : state.view === "Forecast"
+          ? "Forecast room"
         : state.view === "Clients"
           ? "Clients portfolio"
+        : state.view === "Contracts"
+          ? "Contracts room"
+        : state.view === "Documents"
+          ? "Documents room"
+        : state.view === "Reminders"
+          ? "Follow-up desk"
+        : state.view === "Reports"
+          ? "Reports room"
         : state.view === "Membership"
           ? "Membership model"
           : state.view;
     const viewCopy =
-      state.view === "Tenders Insights"
+      state.view === "Command"
+        ? "One morning screen for operating priorities, pursuit health, evidence gaps, client heat, contract movement, and management-ready actions."
+        : state.view === "Import"
+        ? "Bring Excel exports into PursuitDesk with CSV paste, source health checks, duplicate detection, preview, and controlled import."
+        : state.view === "Tenders Insights"
         ? "Tender-only management signals for follow-up risk, submission readiness, value exposure, and bid decisions."
         : state.view === "Project Insights"
           ? "Project-only management signals for delivery movement, due-date pressure, owner load, and completion health."
+        : state.view === "Forecast"
+          ? "Forward-looking pipeline view for weighted value, expected conversion, date windows, client forecast, and upside scenarios."
         : state.view === "Clients"
           ? "Relationship intelligence across client accounts, business units, active work, value exposure, and follow-up pressure."
+        : state.view === "Contracts"
+          ? "Commercial control for agreement numbers, awards, handovers, missing documents, contract value, and renewal watch."
+        : state.view === "Documents"
+          ? "Evidence control for source workbooks, sheet coverage, agreement and LOA proof, tender packs, project files, and missing document signals."
+        : state.view === "Reminders"
+          ? "Generated follow-up priorities for overdue records, near dates, missing information, high-value work, and negotiation movement."
+        : state.view === "Reports"
+          ? "A printable management pack for weekly reviews, executive updates, tender/project status, client concentration, and action follow-through."
         : state.view === "Membership"
           ? "Manage launch pricing, seats, subscription packaging, and the upgrade path from demo workspace to paid company plan."
         : `${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.`;
@@ -665,9 +858,11 @@
           </div>
           <div class="topbar-actions">
             ${renderModeButtons()}
-            <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
-            <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
-            <button class="secondary-btn" type="button" data-action="logout">Logout</button>
+            <div class="account-actions">
+              <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
+              <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
+              <button class="secondary-btn" type="button" data-action="logout">Logout</button>
+            </div>
           </div>
         </header>
 
@@ -683,10 +878,24 @@
           ${renderMetricsForView(state.view, scopedMetrics)}
 
           ${
-            isInsightSection(state.view)
+            state.view === "Command"
+              ? renderCommandCenterPage()
+            : state.view === "Import"
+              ? renderImportStudioPage()
+            : state.view === "Forecast"
+              ? renderForecastPage()
+              : isInsightSection(state.view)
               ? renderInsights()
               : state.view === "Clients"
                 ? renderClientPortfolioPage()
+              : state.view === "Contracts"
+                ? renderContractsPage()
+              : state.view === "Documents"
+                ? renderDocumentsPage()
+              : state.view === "Reminders"
+                ? renderRemindersPage()
+              : state.view === "Reports"
+                ? renderReportsPage()
               : state.view === "Membership"
                 ? renderMembershipPage(stats, company)
                 : renderTracker(records, selected, stats)
@@ -828,6 +1037,430 @@
       { label: "Later", value: buckets.later, tone: "green" },
       { label: "No date", value: buckets.noDate, tone: "muted" },
     ];
+  }
+
+  function buildImportStudioModel() {
+    const records = companyRecords();
+    const coverageFields = [
+      ["reference", "Reference"],
+      ["client", "Client"],
+      ["title", "Title"],
+      ["category", "Category"],
+      ["status", "Status"],
+      ["endDate", "Due / last date"],
+      ["valueAmount", "Value"],
+      ["owner", "Owner"],
+      ["sourceWorkbook", "Source workbook"],
+      ["sourceSheet", "Source sheet"],
+    ];
+    const coverageRows = coverageFields.map(([field, label]) => {
+      const filled = records.filter((record) => {
+        if (field === "valueAmount") return Number(record.valueAmount) > 0;
+        return Boolean(String(record[field] || "").trim());
+      }).length;
+      return {
+        field,
+        label,
+        filled,
+        total: records.length,
+        rate: records.length ? Math.round((filled / records.length) * 100) : 100,
+      };
+    });
+    const totalSlots = coverageRows.reduce((sum, row) => sum + row.total, 0);
+    const filledSlots = coverageRows.reduce((sum, row) => sum + row.filled, 0);
+    const sourceRows = topBreakdown(records, "sourceWorkbook", 6, "Manual entry");
+    const sheetRows = topBreakdown(records, "sourceSheet", 8, "Manual entry");
+    const sourceWorkbooks = new Set(
+      records
+        .map((record) => String(record.sourceWorkbook || "").trim())
+        .filter((label) => label && label !== "Manual entry"),
+    ).size;
+    const manualEntries = records.filter(
+      (record) => !record.sourceWorkbook || record.sourceWorkbook === "Manual entry" || !record.sourceSheet,
+    ).length;
+    const duplicateMap = new Map();
+    records.forEach((record) => {
+      const key = normalize(record.reference);
+      if (!key) return;
+      if (!duplicateMap.has(key)) duplicateMap.set(key, []);
+      duplicateMap.get(key).push(record);
+    });
+    const duplicateGroups = Array.from(duplicateMap.values())
+      .filter((group) => group.length > 1)
+      .map((group) => ({
+        reference: group[0].reference || "No reference",
+        count: group.length,
+        clients: Array.from(new Set(group.map((record) => record.client).filter(Boolean))).slice(0, 3),
+      }))
+      .slice(0, 8);
+    const missingRecords = records
+      .map((record) => {
+        const gaps = [];
+        if (!record.reference) gaps.push("reference");
+        if (!record.client) gaps.push("client");
+        if (!record.title) gaps.push("title");
+        if (!record.status) gaps.push("status");
+        if (!record.endDate) gaps.push("date");
+        if (!Number(record.valueAmount)) gaps.push("value");
+        if (!record.sourceSheet) gaps.push("source");
+        return { record, gaps };
+      })
+      .filter((item) => item.gaps.length);
+    return {
+      records,
+      coverageRows,
+      fieldCoverage: totalSlots ? Math.round((filledSlots / totalSlots) * 100) : 100,
+      sourceRows,
+      sheetRows,
+      sourceWorkbooks,
+      manualEntries,
+      duplicateGroups,
+      duplicateCount: duplicateGroups.reduce((sum, group) => sum + group.count, 0),
+      missingRecords: missingRecords.slice(0, 8),
+      missingCount: missingRecords.length,
+      issueCount: duplicateGroups.length + missingRecords.length + manualEntries,
+      preview: state.importPreview,
+    };
+  }
+
+  function sampleImportCsv() {
+    return [
+      IMPORT_COLUMNS.join(","),
+      [
+        "Tender",
+        "CSV-TDR-001",
+        "ADNOC Gas",
+        "Imported tender demo row",
+        "Digital & Telecom",
+        "Active",
+        "2026-05-12",
+        "2026-06-30",
+        "AED 1250000",
+        "Commercial",
+        "CSV Pilot",
+      ].map(csvCell).join(","),
+      [
+        "Project",
+        "CSV-PRJ-001",
+        "ADNOC HQ",
+        "Imported project demo row",
+        "Software",
+        "Ongoing",
+        "2026-05-12",
+        "2026-12-31",
+        "AED 450000",
+        "Operations",
+        "CSV Pilot",
+      ].map(csvCell).join(","),
+    ].join("\n");
+  }
+
+  function csvCell(value) {
+    return `"${String(value ?? "").replaceAll('"', '""')}"`;
+  }
+
+  function parseDelimitedRows(text) {
+    const firstLine = String(text || "").split(/\r?\n/).find((line) => line.trim()) || "";
+    const delimiter = firstLine.includes("\t") && !firstLine.includes(",") ? "\t" : ",";
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let inQuotes = false;
+    const source = String(text || "");
+    for (let index = 0; index < source.length; index += 1) {
+      const char = source[index];
+      const next = source[index + 1];
+      if (char === '"') {
+        if (inQuotes && next === '"') {
+          cell += '"';
+          index += 1;
+        } else {
+          inQuotes = !inQuotes;
+        }
+        continue;
+      }
+      if (char === delimiter && !inQuotes) {
+        row.push(cell);
+        cell = "";
+        continue;
+      }
+      if ((char === "\n" || char === "\r") && !inQuotes) {
+        if (char === "\r" && next === "\n") index += 1;
+        row.push(cell);
+        rows.push(row);
+        row = [];
+        cell = "";
+        continue;
+      }
+      cell += char;
+    }
+    row.push(cell);
+    rows.push(row);
+    return rows.filter((item) => item.some((value) => String(value || "").trim()));
+  }
+
+  function normalizeImportHeader(header) {
+    const key = normalize(header).replace(/[^a-z0-9]/g, "");
+    const aliases = {
+      type: "type",
+      recordtype: "type",
+      module: "type",
+      reference: "reference",
+      ref: "reference",
+      refno: "reference",
+      tenderno: "reference",
+      opportunityno: "reference",
+      agreementno: "agreementNo",
+      contractno: "agreementNo",
+      client: "client",
+      customer: "client",
+      account: "client",
+      clientgroup: "clientGroup",
+      group: "clientGroup",
+      title: "title",
+      description: "title",
+      projectname: "title",
+      tendername: "title",
+      scope: "title",
+      category: "category",
+      discipline: "category",
+      department: "department",
+      status: "status",
+      stage: "status",
+      startdate: "startDate",
+      start: "startDate",
+      receiveddate: "startDate",
+      enddate: "endDate",
+      duedate: "endDate",
+      due: "endDate",
+      lastdate: "endDate",
+      closingdate: "endDate",
+      valuetext: "valueText",
+      value: "valueText",
+      amount: "valueText",
+      tenderamount: "valueText",
+      projectvalue: "valueText",
+      currency: "currency",
+      owner: "owner",
+      responsible: "owner",
+      assignee: "owner",
+      latestactivity: "latestActivity",
+      activity: "latestActivity",
+      notes: "notes",
+      sourcesheet: "sourceSheet",
+      sheet: "sourceSheet",
+      sourceworkbook: "sourceWorkbook",
+      workbook: "sourceWorkbook",
+      file: "sourceWorkbook",
+    };
+    return aliases[key] || "";
+  }
+
+  function normalizeImportType(value) {
+    const key = normalize(value).replace(/[^a-z0-9]/g, "");
+    if (key === "eoi" || key === "expressionofinterest") return "EOI";
+    if (key === "project" || key === "projects") return "Project";
+    if (key === "tender" || key === "bid" || key === "opportunity") return "Tender";
+    return "Tender";
+  }
+
+  function normalizeImportStatus(value, type) {
+    const raw = normalize(value);
+    const exact = STATUS_OPTIONS.find((status) => normalize(status) === raw);
+    if (exact) return exact;
+    const key = raw.replace(/[^a-z0-9]/g, "");
+    if (["won", "award", "awarded", "loa", "loareceived"].includes(key)) return "Awarded";
+    if (["closed", "complete", "completed", "done", "delivered"].includes(key)) return "Completed";
+    if (["cancel", "cancelled", "canceled"].includes(key)) return "Cancelled";
+    if (["lost", "regret", "declined"].includes(key)) return "Regret";
+    if (["submitted", "sent"].includes(key)) return "Submitted";
+    if (["pending", "hold", "onhold"].includes(key)) return "Pending";
+    if (["ongoing", "inprogress", "live"].includes(key)) return "Ongoing";
+    return type === "Project" ? "Ongoing" : "Active";
+  }
+
+  function coerceImportDate(value) {
+    const text = String(value || "").trim();
+    if (!text) return "";
+    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+    const numeric = text.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{2,4})$/);
+    if (numeric) {
+      const day = Number(numeric[1]);
+      const month = Number(numeric[2]);
+      const year = Number(numeric[3].length === 2 ? `20${numeric[3]}` : numeric[3]);
+      const date = new Date(year, month - 1, day);
+      if (!Number.isNaN(date.getTime())) return formatDateForInput(date);
+    }
+    const parsed = new Date(text);
+    return Number.isNaN(parsed.getTime()) ? "" : formatDateForInput(parsed);
+  }
+
+  function formatDateForInput(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function buildImportPreview(text) {
+    const source = String(text || "").trim();
+    if (!source) {
+      return {
+        rows: [],
+        headers: [],
+        rawCount: 0,
+        validCount: 0,
+        issueCount: 0,
+        errors: ["Paste CSV or Excel-copied rows first."],
+      };
+    }
+    const parsedRows = parseDelimitedRows(source);
+    if (parsedRows.length < 2) {
+      return {
+        rows: [],
+        headers: parsedRows[0] || [],
+        rawCount: 0,
+        validCount: 0,
+        issueCount: 0,
+        errors: ["At least one header row and one data row are required."],
+      };
+    }
+    const headers = parsedRows[0].map(normalizeImportHeader);
+    if (!headers.some(Boolean)) {
+      return {
+        rows: [],
+        headers: parsedRows[0],
+        rawCount: parsedRows.length - 1,
+        validCount: 0,
+        issueCount: 0,
+        errors: ["No recognized column headers found. Download the template and match its headings."],
+      };
+    }
+    const existingReferences = new Set(companyRecords().map((record) => normalize(record.reference)).filter(Boolean));
+    const importedReferences = new Set();
+    const previewRows = parsedRows.slice(1).map((values, index) => {
+      const raw = {};
+      headers.forEach((header, columnIndex) => {
+        if (header) raw[header] = String(values[columnIndex] || "").trim();
+      });
+      const type = normalizeImportType(raw.type);
+      const status = normalizeImportStatus(raw.status, type);
+      const reference = raw.reference || raw.agreementNo || "";
+      const duplicateKey = normalize(reference);
+      const issues = [];
+      if (!reference) issues.push("Missing reference");
+      if (!raw.client) issues.push("Missing client");
+      if (!raw.title) issues.push("Missing title");
+      if (duplicateKey && existingReferences.has(duplicateKey)) issues.push("Duplicate existing reference");
+      if (duplicateKey && importedReferences.has(duplicateKey)) issues.push("Duplicate in import");
+      if (duplicateKey) importedReferences.add(duplicateKey);
+      const valueText = raw.valueText || "";
+      const valueAmount = parseAmount(valueText);
+      const record = {
+        id: `PREVIEW-${index + 1}`,
+        companyId: state.user.companyId,
+        type,
+        category: raw.category || (type === "Project" ? "Software" : "Digital & Telecom"),
+        department: raw.department || raw.category || "",
+        reference,
+        clientGroup: raw.clientGroup || raw.client || "",
+        client: raw.client || "",
+        title: raw.title || "",
+        status,
+        startDate: coerceImportDate(raw.startDate),
+        endDate: coerceImportDate(raw.endDate),
+        valueText,
+        valueAmount,
+        currency: raw.currency || state.data.company.currency || "AED",
+        owner: raw.owner || state.user.name,
+        latestActivity: raw.latestActivity || "Imported through Import Studio",
+        notes: raw.notes || "",
+        agreementNo: raw.agreementNo || (type === "Project" ? reference : ""),
+        loaReceived: "",
+        agreementReceived: "",
+        sourceWorkbook: raw.sourceWorkbook || "CSV Import Studio",
+        sourceSheet: raw.sourceSheet || "CSV import",
+        rounds: [],
+      };
+      return { rowNumber: index + 2, record, issues };
+    }).filter((item) => item.record.reference || item.record.client || item.record.title);
+    const issueCount = previewRows.reduce((sum, row) => sum + row.issues.length, 0);
+    return {
+      rows: previewRows,
+      headers,
+      rawCount: parsedRows.length - 1,
+      validCount: previewRows.filter((row) => !row.issues.length).length,
+      issueCount,
+      errors: [],
+    };
+  }
+
+  function previewImportText() {
+    const input = document.getElementById("importCsvText");
+    state.importText = input ? input.value : state.importText;
+    state.importPreview = buildImportPreview(state.importText);
+    const preview = state.importPreview;
+    state.importMessage = preview.errors.length
+      ? preview.errors[0]
+      : `${preview.validCount} clean rows ready, ${preview.issueCount} issue${preview.issueCount === 1 ? "" : "s"} flagged.`;
+    render();
+  }
+
+  function loadImportSample() {
+    state.importText = sampleImportCsv();
+    state.importPreview = null;
+    state.importMessage = "Sample import rows loaded. Preview them before committing.";
+    render();
+  }
+
+  function clearImportStudio() {
+    state.importText = "";
+    state.importPreview = null;
+    state.importMessage = "";
+    render();
+  }
+
+  function commitImportRows() {
+    if (!canEdit()) return;
+    const preview = state.importPreview || buildImportPreview(state.importText);
+    const cleanRows = preview.rows.filter((row) => !row.issues.length);
+    if (!cleanRows.length) {
+      window.alert("No clean rows are ready to import.");
+      return;
+    }
+    const stamp = Date.now();
+    const records = cleanRows.map((row, index) => ({
+      ...row.record,
+      id: `IMP-${stamp}-${String(index + 1).padStart(3, "0")}`,
+    }));
+    state.data.records = [...records, ...state.data.records];
+    state.selectedId = records[0].id;
+    state.importText = "";
+    state.importPreview = null;
+    state.importMessage = `${records.length} row${records.length === 1 ? "" : "s"} imported into the live workspace.`;
+    persistData();
+    render();
+  }
+
+  function downloadImportTemplate() {
+    const blob = new Blob([`${IMPORT_COLUMNS.join(",")}\n`], { type: "text/csv;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "pursuitdesk-import-template.csv";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  function readImportFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      state.importText = String(reader.result || "");
+      state.importPreview = null;
+      state.importMessage = `${file.name} loaded. Preview it before committing.`;
+      render();
+    };
+    reader.readAsText(file);
   }
 
   function insightRecords() {
@@ -1279,6 +1912,1186 @@
     `;
   }
 
+  function buildCommandCenterModel() {
+    const records = companyRecords();
+    const tenderRecords = sectionRecords("Tenders");
+    const projectRecords = sectionRecords("Projects");
+    const tenderMetrics = sectionMetrics(tenderRecords);
+    const projectMetrics = sectionMetrics(projectRecords);
+    const reminders = buildReminderModel();
+    const documents = buildDocumentsModel();
+    const contracts = buildContractsModel();
+    const portfolio = buildClientPortfolioModel();
+    const importStudio = buildImportStudioModel();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const closedGood = records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length;
+    const closedBad = records.filter((record) => ["Cancelled", "Regret"].includes(record.status)).length;
+    const closedTotal = closedGood + closedBad;
+    const winRate = closedTotal ? Math.round((closedGood / closedTotal) * 100) : 0;
+    const actionScore = Math.max(0, 100 - Math.min(75, reminders.overdue * 8 + reminders.next30 * 2 + reminders.missingData));
+    const evidencePenalty = Math.round((documents.totalGaps / Math.max(documents.packs.length, 1)) * 35);
+    const evidenceScore = Math.max(0, Math.min(100, documents.sourceCoverage - evidencePenalty));
+    const contractScore = contracts.records.length
+      ? Math.max(0, Math.round(((contracts.records.length - contracts.gapCount) / contracts.records.length) * 100))
+      : 100;
+    const outcomeScore = winRate || (openRecords.length ? 62 : 100);
+    const healthScore = Math.round(actionScore * 0.3 + evidenceScore * 0.25 + contractScore * 0.25 + outcomeScore * 0.2);
+    const topOpenValues = openRecords
+      .filter((record) => Number(record.valueAmount) > 0)
+      .sort((a, b) => Number(b.valueAmount) - Number(a.valueAmount))
+      .slice(0, 6);
+    const moduleCards = [
+      {
+        label: "Import",
+        view: "Import",
+        value: `${importStudio.fieldCoverage}%`,
+        note: `${importStudio.sourceWorkbooks} source workbooks / ${importStudio.manualEntries} manual rows`,
+        signal: `${importStudio.issueCount} import issues`,
+        tone: "amber",
+      },
+      {
+        label: "Tenders",
+        view: "Tenders",
+        value: tenderMetrics.total,
+        note: `${tenderMetrics.open} open / ${formatCompactMoney(tenderMetrics.value)}`,
+        signal: `${tenderMetrics.awarded} awarded`,
+        tone: "teal",
+      },
+      {
+        label: "Projects",
+        view: "Projects",
+        value: projectMetrics.total,
+        note: `${projectMetrics.open} open / ${formatCompactMoney(projectMetrics.value)}`,
+        signal: `${projectMetrics.dueWatch} due-watch`,
+        tone: "blue",
+      },
+      {
+        label: "Forecast",
+        view: "Forecast",
+        value: formatCompactMoney(buildForecastModel().weightedValue),
+        note: "Weighted forward pipeline",
+        signal: "Scenario view",
+        tone: "green",
+      },
+      {
+        label: "Clients",
+        view: "Clients",
+        value: portfolio.accounts.length,
+        note: `${portfolio.activeAccounts} active accounts`,
+        signal: `${portfolio.dueWatch} relationship moves`,
+        tone: "green",
+      },
+      {
+        label: "Contracts",
+        view: "Contracts",
+        value: contracts.records.length,
+        note: `${contracts.withAgreement} agreement nos`,
+        signal: `${contracts.gapCount} commercial gaps`,
+        tone: "amber",
+      },
+      {
+        label: "Documents",
+        view: "Documents",
+        value: documents.packs.length,
+        note: `${documents.sourceCoverage}% source coverage`,
+        signal: `${documents.totalGaps} evidence gaps`,
+        tone: "blue",
+      },
+      {
+        label: "Reminders",
+        view: "Reminders",
+        value: reminders.tasks.length,
+        note: `${reminders.overdue} overdue / ${reminders.next30} near date`,
+        signal: `${reminders.highValue} high-value reviews`,
+        tone: "red",
+      },
+      {
+        label: "Reports",
+        view: "Reports",
+        value: winRate ? `${winRate}%` : "Ready",
+        note: "Weekly management pack",
+        signal: `${topOpenValues.length} open value items`,
+        tone: "teal",
+      },
+    ];
+    return {
+      records,
+      openRecords,
+      tenderMetrics,
+      projectMetrics,
+      reminders,
+      documents,
+      contracts,
+      portfolio,
+      winRate,
+      healthScore,
+      actionScore,
+      evidenceScore,
+      contractScore,
+      totalValue: sumAmounts(records),
+      topOpenValues,
+      priorityTasks: reminders.tasks.slice(0, 6),
+      evidenceGaps: documents.gapPacks.slice(0, 6),
+      contractGaps: contracts.gaps.slice(0, 6),
+      topClients: portfolio.accounts.slice(0, 6),
+      moduleCards,
+      brief: [
+        `${openRecords.length} active records need regular movement across tenders and projects.`,
+        `${reminders.tasks.length} generated actions are waiting, led by ${reminders.overdue} overdue and ${reminders.missingData} missing-data items.`,
+        `${documents.totalGaps} evidence gaps and ${contracts.gapCount} commercial gaps are visible before management review.`,
+        portfolio.accounts[0]
+          ? `${portfolio.accounts[0].label} is the hottest account with ${portfolio.accounts[0].openCount} open items.`
+          : "Client heat will appear once relationship records exist.",
+      ],
+    };
+  }
+
+  function renderCommandCenterPage() {
+    const model = buildCommandCenterModel();
+    return `
+      <section class="command-center">
+        <section class="command-console">
+          <div>
+            <span class="panel-label">Executive command</span>
+            <h2>Run the pursuit business from one morning screen.</h2>
+            <p>Start here, clear the pressure, then jump into the room that needs movement. The command center reads from the same records, so every signal stays tied to the actual tender or project.</p>
+            <div class="command-actions">
+              <button class="secondary-btn" type="button" data-view="Reminders">Open priority queue</button>
+              <button class="ghost-btn" type="button" data-view="Documents">Review evidence gaps</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open weekly pack</button>
+            </div>
+          </div>
+          <div class="score-ring command-score" style="--score: ${model.healthScore}">
+            <div>
+              <strong>${model.healthScore}</strong>
+              <span>Health</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="command-kpis">
+          ${renderInsightKpi("Open work", `${model.openRecords.length}`, `${model.records.length} total pursuit and project records`)}
+          ${renderInsightKpi("Captured value", formatCompactMoney(model.totalValue), "Tender and project value currently captured")}
+          ${renderInsightKpi("Priority actions", `${model.reminders.tasks.length}`, `${model.reminders.overdue} overdue follow-ups`)}
+          ${renderInsightKpi("Evidence health", `${model.evidenceScore}%`, `${model.documents.sourceCoverage}% source coverage after gap penalty`)}
+        </div>
+
+        <div class="command-layout">
+          <section class="command-main">
+            <div class="info-head command-main-head">
+              <div>
+                <span class="metric-label">Operating rooms</span>
+                <h3>Module cockpit</h3>
+              </div>
+              <span>${model.moduleCards.length} rooms</span>
+            </div>
+            <div class="command-module-grid">
+              ${model.moduleCards.map(renderCommandModuleCard).join("")}
+            </div>
+            ${renderCommandPulse(model)}
+          </section>
+
+          <aside class="command-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Today first</span>
+                  <h3>Priority queue</h3>
+                </div>
+                <span>${model.priorityTasks.length} shown</span>
+              </div>
+              ${renderCommandTaskList(model.priorityTasks)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Management brief</span>
+                  <h3>What to say in review</h3>
+                </div>
+              </div>
+              ${renderCommandBrief(model.brief)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="command-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Evidence control</span>
+                <h3>Document gaps</h3>
+              </div>
+            </div>
+            ${renderCommandEvidenceList(model.evidenceGaps)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Commercial movement</span>
+                <h3>Contract gaps</h3>
+              </div>
+            </div>
+            ${renderCommandContractList(model.contractGaps)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client heat</span>
+                <h3>Relationship pressure</h3>
+              </div>
+            </div>
+            ${renderCommandClientList(model.topClients)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Value exposure</span>
+                <h3>Largest open values</h3>
+              </div>
+            </div>
+            ${renderCommandValueList(model.topOpenValues)}
+          </article>
+
+          <article class="info-panel command-rhythm-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Operating rhythm</span>
+                <h3>Daily control loop</h3>
+              </div>
+            </div>
+            ${renderCommandRhythm()}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandModuleCard(card) {
+    const enabled = canAccessView(card.view);
+    return `
+      <button class="command-module-card tone-${escapeHtml(card.tone)}" type="button" data-view="${escapeHtml(card.view)}" ${enabled ? "" : "disabled"}>
+        <span>${escapeHtml(card.label)}</span>
+        <strong>${escapeHtml(card.value)}</strong>
+        <small>${escapeHtml(card.note)}</small>
+        <em>${escapeHtml(card.signal)}</em>
+      </button>
+    `;
+  }
+
+  function renderCommandPulse(model) {
+    const rows = [
+      ["Action pulse", `${model.actionScore}%`, `${model.reminders.overdue} overdue / ${model.reminders.next30} near-date`],
+      ["Evidence pulse", `${model.evidenceScore}%`, `${model.documents.totalGaps} document gaps`],
+      ["Contract pulse", `${model.contractScore}%`, `${model.contracts.gapCount} commercial gaps`],
+      ["Outcome pulse", model.winRate ? `${model.winRate}%` : "Live", "Closed success signal"],
+    ];
+    return `
+      <div class="command-pulse-grid">
+        ${rows
+          .map(
+            ([label, value, note]) => `
+              <div>
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(value)}</strong>
+                <small>${escapeHtml(note)}</small>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandTaskList(tasks) {
+    if (!tasks.length) return `<div class="empty-state compact">No priority actions generated.</div>`;
+    return `
+      <div class="command-list">
+        ${tasks
+          .map((task) => {
+            const dueText =
+              task.days === null
+                ? "No date"
+                : task.days < 0
+                  ? `${Math.abs(task.days)}d late`
+                  : task.days === 0
+                    ? "Due today"
+                    : `${task.days}d left`;
+            return `
+              <button class="command-row tone-${escapeHtml(task.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(task.record.id)}">
+                <span>${escapeHtml(task.lane)}</span>
+                <strong>${escapeHtml(task.record.title || "Untitled record")}</strong>
+                <em>${escapeHtml([task.record.client, task.record.type, task.record.status, dueText].filter(Boolean).join(" / "))}</em>
+              </button>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandBrief(rows) {
+    return `
+      <div class="command-brief-list">
+        ${rows.map((row) => `<p>${escapeHtml(row)}</p>`).join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandEvidenceList(packs) {
+    if (!packs.length) return `<div class="empty-state compact">No evidence gaps found.</div>`;
+    return `
+      <div class="command-list">
+        ${packs
+          .map(
+            (pack) => `
+              <button class="command-row tone-blue" type="button" data-action="open-related-record" data-id="${escapeHtml(pack.record.id)}">
+                <span>${pack.gaps.length} gaps</span>
+                <strong>${escapeHtml(pack.record.title || "Untitled record")}</strong>
+                <em>${escapeHtml(pack.gaps.slice(0, 4).join(" / "))}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandContractList(items) {
+    if (!items.length) return `<div class="empty-state compact">No contract gaps found.</div>`;
+    return `
+      <div class="command-list">
+        ${items
+          .map(
+            (item) => `
+              <button class="command-row tone-amber" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+                <span>${escapeHtml(item.risk)}</span>
+                <strong>${escapeHtml(item.record.title || "Untitled record")}</strong>
+                <em>${escapeHtml([item.record.client, item.stage, item.record.agreementNo || "No agreement"].filter(Boolean).join(" / "))}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandClientList(accounts) {
+    if (!accounts.length) return `<div class="empty-state compact">No client heat available.</div>`;
+    return `
+      <div class="command-list">
+        ${accounts
+          .map(
+            (account) => `
+              <button class="command-row tone-green" type="button" data-action="open-related-record" data-id="${escapeHtml(account.latest?.id || "")}" ${account.latest ? "" : "disabled"}>
+                <span>${escapeHtml(account.pulse)}</span>
+                <strong>${escapeHtml(account.label)}</strong>
+                <em>${account.records.length} records / ${account.openCount} open / ${escapeHtml(formatCompactMoney(account.totalValue))}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandValueList(records) {
+    if (!records.length) return `<div class="empty-state compact">No open value captured yet.</div>`;
+    return `
+      <div class="command-list">
+        ${records
+          .map(
+            (record) => `
+              <button class="command-row tone-teal" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">
+                <span>${escapeHtml(formatCompactMoney(record.valueAmount))}</span>
+                <strong>${escapeHtml(record.client || record.reference || "Open record")}</strong>
+                <em>${escapeHtml(record.title || "Untitled record")}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandRhythm() {
+    const rows = [
+      ["1", "Clear red actions", "Open Reminders and update overdue or near-date records first.", "Reminders"],
+      ["2", "Fix evidence", "Review Documents so source sheets, LOA, and agreement proof are visible.", "Documents"],
+      ["3", "Move commercial gaps", "Open Contracts and close agreement, handover, and value gaps.", "Contracts"],
+      ["4", "Share the pack", "Open Reports when the operating story is ready for management.", "Reports"],
+    ];
+    return `
+      <div class="command-rhythm">
+        ${rows
+          .map(
+            ([step, title, note, view]) => `
+              <button type="button" data-view="${escapeHtml(view)}" ${canAccessView(view) ? "" : "disabled"}>
+                <span>${escapeHtml(step)}</span>
+                <strong>${escapeHtml(title)}</strong>
+                <em>${escapeHtml(note)}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderImportStudioPage() {
+    const model = buildImportStudioModel();
+    const preview = model.preview;
+    return `
+      <section class="import-studio">
+        <section class="import-console">
+          <div>
+            <span class="panel-label">Import control</span>
+            <h2>Turn Excel exports into clean workspace rows.</h2>
+            <p>Paste CSV or Excel-copied rows, preview every line, then import only clean records. Existing references, missing fields, source gaps, and coverage health stay visible before the team trusts the data.</p>
+            <div class="import-actions">
+              <button class="secondary-btn" type="button" data-action="load-import-sample">Load sample</button>
+              <button class="ghost-btn" type="button" data-action="download-import-template">Template CSV</button>
+              <label class="ghost-btn import-file-button">
+                Upload CSV
+                <input type="file" accept=".csv,.txt,.tsv" data-import-file>
+              </label>
+            </div>
+          </div>
+          <div class="import-score-card">
+            <span>Field coverage</span>
+            <strong>${model.fieldCoverage}%</strong>
+            <small>${model.sourceWorkbooks} source workbooks / ${model.issueCount} intake issues</small>
+          </div>
+        </section>
+
+        <div class="import-kpis">
+          ${renderInsightKpi("Workspace rows", `${model.records.length}`, "Records currently stored")}
+          ${renderInsightKpi("Source workbooks", `${model.sourceWorkbooks}`, `${model.sheetRows.length} source sheets visible`)}
+          ${renderInsightKpi("Duplicate refs", `${model.duplicateGroups.length}`, `${model.duplicateCount} rows in duplicate groups`)}
+          ${renderInsightKpi("Missing fields", `${model.missingCount}`, "Rows needing cleanup before reporting")}
+        </div>
+
+        <div class="import-layout">
+          <section class="import-main">
+            <article class="info-panel import-entry-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">CSV intake</span>
+                  <h3>Preview before commit</h3>
+                </div>
+                <span>${preview ? `${preview.validCount} clean` : "Ready"}</span>
+              </div>
+              <textarea id="importCsvText" class="import-textarea" data-import-text spellcheck="false" placeholder="${escapeHtml(IMPORT_COLUMNS.join(","))}">${escapeHtml(state.importText)}</textarea>
+              <div class="import-toolbar">
+                <div class="import-message">${escapeHtml(state.importMessage || "No import queued.")}</div>
+                <div class="import-toolbar-actions">
+                  <button class="secondary-btn" type="button" data-action="preview-import">Preview CSV</button>
+                  <button class="primary-btn" type="button" data-action="commit-import" ${preview && preview.validCount && canEdit() ? "" : "disabled"}>Import clean rows</button>
+                  <button class="ghost-btn" type="button" data-action="clear-import">Clear</button>
+                </div>
+              </div>
+            </article>
+
+            ${renderImportPreviewPanel(preview)}
+          </section>
+
+          <aside class="import-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Source health</span>
+                  <h3>Workbook coverage</h3>
+                </div>
+                <span>${model.sourceRows.length} sources</span>
+              </div>
+              ${renderImportSourceRows(model.sourceRows)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Field map</span>
+                  <h3>Coverage by column</h3>
+                </div>
+                <span>${model.fieldCoverage}%</span>
+              </div>
+              ${renderImportCoverageRows(model.coverageRows)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="import-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Duplicate watch</span>
+                <h3>Repeated references</h3>
+              </div>
+            </div>
+            ${renderImportDuplicateList(model.duplicateGroups)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Cleanup queue</span>
+                <h3>Missing-field records</h3>
+              </div>
+              <span>${model.missingCount} total</span>
+            </div>
+            ${renderImportMissingList(model.missingRecords)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Sheet heat</span>
+                <h3>Most used sheets</h3>
+              </div>
+            </div>
+            ${renderImportSourceRows(model.sheetRows)}
+          </article>
+
+          <article class="info-panel import-playbook-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Import rhythm</span>
+                <h3>Governance loop</h3>
+              </div>
+            </div>
+            ${renderImportPlaybook()}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderImportPreviewPanel(preview) {
+    if (!preview) {
+      return `
+        <article class="info-panel import-preview-panel">
+          <div class="info-head">
+            <div>
+              <span class="metric-label">Preview grid</span>
+              <h3>No preview yet</h3>
+            </div>
+          </div>
+          <div class="empty-state">Paste rows or load the sample, then preview the import.</div>
+        </article>
+      `;
+    }
+    if (preview.errors.length) {
+      return `
+        <article class="info-panel import-preview-panel">
+          <div class="info-head">
+            <div>
+              <span class="metric-label">Preview grid</span>
+              <h3>Import blocked</h3>
+            </div>
+            <span>${preview.rawCount} rows</span>
+          </div>
+          <div class="empty-state">${escapeHtml(preview.errors[0])}</div>
+        </article>
+      `;
+    }
+    return `
+      <article class="info-panel import-preview-panel">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Preview grid</span>
+            <h3>Rows waiting for import</h3>
+          </div>
+          <span>${preview.validCount} clean / ${preview.issueCount} issues</span>
+        </div>
+        <div class="import-preview-wrap">
+          <table class="import-preview-table">
+            <thead>
+              <tr>
+                <th>Row</th>
+                <th>Type</th>
+                <th>Reference</th>
+                <th>Client</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Value</th>
+                <th>Issues</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${preview.rows
+                .slice(0, 14)
+                .map(
+                  (row) => `
+                    <tr class="${row.issues.length ? "has-issues" : "is-clean"}">
+                      <td>${row.rowNumber}</td>
+                      <td>${escapeHtml(row.record.type)}</td>
+                      <td>${escapeHtml(row.record.reference || "-")}</td>
+                      <td>${escapeHtml(row.record.client || "-")}</td>
+                      <td>${escapeHtml(row.record.title || "-")}</td>
+                      <td><span class="status-badge ${statusClass(row.record.status)}">${escapeHtml(row.record.status)}</span></td>
+                      <td>${escapeHtml(row.record.valueAmount ? formatCompactMoney(row.record.valueAmount) : "-")}</td>
+                      <td>${row.issues.length ? row.issues.map((issue) => `<span>${escapeHtml(issue)}</span>`).join("") : "<strong>Clean</strong>"}</td>
+                    </tr>
+                  `,
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="import-preview-note">${preview.rows.length > 14 ? `Showing 14 of ${preview.rows.length} parsed rows.` : `${preview.rows.length} parsed rows.`}</div>
+      </article>
+    `;
+  }
+
+  function renderImportSourceRows(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No source rows available.</div>`;
+    const total = Math.max(1, rows.reduce((sum, row) => sum + row.value, 0));
+    return `
+      <div class="import-source-list">
+        ${rows
+          .map((row) => `
+            <div>
+              <span>${escapeHtml(row.label)}</span>
+              <strong>${row.value}</strong>
+              <i style="--width: ${Math.max(4, Math.round((row.value / total) * 100))}%"></i>
+            </div>
+          `)
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderImportCoverageRows(rows) {
+    return `
+      <div class="import-coverage-list">
+        ${rows
+          .map((row) => `
+            <div>
+              <span>${escapeHtml(row.label)}</span>
+              <strong>${row.rate}%</strong>
+              <i style="--width: ${Math.max(4, row.rate)}%"></i>
+              <small>${row.filled}/${row.total} filled</small>
+            </div>
+          `)
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderImportDuplicateList(groups) {
+    if (!groups.length) return `<div class="empty-state compact">No duplicate references found.</div>`;
+    return `
+      <div class="command-list">
+        ${groups
+          .map((group) => `
+            <div class="command-row tone-amber static-row">
+              <span>${group.count} rows</span>
+              <strong>${escapeHtml(group.reference)}</strong>
+              <em>${escapeHtml(group.clients.join(" / ") || "No client")}</em>
+            </div>
+          `)
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderImportMissingList(items) {
+    if (!items.length) return `<div class="empty-state compact">No missing-field records found.</div>`;
+    return `
+      <div class="command-list">
+        ${items
+          .map((item) => `
+            <button class="command-row tone-red" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+              <span>${item.gaps.length} gaps</span>
+              <strong>${escapeHtml(item.record.title || item.record.reference || "Untitled record")}</strong>
+              <em>${escapeHtml(item.gaps.join(" / "))}</em>
+            </button>
+          `)
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderImportPlaybook() {
+    const rows = [
+      ["1", "Load source", "Paste CSV, upload a file, or use the template."],
+      ["2", "Preview rows", "Check duplicate references and missing core fields."],
+      ["3", "Commit clean", "Only issue-free rows enter the live workspace."],
+      ["4", "Review rooms", "Open Tenders, Projects, Documents, or Reports after import."],
+    ];
+    return `
+      <div class="command-rhythm import-playbook">
+        ${rows
+          .map(
+            ([step, title, note]) => `
+              <div>
+                <span>${escapeHtml(step)}</span>
+                <strong>${escapeHtml(title)}</strong>
+                <em>${escapeHtml(note)}</em>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function forecastProbability(record) {
+    if (record.status === "Cancelled" || record.status === "Regret") return 0;
+    if (record.status === "Completed") return 100;
+    if (record.status === "Awarded") return 92;
+    if (record.type === "Project" && record.status === "Ongoing") return 78;
+    if (record.status === "Submitted") return 62;
+    if (record.status === "Pending") return 46;
+    if (record.type === "EOI") return 18;
+    if (record.status === "Active") return 34;
+    return 30;
+  }
+
+  function forecastWindow(record) {
+    if (["Awarded", "Completed"].includes(record.status)) return { label: "Committed", order: 0, tone: "green" };
+    const days = recordDueDays(record);
+    if (days === null) return { label: "No date", order: 6, tone: "muted" };
+    if (days < 0) return { label: "Past due", order: 1, tone: "red" };
+    if (days <= 30) return { label: "Next 30 days", order: 2, tone: "amber" };
+    if (days <= 90) return { label: "31-90 days", order: 3, tone: "blue" };
+    if (days <= 180) return { label: "91-180 days", order: 4, tone: "green" };
+    return { label: "Later", order: 5, tone: "teal" };
+  }
+
+  function buildForecastModel() {
+    const records = companyRecords();
+    const forecastItems = records
+      .filter((record) => Number(record.valueAmount) > 0 && !["Cancelled", "Regret"].includes(record.status))
+      .map((record) => {
+        const probability = forecastProbability(record);
+        const amount = Number(record.valueAmount) || 0;
+        const weightedValue = amount * (probability / 100);
+        const window = forecastWindow(record);
+        const confidence =
+          probability +
+          (record.endDate ? 8 : -10) +
+          (record.client ? 4 : -4) +
+          ((record.rounds || []).length ? 4 : 0) +
+          (record.agreementNo ? 5 : 0);
+        return {
+          record,
+          amount,
+          probability,
+          weightedValue,
+          window,
+          confidence: Math.max(8, Math.min(100, Math.round(confidence))),
+        };
+      });
+    const weightedValue = forecastItems.reduce((total, item) => total + item.weightedValue, 0);
+    const totalValue = forecastItems.reduce((total, item) => total + item.amount, 0);
+    const next90Weighted = forecastItems
+      .filter((item) => item.window.order >= 2 && item.window.order <= 3)
+      .reduce((total, item) => total + item.weightedValue, 0);
+    const committedValue = forecastItems
+      .filter((item) => ["Awarded", "Completed"].includes(item.record.status) || item.record.type === "Project")
+      .reduce((total, item) => total + item.weightedValue, 0);
+    const confidence = totalValue ? Math.round((weightedValue / totalValue) * 100) : 0;
+    const windowMap = new Map();
+    forecastItems.forEach((item) => {
+      const current = windowMap.get(item.window.label) || {
+        label: item.window.label,
+        value: 0,
+        raw: 0,
+        count: 0,
+        tone: item.window.tone,
+        order: item.window.order,
+      };
+      current.value += item.weightedValue;
+      current.raw += item.amount;
+      current.count += 1;
+      windowMap.set(item.window.label, current);
+    });
+    const windowTemplate = [
+      { label: "Committed", order: 0, tone: "green" },
+      { label: "Past due", order: 1, tone: "red" },
+      { label: "Next 30 days", order: 2, tone: "amber" },
+      { label: "31-90 days", order: 3, tone: "blue" },
+      { label: "91-180 days", order: 4, tone: "green" },
+      { label: "Later", order: 5, tone: "teal" },
+      { label: "No date", order: 6, tone: "muted" },
+    ];
+    const windowRows = windowTemplate.map((row) => windowMap.get(row.label) || { ...row, value: 0, raw: 0, count: 0 });
+    const clientMap = new Map();
+    forecastItems.forEach((item) => {
+      const label = accountLabelForRecord(item.record);
+      const current = clientMap.get(label) || { label, value: 0, raw: 0, count: 0, records: [] };
+      current.value += item.weightedValue;
+      current.raw += item.amount;
+      current.count += 1;
+      current.records.push(item.record);
+      clientMap.set(label, current);
+    });
+    const clientRows = Array.from(clientMap.values()).sort((a, b) => b.value - a.value).slice(0, 7);
+    const statusRows = Array.from(
+      forecastItems.reduce((map, item) => {
+        const label = item.record.status || "Unknown";
+        const current = map.get(label) || { label, value: 0, raw: 0, count: 0 };
+        current.value += item.weightedValue;
+        current.raw += item.amount;
+        current.count += 1;
+        map.set(label, current);
+        return map;
+      }, new Map()).values(),
+    ).sort((a, b) => b.value - a.value);
+    const tenderWeighted = forecastItems
+      .filter((item) => item.record.type === "Tender" || item.record.type === "EOI")
+      .reduce((total, item) => total + item.weightedValue, 0);
+    const projectWeighted = forecastItems
+      .filter((item) => item.record.type === "Project")
+      .reduce((total, item) => total + item.weightedValue, 0);
+    const risks = [
+      {
+        label: "No date value",
+        value: forecastItems.filter((item) => item.window.label === "No date").reduce((total, item) => total + item.weightedValue, 0),
+        note: "Weighted value missing forecast timing",
+      },
+      {
+        label: "Past due value",
+        value: forecastItems.filter((item) => item.window.label === "Past due").reduce((total, item) => total + item.weightedValue, 0),
+        note: "Weighted value with dates already passed",
+      },
+      {
+        label: "Low probability value",
+        value: forecastItems.filter((item) => item.probability < 40).reduce((total, item) => total + item.amount, 0),
+        note: "Raw value below 40% conversion probability",
+      },
+    ];
+    return {
+      records,
+      forecastItems,
+      weightedValue,
+      totalValue,
+      next90Weighted,
+      committedValue,
+      confidence,
+      tenderWeighted,
+      projectWeighted,
+      windowRows,
+      clientRows,
+      statusRows,
+      risks,
+      topItems: [...forecastItems].sort((a, b) => b.weightedValue - a.weightedValue).slice(0, 10),
+      atRiskItems: [...forecastItems]
+        .filter((item) => item.window.label === "Past due" || item.window.label === "No date" || item.probability < 40)
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 6),
+      scenarios: [
+        { label: "Conservative", value: weightedValue * 0.72, note: "Only the strongest visible conversion is assumed." },
+        { label: "Base forecast", value: weightedValue, note: "Current weighted probability by status and record quality." },
+        { label: "Upside", value: Math.min(totalValue, weightedValue * 1.22), note: "Better movement on negotiations, dates, and client decisions." },
+      ],
+      assumptions: [
+        ["Awarded", "92%", "Awarded tenders are counted close to committed."],
+        ["Ongoing projects", "78%", "Live delivery carries strong but not final forecast weight."],
+        ["Submitted", "62%", "Submitted bids carry mid-high conversion weight."],
+        ["Active tender", "34%", "Early pipeline stays conservative until submission or negotiation."],
+      ],
+    };
+  }
+
+  function renderForecastPage() {
+    const model = buildForecastModel();
+    return `
+      <section class="forecast-room">
+        <section class="forecast-console">
+          <div>
+            <span class="panel-label">Forecast room</span>
+            <h2>Turn the live tracker into a forward value view.</h2>
+            <p>Forecast uses transparent probability assumptions from status, record quality, dates, and commercial proof. It gives management a practical forward view without pretending the spreadsheet is magic.</p>
+            <div class="forecast-actions">
+              <button class="secondary-btn" type="button" data-view="Tenders">Open tenders</button>
+              <button class="ghost-btn" type="button" data-view="Projects">Open projects</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+            </div>
+          </div>
+          <div class="forecast-total-card">
+            <span>Base weighted forecast</span>
+            <strong>${escapeHtml(formatCompactMoney(model.weightedValue))}</strong>
+            <small>${model.confidence}% weighted confidence across valued records</small>
+          </div>
+        </section>
+
+        <div class="forecast-kpis">
+          ${renderInsightKpi("Raw forecast pool", formatCompactMoney(model.totalValue), `${model.forecastItems.length} valued active/positive records`)}
+          ${renderInsightKpi("Weighted forecast", formatCompactMoney(model.weightedValue), "Status-based expected value")}
+          ${renderInsightKpi("Next 90 days", formatCompactMoney(model.next90Weighted), "Weighted value in near windows")}
+          ${renderInsightKpi("Committed layer", formatCompactMoney(model.committedValue), "Awarded, completed, and live project weight")}
+        </div>
+
+        <div class="forecast-layout">
+          <section class="forecast-main">
+            <div class="info-head forecast-main-head">
+              <div>
+                <span class="metric-label">Forecast board</span>
+                <h3>Largest weighted opportunities</h3>
+              </div>
+              <span>${model.topItems.length} shown</span>
+            </div>
+            <div class="forecast-card-grid">
+              ${model.topItems.map(renderForecastCard).join("")}
+            </div>
+          </section>
+
+          <aside class="forecast-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Scenario model</span>
+                  <h3>Forecast range</h3>
+                </div>
+              </div>
+              ${renderForecastScenarios(model.scenarios)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Assumptions</span>
+                  <h3>Conversion logic</h3>
+                </div>
+              </div>
+              ${renderForecastAssumptions(model.assumptions)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="forecast-analytics-grid">
+          <article class="info-panel forecast-window-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Timing</span>
+                <h3>Forecast by date window</h3>
+              </div>
+            </div>
+            ${renderForecastWindows(model.windowRows)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client forecast</span>
+                <h3>Weighted account value</h3>
+              </div>
+            </div>
+            ${renderForecastClients(model.clientRows)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Split</span>
+                <h3>Tenders versus projects</h3>
+              </div>
+            </div>
+            ${renderForecastSplit(model)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Risk cleanup</span>
+                <h3>Forecast hygiene</h3>
+              </div>
+            </div>
+            ${renderForecastRisks(model.risks)}
+          </article>
+
+          <article class="info-panel forecast-risk-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">At-risk forecast</span>
+                <h3>Fix these to improve confidence</h3>
+              </div>
+            </div>
+            ${renderForecastAtRisk(model.atRiskItems)}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderForecastCard(item) {
+    const record = item.record;
+    return `
+      <article class="forecast-card">
+        <div class="forecast-card-head">
+          <div>
+            <span>${escapeHtml(item.window.label)}</span>
+            <h3>${escapeHtml(record.title || "Untitled forecast record")}</h3>
+          </div>
+          <strong>${item.probability}%</strong>
+        </div>
+        <div class="forecast-meta-line">
+          <span>${escapeHtml(record.client || "No client")}</span>
+          <span>${escapeHtml(record.type)}</span>
+          <span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span>
+        </div>
+        <div class="forecast-stat-grid">
+          <div><span>Raw value</span><strong>${escapeHtml(formatCompactMoney(item.amount))}</strong></div>
+          <div><span>Weighted</span><strong>${escapeHtml(formatCompactMoney(item.weightedValue))}</strong></div>
+          <div><span>Due / last</span><strong>${escapeHtml(formatDate(record.endDate) || "No date")}</strong></div>
+          <div><span>Confidence</span><strong>${item.confidence}%</strong></div>
+        </div>
+        <button class="mini-btn" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">Open source</button>
+      </article>
+    `;
+  }
+
+  function renderForecastScenarios(rows) {
+    return `
+      <div class="forecast-scenario-list">
+        ${rows
+          .map(
+            (row) => `
+              <div>
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${escapeHtml(formatCompactMoney(row.value))}</strong>
+                <small>${escapeHtml(row.note)}</small>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderForecastAssumptions(rows) {
+    return `
+      <div class="forecast-assumption-list">
+        ${rows
+          .map(
+            ([label, value, note]) => `
+              <div>
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(value)}</strong>
+                <small>${escapeHtml(note)}</small>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderForecastWindows(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No dated forecast records available.</div>`;
+    const max = Math.max(...rows.map((row) => row.value), 1);
+    return `
+      <div class="forecast-window-list">
+        ${rows
+          .map((row) => {
+            const width = Math.max(5, Math.round((row.value / max) * 100));
+            return `
+              <div class="forecast-window-row tone-${escapeHtml(row.tone)}">
+                <div>
+                  <span>${escapeHtml(row.label)}</span>
+                  <strong>${escapeHtml(formatCompactMoney(row.value))}</strong>
+                  <small>${row.count} records / raw ${escapeHtml(formatCompactMoney(row.raw))}</small>
+                </div>
+                <i><b style="width: ${width}%"></b></i>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderForecastClients(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No client forecast available.</div>`;
+    const max = Math.max(...rows.map((row) => row.value), 1);
+    return `
+      <div class="forecast-client-list">
+        ${rows
+          .map((row) => {
+            const width = Math.max(5, Math.round((row.value / max) * 100));
+            return `
+              <div class="forecast-client-row">
+                <div>
+                  <span>${escapeHtml(row.label)}</span>
+                  <strong>${escapeHtml(formatCompactMoney(row.value))}</strong>
+                  <small>${row.count} records / raw ${escapeHtml(formatCompactMoney(row.raw))}</small>
+                </div>
+                <i><b style="width: ${width}%"></b></i>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderForecastSplit(model) {
+    const total = Math.max(model.tenderWeighted + model.projectWeighted, 1);
+    const rows = [
+      ["Tender forecast", model.tenderWeighted, "Tender and EOI weighted value"],
+      ["Project forecast", model.projectWeighted, "Project weighted delivery value"],
+    ];
+    return `
+      <div class="forecast-split-list">
+        ${rows
+          .map(([label, value, note]) => {
+            const width = Math.max(5, Math.round((value / total) * 100));
+            return `
+              <div>
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(formatCompactMoney(value))}</strong>
+                <small>${escapeHtml(note)}</small>
+                <i><b style="width: ${width}%"></b></i>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderForecastRisks(rows) {
+    return `
+      <div class="forecast-risk-list">
+        ${rows
+          .map(
+            (row) => `
+              <div>
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${escapeHtml(formatCompactMoney(row.value))}</strong>
+                <small>${escapeHtml(row.note)}</small>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderForecastAtRisk(items) {
+    if (!items.length) return `<div class="empty-state compact">No at-risk forecast records found.</div>`;
+    return `
+      <div class="forecast-risk-records">
+        ${items
+          .map(
+            (item) => `
+              <button class="forecast-risk-row" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+                <span>${escapeHtml(item.window.label)}</span>
+                <strong>${escapeHtml(item.record.title || "Untitled record")}</strong>
+                <em>${escapeHtml([item.record.client, `${item.probability}%`, formatCompactMoney(item.amount)].filter(Boolean).join(" / "))}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
   function accountLabelForRecord(record) {
     return String(record.clientGroup || record.client || "Unassigned client").trim() || "Unassigned client";
   }
@@ -1529,6 +3342,1088 @@
                 <span>${account.openCount} open / ${account.dueWatchCount} due-watch / ${account.noDateCount} no-date</span>
                 <p>${escapeHtml(account.recommendation)}</p>
               </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function isYes(value) {
+    return normalize(value) === "yes";
+  }
+
+  function contractCandidateRecords() {
+    return companyRecords().filter(
+      (record) =>
+        record.type === "Project" ||
+        ["Awarded", "Completed"].includes(record.status) ||
+        Boolean(record.agreementNo) ||
+        Boolean(record.loaReceived) ||
+        Boolean(record.agreementReceived),
+    );
+  }
+
+  function contractStage(record) {
+    if (record.type === "Project" && record.status === "Ongoing") return "Live delivery";
+    if (record.status === "Awarded") return "Award handover";
+    if (record.status === "Completed") return "Closed contract";
+    if (record.agreementNo) return "Agreement record";
+    if (record.type === "Project") return "Project contract";
+    return "Contract candidate";
+  }
+
+  function contractRisk(record) {
+    const days = recordDueDays(record);
+    if (!record.agreementNo) return "Needs agreement";
+    if (record.status === "Awarded" && !isYes(record.loaReceived)) return "LOA gap";
+    if (record.agreementNo && !isYes(record.agreementReceived)) return "Agreement follow-up";
+    if (!isClosedRecord(record) && days !== null && days < 0) return "Past due";
+    if (!(Number(record.valueAmount) > 0)) return "Value gap";
+    return "On file";
+  }
+
+  function contractScore(record) {
+    const amount = Number(record.valueAmount) || 0;
+    const days = recordDueDays(record);
+    let score = 28;
+    if (record.agreementNo) score += 22;
+    if (isYes(record.agreementReceived)) score += 18;
+    if (isYes(record.loaReceived)) score += 12;
+    if (amount > 0) score += 12;
+    if (record.endDate) score += 10;
+    if (record.type === "Project" || ["Awarded", "Completed"].includes(record.status)) score += 12;
+    if (!isClosedRecord(record) && days !== null && days < 0) score -= 14;
+    if (!record.agreementNo) score -= 10;
+    return Math.max(12, Math.min(100, Math.round(score)));
+  }
+
+  function buildContractsModel() {
+    const records = contractCandidateRecords();
+    const enriched = records
+      .map((record) => ({
+        record,
+        score: contractScore(record),
+        stage: contractStage(record),
+        risk: contractRisk(record),
+        days: recordDueDays(record),
+      }))
+      .sort(
+        (a, b) =>
+          (a.risk === "Needs agreement" ? -1 : 0) - (b.risk === "Needs agreement" ? -1 : 0) ||
+          b.score - a.score ||
+          (Number(b.record.valueAmount) || 0) - (Number(a.record.valueAmount) || 0),
+      );
+    const gaps = enriched.filter((item) => item.risk !== "On file");
+    const awarded = enriched.filter((item) => item.record.status === "Awarded");
+    const liveDelivery = enriched.filter((item) => item.record.type === "Project" && !isClosedRecord(item.record));
+    const renewalWatch = enriched.filter((item) => item.days !== null && item.days >= 0 && item.days <= 180);
+    const agreementRows = [
+      { label: "Agreement no captured", value: records.filter((record) => record.agreementNo).length },
+      { label: "Agreement received", value: records.filter((record) => isYes(record.agreementReceived)).length },
+      { label: "LOA received", value: records.filter((record) => isYes(record.loaReceived)).length },
+      { label: "Missing agreement no", value: records.filter((record) => !record.agreementNo).length },
+    ];
+    return {
+      records,
+      enriched,
+      gaps,
+      awarded,
+      liveDelivery,
+      renewalWatch,
+      withAgreement: records.filter((record) => record.agreementNo).length,
+      agreementReceived: records.filter((record) => isYes(record.agreementReceived)).length,
+      loaReceived: records.filter((record) => isYes(record.loaReceived)).length,
+      missingAgreement: records.filter((record) => !record.agreementNo).length,
+      gapCount: gaps.length,
+      totalValue: sumAmounts(records),
+      handoverRows: gaps.slice(0, 7),
+      agreementRows,
+      clientRows: topBreakdown(records, "client", 6, "No client"),
+      sourceRows: topBreakdown(records, "sourceSheet", 6, "Manual entry"),
+    };
+  }
+
+  function renderContractsPage() {
+    const model = buildContractsModel();
+    return `
+      <section class="contracts-room">
+        <div class="contract-kpis">
+          ${renderInsightKpi("Contract records", `${model.records.length}`, `${model.liveDelivery.length} live delivery records`)}
+          ${renderInsightKpi("Agreement nos", `${model.withAgreement}`, `${model.missingAgreement} missing agreement numbers`)}
+          ${renderInsightKpi("Contract value", formatCompactMoney(model.totalValue), "Award, project, and agreement-linked value")}
+          ${renderInsightKpi("Commercial gaps", `${model.gapCount}`, "Records needing agreement, LOA, date, or value cleanup")}
+        </div>
+
+        <div class="contracts-layout">
+          <section class="contracts-main">
+            <div class="info-head contract-main-head">
+              <div>
+                <span class="metric-label">Contract register</span>
+                <h3>Awards, agreements, and delivery handover</h3>
+              </div>
+              <span>${model.enriched.length} records</span>
+            </div>
+            <div class="contract-card-grid">
+              ${model.enriched.slice(0, 12).map(renderContractCard).join("")}
+            </div>
+          </section>
+
+          <aside class="contracts-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Handover watch</span>
+                  <h3>Needs commercial movement</h3>
+                </div>
+                <span>${model.handoverRows.length} shown</span>
+              </div>
+              ${renderContractWatchList(model.handoverRows)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Agreement coverage</span>
+                  <h3>Document capture</h3>
+                </div>
+              </div>
+              ${renderContractCoverage(model.agreementRows, model.records.length)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="contract-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client contracts</span>
+                <h3>Contract concentration</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.clientRows, "blue")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Source register</span>
+                <h3>Where contract data came from</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.sourceRows, "green")}
+          </article>
+
+          <article class="info-panel contract-playbook-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Commercial playbook</span>
+                <h3>Contract control rhythm</h3>
+              </div>
+            </div>
+            ${renderContractPlaybook()}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderContractCard(item) {
+    const { record } = item;
+    const agreement = record.agreementNo || "No agreement no";
+    const value = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "No value";
+    const date = formatDate(record.endDate) || "No date";
+    return `
+      <article class="contract-card">
+        <div class="contract-card-head">
+          <div>
+            <span>${escapeHtml(item.stage)}</span>
+            <h3>${escapeHtml(record.title || "Untitled contract record")}</h3>
+          </div>
+          <strong>${item.score}</strong>
+        </div>
+        <div class="contract-meta-line">
+          <span>${escapeHtml(record.client || "No client")}</span>
+          <span>${escapeHtml(record.type)}</span>
+          <span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span>
+        </div>
+        <div class="contract-stat-grid">
+          <div><span>Agreement</span><strong>${escapeHtml(agreement)}</strong></div>
+          <div><span>End / last</span><strong>${escapeHtml(date)}</strong></div>
+          <div><span>Value</span><strong>${escapeHtml(value)}</strong></div>
+          <div><span>Risk</span><strong>${escapeHtml(item.risk)}</strong></div>
+        </div>
+        <div class="contract-doc-row">
+          <span class="${isYes(record.loaReceived) ? "is-ok" : ""}">LOA ${isYes(record.loaReceived) ? "yes" : "open"}</span>
+          <span class="${isYes(record.agreementReceived) ? "is-ok" : ""}">Agreement ${isYes(record.agreementReceived) ? "yes" : "open"}</span>
+          <span>${escapeHtml(record.sourceSheet || "Manual entry")}</span>
+        </div>
+        <button class="mini-btn" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">Open source</button>
+      </article>
+    `;
+  }
+
+  function renderContractWatchList(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No contract handover gaps found.</div>`;
+    return `
+      <div class="contract-watch-list">
+        ${rows
+          .map(
+            (item) => `
+              <button class="contract-watch-row" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+                <span>${escapeHtml(item.risk)}</span>
+                <strong>${escapeHtml(item.record.title || "Untitled record")}</strong>
+                <em>${escapeHtml([item.record.client, item.stage, item.record.agreementNo || "No agreement"].filter(Boolean).join(" / "))}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderContractCoverage(rows, total) {
+    const max = Math.max(total, 1);
+    return `
+      <div class="contract-coverage-list">
+        ${rows
+          .map((row) => {
+            const width = Math.max(4, Math.round((row.value / max) * 100));
+            return `
+              <div>
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${row.value}</strong>
+                <i><b style="width: ${width}%"></b></i>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderContractPlaybook() {
+    const rows = [
+      ["Award", "Confirm LOA, agreement number, and handover owner when a tender is awarded."],
+      ["Agreement", "Track agreement received status and source sheet for audit-friendly lookup."],
+      ["Delivery", "Connect live projects back to agreement numbers and end dates."],
+      ["Renewal", "Use due-watch items to start renewal or extension conversations early."],
+    ];
+    return `
+      <div class="contract-playbook">
+        ${rows
+          .map(
+            ([label, note]) => `
+              <div>
+                <strong>${escapeHtml(label)}</strong>
+                <span>${escapeHtml(note)}</span>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function documentPackType(record) {
+    if (record.type === "Project") return "Project file";
+    if (record.status === "Awarded") return "Award file";
+    if ((record.rounds || []).length) return "Negotiation file";
+    if (record.type === "EOI") return "EOI file";
+    return "Tender file";
+  }
+
+  function documentGaps(record) {
+    const gaps = [];
+    if (!record.sourceWorkbook || record.sourceWorkbook === "Manual entry") gaps.push("Source workbook");
+    if (!record.sourceSheet || record.sourceSheet === "Manual entry") gaps.push("Source sheet");
+    if ((record.status === "Awarded" || record.type === "Project") && !record.agreementNo) gaps.push("Agreement no");
+    if (record.status === "Awarded" && !isYes(record.loaReceived)) gaps.push("LOA proof");
+    if ((record.agreementNo || record.type === "Project") && !isYes(record.agreementReceived)) gaps.push("Agreement file");
+    if (!record.endDate) gaps.push("Due/end date");
+    if (!record.latestActivity && (record.rounds || []).length) gaps.push("Negotiation note");
+    return gaps;
+  }
+
+  function documentEvidenceCount(record) {
+    return [
+      record.sourceWorkbook,
+      record.sourceSheet,
+      record.endDate,
+      Number(record.valueAmount) > 0,
+      record.agreementNo,
+      isYes(record.loaReceived),
+      isYes(record.agreementReceived),
+      (record.rounds || []).length,
+      record.latestActivity,
+    ].filter(Boolean).length;
+  }
+
+  function documentReadiness(record, gaps) {
+    let score = 42 + documentEvidenceCount(record) * 7 - gaps.length * 10;
+    if (record.sourceWorkbook && record.sourceWorkbook !== "Manual entry") score += 8;
+    if ((record.rounds || []).length) score += 8;
+    if (record.type === "Project" || record.status === "Awarded") score += 5;
+    if (!record.endDate && !isClosedRecord(record)) score -= 8;
+    return Math.max(8, Math.min(100, Math.round(score)));
+  }
+
+  function buildDocumentsModel() {
+    const records = companyRecords();
+    const packs = records
+      .map((record) => {
+        const gaps = documentGaps(record);
+        return {
+          record,
+          gaps,
+          packType: documentPackType(record),
+          readiness: documentReadiness(record, gaps),
+          evidenceCount: documentEvidenceCount(record),
+          sourceLabel: [record.sourceWorkbook || "Manual entry", record.sourceSheet || "No sheet"].filter(Boolean).join(" / "),
+        };
+      })
+      .sort(
+        (a, b) =>
+          b.gaps.length - a.gaps.length ||
+          a.readiness - b.readiness ||
+          (Number(b.record.valueAmount) || 0) - (Number(a.record.valueAmount) || 0),
+      );
+    const sourceCovered = records.filter((record) => record.sourceWorkbook && record.sourceWorkbook !== "Manual entry").length;
+    const sourceCoverage = records.length ? Math.round((sourceCovered / records.length) * 100) : 0;
+    const gapPacks = packs.filter((pack) => pack.gaps.length);
+    const packRows = Array.from(
+      packs.reduce((map, pack) => map.set(pack.packType, (map.get(pack.packType) || 0) + 1), new Map()),
+      ([label, value]) => ({ label, value }),
+    ).sort((a, b) => b.value - a.value || a.label.localeCompare(b.label));
+    const coverageRows = [
+      { label: "Source workbook", value: sourceCovered },
+      { label: "Source sheet", value: records.filter((record) => record.sourceSheet && record.sourceSheet !== "Manual entry").length },
+      { label: "Value captured", value: records.filter((record) => Number(record.valueAmount) > 0).length },
+      { label: "Negotiation trail", value: records.filter((record) => (record.rounds || []).length).length },
+      { label: "Agreement proof", value: records.filter((record) => record.agreementNo || isYes(record.agreementReceived)).length },
+      { label: "LOA proof", value: records.filter((record) => isYes(record.loaReceived)).length },
+    ];
+    return {
+      records,
+      packs,
+      gapPacks,
+      totalGaps: packs.reduce((total, pack) => total + pack.gaps.length, 0),
+      sourceCoverage,
+      sourceRows: topBreakdown(records, "sourceWorkbook", 6, "Manual entry"),
+      sheetRows: topBreakdown(records, "sourceSheet", 8, "Manual entry"),
+      packRows,
+      coverageRows,
+      agreementProof: records.filter((record) => record.agreementNo || isYes(record.agreementReceived) || isYes(record.loaReceived)).length,
+      negotiationProof: records.filter((record) => (record.rounds || []).length).length,
+    };
+  }
+
+  function renderDocumentsPage() {
+    const model = buildDocumentsModel();
+    return `
+      <section class="documents-room">
+        <div class="document-kpis">
+          ${renderInsightKpi("Document packs", `${model.packs.length}`, "Tender, EOI, project, award, and negotiation files")}
+          ${renderInsightKpi("Source coverage", `${model.sourceCoverage}%`, "Records connected back to source workbooks")}
+          ${renderInsightKpi("Evidence gaps", `${model.totalGaps}`, `${model.gapPacks.length} records need document cleanup`)}
+          ${renderInsightKpi("Agreement proof", `${model.agreementProof}`, "Agreement, LOA, or received flags captured")}
+        </div>
+
+        <div class="documents-layout">
+          <section class="documents-main">
+            <div class="info-head document-main-head">
+              <div>
+                <span class="metric-label">Evidence register</span>
+                <h3>Document packs linked to source records</h3>
+              </div>
+              <span>${model.packs.length} packs</span>
+            </div>
+            <div class="document-card-grid">
+              ${model.packs.slice(0, 14).map(renderDocumentCard).join("")}
+            </div>
+          </section>
+
+          <aside class="documents-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Gap queue</span>
+                  <h3>Evidence needing cleanup</h3>
+                </div>
+                <span>${model.gapPacks.slice(0, 8).length} shown</span>
+              </div>
+              ${renderDocumentGapList(model.gapPacks.slice(0, 8))}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Source workbooks</span>
+                  <h3>Import memory</h3>
+                </div>
+              </div>
+              ${renderDocumentSourceList(model.sourceRows)}
+            </article>
+          </aside>
+        </div>
+
+        <div class="document-analytics-grid">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Source sheets</span>
+                <h3>Sheet coverage</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.sheetRows, "green")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Pack mix</span>
+                <h3>Document library shape</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.packRows, "blue")}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Evidence coverage</span>
+                <h3>Control checklist</h3>
+              </div>
+            </div>
+            ${renderDocumentCoverage(model.coverageRows, model.records.length)}
+          </article>
+
+          <article class="info-panel document-playbook-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Document playbook</span>
+                <h3>How teams should use this room</h3>
+              </div>
+            </div>
+            ${renderDocumentPlaybook()}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderDocumentCard(pack) {
+    const record = pack.record;
+    const value = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "No value";
+    const gapLabel = pack.gaps.length ? `${pack.gaps.length} gap${pack.gaps.length === 1 ? "" : "s"}` : "Complete";
+    return `
+      <article class="document-card">
+        <div class="document-card-head">
+          <div>
+            <span>${escapeHtml(pack.packType)}</span>
+            <h3>${escapeHtml(record.title || "Untitled document pack")}</h3>
+          </div>
+          <strong>${pack.readiness}</strong>
+        </div>
+        <div class="document-meta-line">
+          <span>${escapeHtml(record.client || "No client")}</span>
+          <span>${escapeHtml(record.type)}</span>
+          <span class="status-badge ${statusClass(record.status)}">${escapeHtml(record.status)}</span>
+        </div>
+        <div class="document-stat-grid">
+          <div><span>Source</span><strong>${escapeHtml(record.sourceWorkbook || "Manual entry")}</strong></div>
+          <div><span>Sheet</span><strong>${escapeHtml(record.sourceSheet || "No sheet")}</strong></div>
+          <div><span>Agreement</span><strong>${escapeHtml(record.agreementNo || "No agreement no")}</strong></div>
+          <div><span>Value</span><strong>${escapeHtml(value)}</strong></div>
+        </div>
+        <div class="document-chip-row">
+          <span class="${record.sourceWorkbook && record.sourceWorkbook !== "Manual entry" ? "is-ok" : ""}">Source ${record.sourceWorkbook && record.sourceWorkbook !== "Manual entry" ? "linked" : "open"}</span>
+          <span class="${isYes(record.loaReceived) ? "is-ok" : ""}">LOA ${isYes(record.loaReceived) ? "yes" : "open"}</span>
+          <span class="${isYes(record.agreementReceived) ? "is-ok" : ""}">Agreement ${isYes(record.agreementReceived) ? "yes" : "open"}</span>
+        </div>
+        <div class="document-gap-summary ${pack.gaps.length ? "" : "is-clear"}">
+          <strong>${escapeHtml(gapLabel)}</strong>
+          <span>${escapeHtml(pack.gaps.length ? pack.gaps.slice(0, 3).join(" / ") : "Core evidence is captured for this pack.")}</span>
+        </div>
+        <button class="mini-btn" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">Open source</button>
+      </article>
+    `;
+  }
+
+  function renderDocumentGapList(packs) {
+    if (!packs.length) return `<div class="empty-state compact">No document gaps found.</div>`;
+    return `
+      <div class="document-gap-list">
+        ${packs
+          .map(
+            (pack) => `
+              <button class="document-gap-row" type="button" data-action="open-related-record" data-id="${escapeHtml(pack.record.id)}">
+                <span>${escapeHtml(pack.gaps.length)} gaps</span>
+                <strong>${escapeHtml(pack.record.title || "Untitled record")}</strong>
+                <em>${escapeHtml(pack.gaps.slice(0, 4).join(" / "))}</em>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderDocumentSourceList(rows) {
+    if (!rows.length) return `<div class="empty-state compact">No source workbooks available.</div>`;
+    return `
+      <div class="document-source-list">
+        ${rows
+          .map(
+            (row) => `
+              <div class="document-source-row">
+                <strong>${escapeHtml(row.label)}</strong>
+                <span>${row.value} records</span>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderDocumentCoverage(rows, total) {
+    const max = Math.max(total, 1);
+    return `
+      <div class="document-coverage-list">
+        ${rows
+          .map((row) => {
+            const width = Math.max(4, Math.round((row.value / max) * 100));
+            return `
+              <div>
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${row.value}</strong>
+                <i><b style="width: ${width}%"></b></i>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderDocumentPlaybook() {
+    const rows = [
+      ["Import", "Keep the source workbook and source sheet visible for every imported record."],
+      ["Award", "When a tender is awarded, attach agreement number, LOA proof, and agreement received status."],
+      ["Delivery", "For live projects, connect the file pack to agreement number, end date, and project source."],
+      ["Audit", "Use the gap queue before weekly reviews so missing proof is visible before management asks."],
+    ];
+    return `
+      <div class="document-playbook">
+        ${rows
+          .map(
+            ([label, note]) => `
+              <div>
+                <strong>${escapeHtml(label)}</strong>
+                <span>${escapeHtml(note)}</span>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function makeReminder(record, lane, label, note, tone, priority) {
+    return {
+      id: `${record.id}-${normalize(lane).replaceAll(" ", "-")}-${priority}`,
+      record,
+      lane,
+      label,
+      note,
+      tone,
+      priority,
+      days: recordDueDays(record),
+    };
+  }
+
+  function reminderBreakdown(tasks, getter, limit = 6) {
+    const rows = new Map();
+    tasks.forEach((task) => {
+      const label = String(getter(task) || "Unassigned").trim() || "Unassigned";
+      rows.set(label, (rows.get(label) || 0) + 1);
+    });
+    return Array.from(rows, ([label, value]) => ({ label, value }))
+      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
+      .slice(0, limit);
+  }
+
+  function buildReminderModel() {
+    const records = companyRecords();
+    const floor = highValueThreshold(records);
+    const tasks = [];
+    records
+      .filter((record) => !isClosedRecord(record))
+      .forEach((record) => {
+        const amount = Number(record.valueAmount) || 0;
+        const days = recordDueDays(record);
+        if (days !== null && days < 0) {
+          tasks.push(
+            makeReminder(
+              record,
+              "Overdue",
+              "Refresh overdue follow-up",
+              `${Math.abs(days)} days past due. Confirm status, owner, and next date.`,
+              "red",
+              120 + Math.min(40, Math.abs(days)),
+            ),
+          );
+        } else if (days !== null && days <= 30) {
+          tasks.push(
+            makeReminder(
+              record,
+              "Next 30",
+              days === 0 ? "Due today" : "Prepare near-date follow-up",
+              days === 0 ? "Due today. Confirm submission, delivery, or client response." : `${days} days left. Move this before it becomes overdue.`,
+              "amber",
+              95 - days,
+            ),
+          );
+        }
+        if (days === null) {
+          tasks.push(
+            makeReminder(record, "Missing Data", "Add due or last date", "No end date is captured, so this record cannot be managed on the calendar.", "amber", 74),
+          );
+        }
+        if (!amount) {
+          tasks.push(
+            makeReminder(record, "Missing Data", "Capture expected value", "Add a value so prioritization, account heat, and management reporting improve.", "blue", 66),
+          );
+        }
+        if ((record.rounds || []).length && ["Active", "Pending", "Submitted", "Ongoing"].includes(record.status)) {
+          tasks.push(
+            makeReminder(record, "Negotiations", "Review negotiation trail", `${(record.rounds || []).length} round${(record.rounds || []).length === 1 ? "" : "s"} captured. Check the next response or commercial move.`, "green", 82),
+          );
+        }
+        if (amount >= floor && amount > 0) {
+          tasks.push(
+            makeReminder(record, "High Value", "Management review", `${formatCompactMoney(amount)} deserves a visible owner, date, and next decision.`, "blue", 88),
+          );
+        }
+      });
+    const sorted = tasks.sort(
+      (a, b) =>
+        b.priority - a.priority ||
+        (a.days ?? 9999) - (b.days ?? 9999) ||
+        a.record.client.localeCompare(b.record.client),
+    );
+    const laneNames = ["Overdue", "Next 30", "Missing Data", "Negotiations", "High Value"];
+    const lanes = laneNames.map((name) => ({
+      name,
+      tasks: sorted.filter((task) => task.lane === name).slice(0, 8),
+    }));
+    const playbook = [
+      ["Clear red", "Open overdue items first and update the last date or client response."],
+      ["Protect value", "Review high-value records before ordinary data cleanup."],
+      ["Fix hygiene", "Add missing due dates and expected values during weekly review."],
+      ["Close loop", "After negotiation updates, move the status or next date immediately."],
+    ];
+    return {
+      tasks: sorted,
+      lanes,
+      overdue: sorted.filter((task) => task.lane === "Overdue").length,
+      next30: sorted.filter((task) => task.lane === "Next 30").length,
+      missingData: sorted.filter((task) => task.lane === "Missing Data").length,
+      negotiation: sorted.filter((task) => task.lane === "Negotiations").length,
+      highValue: sorted.filter((task) => task.lane === "High Value").length,
+      ownerRows: reminderBreakdown(sorted, (task) => task.record.owner, 6),
+      clientRows: reminderBreakdown(sorted, (task) => accountLabelForRecord(task.record), 6),
+      playbook,
+    };
+  }
+
+  function renderRemindersPage() {
+    const model = buildReminderModel();
+    return `
+      <section class="reminder-desk">
+        <div class="reminder-kpis">
+          ${renderInsightKpi("Open reminders", `${model.tasks.length}`, "Generated from active tender and project records")}
+          ${renderInsightKpi("Overdue", `${model.overdue}`, "Past due records needing immediate cleanup")}
+          ${renderInsightKpi("Next 30 days", `${model.next30}`, "Near-date submission or delivery pressure")}
+          ${renderInsightKpi("Missing data", `${model.missingData}`, "Records missing dates or values")}
+        </div>
+
+        <div class="reminder-layout">
+          <section class="reminder-board">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Follow-up desk</span>
+                <h3>Generated action board</h3>
+              </div>
+              <span>${model.tasks.length} reminders</span>
+            </div>
+            <div class="reminder-lanes">
+              ${model.lanes.map(renderReminderLane).join("")}
+            </div>
+          </section>
+
+          <aside class="reminder-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Owner load</span>
+                  <h3>Reminder distribution</h3>
+                </div>
+              </div>
+              ${renderRankBars(model.ownerRows, "green")}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Client pressure</span>
+                  <h3>Accounts needing movement</h3>
+                </div>
+              </div>
+              ${renderRankBars(model.clientRows, "blue")}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Daily rhythm</span>
+                  <h3>How to work the desk</h3>
+                </div>
+              </div>
+              <div class="reminder-playbook">
+                ${model.playbook
+                  .map(
+                    ([title, note]) => `
+                      <div>
+                        <strong>${escapeHtml(title)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </aside>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderReminderLane(lane) {
+    return `
+      <article class="reminder-lane">
+        <div class="reminder-lane-head">
+          <strong>${escapeHtml(lane.name)}</strong>
+          <span>${lane.tasks.length}</span>
+        </div>
+        <div class="reminder-card-list">
+          ${
+            lane.tasks.length
+              ? lane.tasks.map(renderReminderCard).join("")
+              : `<div class="empty-state compact">No reminders in this lane.</div>`
+          }
+        </div>
+      </article>
+    `;
+  }
+
+  function renderReminderCard(task) {
+    const record = task.record;
+    const dueText =
+      task.days === null
+        ? "No date"
+        : task.days < 0
+          ? `${Math.abs(task.days)}d late`
+          : task.days === 0
+            ? "Due today"
+            : `${task.days}d left`;
+    return `
+      <button class="reminder-card tone-${escapeHtml(task.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">
+        <span>${escapeHtml(task.label)}</span>
+        <strong>${escapeHtml(record.title || "Untitled record")}</strong>
+        <em>${escapeHtml([record.client || accountLabelForRecord(record), record.type, record.status, dueText].filter(Boolean).join(" / "))}</em>
+        <p>${escapeHtml(task.note)}</p>
+      </button>
+    `;
+  }
+
+  function buildReportModel() {
+    const records = companyRecords();
+    const tenderRecords = sectionRecords("Tenders");
+    const projectRecords = sectionRecords("Projects");
+    const tenderMetrics = sectionMetrics(tenderRecords);
+    const projectMetrics = sectionMetrics(projectRecords);
+    const reminders = buildReminderModel();
+    const portfolio = buildClientPortfolioModel();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const closedGood = records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length;
+    const closedBad = records.filter((record) => ["Cancelled", "Regret"].includes(record.status)).length;
+    const closedTotal = closedGood + closedBad;
+    const topClient = portfolio.accounts[0] || null;
+    const topOpenValues = openRecords
+      .filter((record) => Number(record.valueAmount) > 0)
+      .sort((a, b) => Number(b.valueAmount) - Number(a.valueAmount))
+      .slice(0, 6);
+    const reportDate = new Date().toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+    const summary = [
+      `${records.length} records are tracked across ${tenderRecords.length} tender-side items and ${projectRecords.length} project-side items.`,
+      `${openRecords.length} records remain open, with ${reminders.overdue} overdue follow-ups and ${reminders.missingData} missing-data reminders.`,
+      `${formatCompactMoney(sumAmounts(records))} is captured in the current workspace value field across tenders and projects.`,
+      topClient
+        ? `${topClient.label} is the largest relationship cluster with ${topClient.records.length} records, ${topClient.openCount} open items, and ${formatCompactMoney(topClient.totalValue)} captured value.`
+        : "Client concentration will appear once records are imported.",
+    ];
+    return {
+      reportDate,
+      records,
+      tenderRecords,
+      projectRecords,
+      tenderMetrics,
+      projectMetrics,
+      reminders,
+      portfolio,
+      totalRecords: records.length,
+      openRecords: openRecords.length,
+      totalValue: sumAmounts(records),
+      winRate: closedTotal ? Math.round((closedGood / closedTotal) * 100) : 0,
+      topOpenValues,
+      dueBuckets: buildDueBuckets(records),
+      categoryRows: topBreakdown(records, "category", 6, "Uncategorized"),
+      clientRows: portfolio.accounts.slice(0, 6).map((account) => ({ label: account.label, value: account.records.length })),
+      topActions: reminders.tasks.slice(0, 8),
+      topClients: portfolio.accounts.slice(0, 5),
+      summary,
+      checklist: [
+        ["Pipeline", "Review active tenders, awards, and lost/cancelled records."],
+        ["Delivery", "Check ongoing projects, completed work, and due-watch pressure."],
+        ["Clients", "Confirm account concentration and relationship movement."],
+        ["Actions", "Clear overdue, high-value, and missing-data follow-ups."],
+        ["Next meeting", "Update owner, next date, and value before sharing the report."],
+      ],
+    };
+  }
+
+  function renderReportsPage() {
+    const report = buildReportModel();
+    return `
+      <section class="reports-room">
+        <section class="report-console">
+          <div>
+            <span class="panel-label">Management report</span>
+            <h2>Weekly operating pack</h2>
+            <p>Generated on ${escapeHtml(report.reportDate)} from the live PursuitDesk workspace. Use this view for weekly review, client updates, and management handoff.</p>
+          </div>
+          <div class="report-actions">
+            <button class="secondary-btn" type="button" data-action="print-report">Print report</button>
+            <button class="ghost-btn" type="button" data-view="Reminders">Open reminders</button>
+            <button class="ghost-btn" type="button" data-view="Clients">Open clients</button>
+          </div>
+        </section>
+
+        <div class="report-kpis">
+          ${renderInsightKpi("Total records", `${report.totalRecords}`, `${report.openRecords} open records`)}
+          ${renderInsightKpi("Captured value", formatCompactMoney(report.totalValue), "Tender and project value captured")}
+          ${renderInsightKpi("Follow-ups", `${report.reminders.tasks.length}`, `${report.reminders.overdue} overdue actions`)}
+          ${renderInsightKpi("Closed success", `${report.winRate}%`, "Awarded/completed share of closed records")}
+        </div>
+
+        <div class="report-grid">
+          <article class="info-panel report-brief">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Executive summary</span>
+                <h3>What management should know</h3>
+              </div>
+            </div>
+            <div class="report-summary-list">
+              ${report.summary.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+            </div>
+          </article>
+
+          <article class="info-panel report-split-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Operating split</span>
+                <h3>Tenders and projects</h3>
+              </div>
+            </div>
+            ${renderReportSplit(report)}
+          </article>
+
+          <article class="info-panel report-actions-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Action pack</span>
+                <h3>Top follow-ups</h3>
+              </div>
+              <span>${report.topActions.length} shown</span>
+            </div>
+            ${renderReportActions(report.topActions)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Client concentration</span>
+                <h3>Relationship heat</h3>
+              </div>
+            </div>
+            ${renderReportClients(report.topClients)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Value exposure</span>
+                <h3>Largest open values</h3>
+              </div>
+            </div>
+            ${renderReportValues(report.topOpenValues)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Due radar</span>
+                <h3>Calendar pressure</h3>
+              </div>
+            </div>
+            ${renderDueCards(report.dueBuckets)}
+          </article>
+
+          <article class="info-panel report-checklist">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Meeting checklist</span>
+                <h3>Before sending the pack</h3>
+              </div>
+            </div>
+            ${renderReportChecklist(report.checklist)}
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Category mix</span>
+                <h3>Work concentration</h3>
+              </div>
+            </div>
+            ${renderRankBars(report.categoryRows, "amber")}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderReportSplit(report) {
+    const rows = [
+      ["Tenders", report.tenderMetrics.total, report.tenderMetrics.open, report.tenderMetrics.closed, formatCompactMoney(report.tenderMetrics.value)],
+      ["Projects", report.projectMetrics.total, report.projectMetrics.open, report.projectMetrics.closed, formatCompactMoney(report.projectMetrics.value)],
+    ];
+    return `
+      <div class="report-split">
+        ${rows
+          .map(
+            ([label, total, open, closed, value]) => `
+              <div>
+                <strong>${escapeHtml(label)}</strong>
+                <span>${total} records</span>
+                <span>${open} open</span>
+                <span>${closed} closed</span>
+                <b>${escapeHtml(value)}</b>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderReportActions(tasks) {
+    if (!tasks.length) return `<div class="empty-state compact">No generated follow-ups available.</div>`;
+    return `
+      <div class="report-action-list">
+        ${tasks
+          .map((task) => {
+            const record = task.record;
+            const dueText =
+              task.days === null
+                ? "No date"
+                : task.days < 0
+                  ? `${Math.abs(task.days)}d late`
+                  : task.days === 0
+                    ? "Due today"
+                    : `${task.days}d left`;
+            return `
+              <button class="report-action-row tone-${escapeHtml(task.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">
+                <span>${escapeHtml(task.lane)}</span>
+                <strong>${escapeHtml(record.title || "Untitled record")}</strong>
+                <em>${escapeHtml([record.client, record.type, record.status, dueText].filter(Boolean).join(" / "))}</em>
+              </button>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderReportClients(accounts) {
+    if (!accounts.length) return `<div class="empty-state compact">No client accounts available.</div>`;
+    return `
+      <div class="report-client-list">
+        ${accounts
+          .map(
+            (account) => `
+              <button class="report-client-row" type="button" data-action="open-related-record" data-id="${escapeHtml(account.latest?.id || "")}" ${account.latest ? "" : "disabled"}>
+                <span>
+                  <strong>${escapeHtml(account.label)}</strong>
+                  <em>${account.records.length} records / ${account.openCount} open / ${escapeHtml(formatCompactMoney(account.totalValue))}</em>
+                </span>
+                <b>${account.score}</b>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderReportValues(records) {
+    if (!records.length) return `<div class="empty-state compact">No open value captured yet.</div>`;
+    return `
+      <div class="report-value-list">
+        ${records
+          .map(
+            (record) => `
+              <button class="report-value-row" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">
+                <span>
+                  <strong>${escapeHtml(record.client || record.reference || "Open record")}</strong>
+                  <em>${escapeHtml(record.title || "Untitled record")}</em>
+                </span>
+                <b>${escapeHtml(formatCompactMoney(record.valueAmount))}</b>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderReportChecklist(rows) {
+    return `
+      <div class="report-check-list">
+        ${rows
+          .map(
+            ([label, note]) => `
+              <div>
+                <strong>${escapeHtml(label)}</strong>
+                <span>${escapeHtml(note)}</span>
+              </div>
             `,
           )
           .join("")}
@@ -3717,6 +6612,26 @@
       openSearchResult(button.dataset.id);
       return;
     }
+    if (action === "load-import-sample") {
+      loadImportSample();
+      return;
+    }
+    if (action === "preview-import") {
+      previewImportText();
+      return;
+    }
+    if (action === "commit-import") {
+      commitImportRows();
+      return;
+    }
+    if (action === "clear-import") {
+      clearImportStudio();
+      return;
+    }
+    if (action === "download-import-template") {
+      downloadImportTemplate();
+      return;
+    }
     if (action === "scroll-page") {
       scrollPageEdge();
       return;
@@ -3724,6 +6639,10 @@
     if (action === "toggle-detail") {
       state.detailCollapsed = !state.detailCollapsed;
       render();
+      return;
+    }
+    if (action === "print-report") {
+      window.print();
       return;
     }
     if (action === "reset") resetDemo();
@@ -3752,6 +6671,10 @@
     if (event.target.dataset.pricing === "seats") {
       state.pricingSeats = Number(event.target.value) || 10;
       updatePricingCalculator();
+      return;
+    }
+    if (event.target.matches("[data-import-text]")) {
+      state.importText = event.target.value;
       return;
     }
     if (filter === "search") {
@@ -3784,6 +6707,10 @@
 
   document.addEventListener("change", (event) => {
     const filter = event.target.dataset.filter;
+    if (event.target.matches("[data-import-file]")) {
+      readImportFile(event.target.files?.[0]);
+      return;
+    }
     if (filter && filter !== "search") {
       state.filters[filter] = event.target.value;
       state.selectedId = null;

@@ -18,6 +18,9 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 ## What Is Included
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
+- Command Center home screen with operating health score, priority queue, module cockpit, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- Import Studio for CSV or Excel-copied rows, template download, source workbook health, field coverage, duplicate reference checks, missing-field cleanup, preview before commit, and controlled clean-row import.
+- Forecast Room for weighted pipeline value, next-90-day forecast, scenario range, conversion assumptions, date-window timing, client forecast, and at-risk forecast cleanup.
 - Inline table editing for Admin and Editor users.
 - Viewer-only role.
 - Tender, EOI, and project record types.
@@ -29,7 +32,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Quick search follows the current section, so tender pages search tender/EOI records and project pages search project records.
 - Commercial and seat-billing material contained inside the dedicated Membership Model page, priced globally at USD 5/user/month.
 - Monthly and annual prepaid billing views, with annual showing a two-month saving.
-- Admin-managed section access for each user across Tenders, Tenders Insights, Projects, Project Insights, and Membership Model.
+- Admin-managed section access for each user across Command, Import, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, Reports, and Membership Model.
 - Dedicated Membership Model page with top-level product navigation, subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
 - Platform roadmap section showing how PursuitDesk can grow into future modules for contracts, clients, documents, reminders, and reports while keeping tenders and projects as the current foundation.
 - Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.
@@ -42,9 +45,14 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Timeline mode turns the same Tender and Project records into date lanes for Past Due, This Month, Next 30, Next Quarter, Later, and No Date, making schedule pressure visible without leaving the tracker.
 - Action Queue scans the current Tender or Project view and surfaces the top next moves for overdue records, due-watch items, missing dates, missing values, high-value work, and negotiation follow-ups.
 - Counter fix keeps the command rail and mix panels based on the full current section, so clicking a status filter changes visible rows without resetting the other counter values to zero.
+- Import governance keeps new CSV rows out of the live workspace until references, core fields, duplicates, source sheet, status, and value parsing have been reviewed in the preview grid.
 - Smart Record Brief appears inside the right detail panel for selected records, showing health score, readiness, due signal, value, negotiation depth, missing data, next move, and a short management line.
 - Client Memory appears at the top of the selected-record detail panel, summarizing account history across tenders and projects with open work, same-unit count, value, latest touch, and clickable related records.
 - Clients Portfolio adds a dedicated relationship intelligence page with account cards, active/open work signals, due-watch pressure, value exposure, related latest-record links, and a roadmap strip toward Contracts, Documents, Reminders, and Reports.
+- Contracts Room adds a commercial control register for agreement numbers, LOA/agreement received flags, award handover, live delivery contracts, contract value, document coverage, and commercial gaps.
+- Documents Room adds an evidence register for tender/project document packs, source workbook and sheet coverage, agreement/LOA proof, missing document gaps, and source-record drilldowns.
+- Reminders adds a generated follow-up desk with lanes for overdue work, next-30-day pressure, missing data, negotiation reviews, and high-value management reviews, with each reminder linking back to its source record.
+- Reports Room adds a printable weekly operating pack with executive summary, tender/project split, follow-up actions, client concentration, value exposure, due radar, and meeting checklist.
 
 ## Production Notes
 

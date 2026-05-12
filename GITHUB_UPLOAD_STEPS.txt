@@ -1,4 +1,4 @@
-PursuitDesk v35 clients portfolio upload steps
+PursuitDesk v42 import studio upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v35 clients portfolio upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v35 clients portfolio
+   PursuitDesk v42 import studio
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Clients Portfolio page for account-level relationship intelligence across tenders and projects.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds an Import Studio for CSV or Excel-copied rows, template download, field coverage, source workbook health, duplicate reference checks, missing-field cleanup, preview before commit, and controlled clean-row import.
 
 Demo login:
 admin@pursuitdesk.app
