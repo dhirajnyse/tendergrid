@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=62";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=62";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=65";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=65";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -19,11 +19,13 @@
   const LANE_OPTIONS = [
     "All lanes",
     "Needs decision",
+    "Due watch",
     "Past due",
     "No due date",
     "Missing owner",
     "Missing category",
     "Missing reference",
+    "Ready rhythm",
   ];
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
@@ -709,6 +711,10 @@
     if (lane === "Needs decision") {
       return !isClosedRecord(record) && ["Active", "Pending", "Submitted"].includes(record.status);
     }
+    if (lane === "Due watch") {
+      const days = recordDueDays(record);
+      return !isClosedRecord(record) && days !== null && days <= 30;
+    }
     if (lane === "Past due") {
       return !isClosedRecord(record) && date && date < today;
     }
@@ -723,6 +729,9 @@
     }
     if (lane === "Missing reference") {
       return !isClosedRecord(record) && !record.reference;
+    }
+    if (lane === "Ready rhythm") {
+      return !isClosedRecord(record) && Boolean(record.reference && record.client && record.title && record.status && record.owner && record.category && record.endDate);
     }
     return true;
   }
@@ -4843,12 +4852,16 @@
   }
 
   function renderAdvisorFocusStrip(rows) {
+    return renderRoomFocusStrip(rows, "advisor-focus-strip", "Advisor focus strip");
+  }
+
+  function renderRoomFocusStrip(rows, extraClass = "", label = "Room focus strip") {
     return `
-      <section class="advisor-focus-strip" aria-label="Advisor focus strip">
+      <section class="room-focus-strip ${escapeHtml(extraClass)}" aria-label="${escapeHtml(label)}">
         ${rows
           .map(
             (row) => `
-              <article class="advisor-focus-card tone-${escapeHtml(row.tone)}">
+              <article class="room-focus-card tone-${escapeHtml(row.tone || "teal")}">
                 <span>${escapeHtml(row.label)}</span>
                 <strong>${escapeHtml(row.value)}</strong>
                 <small>${escapeHtml(row.note)}</small>
@@ -5081,6 +5094,8 @@
       ["Evidence", "Commercial and document gaps are assigned to the next owner."],
       ["Report", "Reports room is ready for print once action owners are accepted."],
     ];
+    const decisionSignalTotal = decisionLog.reduce((sum, item) => sum + Number(item.value || 0), 0);
+    const topOwner = ownerRows[0] || null;
     return {
       reviewDate,
       reviewScore,
@@ -5098,6 +5113,32 @@
       decisionLog,
       ownerRows,
       sourceRows,
+      focusStrip: [
+        {
+          label: "Meeting priority",
+          value: risk.critical.length ? `${risk.critical.length} critical` : `${advisor.doNow.length} do-now`,
+          note: risk.critical.length ? "Start with red risks before routine updates." : "Start with the highest priority owner actions.",
+          tone: risk.critical.length ? "red" : advisor.doNow.length ? "amber" : "green",
+        },
+        {
+          label: "Decision queue",
+          value: `${decisionSignalTotal} signals`,
+          note: "Needs yes, no, owner, date, or evidence confirmation.",
+          tone: decisionSignalTotal ? "amber" : "green",
+        },
+        {
+          label: "Owner load",
+          value: topOwner ? topOwner.label : "Team clear",
+          note: topOwner ? `${topOwner.value} review actions need support.` : "No concentrated owner pressure found.",
+          tone: topOwner && topOwner.value > 3 ? "blue" : "teal",
+        },
+        {
+          label: "Report readiness",
+          value: `${reviewScore}% ready`,
+          note: reviewScore >= 72 ? "Management pack can follow owner commitments." : "Clear red, date, and proof gaps before sending.",
+          tone: reviewScore >= 72 ? "green" : reviewScore >= 48 ? "amber" : "red",
+        },
+      ],
       briefLines,
       closeout,
       reviewValue: advisor.recommendationValue,
@@ -5133,6 +5174,8 @@
           ${renderInsightKpi("Open records", `${model.openRecords}`, "Tenders and projects still moving")}
           ${renderInsightKpi("Forecast confidence", `${model.forecast.confidence}%`, "Weighted by dates, values, and status quality")}
         </div>
+
+        ${renderRoomFocusStrip(model.focusStrip, "weekly-focus-strip", "Weekly review focus strip")}
 
         <div class="weekly-layout">
           <section class="weekly-main">
@@ -7700,6 +7743,7 @@
     const tenderMetrics = sectionMetrics(tenderRecords);
     const projectMetrics = sectionMetrics(projectRecords);
     const reminders = buildReminderModel();
+    const documents = buildDocumentsModel();
     const portfolio = buildClientPortfolioModel();
     const openRecords = records.filter((record) => !isClosedRecord(record));
     const closedGood = records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length;
@@ -7742,6 +7786,32 @@
       clientRows: portfolio.accounts.slice(0, 6).map((account) => ({ label: account.label, value: account.records.length })),
       topActions: reminders.tasks.slice(0, 8),
       topClients: portfolio.accounts.slice(0, 5),
+      focusStrip: [
+        {
+          label: "Executive summary",
+          value: `${openRecords.length} open`,
+          note: `${records.length} total records across tenders and projects.`,
+          tone: "teal",
+        },
+        {
+          label: "Overdue actions",
+          value: reminders.overdue,
+          note: `${reminders.tasks.length} follow-ups in the current action pack.`,
+          tone: reminders.overdue ? "red" : reminders.tasks.length ? "amber" : "green",
+        },
+        {
+          label: "Evidence gaps",
+          value: documents.totalGaps,
+          note: "Complete source, agreement, LOA, date, and negotiation proof.",
+          tone: documents.totalGaps ? "blue" : "green",
+        },
+        {
+          label: "Client pressure",
+          value: topClient ? topClient.label : "No pressure",
+          note: topClient ? `${topClient.openCount} open / ${formatCompactMoney(topClient.totalValue)} captured.` : "Client heat will appear as records grow.",
+          tone: topClient && topClient.openCount > 10 ? "amber" : "green",
+        },
+      ],
       summary,
       checklist: [
         ["Pipeline", "Review active tenders, awards, and lost/cancelled records."],
@@ -7776,6 +7846,8 @@
           ${renderInsightKpi("Follow-ups", `${report.reminders.tasks.length}`, `${report.reminders.overdue} overdue actions`)}
           ${renderInsightKpi("Closed success", `${report.winRate}%`, "Awarded/completed share of closed records")}
         </div>
+
+        ${renderRoomFocusStrip(report.focusStrip, "report-focus-strip", "Reports focus strip")}
 
         <div class="report-grid">
           <article class="info-panel report-brief">
@@ -8374,6 +8446,7 @@
           </div>
           <span class="status-chip">${formatBilling(company.pricePerUser)}/user monthly</span>
         </div>
+        ${renderAccessCoverageStrip(users)}
         ${renderAccessBlueprint()}
         <div class="access-layout">
           <div class="access-table-wrap">
@@ -8399,6 +8472,43 @@
         </div>
       </article>
     `;
+  }
+
+  function renderAccessCoverageStrip(users) {
+    const operationsUsers = users.filter((user) => {
+      const access = normalizeUserAccess(user);
+      return access.includes("tenders") || access.includes("projects");
+    }).length;
+    const commercialUsers = users.filter(userHasCommercialAccess).length;
+    const governanceUsers = users.filter(userHasGovernanceAccess).length;
+    const adminUsers = users.filter((user) => user.role === "Admin").length;
+    const cards = [
+      {
+        label: "Operations access",
+        value: `${operationsUsers}/${users.length}`,
+        note: "Can update tender and project tracker rooms.",
+        tone: "teal",
+      },
+      {
+        label: "Commercial access",
+        value: `${commercialUsers}/${users.length}`,
+        note: "Can open insights, forecast, contracts, reports, advisor, or command.",
+        tone: "amber",
+      },
+      {
+        label: "Governance access",
+        value: `${governanceUsers}/${users.length}`,
+        note: "Can work with audit, import, or evidence-control rooms.",
+        tone: "blue",
+      },
+      {
+        label: "Membership admins",
+        value: adminUsers,
+        note: "Only company admins can see and open Membership Model.",
+        tone: "green",
+      },
+    ];
+    return renderRoomFocusStrip(cards, "membership-access-strip", "Membership access coverage");
   }
 
   function renderAccessBlueprint() {
@@ -8667,7 +8777,13 @@
             </div>
           </section>
 
-          ${renderTrackerSignalStrip(counterRecords)}
+          ${renderTrackerPrivacyPanel(counterRecords)}
+
+          ${renderWorkScopePanel(counterRecords)}
+
+          ${renderTrackerFocusStrip(counterRecords)}
+
+          ${renderOwnerFocusPanel(counterRecords)}
 
           ${renderActionQueue(records)}
 
@@ -8710,6 +8826,176 @@
         </section>
 
         ${state.detailCollapsed ? "" : renderDetail(selected)}
+      </section>
+    `;
+  }
+
+  function recordHasCommercialFields(record) {
+    return Boolean(
+      record.valueText ||
+        Number(record.valueAmount) > 0 ||
+        record.agreementNo ||
+        record.loaReceived ||
+        record.agreementReceived ||
+        (record.rounds || []).some((round) => round.submittedPrice || round.targetPrice || round.providedPrice),
+    );
+  }
+
+  function renderTrackerPrivacyPanel(records) {
+    const insightView = isProjectSection() ? "Project Insights" : "Tenders Insights";
+    const sectionKey = sectionForView(state.view);
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const operationalUsers = users.filter((user) => normalizeUserAccess(user).includes(sectionKey)).length;
+    const commercialUsers = users.filter(userHasCommercialAccess).length;
+    const commercialRecords = records.filter(recordHasCommercialFields).length;
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const coreReady = openRecords.filter(
+      (record) => record.reference && record.client && record.title && record.status && record.owner && record.endDate,
+    ).length;
+    return `
+      <section class="tracker-privacy-panel" aria-label="${escapeHtml(state.view)} commercial privacy">
+        <div class="tracker-privacy-card tone-green">
+          <span>Operational privacy</span>
+          <strong>Commercial fields locked</strong>
+          <small>${commercialRecords} records carry value, agreement, or negotiation data outside this worklist.</small>
+        </div>
+        <div class="tracker-privacy-card tone-teal">
+          <span>Frontline readiness</span>
+          <strong>${coreReady}/${openRecords.length || 0} ready</strong>
+          <small>Reference, client, title, status, owner, category, and date stay visible here.</small>
+        </div>
+        <div class="tracker-privacy-card tone-blue">
+          <span>Access split</span>
+          <strong>${operationalUsers} ops / ${commercialUsers} commercial</strong>
+          <small>Admins decide who can open tracker rooms versus management rooms.</small>
+        </div>
+        <div class="tracker-privacy-action">
+          <span>Management handoff</span>
+          <button class="ghost-btn" type="button" data-view="${escapeHtml(insightView)}" ${canAccessView(insightView) ? "" : "disabled"}>
+            Open ${escapeHtml(insightView)}
+          </button>
+        </div>
+      </section>
+    `;
+  }
+
+  function workScopeRows(records) {
+    return [
+      {
+        key: "All lanes",
+        label: "All records",
+        value: records.length,
+        note: "Full tracker view",
+        tone: "teal",
+      },
+      {
+        key: "Due watch",
+        label: "Due watch",
+        value: records.filter((record) => recordMatchesLane(record, "Due watch")).length,
+        note: "Past due and next 30 days",
+        tone: "amber",
+      },
+      {
+        key: "No due date",
+        label: "No date",
+        value: records.filter((record) => recordMatchesLane(record, "No due date")).length,
+        note: "Needs a control date",
+        tone: "blue",
+      },
+      {
+        key: "Missing owner",
+        label: "Missing owner",
+        value: records.filter((record) => recordMatchesLane(record, "Missing owner")).length,
+        note: "Assign accountability",
+        tone: "red",
+      },
+      {
+        key: "Ready rhythm",
+        label: "Ready rhythm",
+        value: records.filter((record) => recordMatchesLane(record, "Ready rhythm")).length,
+        note: "Core fields complete",
+        tone: "green",
+      },
+    ];
+  }
+
+  function renderWorkScopePanel(records) {
+    const rows = workScopeRows(records);
+    const activeLane = state.filters.lane || "All lanes";
+    return `
+      <section class="work-scope-panel" aria-label="${escapeHtml(state.view)} work scopes">
+        <div class="work-scope-head">
+          <span>Frontline work scopes</span>
+          <strong>${escapeHtml(activeLane === "All lanes" ? "All records" : activeLane)}</strong>
+        </div>
+        <div class="work-scope-buttons">
+          ${rows
+            .map(
+              (row) => `
+                <button class="scope-chip tone-${escapeHtml(row.tone)} ${activeLane === row.key ? "active" : ""}" type="button" data-work-scope="${escapeHtml(row.key)}">
+                  <span>${escapeHtml(row.label)}</span>
+                  <strong>${row.value}</strong>
+                  <small>${escapeHtml(row.note)}</small>
+                </button>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function ownerFocusRows(records) {
+    const grouped = new Map();
+    records
+      .filter((record) => !isClosedRecord(record))
+      .forEach((record) => {
+        const owner = String(record.owner || "").trim() || "Unassigned";
+        if (!grouped.has(owner)) {
+          grouped.set(owner, { owner, total: 0, dueWatch: 0, noDate: 0, tone: owner === "Unassigned" ? "red" : "teal" });
+        }
+        const row = grouped.get(owner);
+        row.total += 1;
+        if (recordMatchesLane(record, "Due watch")) row.dueWatch += 1;
+        if (recordMatchesLane(record, "No due date")) row.noDate += 1;
+      });
+    return Array.from(grouped.values())
+      .sort((a, b) => b.total - a.total || b.dueWatch - a.dueWatch || a.owner.localeCompare(b.owner))
+      .slice(0, 5)
+      .map((row) => ({
+        ...row,
+        tone: row.owner === "Unassigned" ? "red" : row.dueWatch ? "amber" : "green",
+      }));
+  }
+
+  function renderOwnerFocusPanel(records) {
+    const rows = ownerFocusRows(records);
+    if (!rows.length) return "";
+    const activeOwner = normalize(state.filters.search);
+    return `
+      <section class="owner-focus-panel" aria-label="${escapeHtml(state.view)} owner workload">
+        <div class="owner-focus-head">
+          <div>
+            <span class="panel-label">Owner focus</span>
+            <h2>Who needs support now</h2>
+          </div>
+          <button class="mini-btn" type="button" data-owner-filter="">Clear owner</button>
+        </div>
+        <div class="owner-focus-grid">
+          ${rows
+            .map((row) => {
+              const key = row.owner === "Unassigned" ? "__missing_owner" : row.owner;
+              const active = row.owner !== "Unassigned" && activeOwner === normalize(row.owner);
+              return `
+                <button class="owner-focus-card tone-${escapeHtml(row.tone)} ${active ? "active" : ""}" type="button" data-owner-filter="${escapeHtml(key)}">
+                  <span>${escapeHtml(row.owner)}</span>
+                  <strong>${row.total} open</strong>
+                  <small>${row.dueWatch} due-watch / ${row.noDate} no-date</small>
+                </button>
+              `;
+            })
+            .join("")}
+        </div>
       </section>
     `;
   }
@@ -8786,6 +9072,77 @@
           .join("")}
       </section>
     `;
+  }
+
+  function renderTrackerFocusStrip(records) {
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const dueBuckets = buildDueBuckets(records);
+    const bucketValue = (label) => dueBuckets.find((bucket) => bucket.label === label)?.value || 0;
+    const datedOpen = openRecords
+      .map((record) => ({ record, days: recordDueDays(record) }))
+      .filter((item) => item.days !== null)
+      .sort((a, b) => a.days - b.days);
+    const nextItem = datedOpen.find((item) => item.days >= 0) || datedOpen[0] || null;
+    const missingOwner = openRecords.filter((record) => !String(record.owner || "").trim()).length;
+    const readyRhythm = openRecords.filter((record) => record.reference && record.client && record.title && record.status && record.owner && record.endDate).length;
+    const noDate = bucketValue("No date");
+    const completed = records.filter((record) => record.status === "Completed").length;
+    const cards = isProjectSection()
+      ? [
+          {
+            label: "Delivery risk",
+            value: bucketValue("Past due"),
+            note: "Past-due project dates needing owner movement.",
+            tone: "red",
+          },
+          {
+            label: "Due watch",
+            value: bucketValue("Past due") + bucketValue("Next 30 days"),
+            note: "Past due and next 30 days across live projects.",
+            tone: "amber",
+          },
+          {
+            label: "Missing date",
+            value: noDate,
+            note: "Add delivery, renewal, or next review dates.",
+            tone: "blue",
+          },
+          {
+            label: "Completion rhythm",
+            value: completed,
+            note: `${readyRhythm} open projects have core fields ready.`,
+            tone: "green",
+          },
+        ]
+      : [
+          {
+            label: "Past due",
+            value: bucketValue("Past due"),
+            note: "Update bid status, owner, or next action date.",
+            tone: "red",
+          },
+          {
+            label: "Next submission",
+            value: nextItem ? formatDate(nextItem.record.endDate) : "No date",
+            note: nextItem
+              ? `${nextItem.record.client || nextItem.record.reference || "Tender"} / ${dueLabel(nextItem.days)}`
+              : "Add dates so the active pipeline can be sequenced.",
+            tone: "amber",
+          },
+          {
+            label: "Missing owner",
+            value: missingOwner,
+            note: "Assign pursuit or commercial accountability.",
+            tone: "blue",
+          },
+          {
+            label: "Ready to move",
+            value: readyRhythm,
+            note: "Open tender records with core fields complete.",
+            tone: "green",
+          },
+        ];
+    return renderRoomFocusStrip(cards, "tracker-focus-strip", `${state.view} focus strip`);
   }
 
   function renderMixPanel(records) {
@@ -10351,7 +10708,7 @@
 
   document.addEventListener("click", (event) => {
     const button = event.target.closest(
-      "[data-action], [data-view], [data-quick-status], [data-insight-lens], [data-membership-plan], [data-billing-term], [data-density], [data-tracker-mode]",
+      "[data-action], [data-view], [data-quick-status], [data-work-scope], [data-owner-filter], [data-insight-lens], [data-membership-plan], [data-billing-term], [data-density], [data-tracker-mode]",
     );
     const row = event.target.closest(".tracker-table tbody tr");
     if (event.target.classList.contains("quick-search-backdrop")) {
@@ -10370,6 +10727,26 @@
 
     if (button.dataset.quickStatus) {
       state.filters.status = state.filters.status === button.dataset.quickStatus ? "All" : button.dataset.quickStatus;
+      state.selectedId = null;
+      render();
+      return;
+    }
+
+    if (button.dataset.workScope) {
+      state.filters.lane = button.dataset.workScope;
+      state.filters.status = "All";
+      state.selectedId = null;
+      render();
+      return;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(button.dataset, "ownerFilter")) {
+      const owner = button.dataset.ownerFilter || "";
+      state.filters.search = owner === "__missing_owner" ? "" : owner;
+      state.filters.lane = owner === "__missing_owner" ? "Missing owner" : state.filters.lane;
+      if (owner && owner !== "__missing_owner" && state.filters.lane === "Missing owner") state.filters.lane = "All lanes";
+      if (!owner) state.filters.lane = "All lanes";
+      state.filters.status = "All";
       state.selectedId = null;
       render();
       return;

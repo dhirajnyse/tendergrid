@@ -49,6 +49,10 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Admins can apply those access templates directly to users from the Membership access table, with changes written into the audit trail.
 - Admins can preview any non-admin user's workspace from Membership, seeing the exact enabled navigation and access profile with a clear Exit Preview control.
 - Membership Model is no longer grantable to editors or viewers; it appears only for company admins and is blocked by the same access guard if a non-admin tries to open it directly.
+- Tenders and Projects now include an operational privacy panel that confirms commercial fields are locked away from the frontline tracker while showing readiness, user split, and a controlled Insights handoff.
+- Tenders and Projects now include Frontline Work Scopes for all records, due watch, no date, missing owner, and ready rhythm so daily users can jump straight to the right operational list.
+- Tenders and Projects now include an Owner Focus panel showing the highest-load owners, due-watch counts, no-date counts, and one-click owner filtering.
+- Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
 - Operating cards now follow a unified soft status-color system inspired by the Reports Calendar Pressure cards: light red, amber, blue, green, and teal surfaces with strong dark text.
@@ -56,6 +60,9 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Command Center includes a Readability Audit panel to show the soft-card standard, strong-text rule, signal language, and intentional saturated exceptions.
 - Pursuit Advisor now has a Focus Strip for first move, decision queue, schedule cleanup, and review posture before the full recommendation board.
 - Advisor recommendation cards now use a calmer white-card treatment with colored left rails and soft lane headers, reducing the heavy wall of red/amber/blue cards.
+- Tenders and Projects now start with guided Focus Strips for past due/delivery risk, next submission/due watch, missing ownership/date gaps, and movement readiness.
+- Weekly Review now opens with a Focus Strip for meeting priority, decision queue, owner load, and report readiness.
+- Reports now opens with a Focus Strip for executive summary, overdue actions, evidence gaps, and client pressure before the full pack.
 - Tenders and Projects now use the same soft corporate color system across KPI cards, command rail counters, action cards, board lanes, timeline lanes, and tracker headers.
 - New operational signal strip on Tenders and Projects shows Past Due, Next 30, Missing Owner, and Ready Rhythm without exposing commercial values.
 - Top navigation now uses equal-width, equal-height section buttons for a cleaner command bar.
