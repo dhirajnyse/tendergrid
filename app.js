@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=54";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=54";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=56";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=56";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -29,10 +29,11 @@
   const BILLING_PRICE_PER_USER = 5;
   const BUSINESS_PLUS_BASE = 49;
   const ANNUAL_BILLABLE_MONTHS = 10;
-  const ACCESS_MODEL_VERSION = 53;
+  const ACCESS_MODEL_VERSION = 55;
   const BILLING_TERMS = ["Monthly", "Annual"];
   const IMPORT_COLUMNS = ["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "sourceSheet"];
-  const PRIMARY_NAV_KEYS = ["command", "advisor", "review", "tenders", "projects", "reports", "membership"];
+  const ADMIN_ONLY_SECTION_KEYS = ["membership"];
+  const PRIMARY_NAV_KEYS = ["command", "advisor", "review", "tenders", "projects", "reports"];
   const ACCESS_SECTIONS = [
     { key: "command", label: "Command", view: "Command" },
     { key: "advisor", label: "Advisor", view: "Advisor" },
@@ -57,7 +58,8 @@
   ];
   const DEFAULT_OPERATION_ACCESS_KEYS = ["tenders", "projects"];
   const COMMERCIAL_ACCESS_KEYS = ["tenderInsights", "projectInsights", "forecast", "clients", "contracts", "reports", "advisor", "command"];
-  const GOVERNANCE_ACCESS_KEYS = ["governance", "import", "documents", "membership"];
+  const GRANTABLE_ACCESS_SECTIONS = ACCESS_SECTIONS.filter((section) => !ADMIN_ONLY_SECTION_KEYS.includes(section.key));
+  const GOVERNANCE_ACCESS_KEYS = ["governance", "import", "documents"];
   const DATA_ARCHITECTURE_LAYERS = [
     {
       key: "operations",
@@ -82,8 +84,8 @@
       label: "Governance evidence",
       owner: "Admin / control",
       tone: "blue",
-      sections: ["Governance", "Import", "Documents", "Membership"],
-      fields: ["Source workbook", "Source sheet", "Audit trail", "Access rights", "Review status", "Billing seats"],
+      sections: ["Governance", "Import", "Documents"],
+      fields: ["Source workbook", "Source sheet", "Audit trail", "Access rights", "Review status", "Evidence gaps"],
       rule: "Trust fields explain where the data came from, who can see it, and what changed.",
     },
   ];
@@ -107,8 +109,8 @@
     {
       key: "control",
       label: "Control admin",
-      access: ["command", "governance", "import", "documents", "membership", "reports"],
-      sections: ["Governance", "Import", "Documents", "Membership"],
+      access: ["command", "governance", "import", "documents", "reports"],
+      sections: ["Governance", "Import", "Documents", "Reports"],
       commercial: "Access and trust control",
       note: "Best for admins who manage users, imports, audit trail, and evidence.",
     },
@@ -387,12 +389,15 @@
     const legacyMap = {
       control: ["tenders", "projects"],
       insights: ["tenderInsights", "projectInsights"],
-      membership: ["membership"],
+      membership: [],
     };
     const requested = Array.isArray(user.access)
-      ? user.access.flatMap((key) => legacyMap[key] || key).filter((key) => valid.has(key))
+      ? user.access
+          .flatMap((key) => legacyMap[key] || key)
+          .filter((key) => valid.has(key) && !ADMIN_ONLY_SECTION_KEYS.includes(key))
       : [];
-    return requested.length ? requested : defaultAccessForRole(user.role);
+    const unique = Array.from(new Set(requested));
+    return unique.length ? unique : defaultAccessForRole(user.role);
   }
 
   function persistData() {
@@ -573,6 +578,7 @@
   }
 
   function hasSectionAccess(key, user = state.user) {
+    if (ADMIN_ONLY_SECTION_KEYS.includes(key)) return user?.role === "Admin";
     return userAccess(user).includes(key);
   }
 
@@ -844,7 +850,7 @@
   }
 
   function renderModeButtons() {
-    const visibleSections = ACCESS_SECTIONS.filter((section) => hasSectionAccess(section.key));
+    const visibleSections = ACCESS_SECTIONS.filter((section) => !ADMIN_ONLY_SECTION_KEYS.includes(section.key) && hasSectionAccess(section.key));
     const primarySections = visibleSections.filter((section) => PRIMARY_NAV_KEYS.includes(section.key));
     const roomSections = visibleSections.filter((section) => !PRIMARY_NAV_KEYS.includes(section.key));
     const roomsActive = roomSections.some((section) => section.view === state.view);
@@ -1360,6 +1366,11 @@
       `;
     }
     return `
+      ${
+        canAdmin()
+          ? `<button class="ghost-btn admin-membership-btn ${state.view === "Membership" ? "active" : ""}" type="button" data-view="Membership">Membership Model</button>`
+          : ""
+      }
       <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
       <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
       <button class="secondary-btn" type="button" data-action="logout">Logout</button>
@@ -3091,6 +3102,58 @@
               ${model.moduleCards.map(renderCommandModuleCard).join("")}
             </div>
             ${renderCommandPulse(model)}
+
+            <div class="command-analytics-grid">
+              <article class="info-panel">
+                <div class="info-head">
+                  <div>
+                    <span class="metric-label">Evidence control</span>
+                    <h3>Document gaps</h3>
+                  </div>
+                </div>
+                ${renderCommandEvidenceList(model.evidenceGaps)}
+              </article>
+
+              <article class="info-panel">
+                <div class="info-head">
+                  <div>
+                    <span class="metric-label">Commercial movement</span>
+                    <h3>Contract gaps</h3>
+                  </div>
+                </div>
+                ${renderCommandContractList(model.contractGaps)}
+              </article>
+
+              <article class="info-panel">
+                <div class="info-head">
+                  <div>
+                    <span class="metric-label">Client heat</span>
+                    <h3>Relationship pressure</h3>
+                  </div>
+                </div>
+                ${renderCommandClientList(model.topClients)}
+              </article>
+
+              <article class="info-panel">
+                <div class="info-head">
+                  <div>
+                    <span class="metric-label">Value exposure</span>
+                    <h3>Largest open values</h3>
+                  </div>
+                </div>
+                ${renderCommandValueList(model.topOpenValues)}
+              </article>
+
+              <article class="info-panel command-rhythm-panel">
+                <div class="info-head">
+                  <div>
+                    <span class="metric-label">Operating rhythm</span>
+                    <h3>Daily control loop</h3>
+                  </div>
+                </div>
+                ${renderCommandRhythm()}
+              </article>
+            </div>
           </section>
 
           <aside class="command-side">
@@ -3115,58 +3178,6 @@
               ${renderCommandBrief(model.brief)}
             </article>
           </aside>
-        </div>
-
-        <div class="command-analytics-grid">
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Evidence control</span>
-                <h3>Document gaps</h3>
-              </div>
-            </div>
-            ${renderCommandEvidenceList(model.evidenceGaps)}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Commercial movement</span>
-                <h3>Contract gaps</h3>
-              </div>
-            </div>
-            ${renderCommandContractList(model.contractGaps)}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Client heat</span>
-                <h3>Relationship pressure</h3>
-              </div>
-            </div>
-            ${renderCommandClientList(model.topClients)}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Value exposure</span>
-                <h3>Largest open values</h3>
-              </div>
-            </div>
-            ${renderCommandValueList(model.topOpenValues)}
-          </article>
-
-          <article class="info-panel command-rhythm-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Operating rhythm</span>
-                <h3>Daily control loop</h3>
-              </div>
-            </div>
-            ${renderCommandRhythm()}
-          </article>
         </div>
       </section>
     `;
@@ -5729,7 +5740,7 @@
           <div>
             <span class="panel-label">Trust control</span>
             <h2>Keep every pursuit decision reviewable.</h2>
-            <p>Governance brings the hidden management layer into the product: audit trail, high-value approvals, access control visibility, and policy health for tenders, projects, imports, reports, and membership.</p>
+            <p>Governance brings the hidden management layer into the product: audit trail, high-value approvals, access control visibility, and policy health for tenders, projects, imports, reports, and evidence.</p>
             <div class="governance-actions">
               <button class="secondary-btn" type="button" data-view="Reports">Open weekly pack</button>
               <button class="ghost-btn" type="button" data-view="Reminders">Open follow-ups</button>
@@ -9537,7 +9548,7 @@
         <td>
           ${renderAccessTemplateButtons(user, locked)}
           <div class="access-checks">
-            ${ACCESS_SECTIONS.map(
+            ${GRANTABLE_ACCESS_SECTIONS.map(
               (section) => `
                 <label>
                   <input type="checkbox" data-user-id="${escapeHtml(user.id)}" data-user-access="${escapeHtml(section.key)}" ${access.has(section.key) ? "checked" : ""} ${locked ? "disabled" : ""}>
@@ -9608,7 +9619,7 @@
         <div class="field access-field">
           <span>Section access</span>
           <div class="access-checks form-access-checks">
-            ${ACCESS_SECTIONS.map(
+            ${GRANTABLE_ACCESS_SECTIONS.map(
               (section) => `
                 <label>
                   <input type="checkbox" name="access" value="${escapeHtml(section.key)}" ${DEFAULT_OPERATION_ACCESS_KEYS.includes(section.key) ? "checked" : ""}>
@@ -9952,7 +9963,7 @@
     const access = new Set(normalizeUserAccess(user));
     if (checked) access.add(key);
     else access.delete(key);
-    user.access = Array.from(access).filter((item) => ACCESS_SECTIONS.some((section) => section.key === item));
+    user.access = Array.from(access).filter((item) => GRANTABLE_ACCESS_SECTIONS.some((section) => section.key === item));
     if (!user.access.length) {
       window.alert("Please keep at least one section enabled for each user.");
       user.access = normalizeUserAccess(user);

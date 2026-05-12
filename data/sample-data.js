@@ -7,7 +7,7 @@ window.SEED_DATA = {
     "pricePerUser": 5,
     "billingCycle": "monthly"
   },
-  "accessModelVersion": 53,
+  "accessModelVersion": 55,
   "users": [
     {
       "id": "u-admin",

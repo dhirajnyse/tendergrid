@@ -35,19 +35,22 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Compact daily-use tracker grid with type/category/owner metadata moved into the title cell to reduce horizontal scrolling.
 - Search, status/category/type filters, smarter action lanes, details panel, notes, CSV export.
 - Bottom-right floating search and scroll controls with a quick search overlay for jumping directly to records.
-- Cleaner product navigation keeps Command, Advisor, Weekly Review, Tenders, Projects, Reports, and Membership visible while specialist modules sit inside a compact Rooms launcher.
+- Cleaner product navigation keeps Command, Advisor, Weekly Review, Tenders, Projects, and Reports visible while specialist modules sit inside a compact Rooms launcher.
 - Top navigation now separates daily work into Tenders, Tenders Insights, Projects, and Project Insights, with no All tab and no combined records pill.
 - Each main section is scoped to its own content so tender records, tender analytics, project records, and project analytics do not mix.
 - Quick search follows the current section, so tender pages search tender/EOI records and project pages search project records.
 - Commercial and seat-billing material contained inside the dedicated Membership Model page, priced globally at USD 5/user/month.
 - Tenders and Projects are operational trackers only: commercial values, pricing, and negotiation money stay out of frontline worklists and live inside Insights, Forecast, Contracts, Reports, Advisor, and management rooms.
 - Monthly and annual prepaid billing views, with annual showing a two-month saving.
-- Admin-managed section access for each user across Command, Advisor, Weekly Review, Intake, Import, Governance, Bid Desk, Calendar, Risk, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, Reports, and Membership Model.
-- New users now default to operational tracker access only, while admins can deliberately add Insights, Forecast, Contracts, Reports, Governance, Import, Documents, or Membership access.
-- Dedicated Membership Model page with top-level product navigation, subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
+- Admin-managed section access for each user across Command, Advisor, Weekly Review, Intake, Import, Governance, Bid Desk, Calendar, Risk, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, and Reports.
+- New users now default to operational tracker access only, while admins can deliberately add Insights, Forecast, Contracts, Reports, Governance, Import, or Documents access.
+- Dedicated admin-only Membership Model page beside the admin account control, with subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
 - Membership access blueprints show Operations User, Pursuit Manager, and Control Admin templates so buyers can understand who should see operational, commercial, and governance rooms.
 - Admins can apply those access templates directly to users from the Membership access table, with changes written into the audit trail.
 - Admins can preview any non-admin user's workspace from Membership, seeing the exact enabled navigation and access profile with a clear Exit Preview control.
+- Membership Model is no longer grantable to editors or viewers; it appears only for company admins and is blocked by the same access guard if a non-admin tries to open it directly.
+- Command cockpit dark cards now use contrast-safe foreground colors so teal, blue, and amber boards remain readable.
+- Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
 - Demo Editor now starts as an operations-only user for realistic frontline testing, while Admin keeps full workspace access.
 - Platform roadmap section showing how PursuitDesk can grow into future modules for contracts, clients, documents, reminders, and reports while keeping tenders and projects as the current foundation.
 - Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.

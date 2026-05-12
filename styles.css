@@ -367,6 +367,18 @@ textarea:disabled {
   border: 1px solid var(--line);
 }
 
+.admin-membership-btn {
+  border-color: rgba(13, 111, 97, 0.32);
+  color: var(--teal-dark);
+  background: var(--teal-soft);
+}
+
+.admin-membership-btn.active {
+  color: #ffffff;
+  background: var(--teal);
+  border-color: var(--teal);
+}
+
 .danger-btn {
   color: var(--red);
   background: var(--red-soft);
@@ -1196,6 +1208,43 @@ textarea:disabled {
   background: var(--red-soft);
 }
 
+.command-module-card.tone-teal,
+.command-module-card.tone-blue {
+  color: #ffffff;
+}
+
+.command-module-card.tone-teal span,
+.command-module-card.tone-teal strong,
+.command-module-card.tone-blue span,
+.command-module-card.tone-blue strong {
+  color: #ffffff;
+}
+
+.command-module-card.tone-teal small,
+.command-module-card.tone-blue small {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.command-module-card.tone-teal em,
+.command-module-card.tone-blue em {
+  color: var(--teal-dark);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-module-card.tone-amber span,
+.command-module-card.tone-amber strong {
+  color: #111815;
+}
+
+.command-module-card.tone-amber small {
+  color: rgba(17, 24, 21, 0.82);
+}
+
+.command-module-card.tone-amber em {
+  color: #8a4300;
+  background: rgba(255, 255, 255, 0.92);
+}
+
 .command-pulse-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1334,8 +1383,9 @@ textarea:disabled {
 
 .command-analytics-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  align-items: start;
 }
 
 .command-rhythm-panel {
@@ -9584,6 +9634,10 @@ tr.selected-row td:first-child {
 
   .rooms-menu-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .command-rhythm-panel {
+    grid-column: auto;
   }
 
   .advisor-kpis,

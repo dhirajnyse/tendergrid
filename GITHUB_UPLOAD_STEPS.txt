@@ -1,4 +1,4 @@
-PursuitDesk v54 access preview upload steps
+PursuitDesk v56 command layout upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v54 access preview upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v54 access preview
+   PursuitDesk v56 command center layout polish
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds Admin Access Preview in Membership: admins can preview any non-admin user's workspace, confirm the visible navigation and access profile, then exit back to admin control.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, keeps Membership Model admin-only beside the account control, improves dark command-card text contrast, and removes the large Command Center gap by letting analytics begin directly below the pulse cards.
 
 Demo login:
 admin@pursuitdesk.app
