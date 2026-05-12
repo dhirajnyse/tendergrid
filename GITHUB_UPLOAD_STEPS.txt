@@ -1,4 +1,4 @@
-PursuitDesk v75 decision ledger upload steps
+PursuitDesk v80 build tracker upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v75 decision ledger upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v75 decision ledger
+   PursuitDesk v80 build tracker
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Decision Ledger to Tenders Insights plus Project Insights, showing decision, owner, due signal, expected output, and direct record actions in the screen and management export.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds an admin-only Build Tracker inside Command Center, showing current phase, prototype progress, SaaS readiness, done/active/next phases, roadmap queue, and production blockers.
 
 Demo login:
 admin@pursuitdesk.app

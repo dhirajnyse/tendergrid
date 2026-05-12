@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=75";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=75";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=80";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=80";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -3210,6 +3210,344 @@
     `;
   }
 
+  function buildInsightCommitments(model, isProjectLens) {
+    const ledgerRows = buildInsightDecisionLedger(model, isProjectLens).filter((item) => item.record);
+    const rows = ledgerRows.slice(0, 4).map((item, index) => {
+      const record = item.record;
+      const days = recordDueDays(record);
+      const isLate = days !== null && days < 0;
+      const isNoDate = days === null;
+      const dueLabel = isNoDate ? "Set today" : isLate ? "Today" : days <= 7 ? `${days} days` : days <= 30 ? "Next 30 days" : formatDate(record.endDate);
+      const lane = isLate ? "Red follow-up" : isNoDate ? "Date assignment" : days <= 30 ? "Near-term move" : "Watch rhythm";
+      return {
+        no: String(index + 1).padStart(2, "0"),
+        lane,
+        commitment: isProjectLens
+          ? item.decision === "Recover delivery date"
+            ? "Publish recovery date"
+            : "Confirm delivery movement"
+          : item.decision === "Bid/no-bid call"
+            ? "Close bid/no-bid call"
+            : "Confirm bid posture",
+        owner: item.owner,
+        dueLabel,
+        proof: isProjectLens ? "Delivery update + next date" : "Bid note + next action",
+        record,
+        tone: isLate ? "red" : isNoDate ? "amber" : days <= 30 ? "blue" : item.tone,
+      };
+    });
+    if (rows.length) return rows;
+    return [
+      {
+        no: "01",
+        lane: "Clean rhythm",
+        commitment: "Circulate review pack",
+        owner: model.topOwner.label || "Management",
+        dueLabel: "Today",
+        proof: "Exported management pack",
+        record: null,
+        tone: "green",
+      },
+    ];
+  }
+
+  function renderInsightCommitmentBoard(model, isProjectLens) {
+    const rows = buildInsightCommitments(model, isProjectLens);
+    return `
+      <section class="insight-commitment-board">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Commitment board</span>
+            <h3>${escapeHtml(isProjectLens ? "Delivery follow-through" : "Tender follow-through")}</h3>
+          </div>
+          <span>${rows.length} commitments</span>
+        </div>
+        <div class="insight-commitment-grid">
+          ${rows
+            .map(
+              (item) => `
+                <article class="insight-commitment-card tone-${escapeHtml(item.tone)}">
+                  <div>
+                    <span>${escapeHtml(item.no)}</span>
+                    <em>${escapeHtml(item.lane)}</em>
+                  </div>
+                  <strong>${escapeHtml(item.commitment)}</strong>
+                  <p>${escapeHtml(item.record?.title || item.record?.reference || "Management rhythm")}</p>
+                  <dl>
+                    <div>
+                      <dt>Owner</dt>
+                      <dd>${escapeHtml(item.owner)}</dd>
+                    </div>
+                    <div>
+                      <dt>When</dt>
+                      <dd>${escapeHtml(item.dueLabel)}</dd>
+                    </div>
+                    <div>
+                      <dt>Proof</dt>
+                      <dd>${escapeHtml(item.proof)}</dd>
+                    </div>
+                  </dl>
+                  ${
+                    item.record
+                      ? `<button class="mini-btn" type="button" data-action="select" data-id="${escapeHtml(item.record.id)}">Open record</button>`
+                      : `<button class="mini-btn" type="button" data-action="export-insights">Export pack</button>`
+                  }
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function buildInsightEscalations(model, isProjectLens, trackerView) {
+    const overdue = insightDueValue(model, "Past due");
+    const noDate = insightDueValue(model, "No date");
+    const next30 = insightDueValue(model, "Next 30 days");
+    const firstRed = model.decisionRows.find((row) => row.tone === "red") || model.decisionRows[0];
+    const topValue = model.highValueOpen[0];
+    const ownerLoad = model.topOwner.value || 0;
+    return [
+      {
+        label: "Executive push",
+        value: overdue ? `${overdue} late` : `${next30} due-watch`,
+        note: overdue
+          ? `${isProjectLens ? "Delivery" : "Bid"} records are past due and need management pressure.`
+          : "No late items at the top of this lens; keep near-date items moving.",
+        tone: overdue ? "red" : next30 ? "amber" : "green",
+        record: firstRed?.record || null,
+        actionLabel: firstRed?.record ? "Open item" : `Open ${trackerView}`,
+        view: trackerView,
+      },
+      {
+        label: "Owner capacity",
+        value: model.topOwner.label,
+        note: `${ownerLoad} open records sit with this owner; check if support or redistribution is needed.`,
+        tone: ownerLoad >= 20 ? "red" : ownerLoad >= 8 ? "amber" : "green",
+        record: null,
+        actionLabel: `Open ${trackerView}`,
+        view: trackerView,
+      },
+      {
+        label: "Value protection",
+        value: formatCompactMoney(model.openValue),
+        note: topValue
+          ? `${topValue.client || "Top account"} carries the largest open exposure in this lens.`
+          : "No open value is captured yet; keep commercial visibility in the management rooms.",
+        tone: model.openValue ? "blue" : "amber",
+        record: topValue || null,
+        actionLabel: topValue ? "Open value" : "Export pack",
+        action: topValue ? "" : "export-insights",
+      },
+      {
+        label: "Control gap",
+        value: noDate ? `${noDate} no-date` : "Dates clean",
+        note: noDate
+          ? "No-date records are invisible to time-based review until a control date is assigned."
+          : "Date control is clean enough for the current review rhythm.",
+        tone: noDate ? "amber" : "green",
+        record: model.decisionRows.find((row) => row.days === null)?.record || null,
+        actionLabel: noDate ? "Fix dates" : "Export pack",
+        action: noDate ? "" : "export-insights",
+        view: trackerView,
+      },
+    ];
+  }
+
+  function renderInsightEscalationRadar(model, isProjectLens, trackerView) {
+    const rows = buildInsightEscalations(model, isProjectLens, trackerView);
+    return `
+      <section class="insight-escalation-radar">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Escalation radar</span>
+            <h3>${escapeHtml(isProjectLens ? "Where management should push" : "Where leadership should push")}</h3>
+          </div>
+          <span>${rows.length} signals</span>
+        </div>
+        <div class="insight-escalation-grid">
+          ${rows
+            .map((item) => {
+              const attrs = item.action
+                ? `data-action="${escapeHtml(item.action)}"`
+                : item.record
+                  ? `data-action="select" data-id="${escapeHtml(item.record.id)}"`
+                  : `data-view="${escapeHtml(item.view || trackerView)}"`;
+              return `
+                <article class="insight-escalation-card tone-${escapeHtml(item.tone)}">
+                  <span>${escapeHtml(item.label)}</span>
+                  <strong>${escapeHtml(item.value)}</strong>
+                  <p>${escapeHtml(item.note)}</p>
+                  <button class="mini-btn" type="button" ${attrs}>${escapeHtml(item.actionLabel)}</button>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function buildInsightMinutes(model, isProjectLens, trackerView) {
+    const dateLabel = new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+    const posture = insightPosture(model);
+    const ledger = buildInsightDecisionLedger(model, isProjectLens).slice(0, 3);
+    const commitments = buildInsightCommitments(model, isProjectLens).slice(0, 3);
+    const escalations = buildInsightEscalations(model, isProjectLens, trackerView)
+      .filter((item) => item.tone !== "green")
+      .slice(0, 3);
+    const duePressure = insightDueValue(model, "Past due") + insightDueValue(model, "Next 30 days");
+    return {
+      dateLabel,
+      title: `${isProjectLens ? "Project" : "Tender"} management review minutes`,
+      opening: `${state.data.company.name} reviewed ${model.scopedRecords} ${isProjectLens ? "project" : "tender"} records on ${dateLabel}. The room closed at ${model.healthScore}/100 with ${model.openRecords} open records and ${duePressure} due-watch items.`,
+      posture: `${posture.label}: ${posture.note}`,
+      decisions: ledger.map((item) => {
+        const recordTitle = item.record?.title || item.record?.reference || "Management rhythm";
+        return `${item.decision} - ${recordTitle} / owner ${item.owner} / due ${item.dueSignal}.`;
+      }),
+      commitments: commitments.map((item) => {
+        const recordTitle = item.record?.title || item.record?.reference || "Management rhythm";
+        return `${item.owner} to ${item.commitment.toLowerCase()} for ${recordTitle}; proof required: ${item.proof}; timing: ${item.dueLabel}.`;
+      }),
+      escalations: escalations.length
+        ? escalations.map((item) => `${item.label}: ${item.value}. ${item.note}`)
+        : ["No executive escalation is required beyond normal review rhythm."],
+      closeout: `Closeout: circulate the review pack, update tracker evidence, and reopen ${isProjectLens ? "Project Insights" : "Tenders Insights"} before the next management review.`,
+    };
+  }
+
+  function renderInsightMinutesComposer(model, isProjectLens, trackerView) {
+    const minutes = buildInsightMinutes(model, isProjectLens, trackerView);
+    return `
+      <section class="insight-minutes-composer">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Review minutes composer</span>
+            <h3>${escapeHtml(minutes.title)}</h3>
+          </div>
+          <button class="mini-btn" type="button" data-action="export-minutes">Export minutes</button>
+        </div>
+        <div class="insight-minutes-grid">
+          <article class="insight-minutes-lead">
+            <span>${escapeHtml(minutes.dateLabel)}</span>
+            <strong>${escapeHtml(minutes.opening)}</strong>
+            <p>${escapeHtml(minutes.posture)}</p>
+          </article>
+          <article>
+            <span>Decisions recorded</span>
+            ${minutes.decisions.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+          </article>
+          <article>
+            <span>Commitments issued</span>
+            ${minutes.commitments.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+          </article>
+          <article>
+            <span>Escalations and closeout</span>
+            ${minutes.escalations.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+            <p>${escapeHtml(minutes.closeout)}</p>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function buildInsightDispatchQueue(model, isProjectLens, trackerView) {
+    const commitments = buildInsightCommitments(model, isProjectLens).filter((item) => item.record).slice(0, 4);
+    const escalations = buildInsightEscalations(model, isProjectLens, trackerView)
+      .filter((item) => item.tone !== "green")
+      .slice(0, 2);
+    const rows = commitments.map((item, index) => {
+      const title = item.record?.title || item.record?.reference || "Management rhythm";
+      return {
+        no: String(index + 1).padStart(2, "0"),
+        channel: "Owner note",
+        recipient: item.owner || "Management",
+        subject: `${isProjectLens ? "Project" : "Tender"} follow-up: ${title}`,
+        instruction: `${item.commitment}. Update the tracker, confirm the next control date, and attach ${item.proof.toLowerCase()} by ${item.dueLabel}.`,
+        proof: item.proof,
+        signal: item.lane,
+        tone: item.tone,
+        record: item.record,
+      };
+    });
+    escalations.forEach((item) => {
+      const title = item.record?.title || item.label;
+      rows.push({
+        no: String(rows.length + 1).padStart(2, "0"),
+        channel: "Management push",
+        recipient: item.record?.owner || model.topOwner.label || "Management",
+        subject: `${item.label}: ${title}`,
+        instruction: `${item.note} Confirm the owner, action path, and next review evidence before the next management check-in.`,
+        proof: item.label === "Value protection" ? "Commercial note in Insights" : "Updated control signal",
+        signal: item.value,
+        tone: item.tone,
+        record: item.record,
+      });
+    });
+    if (rows.length) return rows.slice(0, 5);
+    return [
+      {
+        no: "01",
+        channel: "Review closeout",
+        recipient: model.topOwner.label || "Management",
+        subject: `${isProjectLens ? "Project" : "Tender"} review closeout`,
+        instruction: "Circulate the review pack, confirm no open escalation needs leadership intervention, and keep the next review date visible.",
+        proof: "Exported review pack",
+        signal: "Clean rhythm",
+        tone: "green",
+        record: null,
+      },
+    ];
+  }
+
+  function renderInsightDispatchCenter(model, isProjectLens, trackerView) {
+    const rows = buildInsightDispatchQueue(model, isProjectLens, trackerView);
+    const trackerLabel = isProjectLens ? "project" : "tender";
+    return `
+      <section class="insight-dispatch-center">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Review dispatch</span>
+            <h3>${escapeHtml(isProjectLens ? "Project owner follow-up queue" : "Tender owner follow-up queue")}</h3>
+          </div>
+          <button class="mini-btn" type="button" data-action="export-dispatch">Export dispatch</button>
+        </div>
+        <div class="insight-dispatch-grid">
+          <article class="insight-dispatch-brief">
+            <span>After-review handoff</span>
+            <strong>${rows.length} owner-ready notes</strong>
+            <p>Use this queue after the review meeting to tell each owner what changed, what proof is expected, and which ${escapeHtml(trackerLabel)} record needs movement.</p>
+          </article>
+          ${rows
+            .map((item) => {
+              const attrs = item.record
+                ? `data-action="select" data-id="${escapeHtml(item.record.id)}"`
+                : `data-view="${escapeHtml(trackerView)}"`;
+              return `
+                <article class="insight-dispatch-card tone-${escapeHtml(item.tone)}">
+                  <div>
+                    <span>${escapeHtml(item.no)}</span>
+                    <em>${escapeHtml(item.channel)}</em>
+                  </div>
+                  <strong>${escapeHtml(item.subject)}</strong>
+                  <p>${escapeHtml(item.instruction)}</p>
+                  <footer>
+                    <small>To ${escapeHtml(item.recipient)}</small>
+                    <small>${escapeHtml(item.signal)}</small>
+                    <small>Proof: ${escapeHtml(item.proof)}</small>
+                  </footer>
+                  <button class="mini-btn" type="button" ${attrs}>${escapeHtml(item.record ? "Open record" : `Open ${trackerView}`)}</button>
+                </article>
+              `;
+            })
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
   function renderInsights() {
     const activeLens = state.view === "Project Insights" ? "Projects" : "Tendering";
     if (state.insightLens !== activeLens) state.insightLens = activeLens;
@@ -3266,6 +3604,14 @@
         ${renderInsightRunSheet(model, isProjectLens, trackerView)}
 
         ${renderInsightDecisionLedger(model, isProjectLens)}
+
+        ${renderInsightCommitmentBoard(model, isProjectLens)}
+
+        ${renderInsightEscalationRadar(model, isProjectLens, trackerView)}
+
+        ${renderInsightMinutesComposer(model, isProjectLens, trackerView)}
+
+        ${renderInsightDispatchCenter(model, isProjectLens, trackerView)}
 
         <div class="cockpit-grid">
           <article class="info-panel decision-panel">
@@ -3610,6 +3956,7 @@
 
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
+    const buildTracker = buildProductBuildTracker();
     return `
       <section class="command-center">
         <section class="command-console">
@@ -3637,6 +3984,8 @@
           ${renderInsightKpi("Priority actions", `${model.reminders.tasks.length}`, `${model.reminders.overdue} overdue follow-ups`)}
           ${renderInsightKpi("Evidence health", `${model.evidenceScore}%`, `${model.documents.sourceCoverage}% source coverage after gap penalty`)}
         </div>
+
+        ${canAdmin() ? renderProductBuildTracker(buildTracker) : ""}
 
         <div class="command-layout">
           <section class="command-main">
@@ -3748,6 +4097,145 @@
               ${renderReadabilityAudit(model.readabilityAudit)}
             </article>
           </aside>
+        </div>
+      </section>
+    `;
+  }
+
+  function buildProductBuildTracker() {
+    return {
+      version: "v80 Build Tracker",
+      phase: "Management operating layer",
+      lane: "Static product prototype on GitHub Pages",
+      pace: "61 meaningful versions since rebrand",
+      summary: "The demo is strong enough for guided feedback. The SaaS build still needs clean schemas, backend, billing, and deployment.",
+      tracks: [
+        ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
+        ["Static prototype", 78, "Trackers, insights, management rooms, membership, and admin controls are live in demo form.", "teal"],
+        ["Data architecture", 48, "Operational, commercial, and governance layers are separated but need real schemas.", "blue"],
+        ["Production backend", 10, "Real tenant database, auth, APIs, audit persistence, and hosting are not built yet.", "red"],
+        ["Billing model", 22, "USD pricing and seat logic exist as prototype; checkout and invoices are pending.", "amber"],
+        ["Pilot readiness", 42, "Useful for demos and feedback, but not ready for live customer data yet.", "blue"],
+      ],
+      phases: [
+        ["0", "Positioning", "Done", "PursuitDesk direction is set."],
+        ["1", "Excel foundation", "Done", "Sample records are imported."],
+        ["2", "UI shell", "Done", "Brand, navigation, and soft card system are stable."],
+        ["3", "Operational trackers", "Mostly done", "Tenders and Projects are frontline workspaces."],
+        ["4", "Management insights", "Active", "Insights now run review, minutes, and dispatch."],
+        ["5", "Admin and membership", "Active", "Access control and pricing are simulated."],
+        ["6", "Clean data model", "Next", "Schema room should convert the prototype into SaaS structure."],
+        ["7", "Backend MVP", "Next", "Auth, tenant database, APIs, and audit need implementation."],
+      ],
+      nextBuilds: [
+        ["v81", "Clean Data Schema Room", "Define company, user, record, commercial, document, audit, subscription, and review-session tables."],
+        ["v82", "Backend Architecture Plan", "Choose stack, API shape, tenant isolation, auth, hosting, storage, and backup approach."],
+        ["v83", "Import Normalization Lab", "Convert messy Excel uploads into clean operational, commercial, and governance records."],
+      ],
+      blockers: [
+        "Real company account isolation",
+        "Backend database and API",
+        "Authentication and password reset",
+        "Persistent audit history",
+        "Subscription checkout and invoices",
+        "Production hosting, backup, and monitoring",
+      ],
+    };
+  }
+
+  function renderProductBuildTracker(tracker) {
+    return `
+      <section class="product-build-tracker">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Build tracker</span>
+            <h3>Where PursuitDesk stands now</h3>
+          </div>
+          <span>${escapeHtml(tracker.version)}</span>
+        </div>
+        <div class="build-tracker-hero">
+          <div>
+            <span>Current phase</span>
+            <strong>${escapeHtml(tracker.phase)}</strong>
+            <p>${escapeHtml(tracker.summary)}</p>
+          </div>
+          <div>
+            <span>Build lane</span>
+            <strong>${escapeHtml(tracker.lane)}</strong>
+            <p>${escapeHtml(tracker.pace)}</p>
+          </div>
+        </div>
+        <div class="build-track-grid">
+          ${tracker.tracks
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="build-track-card tone-${escapeHtml(tone)}">
+                  <div>
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(String(value))}%</strong>
+                  </div>
+                  <i><b style="width: ${Math.max(0, Math.min(100, Number(value)))}%"></b></i>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="build-phase-grid">
+          <article>
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Phase map</span>
+                <h3>Done, active, next</h3>
+              </div>
+            </div>
+            <div class="build-phase-list">
+              ${tracker.phases
+                .map(
+                  ([no, label, status, note]) => `
+                    <div class="build-phase-row status-${escapeHtml(status.toLowerCase().replaceAll(" ", "-"))}">
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <em>${escapeHtml(status)}</em>
+                      <small>${escapeHtml(note)}</small>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+          <article>
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Next builds</span>
+                <h3>Roadmap queue</h3>
+              </div>
+            </div>
+            <div class="build-next-list">
+              ${tracker.nextBuilds
+                .map(
+                  ([version, title, note]) => `
+                    <div>
+                      <span>${escapeHtml(version)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+          <article>
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Production blockers</span>
+                <h3>Before real SaaS pilot</h3>
+              </div>
+            </div>
+            <div class="build-blocker-list">
+              ${tracker.blockers.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
+            </div>
+          </article>
         </div>
       </section>
     `;
@@ -10994,6 +11482,10 @@
     const actionPack = buildInsightActionPack(model, isProjectLens, trackerView);
     const runSheet = buildInsightRunSheet(model, isProjectLens, trackerView);
     const decisionLedger = buildInsightDecisionLedger(model, isProjectLens);
+    const commitments = buildInsightCommitments(model, isProjectLens);
+    const escalations = buildInsightEscalations(model, isProjectLens, trackerView);
+    const minutes = buildInsightMinutes(model, isProjectLens, trackerView);
+    const dispatchQueue = buildInsightDispatchQueue(model, isProjectLens, trackerView);
     const lines = [
       `${BRAND_NAME} Management Review Pack`,
       `Company: ${state.data.company.name}`,
@@ -11021,6 +11513,29 @@
         return `- ${item.no} | ${item.decision} | ${recordTitle} | Owner: ${item.owner} | Due: ${item.dueSignal} | Output: ${item.output}`;
       }),
       "",
+      "Commitment Board",
+      ...commitments.map((item) => {
+        const recordTitle = item.record?.title || item.record?.reference || "Management rhythm";
+        return `- ${item.no} | ${item.commitment} | ${recordTitle} | Owner: ${item.owner} | When: ${item.dueLabel} | Proof: ${item.proof}`;
+      }),
+      "",
+      "Escalation Radar",
+      ...escalations.map((item) => `- ${item.label}: ${item.value} | ${item.note}`),
+      "",
+      "Review Minutes Draft",
+      `- ${minutes.opening}`,
+      `- ${minutes.posture}`,
+      ...minutes.decisions.map((line) => `- Decision: ${line}`),
+      ...minutes.commitments.map((line) => `- Commitment: ${line}`),
+      ...minutes.escalations.map((line) => `- Escalation: ${line}`),
+      `- ${minutes.closeout}`,
+      "",
+      "Review Dispatch Queue",
+      ...dispatchQueue.map(
+        (item) =>
+          `- To: ${item.recipient} | ${item.channel} | ${item.subject} | ${item.instruction} | Proof: ${item.proof}`,
+      ),
+      "",
       isProjectLens ? "Project Review Queue" : "Tender Review Queue",
       ...model.decisionRows.map(
         ({ record, score, recommendation, reasons }) =>
@@ -11040,6 +11555,73 @@
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = "pursuitdesk-board-pack.txt";
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  function exportInsightDispatch() {
+    const model = insightModel(insightRecords());
+    const isProjectLens = model.lens === "Projects";
+    const trackerView = isProjectLens ? "Projects" : "Tenders";
+    const rows = buildInsightDispatchQueue(model, isProjectLens, trackerView);
+    const lines = [
+      `${BRAND_NAME} Review Dispatch Queue`,
+      `Company: ${state.data.company.name}`,
+      `Room: ${isProjectLens ? "Project Insights" : "Tenders Insights"}`,
+      `Prepared by: ${state.user.name}`,
+      "",
+      ...rows.flatMap((item) => [
+        `${item.no}. ${item.subject}`,
+        `To: ${item.recipient}`,
+        `Channel: ${item.channel}`,
+        `Signal: ${item.signal}`,
+        `Instruction: ${item.instruction}`,
+        `Proof expected: ${item.proof}`,
+        "",
+      ]),
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${isProjectLens ? "project" : "tender"}-review-dispatch.txt`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  }
+
+  function exportInsightMinutes() {
+    const model = insightModel(insightRecords());
+    const isProjectLens = model.lens === "Projects";
+    const trackerView = isProjectLens ? "Projects" : "Tenders";
+    const minutes = buildInsightMinutes(model, isProjectLens, trackerView);
+    const lines = [
+      `${BRAND_NAME} Review Minutes`,
+      `Company: ${state.data.company.name}`,
+      `Room: ${isProjectLens ? "Project Insights" : "Tenders Insights"}`,
+      `Date: ${minutes.dateLabel}`,
+      `Chair: ${state.user.name}`,
+      "",
+      "Opening",
+      minutes.opening,
+      "",
+      "Posture",
+      minutes.posture,
+      "",
+      "Decisions",
+      ...minutes.decisions.map((line) => `- ${line}`),
+      "",
+      "Commitments",
+      ...minutes.commitments.map((line) => `- ${line}`),
+      "",
+      "Escalations",
+      ...minutes.escalations.map((line) => `- ${line}`),
+      "",
+      "Closeout",
+      minutes.closeout,
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `${isProjectLens ? "project" : "tender"}-review-minutes.txt`;
     link.click();
     URL.revokeObjectURL(link.href);
   }
@@ -11525,6 +12107,8 @@
     if (action === "add") addRecord();
     if (action === "export") exportCsv();
     if (action === "export-insights") exportInsightsPack();
+    if (action === "export-dispatch") exportInsightDispatch();
+    if (action === "export-minutes") exportInsightMinutes();
     if (action === "subscription-request") {
       const status = document.getElementById("subscriptionStatus");
       if (status) status.textContent = "Membership request prepared";

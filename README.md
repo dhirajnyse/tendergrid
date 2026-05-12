@@ -18,7 +18,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 ## What Is Included
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
-- Command Center home screen with operating health score, priority queue, module cockpit, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
 - Pursuit Advisor turns live signals from Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminders into ranked next-best actions, decision prompts, management brief lines, and operating recommendations.
 - Weekly Review Room turns the same operating signals into a 55-minute agenda, owner-ready action register, leadership decision prompts, opening brief, closeout checklist, and management-pack handoff.
 - Intake Desk for controlled tender/project request capture, required-field validation, priority scoring, rework routing, and conversion into live records.
@@ -62,6 +62,11 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v73 adds an Insight Action Pack to Tenders Insights and Project Insights with first move, owner handoff, control gate, and board output cards, plus richer management review exports.
 - v74 adds a Management Run Sheet to Tenders Insights and Project Insights, turning each room into an 18-minute review flow for posture, decision, owner handoff, date control, exposure check, and pack closeout.
 - v75 adds a Decision Ledger to Tenders Insights and Project Insights, showing decision, owner, due signal, expected output, and direct record actions, with the ledger included in management exports.
+- v76 adds a Commitment Board to Tenders Insights and Project Insights, turning ledger decisions into owner, timing, proof, and record-linked follow-through cards that also export with the management pack.
+- v77 adds an Escalation Radar to Tenders Insights and Project Insights, highlighting executive push, owner capacity, value protection, and control gaps on screen and in the management export.
+- v78 adds a Review Minutes Composer to Tenders Insights and Project Insights, drafting opening notes, decisions, commitments, escalations, and closeout lines with a dedicated minutes export.
+- v79 adds a Review Dispatch Queue to Tenders Insights and Project Insights, converting commitments and escalations into owner-ready follow-up notes with a dedicated dispatch export.
+- v80 adds an admin-only Build Tracker inside Command Center, showing current phase, prototype progress, SaaS readiness, done/active/next phases, roadmap queue, and production blockers.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
