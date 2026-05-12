@@ -1,6 +1,6 @@
 # PursuitDesk
 
-A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects in a spreadsheet-style workspace.
+A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsheet-style workspace.
 
 ## Brand
 
@@ -39,6 +39,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Each main section is scoped to its own content so tender records, tender analytics, project records, and project analytics do not mix.
 - Quick search follows the current section, so tender pages search tender/EOI records and project pages search project records.
 - Commercial and seat-billing material contained inside the dedicated Membership Model page, priced globally at USD 5/user/month.
+- Tenders and Projects are operational trackers only: commercial values, pricing, and negotiation money stay out of frontline worklists and live inside Insights, Forecast, Contracts, Reports, Advisor, and management rooms.
 - Monthly and annual prepaid billing views, with annual showing a two-month saving.
 - Admin-managed section access for each user across Command, Advisor, Weekly Review, Intake, Import, Governance, Bid Desk, Calendar, Risk, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, Reports, and Membership Model.
 - Dedicated Membership Model page with top-level product navigation, subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
@@ -51,7 +52,7 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Sticky sheet header keeps filters, actions, range hint, and column labels visible while scrolling through the expanded Tenders and Projects grids.
 - Sheet/Board mode lets users keep the spreadsheet tracker or switch to a visual operating board, with tender lanes for Active Pipeline, Due Watch, Awarded, and Closed/Regret, plus project lanes for Ongoing, Due Watch, Completed, and Stopped/Regret.
 - Timeline mode turns the same Tender and Project records into date lanes for Past Due, This Month, Next 30, Next Quarter, Later, and No Date, making schedule pressure visible without leaving the tracker.
-- Action Queue scans the current Tender or Project view and surfaces the top next moves for overdue records, due-watch items, missing dates, missing values, high-value work, and negotiation follow-ups.
+- Action Queue scans the current Tender or Project view and surfaces the top operational next moves for overdue records, due-watch items, missing dates, owner gaps, category gaps, and reference cleanup.
 - Counter fix keeps the command rail and mix panels based on the full current section, so clicking a status filter changes visible rows without resetting the other counter values to zero.
 - Bid Desk actions let editors set Bid, Watch, or No-bid, mark submission packs ready, and write those movements into the Governance audit trail.
 - Review Calendar adds a rolling eight-week view, urgency lanes, date coverage score, owner diary, client pressure, work-type mix, and quality signals for dated work.
@@ -61,8 +62,8 @@ A small static MVP for tracking EOI, tenders, negotiations, and ongoing projects
 - Intake conversion turns clean requests into live Tender, EOI, or Project records with source marked as Intake Desk and full audit logging.
 - Import governance keeps new CSV rows out of the live workspace until references, core fields, duplicates, source sheet, status, and value parsing have been reviewed in the preview grid.
 - Governance audit logging captures imports, manual row creation, key record edits, deletes, user creation, role updates, section-access changes, and high-value review approvals.
-- Smart Record Brief appears inside the right detail panel for selected records, showing health score, readiness, due signal, value, negotiation depth, missing data, next move, and a short management line.
-- Client Memory appears at the top of the selected-record detail panel, summarizing account history across tenders and projects with open work, same-unit count, value, latest touch, and clickable related records.
+- Smart Record Brief appears inside the right detail panel for selected tracker records, showing health score, readiness, due signal, owner/category coverage, missing data, next move, and a short operating line.
+- Client Memory appears at the top of the selected-record detail panel, summarizing account history across tenders and projects with open work, same-unit count, due-watch signal, latest touch, and clickable related records.
 - Clients Portfolio adds a dedicated relationship intelligence page with account cards, active/open work signals, due-watch pressure, value exposure, related latest-record links, and a roadmap strip toward Contracts, Documents, Reminders, and Reports.
 - Contracts Room adds a commercial control register for agreement numbers, LOA/agreement received flags, award handover, live delivery contracts, contract value, document coverage, and commercial gaps.
 - Documents Room adds an evidence register for tender/project document packs, source workbook and sheet coverage, agreement/LOA proof, missing document gaps, and source-record drilldowns.

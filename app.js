@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=50";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=50";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=51";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=51";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -21,9 +21,9 @@
     "Needs decision",
     "Past due",
     "No due date",
-    "High value",
-    "Has negotiations",
-    "Missing value",
+    "Missing owner",
+    "Missing category",
+    "Missing reference",
   ];
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
@@ -381,6 +381,10 @@
     return `${billingCurrency(company)} ${Number(amount || 0).toLocaleString("en-US")}`;
   }
 
+  function isOperationalTrackerSection(view = state.view) {
+    return view === "Tenders" || view === "Projects";
+  }
+
   function isTenderSection(view = state.view) {
     return view === "Tenders" || view === "Tender Insights" || view === "Tenders Insights";
   }
@@ -611,8 +615,6 @@
     const date = parseRecordDate(record.endDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const amount = Number(record.valueAmount) || 0;
-    const highValueFloor = highValueThreshold(companyRecords());
     if (lane === "Needs decision") {
       return !isClosedRecord(record) && ["Active", "Pending", "Submitted"].includes(record.status);
     }
@@ -622,14 +624,14 @@
     if (lane === "No due date") {
       return !isClosedRecord(record) && !record.endDate;
     }
-    if (lane === "High value") {
-      return amount >= highValueFloor && amount > 0;
+    if (lane === "Missing owner") {
+      return !isClosedRecord(record) && !record.owner;
     }
-    if (lane === "Has negotiations") {
-      return (record.rounds || []).length > 0;
+    if (lane === "Missing category") {
+      return !isClosedRecord(record) && !record.category;
     }
-    if (lane === "Missing value") {
-      return !amount;
+    if (lane === "Missing reference") {
+      return !isClosedRecord(record) && !record.reference;
     }
     return true;
   }
@@ -1079,13 +1081,13 @@
           ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`],
           ["Completed projects", metrics.completed, "Closed delivery records"],
           ["Due watch", metrics.dueWatch, "Past due and next 30 days"],
-          ["Captured value", formatCompactMoney(metrics.value), "Project value captured"],
+          ["Stopped records", metrics.closed, "Cancelled or regret records"],
         ]
       : [
           ["Active tenders", metrics.active, `${metrics.total} tender and EOI records`],
           ["Submitted", metrics.submitted, "Submitted tender records"],
           ["Awarded tenders", metrics.awarded, "LOA or award status"],
-          ["Captured value", formatCompactMoney(metrics.value), "Tender value captured"],
+          ["Due watch", metrics.dueWatch, "Past due and next 30 days"],
         ];
     return `
       <section class="analytics">
@@ -1186,7 +1188,7 @@
           ? "A printable management pack for weekly reviews, executive updates, tender/project status, client concentration, and action follow-through."
         : state.view === "Membership"
           ? "Manage launch pricing, seats, subscription packaging, and the upgrade path from demo workspace to paid company plan."
-        : `${records.length} records in view. Track bids, negotiations, owners, dates, and delivery status without losing the spreadsheet speed.`;
+        : `${records.length} records in view. Track references, clients, owners, dates, categories, and status without losing the spreadsheet speed.`;
     app.innerHTML = `
       <div class="shell">
         <header class="topbar">
@@ -8272,7 +8274,6 @@
                 <span>Title</span>
                 <span>Status</span>
                 <span>Due / Last</span>
-                <span>Value</span>
                 <span>Actions</span>
               </div>`
               }
@@ -8401,7 +8402,6 @@
             <th class="col-title">Title</th>
             <th class="col-status">Status</th>
             <th class="col-date">Due / Last</th>
-            <th class="col-value">Value</th>
             <th class="col-actions">Actions</th>
           </tr>
         </thead>
@@ -8427,7 +8427,6 @@
         </td>
         <td>${renderRecordSelect(record, "status", STATUS_OPTIONS, editable, true)}</td>
         <td>${renderDateCell(record.endDate)}</td>
-        <td>${renderMoneyCell(record)}</td>
         <td>
           <div class="row-actions">
             <button class="mini-btn" type="button" data-action="select" data-id="${escapeHtml(record.id)}">View</button>
@@ -8462,7 +8461,7 @@
           <div>
             <span class="panel-label">Action queue</span>
             <h2>${isProjectSection() ? "Project next moves" : "Tender next moves"}</h2>
-            <p>${openCount} open records scanned for due dates, missing values, high-value work, and negotiation movement.</p>
+            <p>${openCount} open records scanned for due dates, ownership gaps, core data, and status movement.</p>
           </div>
           <strong>${queueLabel}</strong>
         </div>
@@ -8476,9 +8475,8 @@
   }
 
   function buildActionQueue(records) {
-    const highValueFloor = highValueThreshold(companyRecords());
     return records
-      .map((record) => actionSignal(record, highValueFloor))
+      .map((record) => actionSignal(record))
       .filter(Boolean)
       .sort(
         (a, b) =>
@@ -8488,31 +8486,29 @@
       );
   }
 
-  function actionSignal(record, highValueFloor) {
+  function actionSignal(record) {
     if (isClosedRecord(record)) return null;
     const date = parseRecordDate(record.endDate);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const nextThirty = new Date(today);
     nextThirty.setDate(nextThirty.getDate() + 30);
-    const amount = Number(record.valueAmount) || 0;
-    const rounds = (record.rounds || []).length;
     const dueSort = date ? date.getTime() : Number.MAX_SAFE_INTEGER;
     if (date && date < today) {
       return {
         record,
         dueSort,
-        score: 100 + rounds,
+        score: 100,
         tone: "red",
         label: "Overdue",
-        nextMove: isProjectSection() ? "Escalate delivery date and confirm owner update." : "Confirm bid status and update the submission or negotiation date.",
+        nextMove: isProjectSection() ? "Escalate delivery date and confirm owner update." : "Confirm bid status and update the next action date.",
       };
     }
     if (date && date <= nextThirty) {
       return {
         record,
         dueSort,
-        score: 90 + rounds,
+        score: 90,
         tone: "amber",
         label: "Due watch",
         nextMove: isProjectSection() ? "Review next milestone before the date passes." : "Prepare the next tender follow-up before the due date.",
@@ -8528,34 +8524,44 @@
         nextMove: "Add a target date so the record can enter the operating rhythm.",
       };
     }
-    if (rounds) {
+    if (!record.owner) {
       return {
         record,
         dueSort,
-        score: 70 + rounds,
+        score: 72,
         tone: "teal",
-        label: `${rounds} negotiation${rounds === 1 ? "" : "s"}`,
-        nextMove: "Review last negotiation note and decide the next commercial move.",
+        label: "Missing owner",
+        nextMove: "Assign an owner so the next movement has clear accountability.",
       };
     }
-    if (amount >= highValueFloor && amount > 0) {
+    if (!record.category) {
       return {
         record,
         dueSort,
-        score: 62,
+        score: 64,
         tone: "green",
-        label: "High value",
-        nextMove: "Give this record a commercial review before the next status change.",
+        label: "Missing category",
+        nextMove: "Add a category so the record can route to the right operating view.",
       };
     }
-    if (!amount) {
+    if (!record.reference) {
       return {
         record,
         dueSort,
-        score: 54,
+        score: 58,
         tone: "blue",
-        label: "Missing value",
-        nextMove: "Capture the expected value so reports and prioritization improve.",
+        label: "Missing reference",
+        nextMove: "Add the reference number so search, audit, and handover stay clean.",
+      };
+    }
+    if (["Active", "Pending", "Submitted", "Ongoing"].includes(record.status)) {
+      return {
+        record,
+        dueSort,
+        score: 50,
+        tone: "blue",
+        label: "Status movement",
+        nextMove: isProjectSection() ? "Confirm the next delivery update." : "Refresh the next tender action and current status.",
       };
     }
     return null;
@@ -8565,7 +8571,7 @@
     const record = item.record;
     const selected = record.id === state.selectedId ? "selected-card" : "";
     const dueLabel = formatDate(record.endDate) || "No due date";
-    const valueLabel = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "No value";
+    const ownerLabel = record.owner || "No owner";
     return `
       <button class="action-card action-${item.tone} ${selected}" type="button" data-action="select" data-id="${escapeHtml(record.id)}">
         <span class="action-card-top">
@@ -8576,7 +8582,7 @@
         <em>${escapeHtml(record.reference || "No reference")} / ${escapeHtml(record.client || "No client")}</em>
         <span class="action-card-meta">
           <span>${escapeHtml(dueLabel)}</span>
-          <span>${escapeHtml(valueLabel)}</span>
+          <span>${escapeHtml(ownerLabel)}</span>
         </span>
         <small>${escapeHtml(item.nextMove)}</small>
       </button>
@@ -8664,8 +8670,7 @@
   function renderBoardCard(record) {
     const selected = record.id === state.selectedId ? "selected-card" : "";
     const dueLabel = formatDate(record.endDate) || "No due date";
-    const valueLabel = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "No value";
-    const rounds = (record.rounds || []).length;
+    const ownerLabel = record.owner || "No owner";
     return `
       <button class="board-card ${selected}" type="button" data-action="select" data-id="${escapeHtml(record.id)}">
         <span class="board-card-top">
@@ -8676,11 +8681,11 @@
         <span class="board-client">${escapeHtml(record.client || "No client")}</span>
         <span class="board-card-grid">
           <span><em>Due / last</em><strong>${escapeHtml(dueLabel)}</strong></span>
-          <span><em>Value</em><strong>${escapeHtml(valueLabel)}</strong></span>
+          <span><em>Owner</em><strong>${escapeHtml(ownerLabel)}</strong></span>
         </span>
         <span class="board-tags">
           <span>${escapeHtml([record.type, record.category].filter(Boolean).join(" / ") || "No category")}</span>
-          <span>${rounds ? `${rounds} rounds` : escapeHtml(record.owner || "No owner")}</span>
+          <span>${escapeHtml(record.department || record.status || "No department")}</span>
         </span>
       </button>
     `;
@@ -8766,7 +8771,7 @@
     const date = parseRecordDate(record.endDate);
     const day = date ? date.toLocaleDateString("en-GB", { day: "2-digit" }) : "--";
     const month = date ? date.toLocaleDateString("en-GB", { month: "short", year: "2-digit" }) : "No date";
-    const valueLabel = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "No value";
+    const ownerLabel = record.owner || "No owner";
     return `
       <button class="timeline-card ${selected}" type="button" data-action="select" data-id="${escapeHtml(record.id)}">
         <span class="timeline-date">
@@ -8780,7 +8785,7 @@
           </span>
           <strong>${escapeHtml(record.title || "Untitled record")}</strong>
           <em>${escapeHtml(record.client || "No client")}</em>
-          <small>${escapeHtml([record.type, record.category, valueLabel].filter(Boolean).join(" / "))}</small>
+          <small>${escapeHtml([record.type, record.category, ownerLabel].filter(Boolean).join(" / "))}</small>
         </span>
       </button>
     `;
@@ -8883,11 +8888,6 @@
     return `<span class="cell-plain">${escapeHtml(formatDate(value) || "-")}</span>`;
   }
 
-  function renderMoneyCell(record) {
-    const label = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : record.valueText || "-";
-    return `<span class="cell-money" title="${escapeHtml(record.valueText || "")}">${escapeHtml(label)}</span>`;
-  }
-
   function editableCell(record, field) {
     const editable = canEdit() ? "true" : "false";
     const value = record[field] ?? "";
@@ -8919,10 +8919,7 @@
   }
 
   function buildRecordBrief(record) {
-    const floor = highValueThreshold(companyRecords());
-    const scored = scoreRecord(record, floor);
-    const signal = actionSignal(record, floor);
-    const amount = Number(record.valueAmount) || 0;
+    const signal = actionSignal(record);
     const missing = [
       ["Reference", record.reference],
       ["Client", record.client],
@@ -8930,10 +8927,9 @@
       ["Owner", record.owner],
       ["Category", record.category],
       ["Due date", record.endDate],
-      ["Value", amount > 0],
     ].filter(([, value]) => !value);
-    const completed = 7 - missing.length;
-    const readiness = Math.round((completed / 7) * 100);
+    const completed = 6 - missing.length;
+    const readiness = Math.round((completed / 6) * 100);
     const dueDays = recordDueDays(record);
     const dueLabel =
       dueDays === null
@@ -8941,48 +8937,73 @@
         : dueDays < 0
           ? `${Math.abs(dueDays)} days past due`
           : dueDays === 0
-            ? "Due today"
+          ? "Due today"
             : `${dueDays} days left`;
-    const valueLabel = amount > 0 ? formatCompactMoney(amount) : "No value";
+    const reasons = [];
+    let score = 48 + completed * 7;
+    if (isClosedRecord(record)) {
+      score += 10;
+      reasons.push("Closed");
+    }
+    if (dueDays === null) {
+      score -= 12;
+      reasons.push("No due date");
+    } else if (dueDays < 0) {
+      score -= 22;
+      reasons.push("Past due");
+    } else if (dueDays <= 14) {
+      score += 4;
+      reasons.push("Near date");
+    }
+    if (["Submitted", "Awarded", "Completed"].includes(record.status)) {
+      score += 6;
+      reasons.push("Advanced status");
+    }
+    if (!record.owner) reasons.push("Owner gap");
+    if (!record.category) reasons.push("Category gap");
+    score = Math.max(1, Math.min(100, Math.round(score)));
     const healthLabel = isClosedRecord(record)
       ? "Closed record"
       : dueDays !== null && dueDays < 0
         ? "Overdue watch"
         : dueDays === null
           ? "Needs date"
-          : !amount
-            ? "Needs value"
-            : scored.score >= 72
-        ? "Healthy"
-        : scored.score >= 52
-          ? "Needs watch"
-          : "Needs cleanup";
+          : !record.owner
+            ? "Needs owner"
+            : !record.category
+              ? "Needs category"
+              : score >= 72
+                ? "Healthy"
+                : score >= 52
+                  ? "Needs watch"
+                  : "Needs cleanup";
     const displayTone = isClosedRecord(record)
       ? "green"
       : dueDays !== null && dueDays < 0
         ? "red"
-        : dueDays === null || !amount
+        : dueDays === null || !record.owner || !record.category
           ? "amber"
-          : scored.tone;
-    const nextMove = signal?.nextMove || closedRecordMove(record) || "Keep monitoring this record and refresh the next date, value, or owner when it changes.";
-    const managementLine = `${record.reference || "This record"} for ${record.client || "the client"} is ${record.status || "unassigned"} with ${valueLabel} and ${dueLabel.toLowerCase()}. Next move: ${nextMove}`;
+          : "green";
+    const nextMove = signal?.nextMove || closedRecordMove(record) || "Keep monitoring this record and refresh the next date, owner, or status when it changes.";
+    const managementLine = `${record.reference || "This record"} for ${record.client || "the client"} is ${record.status || "unassigned"} with ${dueLabel.toLowerCase()}. Next move: ${nextMove}`;
     return {
-      ...scored,
+      score,
       tone: displayTone,
+      reasons,
       healthLabel,
       nextMove,
       managementLine,
       missing,
       readiness,
       dueLabel,
-      valueLabel,
-      rounds: (record.rounds || []).length,
+      ownerLabel: record.owner || "No owner",
+      categoryLabel: record.category || "No category",
     };
   }
 
   function closedRecordMove(record) {
     if (record.status === "Awarded") return "Prepare the handover path from pursuit to contract or delivery ownership.";
-    if (record.status === "Completed") return "Archive completion notes, final value, and any lessons for future similar work.";
+    if (record.status === "Completed") return "Archive completion notes, final status, and any lessons for future similar work.";
     if (["Cancelled", "Regret"].includes(record.status)) return "Capture the loss or stop reason so future pursuit decisions improve.";
     return "";
   }
@@ -9008,8 +9029,8 @@
         <div class="brief-stat-grid">
           <div><span>Readiness</span><strong>${brief.readiness}%</strong></div>
           <div><span>Due signal</span><strong>${escapeHtml(brief.dueLabel)}</strong></div>
-          <div><span>Value</span><strong>${escapeHtml(brief.valueLabel)}</strong></div>
-          <div><span>Rounds</span><strong>${brief.rounds}</strong></div>
+          <div><span>Owner</span><strong>${escapeHtml(brief.ownerLabel)}</strong></div>
+          <div><span>Category</span><strong>${escapeHtml(brief.categoryLabel)}</strong></div>
         </div>
         <div class="brief-next">
           <span>Next move</span>
@@ -9092,14 +9113,14 @@
 
   function renderClientMemoryRow(record) {
     const meta = [record.reference, record.type, record.status].filter(Boolean).join(" / ");
-    const value = Number(record.valueAmount) > 0 ? formatCompactMoney(record.valueAmount) : "-";
+    const dateLabel = formatDate(record.endDate) || "No date";
     return `
       <button class="client-memory-row" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">
         <span>
           <strong>${escapeHtml(record.title || "Untitled record")}</strong>
           <em>${escapeHtml(meta || "No record metadata")}</em>
         </span>
-        <b>${escapeHtml(value)}</b>
+        <b>${escapeHtml(dateLabel)}</b>
       </button>
     `;
   }
@@ -9124,7 +9145,7 @@
           <div><span>Open</span><strong>${memory.openCount}</strong></div>
           <div><span>Same unit</span><strong>${memory.unitCount}</strong></div>
           <div><span>Signal</span><strong>${escapeHtml(overdueText)}</strong></div>
-          <div><span>Value</span><strong>${escapeHtml(formatCompactMoney(memory.totalValue))}</strong></div>
+          <div><span>Due watch</span><strong>${memory.overdueCount}</strong></div>
         </div>
         <div class="client-pulse">
           <span>Latest touch</span>
@@ -9170,16 +9191,16 @@
             <div class="detail-item"><span>Category</span><strong>${escapeHtml(record.category)}</strong></div>
             <div class="detail-item"><span>Start date</span><strong>${escapeHtml(formatDate(record.startDate))}</strong></div>
             <div class="detail-item"><span>End or last date</span><strong>${escapeHtml(formatDate(record.endDate))}</strong></div>
-            <div class="detail-item"><span>Agreement no</span><strong>${escapeHtml(record.agreementNo || "-")}</strong></div>
-            <div class="detail-item"><span>Source sheet</span><strong>${escapeHtml(record.sourceSheet || "-")}</strong></div>
+            <div class="detail-item"><span>Owner</span><strong>${escapeHtml(record.owner || "-")}</strong></div>
+            <div class="detail-item"><span>Source</span><strong>${escapeHtml(!record.sourceSheet || record.sourceSheet === "Manual entry" ? "Manual entry" : "Imported")}</strong></div>
           </div>
 
           <div class="rounds">
-            <h3>Negotiation rounds</h3>
+            <h3>Activity trail</h3>
             ${
               rounds.length
                 ? `<div class="round-list">${rounds.map(renderRound).join("")}</div>`
-                : `<div class="readonly-note">No negotiation rounds recorded for this item.</div>`
+                : `<div class="readonly-note">No activity trail recorded for this item.</div>`
             }
           </div>
 
@@ -9193,13 +9214,10 @@
   }
 
   function renderRound(round) {
-    const money = [round.submittedPrice, round.targetPrice, round.providedPrice]
-      .filter(Boolean)
-      .join(" | ");
+    const label = round.round ? `Update ${round.round}` : "Update";
     return `
       <div class="round-item">
-        <strong>${escapeHtml(round.label || `Round ${round.round}`)} / ${escapeHtml(formatDate(round.receivedDate))}</strong>
-        <span>${escapeHtml(money || "No price captured")}</span>
+        <strong>${escapeHtml(label)} / ${escapeHtml(formatDate(round.receivedDate))}</strong>
         <span>${escapeHtml(round.response || "No response captured")}</span>
       </div>
     `;
@@ -9520,20 +9538,33 @@
 
   function exportCsv() {
     const rows = filterRecords();
-    const columns = [
-      "type",
-      "reference",
-      "client",
-      "title",
-      "category",
-      "status",
-      "startDate",
-      "endDate",
-      "valueText",
-      "owner",
-      "latestActivity",
-      "sourceSheet",
-    ];
+    const columns = isOperationalTrackerSection()
+      ? [
+          "type",
+          "reference",
+          "client",
+          "title",
+          "category",
+          "status",
+          "startDate",
+          "endDate",
+          "owner",
+          "notes",
+        ]
+      : [
+          "type",
+          "reference",
+          "client",
+          "title",
+          "category",
+          "status",
+          "startDate",
+          "endDate",
+          "valueText",
+          "owner",
+          "latestActivity",
+          "sourceSheet",
+        ];
     const csvRows = [
       columns.join(","),
       ...rows.map((record) =>
