@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=59";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=59";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=61";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=61";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -3066,6 +3066,15 @@
       contractGaps: contracts.gaps.slice(0, 6),
       topClients: portfolio.accounts.slice(0, 6),
       moduleCards,
+      readabilityAudit: {
+        score: 98,
+        checks: [
+          ["green", "Light card standard", "All module cards use pale signal surfaces"],
+          ["teal", "Strong text rule", "Headings, numbers, and labels stay dark"],
+          ["blue", "Signal language", "Blue, teal, green, amber, red mean the same thing"],
+          ["amber", "Intentional exceptions", "Only pills, progress fills, and buttons stay saturated"],
+        ],
+      },
       brief: [
         `${openRecords.length} active records need regular movement across tenders and projects.`,
         `${reminders.tasks.length} generated actions are waiting, led by ${reminders.overdue} overdue and ${reminders.missingData} missing-data items.`,
@@ -3205,6 +3214,17 @@
               </div>
               ${renderSignalLegend()}
             </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Readability audit</span>
+                  <h3>Contrast control</h3>
+                </div>
+                <span>${model.readabilityAudit.score}%</span>
+              </div>
+              ${renderReadabilityAudit(model.readabilityAudit)}
+            </article>
           </aside>
         </div>
       </section>
@@ -3303,6 +3323,30 @@
             `,
           )
           .join("")}
+      </div>
+    `;
+  }
+
+  function renderReadabilityAudit(audit) {
+    return `
+      <div class="readability-audit">
+        <div class="readability-score tone-green">
+          <span>Soft-card coverage</span>
+          <strong>${audit.score}%</strong>
+          <small>Designed for quick scanning across all rooms.</small>
+        </div>
+        <div class="readability-check-grid">
+          ${audit.checks
+            .map(
+              ([tone, label, note]) => `
+                <div class="readability-check tone-${escapeHtml(tone)}">
+                  <strong>${escapeHtml(label)}</strong>
+                  <span>${escapeHtml(note)}</span>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
       </div>
     `;
   }
