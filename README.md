@@ -54,6 +54,8 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Operating cards now follow a unified soft status-color system inspired by the Reports Calendar Pressure cards: light red, amber, blue, green, and teal surfaces with strong dark text.
 - Command Center includes a Signal Legend so users understand critical, decision, evidence, healthy, and active card colors consistently across the product.
 - Command Center includes a Readability Audit panel to show the soft-card standard, strong-text rule, signal language, and intentional saturated exceptions.
+- Pursuit Advisor now has a Focus Strip for first move, decision queue, schedule cleanup, and review posture before the full recommendation board.
+- Advisor recommendation cards now use a calmer white-card treatment with colored left rails and soft lane headers, reducing the heavy wall of red/amber/blue cards.
 - Tenders and Projects now use the same soft corporate color system across KPI cards, command rail counters, action cards, board lanes, timeline lanes, and tracker headers.
 - New operational signal strip on Tenders and Projects shows Past Due, Next 30, Missing Owner, and Ready Rhythm without exposing commercial values.
 - Top navigation now uses equal-width, equal-height section buttons for a cleaner command bar.

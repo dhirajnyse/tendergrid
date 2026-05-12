@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=61";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=61";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=62";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=62";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -4579,9 +4579,18 @@
     }
 
     const sorted = recommendations.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+    const laneToneMap = {
+      "Do now": "red",
+      Decide: "amber",
+      Schedule: "blue",
+      Commercial: "amber",
+      Forecast: "green",
+      "Clean data": "blue",
+    };
     const laneNames = ["Do now", "Decide", "Schedule", "Commercial", "Forecast", "Clean data"];
     const lanes = laneNames.map((name) => ({
       name,
+      tone: laneToneMap[name] || "teal",
       items: sorted.filter((item) => item.lane === name).slice(0, 8),
       count: sorted.filter((item) => item.lane === name).length,
     }));
@@ -4650,6 +4659,32 @@
       recommendationValue,
       doNow: sorted.filter((item) => item.lane === "Do now"),
       decisionStack,
+      focusStrip: [
+        {
+          tone: topAction?.tone || "red",
+          label: "First move",
+          value: topAction?.title || "No urgent action",
+          note: topAction?.action || "Keep the regular weekly review rhythm.",
+        },
+        {
+          tone: "amber",
+          label: "Decision queue",
+          value: `${lanes.find((lane) => lane.name === "Decide")?.count || 0} decisions`,
+          note: "Convert Watch items into Bid, No-bid, or hold with a clear owner.",
+        },
+        {
+          tone: "blue",
+          label: "Schedule cleanup",
+          value: `${calendar.noDate.length} no-date records`,
+          note: "Add due, submission, or review dates so work appears in time views.",
+        },
+        {
+          tone: advisorScore >= 72 ? "green" : "teal",
+          label: "Review posture",
+          value: advisorScore >= 72 ? "Controlled push" : advisorScore >= 48 ? "Focused recovery" : "Management intervention",
+          note: `${sorted.length} ranked actions with ${Math.round((governance.governanceScore + documents.sourceCoverage + forecast.confidence) / 3)}% signal confidence.`,
+        },
+      ],
       brief,
       sourceRows: advisorBreakdown(sorted, (item) => item.source, 8),
       ownerRows: advisorBreakdown(sorted, (item) => item.record?.owner, 6),
@@ -4691,6 +4726,8 @@
           ${renderInsightKpi("Value touched", formatCompactMoney(model.recommendationValue), "Unique value connected to recommendations")}
           ${renderInsightKpi("Signal confidence", `${model.confidence}%`, "Governance, evidence, and forecast quality")}
         </div>
+
+        ${renderAdvisorFocusStrip(model.focusStrip)}
 
         <div class="advisor-layout">
           <section class="advisor-main">
@@ -4793,7 +4830,7 @@
 
   function renderAdvisorLane(lane) {
     return `
-      <article class="advisor-lane">
+      <article class="advisor-lane tone-${escapeHtml(lane.tone)}">
         <div class="advisor-lane-head">
           <strong>${escapeHtml(lane.name)}</strong>
           <span>${lane.count}</span>
@@ -4802,6 +4839,24 @@
           ${lane.items.length ? lane.items.map(renderAdvisorCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} recommendations.</div>`}
         </div>
       </article>
+    `;
+  }
+
+  function renderAdvisorFocusStrip(rows) {
+    return `
+      <section class="advisor-focus-strip" aria-label="Advisor focus strip">
+        ${rows
+          .map(
+            (row) => `
+              <article class="advisor-focus-card tone-${escapeHtml(row.tone)}">
+                <span>${escapeHtml(row.label)}</span>
+                <strong>${escapeHtml(row.value)}</strong>
+                <small>${escapeHtml(row.note)}</small>
+              </article>
+            `,
+          )
+          .join("")}
+      </section>
     `;
   }
 

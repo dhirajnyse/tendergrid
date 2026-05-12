@@ -7029,6 +7029,160 @@ textarea:disabled {
   line-height: 1.25;
 }
 
+.advisor-focus-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.advisor-focus-card {
+  min-height: 104px;
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  padding: 13px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  color: var(--ink);
+  background: var(--teal-soft);
+  box-shadow: 0 8px 18px rgba(17, 24, 21, 0.055);
+}
+
+.advisor-focus-card.tone-red,
+.advisor-lane.tone-red .advisor-lane-head {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.advisor-focus-card.tone-amber,
+.advisor-lane.tone-amber .advisor-lane-head {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.advisor-focus-card.tone-blue,
+.advisor-lane.tone-blue .advisor-lane-head {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.advisor-focus-card.tone-green,
+.advisor-lane.tone-green .advisor-lane-head {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.advisor-focus-card span {
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.advisor-focus-card strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.advisor-focus-card small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.advisor-lane {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.advisor-lane-head {
+  min-height: 48px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: var(--teal-soft);
+}
+
+.advisor-lane-head strong,
+.advisor-lane-head span {
+  color: var(--ink);
+}
+
+.advisor-card[class*="tone-"],
+.advisor-decision-card[class*="tone-"] {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 6px 14px rgba(17, 24, 21, 0.045);
+}
+
+.advisor-card.tone-red,
+.advisor-decision-card.tone-red {
+  border-left-color: var(--red);
+}
+
+.advisor-card.tone-amber,
+.advisor-decision-card.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.advisor-card.tone-blue,
+.advisor-decision-card.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.advisor-card.tone-green,
+.advisor-decision-card.tone-green {
+  border-left-color: var(--green);
+}
+
+.advisor-card.tone-teal,
+.advisor-decision-card.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.advisor-card[class*="tone-"] span,
+.advisor-decision-card[class*="tone-"] span {
+  color: var(--ink);
+  background: var(--panel-strong);
+}
+
+.advisor-card.tone-red span,
+.advisor-decision-card.tone-red span {
+  color: var(--red);
+  background: var(--red-soft);
+}
+
+.advisor-card.tone-amber span,
+.advisor-decision-card.tone-amber span {
+  color: #8a4300;
+  background: var(--amber-soft);
+}
+
+.advisor-card.tone-blue span,
+.advisor-decision-card.tone-blue span {
+  color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.advisor-card.tone-green span,
+.advisor-decision-card.tone-green span {
+  color: var(--green);
+  background: var(--green-soft);
+}
+
+.advisor-card.tone-teal span,
+.advisor-decision-card.tone-teal span {
+  color: var(--teal-dark);
+  background: var(--teal-soft);
+}
+
 .action-card {
   border-left: 4px solid var(--teal);
   background: var(--teal-soft);
@@ -9854,6 +10008,7 @@ tr.selected-row td:first-child {
   .calendar-lanes,
   .risk-analytics-grid,
   .risk-lanes,
+  .advisor-focus-strip,
   .advisor-analytics-grid,
   .advisor-lanes,
   .advisor-decision-grid,
@@ -10050,6 +10205,7 @@ tr.selected-row td:first-child {
   .bid-kpis,
   .calendar-kpis,
   .risk-kpis,
+  .advisor-focus-strip,
   .advisor-kpis,
   .weekly-kpis,
   .forecast-kpis,
@@ -10460,6 +10616,7 @@ tr.selected-row td:first-child {
   .risk-side,
   .risk-analytics-grid,
   .risk-lanes,
+  .advisor-focus-strip,
   .advisor-kpis,
   .advisor-side,
   .advisor-analytics-grid,
