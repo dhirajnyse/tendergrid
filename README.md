@@ -53,6 +53,10 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
 - Operating cards now follow a unified soft status-color system inspired by the Reports Calendar Pressure cards: light red, amber, blue, green, and teal surfaces with strong dark text.
 - Command Center includes a Signal Legend so users understand critical, decision, evidence, healthy, and active card colors consistently across the product.
+- Tenders and Projects now use the same soft corporate color system across KPI cards, command rail counters, action cards, board lanes, timeline lanes, and tracker headers.
+- New operational signal strip on Tenders and Projects shows Past Due, Next 30, Missing Owner, and Ready Rhythm without exposing commercial values.
+- Top navigation now uses equal-width section buttons for a cleaner command bar.
+- Rooms dropdown cards now use the same soft status palette and equal tile sizing as the rest of the workspace.
 - Demo Editor now starts as an operations-only user for realistic frontline testing, while Admin keeps full workspace access.
 - Platform roadmap section showing how PursuitDesk can grow into future modules for contracts, clients, documents, reminders, and reports while keeping tenders and projects as the current foundation.
 - Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.

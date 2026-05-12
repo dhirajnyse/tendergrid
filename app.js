@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=57";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=57";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=59";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=59";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -886,7 +886,7 @@
                             .map((section) => {
                               const active = state.view === section.view;
                               return `
-                                <button class="rooms-menu-card ${active ? "active" : ""}" type="button" data-view="${escapeHtml(section.view)}" role="menuitem">
+                                <button class="rooms-menu-card tone-${escapeHtml(roomNavTone(section.view))} ${active ? "active" : ""}" type="button" data-view="${escapeHtml(section.view)}" role="menuitem">
                                   <span>${escapeHtml(section.label)}</span>
                                   <small>${escapeHtml(roomNavNote(section.view))}</small>
                                 </button>
@@ -904,6 +904,24 @@
         }
       </div>
     `;
+  }
+
+  function roomNavTone(view) {
+    return {
+      Intake: "teal",
+      Import: "amber",
+      Governance: "green",
+      "Bid Desk": "blue",
+      Calendar: "amber",
+      Risk: "red",
+      "Tenders Insights": "teal",
+      "Project Insights": "blue",
+      Forecast: "green",
+      Clients: "green",
+      Contracts: "amber",
+      Documents: "blue",
+      Reminders: "red",
+    }[view] || "teal";
   }
 
   function roomNavNote(view) {
@@ -1169,23 +1187,23 @@
     if (isInsightSection(view) || view === "Membership" || isCommandSection(view) || isAdvisorSection(view) || isWeeklyReviewSection(view) || isIntakeSection(view) || isImportSection(view) || isGovernanceSection(view) || isBidDeskSection(view) || isCalendarSection(view) || isRiskSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isReportSection(view)) return "";
     const cards = isProjectSection(view)
       ? [
-          ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`],
-          ["Completed projects", metrics.completed, "Closed delivery records"],
-          ["Due watch", metrics.dueWatch, "Past due and next 30 days"],
-          ["Stopped records", metrics.closed, "Cancelled or regret records"],
+          ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`, "teal"],
+          ["Completed projects", metrics.completed, "Closed delivery records", "green"],
+          ["Due watch", metrics.dueWatch, "Past due and next 30 days", "amber"],
+          ["Stopped records", metrics.closed, "Cancelled or regret records", "red"],
         ]
       : [
-          ["Active tenders", metrics.active, `${metrics.total} tender and EOI records`],
-          ["Submitted", metrics.submitted, "Submitted tender records"],
-          ["Awarded tenders", metrics.awarded, "LOA or award status"],
-          ["Due watch", metrics.dueWatch, "Past due and next 30 days"],
+          ["Active tenders", metrics.active, `${metrics.total} tender and EOI records`, "teal"],
+          ["Submitted", metrics.submitted, "Submitted tender records", "blue"],
+          ["Awarded tenders", metrics.awarded, "LOA or award status", "green"],
+          ["Due watch", metrics.dueWatch, "Past due and next 30 days", "amber"],
         ];
     return `
       <section class="analytics">
         ${cards
           .map(
-            ([label, value, note]) => `
-              <div class="metric"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong><small>${escapeHtml(note)}</small></div>
+            ([label, value, note, tone]) => `
+              <div class="metric tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong><small>${escapeHtml(note)}</small></div>
             `,
           )
           .join("")}
@@ -8550,6 +8568,8 @@
             </div>
           </section>
 
+          ${renderTrackerSignalStrip(counterRecords)}
+
           ${renderActionQueue(records)}
 
           <div class="table-panel">
@@ -8602,16 +8622,16 @@
     const countStatus = (status) => counterRecords.filter((record) => record.status === status).length;
     const signalRows = isProjectSection()
       ? [
-          ["Ongoing", "Ongoing", countStatus("Ongoing")],
-          ["Completed", "Completed", countStatus("Completed")],
-          ["Cancelled", "Cancelled", countStatus("Cancelled")],
-          ["Regret", "Regret", countStatus("Regret")],
+          ["Ongoing", "Ongoing", countStatus("Ongoing"), "teal"],
+          ["Completed", "Completed", countStatus("Completed"), "green"],
+          ["Cancelled", "Cancelled", countStatus("Cancelled"), "red"],
+          ["Regret", "Regret", countStatus("Regret"), "red"],
         ]
       : [
-          ["Active", "Active", countStatus("Active")],
-          ["Pending", "Pending", countStatus("Pending")],
-          ["Submitted", "Submitted", countStatus("Submitted")],
-          ["Awarded", "Awarded", countStatus("Awarded")],
+          ["Active", "Active", countStatus("Active"), "teal"],
+          ["Pending", "Pending", countStatus("Pending"), "amber"],
+          ["Submitted", "Submitted", countStatus("Submitted"), "blue"],
+          ["Awarded", "Awarded", countStatus("Awarded"), "green"],
         ];
     return `
       <div class="panel command-panel">
@@ -8627,8 +8647,8 @@
         <div class="signal-list">
           ${signalRows
             .map(
-              ([label, status, value]) => `
-                <button class="signal-row ${state.filters.status === status ? "active" : ""}" type="button" data-quick-status="${escapeHtml(status)}">
+              ([label, status, value, tone]) => `
+                <button class="signal-row tone-${escapeHtml(tone)} ${state.filters.status === status ? "active" : ""}" type="button" data-quick-status="${escapeHtml(status)}">
                   <span>${label}</span>
                   <strong>${value}</strong>
                 </button>
@@ -8637,6 +8657,35 @@
             .join("")}
         </div>
       </div>
+    `;
+  }
+
+  function renderTrackerSignalStrip(records) {
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const dueBuckets = buildDueBuckets(records);
+    const bucketValue = (label) => dueBuckets.find((bucket) => bucket.label === label)?.value || 0;
+    const missingOwner = openRecords.filter((record) => !String(record.owner || "").trim()).length;
+    const readyRhythm = openRecords.filter((record) => record.reference && record.client && record.title && record.status && record.owner && record.endDate).length;
+    const cards = [
+      ["Past due", bucketValue("Past due"), "Needs date movement", "red"],
+      ["Next 30", bucketValue("Next 30 days"), "Near-term follow-up", "amber"],
+      ["Missing owner", missingOwner, "Assign accountability", "blue"],
+      ["Ready rhythm", readyRhythm, "Core fields complete", "green"],
+    ];
+    return `
+      <section class="tracker-signal-strip" aria-label="${escapeHtml(state.view)} operating signals">
+        ${cards
+          .map(
+            ([label, value, note, tone]) => `
+              <article class="tracker-signal-card tone-${escapeHtml(tone)}">
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(value)}</strong>
+                <small>${escapeHtml(note)}</small>
+              </article>
+            `,
+          )
+          .join("")}
+      </section>
     `;
   }
 
