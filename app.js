@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=80";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=80";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=96";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=96";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -90,6 +90,228 @@
       fields: ["Source workbook", "Source sheet", "Audit trail", "Access rights", "Review status", "Evidence gaps"],
       rule: "Trust fields explain where the data came from, who can see it, and what changed.",
     },
+  ];
+  const CLEAN_SCHEMA_TABLES = [
+    {
+      group: "Tenant and identity",
+      tone: "green",
+      tables: [
+        {
+          name: "companies",
+          purpose: "One isolated workspace per paying company.",
+          fields: ["id", "name", "country", "default_currency", "plan_id", "status"],
+        },
+        {
+          name: "users",
+          purpose: "Login identity, role, company membership, and account status.",
+          fields: ["id", "company_id", "name", "email", "role", "status"],
+        },
+        {
+          name: "user_section_access",
+          purpose: "Admin-controlled access to trackers, insights, reports, governance, and membership.",
+          fields: ["id", "user_id", "section_key", "can_view", "can_edit"],
+        },
+      ],
+    },
+    {
+      group: "Operational tracker",
+      tone: "teal",
+      tables: [
+        {
+          name: "records",
+          purpose: "Shared operational shell for tender, EOI, and project records.",
+          fields: ["id", "company_id", "type", "reference", "client_id", "title", "status", "owner_id"],
+        },
+        {
+          name: "tender_details",
+          purpose: "Tender-specific dates, submission state, bid posture, and tracker-only fields.",
+          fields: ["record_id", "submission_date", "bid_status", "category", "stage", "next_action_date"],
+        },
+        {
+          name: "project_details",
+          purpose: "Project delivery state, completion rhythm, renewal dates, and operations ownership.",
+          fields: ["record_id", "start_date", "end_date", "delivery_status", "service_type", "next_review_date"],
+        },
+      ],
+    },
+    {
+      group: "Commercial vault",
+      tone: "amber",
+      tables: [
+        {
+          name: "commercial_facts",
+          purpose: "Controlled value, currency, forecast, agreement, and LOA data hidden from frontline trackers.",
+          fields: ["record_id", "currency", "value_amount", "forecast_weight", "agreement_no", "loa_received"],
+        },
+        {
+          name: "negotiation_rounds",
+          purpose: "Structured negotiation history without exposing money in operational views.",
+          fields: ["id", "record_id", "round_no", "round_date", "amount", "outcome"],
+        },
+      ],
+    },
+    {
+      group: "Evidence and workflow",
+      tone: "blue",
+      tables: [
+        {
+          name: "documents",
+          purpose: "Evidence packs, source files, agreement proof, and missing document control.",
+          fields: ["id", "record_id", "document_type", "source_name", "storage_url", "status"],
+        },
+        {
+          name: "actions",
+          purpose: "Owner follow-ups, reminders, dispatch notes, and dated work commitments.",
+          fields: ["id", "record_id", "owner_id", "action_type", "due_date", "status"],
+        },
+        {
+          name: "review_sessions",
+          purpose: "Saved management reviews with decisions, minutes, commitments, and dispatch queue.",
+          fields: ["id", "company_id", "lens", "review_date", "chair_user_id", "status"],
+        },
+        {
+          name: "audit_logs",
+          purpose: "Immutable trail for data edits, imports, access changes, reviews, and billing actions.",
+          fields: ["id", "company_id", "actor_id", "action", "entity_type", "created_at"],
+        },
+      ],
+    },
+    {
+      group: "Billing",
+      tone: "red",
+      tables: [
+        {
+          name: "subscriptions",
+          purpose: "Plan, seat count, billing cycle, checkout status, invoice state, and renewal date.",
+          fields: ["id", "company_id", "plan_code", "seat_count", "billing_cycle", "status"],
+        },
+      ],
+    },
+  ];
+  const CLEAN_SCHEMA_RELATIONS = [
+    ["companies", "users", "One company has many users"],
+    ["companies", "records", "One company owns every tender and project record"],
+    ["records", "tender_details / project_details", "One operational shell splits by record type"],
+    ["records", "commercial_facts", "Commercial values sit in a controlled vault"],
+    ["records", "documents / actions", "Each record carries evidence and movement"],
+    ["review_sessions", "actions / audit_logs", "Reviews create follow-up and traceability"],
+    ["companies", "subscriptions", "Membership billing belongs to the company"],
+  ];
+  const CLEAN_SCHEMA_GUARDRAILS = [
+    ["Tenant isolation", "Every user, record, action, document, audit entry, and subscription carries company_id."],
+    ["Commercial privacy", "Operational Tenders and Projects query tracker tables, while Insights query commercial_facts."],
+    ["Review memory", "Decisions, minutes, commitments, and dispatches become review_sessions, not temporary screen text."],
+    ["Import traceability", "Every imported row keeps source workbook, source sheet, source row, and import batch."],
+    ["Audit first", "User changes, access changes, value edits, imports, and reviews write audit_logs."],
+    ["Billing control", "Seat count and role access must reconcile with subscriptions before production launch."],
+  ];
+  const BACKEND_STACK_LAYERS = [
+    {
+      label: "Frontend app",
+      tone: "teal",
+      choice: "Static UI now, React/Vite when backend starts",
+      note: "Keep the current GitHub Pages demo for selling, then move the live app to a routed frontend with API calls.",
+    },
+    {
+      label: "API service",
+      tone: "blue",
+      choice: "Node API with typed route contracts",
+      note: "Expose records, access, reviews, reports, imports, billing, and audit through one company-scoped API layer.",
+    },
+    {
+      label: "Database",
+      tone: "green",
+      choice: "Managed PostgreSQL with tenant keys",
+      note: "Use company_id, relational constraints, indexes, backups, and optional row-level security for every company record.",
+    },
+    {
+      label: "Files",
+      tone: "amber",
+      choice: "Object storage for evidence packs",
+      note: "Keep source Excel files, agreements, LOA proof, and report exports outside the database with signed access links.",
+    },
+    {
+      label: "Auth and access",
+      tone: "red",
+      choice: "Secure login, sessions, roles, section grants",
+      note: "Admin creates users, controls section access, and the backend enforces every tracker and commercial room request.",
+    },
+    {
+      label: "Operations",
+      tone: "blue",
+      choice: "Jobs, logs, monitoring, backup checks",
+      note: "Nightly backups, import jobs, report generation, audit retention, error logs, and uptime monitoring make it pilot-safe.",
+    },
+  ];
+  const BACKEND_API_GROUPS = [
+    ["Auth", "/auth/login, /auth/logout, /auth/reset", "Login, sessions, password reset, and account status."],
+    ["Company", "/companies/current, /companies/settings", "Tenant settings, default currency, subscription state, and workspace profile."],
+    ["Users", "/users, /users/:id/access", "Admin user creation, role changes, section grants, and preview-mode support."],
+    ["Records", "/records, /records/:id", "Tracker CRUD for tenders, EOIs, projects, dates, status, owner, and category."],
+    ["Commercial", "/commercial/records/:id", "Controlled value, forecast, agreement, LOA, and negotiation data for insight users only."],
+    ["Documents", "/documents, /documents/upload-url", "Evidence packs, source workbooks, agreement proof, and signed file upload links."],
+    ["Reviews", "/reviews, /actions, /dispatch", "Management reviews, decisions, commitments, reminders, minutes, and dispatch queue."],
+    ["Billing", "/billing/subscription, /billing/seats", "USD membership plan, seat count, invoice state, and company access status."],
+    ["Reports", "/reports/weekly, /exports/csv", "Weekly operating pack, CSV exports, and management-ready report generation."],
+  ];
+  const BACKEND_SECURITY_CONTROLS = [
+    ["Tenant scope", "Every query must include company_id from the authenticated session, never from the browser payload.", "red"],
+    ["Section access", "API checks can_view and can_edit before returning tracker, insight, commercial, report, or membership data.", "amber"],
+    ["Commercial vault", "Value, forecast, agreement, LOA, and negotiation rows are served only to commercial-authorized users.", "teal"],
+    ["Audit immutability", "Creates, edits, deletes, imports, access changes, review outputs, and billing events append audit logs.", "blue"],
+    ["Import quarantine", "Excel rows land in a staging table before clean rows are committed into production records.", "amber"],
+    ["Backup rhythm", "Daily database backups, weekly restore test, object-storage retention, and environment secret rotation.", "green"],
+  ];
+  const BACKEND_ROLLOUT_PHASES = [
+    ["01", "Foundation", "Create repository structure, environment config, database migrations, tenant tables, and auth shell."],
+    ["02", "Core records", "Move Tenders and Projects CRUD from browser state into company-scoped backend tables."],
+    ["03", "Commercial vault", "Connect Insights, Forecast, Contracts, and Reports to controlled commercial endpoints."],
+    ["04", "Governance memory", "Persist imports, documents, audit logs, review sessions, decisions, commitments, and dispatches."],
+    ["05", "Pilot launch", "Enable billing, backups, monitoring, seed migration, user onboarding, and first-company pilot checks."],
+  ];
+  const IMPORT_NORMALIZATION_LAYERS = [
+    {
+      label: "Operational tracker",
+      tone: "teal",
+      table: "records + tender_details / project_details",
+      fields: ["type", "reference", "client", "title", "status", "category", "owner", "dates"],
+      rule: "Daily users receive tracker-safe records without value, pricing, or negotiation money.",
+    },
+    {
+      label: "Commercial vault",
+      tone: "amber",
+      table: "commercial_facts + negotiation_rounds",
+      fields: ["currency", "value_amount", "agreement_no", "loa_received", "forecast_weight"],
+      rule: "Money and contract facts route to insight rooms only, protected by section access.",
+    },
+    {
+      label: "Governance evidence",
+      tone: "blue",
+      table: "documents + import_batches + audit_logs",
+      fields: ["source_workbook", "source_sheet", "source_row", "import_batch_id", "audit_action"],
+      rule: "Every imported row keeps a source trail so management can trust later reports.",
+    },
+    {
+      label: "Workflow actions",
+      tone: "green",
+      table: "actions + review_sessions",
+      fields: ["owner_id", "due_date", "action_type", "status", "review_session_id"],
+      rule: "Rows with missing owner, dates, or decisions become follow-up actions instead of silent gaps.",
+    },
+  ];
+  const IMPORT_NORMALIZATION_STEPS = [
+    ["01", "Header recognition", "Match messy Excel headings to PursuitDesk canonical fields using aliases and templates."],
+    ["02", "Type and status cleanup", "Convert tender, EOI, project, active, submitted, awarded, completed, cancelled, and regret labels into standard values."],
+    ["03", "Date and value parsing", "Parse dates and amounts while keeping currency and value out of frontline tracker screens."],
+    ["04", "Duplicate and source gate", "Quarantine duplicate references, missing source rows, missing title/client/reference, and unsafe rows."],
+    ["05", "Commit into layers", "Only clean rows create operational records, commercial facts, source trace, audit logs, and action reminders."],
+  ];
+  const IMPORT_COMMIT_GATES = [
+    ["Core identity", "reference, client, title, type, and status must be recognizable before commit.", "teal"],
+    ["Duplicate control", "existing references and duplicate rows inside the file stay quarantined.", "amber"],
+    ["Commercial routing", "value, agreement, LOA, and negotiation facts move to commercial tables, not daily tracker columns.", "green"],
+    ["Source trace", "workbook, sheet, row number, and import batch become governance evidence.", "blue"],
+    ["Audit write", "every clean commit writes who imported it, what source it came from, and which rows changed.", "red"],
   ];
   const ACCESS_BLUEPRINTS = [
     {
@@ -1843,6 +2065,58 @@
       missingCount: missingRecords.length,
       issueCount: duplicateGroups.length + missingRecords.length + manualEntries,
       preview: state.importPreview,
+      normalization: buildImportNormalizationModel(records, state.importPreview, {
+        fieldCoverage: totalSlots ? Math.round((filledSlots / totalSlots) * 100) : 100,
+        duplicateGroups,
+        missingRecords,
+        manualEntries,
+        sourceWorkbooks,
+      }),
+    };
+  }
+
+  function buildImportNormalizationModel(records, preview, base) {
+    const sourceRows = preview && !preview.errors.length ? preview.rows.map((row) => row.record) : records;
+    const issueRows = preview && !preview.errors.length ? preview.rows.filter((row) => row.issues.length) : [];
+    const cleanRows = preview && !preview.errors.length ? preview.rows.filter((row) => !row.issues.length) : [];
+    const total = Math.max(1, sourceRows.length);
+    const operationalReady = sourceRows.filter((record) => record.reference && record.client && record.title && record.status).length;
+    const commercialRows = sourceRows.filter((record) => Number(record.valueAmount) > 0 || record.valueText || record.agreementNo || record.loaReceived || record.agreementReceived).length;
+    const governanceRows = sourceRows.filter((record) => record.sourceWorkbook && record.sourceSheet).length;
+    const workflowRows = sourceRows.filter((record) => !record.owner || !record.endDate || ["Pending", "Submitted", "Active", "Ongoing"].includes(record.status)).length;
+    const duplicateRows = base.duplicateGroups.reduce((sum, group) => sum + group.count, 0);
+    const quarantineCount = preview && !preview.errors.length ? issueRows.length : base.missingRecords.length + duplicateRows + base.manualEntries;
+    const commitReady = preview && !preview.errors.length ? cleanRows.length : Math.max(0, records.length - quarantineCount);
+    return {
+      activeMode: preview && !preview.errors.length ? "Preview batch" : "Current workspace",
+      layers: IMPORT_NORMALIZATION_LAYERS.map((layer) => {
+        const rate =
+          layer.label === "Operational tracker"
+            ? Math.round((operationalReady / total) * 100)
+            : layer.label === "Commercial vault"
+              ? Math.round((commercialRows / total) * 100)
+              : layer.label === "Governance evidence"
+                ? Math.round((governanceRows / total) * 100)
+                : Math.round((workflowRows / total) * 100);
+        return { ...layer, rate };
+      }),
+      signals: [
+        ["Commit-ready", commitReady, preview ? `${cleanRows.length} clean preview rows` : "current rows passing gates", "green"],
+        ["Quarantine", quarantineCount, preview ? `${issueRows.length} preview rows need cleanup` : "workspace rows need cleanup", "red"],
+        ["Commercial routed", commercialRows, "rows with value or agreement facts", "amber"],
+        ["Source trace", governanceRows, "rows carrying workbook and sheet", "blue"],
+      ],
+      steps: IMPORT_NORMALIZATION_STEPS.map(([no, title, note]) => ({ no, title, note })),
+      gates: IMPORT_COMMIT_GATES.map(([label, note, tone]) => ({ label, note, tone })),
+      fieldMap: [
+        ["Type / status", "type, status", "records / details", "Standardize tender, EOI, project, active, awarded, completed, regret."],
+        ["Identity", "reference, client, title", "records", "Create the tracker row only when core identity is present."],
+        ["Dates", "startDate, endDate", "tender_details / project_details / actions", "Use due dates for calendar, reminders, and review rhythm."],
+        ["Money", "valueText, currency, agreementNo", "commercial_facts", "Hide values from Tenders and Projects while feeding Insights."],
+        ["Source", "sourceWorkbook, sourceSheet, sourceRow", "import_batches / audit_logs", "Keep workbook memory for audit, documents, and reports."],
+        ["Owner", "owner", "users / actions", "Assign accountability or generate a missing-owner cleanup action."],
+      ],
+      readiness: Math.round((operationalReady / total) * 35 + (governanceRows / total) * 25 + (Math.max(0, total - quarantineCount) / total) * 25 + Math.min(1, commercialRows / total) * 15),
     };
   }
 
@@ -2318,6 +2592,65 @@
     };
   }
 
+  function buildCleanSchemaModel(dataArchitecture) {
+    const tables = CLEAN_SCHEMA_TABLES.flatMap((group) => group.tables.map((table) => ({ ...table, group: group.group, tone: group.tone })));
+    const fieldCount = tables.reduce((sum, table) => sum + table.fields.length, 0);
+    const operationalTables = tables.filter((table) => ["records", "tender_details", "project_details"].includes(table.name)).length;
+    const controlledTables = tables.filter((table) => ["commercial_facts", "negotiation_rounds", "subscriptions"].includes(table.name)).length;
+    return {
+      groups: CLEAN_SCHEMA_TABLES,
+      tables,
+      fieldCount,
+      relationCount: CLEAN_SCHEMA_RELATIONS.length,
+      guardrailCount: CLEAN_SCHEMA_GUARDRAILS.length,
+      operationalTables,
+      controlledTables,
+      readiness: dataArchitecture.guardRows,
+      relations: CLEAN_SCHEMA_RELATIONS.map(([from, to, note]) => ({ from, to, note })),
+      guardrails: CLEAN_SCHEMA_GUARDRAILS.map(([label, note], index) => ({
+        no: String(index + 1).padStart(2, "0"),
+        label,
+        note,
+      })),
+      migrationSteps: [
+        ["01", "Create tenant core", "Move companies, users, roles, and section access out of local browser storage."],
+        ["02", "Split records", "Keep common tracker fields in records and move tender/project-specific fields into detail tables."],
+        ["03", "Protect commercial fields", "Move value, currency, forecast, agreement, and negotiation rounds into controlled commercial tables."],
+        ["04", "Persist governance", "Store documents, imports, audit logs, review sessions, minutes, commitments, and dispatches."],
+        ["05", "Connect billing", "Link subscriptions, seats, invoices, and active company status to access control."],
+      ],
+    };
+  }
+
+  function buildBackendArchitectureModel(cleanSchema, dataArchitecture) {
+    const endpointCount = BACKEND_API_GROUPS.reduce((sum, [, routes]) => sum + routes.split(",").length, 0);
+    const tableCount = cleanSchema.tables.length;
+    const securityCount = BACKEND_SECURITY_CONTROLS.length;
+    const rolloutCount = BACKEND_ROLLOUT_PHASES.length;
+    const readiness = Math.round((dataArchitecture.operationUsers * 8 + dataArchitecture.commercialUsers * 7 + dataArchitecture.governanceUsers * 9 + tableCount * 3 + securityCount * 4) / 10);
+    return {
+      stack: BACKEND_STACK_LAYERS,
+      apiGroups: BACKEND_API_GROUPS.map(([group, routes, note]) => ({ group, routes, note })),
+      securityControls: BACKEND_SECURITY_CONTROLS.map(([label, note, tone]) => ({ label, note, tone })),
+      rolloutPhases: BACKEND_ROLLOUT_PHASES.map(([no, title, note]) => ({ no, title, note })),
+      signals: [
+        ["Tables ready", tableCount, "from Clean Data Schema Room"],
+        ["API groups", BACKEND_API_GROUPS.length, `${endpointCount} route families`],
+        ["Security gates", securityCount, "before pilot data"],
+        ["Rollout phases", rolloutCount, "backend build sequence"],
+      ],
+      readiness: Math.max(24, Math.min(72, readiness)),
+      decision: "Build the first backend as a lean managed SaaS stack: app UI, Node API, managed PostgreSQL, object storage, auth, audit, and billing hooks. This keeps the first pilot fast while still protecting tenant and commercial data.",
+      flow: [
+        ["Browser app", "Authenticated user opens a tracker, insight, report, or membership room."],
+        ["API gateway", "Route checks session, role, section access, and requested company scope."],
+        ["Tenant policy", "Backend injects company_id and blocks cross-company or unapproved commercial reads."],
+        ["Database and files", "PostgreSQL stores records and audit; object storage keeps evidence and exports."],
+        ["Audit and reporting", "Every important movement is logged and becomes available to Governance and Reports."],
+      ],
+    };
+  }
+
   function buildGovernanceModel() {
     ensureGovernanceStores();
     const records = companyRecords();
@@ -2328,6 +2661,8 @@
       .slice(0, 60);
     const floor = highValueThreshold(records);
     const dataArchitecture = buildDataArchitectureModel(records, users);
+    const cleanSchema = buildCleanSchemaModel(dataArchitecture);
+    const backendArchitecture = buildBackendArchitectureModel(cleanSchema, dataArchitecture);
     const reviewRows = records
       .map((record) => {
         const reasons = reviewSignalsForRecord(record, floor);
@@ -2396,6 +2731,8 @@
       actorRows: topAuditActors(auditRows, users),
       actionRows: topAuditActions(auditRows),
       dataArchitecture,
+      cleanSchema,
+      backendArchitecture,
     };
   }
 
@@ -3917,6 +4254,9 @@
       reminders,
       documents,
       contracts,
+      importStudio,
+      governance,
+      bidDesk,
       portfolio,
       calendar,
       risk,
@@ -3957,6 +4297,19 @@
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
     const buildTracker = buildProductBuildTracker();
+    const pilotReadiness = buildPilotReadinessModel(model);
+    const saasConversion = buildSaasConversionSprintModel(model, pilotReadiness);
+    const securityModel = buildProductionSecurityModel(model, pilotReadiness, saasConversion);
+    const billingBlueprint = buildBillingCheckoutBlueprintModel(model, securityModel);
+    const migrationPack = buildDataMigrationPackModel(model);
+    const pilotFeedback = buildPilotFeedbackRoomModel(model, pilotReadiness, securityModel, billingBlueprint, migrationPack);
+    const backendScaffold = buildBackendRepositoryScaffoldModel(model, saasConversion, securityModel, billingBlueprint, migrationPack, pilotFeedback);
+    const securityTestPack = buildSecurityTestPackModel(model, securityModel, backendScaffold, migrationPack, billingBlueprint, pilotFeedback);
+    const billingTestPack = buildBillingTestPackModel(model, billingBlueprint, securityModel, securityTestPack);
+    const migrationTestPack = buildMigrationTestPackModel(model, migrationPack, securityTestPack, billingTestPack);
+    const feedbackPersistence = buildPilotFeedbackPersistenceModel(model, pilotFeedback, backendScaffold, securityTestPack, billingTestPack, migrationTestPack);
+    const backendTicketBoard = buildBackendMvpTicketBoardModel(model, backendScaffold, securityTestPack, billingTestPack, migrationTestPack, feedbackPersistence);
+    const hostingRunbook = buildProductionHostingRunbookModel(model, backendTicketBoard, securityTestPack, billingTestPack, migrationTestPack, feedbackPersistence);
     return `
       <section class="command-center">
         <section class="command-console">
@@ -3986,6 +4339,32 @@
         </div>
 
         ${canAdmin() ? renderProductBuildTracker(buildTracker) : ""}
+
+        ${canAdmin() ? renderPilotReadinessChecklist(pilotReadiness) : ""}
+
+        ${canAdmin() ? renderSaasConversionSprint(saasConversion) : ""}
+
+        ${canAdmin() ? renderProductionSecurityModel(securityModel) : ""}
+
+        ${canAdmin() ? renderBillingCheckoutBlueprint(billingBlueprint) : ""}
+
+        ${canAdmin() ? renderDataMigrationPack(migrationPack) : ""}
+
+        ${canAdmin() ? renderPilotFeedbackRoom(pilotFeedback) : ""}
+
+        ${canAdmin() ? renderBackendRepositoryScaffold(backendScaffold) : ""}
+
+        ${canAdmin() ? renderSecurityTestPack(securityTestPack) : ""}
+
+        ${canAdmin() ? renderBillingTestPack(billingTestPack) : ""}
+
+        ${canAdmin() ? renderMigrationTestPack(migrationTestPack) : ""}
+
+        ${canAdmin() ? renderPilotFeedbackPersistence(feedbackPersistence) : ""}
+
+        ${canAdmin() ? renderBackendMvpTicketBoard(backendTicketBoard) : ""}
+
+        ${canAdmin() ? renderProductionHostingRunbook(hostingRunbook) : ""}
 
         <div class="command-layout">
           <section class="command-main">
@@ -4102,20 +4481,2007 @@
     `;
   }
 
+  function buildPilotReadinessModel(commandModel) {
+    const company = state.data.company || {};
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const adminUsers = users.filter((user) => user.role === "Admin").length;
+    const editorUsers = users.filter((user) => user.role === "Editor").length;
+    const viewerUsers = users.filter((user) => user.role === "Viewer").length;
+    const accessConfigured = users.filter((user) => normalizeUserAccess(user).length).length;
+    const commercialUsers = users.filter(userHasCommercialAccess).length;
+    const governanceUsers = users.filter(userHasGovernanceAccess).length;
+    const fieldCoverage = commandModel.importStudio.fieldCoverage;
+    const sourceCoverage = commandModel.documents.sourceCoverage;
+    const importIssueCount = commandModel.importStudio.issueCount;
+    const openRecords = commandModel.openRecords.length;
+    const totalRecords = commandModel.records.length;
+    const launchChecks = [
+      ["Company account", Boolean(company.name), `Workspace: ${company.name || "Not set"}`, "green"],
+      ["Admin owner", adminUsers > 0, `${adminUsers} admin user${adminUsers === 1 ? "" : "s"}`, "green"],
+      ["Operations users", editorUsers + viewerUsers > 0, `${editorUsers} editor / ${viewerUsers} viewer users`, "teal"],
+      ["Access configured", accessConfigured === users.length, `${accessConfigured}/${users.length} users have section access`, "teal"],
+      ["Tracker records", totalRecords >= 50, `${totalRecords} sample records available`, "blue"],
+      ["Import cleanup", importIssueCount < 25, `${importIssueCount} import/data issues visible`, importIssueCount < 25 ? "green" : "amber"],
+      ["Source coverage", sourceCoverage >= 75, `${sourceCoverage}% source coverage`, sourceCoverage >= 75 ? "green" : "amber"],
+      ["Commercial privacy", commercialUsers >= 1 && governanceUsers >= 1, `${commercialUsers} commercial / ${governanceUsers} governance users`, "amber"],
+      ["Review rhythm", commandModel.weeklyReview.actionRegister.length > 0, `${commandModel.weeklyReview.actionRegister.length} review actions generated`, "blue"],
+      ["Backend build", false, "Real auth, database, API, and deployment still pending", "red"],
+      ["Billing checkout", false, "USD pricing exists, checkout and invoices still pending", "red"],
+      ["Pilot feedback", false, "Pilot feedback form and success metrics still need production capture", "amber"],
+    ];
+    const readyCount = launchChecks.filter(([, ready]) => ready).length;
+    const blockedCount = launchChecks.length - readyCount;
+    const areas = [
+      {
+        label: "Demo product",
+        tone: "green",
+        score: 86,
+        status: "Strong demo-ready",
+        checks: [
+          ["Command, Advisor, Review, Reports", true],
+          ["Tenders and Projects trackers", true],
+          ["Management insight rooms", true],
+          ["Soft corporate UI system", true],
+        ],
+      },
+      {
+        label: "Data and import",
+        tone: fieldCoverage >= 80 ? "green" : "amber",
+        score: Math.round(fieldCoverage * 0.55 + sourceCoverage * 0.35 + (importIssueCount < 25 ? 10 : 0)),
+        status: "Good for controlled pilot cleanup",
+        checks: [
+          [`${fieldCoverage}% field coverage`, fieldCoverage >= 80],
+          [`${sourceCoverage}% source coverage`, sourceCoverage >= 75],
+          [`${importIssueCount} cleanup issues`, importIssueCount < 25],
+          ["Import normalization lab", true],
+        ],
+      },
+      {
+        label: "Users and permissions",
+        tone: "teal",
+        score: Math.round((accessConfigured / Math.max(users.length, 1)) * 70 + (adminUsers ? 15 : 0) + (commercialUsers ? 15 : 0)),
+        status: "Access model simulated",
+        checks: [
+          [`${users.length} demo users`, users.length >= 3],
+          [`${adminUsers} admin owner`, adminUsers > 0],
+          [`${accessConfigured}/${users.length} access profiles`, accessConfigured === users.length],
+          ["Admin-only membership model", true],
+        ],
+      },
+      {
+        label: "Operating workflow",
+        tone: "blue",
+        score: Math.round((commandModel.healthScore + commandModel.advisor.advisorScore + commandModel.weeklyReview.reviewScore) / 3),
+        status: "Review rhythm visible",
+        checks: [
+          [`${openRecords} open records monitored`, openRecords > 0],
+          [`${commandModel.reminders.tasks.length} generated actions`, commandModel.reminders.tasks.length > 0],
+          [`${commandModel.weeklyReview.agenda.length} agenda blocks`, commandModel.weeklyReview.agenda.length > 0],
+          [`${commandModel.reportsReady ? "Report pack ready" : "Reports room ready"}`, true],
+        ],
+      },
+      {
+        label: "Backend and security",
+        tone: "red",
+        score: 24,
+        status: "Architecture only",
+        checks: [
+          ["Clean schema mapped", true],
+          ["Backend architecture mapped", true],
+          ["Real authentication", false],
+          ["Tenant database and audit persistence", false],
+        ],
+      },
+      {
+        label: "Commercial launch",
+        tone: "amber",
+        score: 38,
+        status: "Pricing prototype ready",
+        checks: [
+          ["USD 5/user/month pricing", true],
+          ["Admin seat model", true],
+          ["Checkout and invoices", false],
+          ["Pilot contract and support terms", false],
+        ],
+      },
+    ].map((area) => ({
+      ...area,
+      score: Math.max(0, Math.min(100, area.score)),
+    }));
+    const pilotScore = Math.round(areas.reduce((sum, area) => sum + area.score, 0) / Math.max(areas.length, 1));
+    return {
+      companyName: company.name || "Pilot company",
+      pilotScore,
+      readyCount,
+      blockedCount,
+      launchChecks,
+      areas,
+      signalCards: [
+        ["Pilot score", `${pilotScore}%`, "Prototype readiness for first controlled pilot", pilotScore >= 60 ? "green" : "amber"],
+        ["Ready checks", readyCount, `${launchChecks.length} launch checks tracked`, "green"],
+        ["Blockers", blockedCount, "Backend, billing, and live feedback remain", "red"],
+        ["Pilot users", users.length, `${adminUsers} admin / ${editorUsers} editor / ${viewerUsers} viewer`, "blue"],
+      ],
+      sequence: [
+        ["01", "Select pilot company", "Confirm sponsor, admin owner, test users, and success definition.", true],
+        ["02", "Clean source data", "Use Import Normalization Lab to prepare tracker, commercial, and evidence rows.", fieldCoverage >= 80],
+        ["03", "Configure access", "Create admin, manager, operations, and viewer access profiles.", accessConfigured === users.length],
+        ["04", "Run UAT week", "Use Tenders, Projects, Advisor, Weekly Review, Reports, and Governance with real users.", false],
+        ["05", "Switch on billing", "Connect checkout, invoices, seat reconciliation, and subscription status.", false],
+        ["06", "Go-live review", "Collect feedback, fix workflows, lock backup/security checks, and decide paid launch.", false],
+      ],
+      decisionGates: [
+        ["Data gate", "No launch until imported records have reference, client, title, status, owner, date, source workbook, and source sheet."],
+        ["Access gate", "No commercial pilot user sees values unless admin grants insight or commercial-room access."],
+        ["Security gate", "No real customer data until backend auth, tenant isolation, audit, backups, and hosting are implemented."],
+        ["Business gate", "No paid rollout until USD billing, invoice status, support owner, and feedback loop are agreed."],
+      ],
+    };
+  }
+
+  function buildSaasConversionSprintModel(commandModel, pilotReadiness) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const accessConfigured = users.filter((user) => normalizeUserAccess(user).length).length;
+    const commercialUsers = users.filter(userHasCommercialAccess).length;
+    const governanceUsers = users.filter(userHasGovernanceAccess).length;
+    const trackerRecords = commandModel.records.length;
+    const operationalRecords = commandModel.records.filter((record) => ["Tender", "EOI", "Project"].includes(record.type)).length;
+    const commercialRows = commandModel.records.filter(
+      (record) => Number(record.valueAmount) > 0 || record.agreementNo || record.negotiations?.length,
+    ).length;
+    const importIssues = commandModel.importStudio.issueCount;
+    const sourceWorkbooks = commandModel.importStudio.sourceWorkbooks;
+    const fieldCoverage = commandModel.importStudio.fieldCoverage;
+    const auditRows = commandModel.governance.auditRows.length;
+    const backendProgress = 26;
+    const billingProgress = 28;
+    const tracks = [
+      {
+        label: "UI reuse",
+        value: 88,
+        tone: "green",
+        note: "Keep the current PursuitDesk shell, rooms, trackers, filters, boards, and reports as the frontend base.",
+      },
+      {
+        label: "Data model",
+        value: 76,
+        tone: "green",
+        note: "Tenant, user, record, commercial vault, evidence, audit, import, review, and subscription tables are mapped.",
+      },
+      {
+        label: "API contracts",
+        value: 52,
+        tone: "blue",
+        note: "Core routes are now grouped, but request/response contracts and validation rules still need code.",
+      },
+      {
+        label: "Auth and tenants",
+        value: 22,
+        tone: "red",
+        note: "Admin/user access is simulated; real login, sessions, password reset, and tenant isolation are pending.",
+      },
+      {
+        label: "Import pipeline",
+        value: Math.max(34, Math.round((fieldCoverage + commandModel.documents.sourceCoverage) / 3)),
+        tone: importIssues < 25 ? "amber" : "red",
+        note: "Excel staging, row validation, quarantine, commit gates, and source lineage need backend persistence.",
+      },
+      {
+        label: "Billing hooks",
+        value: billingProgress,
+        tone: "amber",
+        note: "USD seat pricing exists, but checkout, invoice status, webhooks, and plan changes are not live.",
+      },
+      {
+        label: "Deploy and monitor",
+        value: 18,
+        tone: "red",
+        note: "Production hosting, backups, logs, monitoring, and incident runbook still need implementation.",
+      },
+    ];
+    const conversionScore = Math.round(tracks.reduce((sum, track) => sum + track.value, 0) / tracks.length);
+    const apiGroups = [
+      {
+        label: "Tenant and users",
+        tone: "green",
+        progress: 56,
+        routes: ["POST /companies", "GET /users", "PATCH /users/:id/access"],
+        note: "Company isolation, admin owner, user roles, preview mode, and section access.",
+      },
+      {
+        label: "Operational records",
+        tone: "teal",
+        progress: 62,
+        routes: ["GET /records", "POST /records", "PATCH /records/:id"],
+        note: "Tenders and Projects stay commercial-free for frontline users.",
+      },
+      {
+        label: "Commercial vault",
+        tone: "amber",
+        progress: 44,
+        routes: ["GET /insights/value", "PATCH /commercial/:recordId", "POST /decisions"],
+        note: "Values, agreements, negotiations, decisions, and management review outputs.",
+      },
+      {
+        label: "Import and evidence",
+        tone: "blue",
+        progress: 38,
+        routes: ["POST /imports", "GET /imports/:id/issues", "POST /imports/:id/commit"],
+        note: "Workbook staging, source sheets, document packs, row quarantine, and cleanup gates.",
+      },
+      {
+        label: "Billing and audit",
+        tone: "red",
+        progress: 26,
+        routes: ["POST /checkout", "POST /webhooks/billing", "GET /audit"],
+        note: "Subscription status, seat count, invoice trail, and permanent activity logging.",
+      },
+    ];
+    const databaseObjects = [
+      ["companies", "Tenant account, settings, subscription state", "green"],
+      ["users", "Role, access profile, preview and invitation status", "green"],
+      ["records", "Reference, client, title, type, status, category, owner, dates", "teal"],
+      ["record_commercial", "Value, agreement, negotiation, bid and award data", "amber"],
+      ["documents", "Source workbook, source sheet, document pack and evidence status", "blue"],
+      ["actions", "Reminders, commitments, review follow-ups and owner movement", "blue"],
+      ["audit_events", "Who changed what, when, before and after", "red"],
+      ["subscriptions", "Plan, seats, billing period, invoice and payment status", "amber"],
+      ["import_batches", "Uploaded source, staging rows, errors, quarantine and commit result", "blue"],
+      ["review_sessions", "Agenda, minutes, decisions, dispatch queue and management pack", "green"],
+    ];
+    const sprintRunway = [
+      ["1", "Create production repo structure", "Split frontend, API, database migrations, seed tools, and deployment config.", true],
+      ["2", "Build tenant auth skeleton", "Real company accounts, users, secure sessions, password reset, and admin invitations.", false],
+      ["3", "Move records into database", "Tenders and Projects become clean operational tables with audit-backed CRUD.", false],
+      ["4", "Move commercial data into vault", "Insights, Forecast, Contracts, and Reports read from permissioned commercial tables.", false],
+      ["5", "Ship import staging API", "Workbook uploads create batches, row issues, quarantine queues, and commit approvals.", false],
+      ["6", "Connect billing and launch controls", "Checkout, invoices, seat reconciliation, plan status, and pilot feedback capture.", false],
+    ];
+    const productionBlocks = [
+      ["Auth", "No live data until login, password reset, secure sessions, and invite flow exist.", "red"],
+      ["Tenant isolation", "Every query must filter by company and enforce section-level permission.", "red"],
+      ["Audit", "Access, record, commercial, import, review, and billing changes need permanent logs.", "amber"],
+      ["Backups", "Database backup, restore test, file storage retention, and monitoring must be proven.", "amber"],
+      ["Billing", "Subscription state must control seat limits, plan changes, invoices, and trial status.", "blue"],
+    ];
+    const repoStructure = [
+      ["apps/web", "Current PursuitDesk interface, converted into a production frontend."],
+      ["apps/api", "Tenant-aware API routes, auth middleware, validation, and audit hooks."],
+      ["packages/domain", "Shared schemas for records, users, access, imports, billing, and review sessions."],
+      ["packages/db", "Migrations, table models, seeds, and safe import staging helpers."],
+      ["ops", "Deployment config, environment templates, backup scripts, and monitoring checklist."],
+    ];
+    return {
+      conversionScore,
+      backendProgress,
+      billingProgress,
+      tracks,
+      apiGroups,
+      databaseObjects,
+      sprintRunway,
+      productionBlocks,
+      repoStructure,
+      signalCards: [
+        ["MVP bridge", `${conversionScore}%`, "How ready the prototype is to become coded SaaS infrastructure", "blue"],
+        ["API groups", apiGroups.length, "Tenant, records, commercial, import, billing, and audit boundaries", "green"],
+        ["Data objects", databaseObjects.length, `${operationalRecords} operational rows / ${commercialRows} commercial-linked rows`, "teal"],
+        ["Live blockers", productionBlocks.length, "Security, tenant, audit, backup, and billing controls before customer data", "red"],
+      ],
+      handoff: [
+        `${trackerRecords} sample records can become the first seed dataset after import cleanup.`,
+        `${users.length} demo users exist; ${accessConfigured}/${users.length} already have section access profiles.`,
+        `${commercialUsers} commercial and ${governanceUsers} governance users show the permission model needed for production.`,
+        `${sourceWorkbooks} source workbooks, ${importIssues} import issues, and ${auditRows} audit entries define the first backend test cases.`,
+        `${pilotReadiness.pilotScore}% pilot readiness becomes the practical gate before any live customer upload.`,
+      ],
+    };
+  }
+
+  function buildProductionSecurityModel(commandModel, pilotReadiness, saasConversion) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const adminUsers = users.filter((user) => user.role === "Admin").length;
+    const accessConfigured = users.filter((user) => normalizeUserAccess(user).length).length;
+    const commercialUsers = users.filter(userHasCommercialAccess).length;
+    const governanceUsers = users.filter(userHasGovernanceAccess).length;
+    const commercialRows = commandModel.records.filter(
+      (record) => Number(record.valueAmount) > 0 || record.agreementNo || record.negotiations?.length,
+    ).length;
+    const auditEvents = commandModel.governance.auditRows.length;
+    const highRiskCount = commandModel.risk.critical.length + commandModel.risk.high.length;
+    const protectedTrackerRows = commandModel.records.filter((record) => !Number(record.valueAmount) && !record.agreementNo).length;
+    const securityLayers = [
+      {
+        label: "Identity and sessions",
+        tone: "amber",
+        score: 36,
+        status: "Policy mapped",
+        checks: [
+          ["Admin owner exists", adminUsers > 0],
+          ["Password reset flow", false],
+          ["Session timeout and refresh", false],
+          ["Optional MFA for admins", false],
+        ],
+      },
+      {
+        label: "Tenant isolation",
+        tone: "blue",
+        score: 42,
+        status: "Architecture mapped",
+        checks: [
+          ["company_id required on every table", true],
+          ["Tenant-scoped API middleware", false],
+          ["Row-level security policy", false],
+          ["Cross-company export blocked", false],
+        ],
+      },
+      {
+        label: "Permissions and privacy",
+        tone: "green",
+        score: Math.round((accessConfigured / Math.max(users.length, 1)) * 42 + (commercialUsers ? 18 : 0) + (governanceUsers ? 18 : 0) + 12),
+        status: "Strong prototype logic",
+        checks: [
+          [`${accessConfigured}/${users.length} access profiles configured`, accessConfigured === users.length],
+          [`${commercialUsers} commercial users`, commercialUsers > 0],
+          [`${governanceUsers} governance users`, governanceUsers > 0],
+          ["Membership is admin-only", true],
+        ],
+      },
+      {
+        label: "Commercial data vault",
+        tone: "green",
+        score: 68,
+        status: "Product rule established",
+        checks: [
+          [`${commercialRows} commercial-linked rows isolated from frontline fields`, commercialRows > 0],
+          ["Tenders and Projects hide values", true],
+          ["Insights and reports hold commercial views", true],
+          ["Backend vault table pending", false],
+        ],
+      },
+      {
+        label: "Audit and retention",
+        tone: "amber",
+        score: Math.min(72, Math.round(auditEvents * 4 + 24)),
+        status: "Local audit visible",
+        checks: [
+          [`${auditEvents} audit events in demo`, auditEvents > 0],
+          ["Access changes logged", true],
+          ["Immutable backend audit table", false],
+          ["Retention and export policy", false],
+        ],
+      },
+      {
+        label: "Backup and recovery",
+        tone: "red",
+        score: 24,
+        status: "Not production-ready",
+        checks: [
+          ["Daily database backup", false],
+          ["Weekly restore test", false],
+          ["Object storage retention", false],
+          ["Disaster recovery owner", false],
+        ],
+      },
+      {
+        label: "Monitoring and incident response",
+        tone: "red",
+        score: 22,
+        status: "Needs implementation",
+        checks: [
+          ["Error logging", false],
+          ["Uptime checks", false],
+          ["Security event alerts", false],
+          ["Incident response runbook", false],
+        ],
+      },
+    ].map((layer) => ({
+      ...layer,
+      score: Math.max(0, Math.min(100, layer.score)),
+    }));
+    const securityScore = Math.round(securityLayers.reduce((sum, layer) => sum + layer.score, 0) / securityLayers.length);
+    const readyChecks = securityLayers.reduce(
+      (sum, layer) => sum + layer.checks.filter(([, ready]) => ready).length,
+      0,
+    );
+    const totalChecks = securityLayers.reduce((sum, layer) => sum + layer.checks.length, 0);
+    return {
+      securityScore,
+      readyChecks,
+      totalChecks,
+      blockedChecks: totalChecks - readyChecks,
+      signalCards: [
+        ["Security score", `${securityScore}%`, "Current production-security readiness across identity, tenant, privacy, audit, backup, and monitoring", securityScore >= 60 ? "green" : "amber"],
+        ["Access profiles", `${accessConfigured}/${users.length}`, "Users with explicit section access", accessConfigured === users.length ? "green" : "amber"],
+        ["Commercial rows", commercialRows, "Rows that must stay outside frontline tracker views", "amber"],
+        ["Risk pressure", highRiskCount, "Critical and high risks that need secure review history", highRiskCount ? "red" : "green"],
+      ],
+      securityLayers,
+      accessMatrix: [
+        ["Operations user", "Tenders, Projects", "No commercial values, no membership, no admin rooms", "green"],
+        ["Pursuit manager", "Advisor, Weekly Review, Insights, Reports", "Can review commercial signals only when admin grants access", "blue"],
+        ["Governance user", "Governance, Import, Documents, Audit", "Can manage evidence and traceability, not billing ownership", "amber"],
+        ["Company admin", "All rooms plus Membership", "Can manage users, access, plan, export, and company settings", "red"],
+      ],
+      policyCards: [
+        {
+          label: "Session policy",
+          tone: "amber",
+          bullets: [
+            "Password reset and invite links expire quickly.",
+            "Admin sessions should timeout earlier than viewer sessions.",
+            "High-risk actions should require a fresh session.",
+          ],
+        },
+        {
+          label: "Tenant policy",
+          tone: "blue",
+          bullets: [
+            "Every API request carries one company context.",
+            "Every query filters by company_id before returning data.",
+            "Exports can never mix companies or hidden commercial fields.",
+          ],
+        },
+        {
+          label: "Audit policy",
+          tone: "green",
+          bullets: [
+            "User, access, import, record, commercial, review, and billing changes append audit events.",
+            "Audit rows are immutable after write.",
+            "Admin can export audit history for management review.",
+          ],
+        },
+        {
+          label: "Recovery policy",
+          tone: "red",
+          bullets: [
+            "Nightly database backup with weekly restore test.",
+            "Evidence files retained with object-storage versioning.",
+            "Incident owner and escalation channel defined before pilot.",
+          ],
+        },
+      ],
+      liveDataGates: [
+        ["Identity gate", "Real login, password reset, session timeout, admin invite, and optional MFA are coded.", false],
+        ["Tenant gate", "Company-scoped middleware, database constraints, and row-level security are tested.", false],
+        ["Permission gate", "Commercial and membership rooms are denied by backend, not only hidden in UI.", false],
+        ["Audit gate", "Every sensitive create, edit, delete, import, access, review, and billing event is logged.", false],
+        ["Backup gate", "Backup and restore test are complete before accepting customer workbooks.", false],
+        ["Pilot gate", `${pilotReadiness.pilotScore}% pilot readiness and ${saasConversion.conversionScore}% SaaS bridge must both clear management approval.`, pilotReadiness.pilotScore >= 70 && saasConversion.conversionScore >= 70],
+      ],
+      dataRules: [
+        [`${protectedTrackerRows} rows currently behave as frontline-safe tracker rows.`],
+        [`${commercialRows} rows carry value, agreement, or negotiation data and must route through commercial permissions.`],
+        [`${auditEvents} local audit events are useful test fixtures for backend audit persistence.`],
+        [`${commandModel.documents.totalGaps} evidence gaps should remain visible to governance users before launch.`],
+      ],
+    };
+  }
+
+  function buildBillingCheckoutBlueprintModel(commandModel, securityModel) {
+    const company = state.data.company || {};
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const membership = membershipProjection(company);
+    const activeSeats = users.length;
+    const seatDelta = membership.seats - activeSeats;
+    const monthly = membership.monthly ?? 0;
+    const dueNow = membership.dueNow ?? 0;
+    const annual = membership.annualPrepay ?? 0;
+    const invoicesReady = false;
+    const checkoutReady = false;
+    const webhookReady = false;
+    const subscriptionScore = Math.round(
+      (membership.isCustom ? 30 : 52) +
+        (activeSeats > 0 ? 10 : 0) +
+        (securityModel.securityScore >= 40 ? 8 : 0) +
+        (state.billingTerm === "Annual" ? 6 : 4),
+    );
+    const signalCards = [
+      ["Billing readiness", `${Math.min(82, subscriptionScore)}%`, "Prototype pricing and seat logic are ready; production checkout is still pending", "amber"],
+      ["Selected plan", membership.label, `${membership.seats} seats / ${membership.billingTerm.toLowerCase()} billing`, "green"],
+      ["Due now", membership.isCustom ? "Custom" : formatBilling(dueNow, company), membership.billingTerm === "Annual" ? "Annual prepaid launch invoice" : "Monthly pilot invoice", "blue"],
+      ["Seat delta", seatDelta >= 0 ? `+${seatDelta}` : `${seatDelta}`, `${activeSeats} active users vs ${membership.seats} billable seats`, seatDelta >= 0 ? "green" : "red"],
+    ];
+    const checkoutFlow = [
+      ["01", "Plan selected", `${membership.label} with ${membership.seats} seats and ${membership.billingTerm.toLowerCase()} billing.`, true],
+      ["02", "Checkout session", "Create checkout session with company, plan, seats, cycle, tax, and success/cancel URLs.", checkoutReady],
+      ["03", "Payment confirmed", "Payment provider returns checkout.session.completed and marks invoice as paid.", false],
+      ["04", "Subscription active", "Company subscription status unlocks paid workspace, seat limit, and renewal date.", false],
+      ["05", "Invoice stored", "Invoice number, amount, currency, PDF URL, and payment status write to billing history.", invoicesReady],
+      ["06", "Audit written", "Billing event writes immutable audit record for admin review.", false],
+    ];
+    const invoiceLifecycle = [
+      ["Draft", "Created from selected plan, seats, billing cycle, company, and account owner.", true, "green"],
+      ["Open", "Sent to customer or checkout provider with due date and payment link.", false, "amber"],
+      ["Paid", "Webhook confirms payment and activates subscription.", false, "green"],
+      ["Failed", "Payment failure locks upgrade actions and creates admin alert.", false, "red"],
+      ["Past due", "Grace period starts; export and admin changes stay visible, but paid expansion pauses.", false, "red"],
+    ];
+    const seatReconciliation = [
+      ["Active users", activeSeats, "Current users in the company workspace", "green"],
+      ["Billable seats", membership.seats, "Seats selected in the subscription builder", "blue"],
+      ["Seat buffer", Math.max(0, seatDelta), "Unused paid seats available for new users", "teal"],
+      ["Overage", Math.max(0, activeSeats - membership.seats), "Users above subscribed seat count", activeSeats > membership.seats ? "red" : "green"],
+    ];
+    const webhookEvents = [
+      ["checkout.session.completed", "Activate subscription, write invoice, audit billing action", "green"],
+      ["invoice.payment_failed", "Set payment warning, notify admin, start grace period", "red"],
+      ["customer.subscription.updated", "Sync plan, billing term, seat limit, renewal date", "blue"],
+      ["customer.subscription.deleted", "Set workspace to cancelled, retain audit and export access", "red"],
+      ["invoice.paid", "Mark invoice paid and release renewal warning", "green"],
+    ];
+    const planChanges = [
+      ["Add seats", "Admin increases billable seats; checkout or proration confirms before users are invited.", "green"],
+      ["Remove seats", "Admin reduces seats; system requires active users to fit the new limit first.", "amber"],
+      ["Monthly to annual", "Annual prepaid invoice charges 10 months and records two-month saving.", "blue"],
+      ["Pause or cancel", "Workspace becomes read/export mode after grace period, with audit retained.", "red"],
+    ];
+    const productionGates = [
+      ["Checkout provider", checkoutReady, "Payment provider account, products, prices, success URL, cancel URL, and webhook secret configured."],
+      ["Invoice persistence", invoicesReady, "Invoice table stores status, amount, currency, due date, PDF, and external payment ID."],
+      ["Webhook verification", webhookReady, "Webhook signatures verified before updating subscription state."],
+      ["Seat enforcement", activeSeats <= membership.seats, `${activeSeats}/${membership.seats} users fit inside the selected seat count.`],
+      ["Access lock", false, "Past-due or cancelled subscriptions restrict paid actions without hiding audit/export history."],
+      ["Billing audit", false, "Checkout, invoice, plan, seat, and cancellation events append immutable audit rows."],
+    ];
+    return {
+      companyName: company.name || "Pilot company",
+      membership,
+      monthly,
+      annual,
+      dueNow,
+      activeSeats,
+      seatDelta,
+      signalCards,
+      checkoutFlow,
+      invoiceLifecycle,
+      seatReconciliation,
+      webhookEvents,
+      planChanges,
+      productionGates,
+      handoff: [
+        `Charge in ${billingCurrency(company)} only for membership, while tender and project values can later keep their own selected currencies.`,
+        `${activeSeats} users currently exist; selected subscription has ${membership.seats} billable seats.`,
+        `${membership.billingTerm} billing means first due amount is ${membership.isCustom ? "custom proposal" : formatBilling(dueNow, company)}.`,
+        `Production billing must connect checkout, invoices, seat limits, subscription status, access control, and audit events.`,
+        `${commandModel.records.length} demo records remain separate from billing data; subscription belongs to company account, not individual tenders/projects.`,
+      ],
+    };
+  }
+
+  function buildDataMigrationPackModel(sourceModel) {
+    const importStudio = sourceModel.importStudio || sourceModel;
+    const records = importStudio.records || companyRecords();
+    const totalRecords = records.length;
+    const operationalReady = records.filter((record) => record.reference && record.client && record.title && record.status).length;
+    const commercialRows = records.filter(
+      (record) => Number(record.valueAmount) > 0 || record.agreementNo || record.negotiations?.length || record.valueText,
+    ).length;
+    const governanceRows = records.filter((record) => record.sourceWorkbook && record.sourceSheet).length;
+    const workflowRows = records.filter((record) => !record.owner || !record.endDate || ["Active", "Pending", "Submitted", "Ongoing"].includes(record.status)).length;
+    const quarantineCount = importStudio.missingCount + importStudio.duplicateGroups.length + importStudio.manualEntries;
+    const cleanCandidateCount = Math.max(0, totalRecords - quarantineCount);
+    const migrationScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          importStudio.fieldCoverage * 0.34 +
+            (governanceRows / Math.max(totalRecords, 1)) * 24 +
+            (cleanCandidateCount / Math.max(totalRecords, 1)) * 24 +
+            Math.min(1, commercialRows / Math.max(totalRecords, 1)) * 10 +
+            (importStudio.sourceWorkbooks ? 8 : 0),
+        ),
+      ),
+    );
+    const sourcePackages = importStudio.sourceRows.map((source) => ({
+      label: source.label,
+      count: source.count,
+      tone: source.label === "Manual entry" ? "amber" : "blue",
+      note: source.label === "Manual entry" ? "Needs source workbook and sheet before production import." : "Can become an import batch with retained workbook memory.",
+    }));
+    const targetTables = [
+      ["companies", "Create tenant record and default workspace settings.", "green"],
+      ["users + access_profiles", "Seed admin, editor, viewer, and section access templates.", "green"],
+      ["records", "Move reference, client, title, type, status, category, owner, and dates.", "teal"],
+      ["tender_details / project_details", "Split tender and delivery-specific fields after base record creation.", "blue"],
+      ["commercial_facts", "Move values, agreement numbers, negotiation rounds, and award/LOA signals.", "amber"],
+      ["documents", "Keep source workbook, source sheet, row number, and evidence pack references.", "blue"],
+      ["actions", "Create owner, missing date, overdue, review, and reminder actions from gaps.", "red"],
+      ["audit_events", "Write import, validation, correction, commit, rollback, and access changes.", "green"],
+      ["import_batches", "Store upload, staging, validation, quarantine, commit, and rollback metadata.", "blue"],
+    ];
+    const migrationBatches = [
+      ["01", "Tenant seed", "Company account, admin owner, demo users, access templates, and membership status.", true, "green"],
+      ["02", "Source inventory", `${importStudio.sourceWorkbooks} workbooks and ${importStudio.sheetRows.length} source sheets become import batches.`, importStudio.sourceWorkbooks > 0, "blue"],
+      ["03", "Operational records", `${operationalReady}/${totalRecords} rows have reference, client, title, and status.`, operationalReady === totalRecords, "teal"],
+      ["04", "Commercial vault", `${commercialRows} rows carry value, agreement, LOA, or negotiation facts.`, commercialRows > 0, "amber"],
+      ["05", "Governance evidence", `${governanceRows}/${totalRecords} rows have workbook and sheet trace.`, governanceRows === totalRecords, "blue"],
+      ["06", "Workflow actions", `${workflowRows} rows should create reminders, owner moves, review items, or cleanup tasks.`, workflowRows > 0, "red"],
+    ];
+    const validationGates = [
+      ["Core identity", "No commit unless type, reference, client, title, and status exist.", operationalReady === totalRecords, "green"],
+      ["Duplicate reference", `${importStudio.duplicateGroups.length} duplicate reference groups must be resolved or deliberately linked.`, !importStudio.duplicateGroups.length, "red"],
+      ["Source trace", `${importStudio.manualEntries} rows need workbook/sheet lineage before production reporting.`, !importStudio.manualEntries, "blue"],
+      ["Commercial split", "Values and agreement facts route to commercial_facts, never to frontline tracker-only views.", commercialRows > 0, "amber"],
+      ["Date control", "Rows with no due/last date create cleanup actions before management review.", importStudio.missingCount < totalRecords, "teal"],
+      ["Rollback ready", "Every import batch can be reversed before live pilot sign-off.", false, "red"],
+    ];
+    const dryRunCases = [
+      ["Happy path", `${cleanCandidateCount} rows should commit into records, details, documents, actions, and audit events.`],
+      ["Duplicate path", `${importStudio.duplicateGroups.length} duplicate groups should quarantine until merged or approved.`],
+      ["Manual source path", `${importStudio.manualEntries} rows should fail source-trace gate until workbook and sheet are supplied.`],
+      ["Commercial privacy path", `${commercialRows} rows should feed Insights while remaining hidden from Tenders and Projects.`],
+      ["Rollback path", "A committed batch should be reversible by batch id without touching unrelated companies."],
+    ];
+    const cutoverSteps = [
+      ["1", "Freeze source workbook", "Pick the final Excel export, assign owner, and stop parallel manual edits."],
+      ["2", "Stage import batch", "Upload rows into import_batches and staging_rows without touching live tables."],
+      ["3", "Run validation gates", "Check identity, duplicates, dates, source trace, commercial split, and owner mapping."],
+      ["4", "Commit clean rows", "Create records, details, commercial facts, documents, actions, and audit events."],
+      ["5", "Reconcile reports", "Compare counts, status mix, clients, values, and source sheets with original workbooks."],
+      ["6", "Approve pilot dataset", "Lock migration report, retain rollback id, and allow pilot users into the workspace."],
+    ];
+    return {
+      migrationScore,
+      totalRecords,
+      cleanCandidateCount,
+      quarantineCount,
+      sourceWorkbooks: importStudio.sourceWorkbooks,
+      fieldCoverage: importStudio.fieldCoverage,
+      sourcePackages,
+      targetTables,
+      migrationBatches,
+      validationGates,
+      dryRunCases,
+      cutoverSteps,
+      signalCards: [
+        ["Migration score", `${migrationScore}%`, "Current readiness for moving demo/sample rows into production tables", migrationScore >= 70 ? "green" : "amber"],
+        ["Rows to migrate", totalRecords, `${cleanCandidateCount} clean candidates / ${quarantineCount} quarantine signals`, "blue"],
+        ["Source batches", importStudio.sourceWorkbooks, `${importStudio.sheetRows.length} source sheets tracked`, "green"],
+        ["Field coverage", `${importStudio.fieldCoverage}%`, `${importStudio.missingCount} rows still need cleanup`, importStudio.fieldCoverage >= 80 ? "green" : "amber"],
+      ],
+      handoff: [
+        `${totalRecords} records become the seed migration dataset for the first backend dry run.`,
+        `${commercialRows} commercial-linked rows must route to permissioned tables before frontline users test the workspace.`,
+        `${governanceRows} rows currently carry source workbook and sheet memory for audit-friendly migration.`,
+        `${quarantineCount} quarantine signals should become explicit validation failures, not silent cleanup.`,
+        "The production importer should support dry run, commit, rollback, audit export, and reconciliation report per batch.",
+      ],
+    };
+  }
+
+  function buildPilotFeedbackRoomModel(commandModel, pilotReadiness, securityModel, billingBlueprint, migrationPack) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const openRecords = commandModel.openRecords.length;
+    const actionCount = commandModel.reminders.tasks.length;
+    const overdueCount = commandModel.reminders.overdue;
+    const evidenceGaps = commandModel.documents.totalGaps;
+    const commercialGaps = commandModel.contracts.gapCount;
+    const adoptionScore = Math.round(
+      Math.min(100, users.length * 8) +
+        Math.min(28, commandModel.moduleCards.length * 1.4) +
+        Math.min(22, commandModel.weeklyReview.actionRegister.length * 1.2) +
+        (pilotReadiness.pilotScore >= 65 ? 14 : 6) -
+        Math.min(18, overdueCount * 0.6),
+    );
+    const feedbackScore = Math.max(0, Math.min(100, Math.round((pilotReadiness.pilotScore + migrationPack.migrationScore + securityModel.securityScore + adoptionScore) / 4)));
+    const criticalBlockers = [
+      ["Backend not live", "Real auth, tenant database, APIs, audit persistence, and hosting still need implementation.", "red"],
+      ["Security gates pending", `${securityModel.blockedChecks} security checks are not production-ready yet.`, "red"],
+      ["Billing not connected", "Checkout, invoices, payment webhooks, subscription state, and billing audit are mapped but not live.", "amber"],
+      ["Migration rollback pending", "Import dry run and rollback are designed but not implemented in backend.", "amber"],
+      ["Pilot feedback capture pending", "Feedback is currently modeled; production needs persistent forms, tags, owners, and decision history.", "blue"],
+    ];
+    const uatSignals = [
+      ["Usability", "Tracker users can test Tenders, Projects, boards, timelines, search, notes, and detail panels.", "green"],
+      ["Management review", "Managers can test Advisor, Weekly Review, Reports, Insights, and Command Center handoff.", "green"],
+      ["Data trust", `${migrationPack.cleanCandidateCount} rows look migration-ready, with ${migrationPack.quarantineCount} quarantine signals.`, migrationPack.quarantineCount ? "amber" : "green"],
+      ["Access privacy", `${users.length} users can test role views; commercial and membership rooms remain controlled.`, "blue"],
+      ["Commercial readiness", `${billingBlueprint.membership.label} is priced in USD with ${billingBlueprint.membership.seats} selected seats.`, "amber"],
+    ];
+    const feedbackLanes = [
+      {
+        label: "Must fix before pilot",
+        tone: "red",
+        count: criticalBlockers.length,
+        items: criticalBlockers.slice(0, 4),
+      },
+      {
+        label: "UAT questions",
+        tone: "blue",
+        count: 5,
+        items: [
+          ["Daily speed", "Can frontline users update records faster than Excel?", "blue"],
+          ["Visibility", "Can managers find overdue, missing-owner, and missing-date items quickly?", "blue"],
+          ["Privacy", "Do operations users avoid seeing commercial values?", "blue"],
+          ["Review rhythm", "Can weekly review move from agenda to minutes to dispatch?", "blue"],
+        ],
+      },
+      {
+        label: "Customer success follow-up",
+        tone: "green",
+        count: 6,
+        items: [
+          ["Day 1 setup", "Confirm admin owner, users, access, source data, and first review date.", "green"],
+          ["Day 3 adoption", "Check whether users updated tracker rows without support.", "green"],
+          ["Day 7 review", "Run Advisor and Weekly Review with pilot sponsor.", "green"],
+          ["Day 14 decision", "Agree continue, fix, expand, or paid conversion path.", "green"],
+        ],
+      },
+    ];
+    const successMetrics = [
+      ["Active users", users.length, "Pilot participants with access profiles", "green"],
+      ["Open work", openRecords, "Live tenders and projects to validate operating rhythm", "blue"],
+      ["Action load", actionCount, `${overdueCount} overdue follow-ups`, actionCount > 80 ? "amber" : "green"],
+      ["Evidence gaps", evidenceGaps, "Document/source gaps to confirm governance value", evidenceGaps ? "amber" : "green"],
+      ["Commercial gaps", commercialGaps, "Agreement/value gaps visible only to allowed users", commercialGaps ? "amber" : "green"],
+      ["Readiness", `${feedbackScore}%`, "Blended pilot, migration, security, and adoption signal", feedbackScore >= 65 ? "green" : "amber"],
+    ];
+    const feedbackForm = [
+      ["Who", "User, role, company, room, and workflow being tested."],
+      ["What happened", "Short observation, expected result, actual result, and screenshot/document link."],
+      ["Impact", "Blocker, friction, improvement, training need, or enhancement request."],
+      ["Owner", "Product, data, operations, commercial, security, billing, or customer-success owner."],
+      ["Decision", "Fix now, fix later, train user, accept, reject, or convert into roadmap item."],
+    ];
+    const pilotRunbook = [
+      ["01", "Kickoff", "Confirm sponsor, users, success criteria, test data, access model, and review rhythm.", true],
+      ["02", "UAT week", "Run daily tracker updates, manager review, import cleanup, and role/privacy checks.", false],
+      ["03", "Feedback triage", "Classify feedback into blocker, friction, enhancement, training, and commercial signal.", false],
+      ["04", "Fix sprint", "Clear blocker items and confirm the same user can retest the workflow.", false],
+      ["05", "Sponsor review", "Show adoption score, blockers, decisions, feedback themes, and paid conversion path.", false],
+      ["06", "Pilot decision", "Choose expand, paid launch, extend pilot, or hold until backend/security/billing are ready.", false],
+    ];
+    const launchDecisions = [
+      ["Go", "Pilot team can operate weekly review, data is clean, blockers are low, and sponsor agrees paid conversion.", "green"],
+      ["Go with fixes", "Product works but selected blockers need owner and date before paid rollout.", "amber"],
+      ["Extend pilot", "Users need more time, imported data needs cleanup, or workflows need training.", "blue"],
+      ["Hold", "Security, billing, backend, or migration gates are not safe for customer data.", "red"],
+    ];
+    return {
+      feedbackScore,
+      adoptionScore: Math.max(0, Math.min(100, adoptionScore)),
+      blockerCount: criticalBlockers.length,
+      uatSignals,
+      feedbackLanes,
+      successMetrics,
+      feedbackForm,
+      pilotRunbook,
+      launchDecisions,
+      signalCards: [
+        ["Feedback score", `${feedbackScore}%`, "Blended pilot, migration, security, and adoption readiness", feedbackScore >= 65 ? "green" : "amber"],
+        ["Adoption score", `${Math.max(0, Math.min(100, adoptionScore))}%`, `${users.length} users / ${commandModel.moduleCards.length} rooms available`, "green"],
+        ["Open blockers", criticalBlockers.length, "Items to clear before live customer data or paid rollout", "red"],
+        ["UAT signals", uatSignals.length, "Usability, management, data, privacy, and commercial feedback lanes", "blue"],
+      ],
+      handoff: [
+        "Production feedback should be stored as first-class records, not loose notes.",
+        "Each UAT item needs room, user role, impact, owner, due date, status, and decision history.",
+        "Pilot sponsor review should compare adoption, blockers, data quality, security, billing, and weekly-review usefulness.",
+        "Feedback room should become the customer-success bridge between demo testing and paid launch.",
+      ],
+    };
+  }
+
+  function buildBackendRepositoryScaffoldModel(commandModel, saasConversion, securityModel, billingBlueprint, migrationPack, pilotFeedback) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const readyBillingGates = billingBlueprint.productionGates.filter(([, ready]) => ready).length;
+    const billingGateScore = Math.round((readyBillingGates / Math.max(billingBlueprint.productionGates.length, 1)) * 100);
+    const scaffoldScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          (saasConversion.conversionScore +
+            securityModel.securityScore +
+            migrationPack.migrationScore +
+            pilotFeedback.feedbackScore +
+            billingGateScore) /
+            5,
+        ),
+      ),
+    );
+    const repoFolders = [
+      {
+        path: "apps/web",
+        owner: "Frontend",
+        tone: "green",
+        purpose: "Production PursuitDesk UI with authenticated navigation, room access, trackers, reports, and admin screens.",
+        contains: ["React app shell", "route guards", "room pages", "export views"],
+      },
+      {
+        path: "apps/api",
+        owner: "Backend",
+        tone: "red",
+        purpose: "Tenant-aware API surface for records, insights, imports, billing, audit, feedback, and review workflow.",
+        contains: ["REST routes", "auth middleware", "validators", "audit hooks"],
+      },
+      {
+        path: "packages/db",
+        owner: "Data",
+        tone: "blue",
+        purpose: "Database schema, migrations, seed scripts, staging tables, rollback helpers, and reconciliation queries.",
+        contains: ["migrations", "seed data", "import staging", "tenant policies"],
+      },
+      {
+        path: "packages/domain",
+        owner: "Product",
+        tone: "teal",
+        purpose: "Shared business rules for records, commercial privacy, access profiles, UAT feedback, and review outputs.",
+        contains: ["schemas", "permissions", "status maps", "workflow rules"],
+      },
+      {
+        path: "packages/billing",
+        owner: "Commercial",
+        tone: "amber",
+        purpose: "USD membership plans, checkout sessions, invoice state, seat reconciliation, webhooks, and access locks.",
+        contains: ["plans", "checkout", "webhooks", "seat sync"],
+      },
+      {
+        path: "packages/importer",
+        owner: "Data",
+        tone: "blue",
+        purpose: "Excel/CSV staging, validation errors, duplicate handling, quarantine, dry run, commit, rollback, and audit export.",
+        contains: ["parsers", "validators", "quarantine", "rollback"],
+      },
+      {
+        path: "packages/audit",
+        owner: "Governance",
+        tone: "green",
+        purpose: "Immutable activity events for access, records, commercial fields, imports, billing, review, and feedback.",
+        contains: ["event writer", "redaction", "retention", "exports"],
+      },
+      {
+        path: "infra",
+        owner: "Platform",
+        tone: "red",
+        purpose: "Environment templates, hosting config, backup scripts, monitoring checks, deployment gates, and runbooks.",
+        contains: ["env examples", "deploy config", "backups", "monitoring"],
+      },
+    ];
+    const databaseMigrations = [
+      ["001_tenant_identity", "companies, users, access_profiles, sessions, invitations", "Company isolation, admin owner, secure login, role/access profile seed.", "red"],
+      ["002_operational_records", "records, tender_details, project_details", `${commandModel.records.length} seed records move into operational tracker tables without commercial values.`, "green"],
+      ["003_commercial_vault", "commercial_facts, negotiations, agreements, decisions", "Values, agreement numbers, LOA, negotiation rounds, and management decisions stay permissioned.", "amber"],
+      ["004_evidence_actions", "documents, reminders, actions, review_sessions", "Evidence gaps, commitments, dispatch notes, and review outputs become persistent workflow records.", "blue"],
+      ["005_import_pipeline", "import_batches, staging_rows, validation_errors, rollback_events", `${migrationPack.totalRecords} rows can be dry-run, quarantined, committed, rolled back, and reconciled.`, "blue"],
+      ["006_billing_audit_feedback", "subscriptions, invoices, billing_events, feedback_items", "Membership, invoice, webhook, seat, audit, and UAT feedback events become production data.", "teal"],
+    ];
+    const apiContracts = [
+      {
+        label: "Identity and access",
+        tone: "red",
+        routes: ["POST /auth/login", "POST /auth/reset", "GET /me", "PATCH /users/:id/access"],
+        unlocks: "Real admin/user accounts, section permissions, preview mode, and tenant isolation.",
+      },
+      {
+        label: "Records and trackers",
+        tone: "green",
+        routes: ["GET /records", "POST /records", "PATCH /records/:id", "GET /records/:id/client-memory"],
+        unlocks: "Tenders and Projects can leave local browser state and become audited operational worklists.",
+      },
+      {
+        label: "Commercial insights",
+        tone: "amber",
+        routes: ["GET /insights/tenders", "GET /insights/projects", "PATCH /commercial/:recordId", "POST /review-sessions"],
+        unlocks: "Commercial figures remain outside frontline trackers while managers keep value, decisions, and reports.",
+      },
+      {
+        label: "Import and migration",
+        tone: "blue",
+        routes: ["POST /imports", "GET /imports/:id/issues", "POST /imports/:id/dry-run", "POST /imports/:id/commit"],
+        unlocks: "Excel uploads become controlled batches with validation, quarantine, rollback, and reconciliation.",
+      },
+      {
+        label: "Billing and feedback",
+        tone: "teal",
+        routes: ["POST /checkout", "POST /billing/webhook", "GET /invoices", "POST /feedback"],
+        unlocks: "USD membership, invoices, seat limits, webhook status, and pilot feedback become persistent.",
+      },
+    ];
+    const sprintBacklog = [
+      ["Sprint 1", "Repository and database foundation", "Create apps/packages folders, environment templates, database connection, migrations, seeds, and lint/test pipeline.", true, "green"],
+      ["Sprint 2", "Tenant auth and access", "Build login, sessions, invitations, password reset, company isolation, user access profiles, and admin-only membership guard.", false, "red"],
+      ["Sprint 3", "Operational records API", "Move Tenders and Projects into database tables with CRUD, filters, notes, client memory, audit rows, and CSV export.", false, "green"],
+      ["Sprint 4", "Commercial vault and insights", "Implement permissioned commercial tables, insights APIs, review sessions, reports, decisions, and management exports.", false, "amber"],
+      ["Sprint 5", "Import, billing, feedback", "Ship import batches, checkout sessions, invoice/webhook handling, seat sync, UAT feedback, and pilot decision exports.", false, "blue"],
+    ];
+    const environmentMatrix = [
+      ["Local", "Developer database, seeded demo tenant, test payment keys, file storage emulator.", "green"],
+      ["Preview", "Branch deployments, isolated database schema, smoke tests, no real payment capture.", "blue"],
+      ["Staging", "Pilot-like data, backup restore test, webhook test mode, access/privacy QA.", "amber"],
+      ["Production", "Live tenant data, secure secrets, monitoring, backups, incident runbook, billing webhooks.", "red"],
+    ];
+    const testPacks = [
+      ["Tenant isolation", "Every API query includes company scope and denies cross-company record access.", "red"],
+      ["Commercial privacy", "Operations users cannot read values, agreements, negotiations, invoices, or membership data.", "amber"],
+      ["Import rollback", "A committed import batch can be reverted without touching unrelated companies.", "blue"],
+      ["Billing state", "Checkout, invoice paid/failed, subscription update, seat overage, and cancellation paths are tested.", "amber"],
+      ["Feedback workflow", "UAT items have room, user role, owner, impact, decision, and history.", "green"],
+    ];
+    const handoff = [
+      "Keep the current GitHub Pages prototype as demo branch while the production repo grows in parallel.",
+      "Start backend with tenant identity, records, audit, and permissions before adding billing or live customer imports.",
+      "Treat commercial values, invoices, and membership as protected data from the first migration.",
+      "Every sprint should produce migrations, API contracts, tests, seed data, and one visible screen connected to real persistence.",
+      `The first seed target is ${commandModel.records.length} sample records, ${users.length} demo users, ${migrationPack.sourceWorkbooks} source workbooks, and ${pilotFeedback.blockerCount} pilot feedback blockers.`,
+    ];
+    return {
+      scaffoldScore,
+      repoFolders,
+      databaseMigrations,
+      apiContracts,
+      sprintBacklog,
+      environmentMatrix,
+      testPacks,
+      signalCards: [
+        ["Scaffold score", `${scaffoldScore}%`, "Readiness of the prototype plan to become a real backend repository", scaffoldScore >= 55 ? "green" : "amber"],
+        ["Repo areas", repoFolders.length, "Apps, packages, importer, billing, audit, and infrastructure boundaries", "blue"],
+        ["Migrations", databaseMigrations.length, "Tenant, records, commercial, workflow, import, billing, and feedback tables", "green"],
+        ["API contracts", apiContracts.reduce((sum, group) => sum + group.routes.length, 0), "Identity, records, insights, import, billing, and feedback endpoints", "teal"],
+      ],
+      handoff,
+    };
+  }
+
+  function buildSecurityTestPackModel(commandModel, securityModel, backendScaffold, migrationPack, billingBlueprint, pilotFeedback) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const liveGateReadyCount = securityModel.liveDataGates.filter(([, , ready]) => ready).length;
+    const liveGateScore = Math.round((liveGateReadyCount / Math.max(securityModel.liveDataGates.length, 1)) * 100);
+    const testPackScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          securityModel.securityScore * 0.34 +
+            backendScaffold.scaffoldScore * 0.22 +
+            migrationPack.migrationScore * 0.16 +
+            pilotFeedback.feedbackScore * 0.14 +
+            liveGateScore * 0.14,
+        ),
+      ),
+    );
+    const securitySuites = [
+      {
+        label: "Tenant isolation",
+        tone: "red",
+        owner: "Backend",
+        count: 7,
+        goal: "Prove no company can read, edit, export, import, or audit another company's data.",
+        checks: ["company_id required", "cross-tenant reads denied", "exports scoped", "audit scoped"],
+      },
+      {
+        label: "Role and section access",
+        tone: "blue",
+        owner: "Platform",
+        count: 9,
+        goal: "Prove admins control exact access to trackers, insights, commercial rooms, membership, governance, and reports.",
+        checks: ["admin only membership", "editor tracker edit", "viewer read only", "preview mode exact"],
+      },
+      {
+        label: "Commercial privacy",
+        tone: "amber",
+        owner: "Commercial",
+        count: 8,
+        goal: "Prove values, agreements, negotiations, invoices, and billing stay outside frontline tracker users.",
+        checks: ["tracker hides value", "insight access required", "CSV redaction", "API redaction"],
+      },
+      {
+        label: "Audit immutability",
+        tone: "green",
+        owner: "Governance",
+        count: 6,
+        goal: "Prove sensitive changes create permanent audit events with actor, before/after, scope, and source.",
+        checks: ["record edit audit", "access audit", "import audit", "billing audit"],
+      },
+      {
+        label: "Import and file safety",
+        tone: "blue",
+        owner: "Data",
+        count: 6,
+        goal: "Prove workbook staging, quarantine, dry-run, commit, rollback, and source trace are safe by tenant.",
+        checks: ["batch scoped", "duplicate quarantine", "rollback id", "source lineage"],
+      },
+      {
+        label: "Recovery and monitoring",
+        tone: "red",
+        owner: "Platform",
+        count: 5,
+        goal: "Prove backup, restore, logs, uptime checks, alerts, and incident response exist before customer data.",
+        checks: ["backup exists", "restore tested", "errors logged", "incident owner"],
+      },
+    ];
+    const totalCases = securitySuites.reduce((sum, suite) => sum + suite.count, 0);
+    const testCases = [
+      {
+        label: "Cross-company record read is denied",
+        tone: "red",
+        priority: "P0",
+        given: "User belongs to Company A and a record belongs to Company B.",
+        when: "User requests GET /records/:id using Company B record id.",
+        then: "API returns 404 or 403, writes security audit event, and reveals no Company B fields.",
+      },
+      {
+        label: "Operations user cannot read commercial value",
+        tone: "amber",
+        priority: "P0",
+        given: "User has Tenders and Projects access only.",
+        when: "User opens a tender row, exports CSV, or calls record API.",
+        then: "Value, agreement, invoice, negotiation, and billing fields are absent in UI and API response.",
+      },
+      {
+        label: "Membership route is admin-only",
+        tone: "blue",
+        priority: "P0",
+        given: "Editor or viewer tries to access Membership directly.",
+        when: "User opens the route or calls membership API.",
+        then: "Access is denied and the route is not shown in navigation.",
+      },
+      {
+        label: "Import rollback cannot cross tenant",
+        tone: "red",
+        priority: "P1",
+        given: "Import batch belongs to one company and another company user knows the batch id.",
+        when: "User requests rollback or reconciliation.",
+        then: "Rollback is denied and no unrelated company rows are touched.",
+      },
+      {
+        label: "Audit event is immutable",
+        tone: "green",
+        priority: "P1",
+        given: "Admin changes access, record status, commercial value, or billing plan.",
+        when: "Audit row is written.",
+        then: "Audit row cannot be edited or deleted through normal app APIs.",
+      },
+      {
+        label: "Expired session blocks sensitive change",
+        tone: "amber",
+        priority: "P1",
+        given: "Admin session is stale.",
+        when: "Admin tries to change access, billing, import commit, or commercial field.",
+        then: "System requires fresh login before completing the action.",
+      },
+    ];
+    const permissionTests = [
+      ["Admin", "Membership, users, access, billing, import commit, commercial rooms", "Allowed with audit", "red"],
+      ["Editor", "Tenders, Projects, notes, status updates, operational fields", "Allowed without commercial values", "green"],
+      ["Viewer", "Read-only operational tracker and permitted reports", "No edit, no delete, no billing", "blue"],
+      ["Operations-only", "Tenders and Projects routes", "Denied insights, reports, commercial, membership", "amber"],
+      ["Commercial user", "Insights, Forecast, Contracts, Reports", "Allowed only when admin grants access", "teal"],
+    ];
+    const auditProofs = [
+      ["Actor", "User id, role, company id, session id, and source IP or device context."],
+      ["Action", "Create, update, delete, import, rollback, checkout, access change, export, or feedback decision."],
+      ["Scope", "Company, record, user, import batch, invoice, feedback item, or review session id."],
+      ["Before and after", "Redacted field-level change payload, with commercial fields protected."],
+      ["Outcome", "Allowed, denied, failed validation, rolled back, exported, or dispatched."],
+    ];
+    const releaseGates = [
+      ["P0 security tests pass", false, "Tenant isolation, commercial privacy, admin-only membership, and auth-sensitive changes pass."],
+      ["Permission matrix verified", false, `${users.length} demo users become automated access fixtures.`],
+      ["Audit evidence export works", false, `${commandModel.governance.auditRows.length} demo audit rows become expected output fixtures.`],
+      ["Backup restore proven", false, "Restore test runs before staging is allowed to hold customer workbook data."],
+      ["Monitoring alert tested", false, "Failed login, denied tenant access, API error, and webhook failure create alerts."],
+      ["Pilot sponsor signoff", pilotFeedback.feedbackScore >= 70, `${pilotFeedback.feedbackScore}% feedback score reviewed before live data gate.`],
+    ];
+    const automationPlan = [
+      ["Unit tests", "Permission helpers, status rules, commercial redaction, schema validation, and audit event shape.", "green"],
+      ["API tests", "Auth, tenant scoping, route denial, import commit, billing webhook, and feedback create paths.", "blue"],
+      ["Integration tests", "User creates record, manager reviews value, admin changes access, audit export proves change.", "amber"],
+      ["E2E smoke tests", "Admin, editor, viewer, and operations-only users see exactly the right rooms and fields.", "teal"],
+      ["Recovery drill", "Backup, restore, rollback, alert, and incident note are rehearsed before first pilot data.", "red"],
+    ];
+    const handoff = [
+      "Security tests must be written before live customer workbook upload, not after the backend feels complete.",
+      "Use demo admin, editor, viewer, operations-only, and commercial users as fixtures for permission tests.",
+      "Every protected-data test should assert both UI hiding and API denial because hiding buttons is not enough.",
+      "Audit tests should verify allowed and denied actions so security failures become visible management evidence.",
+      `The first automated pack should cover ${totalCases} cases across ${securitySuites.length} suites before pilot launch.`,
+    ];
+    return {
+      testPackScore,
+      totalCases,
+      liveGateReadyCount,
+      securitySuites,
+      testCases,
+      permissionTests,
+      auditProofs,
+      releaseGates,
+      automationPlan,
+      signalCards: [
+        ["Test pack score", `${testPackScore}%`, "How ready the security model is to become executable tests", testPackScore >= 55 ? "green" : "amber"],
+        ["Security suites", securitySuites.length, `${totalCases} planned test cases across tenant, access, privacy, audit, import, and recovery`, "blue"],
+        ["P0 cases", testCases.filter((test) => test.priority === "P0").length, "Must pass before real customer data or paid pilot", "red"],
+        ["Live gates", `${liveGateReadyCount}/${securityModel.liveDataGates.length}`, "Current customer-data gates already ready in the model", liveGateReadyCount ? "amber" : "red"],
+      ],
+      handoff,
+    };
+  }
+
+  function buildBillingTestPackModel(commandModel, billingBlueprint, securityModel, securityTestPack) {
+    const membership = billingBlueprint.membership;
+    const readyBillingGates = billingBlueprint.productionGates.filter(([, ready]) => ready).length;
+    const billingGateScore = Math.round((readyBillingGates / Math.max(billingBlueprint.productionGates.length, 1)) * 100);
+    const seatFit = billingBlueprint.activeSeats <= membership.seats;
+    const checkoutStepsReady = billingBlueprint.checkoutFlow.filter(([, , , ready]) => ready).length;
+    const invoiceStatesReady = billingBlueprint.invoiceLifecycle.filter(([, , ready]) => ready).length;
+    const billingTestScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          billingGateScore * 0.24 +
+            securityModel.securityScore * 0.18 +
+            securityTestPack.testPackScore * 0.16 +
+            (seatFit ? 18 : 4) +
+            checkoutStepsReady * 5 +
+            invoiceStatesReady * 4,
+        ),
+      ),
+    );
+    const billingSuites = [
+      {
+        label: "Checkout session",
+        tone: "amber",
+        owner: "Billing",
+        count: 7,
+        goal: "Prove plan, seats, billing cycle, currency, success/cancel URLs, tax metadata, and company id create a safe checkout session.",
+        checks: ["USD currency", "company scoped", "seat count locked", "success URL safe"],
+      },
+      {
+        label: "Invoice lifecycle",
+        tone: "blue",
+        owner: "Finance",
+        count: 8,
+        goal: "Prove draft, open, paid, failed, void, past-due, renewal, and PDF invoice states are persisted and visible to admin only.",
+        checks: ["draft", "open", "paid", "failed", "past due"],
+      },
+      {
+        label: "Webhook verification",
+        tone: "red",
+        owner: "Backend",
+        count: 9,
+        goal: "Prove unsigned, replayed, duplicate, out-of-order, failed, paid, updated, and cancelled events cannot corrupt subscription state.",
+        checks: ["signature", "idempotency", "replay blocked", "state sync"],
+      },
+      {
+        label: "Seat reconciliation",
+        tone: "green",
+        owner: "Admin",
+        count: 6,
+        goal: "Prove active users, paid seats, overage, seat buffer, invitations, and downgrade limits stay aligned.",
+        checks: ["seat fit", "overage lock", "invite limit", "downgrade block"],
+      },
+      {
+        label: "Plan changes",
+        tone: "teal",
+        owner: "Commercial",
+        count: 6,
+        goal: "Prove monthly, annual, upgrade, downgrade, pause, cancellation, and renewal paths keep billing and access in sync.",
+        checks: ["upgrade", "annual switch", "downgrade", "cancel"],
+      },
+      {
+        label: "Billing access lock",
+        tone: "red",
+        owner: "Security",
+        count: 5,
+        goal: "Prove past-due or cancelled workspaces restrict paid actions while preserving read, export, audit, and data ownership.",
+        checks: ["past due lock", "cancelled read", "audit retained", "export allowed"],
+      },
+    ];
+    const totalCases = billingSuites.reduce((sum, suite) => sum + suite.count, 0);
+    const testCases = [
+      {
+        label: "Checkout creates company-scoped subscription intent",
+        tone: "amber",
+        priority: "P0",
+        given: `${membership.label} is selected with ${membership.seats} seats and ${membership.billingTerm.toLowerCase()} billing.`,
+        when: "Admin clicks Activate membership and checkout session is created.",
+        then: "Session contains company id, plan id, USD currency, seat quantity, cycle, success/cancel URLs, and audit event.",
+      },
+      {
+        label: "Webhook signature failure does not update billing",
+        tone: "red",
+        priority: "P0",
+        given: "A checkout or invoice webhook arrives with invalid signature.",
+        when: "Billing webhook endpoint receives the event.",
+        then: "Event is rejected, subscription state stays unchanged, and a security/billing audit row is written.",
+      },
+      {
+        label: "Paid invoice activates workspace",
+        tone: "green",
+        priority: "P0",
+        given: "Checkout session completed and invoice.paid arrives once.",
+        when: "Webhook is verified and invoice is persisted.",
+        then: "Subscription becomes active, invoice becomes paid, renewal date is stored, seat limit is enforced, and admin sees status.",
+      },
+      {
+        label: "Seat downgrade blocks when users exceed seats",
+        tone: "amber",
+        priority: "P1",
+        given: `${billingBlueprint.activeSeats} active users exist in the workspace.`,
+        when: "Admin tries to reduce billable seats below active users.",
+        then: "System blocks downgrade until users are disabled or seats are increased.",
+      },
+      {
+        label: "Past-due account locks paid expansion",
+        tone: "red",
+        priority: "P1",
+        given: "Invoice payment fails and grace period ends.",
+        when: "Admin tries to invite users, expand seats, import production data, or export premium reports.",
+        then: "Paid expansion is blocked while audit history and data export remain available.",
+      },
+      {
+        label: "Annual prepaid shows two-month saving",
+        tone: "blue",
+        priority: "P2",
+        given: "Admin switches from monthly to annual billing.",
+        when: "Billing estimate and checkout line items refresh.",
+        then: "Annual invoice charges ten monthly seats, shows the saving, and writes plan-change audit.",
+      },
+    ];
+    const webhookAssertions = [
+      ["checkout.session.completed", "Creates or activates subscription, stores external ids, writes invoice draft/paid path, and appends audit.", "green"],
+      ["invoice.paid", "Marks invoice paid, refreshes renewal date, clears warning, and unlocks paid workspace actions.", "green"],
+      ["invoice.payment_failed", "Marks invoice failed, starts grace period, alerts admin, and blocks seat expansion after grace.", "red"],
+      ["customer.subscription.updated", "Syncs plan, billing term, seat quantity, renewal date, and status without losing local audit.", "blue"],
+      ["customer.subscription.deleted", "Sets cancelled/read-export state, prevents new paid work, and retains records and audit.", "red"],
+      ["duplicate event id", "Returns idempotent success without applying the same billing movement twice.", "amber"],
+    ];
+    const seatScenarios = [
+      ["Current fit", `${billingBlueprint.activeSeats}/${membership.seats}`, seatFit ? "Seats fit selected plan." : "Workspace has more users than paid seats.", seatFit ? "green" : "red"],
+      ["Add one user", `${billingBlueprint.activeSeats + 1}/${membership.seats}`, billingBlueprint.activeSeats + 1 <= membership.seats ? "Invite can continue." : "Invite requires seat increase.", billingBlueprint.activeSeats + 1 <= membership.seats ? "green" : "amber"],
+      ["Downgrade to active users", `${billingBlueprint.activeSeats}/${billingBlueprint.activeSeats}`, "Allowed only if no pending invitations exceed the new limit.", "blue"],
+      ["Downgrade below active", `${billingBlueprint.activeSeats}/${Math.max(1, billingBlueprint.activeSeats - 1)}`, "Blocked until admin disables users or buys enough seats.", "red"],
+    ];
+    const invoiceChecks = [
+      ["Draft", "Created before payment with company, plan, seats, amount, currency, due date, and external invoice id.", "green"],
+      ["Open", "Visible to admin with payment URL and due date, hidden from non-admin users.", "amber"],
+      ["Paid", "Activates subscription, stores paid date, renewal date, and invoice PDF metadata.", "green"],
+      ["Failed", "Creates warning, alert, grace period, and access-lock countdown.", "red"],
+      ["Void/cancelled", "Stops future collection while preserving invoice audit and export history.", "red"],
+    ];
+    const releaseGates = [
+      ["Checkout test mode passed", false, "Create checkout for monthly and annual Team Workspace plans without real payment capture."],
+      ["Webhook signature verified", false, "Reject unsigned, stale, replayed, duplicate, and wrong-company webhook payloads."],
+      ["Invoice table complete", false, "Store amount, currency, status, due date, paid date, PDF URL, external ids, and company id."],
+      ["Seat limit enforced", seatFit, `${billingBlueprint.activeSeats}/${membership.seats} users currently fit selected seats.`],
+      ["Access lock tested", false, "Past-due and cancelled states block paid expansion without hiding records, exports, or audit history."],
+      ["Billing audit exported", false, "Checkout, invoice, webhook, plan change, seat change, and cancellation events export cleanly."],
+    ];
+    const automationPlan = [
+      ["Unit tests", "Price math, annual savings, seat fit, currency, billing state machine, and plan-change validation.", "green"],
+      ["API tests", "Checkout creation, invoices, subscriptions, plan changes, cancellation, and admin-only billing endpoints.", "blue"],
+      ["Webhook tests", "Signature verification, idempotency, replay protection, event ordering, and status sync.", "red"],
+      ["E2E billing smoke", "Admin chooses plan, adjusts seats, opens checkout preview, receives invoice state, and sees access lock.", "amber"],
+      ["Audit tests", "Every checkout, invoice, webhook, seat, plan, access-lock, and cancellation movement writes audit.", "teal"],
+    ];
+    const handoff = [
+      "Billing tests should run in payment-provider test mode before any live subscription is connected.",
+      "Membership billing stays USD-only, while tender and project values remain separate business currencies.",
+      "Every billing state change needs company id, actor or webhook id, before/after state, invoice id, and audit row.",
+      "Webhook tests need idempotency from day one because duplicate payment events are normal in production.",
+      `The first automated billing suite should cover ${totalCases} cases across ${billingSuites.length} suites before paid pilot launch.`,
+    ];
+    return {
+      billingTestScore,
+      totalCases,
+      readyBillingGates,
+      billingSuites,
+      testCases,
+      webhookAssertions,
+      seatScenarios,
+      invoiceChecks,
+      releaseGates,
+      automationPlan,
+      signalCards: [
+        ["Billing test score", `${billingTestScore}%`, "How ready checkout, invoice, webhook, seat, and access-lock logic is for executable tests", billingTestScore >= 55 ? "green" : "amber"],
+        ["Billing suites", billingSuites.length, `${totalCases} planned cases across checkout, invoices, webhooks, seats, plans, and locks`, "blue"],
+        ["P0 billing cases", testCases.filter((test) => test.priority === "P0").length, "Must pass before paid pilot or live payment capture", "red"],
+        ["Billing gates", `${readyBillingGates}/${billingBlueprint.productionGates.length}`, "Current production billing gates ready in the model", readyBillingGates >= 2 ? "amber" : "red"],
+      ],
+      handoff,
+    };
+  }
+
+  function buildMigrationTestPackModel(commandModel, migrationPack, securityTestPack, billingTestPack) {
+    const records = commandModel.records || companyRecords();
+    const totalRecords = migrationPack.totalRecords || records.length;
+    const commercialRows = records.filter(
+      (record) => Number(record.valueAmount) > 0 || record.agreementNo || record.negotiations?.length || record.valueText,
+    ).length;
+    const governanceRows = records.filter((record) => record.sourceWorkbook && record.sourceSheet).length;
+    const duplicateGroups = commandModel.importStudio?.duplicateGroups?.length || 0;
+    const manualRows = commandModel.importStudio?.manualEntries || 0;
+    const missingRows = commandModel.importStudio?.missingCount || 0;
+    const readyMigrationBatches = migrationPack.migrationBatches.filter(([, , , ready]) => ready).length;
+    const readyValidationGates = migrationPack.validationGates.filter(([, , ready]) => ready).length;
+    const dryRunCaseCount = migrationPack.dryRunCases.length;
+    const rollbackReady = false;
+    const migrationTestScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          migrationPack.migrationScore * 0.3 +
+            securityTestPack.testPackScore * 0.14 +
+            billingTestPack.billingTestScore * 0.08 +
+            (migrationPack.cleanCandidateCount / Math.max(totalRecords, 1)) * 18 +
+            (readyMigrationBatches / Math.max(migrationPack.migrationBatches.length, 1)) * 12 +
+            (readyValidationGates / Math.max(migrationPack.validationGates.length, 1)) * 10 +
+            (rollbackReady ? 8 : 0),
+        ),
+      ),
+    );
+    const migrationSuites = [
+      {
+        label: "Source inventory",
+        tone: "blue",
+        owner: "Data",
+        count: 7,
+        goal: "Prove every workbook, sheet, source row, and manual entry becomes a tenant-scoped import batch with traceable lineage.",
+        checks: ["workbook id", "sheet id", "row number", "batch owner"],
+      },
+      {
+        label: "Staging validation",
+        tone: "green",
+        owner: "Importer",
+        count: 9,
+        goal: "Prove rows land in staging first, then pass type, reference, client, title, status, date, owner, and category validation before commit.",
+        checks: ["staging only", "core identity", "date parse", "status map"],
+      },
+      {
+        label: "Quarantine and duplicates",
+        tone: "red",
+        owner: "Control",
+        count: 8,
+        goal: "Prove duplicates, missing fields, bad dates, manual rows, and unsafe commercial facts stop in quarantine with owner-ready reasons.",
+        checks: ["duplicate block", "missing field", "manual source", "repair reason"],
+      },
+      {
+        label: "Commit and rollback",
+        tone: "amber",
+        owner: "Backend",
+        count: 10,
+        goal: "Prove clean rows commit atomically into records, details, documents, actions, audit, and commercial vault, then roll back by batch id.",
+        checks: ["atomic commit", "batch id", "rollback", "audit retained"],
+      },
+      {
+        label: "Reconciliation",
+        tone: "teal",
+        owner: "Finance",
+        count: 7,
+        goal: "Prove source counts, status mix, client totals, value totals, commercial rows, and audit events reconcile with the uploaded workbook.",
+        checks: ["row count", "status mix", "client total", "value total"],
+      },
+      {
+        label: "Commercial privacy split",
+        tone: "amber",
+        owner: "Security",
+        count: 6,
+        goal: "Prove values, agreement numbers, LOA signals, and negotiation history route to controlled insight tables, not frontline trackers.",
+        checks: ["value hidden", "agreement vault", "insight access", "tracker clean"],
+      },
+    ];
+    const totalCases = migrationSuites.reduce((sum, suite) => sum + suite.count, 0);
+    const testCases = [
+      {
+        label: "Workbook upload creates tenant-scoped dry run",
+        tone: "blue",
+        priority: "P0",
+        given: `${migrationPack.sourceWorkbooks} source workbooks are uploaded for one company tenant.`,
+        when: "Admin starts dry run without committing rows.",
+        then: "Import batch, staging rows, source workbook, source sheet, row numbers, and audit event are created without touching live tracker records.",
+      },
+      {
+        label: "Duplicate reference quarantines before commit",
+        tone: "red",
+        priority: "P0",
+        given: `${duplicateGroups} duplicate reference groups exist in the staged import.`,
+        when: "Validation runs for reference uniqueness.",
+        then: "Duplicate rows stay out of records, receive quarantine reasons, and appear in the repair queue with source trace.",
+      },
+      {
+        label: "Commercial facts route to vault",
+        tone: "amber",
+        priority: "P0",
+        given: `${commercialRows} staged rows contain value, agreement, LOA, or negotiation information.`,
+        when: "Clean rows are committed.",
+        then: "Commercial data writes to permissioned tables while Tenders and Projects receive only tracker-safe fields.",
+      },
+      {
+        label: "Commit creates complete operational memory",
+        tone: "green",
+        priority: "P0",
+        given: `${migrationPack.cleanCandidateCount} rows pass identity, source, date, status, and owner validation.`,
+        when: "Admin approves the batch commit.",
+        then: "Records, tender/project details, documents, actions, audit events, and import summary are created atomically.",
+      },
+      {
+        label: "Rollback reverses only the selected batch",
+        tone: "amber",
+        priority: "P1",
+        given: "A committed batch contains records, details, commercial facts, documents, actions, and audit events.",
+        when: "Admin triggers rollback by import batch id.",
+        then: "Created rows are removed or reversed for that company only, rollback audit remains, and unrelated company data is untouched.",
+      },
+      {
+        label: "Reconciliation flags source mismatch",
+        tone: "teal",
+        priority: "P1",
+        given: "Source workbook counts, migrated counts, commercial counts, and audit counts are compared after dry run.",
+        when: "Any count, value, source sheet, or status mix does not match expected totals.",
+        then: "Migration report blocks pilot approval and explains which workbook, sheet, or row group needs correction.",
+      },
+    ];
+    const validationAssertions = migrationPack.validationGates.map(([label, note, ready, tone]) => ({
+      label,
+      note,
+      ready,
+      tone,
+    }));
+    const dryRunAssertions = migrationPack.dryRunCases.map(([label, note], index) => ({
+      label,
+      note,
+      tone: ["green", "red", "blue", "amber", "teal"][index % 5],
+    }));
+    const reconciliationChecks = [
+      ["Record counts", `${totalRecords}`, "Uploaded rows, staged rows, clean candidates, quarantine rows, and committed rows must reconcile.", "green"],
+      ["Source trace", `${governanceRows}/${totalRecords}`, "Every committed record should retain workbook, sheet, row, and import batch lineage.", "blue"],
+      ["Commercial split", commercialRows, "Value, agreement, and negotiation facts must reconcile to controlled commercial tables.", "amber"],
+      ["Quarantine signals", migrationPack.quarantineCount, "Duplicates, manual rows, missing fields, and unsafe rows must produce visible repair reasons.", "red"],
+      ["Audit events", commandModel.governance.auditRows.length, "Dry run, validation, commit, rollback, and repair movements must append audit proof.", "teal"],
+      ["Cleanup load", missingRows + manualRows + duplicateGroups, "Rows needing date, source, duplicate, or manual cleanup must remain measurable before pilot signoff.", "amber"],
+    ];
+    const releaseGates = [
+      ["Dry run creates no live rows", false, "Staging, validation, preview, and audit run without writing production tracker records."],
+      ["Duplicate quarantine tested", duplicateGroups === 0, `${duplicateGroups} duplicate reference groups currently need explicit quarantine or merge behavior.`],
+      ["Commercial split tested", false, "Value, agreement, LOA, and negotiation rows must prove tracker-safe output before operations users test imports."],
+      ["Rollback tested", rollbackReady, "Batch rollback must reverse committed records and actions without touching other tenants."],
+      ["Reconciliation report exported", false, "Workbook counts, status mix, client counts, commercial totals, and source sheets must export after dry run."],
+      ["Migration owner signoff", migrationPack.migrationScore >= 70, `${migrationPack.migrationScore}% migration readiness is modeled for admin review.`],
+    ];
+    const automationPlan = [
+      ["Parser tests", "Header aliases, type/status normalization, date parsing, value parsing, currency capture, and source metadata.", "blue"],
+      ["Validation tests", "Required fields, duplicate references, manual source rows, malformed dates, missing owners, and source trace gates.", "green"],
+      ["API tests", "Create batch, upload staging rows, validate, quarantine, preview, commit, rollback, and export reconciliation.", "amber"],
+      ["Privacy tests", "Tracker endpoints exclude commercial fields while insight endpoints return controlled commercial facts for allowed roles.", "red"],
+      ["Reconciliation tests", "Source row counts, migrated counts, status mix, client totals, value totals, audit events, and rollback summary.", "teal"],
+    ];
+    return {
+      migrationTestScore,
+      totalCases,
+      dryRunCaseCount,
+      readyMigrationBatches,
+      readyValidationGates,
+      migrationSuites,
+      testCases,
+      validationAssertions,
+      dryRunAssertions,
+      reconciliationChecks,
+      releaseGates,
+      automationPlan,
+      signalCards: [
+        ["Migration test score", `${migrationTestScore}%`, "How ready workbook onboarding is to become executable migration QA", migrationTestScore >= 55 ? "green" : "amber"],
+        ["Migration suites", migrationSuites.length, `${totalCases} planned cases across source, staging, quarantine, commit, rollback, reconciliation, and privacy`, "blue"],
+        ["P0 migration cases", testCases.filter((test) => test.priority === "P0").length, "Must pass before any customer workbook touches production tables", "red"],
+        ["Migration gates", `${readyValidationGates}/${migrationPack.validationGates.length}`, "Current validation gates already ready in the migration model", readyValidationGates >= 2 ? "amber" : "red"],
+      ],
+      handoff: [
+        "Migration tests should run before the first real customer workbook is accepted into a production workspace.",
+        "Every imported row needs tenant id, source workbook, source sheet, source row, batch id, validation result, and audit history.",
+        "Commercial values must be tested as protected facts because operations users should not see them in Tenders or Projects.",
+        "Dry-run preview, quarantine repair, commit approval, rollback, and reconciliation export should become one repeatable admin workflow.",
+        `The first automated migration suite should cover ${totalCases} cases across ${migrationSuites.length} suites before live onboarding.`,
+      ],
+    };
+  }
+
+  function buildPilotFeedbackPersistenceModel(commandModel, pilotFeedback, backendScaffold, securityTestPack, billingTestPack, migrationTestPack) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const feedbackItems = [
+      {
+        id: "FB-001",
+        room: "Backend",
+        severity: "P0",
+        status: "Open",
+        owner: "Backend",
+        tone: "red",
+        title: "Real tenant database and API not live",
+        note: "Pilot feedback cannot be trusted until observations can be stored against company, user, room, and workflow.",
+      },
+      {
+        id: "FB-002",
+        room: "Security",
+        severity: "P0",
+        status: "Open",
+        owner: "Security",
+        tone: "red",
+        title: "Commercial privacy needs API proof",
+        note: "Operations users should not receive values, agreements, invoices, or membership data from backend responses.",
+      },
+      {
+        id: "FB-003",
+        room: "Import",
+        severity: "P1",
+        status: "Triage",
+        owner: "Data",
+        tone: "amber",
+        title: "Workbook repair queue needs persistent reasons",
+        note: "Duplicate, missing-date, manual-source, and quarantine reasons need history and owner-ready repair notes.",
+      },
+      {
+        id: "FB-004",
+        room: "Membership",
+        severity: "P1",
+        status: "Triage",
+        owner: "Billing",
+        tone: "amber",
+        title: "Paid conversion should reference pilot outcome",
+        note: "Subscription request should carry sponsor decision, pilot score, blockers, and accepted rollout scope.",
+      },
+      {
+        id: "FB-005",
+        room: "Tenders",
+        severity: "P2",
+        status: "Owned",
+        owner: "Product",
+        tone: "green",
+        title: "Tracker speed should be measured against Excel",
+        note: "Capture daily-user timing, filter friction, edit confidence, and whether the sheet feels faster than current trackers.",
+      },
+      {
+        id: "FB-006",
+        room: "Weekly Review",
+        severity: "P2",
+        status: "Owned",
+        owner: "Customer Success",
+        tone: "teal",
+        title: "Review output needs sponsor signoff",
+        note: "Minutes, decisions, owner commitments, and dispatch notes should become a review export with signoff state.",
+      },
+      {
+        id: "FB-007",
+        room: "Reports",
+        severity: "P2",
+        status: "Backlog",
+        owner: "Product",
+        tone: "blue",
+        title: "Management pack should preserve feedback themes",
+        note: "Sponsor exports need recurring themes, open blockers, closed fixes, deferred asks, and paid-launch recommendation.",
+      },
+      {
+        id: "FB-008",
+        room: "Governance",
+        severity: "P1",
+        status: "Retest",
+        owner: "Governance",
+        tone: "blue",
+        title: "Feedback decisions need audit trail",
+        note: "Fix, defer, accept, reject, and convert-to-roadmap decisions should write immutable audit evidence.",
+      },
+    ];
+    const openFeedback = feedbackItems.filter((item) => ["Open", "Triage", "Owned", "Retest"].includes(item.status)).length;
+    const p0Items = feedbackItems.filter((item) => item.severity === "P0").length;
+    const ownedItems = feedbackItems.filter((item) => item.owner && item.status !== "Open").length;
+    const exportReady = feedbackItems.filter((item) => ["Retest", "Backlog"].includes(item.status)).length;
+    const persistenceScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          pilotFeedback.feedbackScore * 0.24 +
+            backendScaffold.scaffoldScore * 0.22 +
+            securityTestPack.testPackScore * 0.14 +
+            billingTestPack.billingTestScore * 0.1 +
+            migrationTestPack.migrationTestScore * 0.1 +
+            (ownedItems / Math.max(feedbackItems.length, 1)) * 14 +
+            (exportReady / Math.max(feedbackItems.length, 1)) * 6,
+        ),
+      ),
+    );
+    const feedbackTables = [
+      ["feedback_sessions", "Pilot kickoff, UAT week, fix sprint, sponsor review, and pilot closeout sessions.", "green"],
+      ["feedback_items", "Every blocker, friction, enhancement, training need, and commercial signal with owner and status.", "blue"],
+      ["feedback_activity", "Comments, status changes, owner changes, retest notes, and decision history.", "teal"],
+      ["feedback_attachments", "Screenshots, report exports, source workbook references, and evidence links.", "amber"],
+      ["feedback_decisions", "Fix now, fix later, accept, reject, train, defer, convert to roadmap, or paid rollout decision.", "red"],
+      ["feedback_exports", "Sponsor review pack, fix sprint board, pilot decision memo, and product roadmap handoff.", "green"],
+    ];
+    const captureFields = [
+      ["User context", "company_id, user_id, role, section_key, room, workflow, and browser/device note.", "blue"],
+      ["Observation", "expected result, actual result, impact statement, screenshot link, and record reference.", "green"],
+      ["Triage", "severity, category, owner, due date, status, affected module, and retest requirement.", "amber"],
+      ["Decision", "decision type, sponsor note, product note, accepted scope, paid-launch impact, and audit event id.", "red"],
+      ["Customer success", "follow-up date, training note, adoption concern, sentiment, and expansion signal.", "teal"],
+    ];
+    const statusWorkflow = [
+      ["Captured", feedbackItems.length, "New UAT observation received from pilot user or sponsor.", "blue"],
+      ["Triaged", feedbackItems.filter((item) => ["Triage", "Owned", "Retest", "Backlog"].includes(item.status)).length, "Impact, severity, room, owner, and target decision assigned.", "amber"],
+      ["Owned", ownedItems, "A named team owns the fix, training, or decision follow-up.", "green"],
+      ["Retest", feedbackItems.filter((item) => item.status === "Retest").length, "Pilot user or sponsor can confirm the same workflow again.", "teal"],
+      ["Backlog", feedbackItems.filter((item) => item.status === "Backlog").length, "Accepted improvement stored for roadmap without blocking pilot.", "blue"],
+    ];
+    const apiContracts = [
+      ["POST /feedback", "Create item with tenant, room, role, workflow, severity, text, and optional record id.", "green"],
+      ["PATCH /feedback/:id", "Update owner, status, category, due date, decision, and retest state.", "amber"],
+      ["POST /feedback/:id/activity", "Append comment, status change, attachment, decision, or sponsor note.", "blue"],
+      ["GET /feedback/export", "Export sponsor pack, fix sprint board, pilot decision memo, and roadmap items.", "teal"],
+      ["POST /pilot-sessions", "Create kickoff, UAT, sponsor review, or closeout sessions linked to feedback items.", "red"],
+    ];
+    const exportPacks = [
+      ["Sponsor review pack", "Open blockers, closed fixes, adoption signal, feedback themes, pilot score, and paid-launch decision.", "green"],
+      ["Fix sprint board", "P0/P1 items grouped by owner, due date, room, retest state, and production gate.", "red"],
+      ["Customer success digest", "Training needs, user friction, adoption concerns, next meeting notes, and expansion signal.", "teal"],
+      ["Product roadmap handoff", "Enhancements accepted into backlog with room, impact, user role, and sponsor priority.", "blue"],
+    ];
+    const releaseGates = [
+      ["Feedback tables migrated", false, "Sessions, items, activity, attachments, decisions, and exports exist in tenant database."],
+      ["UAT form endpoint live", false, "Pilot users can submit observations with room, role, workflow, severity, and evidence link."],
+      ["Owner workflow enforced", ownedItems >= 6, `${ownedItems}/${feedbackItems.length} modeled feedback items already have owners beyond raw capture.`],
+      ["Decision audit written", false, "Every fix, defer, accept, reject, training, or roadmap decision writes immutable audit evidence."],
+      ["Sponsor export generated", false, "Pilot sponsor receives a structured review pack instead of scattered notes."],
+      ["Commercial redaction tested", securityTestPack.testPackScore >= 55, "Exports hide values, invoices, and membership details unless the reviewer has permission."],
+    ];
+    return {
+      persistenceScore,
+      feedbackItems,
+      openFeedback,
+      p0Items,
+      ownedItems,
+      feedbackTables,
+      captureFields,
+      statusWorkflow,
+      apiContracts,
+      exportPacks,
+      releaseGates,
+      signalCards: [
+        ["Persistence score", `${persistenceScore}%`, "How ready pilot feedback is to become durable SaaS data", persistenceScore >= 60 ? "green" : "amber"],
+        ["Feedback items", feedbackItems.length, `${openFeedback} open / ${p0Items} P0 blockers modeled`, "blue"],
+        ["Schema tables", feedbackTables.length, "Sessions, items, activity, attachments, decisions, and exports", "green"],
+        ["Pilot users", users.length, "Admin, editor, and viewer roles can become UAT participants", "teal"],
+      ],
+      handoff: [
+        "Pilot feedback must become structured company data, not screenshots and chat messages.",
+        "Every feedback item needs room, role, workflow, severity, owner, status, decision, retest state, and audit history.",
+        "Sponsor review should show what changed, what remains blocked, what goes to backlog, and whether paid launch is recommended.",
+        "Customer success should use the same feedback table for training notes, adoption risks, expansion signals, and follow-up cadence.",
+        "Feedback exports must respect commercial privacy and user access, just like operational trackers and insight rooms.",
+      ],
+    };
+  }
+
+  function buildBackendMvpTicketBoardModel(commandModel, backendScaffold, securityTestPack, billingTestPack, migrationTestPack, feedbackPersistence) {
+    const implementationTickets = [
+      {
+        id: "BE-001",
+        lane: "Foundation",
+        priority: "P0",
+        owner: "Platform",
+        tone: "green",
+        status: "Ready",
+        title: "Create production repository skeleton",
+        definition: "apps/web, apps/api, packages/db, packages/domain, packages/importer, packages/billing, packages/audit, and infra folders exist with lint/test/build commands.",
+      },
+      {
+        id: "BE-002",
+        lane: "Tenant data",
+        priority: "P0",
+        owner: "Data",
+        tone: "red",
+        status: "Next",
+        title: "Ship tenant identity migrations",
+        definition: "companies, users, sessions, invitations, access profiles, and user_section_access tables enforce company isolation from day one.",
+      },
+      {
+        id: "BE-003",
+        lane: "Auth",
+        priority: "P0",
+        owner: "Backend",
+        tone: "red",
+        status: "Next",
+        title: "Build login, sessions, and password reset",
+        definition: "Secure login issues company-scoped sessions, supports reset flow, and blocks inactive users with audit logging.",
+      },
+      {
+        id: "BE-004",
+        lane: "Access",
+        priority: "P0",
+        owner: "Security",
+        tone: "blue",
+        status: "Next",
+        title: "Enforce section access middleware",
+        definition: "API denies commercial, membership, reports, governance, import, and tracker routes unless the user has exact access.",
+      },
+      {
+        id: "BE-005",
+        lane: "Records",
+        priority: "P0",
+        owner: "Backend",
+        tone: "green",
+        status: "Next",
+        title: "Move Tenders and Projects to records API",
+        definition: "records, tender_details, project_details, notes, status updates, filters, CSV export, and client memory leave browser storage.",
+      },
+      {
+        id: "BE-006",
+        lane: "Commercial vault",
+        priority: "P1",
+        owner: "Commercial",
+        tone: "amber",
+        status: "Blocked",
+        title: "Protect value, agreement, LOA, and negotiation APIs",
+        definition: "Commercial facts are stored outside operational trackers and served only to insight-authorized users with audit events.",
+      },
+      {
+        id: "BE-007",
+        lane: "Import",
+        priority: "P1",
+        owner: "Data",
+        tone: "blue",
+        status: "Blocked",
+        title: "Build import staging, dry-run, quarantine, commit, and rollback",
+        definition: "Excel/CSV rows create import batches, staging rows, validation errors, quarantine reasons, clean commits, rollback, and reconciliation export.",
+      },
+      {
+        id: "BE-008",
+        lane: "Billing",
+        priority: "P1",
+        owner: "Billing",
+        tone: "amber",
+        status: "Blocked",
+        title: "Implement checkout, invoices, webhooks, and seat sync",
+        definition: "USD membership checkout, invoice status, webhook verification, seat limits, plan changes, cancellation, and billing audit become persistent.",
+      },
+      {
+        id: "BE-009",
+        lane: "Feedback",
+        priority: "P1",
+        owner: "Customer Success",
+        tone: "teal",
+        status: "Blocked",
+        title: "Persist pilot feedback and sponsor exports",
+        definition: "feedback_sessions, feedback_items, activity, attachments, decisions, exports, retest state, and sponsor packs become tenant data.",
+      },
+      {
+        id: "BE-010",
+        lane: "Audit",
+        priority: "P0",
+        owner: "Governance",
+        tone: "green",
+        status: "Next",
+        title: "Create immutable audit writer",
+        definition: "Allowed, denied, failed, imported, rolled back, billed, exported, and feedback decisions append audit events with actor and scope.",
+      },
+      {
+        id: "BE-011",
+        lane: "Tests",
+        priority: "P0",
+        owner: "QA",
+        tone: "red",
+        status: "Next",
+        title: "Stand up security, billing, migration, and feedback test fixtures",
+        definition: "Admin, editor, viewer, operations-only, commercial, tenant, import, invoice, feedback, and audit fixtures run in CI.",
+      },
+      {
+        id: "BE-012",
+        lane: "Release",
+        priority: "P1",
+        owner: "Platform",
+        tone: "blue",
+        status: "Blocked",
+        title: "Prepare staging deployment, backups, monitoring, and rollback",
+        definition: "Preview, staging, production envs, backup restore drill, logs, alerts, secrets, deployment checklist, and rollback runbook are ready.",
+      },
+    ];
+    const readyTickets = implementationTickets.filter((ticket) => ticket.status === "Ready").length;
+    const nextTickets = implementationTickets.filter((ticket) => ticket.status === "Next").length;
+    const blockedTickets = implementationTickets.filter((ticket) => ticket.status === "Blocked").length;
+    const p0Tickets = implementationTickets.filter((ticket) => ticket.priority === "P0").length;
+    const ticketBoardScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendScaffold.scaffoldScore * 0.26 +
+            securityTestPack.testPackScore * 0.18 +
+            billingTestPack.billingTestScore * 0.12 +
+            migrationTestPack.migrationTestScore * 0.12 +
+            feedbackPersistence.persistenceScore * 0.12 +
+            (readyTickets / Math.max(implementationTickets.length, 1)) * 10 +
+            (nextTickets / Math.max(implementationTickets.length, 1)) * 10,
+        ),
+      ),
+    );
+    const laneCards = [
+      ["Foundation", "Platform", "Repo, commands, package boundaries, CI shell, local env, and seed runner.", "green"],
+      ["Tenant data", "Data", "Company isolation, identity tables, access grants, sessions, invitations, and migrations.", "red"],
+      ["Records", "Backend", "Tenders and Projects CRUD, notes, filters, status movement, client memory, and CSV export.", "green"],
+      ["Commercial vault", "Commercial", "Values, agreements, negotiations, forecast, contracts, insights, and report-safe redaction.", "amber"],
+      ["Import and migration", "Data", "Workbook staging, validation errors, quarantine, dry run, commit, rollback, and reconciliation.", "blue"],
+      ["Billing and feedback", "Growth", "Checkout, invoices, webhooks, seats, pilot feedback, sponsor exports, and customer-success memory.", "teal"],
+    ];
+    const routeTickets = [
+      ["AUTH-01", "POST /auth/login", "Session issue, inactive-user block, audit success/failure.", "red"],
+      ["AUTH-02", "POST /auth/reset", "Password reset request, token, expiry, and audit.", "red"],
+      ["ACCESS-01", "PATCH /users/:id/access", "Admin-only section grants with before/after audit.", "blue"],
+      ["REC-01", "GET /records", "Company-scoped trackers with filters and commercial redaction.", "green"],
+      ["REC-02", "PATCH /records/:id", "Operational updates, notes, status, owner, dates, and audit.", "green"],
+      ["COM-01", "GET /insights/tenders", "Permissioned commercial facts, decision queues, and management review data.", "amber"],
+      ["IMP-01", "POST /imports/:id/dry-run", "Validation, quarantine, source trace, preview counts, and no live writes.", "blue"],
+      ["BILL-01", "POST /billing/webhook", "Signature verification, idempotency, invoice/subscription sync, and audit.", "amber"],
+      ["FB-01", "POST /feedback", "Pilot item capture with tenant, room, role, workflow, severity, and evidence.", "teal"],
+    ];
+    const schemaSlices = [
+      ["Slice 1", "Tenant identity", "companies, users, sessions, invitations, user_section_access", "red"],
+      ["Slice 2", "Operational tracker", "records, tender_details, project_details, notes, client_memory", "green"],
+      ["Slice 3", "Commercial vault", "commercial_facts, negotiation_rounds, agreements, forecast_snapshots", "amber"],
+      ["Slice 4", "Workflow memory", "documents, actions, reminders, review_sessions, dispatches", "blue"],
+      ["Slice 5", "Import control", "import_batches, staging_rows, validation_errors, quarantine_items, rollback_events", "blue"],
+      ["Slice 6", "Billing and feedback", "subscriptions, invoices, billing_events, feedback_sessions, feedback_items, feedback_exports", "teal"],
+    ];
+    const sprintPlan = [
+      ["Week 1", "Foundation and tenant identity", "Create repo, database connection, migrations, auth skeleton, seed tenant, and CI checks.", "green"],
+      ["Week 2", "Access and records API", "Ship login, session guard, user access, records CRUD, notes, filters, CSV export, and audit writer.", "red"],
+      ["Week 3", "Commercial and import runway", "Build commercial vault endpoints, import staging, dry run, quarantine, and rollback proof.", "amber"],
+      ["Week 4", "Billing, feedback, and pilot gates", "Connect billing test mode, feedback persistence, sponsor exports, security tests, and staging deployment.", "blue"],
+    ];
+    const dependencyOrder = [
+      ["1", "Tenant identity before everything", "Every route, table, audit row, invoice, import, and feedback item must carry company scope.", "red"],
+      ["2", "Audit before sensitive edits", "Access, commercial, billing, import, and feedback decisions should write evidence from first implementation.", "green"],
+      ["3", "Records before insights", "Operational tracker tables unlock Tenders and Projects before commercial rooms move to backend.", "blue"],
+      ["4", "Security tests before live data", "Tenant isolation and commercial redaction tests must pass before workbook upload or paid pilot.", "amber"],
+      ["5", "Staging before production", "Preview and staging need backup, monitoring, logs, secrets, and rollback drills before customer data.", "teal"],
+    ];
+    const releaseGates = [
+      ["Tenant schema migrated", false, "Company, users, sessions, access grants, and seed admin exist in database."],
+      ["Auth and access guard tested", false, "Admin, editor, viewer, operations-only, and commercial fixtures pass expected route access."],
+      ["Records API live", false, `${commandModel.records.length} sample records can be seeded, edited, filtered, exported, and audited.`],
+      ["Commercial redaction proven", false, "Operations users cannot receive value, agreement, negotiation, invoice, or membership fields."],
+      ["Import dry run and rollback tested", false, `${migrationTestPack.totalCases} migration test cases inform the import acceptance checks.`],
+      ["Billing and feedback in test mode", false, "Checkout/webhook and feedback/sponsor export flows persist in staging without live payment capture."],
+      ["Deployment rollback rehearsed", false, "Staging deploy, smoke test, backup restore, monitoring alert, and rollback runbook are rehearsed."],
+    ];
+    return {
+      ticketBoardScore,
+      readyTickets,
+      nextTickets,
+      blockedTickets,
+      p0Tickets,
+      implementationTickets,
+      laneCards,
+      routeTickets,
+      schemaSlices,
+      sprintPlan,
+      dependencyOrder,
+      releaseGates,
+      signalCards: [
+        ["Ticket score", `${ticketBoardScore}%`, "How ready the backend plan is to become tracked implementation work", ticketBoardScore >= 60 ? "green" : "amber"],
+        ["MVP tickets", implementationTickets.length, `${p0Tickets} P0 / ${blockedTickets} waiting on backend foundation`, "blue"],
+        ["API tickets", routeTickets.length, "Auth, access, records, commercial, import, billing, and feedback routes", "teal"],
+        ["Schema slices", schemaSlices.length, "Tenant, tracker, commercial, workflow, import, billing, and feedback database areas", "green"],
+      ],
+      handoff: [
+        "This board should become the first production GitHub issue set when the real backend repository is created.",
+        "Do not start with billing or imports before tenant identity, auth, access middleware, records API, and audit writer are working.",
+        "Every ticket needs a test, a data slice, an API route or screen, and a release gate before it is considered done.",
+        "The static prototype remains the selling demo while backend tickets move the product toward a real SaaS pilot.",
+        "Once BE-001 through BE-005 and BE-010 are done, PursuitDesk can begin moving away from browser-only demo state.",
+      ],
+    };
+  }
+
+  function buildProductionHostingRunbookModel(commandModel, backendTicketBoard, securityTestPack, billingTestPack, migrationTestPack, feedbackPersistence) {
+    const readyReleaseGates = backendTicketBoard.releaseGates.filter(([, ready]) => ready).length;
+    const hostingReadiness = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendTicketBoard.ticketBoardScore * 0.28 +
+            securityTestPack.testPackScore * 0.18 +
+            billingTestPack.billingTestScore * 0.1 +
+            migrationTestPack.migrationTestScore * 0.1 +
+            feedbackPersistence.persistenceScore * 0.1 +
+            (readyReleaseGates / Math.max(backendTicketBoard.releaseGates.length, 1)) * 10 +
+            12,
+        ),
+      ),
+    );
+    const environmentMatrix = [
+      ["Local", "Developer machine", "Seeded demo tenant, test payment keys, local database, storage emulator, and fast reset scripts.", "green"],
+      ["Preview", "Every branch or pull request", "Disposable deployment, branch database schema, smoke tests, and no customer files.", "blue"],
+      ["Staging", "Pilot rehearsal", "Pilot-like data, test webhooks, restore drill, access/privacy QA, and sponsor export rehearsal.", "amber"],
+      ["Production", "Live customer tenants", "Managed app, locked secrets, tenant database, monitoring, backups, incident owner, and rollback path.", "red"],
+    ];
+    const hostingLanes = [
+      ["DNS and domains", "pursuitdesk.app, app.pursuitdesk.app, api.pursuitdesk.app, and status.pursuitdesk.app with HTTPS.", "blue"],
+      ["Frontend hosting", "Static web build, CDN cache, route fallback, cache busting, security headers, and preview URLs.", "green"],
+      ["API service", "Node API, health route, background worker, request logs, rate limits, and deployment smoke checks.", "red"],
+      ["Database", "Managed PostgreSQL, migrations, indexes, daily backups, pre-release snapshots, and restore rehearsal.", "amber"],
+      ["Object storage", "Source workbooks, evidence packs, report exports, signed URLs, retention rules, and virus-scan hook.", "blue"],
+      ["Secrets vault", "DB URL, session secret, payment keys, webhook secret, storage keys, and rotation calendar.", "red"],
+      ["Monitoring", "Uptime, API errors, login failures, webhook failures, import failures, backup status, and alert routing.", "teal"],
+      ["Deployment control", "CI build, tests, migration gate, smoke test, release notes, rollback command, and owner sign-off.", "green"],
+    ];
+    const deploymentChecklist = [
+      ["Build and test", "Run app build, API tests, security suite, billing suite, migration suite, and feedback smoke tests.", false, "green"],
+      ["Migrate staging", "Apply database migrations to staging, seed pilot tenant, and verify tenant isolation.", false, "blue"],
+      ["Restore rehearsal", "Restore latest backup into staging and compare users, records, invoices, imports, and feedback.", false, "amber"],
+      ["Secret verification", "Confirm live secrets are present only in the production vault and test keys stay outside production.", false, "red"],
+      ["Smoke release", "Login, record edit, insight redaction, import dry run, invoice webhook, feedback capture, and report export.", false, "teal"],
+      ["Release decision", "Named owner approves deploy window, rollback owner, customer notice, and post-release watch period.", false, "green"],
+    ];
+    const backupRunbook = [
+      ["Database backup", "Daily automated backup, pre-deploy snapshot, weekly restore drill, and retention policy by tenant.", "red"],
+      ["Workbook storage", "Uploaded source workbooks and evidence packs keep object versioning and deletion controls.", "blue"],
+      ["Audit archive", "Access, billing, import, export, feedback, and admin events are retained with immutable export.", "green"],
+      ["Recovery proof", "Staging restore must prove record counts, commercial redaction, invoices, and feedback history survive.", "amber"],
+    ];
+    const monitoringSignals = [
+      ["Uptime check", "/health and /api/health must alert after consecutive failures.", "green"],
+      ["Auth failures", "Spike in login failures or inactive-user attempts routes to admin and security owner.", "red"],
+      ["Tenant isolation", "Any denied cross-tenant access attempt is logged and escalated.", "blue"],
+      ["Billing webhooks", "Failed, duplicate, or unsigned payment events create high-priority operations alerts.", "amber"],
+      ["Import pipeline", "Quarantine spikes, rollback events, and validation failures are visible before commit.", "teal"],
+      ["Backup health", "Missed backup, failed restore drill, or expired retention policy blocks live release.", "red"],
+    ];
+    const rollbackSteps = [
+      ["1", "Freeze release", "Pause the pipeline, stop new migrations, and assign one release owner.", "red"],
+      ["2", "Rollback app", "Redeploy the last known good web and API build from the release archive.", "blue"],
+      ["3", "Protect data", "If migrations ran, switch to maintenance mode and restore only through the approved database plan.", "amber"],
+      ["4", "Verify tenant access", "Smoke login, section access, commercial redaction, record edit, and audit events.", "green"],
+      ["5", "Communicate", "Send internal status, customer notice if needed, known issue, and next review time.", "teal"],
+      ["6", "Postmortem", "Capture cause, blast radius, lost data check, prevention ticket, and release gate update.", "green"],
+    ];
+    const launchGates = [
+      ["DNS and HTTPS ready", false, "App, API, and status domains resolve with certificates and security headers."],
+      ["Production secrets locked", false, "Live keys are in the vault, access is role-bound, and rotation is scheduled."],
+      ["Staging smoke passed", false, "Auth, access, tracker, insight redaction, import, billing, feedback, and reports pass."],
+      ["Backup restore tested", false, "Database and object-storage restore are proven in staging before customer data."],
+      ["Monitoring alert tested", false, "Uptime, API, auth, billing, import, and backup alerts reach named owners."],
+      ["Rollback rehearsed", false, "Last good build, migration rollback plan, and customer communication are practiced."],
+      ["Live data approval", securityTestPack.testPackScore >= 55, "Security test pack is strong enough to guide live-data approval but still needs executable CI."],
+    ];
+    return {
+      hostingReadiness,
+      environmentMatrix,
+      hostingLanes,
+      deploymentChecklist,
+      backupRunbook,
+      monitoringSignals,
+      rollbackSteps,
+      launchGates,
+      signalCards: [
+        ["Hosting readiness", `${hostingReadiness}%`, "How close the SaaS environment plan is to a live pilot runway", hostingReadiness >= 65 ? "green" : "amber"],
+        ["Environments", environmentMatrix.length, "Local, preview, staging, and production operating boundaries", "blue"],
+        ["Hosting lanes", hostingLanes.length, "Domains, app, API, database, storage, secrets, monitoring, and deployment", "teal"],
+        ["Launch gates", launchGates.length, `${launchGates.filter(([, ready]) => ready).length} currently pass in prototype logic`, "red"],
+      ],
+      handoff: [
+        "GitHub Pages remains perfect for sales demos, but live customer data needs app hosting, API hosting, database, secrets, monitoring, backups, and rollback.",
+        "Production must not reuse demo storage or browser-only state; tenant identity, access, audit, and data retention need backend enforcement.",
+        "Staging is the rehearsal room: every release should prove login, tracker edits, insight redaction, import dry run, billing webhook, feedback capture, and report export.",
+        "A backup is not real until a restore has been tested and compared against tenant records, invoices, imports, documents, and feedback history.",
+        "The production hosting runbook should become the first DevOps checklist when PursuitDesk moves from static prototype to paid SaaS pilot.",
+      ],
+    };
+  }
+
   function buildProductBuildTracker() {
     return {
-      version: "v80 Build Tracker",
-      phase: "Management operating layer",
+      version: "v96 Production Hosting Runbook",
+      phase: "Production hosting runbook",
       lane: "Static product prototype on GitHub Pages",
-      pace: "61 meaningful versions since rebrand",
-      summary: "The demo is strong enough for guided feedback. The SaaS build still needs clean schemas, backend, billing, and deployment.",
+      pace: "77 meaningful versions since rebrand",
+      summary: "The prototype now maps how PursuitDesk should move from GitHub Pages demo into a safe hosted SaaS environment with domains, staging, production, secrets, backups, monitoring, deployment, rollback, and launch gates.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 78, "Trackers, insights, management rooms, membership, and admin controls are live in demo form.", "teal"],
-        ["Data architecture", 48, "Operational, commercial, and governance layers are separated but need real schemas.", "blue"],
-        ["Production backend", 10, "Real tenant database, auth, APIs, audit persistence, and hosting are not built yet.", "red"],
-        ["Billing model", 22, "USD pricing and seat logic exist as prototype; checkout and invoices are pending.", "amber"],
-        ["Pilot readiness", 42, "Useful for demos and feedback, but not ready for live customer data yet.", "blue"],
+        ["Static prototype", 99, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, and hosting runbook are live in demo form.", "teal"],
+        ["Data architecture", 96, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, billing events, audit retention, fixtures, hosting environments, and release gates are mapped.", "blue"],
+        ["Production backend", 66, "Repo structure, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, and production hosting runbook are mapped, but real tenant database, auth, APIs, audit persistence, checkout, import pipeline, and hosting are not built yet.", "red"],
+        ["Billing model", 53, "USD pricing, seat logic, checkout flow, invoice lifecycle, webhooks, plan changes, access locks, audit events, billing tests, backend billing tickets, and hosting handoff are now mapped.", "amber"],
+        ["Pilot readiness", 88, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, security tests, billing tests, access, security, billing, hosting, monitoring, backup, and deployment gates.", "green"],
       ],
       phases: [
         ["0", "Positioning", "Done", "PursuitDesk direction is set."],
@@ -4124,13 +6490,28 @@
         ["3", "Operational trackers", "Mostly done", "Tenders and Projects are frontline workspaces."],
         ["4", "Management insights", "Active", "Insights now run review, minutes, and dispatch."],
         ["5", "Admin and membership", "Active", "Access control and pricing are simulated."],
-        ["6", "Clean data model", "Next", "Schema room should convert the prototype into SaaS structure."],
-        ["7", "Backend MVP", "Next", "Auth, tenant database, APIs, and audit need implementation."],
+        ["6", "Clean data model", "Active", "Schema room converts the prototype into SaaS structure."],
+        ["7", "Backend architecture", "Active", "API, auth, tenant, deployment, storage, audit, and backup plan are mapped."],
+        ["8", "Import normalization", "Active", "Excel rows now have staging, routing, quarantine, and commit gates."],
+        ["9", "Pilot readiness", "Active", "Launch checklist, readiness lanes, blockers, and feedback loop are visible."],
+        ["10", "SaaS conversion sprint", "Active", "Production repo shape, API groups, database objects, and implementation runway are mapped."],
+        ["11", "Production security model", "Active", "Identity, tenant, permission, commercial privacy, audit, backup, monitoring, and live-data gates are mapped."],
+        ["12", "Billing checkout blueprint", "Active", "Checkout flow, invoice lifecycle, seat reconciliation, subscription webhooks, plan changes, and billing audit gates are mapped."],
+        ["13", "Data migration pack", "Active", "Source inventory, target tables, migration batches, validation gates, dry-run cases, cutover, rollback, and reconciliation are mapped."],
+        ["14", "Pilot feedback room", "Active", "UAT feedback, adoption score, blockers, follow-up cadence, form fields, and launch decisions are mapped."],
+        ["15", "Backend repository scaffold", "Active", "Apps, API, database, domain packages, billing, importer, audit, environments, test packs, and sprint backlog are mapped."],
+        ["16", "Security test pack", "Active", "Tenant isolation, access, commercial privacy, audit, import, recovery, monitoring, and live-data gates are mapped as test cases."],
+        ["17", "Billing test pack", "Active", "Checkout, invoice, webhook, seat reconciliation, plan change, cancellation, access lock, and billing audit tests are mapped."],
+        ["18", "Migration test pack", "Active", "Dry-run, staging, quarantine, duplicate, commercial split, commit, rollback, reconciliation, and migration release gates are mapped."],
+        ["19", "Pilot feedback persistence", "Active", "Feedback sessions, UAT items, activity, attachments, decisions, sponsor exports, owner workflow, and release gates are mapped."],
+        ["20", "Backend MVP ticket board", "Active", "Implementation tickets, API tickets, schema slices, sprint order, dependencies, tests, and release gates are mapped."],
+        ["21", "Production hosting", "Active", "Hosting environments, DNS, secrets, backups, monitoring, deployment checklist, rollback steps, and launch readiness gates are mapped."],
+        ["22", "Customer success desk", "Next", "Feedback, training, adoption, renewal, and expansion signals need a customer-success operating desk."],
       ],
       nextBuilds: [
-        ["v81", "Clean Data Schema Room", "Define company, user, record, commercial, document, audit, subscription, and review-session tables."],
-        ["v82", "Backend Architecture Plan", "Choose stack, API shape, tenant isolation, auth, hosting, storage, and backup approach."],
-        ["v83", "Import Normalization Lab", "Convert messy Excel uploads into clean operational, commercial, and governance records."],
+        ["v97", "Customer Success Desk", "Turn feedback, training, adoption, and renewal signals into a pilot success operating desk."],
+        ["v98", "Backend Repo Starter Pack", "Prepare the first real repository skeleton, folder map, environment checklist, and issue export plan."],
+        ["v99", "Launch Control Center", "Combine pilot readiness, deployment gates, support plan, and customer go-live checklist."],
       ],
       blockers: [
         "Real company account isolation",
@@ -4138,7 +6519,7 @@
         "Authentication and password reset",
         "Persistent audit history",
         "Subscription checkout and invoices",
-        "Production hosting, backup, and monitoring",
+        "Production hosting implementation and first live environment",
       ],
     };
   }
@@ -4237,6 +6618,2423 @@
             </div>
           </article>
         </div>
+      </section>
+    `;
+  }
+
+  function renderPilotReadinessChecklist(model) {
+    return `
+      <section class="pilot-readiness-control">
+        <div class="pilot-readiness-hero">
+          <div>
+            <span class="metric-label">Pilot readiness checklist</span>
+            <h3>First-company launch control</h3>
+            <p>${escapeHtml(model.companyName)} can now be assessed like a real pilot candidate: product fit, data cleanup, users, access, workflow, backend, billing, and feedback loop are visible before live customer data is accepted.</p>
+            <div class="pilot-action-row">
+              <button class="secondary-btn" type="button" data-view="Import">Clean pilot data</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Review users</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="pilot-score-card">
+            <span>Pilot readiness</span>
+            <strong>${model.pilotScore}%</strong>
+            <i style="--width: ${model.pilotScore}%"></i>
+            <small>${model.readyCount} ready checks / ${model.blockedCount} blockers</small>
+          </div>
+        </div>
+
+        <div class="pilot-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="pilot-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="pilot-area-grid">
+          ${model.areas
+            .map(
+              (area) => `
+                <article class="pilot-area-card tone-${escapeHtml(area.tone)}">
+                  <div class="pilot-area-head">
+                    <div>
+                      <span>${escapeHtml(area.label)}</span>
+                      <strong>${escapeHtml(area.status)}</strong>
+                    </div>
+                    <em>${area.score}%</em>
+                  </div>
+                  <i style="--width: ${area.score}%"></i>
+                  <div class="pilot-check-list">
+                    ${area.checks
+                      .map(
+                        ([label, ready]) => `
+                          <div class="${ready ? "is-ready" : "is-blocked"}">
+                            <span>${ready ? "Ready" : "Block"}</span>
+                            <p>${escapeHtml(label)}</p>
+                          </div>
+                        `,
+                      )
+                      .join("")}
+                  </div>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="pilot-runway-grid">
+          <article class="pilot-runway-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Launch sequence</span>
+                <h3>From demo to first pilot</h3>
+              </div>
+            </div>
+            <div class="pilot-sequence-list">
+              ${model.sequence
+                .map(
+                  ([no, title, note, ready]) => `
+                    <div class="${ready ? "is-ready" : "is-next"}">
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="pilot-runway-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Decision gates</span>
+                <h3>Before live customer data</h3>
+              </div>
+            </div>
+            <div class="pilot-gate-list">
+              ${model.decisionGates
+                .map(
+                  ([label, note]) => `
+                    <div>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="pilot-runway-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Launch checks</span>
+                <h3>Readiness ledger</h3>
+              </div>
+              <span>${model.readyCount}/${model.launchChecks.length}</span>
+            </div>
+            <div class="pilot-ledger-list">
+              ${model.launchChecks
+                .map(
+                  ([label, ready, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)} ${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderSaasConversionSprint(model) {
+    return `
+      <section class="saas-conversion-sprint">
+        <div class="saas-conversion-hero">
+          <div>
+            <span class="metric-label">SaaS conversion sprint</span>
+            <h3>Turn the static demo into a production platform.</h3>
+            <p>This is the engineering bridge: what stays in the current interface, what moves into tenant tables and APIs, what needs security before live customer data, and what the first backend sprint should build.</p>
+            <div class="saas-action-row">
+              <button class="secondary-btn" type="button" data-view="Governance">Open architecture</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import lab</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Open billing model</button>
+            </div>
+          </div>
+          <div class="saas-score-card">
+            <span>MVP bridge</span>
+            <strong>${model.conversionScore}%</strong>
+            <i style="--width: ${model.conversionScore}%"></i>
+            <small>Backend ${model.backendProgress}% / Billing ${model.billingProgress}%</small>
+          </div>
+        </div>
+
+        <div class="saas-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="saas-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="saas-track-grid">
+          ${model.tracks
+            .map(
+              (track) => `
+                <article class="saas-track-card tone-${escapeHtml(track.tone)}">
+                  <div>
+                    <span>${escapeHtml(track.label)}</span>
+                    <strong>${track.value}%</strong>
+                  </div>
+                  <i style="--width: ${track.value}%"></i>
+                  <p>${escapeHtml(track.note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="saas-bridge-grid">
+          <article class="saas-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">API contract map</span>
+                <h3>Backend service groups</h3>
+              </div>
+            </div>
+            <div class="saas-api-list">
+              ${model.apiGroups
+                .map(
+                  (group) => `
+                    <div class="tone-${escapeHtml(group.tone)}">
+                      <div>
+                        <strong>${escapeHtml(group.label)}</strong>
+                        <span>${group.progress}%</span>
+                      </div>
+                      <i style="--width: ${group.progress}%"></i>
+                      <p>${escapeHtml(group.note)}</p>
+                      <em>${group.routes.map(escapeHtml).join(" / ")}</em>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="saas-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Database cutover</span>
+                <h3>Objects to build first</h3>
+              </div>
+              <span>${model.databaseObjects.length} objects</span>
+            </div>
+            <div class="saas-object-grid">
+              ${model.databaseObjects
+                .map(
+                  ([name, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(name)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="saas-runway-grid">
+          <article class="saas-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Build sequence</span>
+                <h3>First backend sprint</h3>
+              </div>
+            </div>
+            <div class="saas-runway-list">
+              ${model.sprintRunway
+                .map(
+                  ([no, title, note, ready]) => `
+                    <div class="${ready ? "is-ready" : "is-next"}">
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="saas-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Repo blueprint</span>
+                <h3>Suggested production structure</h3>
+              </div>
+            </div>
+            <div class="saas-repo-list">
+              ${model.repoStructure
+                .map(
+                  ([path, note]) => `
+                    <div>
+                      <strong>${escapeHtml(path)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="saas-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Production gates</span>
+                <h3>Cannot skip</h3>
+              </div>
+            </div>
+            <div class="saas-blocker-list">
+              ${model.productionBlocks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="saas-panel saas-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Engineering handoff</span>
+              <h3>What the backend team should know</h3>
+            </div>
+          </div>
+          <div class="saas-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderProductionSecurityModel(model) {
+    return `
+      <section class="production-security-model">
+        <div class="security-model-hero">
+          <div>
+            <span class="metric-label">Production security model</span>
+            <h3>Protect every company, user, record, value, and audit trail.</h3>
+            <p>Before PursuitDesk accepts real customer workbooks, security has to be visible as an operating system: identity, tenant isolation, permissions, commercial privacy, audit retention, backup, monitoring, and launch gates.</p>
+            <div class="security-action-row">
+              <button class="secondary-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Review access</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="security-score-card">
+            <span>Security readiness</span>
+            <strong>${model.securityScore}%</strong>
+            <i style="--width: ${model.securityScore}%"></i>
+            <small>${model.readyChecks} ready / ${model.blockedChecks} blocked checks</small>
+          </div>
+        </div>
+
+        <div class="security-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="security-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="security-layer-grid">
+          ${model.securityLayers
+            .map(
+              (layer) => `
+                <article class="security-layer-card tone-${escapeHtml(layer.tone)}">
+                  <div class="security-layer-head">
+                    <div>
+                      <span>${escapeHtml(layer.label)}</span>
+                      <strong>${escapeHtml(layer.status)}</strong>
+                    </div>
+                    <em>${layer.score}%</em>
+                  </div>
+                  <i style="--width: ${layer.score}%"></i>
+                  <div class="security-check-list">
+                    ${layer.checks
+                      .map(
+                        ([label, ready]) => `
+                          <div class="${ready ? "is-ready" : "is-blocked"}">
+                            <span>${ready ? "Ready" : "Block"}</span>
+                            <p>${escapeHtml(label)}</p>
+                          </div>
+                        `,
+                      )
+                      .join("")}
+                  </div>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="security-policy-grid">
+          <article class="security-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Access matrix</span>
+                <h3>Who can see what</h3>
+              </div>
+            </div>
+            <div class="security-access-list">
+              ${model.accessMatrix
+                .map(
+                  ([role, rooms, rule, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(role)}</strong>
+                      <span>${escapeHtml(rooms)}</span>
+                      <p>${escapeHtml(rule)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="security-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Policy pack</span>
+                <h3>Rules before production</h3>
+              </div>
+            </div>
+            <div class="security-policy-list">
+              ${model.policyCards
+                .map(
+                  (card) => `
+                    <div class="tone-${escapeHtml(card.tone)}">
+                      <strong>${escapeHtml(card.label)}</strong>
+                      ${card.bullets.map((bullet) => `<p>${escapeHtml(bullet)}</p>`).join("")}
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="security-gate-grid">
+          <article class="security-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Live data gates</span>
+                <h3>No customer data until these pass</h3>
+              </div>
+              <span>${model.totalChecks} checks</span>
+            </div>
+            <div class="security-gate-list">
+              ${model.liveDataGates
+                .map(
+                  ([label, note, ready]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="security-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Data protection notes</span>
+                <h3>Current demo signals</h3>
+              </div>
+            </div>
+            <div class="security-data-list">
+              ${model.dataRules.map(([rule]) => `<p>${escapeHtml(rule)}</p>`).join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderBillingCheckoutBlueprint(model) {
+    return `
+      <section class="billing-checkout-blueprint">
+        <div class="billing-blueprint-hero">
+          <div>
+            <span class="metric-label">Billing checkout blueprint</span>
+            <h3>Turn USD seat pricing into a controlled subscription engine.</h3>
+            <p>${escapeHtml(model.companyName)} can now be reviewed through the full billing path: plan, seats, checkout, invoice, payment status, subscription state, webhooks, seat limits, access lock, and billing audit.</p>
+            <div class="billing-action-row">
+              <button class="secondary-btn" type="button" data-view="Membership">Open membership</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open billing audit</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="billing-score-card">
+            <span>Due now</span>
+            <strong>${model.membership.isCustom ? "Custom" : formatBilling(model.dueNow)}</strong>
+            <i style="--width: ${Math.min(100, Math.round((model.activeSeats / Math.max(model.membership.seats, 1)) * 100))}%"></i>
+            <small>${model.membership.label} / ${model.membership.seats} seats / ${model.membership.billingTerm}</small>
+          </div>
+        </div>
+
+        <div class="billing-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="billing-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="billing-flow-grid">
+          <article class="billing-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Checkout flow</span>
+                <h3>From plan to active workspace</h3>
+              </div>
+            </div>
+            <div class="billing-step-list">
+              ${model.checkoutFlow
+                .map(
+                  ([no, title, note, ready]) => `
+                    <div class="${ready ? "is-ready" : "is-next"}">
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="billing-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Invoice lifecycle</span>
+                <h3>Status states to persist</h3>
+              </div>
+            </div>
+            <div class="billing-invoice-list">
+              ${model.invoiceLifecycle
+                .map(
+                  ([label, note, ready, tone]) => `
+                    <div class="tone-${escapeHtml(tone)} ${ready ? "is-ready" : "is-next"}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="billing-detail-grid">
+          <article class="billing-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Seat reconciliation</span>
+                <h3>Users versus billable seats</h3>
+              </div>
+            </div>
+            <div class="billing-seat-grid">
+              ${model.seatReconciliation
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="billing-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Webhook map</span>
+                <h3>Events that control access</h3>
+              </div>
+            </div>
+            <div class="billing-webhook-list">
+              ${model.webhookEvents
+                .map(
+                  ([event, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(event)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="billing-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Plan changes</span>
+                <h3>Upgrade, downgrade, pause</h3>
+              </div>
+            </div>
+            <div class="billing-plan-list">
+              ${model.planChanges
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="billing-gate-grid">
+          <article class="billing-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Production billing gates</span>
+                <h3>Before paid rollout</h3>
+              </div>
+            </div>
+            <div class="billing-gate-list">
+              ${model.productionGates
+                .map(
+                  ([label, ready, note]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="billing-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Billing handoff</span>
+                <h3>What to build into backend</h3>
+              </div>
+            </div>
+            <div class="billing-handoff-list">
+              ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderDataMigrationPack(model) {
+    return `
+      <section class="data-migration-pack">
+        <div class="migration-pack-hero">
+          <div>
+            <span class="metric-label">Data migration pack</span>
+            <h3>Move workbook-shaped data into production tables safely.</h3>
+            <p>The migration pack turns the current Excel-derived records into a real backend dry run: source inventory, staging batches, target tables, validation gates, quarantine, commit, rollback, reconciliation, and audit handoff.</p>
+            <div class="migration-action-row">
+              <button class="secondary-btn" type="button" data-view="Import">Open import studio</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="migration-score-card">
+            <span>Migration readiness</span>
+            <strong>${model.migrationScore}%</strong>
+            <i style="--width: ${model.migrationScore}%"></i>
+            <small>${model.cleanCandidateCount} clean candidates / ${model.quarantineCount} quarantine signals</small>
+          </div>
+        </div>
+
+        <div class="migration-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="migration-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="migration-grid">
+          <article class="migration-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Source inventory</span>
+                <h3>Workbook batches</h3>
+              </div>
+              <span>${model.sourceWorkbooks} sources</span>
+            </div>
+            <div class="migration-source-list">
+              ${model.sourcePackages
+                .map(
+                  (source) => `
+                    <div class="tone-${escapeHtml(source.tone)}">
+                      <strong>${escapeHtml(source.label)}</strong>
+                      <span>${source.count} rows</span>
+                      <p>${escapeHtml(source.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="migration-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Target schema</span>
+                <h3>Tables to populate</h3>
+              </div>
+              <span>${model.targetTables.length} tables</span>
+            </div>
+            <div class="migration-table-grid">
+              ${model.targetTables
+                .map(
+                  ([table, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(table)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="migration-batch-grid">
+          ${model.migrationBatches
+            .map(
+              ([no, label, note, ready, tone]) => `
+                <article class="tone-${escapeHtml(tone)} ${ready ? "is-ready" : "is-next"}">
+                  <span>${escapeHtml(no)}</span>
+                  <strong>${escapeHtml(label)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="migration-control-grid">
+          <article class="migration-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Validation gates</span>
+                <h3>What blocks unsafe migration</h3>
+              </div>
+            </div>
+            <div class="migration-gate-list">
+              ${model.validationGates
+                .map(
+                  ([label, note, ready, tone]) => `
+                    <div class="tone-${escapeHtml(tone)} ${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="migration-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Dry-run cases</span>
+                <h3>Test before commit</h3>
+              </div>
+            </div>
+            <div class="migration-test-list">
+              ${model.dryRunCases
+                .map(
+                  ([label, note]) => `
+                    <div>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="migration-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Cutover runbook</span>
+                <h3>From Excel to pilot data</h3>
+              </div>
+            </div>
+            <div class="migration-cutover-list">
+              ${model.cutoverSteps
+                .map(
+                  ([no, title, note]) => `
+                    <div>
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="migration-panel migration-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Migration handoff</span>
+              <h3>What backend import must support</h3>
+            </div>
+          </div>
+          <div class="migration-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPilotFeedbackRoom(model) {
+    return `
+      <section class="pilot-feedback-room">
+        <div class="feedback-room-hero">
+          <div>
+            <span class="metric-label">Pilot feedback room</span>
+            <h3>Turn UAT feedback into a launch decision.</h3>
+            <p>This room gives the first pilot a management rhythm: capture user feedback, classify blockers, watch adoption, assign customer-success follow-up, and decide whether to go, fix, extend, or hold.</p>
+            <div class="feedback-action-row">
+              <button class="secondary-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="feedback-score-card">
+            <span>Feedback readiness</span>
+            <strong>${model.feedbackScore}%</strong>
+            <i style="--width: ${model.feedbackScore}%"></i>
+            <small>${model.blockerCount} blockers / ${model.adoptionScore}% adoption signal</small>
+          </div>
+        </div>
+
+        <div class="feedback-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="feedback-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="feedback-lane-grid">
+          ${model.feedbackLanes
+            .map(
+              (lane) => `
+                <article class="feedback-lane-card tone-${escapeHtml(lane.tone)}">
+                  <div class="info-head compact">
+                    <div>
+                      <span class="metric-label">${escapeHtml(lane.label)}</span>
+                      <h3>${lane.count} items</h3>
+                    </div>
+                  </div>
+                  <div class="feedback-item-list">
+                    ${lane.items
+                      .map(
+                        ([label, note, tone]) => `
+                          <div class="tone-${escapeHtml(tone)}">
+                            <strong>${escapeHtml(label)}</strong>
+                            <p>${escapeHtml(note)}</p>
+                          </div>
+                        `,
+                      )
+                      .join("")}
+                  </div>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="feedback-metric-grid">
+          ${model.successMetrics
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="feedback-control-grid">
+          <article class="feedback-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Feedback form model</span>
+                <h3>Fields to capture</h3>
+              </div>
+            </div>
+            <div class="feedback-form-list">
+              ${model.feedbackForm
+                .map(
+                  ([label, note]) => `
+                    <div>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="feedback-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Pilot runbook</span>
+                <h3>Two-week feedback rhythm</h3>
+              </div>
+            </div>
+            <div class="feedback-runbook-list">
+              ${model.pilotRunbook
+                .map(
+                  ([no, title, note, ready]) => `
+                    <div class="${ready ? "is-ready" : "is-next"}">
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="feedback-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Launch decision</span>
+                <h3>How to close the pilot</h3>
+              </div>
+            </div>
+            <div class="feedback-decision-list">
+              ${model.launchDecisions
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="feedback-panel feedback-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Customer success handoff</span>
+              <h3>What production feedback must remember</h3>
+            </div>
+          </div>
+          <div class="feedback-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendRepositoryScaffold(model) {
+    return `
+      <section class="backend-scaffold-room">
+        <div class="backend-scaffold-hero">
+          <div>
+            <span class="metric-label">Backend repository scaffold</span>
+            <h3>Turn the prototype into a buildable SaaS repo.</h3>
+            <p>This is the production engineering map: app folders, API contracts, database migrations, shared packages, environments, tests, and the first sprint backlog needed before real customer data.</p>
+            <div class="backend-action-row">
+              <button class="secondary-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Open billing model</button>
+            </div>
+          </div>
+          <div class="backend-score-card">
+            <span>Repository readiness</span>
+            <strong>${model.scaffoldScore}%</strong>
+            <i style="--width: ${model.scaffoldScore}%"></i>
+            <small>${model.repoFolders.length} repo areas / ${model.databaseMigrations.length} migration groups</small>
+          </div>
+        </div>
+
+        <div class="backend-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="backend-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="backend-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Repository map</span>
+              <h3>Production folders and ownership</h3>
+            </div>
+            <span>${model.repoFolders.length} areas</span>
+          </div>
+          <div class="backend-repo-grid">
+            ${model.repoFolders
+              .map(
+                (folder) => `
+                  <div class="tone-${escapeHtml(folder.tone)}">
+                    <span>${escapeHtml(folder.owner)}</span>
+                    <strong>${escapeHtml(folder.path)}</strong>
+                    <p>${escapeHtml(folder.purpose)}</p>
+                    <em>${folder.contains.map(escapeHtml).join(" / ")}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="backend-two-column">
+          <article class="backend-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Database migrations</span>
+                <h3>First schema run</h3>
+              </div>
+            </div>
+            <div class="backend-migration-list">
+              ${model.databaseMigrations
+                .map(
+                  ([id, tables, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(id)}</span>
+                      <strong>${escapeHtml(tables)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="backend-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">API contracts</span>
+                <h3>Routes that unlock the product</h3>
+              </div>
+            </div>
+            <div class="backend-api-list">
+              ${model.apiContracts
+                .map(
+                  (group) => `
+                    <div class="tone-${escapeHtml(group.tone)}">
+                      <strong>${escapeHtml(group.label)}</strong>
+                      <p>${escapeHtml(group.unlocks)}</p>
+                      <em>${group.routes.map(escapeHtml).join(" | ")}</em>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="backend-two-column">
+          <article class="backend-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Implementation backlog</span>
+                <h3>First production sprints</h3>
+              </div>
+            </div>
+            <div class="backend-sprint-list">
+              ${model.sprintBacklog
+                .map(
+                  ([label, title, note, ready, tone]) => `
+                    <div class="tone-${escapeHtml(tone)} ${ready ? "is-ready" : "is-next"}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="backend-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Environment and tests</span>
+                <h3>Release gates before pilot data</h3>
+              </div>
+            </div>
+            <div class="backend-env-grid">
+              ${model.environmentMatrix
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+            <div class="backend-test-list">
+              ${model.testPacks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="backend-panel backend-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Engineering handoff</span>
+              <h3>How to start the real repo</h3>
+            </div>
+          </div>
+          <div class="backend-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderSecurityTestPack(model) {
+    return `
+      <section class="security-test-pack">
+        <div class="security-test-hero">
+          <div>
+            <span class="metric-label">Security test pack</span>
+            <h3>Prove the product is safe before customer data.</h3>
+            <p>This pack turns the security model into executable proof: tenant isolation, role access, commercial privacy, audit immutability, import rollback, billing access, backup, monitoring, and live-data gates.</p>
+            <div class="security-test-action-row">
+              <button class="secondary-btn" type="button" data-view="Governance">Open audit desk</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import tests</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Review access</button>
+            </div>
+          </div>
+          <div class="security-test-score-card">
+            <span>Test readiness</span>
+            <strong>${model.testPackScore}%</strong>
+            <i style="--width: ${model.testPackScore}%"></i>
+            <small>${model.totalCases} cases / ${model.liveGateReadyCount} live gates ready</small>
+          </div>
+        </div>
+
+        <div class="security-test-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="security-test-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="security-test-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Security suites</span>
+              <h3>What must be tested first</h3>
+            </div>
+            <span>${model.securitySuites.length} suites</span>
+          </div>
+          <div class="security-suite-grid">
+            ${model.securitySuites
+              .map(
+                (suite) => `
+                  <div class="tone-${escapeHtml(suite.tone)}">
+                    <span>${escapeHtml(suite.owner)}</span>
+                    <strong>${escapeHtml(suite.label)}</strong>
+                    <p>${escapeHtml(suite.goal)}</p>
+                    <em>${suite.count} cases / ${suite.checks.map(escapeHtml).join(" / ")}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="security-test-two-column">
+          <article class="security-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">P0 and P1 cases</span>
+                <h3>Given, when, then</h3>
+              </div>
+            </div>
+            <div class="security-case-list">
+              ${model.testCases
+                .map(
+                  (test) => `
+                    <div class="tone-${escapeHtml(test.tone)}">
+                      <span>${escapeHtml(test.priority)}</span>
+                      <strong>${escapeHtml(test.label)}</strong>
+                      <p><b>Given</b> ${escapeHtml(test.given)}</p>
+                      <p><b>When</b> ${escapeHtml(test.when)}</p>
+                      <p><b>Then</b> ${escapeHtml(test.then)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="security-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Permission matrix</span>
+                <h3>Role access tests</h3>
+              </div>
+            </div>
+            <div class="security-permission-list">
+              ${model.permissionTests
+                .map(
+                  ([role, surface, expected, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(role)}</strong>
+                      <span>${escapeHtml(surface)}</span>
+                      <p>${escapeHtml(expected)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+
+            <div class="security-audit-proof-list">
+              ${model.auditProofs
+                .map(
+                  ([label, note]) => `
+                    <div>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="security-test-two-column">
+          <article class="security-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Release gates</span>
+                <h3>No live data until these pass</h3>
+              </div>
+            </div>
+            <div class="security-release-list">
+              ${model.releaseGates
+                .map(
+                  ([label, ready, note]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="security-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Automation plan</span>
+                <h3>How QA becomes repeatable</h3>
+              </div>
+            </div>
+            <div class="security-automation-list">
+              ${model.automationPlan
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="security-test-panel security-test-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Security handoff</span>
+              <h3>What backend QA must protect</h3>
+            </div>
+          </div>
+          <div class="security-test-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBillingTestPack(model) {
+    return `
+      <section class="billing-test-pack">
+        <div class="billing-test-hero">
+          <div>
+            <span class="metric-label">Billing test pack</span>
+            <h3>Prove USD membership can become real billing.</h3>
+            <p>This pack turns the checkout blueprint into executable test coverage: checkout session, invoice state, webhook verification, seat reconciliation, plan changes, access locks, billing audit, and paid-pilot release gates.</p>
+            <div class="billing-test-action-row">
+              <button class="secondary-btn" type="button" data-view="Membership">Open membership</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open audit desk</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="billing-test-score-card">
+            <span>Billing test readiness</span>
+            <strong>${model.billingTestScore}%</strong>
+            <i style="--width: ${model.billingTestScore}%"></i>
+            <small>${model.totalCases} cases / ${model.readyBillingGates} billing gates ready</small>
+          </div>
+        </div>
+
+        <div class="billing-test-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="billing-test-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="billing-test-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Billing suites</span>
+              <h3>What paid launch must test</h3>
+            </div>
+            <span>${model.billingSuites.length} suites</span>
+          </div>
+          <div class="billing-suite-grid">
+            ${model.billingSuites
+              .map(
+                (suite) => `
+                  <div class="tone-${escapeHtml(suite.tone)}">
+                    <span>${escapeHtml(suite.owner)}</span>
+                    <strong>${escapeHtml(suite.label)}</strong>
+                    <p>${escapeHtml(suite.goal)}</p>
+                    <em>${suite.count} cases / ${suite.checks.map(escapeHtml).join(" / ")}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="billing-test-two-column">
+          <article class="billing-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">P0 and P2 cases</span>
+                <h3>Given, when, then</h3>
+              </div>
+            </div>
+            <div class="billing-case-list">
+              ${model.testCases
+                .map(
+                  (test) => `
+                    <div class="tone-${escapeHtml(test.tone)}">
+                      <span>${escapeHtml(test.priority)}</span>
+                      <strong>${escapeHtml(test.label)}</strong>
+                      <p><b>Given</b> ${escapeHtml(test.given)}</p>
+                      <p><b>When</b> ${escapeHtml(test.when)}</p>
+                      <p><b>Then</b> ${escapeHtml(test.then)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="billing-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Webhook assertions</span>
+                <h3>Payment events that move access</h3>
+              </div>
+            </div>
+            <div class="billing-webhook-assertion-list">
+              ${model.webhookAssertions
+                .map(
+                  ([event, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(event)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="billing-test-two-column">
+          <article class="billing-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Seat scenarios</span>
+                <h3>Users versus paid seats</h3>
+              </div>
+            </div>
+            <div class="billing-seat-scenario-grid">
+              ${model.seatScenarios
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(value)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="billing-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Invoice state checks</span>
+                <h3>Status rules to persist</h3>
+              </div>
+            </div>
+            <div class="billing-invoice-check-list">
+              ${model.invoiceChecks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="billing-test-two-column">
+          <article class="billing-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Paid rollout gates</span>
+                <h3>No live billing until these pass</h3>
+              </div>
+            </div>
+            <div class="billing-test-release-list">
+              ${model.releaseGates
+                .map(
+                  ([label, ready, note]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="billing-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Automation plan</span>
+                <h3>How billing QA becomes repeatable</h3>
+              </div>
+            </div>
+            <div class="billing-test-automation-list">
+              ${model.automationPlan
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="billing-test-panel billing-test-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Billing handoff</span>
+              <h3>What paid SaaS must remember</h3>
+            </div>
+          </div>
+          <div class="billing-test-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderMigrationTestPack(model) {
+    return `
+      <section class="migration-test-pack">
+        <div class="migration-test-hero">
+          <div>
+            <span class="metric-label">Migration test pack</span>
+            <h3>Prove workbook migration before live onboarding.</h3>
+            <p>This pack turns the migration plan into executable checks: dry run, source trace, staging validation, duplicate quarantine, commercial privacy split, commit, rollback, reconciliation, and migration release gates.</p>
+            <div class="migration-test-action-row">
+              <button class="secondary-btn" type="button" data-view="Import">Open import studio</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="migration-test-score-card">
+            <span>Migration test readiness</span>
+            <strong>${model.migrationTestScore}%</strong>
+            <i style="--width: ${model.migrationTestScore}%"></i>
+            <small>${model.totalCases} cases / ${model.readyValidationGates} validation gates ready</small>
+          </div>
+        </div>
+
+        <div class="migration-test-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="migration-test-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="migration-test-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Migration suites</span>
+              <h3>What onboarding must test</h3>
+            </div>
+            <span>${model.migrationSuites.length} suites</span>
+          </div>
+          <div class="migration-test-suite-grid">
+            ${model.migrationSuites
+              .map(
+                (suite) => `
+                  <div class="tone-${escapeHtml(suite.tone)}">
+                    <span>${escapeHtml(suite.owner)}</span>
+                    <strong>${escapeHtml(suite.label)}</strong>
+                    <p>${escapeHtml(suite.goal)}</p>
+                    <em>${suite.count} cases / ${suite.checks.map((check) => escapeHtml(check)).join(" / ")}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="migration-test-two-column">
+          <article class="migration-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">P0 and P1 cases</span>
+                <h3>Given, when, then</h3>
+              </div>
+            </div>
+            <div class="migration-case-list">
+              ${model.testCases
+                .map(
+                  (test) => `
+                    <div class="tone-${escapeHtml(test.tone)}">
+                      <span>${escapeHtml(test.priority)}</span>
+                      <strong>${escapeHtml(test.label)}</strong>
+                      <p><b>Given</b> ${escapeHtml(test.given)}</p>
+                      <p><b>When</b> ${escapeHtml(test.when)}</p>
+                      <p><b>Then</b> ${escapeHtml(test.then)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="migration-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Validation assertions</span>
+                <h3>Source and row gates</h3>
+              </div>
+            </div>
+            <div class="migration-validation-list">
+              ${model.validationAssertions
+                .map(
+                  (gate) => `
+                    <div class="tone-${escapeHtml(gate.tone)}">
+                      <span>${gate.ready ? "Ready" : "Test"}</span>
+                      <strong>${escapeHtml(gate.label)}</strong>
+                      <p>${escapeHtml(gate.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="migration-test-two-column">
+          <article class="migration-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Dry-run assertions</span>
+                <h3>Commit without touching live data</h3>
+              </div>
+              <span>${model.dryRunCaseCount} paths</span>
+            </div>
+            <div class="migration-dryrun-list">
+              ${model.dryRunAssertions
+                .map(
+                  (item) => `
+                    <div class="tone-${escapeHtml(item.tone)}">
+                      <strong>${escapeHtml(item.label)}</strong>
+                      <p>${escapeHtml(item.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="migration-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reconciliation checks</span>
+                <h3>Workbook to database proof</h3>
+              </div>
+            </div>
+            <div class="migration-reconciliation-grid">
+              ${model.reconciliationChecks
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="migration-test-two-column">
+          <article class="migration-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Migration release gates</span>
+                <h3>No customer workbook until these pass</h3>
+              </div>
+            </div>
+            <div class="migration-test-release-list">
+              ${model.releaseGates
+                .map(
+                  ([label, ready, note]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="migration-test-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Automation plan</span>
+                <h3>How migration QA becomes repeatable</h3>
+              </div>
+            </div>
+            <div class="migration-test-automation-list">
+              ${model.automationPlan
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="migration-test-panel migration-test-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Migration handoff</span>
+              <h3>What importer must remember</h3>
+            </div>
+          </div>
+          <div class="migration-test-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPilotFeedbackPersistence(model) {
+    return `
+      <section class="feedback-persistence-room">
+        <div class="feedback-persistence-hero">
+          <div>
+            <span class="metric-label">Pilot feedback persistence</span>
+            <h3>Make every pilot comment become product memory.</h3>
+            <p>This room turns UAT notes into durable SaaS data: sessions, feedback items, activity history, attachments, decisions, owner workflow, retest state, sponsor exports, and release gates.</p>
+            <div class="feedback-persistence-action-row">
+              <button class="secondary-btn" type="button" data-view="Weekly Review">Open review room</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open audit desk</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="feedback-persistence-score-card">
+            <span>Persistence readiness</span>
+            <strong>${model.persistenceScore}%</strong>
+            <i style="--width: ${model.persistenceScore}%"></i>
+            <small>${model.feedbackItems.length} items / ${model.ownedItems} owned / ${model.p0Items} P0</small>
+          </div>
+        </div>
+
+        <div class="feedback-persistence-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="feedback-persistence-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="feedback-persistence-two-column">
+          <article class="feedback-persistence-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Feedback tables</span>
+                <h3>Production data model</h3>
+              </div>
+              <span>${model.feedbackTables.length} tables</span>
+            </div>
+            <div class="feedback-table-grid">
+              ${model.feedbackTables
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="feedback-persistence-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">UAT capture fields</span>
+                <h3>What the form must store</h3>
+              </div>
+            </div>
+            <div class="feedback-field-list">
+              ${model.captureFields
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="feedback-persistence-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Pilot feedback register</span>
+              <h3>Persistent UAT items</h3>
+            </div>
+            <span>${model.openFeedback} open</span>
+          </div>
+          <div class="feedback-item-register">
+            ${model.feedbackItems
+              .map(
+                (item) => `
+                  <div class="tone-${escapeHtml(item.tone)}">
+                    <span>${escapeHtml(item.id)} / ${escapeHtml(item.severity)} / ${escapeHtml(item.status)}</span>
+                    <strong>${escapeHtml(item.title)}</strong>
+                    <p>${escapeHtml(item.note)}</p>
+                    <em>${escapeHtml(item.room)} / ${escapeHtml(item.owner)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="feedback-persistence-two-column">
+          <article class="feedback-persistence-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Status workflow</span>
+                <h3>From capture to closeout</h3>
+              </div>
+            </div>
+            <div class="feedback-status-grid">
+              ${model.statusWorkflow
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="feedback-persistence-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Feedback API contracts</span>
+                <h3>Endpoints that make it real</h3>
+              </div>
+            </div>
+            <div class="feedback-api-list">
+              ${model.apiContracts
+                .map(
+                  ([route, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(route)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="feedback-persistence-two-column">
+          <article class="feedback-persistence-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Sponsor exports</span>
+                <h3>What leaves the pilot room</h3>
+              </div>
+            </div>
+            <div class="feedback-export-grid">
+              ${model.exportPacks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="feedback-persistence-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Feedback release gates</span>
+                <h3>No paid pilot without this memory</h3>
+              </div>
+            </div>
+            <div class="feedback-persistence-release-list">
+              ${model.releaseGates
+                .map(
+                  ([label, ready, note]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="feedback-persistence-panel feedback-persistence-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Persistence handoff</span>
+              <h3>What customer success and product must remember</h3>
+            </div>
+          </div>
+          <div class="feedback-persistence-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendMvpTicketBoard(model) {
+    return `
+      <section class="backend-ticket-board">
+        <div class="backend-ticket-hero">
+          <div>
+            <span class="metric-label">Backend MVP ticket board</span>
+            <h3>Turn the architecture into shippable engineering tickets.</h3>
+            <p>This board breaks the production backend into concrete tickets: tenant schema, auth, access, records API, commercial vault, import pipeline, billing, feedback, audit, tests, deployment, and release gates.</p>
+            <div class="backend-ticket-action-row">
+              <button class="secondary-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+            </div>
+          </div>
+          <div class="backend-ticket-score-card">
+            <span>Backend ticket readiness</span>
+            <strong>${model.ticketBoardScore}%</strong>
+            <i style="--width: ${model.ticketBoardScore}%"></i>
+            <small>${model.implementationTickets.length} tickets / ${model.p0Tickets} P0 / ${model.blockedTickets} blocked</small>
+          </div>
+        </div>
+
+        <div class="backend-ticket-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="backend-ticket-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="backend-ticket-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Build lanes</span>
+              <h3>Backend work packages</h3>
+            </div>
+            <span>${model.laneCards.length} lanes</span>
+          </div>
+          <div class="backend-ticket-lane-grid">
+            ${model.laneCards
+              .map(
+                ([label, owner, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(owner)}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="backend-ticket-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Implementation board</span>
+              <h3>First backend MVP tickets</h3>
+            </div>
+            <span>${model.readyTickets} ready / ${model.nextTickets} next / ${model.blockedTickets} blocked</span>
+          </div>
+          <div class="backend-ticket-grid">
+            ${model.implementationTickets
+              .map(
+                (ticket) => `
+                  <div class="tone-${escapeHtml(ticket.tone)} status-${escapeHtml(ticket.status.toLowerCase())}">
+                    <span>${escapeHtml(ticket.id)} / ${escapeHtml(ticket.priority)} / ${escapeHtml(ticket.status)}</span>
+                    <strong>${escapeHtml(ticket.title)}</strong>
+                    <p>${escapeHtml(ticket.definition)}</p>
+                    <em>${escapeHtml(ticket.lane)} / ${escapeHtml(ticket.owner)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="backend-ticket-two-column">
+          <article class="backend-ticket-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Route tickets</span>
+                <h3>API contracts to build</h3>
+              </div>
+              <span>${model.routeTickets.length} routes</span>
+            </div>
+            <div class="backend-route-ticket-list">
+              ${model.routeTickets
+                .map(
+                  ([id, route, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(id)}</span>
+                      <strong>${escapeHtml(route)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="backend-ticket-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Schema slices</span>
+                <h3>Database work by release slice</h3>
+              </div>
+              <span>${model.schemaSlices.length} slices</span>
+            </div>
+            <div class="backend-schema-slice-list">
+              ${model.schemaSlices
+                .map(
+                  ([label, title, tables, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(tables)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="backend-ticket-two-column">
+          <article class="backend-ticket-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Sprint order</span>
+                <h3>Four-week MVP runway</h3>
+              </div>
+            </div>
+            <div class="backend-sprint-ticket-list">
+              ${model.sprintPlan
+                .map(
+                  ([label, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="backend-ticket-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Dependency order</span>
+                <h3>What must come first</h3>
+              </div>
+            </div>
+            <div class="backend-dependency-list">
+              ${model.dependencyOrder
+                .map(
+                  ([no, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="backend-ticket-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Backend release gates</span>
+              <h3>No production pilot until these pass</h3>
+            </div>
+          </div>
+          <div class="backend-ticket-release-list">
+            ${model.releaseGates
+              .map(
+                ([label, ready, note]) => `
+                  <div class="${ready ? "is-ready" : "is-blocked"}">
+                    <span>${ready ? "Ready" : "Block"}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="backend-ticket-panel backend-ticket-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Engineering handoff</span>
+              <h3>How to use this ticket board</h3>
+            </div>
+          </div>
+          <div class="backend-ticket-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderProductionHostingRunbook(model) {
+    return `
+      <section class="hosting-runbook">
+        <div class="hosting-hero">
+          <div>
+            <span class="metric-label">Production hosting runbook</span>
+            <h3>Make PursuitDesk safe to deploy before customer data.</h3>
+            <p>This runbook turns the backend ticket board into a production operating plan: domains, environments, app hosting, API hosting, database, object storage, secrets, monitoring, backups, deployment gates, rollback, and live-data approval.</p>
+            <div class="hosting-action-row">
+              <button class="secondary-btn" type="button" data-view="Reports">Open report pack</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+            </div>
+          </div>
+          <div class="hosting-score-card">
+            <span>Hosting readiness</span>
+            <strong>${model.hostingReadiness}%</strong>
+            <i style="--width: ${model.hostingReadiness}%"></i>
+            <small>${model.environmentMatrix.length} environments / ${model.hostingLanes.length} lanes / ${model.launchGates.length} gates</small>
+          </div>
+        </div>
+
+        <div class="hosting-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="hosting-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="hosting-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Environment map</span>
+              <h3>Where each release lives</h3>
+            </div>
+            <span>${model.environmentMatrix.length} environments</span>
+          </div>
+          <div class="hosting-environment-grid">
+            ${model.environmentMatrix
+              .map(
+                ([label, purpose, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(purpose)}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="hosting-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Hosting lanes</span>
+              <h3>Infrastructure and operating controls</h3>
+            </div>
+            <span>${model.hostingLanes.length} lanes</span>
+          </div>
+          <div class="hosting-lane-grid">
+            ${model.hostingLanes
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="hosting-two-column">
+          <article class="hosting-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Deployment checklist</span>
+                <h3>Before every release</h3>
+              </div>
+            </div>
+            <div class="hosting-checklist-list">
+              ${model.deploymentChecklist
+                .map(
+                  ([label, note, ready, tone]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"} tone-${escapeHtml(tone)}">
+                      <span>${ready ? "Ready" : "Required"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="hosting-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Backup and restore</span>
+                <h3>Data recovery rhythm</h3>
+              </div>
+            </div>
+            <div class="hosting-backup-list">
+              ${model.backupRunbook
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="hosting-two-column">
+          <article class="hosting-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Monitoring signals</span>
+                <h3>What must alert</h3>
+              </div>
+              <span>${model.monitoringSignals.length} signals</span>
+            </div>
+            <div class="hosting-monitoring-grid">
+              ${model.monitoringSignals
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="hosting-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Rollback runbook</span>
+                <h3>How to back out safely</h3>
+              </div>
+            </div>
+            <div class="hosting-rollback-list">
+              ${model.rollbackSteps
+                .map(
+                  ([no, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="hosting-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Launch gates</span>
+              <h3>No live customer data until these pass</h3>
+            </div>
+          </div>
+          <div class="hosting-launch-gate-list">
+            ${model.launchGates
+              .map(
+                ([label, ready, note]) => `
+                  <div class="${ready ? "is-ready" : "is-blocked"}">
+                    <span>${ready ? "Ready" : "Block"}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="hosting-panel hosting-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Hosting handoff</span>
+              <h3>What production ops must remember</h3>
+            </div>
+          </div>
+          <div class="hosting-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
       </section>
     `;
   }
@@ -6632,14 +11430,15 @@
 
   function renderImportStudioPage() {
     const model = buildImportStudioModel();
+    const migrationPack = buildDataMigrationPackModel(model);
     const preview = model.preview;
     return `
       <section class="import-studio">
         <section class="import-console">
           <div>
-            <span class="panel-label">Import control</span>
-            <h2>Turn Excel exports into clean workspace rows.</h2>
-            <p>Paste CSV or Excel-copied rows, preview every line, then import only clean records. Existing references, missing fields, source gaps, and coverage health stay visible before the team trusts the data.</p>
+            <span class="panel-label">Import normalization lab</span>
+            <h2>Turn messy Excel exports into clean SaaS data.</h2>
+            <p>Paste CSV or Excel-copied rows, preview every line, then route clean data into operational tracker, commercial vault, governance evidence, and workflow actions before the team trusts the data.</p>
             <div class="import-actions">
               <button class="secondary-btn" type="button" data-action="load-import-sample">Load sample</button>
               <button class="ghost-btn" type="button" data-action="download-import-template">Template CSV</button>
@@ -6662,6 +11461,10 @@
           ${renderInsightKpi("Duplicate refs", `${model.duplicateGroups.length}`, `${model.duplicateCount} rows in duplicate groups`)}
           ${renderInsightKpi("Missing fields", `${model.missingCount}`, "Rows needing cleanup before reporting")}
         </div>
+
+        ${renderImportNormalizationLab(model.normalization)}
+
+        ${renderDataMigrationPack(migrationPack)}
 
         <div class="import-layout">
           <section class="import-main">
@@ -6753,6 +11556,115 @@
             </div>
             ${renderImportPlaybook()}
           </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderImportNormalizationLab(model) {
+    return `
+      <section class="import-normalization-lab">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Normalization lab</span>
+            <h3>Staging, routing, quarantine, and commit gates</h3>
+          </div>
+          <span>${escapeHtml(model.activeMode)} / ${model.readiness}% ready</span>
+        </div>
+
+        <div class="normalization-signal-grid">
+          ${model.signals
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="normalization-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="normalization-layer-grid">
+          ${model.layers
+            .map(
+              (layer) => `
+                <article class="normalization-layer-card tone-${escapeHtml(layer.tone)}">
+                  <div>
+                    <span>${escapeHtml(layer.label)}</span>
+                    <strong>${escapeHtml(layer.table)}</strong>
+                  </div>
+                  <p>${escapeHtml(layer.rule)}</p>
+                  <i style="--width: ${Math.max(4, layer.rate)}%"></i>
+                  <small>${layer.rate}% routing signal</small>
+                  <div class="field-chip-row">
+                    ${layer.fields.map((field) => `<span>${escapeHtml(field)}</span>`).join("")}
+                  </div>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="normalization-detail-grid">
+          <article class="normalization-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Field mapping</span>
+                <h3>Raw columns to production tables</h3>
+              </div>
+            </div>
+            <div class="normalization-field-map">
+              ${model.fieldMap
+                .map(
+                  ([label, raw, table, note]) => `
+                    <div>
+                      <strong>${escapeHtml(label)}</strong>
+                      <span>${escapeHtml(raw)}</span>
+                      <em>${escapeHtml(table)}</em>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="normalization-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Commit gates</span>
+                <h3>What blocks unsafe rows</h3>
+              </div>
+            </div>
+            <div class="normalization-gate-list">
+              ${model.gates
+                .map(
+                  (gate) => `
+                    <div class="tone-${escapeHtml(gate.tone)}">
+                      <strong>${escapeHtml(gate.label)}</strong>
+                      <p>${escapeHtml(gate.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="normalization-step-strip">
+          ${model.steps
+            .map(
+              (step) => `
+                <div>
+                  <span>${escapeHtml(step.no)}</span>
+                  <strong>${escapeHtml(step.title)}</strong>
+                  <p>${escapeHtml(step.note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
         </div>
       </section>
     `;
@@ -6959,6 +11871,10 @@
         </div>
 
         ${renderDataArchitecturePanel(model.dataArchitecture)}
+
+        ${renderCleanSchemaRoom(model.cleanSchema)}
+
+        ${renderBackendArchitectureRoom(model.backendArchitecture)}
 
         <div class="governance-layout">
           <section class="governance-main">
@@ -7169,6 +12085,279 @@
               </div>
             </article>
           `).join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCleanSchemaRoom(model) {
+    return `
+      <section class="clean-schema-room">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Clean data schema room</span>
+            <h3>Future SaaS database map</h3>
+          </div>
+          <span>${model.tables.length} tables / ${model.fieldCount} fields</span>
+        </div>
+
+        <div class="schema-kpi-grid">
+          ${renderInsightKpi("Tables", `${model.tables.length}`, "Production entities mapped")}
+          ${renderInsightKpi("Fields", `${model.fieldCount}`, "Core database fields named")}
+          ${renderInsightKpi("Relations", `${model.relationCount}`, "Primary joins and ownership paths")}
+          ${renderInsightKpi("Guardrails", `${model.guardrailCount}`, "Rules before backend build")}
+        </div>
+
+        <div class="schema-table-grid">
+          ${model.groups
+            .map(
+              (group) => `
+                <article class="schema-group-card tone-${escapeHtml(group.tone)}">
+                  <div class="schema-group-head">
+                    <span>${escapeHtml(group.group)}</span>
+                    <strong>${group.tables.length} tables</strong>
+                  </div>
+                  ${group.tables
+                    .map(
+                      (table) => `
+                        <div class="schema-table-row">
+                          <strong>${escapeHtml(table.name)}</strong>
+                          <p>${escapeHtml(table.purpose)}</p>
+                          <div class="field-chip-row">
+                            ${table.fields.map((field) => `<span>${escapeHtml(field)}</span>`).join("")}
+                          </div>
+                        </div>
+                      `,
+                    )
+                    .join("")}
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="schema-flow-grid">
+          <article class="schema-flow-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Relationship map</span>
+                <h3>How the tables connect</h3>
+              </div>
+              <span>${model.relationCount} joins</span>
+            </div>
+            <div class="schema-relation-list">
+              ${model.relations
+                .map(
+                  (item) => `
+                    <div>
+                      <strong>${escapeHtml(item.from)}</strong>
+                      <span>${escapeHtml(item.to)}</span>
+                      <p>${escapeHtml(item.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="schema-flow-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Migration plan</span>
+                <h3>From Excel prototype to SaaS tables</h3>
+              </div>
+            </div>
+            <div class="schema-migration-list">
+              ${model.migrationSteps
+                .map(
+                  ([no, title, note]) => `
+                    <div>
+                      <span>${escapeHtml(no)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="schema-governance-grid">
+          <article>
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Schema guardrails</span>
+                <h3>Rules before backend build</h3>
+              </div>
+            </div>
+            <div class="schema-guardrail-list">
+              ${model.guardrails
+                .map(
+                  (item) => `
+                    <div>
+                      <span>${escapeHtml(item.no)}</span>
+                      <strong>${escapeHtml(item.label)}</strong>
+                      <p>${escapeHtml(item.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article>
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Current data readiness</span>
+                <h3>What the demo data is telling us</h3>
+              </div>
+            </div>
+            <div class="data-guard-grid schema-readiness-grid">
+              ${model.readiness
+                .map(
+                  (row) => `
+                    <div class="data-guard-card tone-${escapeHtml(row.tone)}">
+                      <span>${escapeHtml(row.label)}</span>
+                      <strong>${row.value}%</strong>
+                      <i style="--width: ${Math.max(4, row.value)}%"></i>
+                      <small>${escapeHtml(row.note)}</small>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderBackendArchitectureRoom(model) {
+    return `
+      <section class="backend-architecture-room">
+        <div class="backend-architecture-hero">
+          <div>
+            <span class="metric-label">Backend architecture plan</span>
+            <h3>How PursuitDesk becomes a real SaaS product</h3>
+            <p>${escapeHtml(model.decision)}</p>
+          </div>
+          <div class="backend-readiness-card">
+            <span>Backend readiness</span>
+            <strong>${model.readiness}%</strong>
+            <i style="--width: ${model.readiness}%"></i>
+            <small>Planning signal only. Real backend build still needs implementation.</small>
+          </div>
+        </div>
+
+        <div class="backend-signal-grid">
+          ${model.signals.map(([label, value, note]) => renderInsightKpi(label, `${value}`, note)).join("")}
+        </div>
+
+        <div class="backend-stack-grid">
+          ${model.stack
+            .map(
+              (item) => `
+                <article class="backend-stack-card tone-${escapeHtml(item.tone)}">
+                  <span>${escapeHtml(item.label)}</span>
+                  <strong>${escapeHtml(item.choice)}</strong>
+                  <p>${escapeHtml(item.note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="backend-plan-grid">
+          <article class="backend-plan-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">API contract map</span>
+                <h3>Route groups to build</h3>
+              </div>
+              <span>${model.apiGroups.length} groups</span>
+            </div>
+            <div class="backend-api-list">
+              ${model.apiGroups
+                .map(
+                  (item) => `
+                    <div>
+                      <strong>${escapeHtml(item.group)}</strong>
+                      <span>${escapeHtml(item.routes)}</span>
+                      <p>${escapeHtml(item.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="backend-plan-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Tenant security chain</span>
+                <h3>Controls before pilot data</h3>
+              </div>
+            </div>
+            <div class="backend-security-list">
+              ${model.securityControls
+                .map(
+                  (item) => `
+                    <div class="tone-${escapeHtml(item.tone)}">
+                      <strong>${escapeHtml(item.label)}</strong>
+                      <p>${escapeHtml(item.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="backend-plan-grid">
+          <article class="backend-plan-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Data flow</span>
+                <h3>Request to audit trail</h3>
+              </div>
+            </div>
+            <div class="backend-flow-list">
+              ${model.flow
+                .map(
+                  ([label, note], index) => `
+                    <div>
+                      <span>${String(index + 1).padStart(2, "0")}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="backend-plan-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Deployment runway</span>
+                <h3>Backend build sequence</h3>
+              </div>
+            </div>
+            <div class="backend-rollout-list">
+              ${model.rolloutPhases
+                .map(
+                  (item) => `
+                    <div>
+                      <span>${escapeHtml(item.no)}</span>
+                      <strong>${escapeHtml(item.title)}</strong>
+                      <p>${escapeHtml(item.note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
         </div>
       </section>
     `;
@@ -9386,12 +14575,87 @@
           </article>
         </div>
 
+        ${renderMembershipCheckoutBlueprint(membership, stats, company)}
+
         ${renderMembershipAccessPanel(company)}
 
         ${renderPlatformRoadmapSection()}
 
         ${renderPricingSection(stats, company)}
       </section>
+    `;
+  }
+
+  function renderMembershipCheckoutBlueprint(membership, stats, company) {
+    const seatBuffer = Math.max(0, membership.seats - stats.seats);
+    const cards = [
+      {
+        label: "Checkout session",
+        value: membership.isCustom ? "Proposal" : formatBilling(membership.dueNow, company),
+        note: `${membership.label} / ${membership.seats} seats / ${membership.billingTerm}`,
+        tone: "blue",
+      },
+      {
+        label: "Seat match",
+        value: `${stats.seats}/${membership.seats}`,
+        note: seatBuffer ? `${seatBuffer} seats available for new users` : "Selected seats match current users",
+        tone: stats.seats <= membership.seats ? "green" : "red",
+      },
+      {
+        label: "Invoice state",
+        value: "Draft",
+        note: "Production invoice should move draft, open, paid, failed, or past due.",
+        tone: "amber",
+      },
+      {
+        label: "Access state",
+        value: "Unlocked",
+        note: "Paid subscription should control user limits and premium room access.",
+        tone: "teal",
+      },
+    ];
+    const rows = [
+      ["Checkout", "Create payment session with company, plan, seats, cycle, currency, and success URL."],
+      ["Invoice", "Persist invoice amount, PDF URL, due date, payment status, and external provider ID."],
+      ["Webhook", "Verify provider signature before changing subscription or invoice status."],
+      ["Seat sync", "Compare active users with subscribed seats before inviting or downgrading users."],
+      ["Audit", "Log checkout, invoice, plan, seat, payment, cancellation, and access-lock events."],
+    ];
+    return `
+      <article class="membership-panel membership-checkout-blueprint">
+        <div class="access-head">
+          <div>
+            <span class="metric-label">Checkout blueprint</span>
+            <h3>How this membership becomes real billing</h3>
+          </div>
+          <span class="status-chip">USD billing only</span>
+        </div>
+        <div class="membership-checkout-grid">
+          ${cards
+            .map(
+              (card) => `
+                <div class="tone-${escapeHtml(card.tone)}">
+                  <span>${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(String(card.value))}</strong>
+                  <p>${escapeHtml(card.note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="membership-checkout-steps">
+          ${rows
+            .map(
+              ([label, note]) => `
+                <div>
+                  <strong>${escapeHtml(label)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+      </article>
     `;
   }
 

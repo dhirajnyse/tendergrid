@@ -19,12 +19,29 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- Admin-only Pilot Readiness Checklist inside Command Center tracks first-company launch score, readiness lanes, launch sequence, decision gates, blockers, users, access, data, backend, billing, and feedback checks.
+- Admin-only SaaS Conversion Sprint inside Command Center maps the bridge from static demo to production MVP with API groups, database objects, sprint sequence, repo blueprint, production gates, and engineering handoff notes.
+- Admin-only Production Security Model inside Command Center maps identity/session controls, tenant isolation, permission gates, commercial-data privacy, audit retention, backups, monitoring, live-data gates, and access matrix rules.
+- Admin-only Billing Checkout Blueprint inside Command Center maps checkout flow, invoice lifecycle, seat reconciliation, subscription webhooks, plan changes, access locks, billing audit gates, and backend billing handoff.
+- Data Migration Pack inside Command Center and Import Studio maps source inventory, target tables, migration batches, validation gates, dry-run cases, cutover sequence, rollback thinking, reconciliation, and backend import handoff.
+- Admin-only Pilot Feedback Room inside Command Center captures UAT feedback model, adoption score, blocker lanes, success metrics, two-week pilot runbook, launch decisions, and customer-success handoff.
+- Admin-only Backend Repository Scaffold inside Command Center maps production repo folders, API contracts, database migrations, shared packages, billing/import/audit boundaries, environment lanes, test packs, sprint backlog, and engineering handoff.
+- Admin-only Security Test Pack inside Command Center turns the security model into tenant isolation suites, role-access tests, commercial privacy cases, audit proof, release gates, automation plan, and backend QA handoff.
+- Admin-only Billing Test Pack inside Command Center turns USD membership into checkout session tests, invoice lifecycle checks, webhook verification, seat reconciliation scenarios, plan-change tests, access-lock gates, billing audit coverage, and paid-rollout handoff.
+- Admin-only Migration Test Pack inside Command Center turns Excel/workbook onboarding into source inventory tests, staging validation, duplicate quarantine, commercial privacy checks, commit/rollback scenarios, reconciliation proof, release gates, and importer QA handoff.
+- Admin-only Pilot Feedback Persistence room inside Command Center turns UAT comments into feedback sessions, feedback items, activity history, attachments, decisions, owner workflow, retest states, sponsor exports, and paid-pilot release gates.
+- Admin-only Backend MVP Ticket Board inside Command Center turns the production scaffold into implementation tickets, route tickets, schema slices, sprint order, dependency rules, backend release gates, and engineering handoff.
+- Admin-only Production Hosting Runbook inside Command Center maps the move from GitHub Pages demo to safe SaaS hosting with local, preview, staging, production, DNS, frontend hosting, API service, database, object storage, secrets, monitoring, backups, deployment checklist, rollback, and live-data launch gates.
 - Pursuit Advisor turns live signals from Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminders into ranked next-best actions, decision prompts, management brief lines, and operating recommendations.
 - Weekly Review Room turns the same operating signals into a 55-minute agenda, owner-ready action register, leadership decision prompts, opening brief, closeout checklist, and management-pack handoff.
 - Intake Desk for controlled tender/project request capture, required-field validation, priority scoring, rework routing, and conversion into live records.
 - Import Studio for CSV or Excel-copied rows, template download, source workbook health, field coverage, duplicate reference checks, missing-field cleanup, preview before commit, and controlled clean-row import.
+- Import Normalization Lab routes messy Excel rows into operational tracker, commercial vault, governance evidence, and workflow action layers with staging signals, field mapping, commit gates, quarantine logic, and cleanup steps.
+- Data Migration Pack turns the current imported sample records into production migration planning with workbook batches, target schema, validation gates, dry-run paths, cutover runbook, rollback expectation, and audit handoff.
 - Governance Desk for audit trail, high-value review queue, access control visibility, policy health checks, and review approvals.
 - Governance Data Architecture panel separates Operational Tracker, Commercial Intelligence, and Governance Evidence layers with readiness, users, fields, and guard checks.
+- Clean Data Schema Room inside Governance maps the future SaaS database with tenant identity, operational tracker, commercial vault, evidence/workflow, billing tables, relationships, migration steps, and backend guardrails.
+- Backend Architecture Plan inside Governance maps the recommended SaaS stack, API groups, tenant security controls, request flow, deployment runway, and backend readiness signal.
 - Bid Desk for bid/no-bid decisions, submission readiness scoring, pack-ready status, deadline pressure, low-readiness cleanup, and audit-backed tender execution.
 - Review Calendar for overdue work, this-week movement, next-30-day pressure, eight-week planning, high-value diary checks, and no-date cleanup.
 - Risk Control Room for schedule, bid, commercial, delivery, value, and data risks with severity lanes, risk exposure, heatmap, critical queue, and mitigation rhythm.
@@ -45,6 +62,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Admin-managed section access for each user across Command, Advisor, Weekly Review, Intake, Import, Governance, Bid Desk, Calendar, Risk, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, and Reports.
 - New users now default to operational tracker access only, while admins can deliberately add Insights, Forecast, Contracts, Reports, Governance, Import, or Documents access.
 - Dedicated admin-only Membership Model page beside the admin account control, with subscription builder, plan selection, seat calculator, user access control, request preview, plan comparison, and billing FAQ cards.
+- Membership Model now includes a Checkout Blueprint panel so admins can see how the selected plan becomes checkout session, invoice state, webhook verification, seat sync, access state, and billing audit.
 - Membership access blueprints show Operations User, Pursuit Manager, and Control Admin templates so buyers can understand who should see operational, commercial, and governance rooms.
 - Admins can apply those access templates directly to users from the Membership access table, with changes written into the audit trail.
 - Admins can preview any non-admin user's workspace from Membership, seeing the exact enabled navigation and access profile with a clear Exit Preview control.
@@ -67,6 +85,22 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v78 adds a Review Minutes Composer to Tenders Insights and Project Insights, drafting opening notes, decisions, commitments, escalations, and closeout lines with a dedicated minutes export.
 - v79 adds a Review Dispatch Queue to Tenders Insights and Project Insights, converting commitments and escalations into owner-ready follow-up notes with a dedicated dispatch export.
 - v80 adds an admin-only Build Tracker inside Command Center, showing current phase, prototype progress, SaaS readiness, done/active/next phases, roadmap queue, and production blockers.
+- v81 adds a Clean Data Schema Room inside Governance, mapping future SaaS tables, fields, relationships, migration steps, guardrails, and current data readiness.
+- v82 adds a Backend Architecture Plan inside Governance, turning the schema map into a practical SaaS stack, API, security, data-flow, and deployment roadmap.
+- v83 upgrades Import Studio with an Import Normalization Lab for Excel-to-SaaS staging, routing, field mapping, quarantine, commit gates, and cleanup sequence.
+- v84 adds an admin-only Pilot Readiness Checklist inside Command Center with launch score, readiness lanes, launch sequence, decision gates, blockers, users, access, data, backend, billing, and feedback checks.
+- v85 adds an admin-only SaaS Conversion Sprint inside Command Center, turning the prototype into a practical MVP bridge across API groups, database objects, first backend sprint, repo structure, production gates, and engineering handoff.
+- v86 adds an admin-only Production Security Model inside Command Center, defining identity/session controls, tenant isolation, permissions, commercial privacy, audit retention, backup, monitoring, access matrix, and live-data gates.
+- v87 adds an admin-only Billing Checkout Blueprint inside Command Center and a Membership checkout blueprint, mapping checkout sessions, invoices, seat reconciliation, subscription webhooks, plan changes, access locks, and billing audit gates.
+- v88 adds a Data Migration Pack inside Command Center and Import Studio, mapping source inventory, target tables, migration batches, validation gates, dry-run cases, cutover sequence, rollback, reconciliation, and backend import handoff.
+- v89 adds an admin-only Pilot Feedback Room inside Command Center, mapping UAT feedback lanes, adoption score, open blockers, success metrics, feedback form fields, two-week pilot runbook, launch decisions, and customer-success handoff.
+- v90 adds an admin-only Backend Repository Scaffold inside Command Center, mapping apps, API, database migrations, domain packages, billing, importer, audit, infrastructure, environments, tests, and first production sprints.
+- v91 adds an admin-only Security Test Pack inside Command Center, mapping tenant isolation, access control, commercial privacy, audit immutability, import rollback, monitoring, release gates, and automated QA coverage.
+- v92 adds an admin-only Billing Test Pack inside Command Center, mapping checkout sessions, invoice states, webhook events, seat limits, plan changes, access locks, billing audit, automation, and paid-rollout gates.
+- v93 adds an admin-only Migration Test Pack inside Command Center, mapping workbook dry run, source trace, staging validation, duplicate quarantine, commercial split, commit, rollback, reconciliation, automation, and onboarding release gates.
+- v94 adds an admin-only Pilot Feedback Persistence room inside Command Center, mapping feedback tables, UAT form fields, feedback API contracts, owner workflow, retest status, sponsor exports, audit decisions, and paid-pilot memory gates.
+- v95 adds an admin-only Backend MVP Ticket Board inside Command Center, mapping foundation, tenant identity, auth, access, records API, commercial vault, import, billing, feedback, audit, tests, deployment, schema slices, and release gates.
+- v96 adds an admin-only Production Hosting Runbook inside Command Center, mapping domains, environments, frontend hosting, API hosting, database, object storage, secrets, monitoring, backups, deployment checklist, rollback steps, and live-data approval gates.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
