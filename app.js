@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=96";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=96";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=100";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=100";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -4310,6 +4310,10 @@
     const feedbackPersistence = buildPilotFeedbackPersistenceModel(model, pilotFeedback, backendScaffold, securityTestPack, billingTestPack, migrationTestPack);
     const backendTicketBoard = buildBackendMvpTicketBoardModel(model, backendScaffold, securityTestPack, billingTestPack, migrationTestPack, feedbackPersistence);
     const hostingRunbook = buildProductionHostingRunbookModel(model, backendTicketBoard, securityTestPack, billingTestPack, migrationTestPack, feedbackPersistence);
+    const customerSuccess = buildCustomerSuccessDeskModel(model, pilotFeedback, feedbackPersistence, hostingRunbook, billingBlueprint, pilotReadiness);
+    const backendRepoStarter = buildBackendRepoStarterPackModel(model, backendScaffold, backendTicketBoard, hostingRunbook, customerSuccess, securityTestPack, billingTestPack, migrationTestPack);
+    const launchControl = buildLaunchControlCenterModel(model, pilotReadiness, hostingRunbook, customerSuccess, backendRepoStarter, billingBlueprint, migrationPack, securityTestPack);
+    const alphaPlan = buildProductionMvpAlphaPlanModel(model, launchControl, backendRepoStarter, hostingRunbook, customerSuccess, billingBlueprint, migrationPack, securityTestPack, backendTicketBoard);
     return `
       <section class="command-center">
         <section class="command-console">
@@ -4340,6 +4344,8 @@
 
         ${canAdmin() ? renderProductBuildTracker(buildTracker) : ""}
 
+        ${canAdmin() ? renderProductionMvpAlphaPlan(alphaPlan) : ""}
+
         ${canAdmin() ? renderPilotReadinessChecklist(pilotReadiness) : ""}
 
         ${canAdmin() ? renderSaasConversionSprint(saasConversion) : ""}
@@ -4365,6 +4371,12 @@
         ${canAdmin() ? renderBackendMvpTicketBoard(backendTicketBoard) : ""}
 
         ${canAdmin() ? renderProductionHostingRunbook(hostingRunbook) : ""}
+
+        ${canAdmin() ? renderCustomerSuccessDesk(customerSuccess) : ""}
+
+        ${canAdmin() ? renderBackendRepoStarterPack(backendRepoStarter) : ""}
+
+        ${canAdmin() ? renderLaunchControlCenter(launchControl) : ""}
 
         <div class="command-layout">
           <section class="command-main">
@@ -6468,20 +6480,486 @@
     };
   }
 
+  function buildCustomerSuccessDeskModel(commandModel, pilotFeedback, feedbackPersistence, hostingRunbook, billingBlueprint, pilotReadiness) {
+    const company = state.data.company || {};
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const openRecords = commandModel.openRecords.length;
+    const overdueActions = commandModel.reminders.overdue;
+    const evidenceGaps = commandModel.documents.totalGaps;
+    const commercialGaps = commandModel.contracts.gapCount;
+    const account = commandModel.portfolio?.accounts?.[0];
+    const adoptionHealth = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          pilotFeedback.feedbackScore * 0.22 +
+            feedbackPersistence.persistenceScore * 0.18 +
+            hostingRunbook.hostingReadiness * 0.14 +
+            pilotReadiness.pilotScore * 0.18 +
+            Math.min(100, users.length * 18) * 0.1 +
+            Math.max(0, 100 - overdueActions) * 0.1 +
+            Math.max(0, 100 - evidenceGaps) * 0.08,
+        ),
+      ),
+    );
+    const renewalRisk = Math.max(
+      5,
+      Math.min(
+        100,
+        Math.round((100 - adoptionHealth) * 0.46 + Math.min(42, overdueActions * 0.16) + Math.min(18, commercialGaps * 0.08) + (hostingRunbook.hostingReadiness < 60 ? 14 : 0)),
+      ),
+    );
+    const expansionScore = Math.max(
+      0,
+      Math.min(100, Math.round(adoptionHealth * 0.42 + Math.min(100, openRecords) * 0.18 + (account ? Math.min(100, account.openCount * 2) : 0) * 0.18 + billingBlueprint.membership.seats * 2 + 10)),
+    );
+    const successScore = Math.max(0, Math.min(100, Math.round(adoptionHealth * 0.5 + (100 - renewalRisk) * 0.2 + expansionScore * 0.2 + feedbackPersistence.persistenceScore * 0.1)));
+    const lifecycleStages = [
+      ["Pilot kickoff", "Sponsor, admin, users, success criteria, pilot scope, and review rhythm confirmed.", pilotReadiness.pilotScore >= 65, "green"],
+      ["Guided onboarding", "Users invited with role-based access, tracker scope, first records, and training route.", users.length >= 3, "blue"],
+      ["Adoption rhythm", "Daily tracker updates, weekly review, advisor actions, and report pack become routine.", adoptionHealth >= 60, "teal"],
+      ["Value review", "Management sees overdue reduction, evidence improvement, decision speed, and relationship heat.", pilotFeedback.feedbackScore >= 60, "amber"],
+      ["Renewal and expansion", "Seat growth, module adoption, clean data, support history, and sponsor value story are ready.", expansionScore >= 60, "green"],
+    ];
+    const onboardingChecklist = [
+      ["Sponsor owner named", true, "One executive sponsor owns pilot success, review cadence, and paid decision.", "green"],
+      ["Admin owner trained", true, "Company admin understands membership, access, users, reset, export, and audit surfaces.", "green"],
+      ["Frontline users loaded", users.length >= 3, `${users.length} users exist for admin, editor, and viewer style testing.`, "blue"],
+      ["Access profiles reviewed", true, "Operations-only and management/commercial access are separated before training.", "teal"],
+      ["Pilot data accepted", pilotReadiness.pilotScore >= 65, "Sample tracker data is usable for guided feedback but still needs production migration.", "amber"],
+      ["Feedback route ready", feedbackPersistence.persistenceScore >= 60, "UAT comments, owner decisions, retest, and sponsor export are mapped.", "blue"],
+      ["Go-live runbook ready", hostingRunbook.hostingReadiness >= 60, "Hosting, backups, monitoring, deployment, rollback, and launch gates are mapped.", "red"],
+    ];
+    const adoptionPlaybook = [
+      ["Daily tracker habit", "Frontline users update owner, status, due date, action lane, and notes directly in Tenders or Projects.", "green"],
+      ["Weekly operating review", "Managers use Advisor, Weekly Review, Reports, and priority queue to convert signals into commitments.", "blue"],
+      ["Commercial privacy confidence", "Operations users keep trackers simple while Insights, Forecast, Contracts, and Reports carry commercial facts.", "teal"],
+      ["Evidence cleanup", "Documents, source trace, governance gaps, and import validation become part of the adoption conversation.", "amber"],
+      ["Admin access discipline", "Customer admin reviews users, sections, membership, seat count, and audit movement every week.", "red"],
+      ["Sponsor value story", "Customer success prepares a simple before/after story: speed, visibility, overdue movement, control, and reporting.", "green"],
+    ];
+    const trainingPlan = [
+      ["Admin setup", "Company, users, section access, membership page, reset demo, and export controls.", "green"],
+      ["Frontline tracker", "Search, filters, row editing, board, timeline, notes, owner focus, and action queue.", "blue"],
+      ["Manager review", "Advisor, Weekly Review, Reports, Tenders Insights, Project Insights, minutes, and dispatch.", "teal"],
+      ["Data owner", "Import Studio, migration pack, source trace, quarantine, validation, and rollback thinking.", "amber"],
+      ["Sponsor briefing", "Command Center, build tracker, readiness, pilot decision, customer value story, and renewal path.", "green"],
+    ];
+    const supportQueue = [
+      ["Access question", "Confirm which sections each user should see before expanding beyond operational trackers.", "blue"],
+      ["Data cleanup", `${evidenceGaps} evidence gaps and ${commercialGaps} commercial gaps should become owner-ready cleanup tasks.`, "amber"],
+      ["Overdue movement", `${overdueActions} overdue follow-ups need a weekly owner rhythm before pilot closeout.`, overdueActions ? "red" : "green"],
+      ["Workflow friction", "Capture where Excel still feels easier and turn that into product or training work.", "teal"],
+      ["Report confidence", "Sponsor should trust what appears in Command, Advisor, Weekly Review, and Reports before conversion.", "green"],
+      ["Go-live blocker", "Backend, hosting, billing, migration, and live data gates remain tracked before paid deployment.", "red"],
+    ];
+    const renewalSignals = [
+      ["Adoption health", `${adoptionHealth}%`, "Users are likely to renew if daily and weekly rituals become normal.", adoptionHealth >= 65 ? "green" : "amber"],
+      ["Renewal risk", `${renewalRisk}%`, "Risk reduces when overdue actions, evidence gaps, and production blockers close.", renewalRisk > 45 ? "red" : "green"],
+      ["Sponsor proof", `${pilotFeedback.feedbackScore}%`, "Pilot feedback and management review form the paid-conversion story.", pilotFeedback.feedbackScore >= 65 ? "green" : "amber"],
+      ["Seat path", `${billingBlueprint.membership.seats} seats`, "Initial USD membership can grow once teams, managers, and governance users join.", "blue"],
+      ["Data trust", `${Math.max(0, 100 - evidenceGaps)}%`, "Source coverage, document gaps, and migration quality influence renewal confidence.", evidenceGaps > 20 ? "amber" : "green"],
+      ["Production confidence", `${hostingRunbook.hostingReadiness}%`, "A customer will trust the product faster when hosting, backups, and rollback are clear.", hostingRunbook.hostingReadiness >= 60 ? "green" : "red"],
+    ];
+    const expansionSignals = [
+      ["More users", "Add pursuit managers, operations coordinators, project leads, document owners, and governance reviewers.", "green"],
+      ["More rooms", "Expand into Clients, Contracts, Documents, Reminders, Forecast, and Reports after first tracker adoption.", "blue"],
+      ["More companies", "The same tenant model can support multiple companies once backend isolation is implemented.", "teal"],
+      ["More value", `${account ? `${account.label} has ${account.openCount} open records` : "Relationship heat will guide expansion once accounts are active."}`, "Largest relationship clusters can become expansion conversations.", "amber"],
+    ];
+    const cadencePlan = [
+      ["Day 0", "Kickoff and access", "Confirm sponsor, admin, pilot users, tracker scope, first review date, and success measures.", "green"],
+      ["Day 2", "Frontline adoption", "Watch record edits, filters, board/timeline use, notes, owner movement, and training friction.", "blue"],
+      ["Day 7", "Management review", "Run Advisor, Weekly Review, Reports, action queue, and dispatch with sponsor present.", "teal"],
+      ["Day 14", "Pilot decision", "Present blockers, fixes, adoption evidence, value story, seat plan, and production readiness path.", "amber"],
+      ["Day 30", "Paid success rhythm", "Move into monthly health review, renewal risk watch, expansion signals, and customer roadmap.", "green"],
+    ];
+    const successGates = [
+      ["Sponsor signoff", false, "Sponsor confirms the product solves a real operating problem."],
+      ["Daily users trained", users.length >= 3, "Operations users can update tracker rows without support."],
+      ["Management pack trusted", pilotFeedback.feedbackScore >= 60, "Weekly Review and Reports produce sponsor-ready output."],
+      ["Feedback loop owned", feedbackPersistence.persistenceScore >= 60, "Feedback items have owners, decisions, retest, and sponsor export path."],
+      ["Commercial privacy accepted", true, "Commercial material remains in management rooms, not frontline tracker sheets."],
+      ["Production path credible", hostingRunbook.hostingReadiness >= 60, "Hosting, backup, monitoring, billing, and migration runway are clear enough for paid pilot planning."],
+    ];
+    return {
+      companyName: company.name || "Pilot company",
+      successScore,
+      adoptionHealth,
+      renewalRisk,
+      expansionScore,
+      lifecycleStages,
+      onboardingChecklist,
+      adoptionPlaybook,
+      trainingPlan,
+      supportQueue,
+      renewalSignals,
+      expansionSignals,
+      cadencePlan,
+      successGates,
+      signalCards: [
+        ["Success score", `${successScore}%`, "Blended adoption, risk, expansion, feedback, and production-readiness signal", successScore >= 65 ? "green" : "amber"],
+        ["Adoption health", `${adoptionHealth}%`, `${users.length} users / ${openRecords} open records / ${overdueActions} overdue actions`, adoptionHealth >= 65 ? "green" : "amber"],
+        ["Renewal risk", `${renewalRisk}%`, "Drops as training, evidence, support, hosting, billing, and migration gates close", renewalRisk > 45 ? "red" : "green"],
+        ["Expansion score", `${expansionScore}%`, "Signals for more users, more rooms, and larger account coverage", expansionScore >= 65 ? "green" : "blue"],
+      ],
+      handoff: [
+        "Customer Success should own the period after demo excitement: onboarding, training, weekly rhythm, support signals, sponsor proof, renewal risk, and expansion path.",
+        "PursuitDesk becomes stronger when the pilot is not just tested, but operated like a real customer account with named owners and review cadence.",
+        "Commercial privacy remains part of the success story: frontline users get clean trackers while managers get controlled insights.",
+        "Every feedback item should connect to training, product fix, data cleanup, access setting, or renewal/expansion signal.",
+        "The first paying customer needs a 30-day success plan before the backend goes live, so support does not become improvised after launch.",
+      ],
+    };
+  }
+
+  function buildBackendRepoStarterPackModel(commandModel, backendScaffold, backendTicketBoard, hostingRunbook, customerSuccess, securityTestPack, billingTestPack, migrationTestPack) {
+    const readyTickets = backendTicketBoard.readyTickets;
+    const totalTickets = backendTicketBoard.implementationTickets.length;
+    const repoReadiness = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendScaffold.scaffoldScore * 0.2 +
+            backendTicketBoard.ticketBoardScore * 0.2 +
+            hostingRunbook.hostingReadiness * 0.16 +
+            customerSuccess.successScore * 0.12 +
+            securityTestPack.testPackScore * 0.14 +
+            billingTestPack.billingTestScore * 0.08 +
+            migrationTestPack.migrationTestScore * 0.06 +
+            (readyTickets / Math.max(totalTickets, 1)) * 4,
+        ),
+      ),
+    );
+    const folderMap = [
+      ["apps/web", "React product shell, route guards, API client, role-based navigation, and static demo migration path.", "green"],
+      ["apps/api", "Node API service for auth, tenants, records, insights, billing, imports, feedback, audit, and admin.", "red"],
+      ["apps/worker", "Background jobs for imports, exports, invoice sync, reminders, report packs, and retention tasks.", "blue"],
+      ["packages/db", "PostgreSQL migrations, schema types, seed data, transaction helpers, and tenant-scope utilities.", "red"],
+      ["packages/domain", "Record, access, billing, import, feedback, report, and customer-success business rules.", "green"],
+      ["packages/auth", "Password reset, session issue, cookie policy, access middleware, and section permission helpers.", "red"],
+      ["packages/importer", "Excel/CSV parser, staging validator, quarantine reasons, dry run, commit, rollback, and reconciliation.", "amber"],
+      ["packages/billing", "USD plans, checkout sessions, invoices, webhook verification, seat sync, grace period, and audit events.", "amber"],
+      ["packages/audit", "Immutable audit writer, event catalog, redaction helpers, export trail, and retention policy.", "blue"],
+      ["packages/testing", "Tenant fixtures, access matrix, billing fixtures, import workbooks, feedback cases, and smoke runners.", "teal"],
+      ["infra", "Hosting manifests, environment templates, deployment checklist, backup scripts, monitoring, and rollback notes.", "blue"],
+      ["docs", "Runbooks, API contracts, schema decisions, customer success playbook, and release notes.", "green"],
+    ];
+    const setupCommands = [
+      ["pnpm install", "Install workspace dependencies across web, API, worker, and packages.", "green"],
+      ["pnpm db:migrate", "Apply tenant identity, records, commercial vault, billing, import, feedback, and audit migrations.", "red"],
+      ["pnpm db:seed", `Seed ${commandModel.records.length} sample records, demo users, access profiles, and membership state.`, "blue"],
+      ["pnpm test", "Run unit, API, security, billing, migration, feedback, and customer-success tests.", "teal"],
+      ["pnpm dev", "Run web, API, and worker locally with demo tenant and test payment keys.", "green"],
+      ["pnpm release:staging", "Build, migrate staging, smoke test, verify backups, and prepare rollback.", "amber"],
+    ];
+    const environmentFiles = [
+      [".env.local", "Developer secrets, local database, test payment keys, mock storage, and seeded tenant.", "green"],
+      [".env.preview", "Branch deployment URL, disposable database schema, no customer files, and smoke-test keys.", "blue"],
+      [".env.staging", "Pilot rehearsal data, test webhooks, backup restore target, and sponsor export checks.", "amber"],
+      [".env.production", "Vault-managed live secrets, production database, storage, payment webhooks, monitoring, and alerts.", "red"],
+    ];
+    const issueExport = [
+      ["Foundation", "BE-001, BE-002", "Repo skeleton, package boundaries, tenant identity, migrations, seed tenant, and CI basics.", "green"],
+      ["Auth and access", "BE-003, BE-004", "Login, sessions, password reset, section middleware, role fixtures, and audit proof.", "red"],
+      ["Records and audit", "BE-005, BE-010", "Tenders, Projects, notes, filters, CSV export, status movement, and immutable audit writer.", "blue"],
+      ["Commercial and import", "BE-006, BE-007", "Commercial vault, value privacy, import staging, quarantine, dry run, commit, rollback, and reconciliation.", "amber"],
+      ["Billing and feedback", "BE-008, BE-009", "Checkout, invoices, webhooks, seat sync, feedback sessions, sponsor exports, and customer-success memory.", "teal"],
+      ["Release operations", "BE-011, BE-012", "Executable test fixtures, staging deployment, backup restore drill, monitoring, and rollback rehearsal.", "red"],
+    ];
+    const branchPlan = [
+      ["main", "Protected production branch with required checks, review, and tagged releases.", "green"],
+      ["develop", "Integration branch for backend feature slices before staging promotion.", "blue"],
+      ["feature/auth-access", "Auth, sessions, password reset, access middleware, and access tests.", "red"],
+      ["feature/records-api", "Operational tracker records, notes, filters, CSV export, and audit events.", "green"],
+      ["feature/import-billing", "Import staging, rollback, checkout, invoices, webhooks, and seat reconciliation.", "amber"],
+      ["feature/feedback-success", "Feedback persistence, sponsor exports, customer success signals, and renewal/expansion memory.", "teal"],
+    ];
+    const starterFiles = [
+      ["README.md", "Install, run, seed, test, deploy, environment setup, and release discipline.", "green"],
+      ["apps/api/src/server.ts", "API bootstrap, health route, middleware chain, error shape, and request logging.", "red"],
+      ["packages/db/migrations/0001_tenant_identity.sql", "companies, users, sessions, invitations, access profiles, and section access.", "blue"],
+      ["packages/db/migrations/0002_records.sql", "records, tender details, project details, notes, client memory, and indexes.", "green"],
+      ["packages/db/migrations/0003_commercial_vault.sql", "commercial facts, negotiation rounds, agreements, forecast snapshots, and redaction rules.", "amber"],
+      ["packages/testing/fixtures/access-matrix.ts", "Admin, editor, viewer, operations-only, commercial, governance, and cross-tenant fixtures.", "teal"],
+      ["infra/staging-checklist.md", "Migrate, seed, smoke, backup, monitor, rollback, and release owner checklist.", "blue"],
+      ["docs/issue-export.md", "Backend MVP tickets, definitions of done, route contracts, schema slices, and release gates.", "green"],
+    ];
+    const releaseCheckpoints = [
+      ["Repo opens cleanly", false, "Fresh clone installs dependencies, runs local dev, and starts API health endpoint."],
+      ["Tenant migrations pass", false, "Company, user, session, access, record, commercial, import, billing, feedback, and audit tables migrate."],
+      ["Seed data loads", false, `${commandModel.records.length} demo records seed with users, access, notes, and source trace.`],
+      ["Security fixtures run", securityTestPack.testPackScore >= 55, "Tenant isolation, section access, commercial privacy, and audit tests are represented."],
+      ["Billing and import fixtures run", billingTestPack.billingTestScore >= 55 && migrationTestPack.migrationTestScore >= 55, "Checkout, invoice, webhook, staging, quarantine, commit, rollback, and reconciliation tests are represented."],
+      ["Staging handoff ready", hostingRunbook.hostingReadiness >= 60, "Deployment, backup, monitoring, rollback, and release owner checklist are mapped."],
+    ];
+    return {
+      repoReadiness,
+      folderMap,
+      setupCommands,
+      environmentFiles,
+      issueExport,
+      branchPlan,
+      starterFiles,
+      releaseCheckpoints,
+      signalCards: [
+        ["Repo readiness", `${repoReadiness}%`, "How close the backend plan is to a first repository skeleton", repoReadiness >= 65 ? "green" : "amber"],
+        ["Folders", folderMap.length, "Apps, packages, infrastructure, and docs boundaries for the real repo", "blue"],
+        ["Starter files", starterFiles.length, "First files that make the repo understandable on day one", "teal"],
+        ["Issue groups", issueExport.length, `${backendTicketBoard.implementationTickets.length} backend MVP tickets grouped for GitHub issues`, "green"],
+      ],
+      handoff: [
+        "This starter pack should become the first real private backend repository, separate from the static GitHub Pages demo.",
+        "Start with tenant identity, auth, access, records API, and audit before billing, imports, or customer success persistence.",
+        "Every folder should have one owner, one test path, one environment expectation, and one definition of done.",
+        "The first GitHub issue import should use the backend MVP ticket board, grouped into foundation, auth, records, commercial/import, billing/feedback, and release operations.",
+        "Once the repo opens cleanly, the next product build can shift from static prototype planning into a production MVP alpha plan.",
+      ],
+    };
+  }
+
+  function buildLaunchControlCenterModel(commandModel, pilotReadiness, hostingRunbook, customerSuccess, backendRepoStarter, billingBlueprint, migrationPack, securityTestPack) {
+    const openWork = commandModel.openRecords.length;
+    const overdueActions = commandModel.reminders.overdue;
+    const evidenceGaps = commandModel.documents.totalGaps;
+    const commercialGaps = commandModel.contracts.gapCount;
+    const launchScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          pilotReadiness.pilotScore * 0.18 +
+            hostingRunbook.hostingReadiness * 0.16 +
+            customerSuccess.successScore * 0.16 +
+            backendRepoStarter.repoReadiness * 0.16 +
+            billingBlueprint.productionGates.filter(([label, ready]) => Boolean(ready)).length * 4 +
+            migrationPack.migrationScore * 0.1 +
+            securityTestPack.testPackScore * 0.1 +
+            Math.max(0, 100 - overdueActions) * 0.08,
+        ),
+      ),
+    );
+    const goStatus = launchScore >= 80 ? "Go candidate" : launchScore >= 60 ? "Controlled pilot only" : "No-go for live data";
+    const launchWorkstreams = [
+      ["Product readiness", `${pilotReadiness.pilotScore}%`, "Pilot scope, access, data, backend, billing, and feedback checks are mapped.", pilotReadiness.pilotScore >= 65, "green"],
+      ["Production hosting", `${hostingRunbook.hostingReadiness}%`, "DNS, environments, secrets, backups, monitoring, deployment, and rollback are mapped.", hostingRunbook.hostingReadiness >= 60, "blue"],
+      ["Backend repository", `${backendRepoStarter.repoReadiness}%`, "Folder map, commands, env files, issue groups, branch plan, and starter files are mapped.", backendRepoStarter.repoReadiness >= 65, "teal"],
+      ["Customer success", `${customerSuccess.successScore}%`, "Onboarding, training, support, renewal risk, expansion, and 30-day cadence are mapped.", customerSuccess.successScore >= 65, "green"],
+      ["Billing and seats", `${billingBlueprint.membership.seats} seats`, "USD plan, checkout flow, invoice lifecycle, webhook, seat sync, and access locks are mapped.", billingBlueprint.productionGates.some(([, ready]) => ready), "amber"],
+      ["Migration and data", `${migrationPack.migrationScore}%`, "Source inventory, validation gates, dry run, cutover, rollback, and reconciliation are mapped.", migrationPack.migrationScore >= 70, "red"],
+    ];
+    const goNoGoGates = [
+      ["Live data approval", false, "No customer production data until auth, tenant isolation, access, audit, hosting, backup, and rollback are executable."],
+      ["Pilot sponsor approved", false, "Sponsor must approve scope, users, success measures, support route, and launch date."],
+      ["Operations users trained", customerSuccess.successGates.some(([label, ready]) => label === "Daily users trained" && ready), "Frontline users can update tracker rows, board, timeline, notes, and filters without support."],
+      ["Commercial privacy accepted", true, "Commercial fields stay in controlled insights, reports, contracts, and forecast rooms."],
+      ["Staging rehearsal complete", false, "Staging must pass login, records, insights, import dry run, billing webhook, feedback capture, report export, and rollback rehearsal."],
+      ["Support owner named", true, "Customer success owner, product owner, data owner, and release owner are identified for launch week."],
+      ["Billing path reviewed", billingBlueprint.activeSeats <= billingBlueprint.membership.seats, `${billingBlueprint.activeSeats}/${billingBlueprint.membership.seats} active users fit inside selected seats.`],
+      ["Migration proof exported", false, "Source counts, migrated counts, commercial split, quarantine, rollback id, and reconciliation report are exported."],
+    ];
+    const launchDayRunbook = [
+      ["T-7 days", "Freeze launch scope", "Confirm company, sponsor, admin owner, users, access profile, pilot records, and support contacts.", "green"],
+      ["T-3 days", "Rehearse staging", "Run migration dry run, auth/access smoke, commercial privacy smoke, invoice webhook, report export, and rollback.", "blue"],
+      ["T-1 day", "Approve launch packet", "Review go/no-go gates, open blockers, backup snapshot, monitoring route, customer notice, and rollback owner.", "amber"],
+      ["Launch morning", "Open controlled pilot", "Enable users, confirm login, update first record, test search, run Advisor, and capture first feedback item.", "teal"],
+      ["Launch day close", "Stabilize", "Review errors, support tickets, overdue movements, customer feedback, adoption friction, and next-day priorities.", "red"],
+      ["Day 7", "Sponsor review", "Present adoption, blockers, training needs, data cleanup, value story, and paid pilot recommendation.", "green"],
+    ];
+    const ownerMatrix = [
+      ["Company sponsor", "Approves business value, pilot decision, paid conversion, and expansion scope.", "green"],
+      ["Company admin", "Owns users, access, membership, reset, training attendance, and daily adoption.", "blue"],
+      ["Product owner", "Owns feature gaps, workflow fixes, feedback triage, and roadmap decisions.", "teal"],
+      ["Data owner", "Owns import source, validation repairs, quarantine, cutover report, and rollback proof.", "amber"],
+      ["Release owner", "Owns deployment, smoke tests, monitoring, backup, rollback, and incident communication.", "red"],
+      ["Customer success", "Owns training, support queue, review cadence, renewal risk, and expansion signals.", "green"],
+    ];
+    const launchPacket = [
+      ["Executive one-pager", "Why launch, current readiness, blockers, owner map, go/no-go status, and next decision date.", "green"],
+      ["User access list", "Admin, operations, manager, commercial, governance, and viewer access by section.", "blue"],
+      ["Data migration report", "Source workbook, row counts, quarantine reasons, commercial split, rollback id, and reconciliation.", "amber"],
+      ["Support and training plan", "Admin training, frontline training, manager review, support queue, and customer success cadence.", "teal"],
+      ["Deployment proof", "Environment, backup snapshot, monitoring routes, smoke results, rollback owner, and incident path.", "red"],
+      ["Billing review", "USD plan, seats, invoice path, annual/monthly option, access lock behavior, and paid conversion step.", "green"],
+    ];
+    const riskRegister = [
+      ["Backend still static", "The current demo is GitHub Pages; real auth, tenant database, APIs, audit, and persistence are still future work.", "red"],
+      ["Data migration not executable", `${migrationPack.quarantineCount} quarantine signals and rollback workflow remain modeled, not implemented.`, "amber"],
+      ["Overdue operating load", `${overdueActions} overdue follow-ups can weaken launch confidence if not owned before sponsor review.`, overdueActions ? "red" : "green"],
+      ["Evidence cleanup", `${evidenceGaps} document/source gaps should be converted into owner-ready tasks before live rollout.`, evidenceGaps > 20 ? "amber" : "green"],
+      ["Commercial gap control", `${commercialGaps} commercial gaps remain visible for management review, not frontline users.`, commercialGaps ? "amber" : "green"],
+      ["Hosting proof pending", "Backup restore, monitoring alerts, deployment smoke, and rollback rehearsal must be executable before production.", "blue"],
+    ];
+    const decisionMemo = [
+      `Current launch status: ${goStatus} at ${launchScore}% readiness.`,
+      `${openWork} open tender/project records and ${overdueActions} overdue actions provide enough workflow signal for pilot testing.`,
+      `The first launch should stay controlled until backend repository, hosting, auth, database, audit, billing, migration, and support workflows are implemented.`,
+      "Commercial privacy is correctly designed: frontline trackers stay operational while commercial material remains in management rooms.",
+      "Best next move after this static prototype is a production MVP alpha plan and private backend repository kickoff.",
+    ];
+    return {
+      launchScore,
+      goStatus,
+      launchWorkstreams,
+      goNoGoGates,
+      launchDayRunbook,
+      ownerMatrix,
+      launchPacket,
+      riskRegister,
+      decisionMemo,
+      signalCards: [
+        ["Launch score", `${launchScore}%`, "Combined pilot, hosting, repo, customer success, billing, migration, and security signal", launchScore >= 70 ? "green" : "amber"],
+        ["Launch status", goStatus, "Current recommendation for real customer data and first controlled pilot", launchScore >= 80 ? "green" : launchScore >= 60 ? "amber" : "red"],
+        ["Open work", openWork, `${overdueActions} overdue actions need owner movement before launch review`, overdueActions ? "amber" : "green"],
+        ["Go/no-go gates", goNoGoGates.length, `${goNoGoGates.filter(([, ready]) => ready).length} gates currently pass in prototype logic`, "blue"],
+      ],
+      handoff: [
+        "Launch Control Center is the executive wrapper around everything built so far: readiness, hosting, repo, billing, migration, customer success, and support.",
+        "The product should not accept live customer data until the launch gates become executable checks in the production backend and staging environment.",
+        "A controlled pilot can still be sold and demonstrated with clear language: static prototype now, production backend next, live data only after gates pass.",
+        "Every go-live needs a launch packet, named owners, support route, rollback path, and sponsor review date before users are enabled.",
+        "v100 should define the Production MVP Alpha scope: the smallest real backend build that can safely move PursuitDesk beyond static demo.",
+      ],
+    };
+  }
+
+  function buildProductionMvpAlphaPlanModel(commandModel, launchControl, backendRepoStarter, hostingRunbook, customerSuccess, billingBlueprint, migrationPack, securityTestPack, backendTicketBoard) {
+    const readyBillingGates = billingBlueprint.productionGates.filter(([, ready]) => ready).length;
+    const alphaScopeScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          launchControl.launchScore * 0.2 +
+            backendRepoStarter.repoReadiness * 0.18 +
+            hostingRunbook.hostingReadiness * 0.14 +
+            customerSuccess.successScore * 0.12 +
+            securityTestPack.testPackScore * 0.12 +
+            migrationPack.migrationScore * 0.1 +
+            backendTicketBoard.ticketBoardScore * 0.08 +
+            readyBillingGates * 2,
+        ),
+      ),
+    );
+    const alphaBoundary = [
+      ["Included", "Tenant identity", "Company, users, invitations, sessions, access grants, and seed admin become real database tables.", "green"],
+      ["Included", "Operational tracker", "Tenders and Projects move from browser storage to company-scoped records, notes, status, owner, category, and dates.", "teal"],
+      ["Included", "Commercial vault shell", "Value, agreement, LOA, negotiation, forecast, and contract fields live behind insight-only access.", "amber"],
+      ["Included", "Audit and evidence", "Login, denied access, record movement, user access, import dry run, billing preview, and feedback decisions write audit events.", "blue"],
+      ["Limited", "Billing test mode", "USD plans, seats, invoice states, and webhook tests are implemented without live card capture in alpha.", "amber"],
+      ["Limited", "Import dry run", "Excel and CSV rows can stage, validate, quarantine, preview, and rollback before live commit is enabled.", "red"],
+    ];
+    const alphaNonGoals = [
+      ["No public signup", "First alpha is invite-only for one controlled company and one admin owner."],
+      ["No mobile app", "Responsive web stays enough for pilot; native mobile comes later if usage proves it."],
+      ["No live payment capture", "Checkout uses test mode and invoice preview until legal, tax, and support workflows are ready."],
+      ["No broad AI automation", "Advisor remains rules-based until tenant data, audit, and permission layers are stable."],
+      ["No multi-region hosting", "Start with one safe deployment region, backups, logs, and rollback before expansion."],
+      ["No unlimited imports", "Workbook migration stays gated by dry run, quarantine, and reconciliation proof."],
+    ];
+    const milestonePlan = [
+      ["A0", "Repository opens", "Private repo, apps/web, apps/api, packages/db, packages/domain, CI shell, env example, and seed command.", "green"],
+      ["A1", "Tenant and auth", "Companies, users, sessions, invitations, password reset, inactive-user block, and exact access middleware.", "red"],
+      ["A2", "Tracker API", "Company-scoped Tenders and Projects CRUD, notes, filters, status moves, owner/date edits, CSV export, and audit.", "teal"],
+      ["A3", "Commercial split", "Insight routes expose value and negotiation data only to permitted users, with redaction tests for operations users.", "amber"],
+      ["A4", "Import and feedback", "Import dry run, staging rows, quarantine, rollback report, UAT feedback, retest states, and sponsor export.", "blue"],
+      ["A5", "Alpha staging", "Preview, staging, backups, logs, smoke tests, billing test mode, support queue, and go/no-go handoff.", "green"],
+    ];
+    const acceptanceCriteria = [
+      ["Tenant isolation", "A user from Company A cannot read, search, export, or infer Company B records, audit rows, users, invoices, imports, or feedback."],
+      ["Operations privacy", "Operations-only users can update Tenders and Projects but never receive valueText, agreement, LOA, negotiation, billing, or membership fields."],
+      ["Section access", "Admin controls Command, Advisor, Weekly Review, Tenders, Projects, Reports, Rooms, Insights, Governance, Import, Documents, and Membership visibility."],
+      ["Audit evidence", "Every login, denied access, record edit, user change, import dry run, rollback, billing event, and feedback decision has actor, tenant, time, and before/after context."],
+      ["Data migration proof", "A workbook dry run returns source counts, mapped counts, quarantine reasons, duplicate checks, commercial split, and rollback id before commit."],
+      ["Billing readiness", "USD 5/user/month seat logic, plan preview, invoice state, webhook signature test, and access-lock behavior pass in test mode."],
+      ["Pilot feedback loop", "Users can submit feedback by room, severity, role, evidence, owner, decision, and retest state; sponsor export is available."],
+      ["Release confidence", "CI, security tests, route access tests, smoke tests, backup restore drill, and rollback rehearsal pass before live customer data."],
+    ];
+    const apiCutline = [
+      ["Auth", "POST /auth/login, POST /auth/logout, POST /auth/reset, GET /me", "Sessions, password reset, inactive-user block, and audit."],
+      ["Users", "GET /users, POST /users, PATCH /users/:id/access", "Admin-only user creation, section grants, role changes, and preview logic."],
+      ["Records", "GET /records, POST /records, PATCH /records/:id, GET /records/export", "Operational tracker with commercial redaction by default."],
+      ["Commercial", "GET /insights/tenders, GET /insights/projects, PATCH /records/:id/commercial", "Values, negotiations, agreement data, forecast, and management rooms."],
+      ["Import", "POST /imports/dry-run, POST /imports/:id/commit, POST /imports/:id/rollback", "Staging, validation, quarantine, source trace, commit, and reconciliation."],
+      ["Billing and feedback", "POST /billing/session, POST /billing/webhook, POST /feedback, GET /feedback/export", "Test-mode subscription and pilot learning loop."],
+    ];
+    const dataContracts = [
+      ["Tenant core", "companies, users, sessions, invitations, user_section_access", "Every row carries tenant scope and audit-safe actor linkage.", "red"],
+      ["Operations", "records, tender_details, project_details, notes, client_memory", "Frontline tables with no commercial figures in default payloads.", "green"],
+      ["Commercial", "commercial_facts, negotiation_rounds, agreements, forecast_snapshots", "Restricted facts for Insights, Contracts, Forecast, Reports, and Advisor.", "amber"],
+      ["Workflow", "actions, reminders, review_sessions, dispatches, documents", "Operating rhythm, evidence gaps, follow-ups, reports, and weekly review memory.", "blue"],
+      ["Migration", "import_batches, staging_rows, validation_errors, quarantine_items, rollback_events", "Controlled workbook onboarding with dry-run proof.", "teal"],
+      ["Growth", "subscriptions, invoices, billing_events, feedback_sessions, feedback_items", "Membership test mode and pilot success memory.", "green"],
+    ];
+    const pilotConstraints = [
+      ["One company first", "Alpha should serve one sponsor company and one controlled dataset before general onboarding."],
+      ["Three roles", "Admin, operations user, and management user are enough to test access, privacy, and workflow split."],
+      ["Limited source records", "Start with a cleaned sample pack, then run one real workbook dry run after staging passes."],
+      ["Manual support", "Support queue can start as internal triage; automated support tooling is later."],
+      ["Clear data language", "Customer must know static demo, staging alpha, and live-data approval are separate phases."],
+    ];
+    const exitGates = [
+      ["Private repo exists", false, "Codebase is created with ownership, commands, CI, env examples, and first branch policy."],
+      ["Auth and tenants pass", false, "Company isolation and login/session tests pass for admin, operations, management, and blocked user fixtures."],
+      ["Tracker payloads pass redaction", false, "Operations users can never see commercial facts through API, export, search, board, timeline, or details."],
+      ["First migration dry run passes", false, `${migrationPack.sourceWorkbooks} source workbooks can be counted, mapped, quarantined, and reconciled.`],
+      ["Billing test mode passes", false, `${BILLING_CURRENCY} ${BILLING_PRICE_PER_USER}/user/month plan preview, seats, invoices, and webhook tests pass.`],
+      ["Customer success loop works", false, "Feedback capture, owner assignment, retest, sponsor export, and 30-day cadence are persistent."],
+      ["Staging go/no-go passes", false, "Smoke tests, backup restore, monitoring alert, rollback, support route, and launch packet are approved."],
+    ];
+    const dayOneBacklog = [
+      ["BE-001", "Open repo and CI", "Create the private production repo skeleton and prove lint/test/build run locally and in CI.", "green"],
+      ["BE-002", "Tenant identity migrations", "Implement companies, users, sessions, invitations, and section access tables.", "red"],
+      ["BE-003", "Login and session guard", "Create admin login, password reset shell, inactive block, and session-backed route guard.", "red"],
+      ["BE-004", "Access middleware", "Enforce section access for tracker, insights, admin, membership, import, and reports routes.", "blue"],
+      ["BE-005", "Records API", "Move Tenders and Projects records, notes, filters, and exports behind tenant-scoped API.", "green"],
+      ["BE-010", "Audit writer", "Append immutable audit rows for login, denied routes, edits, access changes, exports, and imports.", "teal"],
+      ["BE-011", "Security fixtures", "Create test fixtures for admin, editor, viewer, operations-only, commercial, and cross-tenant users.", "red"],
+      ["A-UX", "Alpha label system", "Keep prototype, staging alpha, and live customer data states clear in UI copy.", "amber"],
+    ];
+    return {
+      alphaScopeScore,
+      alphaBoundary,
+      alphaNonGoals,
+      milestonePlan,
+      acceptanceCriteria,
+      apiCutline,
+      dataContracts,
+      pilotConstraints,
+      exitGates,
+      dayOneBacklog,
+      signalCards: [
+        ["Alpha scope", `${alphaScopeScore}%`, "How clear the first real backend build is after launch-control planning", alphaScopeScore >= 70 ? "green" : "amber"],
+        ["Build cutline", "A0-A5", "Six implementation milestones from repo opening to staging go/no-go", "blue"],
+        ["Privacy rule", "Ops first", "Tenders and Projects stay tracker-only; commercial facts live in permissioned rooms", "teal"],
+        ["Exit gates", exitGates.length, "Real SaaS pilot waits until every gate becomes executable", "red"],
+      ],
+      handoff: [
+        "v100 is the line between beautiful static prototype and first production alpha: it defines what to build first and what to deliberately leave out.",
+        "Start with tenant identity, auth, access, records API, commercial redaction, and audit; these protect the product before billing and import depth.",
+        "Tenders and Projects remain lower-level operational trackers. Commercial values move through Insights, Forecast, Contracts, Reports, Advisor, and admin rooms only.",
+        "The first alpha should be private, invite-only, test-mode billing, limited source data, and one controlled sponsor company.",
+        "Once this plan is accepted, the next practical move is private backend repo kickoff and a GitHub issue export from this alpha backlog.",
+      ],
+    };
+  }
+
   function buildProductBuildTracker() {
     return {
-      version: "v96 Production Hosting Runbook",
-      phase: "Production hosting runbook",
+      version: "v100 Production MVP Alpha Plan",
+      phase: "Production MVP alpha plan",
       lane: "Static product prototype on GitHub Pages",
-      pace: "77 meaningful versions since rebrand",
-      summary: "The prototype now maps how PursuitDesk should move from GitHub Pages demo into a safe hosted SaaS environment with domains, staging, production, secrets, backups, monitoring, deployment, rollback, and launch gates.",
+      pace: "81 meaningful versions since rebrand",
+      summary: "The prototype now defines the smallest real production alpha: scope, non-goals, milestones, acceptance criteria, API cutline, data contracts, pilot constraints, exit gates, and first backend backlog.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 99, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, and hosting runbook are live in demo form.", "teal"],
-        ["Data architecture", 96, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, billing events, audit retention, fixtures, hosting environments, and release gates are mapped.", "blue"],
-        ["Production backend", 66, "Repo structure, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, and production hosting runbook are mapped, but real tenant database, auth, APIs, audit persistence, checkout, import pipeline, and hosting are not built yet.", "red"],
-        ["Billing model", 53, "USD pricing, seat logic, checkout flow, invoice lifecycle, webhooks, plan changes, access locks, audit events, billing tests, backend billing tickets, and hosting handoff are now mapped.", "amber"],
-        ["Pilot readiness", 88, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, security tests, billing tests, access, security, billing, hosting, monitoring, backup, and deployment gates.", "green"],
+        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, and production alpha plan are live in demo form.", "teal"],
+        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, and release gates are mapped.", "blue"],
+        ["Production backend", 80, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, and alpha milestones are mapped, but real tenant database, auth, APIs, audit persistence, checkout, import pipeline, and hosting are not built yet.", "red"],
+        ["Billing model", 60, "USD pricing, seat logic, checkout flow, invoice lifecycle, webhooks, plan changes, access locks, audit events, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, and alpha test-mode limits are now mapped.", "amber"],
+        ["Pilot readiness", 96, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, security tests, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, and alpha exit gates.", "green"],
       ],
       phases: [
         ["0", "Positioning", "Done", "PursuitDesk direction is set."],
@@ -6506,20 +6984,26 @@
         ["19", "Pilot feedback persistence", "Active", "Feedback sessions, UAT items, activity, attachments, decisions, sponsor exports, owner workflow, and release gates are mapped."],
         ["20", "Backend MVP ticket board", "Active", "Implementation tickets, API tickets, schema slices, sprint order, dependencies, tests, and release gates are mapped."],
         ["21", "Production hosting", "Active", "Hosting environments, DNS, secrets, backups, monitoring, deployment checklist, rollback steps, and launch readiness gates are mapped."],
-        ["22", "Customer success desk", "Next", "Feedback, training, adoption, renewal, and expansion signals need a customer-success operating desk."],
+        ["22", "Customer success desk", "Active", "Onboarding, training, adoption rhythm, support queue, renewal risk, expansion signals, cadence, and success gates are mapped."],
+        ["23", "Backend repo starter pack", "Active", "Repository folders, setup commands, environment files, issue groups, branch plan, starter files, and release checkpoints are mapped."],
+        ["24", "Launch control center", "Active", "Pilot readiness, deployment gates, support plan, customer go-live checklist, owner matrix, launch packet, risks, and go/no-go decision control are mapped."],
+        ["25", "Production MVP alpha plan", "Active", "The smallest real backend alpha scope, implementation milestones, acceptance criteria, API cutline, data contracts, pilot constraints, and exit gates are mapped."],
+        ["26", "Private backend repo kickoff", "Next", "The production repository, branch plan, seed tenant, environment files, first tickets, and CI checks need to be created."],
       ],
       nextBuilds: [
-        ["v97", "Customer Success Desk", "Turn feedback, training, adoption, and renewal signals into a pilot success operating desk."],
-        ["v98", "Backend Repo Starter Pack", "Prepare the first real repository skeleton, folder map, environment checklist, and issue export plan."],
-        ["v99", "Launch Control Center", "Combine pilot readiness, deployment gates, support plan, and customer go-live checklist."],
+        ["v101", "Private Backend Repo Kickoff", "Create the real implementation branch plan, issue list, and first backend development checklist."],
+        ["v102", "Implementation Issue Export", "Convert the launch and backend plan into GitHub-ready issue titles, bodies, owners, and labels."],
+        ["v103", "Alpha API Contract Pack", "Turn auth, users, records, commercial vault, import, billing, feedback, and audit routes into exact request/response contracts."],
       ],
       blockers: [
+        "Private production repository not created yet",
         "Real company account isolation",
         "Backend database and API",
         "Authentication and password reset",
         "Persistent audit history",
         "Subscription checkout and invoices",
         "Production hosting implementation and first live environment",
+        "Customer success data persistence and support workflow",
       ],
     };
   }
@@ -9032,6 +9516,922 @@
             </div>
           </div>
           <div class="hosting-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderCustomerSuccessDesk(model) {
+    return `
+      <section class="customer-success-desk">
+        <div class="customer-success-hero">
+          <div>
+            <span class="metric-label">Customer success desk</span>
+            <h3>Turn the first pilot into a renewable customer.</h3>
+            <p>This desk turns feedback, training, support, adoption, renewal risk, expansion, and sponsor proof into a practical operating layer for ${escapeHtml(model.companyName)} after the product is deployed.</p>
+            <div class="customer-success-action-row">
+              <button class="secondary-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+            </div>
+          </div>
+          <div class="customer-success-score-card">
+            <span>Customer success score</span>
+            <strong>${model.successScore}%</strong>
+            <i style="--width: ${model.successScore}%"></i>
+            <small>${model.adoptionHealth}% adoption / ${model.renewalRisk}% renewal risk / ${model.expansionScore}% expansion</small>
+          </div>
+        </div>
+
+        <div class="customer-success-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="customer-success-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="customer-success-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Customer lifecycle</span>
+              <h3>From pilot kickoff to renewal</h3>
+            </div>
+            <span>${model.lifecycleStages.length} stages</span>
+          </div>
+          <div class="customer-success-lifecycle-grid">
+            ${model.lifecycleStages
+              .map(
+                ([label, note, ready, tone]) => `
+                  <div class="${ready ? "is-ready" : "is-next"} tone-${escapeHtml(tone)}">
+                    <span>${ready ? "Ready" : "Next"}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="customer-success-two-column">
+          <article class="customer-success-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Onboarding checklist</span>
+                <h3>Before the first company goes live</h3>
+              </div>
+            </div>
+            <div class="customer-success-checklist">
+              ${model.onboardingChecklist
+                .map(
+                  ([label, ready, note, tone]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"} tone-${escapeHtml(tone)}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="customer-success-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Training plan</span>
+                <h3>Who learns what</h3>
+              </div>
+              <span>${model.trainingPlan.length} paths</span>
+            </div>
+            <div class="customer-success-training-list">
+              ${model.trainingPlan
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="customer-success-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Adoption playbook</span>
+              <h3>Make the workflow stick</h3>
+            </div>
+          </div>
+          <div class="customer-success-playbook-grid">
+            ${model.adoptionPlaybook
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="customer-success-two-column">
+          <article class="customer-success-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Support queue</span>
+                <h3>What customer success must watch</h3>
+              </div>
+            </div>
+            <div class="customer-success-support-list">
+              ${model.supportQueue
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="customer-success-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Renewal signals</span>
+                <h3>What makes the account safer</h3>
+              </div>
+            </div>
+            <div class="customer-success-renewal-grid">
+              ${model.renewalSignals
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="customer-success-two-column">
+          <article class="customer-success-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Expansion signals</span>
+                <h3>Where the account can grow</h3>
+              </div>
+            </div>
+            <div class="customer-success-expansion-list">
+              ${model.expansionSignals
+                .map(
+                  ([label, note, detail, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                      <em>${escapeHtml(detail)}</em>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="customer-success-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">30-day cadence</span>
+                <h3>Operating rhythm after launch</h3>
+              </div>
+            </div>
+            <div class="customer-success-cadence-list">
+              ${model.cadencePlan
+                .map(
+                  ([day, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(day)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="customer-success-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Success gates</span>
+              <h3>Before paid expansion</h3>
+            </div>
+          </div>
+          <div class="customer-success-gate-list">
+            ${model.successGates
+              .map(
+                ([label, ready, note]) => `
+                  <div class="${ready ? "is-ready" : "is-blocked"}">
+                    <span>${ready ? "Ready" : "Block"}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="customer-success-panel customer-success-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Customer success handoff</span>
+              <h3>How to operate the first account</h3>
+            </div>
+          </div>
+          <div class="customer-success-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendRepoStarterPack(model) {
+    return `
+      <section class="repo-starter-pack">
+        <div class="repo-starter-hero">
+          <div>
+            <span class="metric-label">Backend repo starter pack</span>
+            <h3>Prepare the first real PursuitDesk backend repository.</h3>
+            <p>This pack turns the SaaS roadmap into a repo-ready plan: app folders, shared packages, database migrations, setup commands, environment files, GitHub issue groups, branch plan, starter files, and release checkpoints.</p>
+            <div class="repo-starter-action-row">
+              <button class="secondary-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="repo-starter-score-card">
+            <span>Repo readiness</span>
+            <strong>${model.repoReadiness}%</strong>
+            <i style="--width: ${model.repoReadiness}%"></i>
+            <small>${model.folderMap.length} folders / ${model.starterFiles.length} starter files / ${model.issueExport.length} issue groups</small>
+          </div>
+        </div>
+
+        <div class="repo-starter-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="repo-starter-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="repo-starter-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Folder map</span>
+              <h3>Repository boundaries</h3>
+            </div>
+            <span>${model.folderMap.length} folders</span>
+          </div>
+          <div class="repo-folder-grid">
+            ${model.folderMap
+              .map(
+                ([path, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(path)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="repo-starter-two-column">
+          <article class="repo-starter-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Setup commands</span>
+                <h3>First local run</h3>
+              </div>
+              <span>${model.setupCommands.length} commands</span>
+            </div>
+            <div class="repo-command-list">
+              ${model.setupCommands
+                .map(
+                  ([command, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <code>${escapeHtml(command)}</code>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="repo-starter-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Environment files</span>
+                <h3>Config by deployment stage</h3>
+              </div>
+            </div>
+            <div class="repo-env-list">
+              ${model.environmentFiles
+                .map(
+                  ([file, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <code>${escapeHtml(file)}</code>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="repo-starter-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">GitHub issue export</span>
+              <h3>Turn backend tickets into work groups</h3>
+            </div>
+            <span>${model.issueExport.length} groups</span>
+          </div>
+          <div class="repo-issue-grid">
+            ${model.issueExport
+              .map(
+                ([lane, tickets, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(tickets)}</span>
+                    <strong>${escapeHtml(lane)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="repo-starter-two-column">
+          <article class="repo-starter-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Branch plan</span>
+                <h3>How implementation can move</h3>
+              </div>
+            </div>
+            <div class="repo-branch-list">
+              ${model.branchPlan
+                .map(
+                  ([branch, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <code>${escapeHtml(branch)}</code>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="repo-starter-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Starter files</span>
+                <h3>Files to create first</h3>
+              </div>
+            </div>
+            <div class="repo-file-list">
+              ${model.starterFiles
+                .map(
+                  ([file, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <code>${escapeHtml(file)}</code>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="repo-starter-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Release checkpoints</span>
+              <h3>Before backend alpha starts</h3>
+            </div>
+          </div>
+          <div class="repo-checkpoint-list">
+            ${model.releaseCheckpoints
+              .map(
+                ([label, ready, note]) => `
+                  <div class="${ready ? "is-ready" : "is-blocked"}">
+                    <span>${ready ? "Ready" : "Block"}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="repo-starter-panel repo-starter-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Repository handoff</span>
+              <h3>How to start implementation without chaos</h3>
+            </div>
+          </div>
+          <div class="repo-starter-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderLaunchControlCenter(model) {
+    return `
+      <section class="launch-control-center">
+        <div class="launch-control-hero">
+          <div>
+            <span class="metric-label">Launch control center</span>
+            <h3>Decide when PursuitDesk is ready for the first controlled pilot.</h3>
+            <p>This command layer combines product readiness, hosting, backend repo, customer success, billing, migration, support ownership, risks, launch packet, and go/no-go gates into one executive decision view.</p>
+            <div class="launch-control-action-row">
+              <button class="secondary-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+            </div>
+          </div>
+          <div class="launch-control-score-card">
+            <span>Launch score</span>
+            <strong>${model.launchScore}%</strong>
+            <i style="--width: ${model.launchScore}%"></i>
+            <small>${escapeHtml(model.goStatus)}</small>
+          </div>
+        </div>
+
+        <div class="launch-control-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="launch-control-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="launch-control-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Launch workstreams</span>
+              <h3>What must be ready together</h3>
+            </div>
+            <span>${model.launchWorkstreams.length} workstreams</span>
+          </div>
+          <div class="launch-workstream-grid">
+            ${model.launchWorkstreams
+              .map(
+                ([label, value, note, ready, tone]) => `
+                  <div class="${ready ? "is-ready" : "is-blocked"} tone-${escapeHtml(tone)}">
+                    <span>${ready ? "Ready" : "Needs proof"}</span>
+                    <strong>${escapeHtml(label)} / ${escapeHtml(String(value))}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="launch-control-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Go / no-go gates</span>
+              <h3>Before live customer data</h3>
+            </div>
+            <span>${model.goNoGoGates.filter(([, ready]) => ready).length}/${model.goNoGoGates.length} pass</span>
+          </div>
+          <div class="launch-gate-grid">
+            ${model.goNoGoGates
+              .map(
+                ([label, ready, note]) => `
+                  <div class="${ready ? "is-ready" : "is-blocked"}">
+                    <span>${ready ? "Ready" : "Block"}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="launch-control-two-column">
+          <article class="launch-control-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Launch day runbook</span>
+                <h3>From freeze to sponsor review</h3>
+              </div>
+            </div>
+            <div class="launch-runbook-list">
+              ${model.launchDayRunbook
+                .map(
+                  ([day, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(day)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="launch-control-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner matrix</span>
+                <h3>Who carries the launch</h3>
+              </div>
+            </div>
+            <div class="launch-owner-list">
+              ${model.ownerMatrix
+                .map(
+                  ([owner, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(owner)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="launch-control-two-column">
+          <article class="launch-control-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Launch packet</span>
+                <h3>What goes to sponsor and implementation team</h3>
+              </div>
+            </div>
+            <div class="launch-packet-list">
+              ${model.launchPacket
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="launch-control-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Launch risk register</span>
+                <h3>What can still hurt the pilot</h3>
+              </div>
+            </div>
+            <div class="launch-risk-list">
+              ${model.riskRegister
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="launch-control-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Decision memo</span>
+              <h3>What to say before launch</h3>
+            </div>
+          </div>
+          <div class="launch-decision-list">
+            ${model.decisionMemo.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+
+        <article class="launch-control-panel launch-control-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Launch handoff</span>
+              <h3>How to use this control center</h3>
+            </div>
+          </div>
+          <div class="launch-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderProductionMvpAlphaPlan(model) {
+    return `
+      <section class="production-alpha-plan">
+        <div class="alpha-hero">
+          <div>
+            <span class="metric-label">Production MVP alpha plan</span>
+            <h3>Define the first real SaaS build before any live customer data.</h3>
+            <p>This plan draws the line between prototype and production alpha: what is included, what is deliberately excluded, which APIs and tables are needed first, and which gates must pass before a real pilot.</p>
+            <div class="alpha-action-row">
+              <button class="secondary-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="alpha-score-card">
+            <span>Alpha scope clarity</span>
+            <strong>${model.alphaScopeScore}%</strong>
+            <i style="--width: ${model.alphaScopeScore}%"></i>
+            <small>Cutline, scope, gates, and implementation backlog are now mapped.</small>
+          </div>
+        </div>
+
+        <div class="alpha-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="alpha-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="alpha-two-column">
+          <article class="alpha-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Alpha boundary</span>
+                <h3>What is inside the first build</h3>
+              </div>
+              <span>${model.alphaBoundary.length} decisions</span>
+            </div>
+            <div class="alpha-scope-grid">
+              ${model.alphaBoundary
+                .map(
+                  ([state, label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(state)}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="alpha-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Day-one non-goals</span>
+                <h3>What we will not overbuild yet</h3>
+              </div>
+            </div>
+            <div class="alpha-nongoal-list">
+              ${model.alphaNonGoals
+                .map(
+                  ([label, note]) => `
+                    <div>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="alpha-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Alpha milestones</span>
+              <h3>From empty repo to staging go/no-go</h3>
+            </div>
+            <span>${model.milestonePlan.length} milestones</span>
+          </div>
+          <div class="alpha-milestone-grid">
+            ${model.milestonePlan
+              .map(
+                ([code, title, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(code)}</span>
+                    <strong>${escapeHtml(title)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="alpha-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance criteria</span>
+              <h3>How we know alpha is real</h3>
+            </div>
+            <span>${model.acceptanceCriteria.length} checks</span>
+          </div>
+          <div class="alpha-acceptance-grid">
+            ${model.acceptanceCriteria
+              .map(
+                ([label, note]) => `
+                  <div>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="alpha-two-column">
+          <article class="alpha-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">API cutline</span>
+                <h3>Routes needed before pilot</h3>
+              </div>
+            </div>
+            <div class="alpha-api-grid">
+              ${model.apiCutline
+                .map(
+                  ([group, routes, note]) => `
+                    <div>
+                      <span>${escapeHtml(group)}</span>
+                      <strong>${escapeHtml(routes)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="alpha-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Data contracts</span>
+                <h3>Tables that protect the product shape</h3>
+              </div>
+            </div>
+            <div class="alpha-data-grid">
+              ${model.dataContracts
+                .map(
+                  ([label, tables, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(tables)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="alpha-two-column">
+          <article class="alpha-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Pilot constraints</span>
+                <h3>Keep first customer rollout controlled</h3>
+              </div>
+            </div>
+            <div class="alpha-constraint-list">
+              ${model.pilotConstraints
+                .map(
+                  ([label, note]) => `
+                    <div>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="alpha-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Alpha exit gates</span>
+                <h3>Before moving to paid pilot</h3>
+              </div>
+              <span>${model.exitGates.filter(([, ready]) => ready).length}/${model.exitGates.length} pass</span>
+            </div>
+            <div class="alpha-exit-gate-list">
+              ${model.exitGates
+                .map(
+                  ([label, ready, note]) => `
+                    <div class="${ready ? "is-ready" : "is-blocked"}">
+                      <span>${ready ? "Ready" : "Block"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="alpha-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Day-one backlog</span>
+              <h3>First issue set for the private backend repo</h3>
+            </div>
+            <span>${model.dayOneBacklog.length} starter issues</span>
+          </div>
+          <div class="alpha-backlog-grid">
+            ${model.dayOneBacklog
+              .map(
+                ([code, title, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(code)}</span>
+                    <strong>${escapeHtml(title)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="alpha-panel alpha-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Implementation handoff</span>
+              <h3>What v100 changes in our direction</h3>
+            </div>
+          </div>
+          <div class="alpha-handoff-list">
             ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
           </div>
         </article>

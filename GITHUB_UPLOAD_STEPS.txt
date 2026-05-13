@@ -1,4 +1,4 @@
-PursuitDesk v96 production hosting runbook upload steps
+PursuitDesk v100 production MVP alpha plan upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v96 production hosting runbook upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v96 production hosting runbook
+   PursuitDesk v100 production MVP alpha plan
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Production Hosting Runbook inside Command Center with local, preview, staging, production environments, DNS, app/API hosting, database, object storage, secrets, monitoring, backups, deployment checklist, rollback steps, and live-data launch gates.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Production MVP Alpha Plan inside Command Center with first SaaS alpha scope, non-goals, A0-A5 milestones, acceptance criteria, API cutline, data contracts, pilot constraints, exit gates, day-one backlog, and implementation handoff.
 
 Demo login:
 admin@pursuitdesk.app

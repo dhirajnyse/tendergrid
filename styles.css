@@ -6065,6 +6065,1067 @@ textarea:disabled {
   background: var(--blue-soft);
 }
 
+.customer-success-desk {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(36, 119, 71, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(228, 241, 231, 0.88));
+  box-shadow: var(--shadow);
+}
+
+.customer-success-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 350px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.customer-success-hero > div:first-child,
+.customer-success-score-card,
+.customer-success-panel {
+  border: 1px solid rgba(36, 119, 71, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.customer-success-hero > div:first-child {
+  padding: 16px;
+}
+
+.customer-success-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.customer-success-hero p,
+.customer-success-signal-card p,
+.customer-success-lifecycle-grid p,
+.customer-success-checklist p,
+.customer-success-training-list p,
+.customer-success-playbook-grid p,
+.customer-success-support-list p,
+.customer-success-renewal-grid p,
+.customer-success-expansion-list p,
+.customer-success-cadence-list p,
+.customer-success-gate-list p,
+.customer-success-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.customer-success-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.customer-success-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--green);
+}
+
+.customer-success-score-card span,
+.customer-success-signal-card span,
+.customer-success-lifecycle-grid span,
+.customer-success-checklist span,
+.customer-success-renewal-grid span,
+.customer-success-cadence-list span,
+.customer-success-gate-list span {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.customer-success-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.customer-success-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green) var(--width), rgba(36, 119, 71, 0.12) 0);
+}
+
+.customer-success-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.customer-success-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.customer-success-signal-card,
+.customer-success-lifecycle-grid > div,
+.customer-success-checklist > div,
+.customer-success-training-list > div,
+.customer-success-playbook-grid > div,
+.customer-success-support-list > div,
+.customer-success-renewal-grid > div,
+.customer-success-expansion-list > div,
+.customer-success-cadence-list > div,
+.customer-success-gate-list > div,
+.customer-success-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(36, 119, 71, 0.2);
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  background: var(--green-soft);
+}
+
+.customer-success-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.customer-success-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.customer-success-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--green);
+}
+
+.customer-success-lifecycle-grid,
+.customer-success-playbook-grid,
+.customer-success-gate-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.customer-success-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.customer-success-checklist,
+.customer-success-training-list,
+.customer-success-support-list,
+.customer-success-expansion-list,
+.customer-success-cadence-list,
+.customer-success-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.customer-success-renewal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.customer-success-lifecycle-grid strong,
+.customer-success-checklist strong,
+.customer-success-training-list strong,
+.customer-success-playbook-grid strong,
+.customer-success-support-list strong,
+.customer-success-renewal-grid strong,
+.customer-success-expansion-list strong,
+.customer-success-cadence-list strong,
+.customer-success-gate-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.customer-success-expansion-list em {
+  color: var(--subtle);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.customer-success-lifecycle-grid .is-ready,
+.customer-success-checklist .is-ready,
+.customer-success-gate-list .is-ready {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.customer-success-lifecycle-grid .is-next,
+.customer-success-checklist .is-blocked,
+.customer-success-gate-list .is-blocked {
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.customer-success-signal-card.tone-green,
+.customer-success-lifecycle-grid .tone-green,
+.customer-success-checklist .tone-green,
+.customer-success-training-list .tone-green,
+.customer-success-playbook-grid .tone-green,
+.customer-success-support-list .tone-green,
+.customer-success-renewal-grid .tone-green,
+.customer-success-expansion-list .tone-green,
+.customer-success-cadence-list .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.customer-success-signal-card.tone-teal,
+.customer-success-lifecycle-grid .tone-teal,
+.customer-success-checklist .tone-teal,
+.customer-success-training-list .tone-teal,
+.customer-success-playbook-grid .tone-teal,
+.customer-success-support-list .tone-teal,
+.customer-success-renewal-grid .tone-teal,
+.customer-success-expansion-list .tone-teal,
+.customer-success-cadence-list .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.customer-success-signal-card.tone-blue,
+.customer-success-lifecycle-grid .tone-blue,
+.customer-success-checklist .tone-blue,
+.customer-success-training-list .tone-blue,
+.customer-success-playbook-grid .tone-blue,
+.customer-success-support-list .tone-blue,
+.customer-success-renewal-grid .tone-blue,
+.customer-success-expansion-list .tone-blue,
+.customer-success-cadence-list .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.customer-success-signal-card.tone-amber,
+.customer-success-lifecycle-grid .tone-amber,
+.customer-success-checklist .tone-amber,
+.customer-success-training-list .tone-amber,
+.customer-success-playbook-grid .tone-amber,
+.customer-success-support-list .tone-amber,
+.customer-success-renewal-grid .tone-amber,
+.customer-success-expansion-list .tone-amber,
+.customer-success-cadence-list .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.customer-success-signal-card.tone-red,
+.customer-success-lifecycle-grid .tone-red,
+.customer-success-checklist .tone-red,
+.customer-success-training-list .tone-red,
+.customer-success-playbook-grid .tone-red,
+.customer-success-support-list .tone-red,
+.customer-success-renewal-grid .tone-red,
+.customer-success-expansion-list .tone-red,
+.customer-success-cadence-list .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.customer-success-handoff-panel {
+  border-left-color: var(--teal);
+}
+
+.customer-success-handoff-list p {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.repo-starter-pack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(227, 237, 247, 0.9));
+  box-shadow: var(--shadow);
+}
+
+.repo-starter-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 350px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.repo-starter-hero > div:first-child,
+.repo-starter-score-card,
+.repo-starter-panel {
+  border: 1px solid rgba(49, 95, 147, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.repo-starter-hero > div:first-child {
+  padding: 16px;
+}
+
+.repo-starter-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.repo-starter-hero p,
+.repo-starter-signal-card p,
+.repo-folder-grid p,
+.repo-command-list p,
+.repo-env-list p,
+.repo-issue-grid p,
+.repo-branch-list p,
+.repo-file-list p,
+.repo-checkpoint-list p,
+.repo-starter-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.repo-starter-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.repo-starter-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--blue);
+}
+
+.repo-starter-score-card span,
+.repo-starter-signal-card span,
+.repo-issue-grid span,
+.repo-checkpoint-list span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.repo-starter-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.repo-starter-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.repo-starter-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.repo-starter-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.repo-starter-signal-card,
+.repo-folder-grid > div,
+.repo-command-list > div,
+.repo-env-list > div,
+.repo-issue-grid > div,
+.repo-branch-list > div,
+.repo-file-list > div,
+.repo-checkpoint-list > div,
+.repo-starter-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(49, 95, 147, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: var(--blue-soft);
+}
+
+.repo-starter-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.repo-starter-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.repo-starter-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--blue);
+}
+
+.repo-folder-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.repo-issue-grid,
+.repo-checkpoint-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.repo-starter-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.repo-command-list,
+.repo-env-list,
+.repo-branch-list,
+.repo-file-list,
+.repo-starter-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.repo-folder-grid strong,
+.repo-issue-grid strong,
+.repo-checkpoint-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.repo-command-list code,
+.repo-env-list code,
+.repo-branch-list code,
+.repo-file-list code {
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 950;
+  white-space: normal;
+}
+
+.repo-checkpoint-list .is-ready {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.repo-checkpoint-list .is-blocked {
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.repo-starter-signal-card.tone-green,
+.repo-folder-grid .tone-green,
+.repo-command-list .tone-green,
+.repo-env-list .tone-green,
+.repo-issue-grid .tone-green,
+.repo-branch-list .tone-green,
+.repo-file-list .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.repo-starter-signal-card.tone-teal,
+.repo-folder-grid .tone-teal,
+.repo-command-list .tone-teal,
+.repo-env-list .tone-teal,
+.repo-issue-grid .tone-teal,
+.repo-branch-list .tone-teal,
+.repo-file-list .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.repo-starter-signal-card.tone-blue,
+.repo-folder-grid .tone-blue,
+.repo-command-list .tone-blue,
+.repo-env-list .tone-blue,
+.repo-issue-grid .tone-blue,
+.repo-branch-list .tone-blue,
+.repo-file-list .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.repo-starter-signal-card.tone-amber,
+.repo-folder-grid .tone-amber,
+.repo-command-list .tone-amber,
+.repo-env-list .tone-amber,
+.repo-issue-grid .tone-amber,
+.repo-branch-list .tone-amber,
+.repo-file-list .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.repo-starter-signal-card.tone-red,
+.repo-folder-grid .tone-red,
+.repo-command-list .tone-red,
+.repo-env-list .tone-red,
+.repo-issue-grid .tone-red,
+.repo-branch-list .tone-red,
+.repo-file-list .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.repo-starter-handoff-panel {
+  border-left-color: var(--green);
+}
+
+.repo-starter-handoff-list p {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.launch-control-center {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(184, 110, 23, 0.24);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(252, 239, 215, 0.84));
+  box-shadow: var(--shadow);
+}
+
+.launch-control-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 350px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.launch-control-hero > div:first-child,
+.launch-control-score-card,
+.launch-control-panel {
+  border: 1px solid rgba(184, 110, 23, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.launch-control-hero > div:first-child {
+  padding: 16px;
+}
+
+.launch-control-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.launch-control-hero p,
+.launch-control-signal-card p,
+.launch-workstream-grid p,
+.launch-gate-grid p,
+.launch-runbook-list p,
+.launch-owner-list p,
+.launch-packet-list p,
+.launch-risk-list p,
+.launch-decision-list p,
+.launch-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.launch-control-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.launch-control-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--amber);
+}
+
+.launch-control-score-card span,
+.launch-control-signal-card span,
+.launch-workstream-grid span,
+.launch-gate-grid span,
+.launch-runbook-list span {
+  color: var(--amber);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.launch-control-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.launch-control-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--amber) var(--width), rgba(184, 110, 23, 0.12) 0);
+}
+
+.launch-control-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.launch-control-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.launch-control-signal-card,
+.launch-workstream-grid > div,
+.launch-gate-grid > div,
+.launch-runbook-list > div,
+.launch-owner-list > div,
+.launch-packet-list > div,
+.launch-risk-list > div,
+.launch-decision-list p,
+.launch-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(184, 110, 23, 0.2);
+  border-left: 4px solid var(--amber);
+  border-radius: 8px;
+  background: var(--amber-soft);
+}
+
+.launch-control-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.launch-control-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.launch-control-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--amber);
+}
+
+.launch-workstream-grid,
+.launch-gate-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.launch-control-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.launch-runbook-list,
+.launch-owner-list,
+.launch-packet-list,
+.launch-risk-list,
+.launch-decision-list,
+.launch-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.launch-workstream-grid strong,
+.launch-gate-grid strong,
+.launch-runbook-list strong,
+.launch-owner-list strong,
+.launch-packet-list strong,
+.launch-risk-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.launch-workstream-grid .is-ready,
+.launch-gate-grid .is-ready {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.launch-workstream-grid .is-blocked,
+.launch-gate-grid .is-blocked {
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.launch-control-signal-card.tone-green,
+.launch-workstream-grid .tone-green,
+.launch-runbook-list .tone-green,
+.launch-owner-list .tone-green,
+.launch-packet-list .tone-green,
+.launch-risk-list .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.launch-control-signal-card.tone-teal,
+.launch-workstream-grid .tone-teal,
+.launch-runbook-list .tone-teal,
+.launch-owner-list .tone-teal,
+.launch-packet-list .tone-teal,
+.launch-risk-list .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.launch-control-signal-card.tone-blue,
+.launch-workstream-grid .tone-blue,
+.launch-runbook-list .tone-blue,
+.launch-owner-list .tone-blue,
+.launch-packet-list .tone-blue,
+.launch-risk-list .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.launch-control-signal-card.tone-amber,
+.launch-workstream-grid .tone-amber,
+.launch-runbook-list .tone-amber,
+.launch-owner-list .tone-amber,
+.launch-packet-list .tone-amber,
+.launch-risk-list .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.launch-control-signal-card.tone-red,
+.launch-workstream-grid .tone-red,
+.launch-runbook-list .tone-red,
+.launch-owner-list .tone-red,
+.launch-packet-list .tone-red,
+.launch-risk-list .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.launch-control-handoff-panel {
+  border-left-color: var(--teal);
+}
+
+.launch-handoff-list p {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.production-alpha-plan {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(225, 235, 246, 0.82));
+  box-shadow: var(--shadow);
+}
+
+.alpha-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.alpha-hero > div:first-child,
+.alpha-score-card,
+.alpha-panel {
+  border: 1px solid rgba(49, 95, 147, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.alpha-hero > div:first-child {
+  padding: 16px;
+}
+
+.alpha-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.alpha-hero p,
+.alpha-signal-card p,
+.alpha-scope-grid p,
+.alpha-nongoal-list p,
+.alpha-milestone-grid p,
+.alpha-acceptance-grid p,
+.alpha-api-grid p,
+.alpha-data-grid p,
+.alpha-constraint-list p,
+.alpha-exit-gate-list p,
+.alpha-backlog-grid p,
+.alpha-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.alpha-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.alpha-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--blue);
+}
+
+.alpha-score-card span,
+.alpha-signal-card span,
+.alpha-scope-grid span,
+.alpha-milestone-grid span,
+.alpha-api-grid span,
+.alpha-data-grid span,
+.alpha-exit-gate-list span,
+.alpha-backlog-grid span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.alpha-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.alpha-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.alpha-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.alpha-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.alpha-signal-card,
+.alpha-scope-grid > div,
+.alpha-nongoal-list > div,
+.alpha-milestone-grid > div,
+.alpha-acceptance-grid > div,
+.alpha-api-grid > div,
+.alpha-data-grid > div,
+.alpha-constraint-list > div,
+.alpha-exit-gate-list > div,
+.alpha-backlog-grid > div,
+.alpha-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(49, 95, 147, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: var(--blue-soft);
+}
+
+.alpha-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.alpha-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.alpha-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--blue);
+}
+
+.alpha-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.alpha-scope-grid,
+.alpha-milestone-grid,
+.alpha-acceptance-grid,
+.alpha-api-grid,
+.alpha-data-grid,
+.alpha-backlog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.alpha-nongoal-list,
+.alpha-constraint-list,
+.alpha-exit-gate-list,
+.alpha-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.alpha-acceptance-grid,
+.alpha-backlog-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.alpha-scope-grid strong,
+.alpha-nongoal-list strong,
+.alpha-milestone-grid strong,
+.alpha-acceptance-grid strong,
+.alpha-api-grid strong,
+.alpha-data-grid strong,
+.alpha-constraint-list strong,
+.alpha-exit-gate-list strong,
+.alpha-backlog-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.alpha-api-grid strong,
+.alpha-data-grid strong {
+  overflow-wrap: anywhere;
+}
+
+.alpha-signal-card.tone-green,
+.alpha-scope-grid .tone-green,
+.alpha-milestone-grid .tone-green,
+.alpha-data-grid .tone-green,
+.alpha-backlog-grid .tone-green,
+.alpha-exit-gate-list .is-ready {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.alpha-signal-card.tone-teal,
+.alpha-scope-grid .tone-teal,
+.alpha-milestone-grid .tone-teal,
+.alpha-data-grid .tone-teal,
+.alpha-backlog-grid .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.alpha-signal-card.tone-blue,
+.alpha-scope-grid .tone-blue,
+.alpha-milestone-grid .tone-blue,
+.alpha-data-grid .tone-blue,
+.alpha-backlog-grid .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.alpha-signal-card.tone-amber,
+.alpha-scope-grid .tone-amber,
+.alpha-milestone-grid .tone-amber,
+.alpha-data-grid .tone-amber,
+.alpha-backlog-grid .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.alpha-signal-card.tone-red,
+.alpha-scope-grid .tone-red,
+.alpha-milestone-grid .tone-red,
+.alpha-data-grid .tone-red,
+.alpha-backlog-grid .tone-red,
+.alpha-exit-gate-list .is-blocked {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.alpha-handoff-panel {
+  border-left-color: var(--teal);
+}
+
+.alpha-handoff-list p {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
 @media (max-width: 1280px) {
   .saas-track-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -6108,7 +7169,21 @@ textarea:disabled {
   .backend-ticket-release-list,
   .hosting-environment-grid,
   .hosting-lane-grid,
-  .hosting-launch-gate-list {
+  .hosting-launch-gate-list,
+  .customer-success-lifecycle-grid,
+  .customer-success-playbook-grid,
+  .customer-success-gate-list,
+  .repo-folder-grid,
+  .repo-issue-grid,
+  .repo-checkpoint-list,
+  .launch-workstream-grid,
+  .launch-gate-grid,
+  .alpha-scope-grid,
+  .alpha-milestone-grid,
+  .alpha-acceptance-grid,
+  .alpha-api-grid,
+  .alpha-data-grid,
+  .alpha-backlog-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -6129,7 +7204,11 @@ textarea:disabled {
   .migration-test-two-column,
   .feedback-persistence-two-column,
   .backend-ticket-two-column,
-  .hosting-two-column {
+  .hosting-two-column,
+  .customer-success-two-column,
+  .repo-starter-two-column,
+  .launch-control-two-column,
+  .alpha-two-column {
     grid-template-columns: 1fr;
   }
 }
@@ -6181,7 +7260,30 @@ textarea:disabled {
   .hosting-environment-grid,
   .hosting-lane-grid,
   .hosting-monitoring-grid,
-  .hosting-launch-gate-list {
+  .hosting-launch-gate-list,
+  .customer-success-hero,
+  .customer-success-signal-grid,
+  .customer-success-lifecycle-grid,
+  .customer-success-playbook-grid,
+  .customer-success-renewal-grid,
+  .customer-success-gate-list,
+  .repo-starter-hero,
+  .repo-starter-signal-grid,
+  .repo-folder-grid,
+  .repo-issue-grid,
+  .repo-checkpoint-list,
+  .launch-control-hero,
+  .launch-control-signal-grid,
+  .launch-workstream-grid,
+  .launch-gate-grid,
+  .alpha-hero,
+  .alpha-signal-grid,
+  .alpha-scope-grid,
+  .alpha-milestone-grid,
+  .alpha-acceptance-grid,
+  .alpha-api-grid,
+  .alpha-data-grid,
+  .alpha-backlog-grid {
     grid-template-columns: 1fr;
   }
 
