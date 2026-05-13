@@ -1,4 +1,4 @@
-PursuitDesk v100 production MVP alpha plan upload steps
+PursuitDesk v104 seed data and migration fixture pack upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v100 production MVP alpha plan upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v100 production MVP alpha plan
+   PursuitDesk v104 seed data and migration fixture pack
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Production MVP Alpha Plan inside Command Center with first SaaS alpha scope, non-goals, A0-A5 milestones, acceptance criteria, API cutline, data contracts, pilot constraints, exit gates, day-one backlog, and implementation handoff.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Seed Data and Migration Fixture Pack inside Command Center with tenant seed, demo users, operational record slices, commercial vault fixtures, import batches, audit seed events, migration assertions, fixture files, backend smoke tests, release gates, and engineering handoff.
 
 Demo login:
 admin@pursuitdesk.app

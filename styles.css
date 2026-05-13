@@ -35,6 +35,16 @@
   letter-spacing: 0;
 }
 
+main,
+section,
+article,
+div,
+header,
+nav,
+aside {
+  min-width: 0;
+}
+
 html {
   min-width: 320px;
   background: var(--bg);
@@ -2128,11 +2138,16 @@ textarea:disabled {
   margin-bottom: 18px;
 }
 
+.command-center > * {
+  min-width: 0;
+}
+
 .command-console {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 18px;
   align-items: center;
+  min-width: 0;
   padding: 18px;
   border: 1px solid rgba(13, 111, 97, 0.24);
   border-bottom: 3px solid var(--teal);
@@ -7126,6 +7141,1164 @@ textarea:disabled {
   background: var(--teal-soft);
 }
 
+.repo-kickoff {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(222, 242, 237, 0.82));
+  box-shadow: var(--shadow);
+}
+
+.repo-kickoff-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.repo-kickoff-hero > div:first-child,
+.repo-kickoff-score-card,
+.repo-kickoff-panel {
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.repo-kickoff-hero > div:first-child {
+  padding: 16px;
+}
+
+.repo-kickoff-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.repo-kickoff-hero p,
+.repo-kickoff-signal-card p,
+.repo-decision-grid p,
+.repo-checklist-list p,
+.repo-owner-grid p,
+.repo-folder-ownership-grid p,
+.repo-setup-list p,
+.repo-branch-grid p,
+.repo-issue-batch-grid p,
+.repo-seed-grid p,
+.repo-ci-gate-list p,
+.repo-week-grid p,
+.repo-exit-gate-list p,
+.repo-kickoff-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.repo-kickoff-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.repo-kickoff-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--teal);
+}
+
+.repo-kickoff-score-card span,
+.repo-kickoff-signal-card span,
+.repo-decision-grid span,
+.repo-checklist-list span,
+.repo-folder-ownership-grid span,
+.repo-setup-list span,
+.repo-branch-grid span,
+.repo-issue-batch-grid span,
+.repo-seed-grid span,
+.repo-ci-gate-list span,
+.repo-week-grid span,
+.repo-exit-gate-list span {
+  color: var(--teal);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.repo-kickoff-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.repo-kickoff-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(13, 111, 97, 0.12) 0);
+}
+
+.repo-kickoff-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.repo-kickoff-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.repo-kickoff-signal-card,
+.repo-decision-grid > div,
+.repo-checklist-list > div,
+.repo-owner-grid > div,
+.repo-folder-ownership-grid > div,
+.repo-setup-list > div,
+.repo-branch-grid > div,
+.repo-issue-batch-grid > div,
+.repo-seed-grid > div,
+.repo-ci-gate-list > div,
+.repo-week-grid > div,
+.repo-exit-gate-list > div,
+.repo-kickoff-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: var(--teal-soft);
+}
+
+.repo-kickoff-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.repo-kickoff-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.repo-kickoff-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--teal);
+}
+
+.repo-kickoff-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.repo-decision-grid,
+.repo-folder-ownership-grid,
+.repo-branch-grid,
+.repo-issue-batch-grid,
+.repo-seed-grid,
+.repo-week-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.repo-checklist-list,
+.repo-owner-grid,
+.repo-setup-list,
+.repo-ci-gate-list,
+.repo-exit-gate-list,
+.repo-kickoff-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.repo-folder-ownership-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.repo-decision-grid strong,
+.repo-checklist-list strong,
+.repo-owner-grid strong,
+.repo-folder-ownership-grid strong,
+.repo-setup-list strong,
+.repo-branch-grid strong,
+.repo-issue-batch-grid strong,
+.repo-seed-grid strong,
+.repo-ci-gate-list strong,
+.repo-week-grid strong,
+.repo-exit-gate-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.repo-setup-list code {
+  color: var(--ink);
+  font-family: inherit;
+  font-weight: 950;
+}
+
+.repo-kickoff-signal-card.tone-green,
+.repo-decision-grid .tone-green,
+.repo-checklist-list .tone-green,
+.repo-owner-grid .tone-green,
+.repo-folder-ownership-grid .tone-green,
+.repo-setup-list .tone-green,
+.repo-branch-grid .tone-green,
+.repo-issue-batch-grid .tone-green,
+.repo-seed-grid .tone-green,
+.repo-week-grid .tone-green,
+.repo-ci-gate-list .is-ready,
+.repo-exit-gate-list .is-ready {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.repo-kickoff-signal-card.tone-teal,
+.repo-decision-grid .tone-teal,
+.repo-checklist-list .tone-teal,
+.repo-owner-grid .tone-teal,
+.repo-folder-ownership-grid .tone-teal,
+.repo-setup-list .tone-teal,
+.repo-branch-grid .tone-teal,
+.repo-issue-batch-grid .tone-teal,
+.repo-seed-grid .tone-teal,
+.repo-week-grid .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.repo-kickoff-signal-card.tone-blue,
+.repo-decision-grid .tone-blue,
+.repo-checklist-list .tone-blue,
+.repo-owner-grid .tone-blue,
+.repo-folder-ownership-grid .tone-blue,
+.repo-setup-list .tone-blue,
+.repo-branch-grid .tone-blue,
+.repo-issue-batch-grid .tone-blue,
+.repo-seed-grid .tone-blue,
+.repo-week-grid .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.repo-kickoff-signal-card.tone-amber,
+.repo-decision-grid .tone-amber,
+.repo-checklist-list .tone-amber,
+.repo-owner-grid .tone-amber,
+.repo-folder-ownership-grid .tone-amber,
+.repo-setup-list .tone-amber,
+.repo-branch-grid .tone-amber,
+.repo-issue-batch-grid .tone-amber,
+.repo-seed-grid .tone-amber,
+.repo-week-grid .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.repo-kickoff-signal-card.tone-red,
+.repo-decision-grid .tone-red,
+.repo-checklist-list .tone-red,
+.repo-owner-grid .tone-red,
+.repo-folder-ownership-grid .tone-red,
+.repo-setup-list .tone-red,
+.repo-branch-grid .tone-red,
+.repo-issue-batch-grid .tone-red,
+.repo-seed-grid .tone-red,
+.repo-week-grid .tone-red,
+.repo-ci-gate-list .is-blocked,
+.repo-exit-gate-list .is-blocked {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.repo-kickoff-handoff-panel {
+  border-left-color: var(--green);
+}
+
+.repo-kickoff-handoff-list p {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.issue-export {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(36, 119, 71, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(226, 241, 231, 0.82));
+  box-shadow: var(--shadow);
+}
+
+.issue-export-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.issue-export-hero > div:first-child,
+.issue-export-score-card,
+.issue-export-panel {
+  border: 1px solid rgba(36, 119, 71, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.issue-export-hero > div:first-child {
+  padding: 16px;
+}
+
+.issue-export-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.issue-export-hero p,
+.issue-export-signal-card p,
+.issue-batch-grid p,
+.issue-card-grid p,
+.issue-label-grid p,
+.issue-milestone-grid p,
+.issue-opening-list p,
+.issue-template-list p,
+.issue-dod-grid p,
+.issue-acceptance-grid p,
+.issue-import-step-grid p,
+.issue-export-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.issue-export-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.issue-export-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--green);
+}
+
+.issue-export-score-card span,
+.issue-export-signal-card span,
+.issue-batch-grid span,
+.issue-card-grid span,
+.issue-label-grid span,
+.issue-milestone-grid span,
+.issue-opening-list span,
+.issue-template-list span,
+.issue-import-step-grid span {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.issue-export-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.issue-export-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green) var(--width), rgba(36, 119, 71, 0.12) 0);
+}
+
+.issue-export-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.issue-export-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.issue-export-signal-card,
+.issue-batch-grid > div,
+.issue-card-grid > div,
+.issue-label-grid > div,
+.issue-milestone-grid > div,
+.issue-opening-list > div,
+.issue-template-list > div,
+.issue-dod-grid > div,
+.issue-acceptance-grid > div,
+.issue-import-step-grid > div,
+.issue-export-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(36, 119, 71, 0.2);
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  background: var(--green-soft);
+}
+
+.issue-export-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.issue-export-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.issue-export-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--green);
+}
+
+.issue-export-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.issue-batch-grid,
+.issue-label-grid,
+.issue-milestone-grid,
+.issue-dod-grid,
+.issue-acceptance-grid,
+.issue-import-step-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.issue-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.issue-opening-list,
+.issue-template-list,
+.issue-export-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.issue-card-head,
+.issue-label-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.issue-card-head em,
+.issue-label-row b {
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.issue-label-row {
+  justify-content: flex-start;
+}
+
+.issue-card-grid small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.issue-batch-grid strong,
+.issue-card-grid strong,
+.issue-label-grid strong,
+.issue-milestone-grid strong,
+.issue-opening-list strong,
+.issue-template-list strong,
+.issue-dod-grid strong,
+.issue-acceptance-grid strong,
+.issue-import-step-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.issue-export-signal-card.tone-green,
+.issue-batch-grid .tone-green,
+.issue-card-grid .tone-green,
+.issue-label-grid .tone-green,
+.issue-milestone-grid .tone-green,
+.issue-opening-list .tone-green,
+.issue-import-step-grid .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.issue-export-signal-card.tone-teal,
+.issue-batch-grid .tone-teal,
+.issue-card-grid .tone-teal,
+.issue-label-grid .tone-teal,
+.issue-milestone-grid .tone-teal,
+.issue-opening-list .tone-teal,
+.issue-import-step-grid .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.issue-export-signal-card.tone-blue,
+.issue-batch-grid .tone-blue,
+.issue-card-grid .tone-blue,
+.issue-label-grid .tone-blue,
+.issue-milestone-grid .tone-blue,
+.issue-opening-list .tone-blue,
+.issue-import-step-grid .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.issue-export-signal-card.tone-amber,
+.issue-batch-grid .tone-amber,
+.issue-card-grid .tone-amber,
+.issue-label-grid .tone-amber,
+.issue-milestone-grid .tone-amber,
+.issue-opening-list .tone-amber,
+.issue-import-step-grid .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.issue-export-signal-card.tone-red,
+.issue-batch-grid .tone-red,
+.issue-card-grid .tone-red,
+.issue-label-grid .tone-red,
+.issue-milestone-grid .tone-red,
+.issue-opening-list .tone-red,
+.issue-import-step-grid .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.issue-export-handoff-panel {
+  border-left-color: var(--teal);
+}
+
+.issue-export-handoff-list p {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.api-contract-pack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(225, 235, 246, 0.82));
+  box-shadow: var(--shadow);
+}
+
+.api-contract-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.api-contract-hero > div:first-child,
+.api-contract-score-card,
+.api-contract-panel {
+  border: 1px solid rgba(49, 95, 147, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.api-contract-hero > div:first-child {
+  padding: 16px;
+}
+
+.api-contract-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.api-contract-hero p,
+.api-contract-signal-card p,
+.api-route-group-grid p,
+.api-endpoint-grid p,
+.api-payload-grid p,
+.api-permission-grid p,
+.api-error-grid p,
+.api-audit-grid p,
+.api-test-grid p,
+.api-order-list p,
+.api-contract-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.api-contract-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.api-contract-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--blue);
+}
+
+.api-contract-score-card span,
+.api-contract-signal-card span,
+.api-route-group-grid span,
+.api-endpoint-grid span,
+.api-payload-grid span,
+.api-error-grid span,
+.api-audit-grid span,
+.api-order-list span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.api-contract-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.api-contract-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.api-contract-score-card small,
+.api-endpoint-grid small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.api-contract-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.api-contract-signal-card,
+.api-route-group-grid > div,
+.api-endpoint-grid > div,
+.api-payload-grid > div,
+.api-permission-grid > div,
+.api-error-grid > div,
+.api-audit-grid > div,
+.api-test-grid > div,
+.api-order-list > div,
+.api-contract-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(49, 95, 147, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: var(--blue-soft);
+}
+
+.api-contract-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.api-contract-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.api-contract-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--blue);
+}
+
+.api-contract-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.api-route-group-grid,
+.api-payload-grid,
+.api-permission-grid,
+.api-error-grid,
+.api-audit-grid,
+.api-test-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.api-endpoint-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.api-order-list,
+.api-contract-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.api-endpoint-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.api-endpoint-head em,
+.api-endpoint-grid b {
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+}
+
+.api-route-group-grid strong,
+.api-endpoint-grid strong,
+.api-payload-grid strong,
+.api-permission-grid strong,
+.api-error-grid strong,
+.api-audit-grid strong,
+.api-test-grid strong,
+.api-order-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.api-contract-signal-card.tone-green,
+.api-route-group-grid .tone-green,
+.api-endpoint-grid .tone-green,
+.api-payload-grid .tone-green,
+.api-permission-grid .tone-green,
+.api-error-grid .tone-green,
+.api-audit-grid .tone-green,
+.api-test-grid .tone-green,
+.api-order-list .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.api-contract-signal-card.tone-teal,
+.api-route-group-grid .tone-teal,
+.api-endpoint-grid .tone-teal,
+.api-payload-grid .tone-teal,
+.api-permission-grid .tone-teal,
+.api-error-grid .tone-teal,
+.api-audit-grid .tone-teal,
+.api-test-grid .tone-teal,
+.api-order-list .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.api-contract-signal-card.tone-blue,
+.api-route-group-grid .tone-blue,
+.api-endpoint-grid .tone-blue,
+.api-payload-grid .tone-blue,
+.api-permission-grid .tone-blue,
+.api-error-grid .tone-blue,
+.api-audit-grid .tone-blue,
+.api-test-grid .tone-blue,
+.api-order-list .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.api-contract-signal-card.tone-amber,
+.api-route-group-grid .tone-amber,
+.api-endpoint-grid .tone-amber,
+.api-payload-grid .tone-amber,
+.api-permission-grid .tone-amber,
+.api-error-grid .tone-amber,
+.api-audit-grid .tone-amber,
+.api-test-grid .tone-amber,
+.api-order-list .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.api-contract-signal-card.tone-red,
+.api-route-group-grid .tone-red,
+.api-endpoint-grid .tone-red,
+.api-payload-grid .tone-red,
+.api-permission-grid .tone-red,
+.api-error-grid .tone-red,
+.api-audit-grid .tone-red,
+.api-test-grid .tone-red,
+.api-order-list .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.api-contract-handoff-panel {
+  border-left-color: var(--teal);
+}
+
+.api-contract-handoff-list p {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.seed-fixture-pack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(221, 242, 237, 0.74));
+  box-shadow: var(--shadow);
+}
+
+.seed-fixture-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.seed-fixture-hero > div:first-child,
+.seed-fixture-score-card,
+.seed-fixture-panel {
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.seed-fixture-hero > div:first-child {
+  padding: 16px;
+}
+
+.seed-fixture-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.seed-fixture-hero p,
+.seed-fixture-signal-card p,
+.seed-tenant-grid p,
+.seed-user-grid p,
+.seed-record-grid p,
+.seed-commercial-grid p,
+.seed-import-grid p,
+.seed-audit-grid p,
+.seed-assertion-grid p,
+.seed-file-grid p,
+.seed-test-grid p,
+.seed-release-gate-list p,
+.seed-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.seed-fixture-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.seed-fixture-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--teal);
+}
+
+.seed-fixture-score-card span,
+.seed-fixture-signal-card span,
+.seed-tenant-grid span,
+.seed-user-grid span,
+.seed-record-grid span,
+.seed-commercial-grid span,
+.seed-import-grid span,
+.seed-audit-grid span,
+.seed-assertion-grid span,
+.seed-release-gate-list span {
+  color: var(--teal);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.seed-fixture-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.seed-fixture-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(13, 111, 97, 0.12) 0);
+}
+
+.seed-fixture-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.seed-fixture-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.seed-fixture-signal-card,
+.seed-tenant-grid > div,
+.seed-user-grid > div,
+.seed-record-grid > div,
+.seed-commercial-grid > div,
+.seed-import-grid > div,
+.seed-audit-grid > div,
+.seed-assertion-grid > div,
+.seed-file-grid > div,
+.seed-test-grid > div,
+.seed-release-gate-list > div,
+.seed-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: var(--teal-soft);
+}
+
+.seed-fixture-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.seed-fixture-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.seed-fixture-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--teal);
+}
+
+.seed-fixture-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.seed-tenant-grid,
+.seed-user-grid,
+.seed-record-grid,
+.seed-commercial-grid,
+.seed-import-grid,
+.seed-audit-grid,
+.seed-assertion-grid,
+.seed-file-grid,
+.seed-test-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.seed-release-gate-list,
+.seed-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.seed-tenant-grid strong,
+.seed-user-grid strong,
+.seed-record-grid strong,
+.seed-commercial-grid strong,
+.seed-import-grid strong,
+.seed-audit-grid strong,
+.seed-assertion-grid strong,
+.seed-file-grid strong,
+.seed-test-grid strong,
+.seed-release-gate-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.seed-fixture-signal-card.tone-green,
+.seed-tenant-grid .tone-green,
+.seed-user-grid .tone-green,
+.seed-record-grid .tone-green,
+.seed-commercial-grid .tone-green,
+.seed-import-grid .tone-green,
+.seed-audit-grid .tone-green,
+.seed-assertion-grid .tone-green,
+.seed-file-grid .tone-green,
+.seed-test-grid .tone-green,
+.seed-release-gate-list .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.seed-fixture-signal-card.tone-teal,
+.seed-tenant-grid .tone-teal,
+.seed-user-grid .tone-teal,
+.seed-record-grid .tone-teal,
+.seed-commercial-grid .tone-teal,
+.seed-import-grid .tone-teal,
+.seed-audit-grid .tone-teal,
+.seed-assertion-grid .tone-teal,
+.seed-file-grid .tone-teal,
+.seed-test-grid .tone-teal,
+.seed-release-gate-list .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.seed-fixture-signal-card.tone-blue,
+.seed-tenant-grid .tone-blue,
+.seed-user-grid .tone-blue,
+.seed-record-grid .tone-blue,
+.seed-commercial-grid .tone-blue,
+.seed-import-grid .tone-blue,
+.seed-audit-grid .tone-blue,
+.seed-assertion-grid .tone-blue,
+.seed-file-grid .tone-blue,
+.seed-test-grid .tone-blue,
+.seed-release-gate-list .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.seed-fixture-signal-card.tone-amber,
+.seed-tenant-grid .tone-amber,
+.seed-user-grid .tone-amber,
+.seed-record-grid .tone-amber,
+.seed-commercial-grid .tone-amber,
+.seed-import-grid .tone-amber,
+.seed-audit-grid .tone-amber,
+.seed-assertion-grid .tone-amber,
+.seed-file-grid .tone-amber,
+.seed-test-grid .tone-amber,
+.seed-release-gate-list .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.seed-fixture-signal-card.tone-red,
+.seed-tenant-grid .tone-red,
+.seed-user-grid .tone-red,
+.seed-record-grid .tone-red,
+.seed-commercial-grid .tone-red,
+.seed-import-grid .tone-red,
+.seed-audit-grid .tone-red,
+.seed-assertion-grid .tone-red,
+.seed-file-grid .tone-red,
+.seed-test-grid .tone-red,
+.seed-release-gate-list .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.seed-fixture-handoff-panel {
+  border-left-color: var(--blue);
+}
+
+.seed-handoff-list p {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
 @media (max-width: 1280px) {
   .saas-track-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -7183,7 +8356,36 @@ textarea:disabled {
   .alpha-acceptance-grid,
   .alpha-api-grid,
   .alpha-data-grid,
-  .alpha-backlog-grid {
+  .alpha-backlog-grid,
+  .repo-decision-grid,
+  .repo-folder-ownership-grid,
+  .repo-branch-grid,
+  .repo-issue-batch-grid,
+  .repo-seed-grid,
+  .repo-week-grid,
+  .issue-batch-grid,
+  .issue-card-grid,
+  .issue-label-grid,
+  .issue-milestone-grid,
+  .issue-dod-grid,
+  .issue-acceptance-grid,
+  .issue-import-step-grid,
+  .api-route-group-grid,
+  .api-endpoint-grid,
+  .api-payload-grid,
+  .api-permission-grid,
+  .api-error-grid,
+  .api-audit-grid,
+  .api-test-grid,
+  .seed-tenant-grid,
+  .seed-user-grid,
+  .seed-record-grid,
+  .seed-commercial-grid,
+  .seed-import-grid,
+  .seed-audit-grid,
+  .seed-assertion-grid,
+  .seed-file-grid,
+  .seed-test-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -7208,7 +8410,11 @@ textarea:disabled {
   .customer-success-two-column,
   .repo-starter-two-column,
   .launch-control-two-column,
-  .alpha-two-column {
+  .alpha-two-column,
+  .repo-kickoff-two-column,
+  .issue-export-two-column,
+  .api-contract-two-column,
+  .seed-fixture-two-column {
     grid-template-columns: 1fr;
   }
 }
@@ -7283,7 +8489,44 @@ textarea:disabled {
   .alpha-acceptance-grid,
   .alpha-api-grid,
   .alpha-data-grid,
-  .alpha-backlog-grid {
+  .alpha-backlog-grid,
+  .repo-kickoff-hero,
+  .repo-kickoff-signal-grid,
+  .repo-decision-grid,
+  .repo-folder-ownership-grid,
+  .repo-branch-grid,
+  .repo-issue-batch-grid,
+  .repo-seed-grid,
+  .repo-week-grid,
+  .issue-export-hero,
+  .issue-export-signal-grid,
+  .issue-batch-grid,
+  .issue-card-grid,
+  .issue-label-grid,
+  .issue-milestone-grid,
+  .issue-dod-grid,
+  .issue-acceptance-grid,
+  .issue-import-step-grid,
+  .api-contract-hero,
+  .api-contract-signal-grid,
+  .api-route-group-grid,
+  .api-endpoint-grid,
+  .api-payload-grid,
+  .api-permission-grid,
+  .api-error-grid,
+  .api-audit-grid,
+  .api-test-grid,
+  .seed-fixture-hero,
+  .seed-fixture-signal-grid,
+  .seed-tenant-grid,
+  .seed-user-grid,
+  .seed-record-grid,
+  .seed-commercial-grid,
+  .seed-import-grid,
+  .seed-audit-grid,
+  .seed-assertion-grid,
+  .seed-file-grid,
+  .seed-test-grid {
     grid-template-columns: 1fr;
   }
 
