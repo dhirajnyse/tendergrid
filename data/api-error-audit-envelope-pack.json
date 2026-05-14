@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "pursuitdesk.apiErrorAuditEnvelopePack.v115",
+  "generatedOn": "2026-05-14",
+  "product": "PursuitDesk",
+  "version": "v115 API Error and Audit Envelope Pack",
+  "purpose": "Standardize safe backend error responses, request ids, audit payloads, denial evidence, route coverage, middleware files, tests, and acceptance checks before private backend implementation starts.",
+  "downloadFile": "pursuitdesk-api-error-audit-envelope-pack-v115.json",
+  "targetRepository": {
+    "owner": "dhirajnyse",
+    "repository": "pursuitdesk-platform",
+    "visibility": "private",
+    "publicDemoRepository": "tendergrid"
+  },
+  "responseHeader": {
+    "requestIdHeader": "x-request-id",
+    "auditEventHeader": "x-audit-event-id",
+    "cachePolicy": "no-store for auth, commercial, audit, billing, import, and feedback responses"
+  },
+  "errorEnvelopeFields": [
+    {"field": "ok", "type": "boolean", "note": "Always false for errors and true for success responses.", "tone": "green"},
+    {"field": "requestId", "type": "string", "note": "Public-safe trace id returned to the UI, logs, and audit rows.", "tone": "blue"},
+    {"field": "timestamp", "type": "ISO datetime", "note": "Server time for support, audit review, and replay ordering.", "tone": "teal"},
+    {"field": "code", "type": "stable string", "note": "Machine-readable code such as access_denied or validation_error.", "tone": "red"},
+    {"field": "message", "type": "safe text", "note": "Human-readable message that never leaks secrets, tenant existence, or commercial values.", "tone": "amber"},
+    {"field": "details", "type": "safe object", "note": "Field-level validation or safe remediation hints only.", "tone": "blue"},
+    {"field": "path", "type": "route path", "note": "Route path without query secrets or raw uploaded content.", "tone": "teal"},
+    {"field": "method", "type": "HTTP method", "note": "GET, POST, PATCH, DELETE, or webhook method for route diagnostics.", "tone": "green"},
+    {"field": "tenantVisible", "type": "boolean", "note": "False when the response must avoid confirming a tenant or record exists.", "tone": "red"},
+    {"field": "retryable", "type": "boolean", "note": "Helps UI decide retry, fix form, re-login, or contact admin.", "tone": "amber"},
+    {"field": "supportHint", "type": "safe text", "note": "Short admin-friendly instruction tied to requestId.", "tone": "blue"},
+    {"field": "auditEventId", "type": "string/null", "note": "Links denial or failure to the immutable audit event when one is written.", "tone": "teal"}
+  ],
+  "errorCatalog": [
+    {"code": "validation_error", "status": 400, "trigger": "Form or payload field is invalid.", "safeBehavior": "Return field errors and safe correction hints.", "tone": "blue"},
+    {"code": "not_authenticated", "status": 401, "trigger": "Session missing, expired, or invalid.", "safeBehavior": "Ask user to sign in again without saying whether account exists.", "tone": "red"},
+    {"code": "tenant_not_resolved", "status": 401, "trigger": "Request has no valid company context.", "safeBehavior": "End request before any data query starts.", "tone": "red"},
+    {"code": "section_access_denied", "status": 403, "trigger": "User lacks the requested room or section.", "safeBehavior": "Write denied audit event with section key and role.", "tone": "amber"},
+    {"code": "commercial_vault_denied", "status": 403, "trigger": "User tried to access restricted value or negotiation facts.", "safeBehavior": "Redact payload and audit the denied target.", "tone": "red"},
+    {"code": "membership_admin_required", "status": 403, "trigger": "Non-admin tried membership, billing, or user access control.", "safeBehavior": "Never allow Membership Model grants for editors or viewers.", "tone": "red"},
+    {"code": "not_found", "status": 404, "trigger": "Record missing or hidden by tenant scope.", "safeBehavior": "Use identical shape for missing and cross-tenant ids.", "tone": "blue"},
+    {"code": "conflict", "status": 409, "trigger": "Duplicate reference, stale version, committed import, or billing state conflict.", "safeBehavior": "Tell UI which safe next action is available.", "tone": "amber"},
+    {"code": "import_quarantine", "status": 422, "trigger": "Workbook row failed dry-run rules.", "safeBehavior": "Return row number, mapped field, and quarantine reason.", "tone": "blue"},
+    {"code": "rate_limited", "status": 429, "trigger": "Login, reset, export, import, or webhook retry limit reached.", "safeBehavior": "Return retryAfterSeconds without internal thresholds.", "tone": "amber"},
+    {"code": "webhook_replay", "status": 409, "trigger": "Billing webhook event was already processed.", "safeBehavior": "Acknowledge idempotently and write provider event id.", "tone": "green"},
+    {"code": "server_error", "status": 500, "trigger": "Unexpected exception.", "safeBehavior": "Return generic text, requestId, and alert-worthy audit context only.", "tone": "red"}
+  ],
+  "auditEnvelopeFields": [
+    {"field": "eventId", "type": "uuid", "note": "Immutable audit row identifier linked to requestId.", "tone": "green"},
+    {"field": "requestId", "type": "uuid", "note": "Same request id returned to the client or support workflow.", "tone": "blue"},
+    {"field": "companyId", "type": "tenant id", "note": "Required for every user, record, import, billing, feedback, and report event.", "tone": "red"},
+    {"field": "actorUserId", "type": "user id/system", "note": "Admin, editor, viewer, system worker, or webhook actor.", "tone": "teal"},
+    {"field": "actorRole", "type": "role", "note": "Role at the time of the action, not current role after later edits.", "tone": "amber"},
+    {"field": "route", "type": "method path", "note": "Backend route that created the event.", "tone": "blue"},
+    {"field": "eventType", "type": "catalog key", "note": "Stable event key such as records.updated or access.denied.", "tone": "green"},
+    {"field": "targetType", "type": "domain object", "note": "record, user, commercialFact, importBatch, invoice, feedback, report, or audit.", "tone": "teal"},
+    {"field": "targetId", "type": "safe id", "note": "Internal id or hashed external reference; no secret payload.", "tone": "blue"},
+    {"field": "decision", "type": "allowed/denied/system", "note": "Whether the request was allowed, denied, or processed as system work.", "tone": "red"},
+    {"field": "beforeAfter", "type": "redacted diff", "note": "Only safe changed fields; commercial fields masked unless event is in vault.", "tone": "amber"},
+    {"field": "retentionClass", "type": "policy key", "note": "Standard, restricted, billing, security, or support retention group.", "tone": "green"}
+  ],
+  "routeEnvelopeMap": [
+    {"module": "Auth", "route": "auth.routes.ts", "controller": "auth.controller.ts", "safeErrors": ["not_authenticated", "rate_limited", "server_error"], "auditEvent": "auth.login.success", "test": "auth.routes.test.ts", "tone": "red"},
+    {"module": "Users", "route": "users.routes.ts", "controller": "users.controller.ts", "safeErrors": ["membership_admin_required", "section_access_denied", "validation_error"], "auditEvent": "users.access.updated", "test": "users.routes.test.ts", "tone": "blue"},
+    {"module": "Records", "route": "records.routes.ts", "controller": "records.controller.ts", "safeErrors": ["not_authenticated", "section_access_denied", "validation_error"], "auditEvent": "records.updated", "test": "records.routes.test.ts", "tone": "teal"},
+    {"module": "Commercial", "route": "commercial.routes.ts", "controller": "commercial.controller.ts", "safeErrors": ["commercial_vault_denied", "section_access_denied", "not_found"], "auditEvent": "commercial.viewed", "test": "commercial.routes.test.ts", "tone": "amber"},
+    {"module": "Import", "route": "imports.routes.ts", "controller": "imports.controller.ts", "safeErrors": ["import_quarantine", "validation_error", "conflict"], "auditEvent": "imports.dry_run.created", "test": "imports.routes.test.ts", "tone": "blue"},
+    {"module": "Billing", "route": "billing.routes.ts", "controller": "billing.controller.ts", "safeErrors": ["membership_admin_required", "webhook_replay", "conflict"], "auditEvent": "billing.webhook.accepted", "test": "billing.routes.test.ts", "tone": "amber"},
+    {"module": "Feedback", "route": "feedback.routes.ts", "controller": "feedback.controller.ts", "safeErrors": ["not_authenticated", "section_access_denied", "validation_error"], "auditEvent": "feedback.created", "test": "feedback.routes.test.ts", "tone": "green"},
+    {"module": "Audit", "route": "audit.routes.ts", "controller": "audit.controller.ts", "safeErrors": ["membership_admin_required", "section_access_denied", "rate_limited"], "auditEvent": "audit.exported", "test": "audit.routes.test.ts", "tone": "teal"}
+  ],
+  "auditEventMatrix": [
+    {"event": "auth.login.success", "decision": "Allowed", "trigger": "User session created", "fields": "actor, company, role, access snapshot, request id", "tone": "green"},
+    {"event": "auth.login.failed", "decision": "Denied", "trigger": "Bad credentials, inactive account, or throttled attempt", "fields": "email hash, reason, request id, IP hash", "tone": "red"},
+    {"event": "access.denied", "decision": "Denied", "trigger": "Section, role, membership, commercial vault, or tenant guard blocked", "fields": "actor, role, section, route, target hash", "tone": "red"},
+    {"event": "records.created", "decision": "Allowed", "trigger": "Operational tracker row created", "fields": "record id, type, section, owner, safe fields", "tone": "teal"},
+    {"event": "records.updated", "decision": "Allowed", "trigger": "Status, owner, date, note, or category changed", "fields": "changed fields, before, after, request id", "tone": "teal"},
+    {"event": "records.exported", "decision": "Allowed", "trigger": "CSV or report export generated", "fields": "filters, count, redaction mode, requester", "tone": "blue"},
+    {"event": "commercial.viewed", "decision": "Allowed", "trigger": "Restricted value or negotiation facts opened", "fields": "record id, user, reason, room, request id", "tone": "amber"},
+    {"event": "commercial.updated", "decision": "Allowed", "trigger": "Value, agreement, LOA, forecast, or negotiation facts changed", "fields": "restricted diff, owner, request id", "tone": "amber"},
+    {"event": "imports.dry_run.created", "decision": "Allowed", "trigger": "Workbook staged without live writes", "fields": "batch id, source, accepted, quarantined, duplicate", "tone": "blue"},
+    {"event": "imports.committed", "decision": "Allowed", "trigger": "Approved import wrote live rows", "fields": "batch id, counts, rollback id, approver", "tone": "red"},
+    {"event": "billing.webhook.accepted", "decision": "System", "trigger": "Signed provider event processed", "fields": "provider event id, invoice, subscription, seat delta", "tone": "green"},
+    {"event": "billing.webhook.replayed", "decision": "System", "trigger": "Duplicate provider event received", "fields": "provider event id, previous event id, request id", "tone": "amber"},
+    {"event": "feedback.created", "decision": "Allowed", "trigger": "Pilot or UAT feedback entered", "fields": "room, severity, owner, record link, retest state", "tone": "green"},
+    {"event": "audit.exported", "decision": "Allowed", "trigger": "Admin exported audit proof", "fields": "filters, date range, count, export id", "tone": "red"}
+  ],
+  "middlewareFiles": [
+    {"file": "apps/api/src/middleware/request-id.ts", "label": "Request identity", "owner": "Platform Owner", "tone": "green"},
+    {"file": "apps/api/src/middleware/error-envelope.ts", "label": "Safe error wrapper", "owner": "Backend Lead", "tone": "red"},
+    {"file": "apps/api/src/middleware/audit-context.ts", "label": "Audit context", "owner": "Governance Owner", "tone": "teal"},
+    {"file": "packages/audit/audit-writer.ts", "label": "Immutable writer", "owner": "Governance Owner", "tone": "blue"},
+    {"file": "apps/api/src/middleware/tenant-scope.ts", "label": "Tenant resolver", "owner": "Security Owner", "tone": "red"},
+    {"file": "apps/api/src/middleware/access-decision.ts", "label": "Section guard", "owner": "Security Owner", "tone": "amber"},
+    {"file": "packages/domain/redaction.ts", "label": "Payload redaction", "owner": "Product Engineer", "tone": "green"},
+    {"file": "apps/api/src/middleware/rate-limit.ts", "label": "Abuse control", "owner": "Platform Owner", "tone": "amber"},
+    {"file": "apps/api/src/middleware/idempotency.ts", "label": "Replay control", "owner": "Billing Owner", "tone": "blue"},
+    {"file": "apps/api/src/middleware/response-logger.ts", "label": "Response proof", "owner": "QA Owner", "tone": "teal"}
+  ],
+  "denialProofScenarios": [
+    {"case": "Cross-tenant record", "trigger": "Editor requests another company record id", "expected": "Return 404 not_found, write access.denied, expose no tenant hint.", "tone": "red"},
+    {"case": "Membership tab", "trigger": "Editor calls membership route directly", "expected": "Return 403 membership_admin_required and audit role/access snapshot.", "tone": "red"},
+    {"case": "Commercial vault", "trigger": "Operations user requests value facts", "expected": "Return 403 commercial_vault_denied and no value fields.", "tone": "red"},
+    {"case": "Inactive user", "trigger": "Inactive user attempts login", "expected": "Return 401 not_authenticated with safe message and auth.login.failed audit.", "tone": "amber"},
+    {"case": "Viewer mutation", "trigger": "Viewer attempts PATCH record", "expected": "Return 403 section_access_denied with route and role evidence.", "tone": "blue"},
+    {"case": "Import commit", "trigger": "Non-admin attempts import commit", "expected": "Return 403 section_access_denied; dry-run stays untouched.", "tone": "amber"},
+    {"case": "Webhook replay", "trigger": "Provider event repeats", "expected": "Return safe replay state, no duplicate invoice or seat writes.", "tone": "green"},
+    {"case": "Report export", "trigger": "Unauthorized report export", "expected": "Return 403 section_access_denied and audit export-denied target.", "tone": "blue"},
+    {"case": "Validation failure", "trigger": "Record payload misses required title", "expected": "Return 400 validation_error with field path and no stack trace.", "tone": "teal"},
+    {"case": "Unexpected exception", "trigger": "Handler throws", "expected": "Return 500 server_error with requestId only and alert event.", "tone": "red"}
+  ],
+  "testCommandBindings": [
+    {"command": "pnpm test:errors", "suite": "Error envelopes", "artifact": "junit-error-envelope.xml", "tone": "red"},
+    {"command": "pnpm test:audit", "suite": "Audit envelopes", "artifact": "audit-event-proof.json", "tone": "teal"},
+    {"command": "pnpm test:denials", "suite": "Denied evidence", "artifact": "denial-proof.json", "tone": "red"},
+    {"command": "pnpm test:redaction", "suite": "Commercial privacy", "artifact": "redaction-proof.json", "tone": "amber"},
+    {"command": "pnpm test:request-id", "suite": "Traceability", "artifact": "request-id-proof.json", "tone": "blue"},
+    {"command": "pnpm test:idempotency", "suite": "Replay safety", "artifact": "idempotency-proof.json", "tone": "green"},
+    {"command": "pnpm test:route-envelopes", "suite": "Route coverage", "artifact": "route-envelope-coverage.json", "tone": "blue"},
+    {"command": "pnpm smoke:staging-audit", "suite": "Staging proof", "artifact": "staging-audit-smoke.json", "tone": "teal"}
+  ],
+  "implementationOrder": [
+    {"step": "01", "title": "Request id first", "tone": "green"},
+    {"step": "02", "title": "Known error classes", "tone": "red"},
+    {"step": "03", "title": "Error middleware", "tone": "red"},
+    {"step": "04", "title": "Audit context", "tone": "teal"},
+    {"step": "05", "title": "Audit writer", "tone": "blue"},
+    {"step": "06", "title": "Denial helpers", "tone": "red"},
+    {"step": "07", "title": "Route adoption", "tone": "amber"},
+    {"step": "08", "title": "Test proof", "tone": "green"}
+  ],
+  "acceptanceChecks": [
+    {"check": "One error shape", "note": "All backend routes return ok, requestId, code, message, path, method, retryable, and safe details.", "tone": "red"},
+    {"check": "No inference leak", "note": "Missing and cross-tenant records share the same not_found envelope.", "tone": "red"},
+    {"check": "Audit on denial", "note": "Every blocked section, commercial, membership, tenant, and inactive-user attempt writes evidence.", "tone": "teal"},
+    {"check": "Request id joined", "note": "Response header, client error, server log, and audit event all share the same requestId.", "tone": "blue"},
+    {"check": "Commercial masked", "note": "Operational tracker responses and exports never include value, agreement, LOA, invoice, or negotiation fields.", "tone": "amber"},
+    {"check": "Webhook idempotent", "note": "Repeated billing events do not double-write invoice, subscription, seat, or audit rows.", "tone": "green"},
+    {"check": "Import safe", "note": "Dry-run errors show row and field context; commit errors preserve rollback id and audit proof.", "tone": "blue"},
+    {"check": "CI artifact ready", "note": "Error, audit, denial, redaction, idempotency, and route-envelope tests publish evidence files.", "tone": "green"}
+  ],
+  "examples": {
+    "safeError": {
+      "ok": false,
+      "requestId": "req_01HY_PURSUIT_7G2M",
+      "timestamp": "2026-05-14T10:35:00.000Z",
+      "code": "commercial_vault_denied",
+      "message": "You do not have access to this restricted commercial record.",
+      "details": {"section": "commercialVault", "action": "read", "remediation": "Ask a company admin to review access."},
+      "path": "/commercial/records/:id",
+      "method": "GET",
+      "tenantVisible": false,
+      "retryable": false,
+      "supportHint": "Share this request id with the company admin.",
+      "auditEventId": "aud_01HY_DENIED_91QK"
+    },
+    "auditEvent": {
+      "eventId": "aud_01HY_DENIED_91QK",
+      "requestId": "req_01HY_PURSUIT_7G2M",
+      "companyId": "capsa",
+      "actorRole": "Editor",
+      "eventType": "access.denied",
+      "targetType": "commercialFact",
+      "decision": "denied",
+      "retentionClass": "restricted"
+    }
+  },
+  "handoff": [
+    "v115 gives the future backend one safe response contract for every route, so UI, support, logs, audit, and CI can all trace the same request.",
+    "Frontline tracker users get operational records, while commercial and membership denials produce safe errors and audit evidence instead of accidental data leaks.",
+    "Engineering should implement request-id, typed errors, error middleware, audit context, audit writer, access denials, redaction, idempotency, and route adoption before adding deeper feature logic.",
+    "The next build can turn these tests and middleware expectations into GitHub Actions workflow files and branch-protection checks."
+  ]
+}

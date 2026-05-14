@@ -1,0 +1,741 @@
+{
+  "schemaVersion": "pursuitdesk.productionBackendRepoFilePack.v114",
+  "generatedOn": "2026-05-14",
+  "product": "PursuitDesk",
+  "version": "v114 Production Backend Repo File Pack",
+  "purpose": "Define the first private production backend repository files before implementation starts: folders, first commit files, API route batches, migrations, auth guards, tests, workflows, env examples, copy order, owners, and acceptance checks.",
+  "targetRepository": {
+    "owner": "dhirajnyse",
+    "name": "pursuitdesk-platform",
+    "visibility": "private",
+    "defaultBranch": "main",
+    "integrationBranch": "develop",
+    "publicDemoRepo": "dhirajnyse/tendergrid"
+  },
+  "repositoryFolders": [
+    {
+      "path": "apps/web",
+      "label": "Frontend app",
+      "note": "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.",
+      "owner": "Frontend Owner",
+      "tone": "green"
+    },
+    {
+      "path": "apps/api",
+      "label": "Backend API",
+      "note": "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.",
+      "owner": "Backend Lead",
+      "tone": "teal"
+    },
+    {
+      "path": "packages/db",
+      "label": "Database layer",
+      "note": "Migrations, seed files, query helpers, tenant scope helpers, and restore scripts.",
+      "owner": "Database Owner",
+      "tone": "blue"
+    },
+    {
+      "path": "packages/domain",
+      "label": "Business rules",
+      "note": "Status rules, due signals, redaction rules, access profiles, record transforms, and report calculations.",
+      "owner": "Product Engineer",
+      "tone": "green"
+    },
+    {
+      "path": "packages/testing",
+      "label": "Test harness",
+      "note": "Fixtures, role contexts, route tests, redaction tests, audit assertions, and CI evidence builders.",
+      "owner": "QA Owner",
+      "tone": "red"
+    },
+    {
+      "path": "packages/importer",
+      "label": "Workbook importer",
+      "note": "Dry-run parser, staging rows, validation, quarantine, duplicate decisions, commit, rollback, and reconciliation.",
+      "owner": "Migration Owner",
+      "tone": "blue"
+    },
+    {
+      "path": "packages/billing",
+      "label": "Membership billing",
+      "note": "USD plan rules, checkout sessions, invoices, webhooks, seat sync, plan changes, and access locks.",
+      "owner": "Billing Owner",
+      "tone": "amber"
+    },
+    {
+      "path": "packages/audit",
+      "label": "Audit proof",
+      "note": "Audit event writer, denied event helpers, export filters, retention rules, and immutable evidence formatting.",
+      "owner": "Governance Owner",
+      "tone": "teal"
+    },
+    {
+      "path": "packages/reports",
+      "label": "Management reports",
+      "note": "Weekly pack builders, review summaries, evidence health, client heat, and redaction-safe exports.",
+      "owner": "Reports Owner",
+      "tone": "green"
+    },
+    {
+      "path": "infra",
+      "label": "Infrastructure",
+      "note": "Docker, database, environment, staging deploy, backup, restore, monitoring, and release scripts.",
+      "owner": "Platform Owner",
+      "tone": "red"
+    },
+    {
+      "path": ".github",
+      "label": "GitHub operations",
+      "note": "Issue templates, pull request template, workflows, code owners, dependabot, and artifact retention.",
+      "owner": "Repo Owner",
+      "tone": "blue"
+    },
+    {
+      "path": "docs",
+      "label": "Engineering docs",
+      "note": "Architecture decisions, API contracts, data model, import rules, test commands, and release runbooks.",
+      "owner": "Product Owner",
+      "tone": "teal"
+    }
+  ],
+  "firstCommitFiles": [
+    {
+      "file": "README.md",
+      "purpose": "Start here",
+      "note": "Install, run, seed, test, deploy, alpha scope, and production boundaries.",
+      "owner": "Repo Owner",
+      "tone": "green"
+    },
+    {
+      "file": "package.json",
+      "purpose": "Workspace root",
+      "note": "pnpm scripts for dev, test, lint, typecheck, migrate, seed, smoke, restore, and ci-gate.",
+      "owner": "Platform Owner",
+      "tone": "blue"
+    },
+    {
+      "file": "pnpm-workspace.yaml",
+      "purpose": "Monorepo map",
+      "note": "apps and packages workspace boundaries for web, API, database, domain, testing, billing, importer, audit, and reports.",
+      "owner": "Platform Owner",
+      "tone": "teal"
+    },
+    {
+      "file": ".env.example",
+      "purpose": "Environment contract",
+      "note": "Document required keys without secrets: database, session, billing test mode, email, storage, audit, and app URLs.",
+      "owner": "Security Owner",
+      "tone": "red"
+    },
+    {
+      "file": ".github/CODEOWNERS",
+      "purpose": "Review ownership",
+      "note": "Route, migration, auth, billing, import, audit, and frontend owners are explicit before first PR.",
+      "owner": "Repo Owner",
+      "tone": "blue"
+    },
+    {
+      "file": ".github/pull_request_template.md",
+      "purpose": "PR evidence",
+      "note": "Every PR lists issue link, migrations, commands, artifacts, screenshots, and rollout notes.",
+      "owner": "QA Owner",
+      "tone": "green"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "purpose": "Primary CI",
+      "note": "Install, lint, typecheck, unit, contracts, routes, auth-tenant, redaction, migrations, billing, audit, and artifacts.",
+      "owner": "Platform Owner",
+      "tone": "red"
+    },
+    {
+      "file": "docs/alpha-api-contracts.md",
+      "purpose": "API contract",
+      "note": "Auth, users, records, commercial vault, import, billing, feedback, and audit endpoint groups.",
+      "owner": "Backend Lead",
+      "tone": "teal"
+    },
+    {
+      "file": "docs/data-model.md",
+      "purpose": "Schema map",
+      "note": "Ordered migration files, ownership, indexes, seed order, rollback, and restore gates.",
+      "owner": "Database Owner",
+      "tone": "blue"
+    },
+    {
+      "file": "docs/security-access.md",
+      "purpose": "Guard map",
+      "note": "Guard files, section rules, session policy, tenant isolation, and denied audit events.",
+      "owner": "Security Owner",
+      "tone": "red"
+    },
+    {
+      "file": "docs/test-command-pack.md",
+      "purpose": "Command proof",
+      "note": "Backend commands, CI jobs, artifacts, failure policies, and release gates.",
+      "owner": "QA Owner",
+      "tone": "amber"
+    },
+    {
+      "file": "docs/staging-deployment.md",
+      "purpose": "Staging runbook",
+      "note": "Environment lanes, secrets, deploy rehearsal, database checks, rollback, and go/no-go rules.",
+      "owner": "Platform Owner",
+      "tone": "blue"
+    }
+  ],
+  "apiFileBatch": [
+    {
+      "module": "Auth",
+      "route": "apps/api/src/routes/auth.routes.ts",
+      "controller": "apps/api/src/controllers/auth.controller.ts",
+      "service": "apps/api/src/services/auth.service.ts",
+      "schema": "apps/api/src/schemas/auth.schema.ts",
+      "test": "apps/api/tests/auth.routes.test.ts",
+      "tone": "red"
+    },
+    {
+      "module": "Users",
+      "route": "apps/api/src/routes/users.routes.ts",
+      "controller": "apps/api/src/controllers/users.controller.ts",
+      "service": "apps/api/src/services/users.service.ts",
+      "schema": "apps/api/src/schemas/users.schema.ts",
+      "test": "apps/api/tests/users.access.test.ts",
+      "tone": "blue"
+    },
+    {
+      "module": "Records",
+      "route": "apps/api/src/routes/records.routes.ts",
+      "controller": "apps/api/src/controllers/records.controller.ts",
+      "service": "apps/api/src/services/records.service.ts",
+      "schema": "apps/api/src/schemas/records.schema.ts",
+      "test": "apps/api/tests/records.redaction.test.ts",
+      "tone": "teal"
+    },
+    {
+      "module": "Commercial",
+      "route": "apps/api/src/routes/commercial.routes.ts",
+      "controller": "apps/api/src/controllers/commercial.controller.ts",
+      "service": "apps/api/src/services/commercialVault.service.ts",
+      "schema": "apps/api/src/schemas/commercial.schema.ts",
+      "test": "apps/api/tests/commercial.guard.test.ts",
+      "tone": "amber"
+    },
+    {
+      "module": "Imports",
+      "route": "apps/api/src/routes/imports.routes.ts",
+      "controller": "apps/api/src/controllers/imports.controller.ts",
+      "service": "apps/api/src/services/importer.service.ts",
+      "schema": "apps/api/src/schemas/imports.schema.ts",
+      "test": "apps/api/tests/imports.rollback.test.ts",
+      "tone": "blue"
+    },
+    {
+      "module": "Billing",
+      "route": "apps/api/src/routes/billing.routes.ts",
+      "controller": "apps/api/src/controllers/billing.controller.ts",
+      "service": "apps/api/src/services/billing.service.ts",
+      "schema": "apps/api/src/schemas/billing.schema.ts",
+      "test": "apps/api/tests/billing.webhook.test.ts",
+      "tone": "amber"
+    },
+    {
+      "module": "Feedback",
+      "route": "apps/api/src/routes/feedback.routes.ts",
+      "controller": "apps/api/src/controllers/feedback.controller.ts",
+      "service": "apps/api/src/services/feedback.service.ts",
+      "schema": "apps/api/src/schemas/feedback.schema.ts",
+      "test": "apps/api/tests/feedback.workflow.test.ts",
+      "tone": "green"
+    },
+    {
+      "module": "Audit",
+      "route": "apps/api/src/routes/audit.routes.ts",
+      "controller": "apps/api/src/controllers/audit.controller.ts",
+      "service": "apps/api/src/services/audit.service.ts",
+      "schema": "apps/api/src/schemas/audit.schema.ts",
+      "test": "apps/api/tests/audit.retention.test.ts",
+      "tone": "teal"
+    }
+  ],
+  "migrationFiles": [
+    {
+      "file": "0001_tenant_identity.sql",
+      "layer": "Tenant identity",
+      "tables": "companies, users, access_profiles, sessions, invitations",
+      "owner": "Security Owner",
+      "tone": "red"
+    },
+    {
+      "file": "0002_operational_records.sql",
+      "layer": "Operational records",
+      "tables": "records, record_notes, record_status_events, client_memory",
+      "owner": "Records Owner",
+      "tone": "teal"
+    },
+    {
+      "file": "0003_commercial_vault.sql",
+      "layer": "Commercial vault",
+      "tables": "commercial_facts, negotiation_rounds, agreements, forecast_inputs",
+      "owner": "Commercial Owner",
+      "tone": "amber"
+    },
+    {
+      "file": "0004_import_pipeline.sql",
+      "layer": "Import pipeline",
+      "tables": "import_batches, staging_rows, validation_errors, quarantine_items, rollback_events",
+      "owner": "Migration Owner",
+      "tone": "blue"
+    },
+    {
+      "file": "0005_audit_events.sql",
+      "layer": "Audit ledger",
+      "tables": "audit_events, audit_exports, request_events",
+      "owner": "Governance Owner",
+      "tone": "teal"
+    },
+    {
+      "file": "0006_billing_membership.sql",
+      "layer": "Billing membership",
+      "tables": "plans, subscriptions, invoices, billing_events, seat_events",
+      "owner": "Billing Owner",
+      "tone": "amber"
+    },
+    {
+      "file": "0007_feedback_workflow.sql",
+      "layer": "Pilot feedback",
+      "tables": "feedback_sessions, feedback_items, feedback_activity, attachments",
+      "owner": "Product Owner",
+      "tone": "green"
+    },
+    {
+      "file": "0008_documents_reports.sql",
+      "layer": "Evidence and reports",
+      "tables": "document_evidence, report_exports, report_snapshots",
+      "owner": "Governance Owner",
+      "tone": "blue"
+    },
+    {
+      "file": "0009_operational_indexes.sql",
+      "layer": "Indexes",
+      "tables": "tenant, status, owner, client, due date, source, audit, billing indexes",
+      "owner": "Backend Lead",
+      "tone": "green"
+    },
+    {
+      "file": "0010_seed_assertions.sql",
+      "layer": "Seed assertions",
+      "tables": "migration_checks, fixture_assertions, smoke_expectations",
+      "owner": "QA Owner",
+      "tone": "teal"
+    }
+  ],
+  "guardFiles": [
+    {
+      "file": "apps/api/src/middleware/session.ts",
+      "guard": "Session guard",
+      "policy": "Reject missing, expired, inactive, and reset-required identities before tenant data.",
+      "owner": "Security Owner",
+      "tone": "red"
+    },
+    {
+      "file": "apps/api/src/auth/password.ts",
+      "guard": "Password policy",
+      "policy": "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.",
+      "owner": "Identity Owner",
+      "tone": "red"
+    },
+    {
+      "file": "apps/api/src/middleware/request-context.ts",
+      "guard": "Request context",
+      "policy": "Attach request id, actor id, company id, route id, and safe logger scope.",
+      "owner": "Backend Lead",
+      "tone": "green"
+    },
+    {
+      "file": "apps/api/src/middleware/tenant.ts",
+      "guard": "Tenant guard",
+      "policy": "Resolve company scope server-side and block cross-company identifiers.",
+      "owner": "Security Owner",
+      "tone": "red"
+    },
+    {
+      "file": "apps/api/src/middleware/access.ts",
+      "guard": "Section access",
+      "policy": "Check room grants for trackers, insights, import, governance, reports, and membership.",
+      "owner": "Backend Lead",
+      "tone": "blue"
+    },
+    {
+      "file": "apps/api/src/middleware/commercial-vault.ts",
+      "guard": "Commercial vault",
+      "policy": "Keep values, agreement, LOA, negotiations, invoices, and forecast facts out of frontline routes.",
+      "owner": "Commercial Owner",
+      "tone": "amber"
+    },
+    {
+      "file": "apps/api/src/middleware/membership-admin.ts",
+      "guard": "Membership admin",
+      "policy": "Membership model, user seats, plan changes, and billing access remain admin-only.",
+      "owner": "Billing Owner",
+      "tone": "red"
+    },
+    {
+      "file": "apps/api/src/middleware/mutation-policy.ts",
+      "guard": "Mutation guard",
+      "policy": "Editors can update assigned tracker fields; viewers and inactive users cannot mutate.",
+      "owner": "Records Owner",
+      "tone": "teal"
+    },
+    {
+      "file": "apps/api/src/middleware/audit-denial.ts",
+      "guard": "Denied audit",
+      "policy": "Every denied sensitive action writes an immutable audit event.",
+      "owner": "Governance Owner",
+      "tone": "green"
+    },
+    {
+      "file": "apps/api/src/middleware/safe-error.ts",
+      "guard": "Safe errors",
+      "policy": "Return consistent validation, auth, permission, tenant, conflict, and server envelopes.",
+      "owner": "Platform Owner",
+      "tone": "blue"
+    }
+  ],
+  "testFiles": [
+    {
+      "step": "01",
+      "command": "pnpm test:unit",
+      "file": "packages/testing/tests/test-unit.test.ts",
+      "suite": "Domain unit tests",
+      "artifact": "junit-unit.xml",
+      "tone": "green"
+    },
+    {
+      "step": "02",
+      "command": "pnpm test:contracts",
+      "file": "packages/testing/tests/test-contracts.test.ts",
+      "suite": "API contract tests",
+      "artifact": "junit-contracts.xml",
+      "tone": "blue"
+    },
+    {
+      "step": "03",
+      "command": "pnpm test:routes",
+      "file": "packages/testing/tests/test-routes.test.ts",
+      "suite": "Route skeleton tests",
+      "artifact": "junit-routes.xml",
+      "tone": "teal"
+    },
+    {
+      "step": "04",
+      "command": "pnpm test:auth-tenant",
+      "file": "packages/testing/tests/test-auth-tenant.test.ts",
+      "suite": "Auth and tenant guard tests",
+      "artifact": "junit-auth-tenant.xml",
+      "tone": "red"
+    },
+    {
+      "step": "05",
+      "command": "pnpm test:redaction",
+      "file": "packages/testing/tests/test-redaction.test.ts",
+      "suite": "Commercial redaction tests",
+      "artifact": "redaction-proof.csv",
+      "tone": "amber"
+    },
+    {
+      "step": "06",
+      "command": "pnpm test:migrations",
+      "file": "packages/testing/tests/test-migrations.test.ts",
+      "suite": "Database migration tests",
+      "artifact": "junit-migrations.xml",
+      "tone": "blue"
+    },
+    {
+      "step": "07",
+      "command": "pnpm test:import",
+      "file": "packages/testing/tests/test-import.test.ts",
+      "suite": "Workbook import tests",
+      "artifact": "import-reconciliation.json",
+      "tone": "teal"
+    },
+    {
+      "step": "08",
+      "command": "pnpm test:billing",
+      "file": "packages/testing/tests/test-billing.test.ts",
+      "suite": "Billing test-mode tests",
+      "artifact": "junit-billing.xml",
+      "tone": "amber"
+    },
+    {
+      "step": "09",
+      "command": "pnpm test:audit",
+      "file": "packages/testing/tests/test-audit.test.ts",
+      "suite": "Audit proof tests",
+      "artifact": "audit-events.json",
+      "tone": "green"
+    },
+    {
+      "step": "10",
+      "command": "pnpm smoke:staging",
+      "file": "packages/testing/tests/smoke-staging.test.ts",
+      "suite": "Staging smoke run",
+      "artifact": "smoke-summary.html",
+      "tone": "red"
+    },
+    {
+      "step": "11",
+      "command": "pnpm test:restore",
+      "file": "packages/testing/tests/test-restore.test.ts",
+      "suite": "Backup and restore drill",
+      "artifact": "restore-proof.json",
+      "tone": "blue"
+    },
+    {
+      "step": "12",
+      "command": "pnpm test:ci-gate",
+      "file": "packages/testing/tests/test-ci-gate.test.ts",
+      "suite": "Release gate command",
+      "artifact": "ci-gate-summary.json",
+      "tone": "green"
+    }
+  ],
+  "workflowFiles": [
+    {
+      "file": ".github/workflows/ci.yml",
+      "label": "Primary PR gate",
+      "note": "Runs install, lint, typecheck, unit, contracts, routes, auth, redaction, migration, billing, audit, and artifact upload.",
+      "tone": "red"
+    },
+    {
+      "file": ".github/workflows/staging-smoke.yml",
+      "label": "Staging smoke",
+      "note": "Runs after staging deploy with fixture tenant, test-mode billing, redaction proof, import dry run, rollback, and report summary.",
+      "tone": "teal"
+    },
+    {
+      "file": ".github/workflows/migration-restore.yml",
+      "label": "Migration and restore",
+      "note": "Nightly migration rollback, fixture restore, import rollback, count parity, and restore proof.",
+      "tone": "blue"
+    },
+    {
+      "file": ".github/workflows/security-audit.yml",
+      "label": "Security proof",
+      "note": "Tenant isolation, inactive user, section denial, commercial vault denial, denied audit, and audit export checks.",
+      "tone": "red"
+    },
+    {
+      "file": ".github/workflows/billing-testmode.yml",
+      "label": "Billing proof",
+      "note": "USD checkout, invoice lifecycle, webhook idempotency, seat sync, plan changes, and access locks in test mode only.",
+      "tone": "amber"
+    },
+    {
+      "file": ".github/workflows/release-gate.yml",
+      "label": "Go/no-go summary",
+      "note": "Aggregates command status, artifacts, blockers, owners, and release decision for management review.",
+      "tone": "green"
+    }
+  ],
+  "envFiles": [
+    {
+      "file": ".env.example",
+      "label": "All environments",
+      "note": "Names only, no secrets; used as the contract for developers and hosting provider.",
+      "tone": "green"
+    },
+    {
+      "file": ".env.local.example",
+      "label": "Local dev",
+      "note": "Local database, test session secret, mail sink, storage emulator, and billing test keys.",
+      "tone": "blue"
+    },
+    {
+      "file": ".env.test.example",
+      "label": "Automated tests",
+      "note": "Disposable test database, fixed tenant fixture, deterministic session secret, and test webhook secret.",
+      "tone": "teal"
+    },
+    {
+      "file": ".env.staging.example",
+      "label": "Staging",
+      "note": "Staging database, app URL, email provider, object storage, monitoring, and billing test-mode keys.",
+      "tone": "amber"
+    },
+    {
+      "file": "infra/secrets.staging.md",
+      "label": "Secret checklist",
+      "note": "Documents who owns each secret, where it is stored, rotation cadence, and live-key prohibition.",
+      "tone": "red"
+    },
+    {
+      "file": "infra/backup-restore.md",
+      "label": "Recovery contract",
+      "note": "Backup schedule, restore command, rollback drill, retention, owner, and evidence artifact.",
+      "tone": "red"
+    }
+  ],
+  "copyOrder": [
+    {
+      "step": "01",
+      "title": "Create repo shell",
+      "note": "README, package.json, workspace file, .gitignore, env examples, CODEOWNERS, PR template.",
+      "tone": "green"
+    },
+    {
+      "step": "02",
+      "title": "Copy docs",
+      "note": "API contracts, data model, security access, test command pack, staging deployment, and alpha scope.",
+      "tone": "blue"
+    },
+    {
+      "step": "03",
+      "title": "Add database package",
+      "note": "Migrations, seed files, schema helpers, tenant scope helpers, rollback and restore scripts.",
+      "tone": "red"
+    },
+    {
+      "step": "04",
+      "title": "Add API shell",
+      "note": "server.ts, request context, session, tenant, access, audit, error middleware, and health route.",
+      "tone": "teal"
+    },
+    {
+      "step": "05",
+      "title": "Add route groups",
+      "note": "Auth, users, records, commercial, imports, billing, feedback, audit, and reports files.",
+      "tone": "amber"
+    },
+    {
+      "step": "06",
+      "title": "Add fixtures",
+      "note": "Tenant, users, operational records, commercial vault, imports, audit, billing, and smoke expectations.",
+      "tone": "green"
+    },
+    {
+      "step": "07",
+      "title": "Add tests",
+      "note": "Unit, contract, routes, auth-tenant, redaction, migrations, imports, billing, audit, restore, and smoke tests.",
+      "tone": "red"
+    },
+    {
+      "step": "08",
+      "title": "Add CI workflows",
+      "note": "Primary CI, security audit, migration restore, billing test mode, staging smoke, and release gate.",
+      "tone": "blue"
+    },
+    {
+      "step": "09",
+      "title": "Open issues",
+      "note": "Use generated labels, milestones, acceptance criteria, owners, and command proof for sprint zero.",
+      "tone": "teal"
+    },
+    {
+      "step": "10",
+      "title": "Run first proof",
+      "note": "pnpm install, lint, typecheck, migrate, seed, test, smoke, restore, and ci-gate commands.",
+      "tone": "red"
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "label": "Folder tree complete",
+      "note": "All 12 repository folders exist with owner, purpose, and first file target.",
+      "tone": "green"
+    },
+    {
+      "label": "Docs committed",
+      "note": "Alpha scope, API contracts, data model, security, test commands, and staging docs are in docs/.",
+      "tone": "blue"
+    },
+    {
+      "label": "Route files mapped",
+      "note": "Eight route groups have route, controller, service, schema, and test files.",
+      "tone": "teal"
+    },
+    {
+      "label": "Migration files mapped",
+      "note": "Ten migration files have ownership, table scope, rollback, and validation notes.",
+      "tone": "red"
+    },
+    {
+      "label": "Guard files mapped",
+      "note": "Ten auth, tenant, access, commercial, membership, mutation, audit, and error guard files are listed.",
+      "tone": "red"
+    },
+    {
+      "label": "Test commands mapped",
+      "note": "Twelve command tests have artifact targets and proof statements.",
+      "tone": "amber"
+    },
+    {
+      "label": "Workflow files mapped",
+      "note": "Six GitHub workflow files define PR, staging, security, billing, restore, and release gates.",
+      "tone": "blue"
+    },
+    {
+      "label": "Secrets remain out",
+      "note": "Only example env files and secret names are committed; no live keys or customer data.",
+      "tone": "red"
+    },
+    {
+      "label": "Fixture copy clear",
+      "note": "Seed fixture families are available for the first backend test data contract.",
+      "tone": "green"
+    },
+    {
+      "label": "Sprint handoff clear",
+      "note": "Sprint lanes connect repo files to implementation movement.",
+      "tone": "teal"
+    }
+  ],
+  "ownershipMatrix": [
+    {
+      "owner": "Platform Owner",
+      "note": "Repo shell, scripts, CI, staging, deployment, backup, restore, and release gate.",
+      "tone": "red"
+    },
+    {
+      "owner": "Backend Lead",
+      "note": "API server, routes, controllers, services, schemas, error envelope, and OpenAPI contract.",
+      "tone": "teal"
+    },
+    {
+      "owner": "Database Owner",
+      "note": "Migrations, seed order, indexes, restore gates, tenant scope, and count parity.",
+      "tone": "blue"
+    },
+    {
+      "owner": "Security Owner",
+      "note": "Session, tenant, access, commercial vault, membership admin, denied audit, and redaction.",
+      "tone": "red"
+    },
+    {
+      "owner": "Migration Owner",
+      "note": "Workbook importer, dry-run, staging rows, quarantine, duplicates, commit, rollback, reconciliation.",
+      "tone": "blue"
+    },
+    {
+      "owner": "Billing Owner",
+      "note": "USD pricing, checkout, invoice, webhook, subscription, seat sync, plan changes, and access locks.",
+      "tone": "amber"
+    },
+    {
+      "owner": "QA Owner",
+      "note": "Test harness, fixtures, command artifacts, smoke reports, failure policies, and CI evidence.",
+      "tone": "green"
+    },
+    {
+      "owner": "Product Owner",
+      "note": "Alpha scope, issue acceptance, feedback workflow, management report expectations, and pilot gates.",
+      "tone": "teal"
+    }
+  ],
+  "handoff": [
+    "Use this pack to create a private backend repo that starts with clear boundaries instead of a blank project.",
+    "The first commit should contain structure, docs, examples, workflows, and fixture contracts, not live secrets or customer data.",
+    "Route, migration, guard, and test batches are named so GitHub issues, pull requests, and CI jobs can share one vocabulary.",
+    "After the file pack is committed, the next implementation step is to standardize API error envelopes and audit event payloads."
+  ]
+}

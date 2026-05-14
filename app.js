@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=104";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=104";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=115";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=115";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -4318,6 +4318,17 @@
     const issueExport = buildImplementationIssueExportModel(model, alphaPlan, repoKickoff, backendRepoStarter, backendTicketBoard, migrationPack, securityTestPack, billingBlueprint);
     const apiContractPack = buildAlphaApiContractPackModel(model, issueExport, repoKickoff, alphaPlan, backendRepoStarter, backendTicketBoard, migrationPack, billingBlueprint, securityTestPack);
     const seedFixturePack = buildSeedDataMigrationFixturePackModel(model, apiContractPack, issueExport, repoKickoff, migrationPack, billingBlueprint, securityTestPack);
+    const privateRepoGuide = buildPrivateRepoCreationGuideModel(model, seedFixturePack, apiContractPack, issueExport, repoKickoff, backendRepoStarter, backendTicketBoard, migrationPack, billingBlueprint, securityTestPack);
+    const stagingSmokeScript = buildStagingSmokeTestScriptModel(model, privateRepoGuide, seedFixturePack, apiContractPack, issueExport, repoKickoff, migrationPack, billingBlueprint, securityTestPack, billingTestPack, migrationTestPack);
+    const backendFixtureExport = buildBackendFixtureExportModel(model, seedFixturePack, stagingSmokeScript, apiContractPack, privateRepoGuide, issueExport, migrationPack);
+    const firstBackendSprint = buildFirstBackendSprintChecklistModel(model, privateRepoGuide, backendFixtureExport, stagingSmokeScript, apiContractPack, issueExport, repoKickoff, backendRepoStarter, alphaPlan);
+    const stagingDeployment = buildStagingDeploymentChecklistModel(model, firstBackendSprint, backendFixtureExport, stagingSmokeScript, hostingRunbook, securityTestPack, billingTestPack, migrationTestPack, launchControl);
+    const backendRouteSkeleton = buildBackendRouteSkeletonMapModel(model, apiContractPack, issueExport, backendFixtureExport, firstBackendSprint, stagingDeployment, backendRepoStarter, securityTestPack, billingTestPack, migrationTestPack);
+    const databaseMigrationBlueprint = buildDatabaseMigrationBlueprintModel(model, migrationPack, seedFixturePack, backendFixtureExport, backendRouteSkeleton, apiContractPack, stagingDeployment, migrationTestPack, securityTestPack);
+    const authTenantGuardBlueprint = buildAuthTenantGuardBlueprintModel(model, securityModel, backendRouteSkeleton, databaseMigrationBlueprint, apiContractPack, seedFixturePack, securityTestPack);
+    const backendTestCommandPack = buildBackendTestCommandPackModel(model, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint, stagingSmokeScript, securityTestPack, billingTestPack, migrationTestPack, apiContractPack, seedFixturePack);
+    const productionBackendRepoFilePack = buildProductionBackendRepoFilePackModel(model, privateRepoGuide, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint, backendTestCommandPack, seedFixturePack, apiContractPack, firstBackendSprint, stagingDeployment);
+    const apiErrorAuditEnvelopePack = buildApiErrorAuditEnvelopePackModel(model, backendRouteSkeleton, authTenantGuardBlueprint, productionBackendRepoFilePack, backendTestCommandPack, apiContractPack, databaseMigrationBlueprint);
     return `
       <section class="command-center">
         <section class="command-console">
@@ -4357,6 +4368,28 @@
         ${canAdmin() ? renderAlphaApiContractPack(apiContractPack) : ""}
 
         ${canAdmin() ? renderSeedDataMigrationFixturePack(seedFixturePack) : ""}
+
+        ${canAdmin() ? renderPrivateRepoCreationGuide(privateRepoGuide) : ""}
+
+        ${canAdmin() ? renderStagingSmokeTestScript(stagingSmokeScript) : ""}
+
+        ${canAdmin() ? renderBackendFixtureExport(backendFixtureExport) : ""}
+
+        ${canAdmin() ? renderFirstBackendSprintChecklist(firstBackendSprint) : ""}
+
+        ${canAdmin() ? renderStagingDeploymentChecklist(stagingDeployment) : ""}
+
+        ${canAdmin() ? renderBackendRouteSkeletonMap(backendRouteSkeleton) : ""}
+
+        ${canAdmin() ? renderDatabaseMigrationBlueprint(databaseMigrationBlueprint) : ""}
+
+        ${canAdmin() ? renderAuthTenantGuardBlueprint(authTenantGuardBlueprint) : ""}
+
+        ${canAdmin() ? renderBackendTestCommandPack(backendTestCommandPack) : ""}
+
+        ${canAdmin() ? renderProductionBackendRepoFilePack(productionBackendRepoFilePack) : ""}
+
+        ${canAdmin() ? renderApiErrorAuditEnvelopePack(apiErrorAuditEnvelopePack) : ""}
 
         ${canAdmin() ? renderPilotReadinessChecklist(pilotReadiness) : ""}
 
@@ -5099,7 +5132,7 @@
     );
     const sourcePackages = importStudio.sourceRows.map((source) => ({
       label: source.label,
-      count: source.count,
+      count: source.value,
       tone: source.label === "Manual entry" ? "amber" : "blue",
       note: source.label === "Manual entry" ? "Needs source workbook and sheet before production import." : "Can become an import batch with retained workbook memory.",
     }));
@@ -7493,20 +7526,1543 @@
     };
   }
 
+  function buildPrivateRepoCreationGuideModel(commandModel, seedFixturePack, apiContractPack, issueExport, repoKickoff, backendRepoStarter, backendTicketBoard, migrationPack, billingBlueprint, securityTestPack) {
+    const issueCount = issueExport.issueCards?.length || backendTicketBoard.implementationTickets?.length || 0;
+    const labelCount = issueExport.labelSystem?.length || 0;
+    const milestoneCount = issueExport.milestonePlan?.length || 0;
+    const repoGuideScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          repoKickoff.kickoffScore * 0.2 +
+            seedFixturePack.seedScore * 0.2 +
+            apiContractPack.apiContractScore * 0.16 +
+            issueExport.issueExportScore * 0.16 +
+            backendRepoStarter.repoReadiness * 0.14 +
+            securityTestPack.testPackScore * 0.08 +
+            Math.min(100, issueCount * 4) * 0.06,
+        ),
+      ),
+    );
+    const repoIdentity = [
+      ["GitHub owner", "dhirajnyse", "Use your current GitHub account first; move to an organization later if needed.", "green"],
+      ["Repository", "pursuitdesk-platform", "Private production SaaS repo for the first real backend alpha.", "teal"],
+      ["Visibility", "Private", "Keep backend, secrets, data contracts, and pilot implementation away from the public demo repo.", "red"],
+      ["Public demo", "tendergrid", "Keep the current GitHub Pages demo live as the sales and feedback surface.", "blue"],
+      ["Default branch", "main", "Protected release branch with reviews and required checks before merge.", "green"],
+      ["Integration branch", "develop", "Feature branches merge here before staging rehearsal and main promotion.", "amber"],
+    ];
+    const creationSteps = [
+      ["01", "Open GitHub new repository", "Go to github.com/new, choose owner dhirajnyse, and use repository name pursuitdesk-platform.", "green"],
+      ["02", "Select Private visibility", "Do not use the existing tendergrid demo repo for production backend code.", "red"],
+      ["03", "Initialize with README", "Add README, Node .gitignore, and choose license later after commercial decision.", "blue"],
+      ["04", "Create develop branch", "Keep main protected and use develop for first integration work.", "teal"],
+      ["05", "Add branch protection", "Require pull request review, status checks, no force pushes, and admin enforcement on main.", "red"],
+      ["06", "Create labels and milestones", `${labelCount} labels and ${milestoneCount} milestones come from the implementation issue export.`, "amber"],
+      ["07", "Open issue batches", `${issueCount} first implementation issues become GitHub work items before coding starts.`, "blue"],
+      ["08", "Commit seed fixture map", `${seedFixturePack.fixtureFiles.length} seed and fixture files become the first backend test data contract.`, "green"],
+    ];
+    const labelSetup = (issueExport.labelSystem || []).map(([label, title, note, tone]) => [
+      label,
+      title,
+      note,
+      tone,
+    ]);
+    const milestoneSetup = (issueExport.milestonePlan || []).map(([code, title, note, tone]) => [
+      code,
+      title,
+      note,
+      tone,
+    ]);
+    const branchRules = [
+      ["main", "Require PR review", "No direct pushes, no force pushes, require successful CI, and allow only reviewed alpha releases.", "red"],
+      ["develop", "Require checks", "Integration branch accepts feature PRs after install, lint, typecheck, and test shell pass.", "blue"],
+      ["feature/*", "Short-lived slices", "Use one feature branch per ticket or tightly related issue pair.", "teal"],
+      ["release/*", "Staging rehearsal", "Only create when migrations, seed, smoke, backup, and rollback checks are ready.", "amber"],
+      ["hotfix/*", "Emergency patch", "Reserved for production after pilot launch; not needed during static prototype phase.", "red"],
+      ["tag alpha-*", "Release marker", "Tag first backend alpha checkpoints after staging smoke passes.", "green"],
+    ];
+    const projectBoard = [
+      ["Backlog", "All generated issues wait here until milestone and owner are confirmed.", "blue"],
+      ["Sprint zero", "Repo skeleton, setup commands, tenant/auth, access, records shell, audit, and seed fixtures.", "red"],
+      ["In progress", "One owner, one branch, one definition of done, one linked PR.", "teal"],
+      ["Review", "Code review, test evidence, migration proof, and redaction proof happen here.", "amber"],
+      ["Staging gate", "Install, migrate, seed, smoke, backup, monitoring, rollback, and support checks.", "red"],
+      ["Done", "Merged, tested, documented, and ready for next dependent issue.", "green"],
+    ];
+    const secretPlan = [
+      ["DATABASE_URL", "Staging PostgreSQL connection only; no production data until launch gates pass.", "red"],
+      ["SESSION_SECRET", "Long random server secret for signed session tokens.", "blue"],
+      ["APP_BASE_URL", "Frontend URL for auth redirects, reset links, and callback testing.", "teal"],
+      ["BILLING_SECRET_KEY", `${BILLING_CURRENCY} test-mode billing provider key, not live card capture.`, "amber"],
+      ["BILLING_WEBHOOK_SECRET", "Webhook signature secret for invoice and subscription event tests.", "amber"],
+      ["OBJECT_STORAGE_KEY", "Future attachment and evidence pack storage; scoped to staging first.", "green"],
+      ["EMAIL_API_KEY", "Invite and password reset email provider key for staging.", "blue"],
+      ["AUDIT_EXPORT_KEY", "Restricted export token for admin-only audit download jobs.", "red"],
+    ];
+    const firstFiles = [
+      ["README.md", "Install, run, seed, test, deploy, alpha limits, and current product scope.", "green"],
+      ["docs/alpha-scope.md", "Smallest production alpha, non-goals, milestones, and exit gates.", "blue"],
+      ["docs/api-contracts.md", `${apiContractPack.endpointContracts.length} endpoint contracts and payload boundaries.`, "teal"],
+      ["docs/migration-fixtures.md", "Seed tenant, operational records, commercial vault, imports, rollback, and assertions.", "amber"],
+      [".github/workflows/ci.yml", "Install, lint, typecheck, test, migration, seed, and smoke placeholders.", "red"],
+      [".github/ISSUE_TEMPLATE/backend-task.md", "Context, scope, definition of done, acceptance tests, and handoff.", "blue"],
+      ["packages/db/seeds/tenant.capsa.ts", "Company, users, membership, access profiles, and tenant settings.", "green"],
+      ["packages/testing/fixtures/redaction-cases.ts", "Tracker, detail, export, insight, and commercial access denial checks.", "red"],
+    ];
+    const issueOpeningPlan = (issueExport.openingOrder || issueExport.issueCards?.slice(0, 8).map((issue, index) => [`${index + 1}`, issue.title, `${issue.owner} / ${issue.milestone}`, issue.tone]) || []).map(([step, title, note, tone]) => [
+      step,
+      title,
+      note,
+      tone,
+    ]);
+    const setupCommands = [
+      ["1", "git clone git@github.com:dhirajnyse/pursuitdesk-platform.git", "Clone the private production repo after creating it.", "green"],
+      ["2", "cd pursuitdesk-platform", "Work from the private backend repo, not the public demo folder.", "teal"],
+      ["3", "pnpm install", "Install the monorepo workspace dependencies.", "blue"],
+      ["4", "pnpm db:migrate", "Apply tenant, users, records, commercial, import, billing, feedback, and audit migrations.", "red"],
+      ["5", "pnpm db:seed", `Load ${commandModel.records.length} demo records, users, access profiles, commercial fixtures, and audit seed.`, "amber"],
+      ["6", "pnpm test", "Run contract, access, redaction, migration, billing, and audit fixture tests.", "green"],
+      ["7", "pnpm dev", "Start web, API, and worker locally once foundation services exist.", "teal"],
+    ];
+    const validationChecklist = [
+      ["Repo settings saved", "Private repo exists, main is protected, develop exists, and pull requests are required.", false, "red"],
+      ["Labels created", `${labelCount} labels are created with the same names as the implementation issue export.`, false, "blue"],
+      ["Milestones created", `${milestoneCount} milestones are created from M0 repo opens through M5 staging rehearsal.`, false, "teal"],
+      ["Project board created", "Backlog, Sprint zero, In progress, Review, Staging gate, and Done columns exist.", false, "green"],
+      ["Secrets listed", "Staging secrets are named before code needs them; live secrets stay blocked.", false, "amber"],
+      ["Seed files mapped", `${seedFixturePack.fixtureFiles.length} fixture files are named and ready for first commit.`, false, "green"],
+      ["First issues opened", `${issueCount} generated issues are ready to import or open manually.`, false, "red"],
+      ["CI shell visible", "GitHub Actions exists with install, test, migration, seed, redaction, and smoke placeholders.", false, "blue"],
+    ];
+    return {
+      repoGuideScore,
+      repoIdentity,
+      creationSteps,
+      labelSetup,
+      milestoneSetup,
+      branchRules,
+      projectBoard,
+      secretPlan,
+      firstFiles,
+      issueOpeningPlan,
+      setupCommands,
+      validationChecklist,
+      signalCards: [
+        ["Guide score", `${repoGuideScore}%`, "How ready the product is for private GitHub repo creation", repoGuideScore >= 80 ? "green" : "amber"],
+        ["Repo actions", creationSteps.length, "Exact GitHub creation and setup steps", "teal"],
+        ["Labels", labelCount, "Issue labels ready to create before opening tickets", "blue"],
+        ["First issues", issueCount, "Implementation issues ready for the private repo", "red"],
+      ],
+      handoff: [
+        "v105 turns the planning stack into a practical GitHub creation guide: repo name, visibility, branch rules, labels, milestones, project board, secrets, files, issues, commands, and validation gates.",
+        "The public GitHub Pages repo should stay as the demo and feedback surface while pursuitdesk-platform becomes the private production implementation repo.",
+        "Labels and milestones should be created before issues, otherwise the first backlog becomes messy and harder to manage.",
+        "The next build can define the staging smoke script that proves login, records, redaction, import dry run, billing test mode, feedback, audit, seed, and rollback.",
+      ],
+    };
+  }
+
+  function buildStagingSmokeTestScriptModel(commandModel, privateRepoGuide, seedFixturePack, apiContractPack, issueExport, repoKickoff, migrationPack, billingBlueprint, securityTestPack, billingTestPack, migrationTestPack) {
+    const records = commandModel.records || [];
+    const smokeScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoGuide.repoGuideScore * 0.2 +
+            seedFixturePack.seedScore * 0.18 +
+            apiContractPack.apiContractScore * 0.16 +
+            securityTestPack.testPackScore * 0.14 +
+            billingTestPack.billingTestScore * 0.1 +
+            migrationTestPack.migrationTestScore * 0.12 +
+            repoKickoff.kickoffScore * 0.1,
+        ),
+      ),
+    );
+    const environmentMatrix = [
+      ["Local dev", "localhost", "Developer can install, migrate, seed, run API, web, worker, and smoke commands.", "green"],
+      ["Preview", "pull request", "Each PR can run install, lint, typecheck, unit, contract, and fixture checks.", "blue"],
+      ["Staging", "first SaaS rehearsal", "No live customer data; only seed tenant, demo users, workbook fixtures, and test billing.", "teal"],
+      ["Staging DB", "PostgreSQL", "Clean migration, seed load, rollback drill, and backup snapshot are mandatory.", "red"],
+      ["Object storage", "evidence packs", "Used later for attachments, exports, and smoke artifacts.", "green"],
+      ["Email test mode", "invite/reset", "Invite, reset, and notification paths use staging-only mail keys.", "blue"],
+      ["Billing test mode", BILLING_CURRENCY, `${BILLING_CURRENCY} ${BILLING_PRICE_PER_USER}/user/month checkout, invoice, webhook, and seat sync stay test-only.`, "amber"],
+      ["Audit export", "admin only", "Audit output proves allowed and denied actions without exposing secrets.", "red"],
+    ];
+    const smokeCommands = [
+      ["01", "pnpm install", "Install workspace dependencies from a fresh clone.", "green"],
+      ["02", "pnpm lint && pnpm typecheck", "Catch obvious code and contract drift before touching staging data.", "blue"],
+      ["03", "pnpm db:migrate --env staging", "Apply tenant, users, records, commercial, import, billing, feedback, and audit migrations.", "red"],
+      ["04", "pnpm db:seed --tenant capsa", `Load ${records.length} demo records, users, access profiles, commercial fixtures, and audit seed.`, "teal"],
+      ["05", "pnpm smoke:auth", "Login, /me, session refresh, inactive user, reset shell, and denied login evidence.", "red"],
+      ["06", "pnpm smoke:records", "List, filter, update, note, export, and status movement for Tenders and Projects.", "green"],
+      ["07", "pnpm smoke:redaction", "Operations users cannot receive commercial, billing, invoice, LOA, agreement, or negotiation fields.", "red"],
+      ["08", "pnpm smoke:import-dry-run", `${migrationPack.sourceWorkbooks} workbook fixtures stage, validate, quarantine, and reconcile without live writes.`, "amber"],
+      ["09", "pnpm smoke:billing-test", "Checkout session, invoice event, webhook signature, seat sync, and access lock in test mode.", "amber"],
+      ["10", "pnpm smoke:feedback-audit", "Pilot feedback, retest status, audit writes, audit query, and sponsor export skeleton.", "blue"],
+      ["11", "pnpm smoke:rollback", "Import rollback, migration rollback rehearsal, backup snapshot check, and reconciliation output.", "red"],
+      ["12", "pnpm smoke:report", "Generate one HTML/JUnit smoke summary with artifacts and issue references.", "teal"],
+    ];
+    const smokePaths = [
+      ["Auth path", "Admin, editor, viewer, inactive", "Login succeeds or fails safely; /me returns company, role, and section access.", "red"],
+      ["Tracker path", "Tenders and Projects", "Operational list, detail, edit, notes, status movement, filters, and export work without commercial fields.", "green"],
+      ["Redaction path", "Commercial vault", "Operations and viewer roles cannot read value, agreement, LOA, negotiation, invoice, or billing payloads.", "red"],
+      ["Insight path", "Management access", "Granted admin/management user can read commercial insight endpoints with audit proof.", "amber"],
+      ["Import path", "Workbook dry run", "Dry-run creates staging rows, validation errors, quarantine reasons, duplicate decisions, and no live writes.", "blue"],
+      ["Billing path", "Test mode only", "Checkout preview, invoice state, webhook signature, seat count, and access lock produce test artifacts.", "amber"],
+      ["Feedback path", "Pilot loop", "Feedback item, owner, severity, retest state, sponsor export, and activity event are persisted.", "teal"],
+      ["Audit path", "Proof layer", `${apiContractPack.auditEvents.length} audit event types have allow/deny proof and request ids.`, "blue"],
+      ["Rollback path", "Import and DB", "Committed fixture batch can roll back in staging with reconciliation summary.", "red"],
+      ["Report path", "Management pack", "Smoke output creates a readable report for product, backend, data, and security owners.", "green"],
+    ];
+    const fixtureCoverage = [
+      ["Tenant seed", "capsa", "Company, settings, billing currency, plan state, and audit retention defaults.", "green"],
+      ["Users", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and denied role cases.", "blue"],
+      ["Operational records", records.length, "Tender, EOI, and project records with source trace and tracker-safe fields.", "teal"],
+      ["Commercial vault", seedFixturePack.commercialVaultFixtures.length, "Value, agreement, LOA, negotiation, forecast, and redaction fixtures.", "amber"],
+      ["Import batches", seedFixturePack.importBatchFixtures.length, "Workbook dry-run, quarantine, duplicate, commit, and rollback fixtures.", "red"],
+      ["Audit seed", seedFixturePack.auditSeedEvents.length, "Allowed and denied event expectations with actor, target, and request id.", "blue"],
+      ["Route contracts", apiContractPack.endpointContracts.length, "Smoke routes are traced back to alpha API endpoint contracts.", "green"],
+      ["Issue links", issueExport.issueCards.length, "Smoke failures should open or reference generated backend issues.", "red"],
+    ];
+    const roleSmokeMatrix = [
+      ["Admin", "all sections", "Can access membership, users, commercial rooms, imports, reports, audit, and smoke artifacts.", "green"],
+      ["Editor", "operational trackers", "Can update permitted Tenders and Projects, but receives redacted commercial payloads.", "teal"],
+      ["Viewer", "read only", "Can read permitted tracker records but cannot edit, import, bill, or view commercial vault.", "blue"],
+      ["Management", "insights and reports", "Can see granted insight and report routes, with commercial access audited.", "amber"],
+      ["Inactive", "blocked", "Login and route access fail safely and write audit evidence.", "red"],
+      ["Cross tenant", "blocked", "Record ids, import batches, and commercial facts never leak between companies.", "red"],
+    ];
+    const failureRules = [
+      ["Stop on tenant leak", "Any cross-tenant data exposure blocks staging and opens priority:p0.", "red"],
+      ["Stop on commercial leak", "Any value, agreement, LOA, negotiation, invoice, or billing payload leak blocks staging.", "red"],
+      ["Stop on missing audit", "Sensitive allow/deny calls must write audit evidence with request id.", "amber"],
+      ["Stop on partial import", "Dry-run or commit cannot leave silent partial writes, orphan rows, or missing rollback id.", "red"],
+      ["Warn on no-date drift", "No-date and due-watch counts should match seed fixture expectations.", "blue"],
+      ["Warn on report drift", "Smoke summary must include owner, command, route, fixture, result, artifact, and issue link.", "teal"],
+    ];
+    const artifactPack = [
+      ["smoke-summary.html", "Human-readable command output, pass/fail table, environment, commit SHA, and artifact links.", "green"],
+      ["junit-smoke.xml", "CI-friendly smoke results for GitHub Actions annotations.", "blue"],
+      ["redaction-proof.csv", "Tracker export sample proving restricted fields are absent.", "red"],
+      ["import-reconciliation.json", "Accepted, quarantined, duplicate, skipped, committed, and rollback counts.", "amber"],
+      ["audit-events.json", "Allowed and denied sensitive events with request ids.", "teal"],
+      ["billing-webhook-log.json", "Test-mode billing event, idempotency key, invoice state, and seat sync proof.", "amber"],
+      ["rollback-proof.json", "Rollback id, reversed tables, restored counts, and post-rollback smoke result.", "red"],
+      ["screenshots.zip", "Minimal web proof for login, records, redaction denial, import dry run, and report summary.", "green"],
+    ];
+    const acceptanceGates = [
+      ["Install gate", false, "Fresh clone can install dependencies without lockfile or workspace drift.", "green"],
+      ["Migration gate", false, "Staging database migrates forward from empty and can be reset safely.", "red"],
+      ["Seed gate", false, "Seed tenant, users, records, commercial vault, import batches, and audit baseline load.", "teal"],
+      ["Auth/access gate", false, "Admin, editor, viewer, inactive, and cross-tenant role cases pass expected access.", "red"],
+      ["Redaction gate", false, "Operational routes and exports never leak commercial or billing fields.", "red"],
+      ["Import gate", false, "Workbook dry-run, quarantine, duplicate, commit, rollback, and reconciliation pass.", "amber"],
+      ["Billing gate", false, "Test-mode checkout, invoice, webhook, seat sync, and access lock pass.", "amber"],
+      ["Audit/report gate", false, "Audit events and smoke report artifacts are generated and linked to issues.", "blue"],
+    ];
+    return {
+      smokeScore,
+      environmentMatrix,
+      smokeCommands,
+      smokePaths,
+      fixtureCoverage,
+      roleSmokeMatrix,
+      failureRules,
+      artifactPack,
+      acceptanceGates,
+      signalCards: [
+        ["Smoke readiness", `${smokeScore}%`, "How ready the planned backend is for the first staging proof run", smokeScore >= 75 ? "green" : "amber"],
+        ["Commands", smokeCommands.length, "Install through smoke report commands in first run order", "teal"],
+        ["Smoke paths", smokePaths.length, "Auth, records, redaction, import, billing, feedback, audit, rollback, and report", "blue"],
+        ["Stop rules", failureRules.filter(([label]) => label.startsWith("Stop")).length, "Critical failures that block staging immediately", "red"],
+      ],
+      handoff: [
+        "v106 defines the first staging smoke script before code exists, so backend work has a clear proof target from day one.",
+        "The smoke run protects the product promise: tenant isolation, operational trackers, commercial redaction, import safety, billing test mode, feedback memory, audit proof, and rollback.",
+        "Failures should not be vague. Each failed smoke step should link to a command, route, fixture, owner, artifact, and GitHub issue label.",
+        "The next build can export backend fixture outlines so the private repo can receive concrete seed files and test case skeletons.",
+      ],
+    };
+  }
+
+  function buildBackendFixtureExportModel(commandModel, seedFixturePack, stagingSmokeScript, apiContractPack, privateRepoGuide, issueExport, migrationPack) {
+    const records = commandModel.records || [];
+    const tenders = records.filter((record) => record.type !== "Project");
+    const projects = records.filter((record) => record.type === "Project");
+    const commercialRecords = records.filter((record) => record.valueAmount || record.agreementNo || record.loaReceived || record.agreementReceived || record.rounds?.length);
+    const sourceMap = records.reduce((map, record) => {
+      const key = `${record.sourceWorkbook || "Manual"}||${record.sourceSheet || "Manual entry"}`;
+      if (!map.has(key)) map.set(key, []);
+      map.get(key).push(record);
+      return map;
+    }, new Map());
+    const sourceBatches = Array.from(sourceMap.entries())
+      .map(([key, items], index) => {
+        const [workbook, sheet] = key.split("||");
+        return [`batch-${String(index + 1).padStart(2, "0")}`, workbook, sheet, items.length, items[0]?.reference || "No reference"];
+      })
+      .sort((a, b) => b[3] - a[3]);
+    const exportScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          seedFixturePack.seedScore * 0.25 +
+            stagingSmokeScript.smokeScore * 0.22 +
+            apiContractPack.apiContractScore * 0.18 +
+            privateRepoGuide.repoGuideScore * 0.17 +
+            Math.min(100, sourceBatches.length * 14) * 0.1 +
+            Math.min(100, issueExport.issueCards.length * 3) * 0.08,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-fixture-export.json?v=115";
+    const exportTables = [
+      ["tenants.json", 1, "Company, workspace defaults, billing currency, plan state, and retention settings.", "green"],
+      ["users.json", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and role-access fixture users.", "blue"],
+      ["access-profiles.json", 3, "Operations, management, and admin-only section-access templates.", "teal"],
+      ["operational-records.json", records.length, "Tracker-safe tender, EOI, and project rows with no commercial money fields.", "green"],
+      ["commercial-vault.json", commercialRecords.length, "Restricted value, agreement, LOA, negotiation, forecast, and commercial flags.", "red"],
+      ["import-batches.json", sourceBatches.length, "Workbook and sheet lineage grouped into repeatable dry-run batches.", "amber"],
+      ["audit-seed-events.json", seedFixturePack.auditSeedEvents.length, "Allowed and denied sensitive events for smoke and audit proof.", "blue"],
+      ["smoke-expectations.json", stagingSmokeScript.smokePaths.length, "Expected counts, redaction fields, role matrix, and command artifacts.", "teal"],
+    ];
+    const exportCommands = [
+      ["01", "pnpm fixtures:export --tenant capsa", "Creates backend fixture files from the current PursuitDesk seed model.", "green"],
+      ["02", "pnpm fixtures:validate", "Checks table counts, required fields, source trace, date format, and duplicate references.", "blue"],
+      ["03", "pnpm fixtures:redaction-proof", "Compares operational records against commercial vault to prove restricted fields are separated.", "red"],
+      ["04", "pnpm db:seed --fixture capsa", "Loads tenant, users, access profiles, operational records, commercial vault, imports, and audit seed.", "teal"],
+      ["05", "pnpm smoke:fixtures", "Runs count, access, redaction, import, audit, and report expectations against staging.", "amber"],
+      ["06", "pnpm fixtures:reconcile --out smoke-artifacts", "Writes reconciliation output for GitHub Actions, QA, and launch-control evidence.", "green"],
+    ];
+    const seedFiles = [
+      ["packages/db/fixtures/capsa/tenant.json", "Tenant, plan, billing currency, retention, and public demo identity.", "green"],
+      ["packages/db/fixtures/capsa/users.json", "Seed users with access templates; passwords must be hashed by the backend seeder.", "blue"],
+      ["packages/db/fixtures/capsa/operational-records.json", `${records.length} tracker-safe rows for daily tender and project work.`, "teal"],
+      ["packages/db/fixtures/capsa/commercial-vault.json", `${commercialRecords.length} restricted commercial rows behind management permissions.`, "red"],
+      ["packages/db/fixtures/capsa/import-batches.json", `${sourceBatches.length} source workbook batches with lineage and sample references.`, "amber"],
+      ["packages/db/fixtures/capsa/audit-seed-events.json", "Baseline user, import, edit, redaction, billing, and denied-access events.", "blue"],
+      ["packages/db/fixtures/capsa/smoke-expectations.json", "Expected counts, lanes, role permissions, blocked fields, and report artifacts.", "green"],
+      ["packages/testing/fixtures/capsa-fixture-manifest.json", "One manifest that links files, routes, commands, issues, and acceptance gates.", "teal"],
+    ];
+    const transformationRules = [
+      ["Operational split", "Keep reference, client, title, status, category, owner, dates, source, and notes in tracker records.", "green"],
+      ["Commercial split", "Move value, currency, agreement, LOA, agreement received, rounds, invoice, and billing facts to the vault.", "red"],
+      ["Date normalization", "Store ISO dates; keep raw source strings only inside import audit metadata.", "blue"],
+      ["Source lineage", "Every migrated record keeps workbook, sheet, row group, import batch, and source reference.", "amber"],
+      ["Role defaults", "Editors and viewers receive tracker access only; membership and commercial rooms stay admin-controlled.", "teal"],
+      ["Audit requirement", "Every sensitive seed and smoke action writes actor, action, target, tenant, request id, and result.", "red"],
+    ];
+    const validationScenarios = [
+      ["Count parity", `${records.length} records = ${tenders.length} tender-side + ${projects.length} project-side`, "Fixture import cannot change total tracker count.", "green"],
+      ["Commercial redaction", `${commercialRecords.length} protected rows`, "Operational APIs and CSV exports cannot include value, LOA, agreement, or negotiation fields.", "red"],
+      ["Source batches", `${sourceBatches.length} batches`, "Workbook and sheet grouping must reconcile to the imported source inventory.", "amber"],
+      ["Role matrix", `${stagingSmokeScript.roleSmokeMatrix.length} roles`, "Admin, editor, viewer, management, inactive, and cross-tenant expectations pass.", "blue"],
+      ["Smoke command link", `${stagingSmokeScript.smokeCommands.length} commands`, "Every fixture file is exercised by at least one smoke command.", "teal"],
+      ["Issue trace", `${issueExport.issueCards.length} issues`, "Fixture failures point to the generated backend issue labels and milestones.", "green"],
+    ];
+    const privacySplit = [
+      ["Frontline tracker", `${records.length} rows`, "Reference, client, title, status, owner, dates, category, source, and notes only.", "green"],
+      ["Commercial vault", `${commercialRecords.length} rows`, "Value, currency, LOA, agreement, negotiation, forecast, and billing facts stay restricted.", "red"],
+      ["Import ledger", `${sourceBatches.length} batches`, "Dry-run, quarantine, duplicate, commit, rollback, and reconciliation history.", "amber"],
+      ["Audit trail", `${seedFixturePack.auditSeedEvents.length} seeds`, "User, access, import, edit, redaction, billing, feedback, and denied-action events.", "blue"],
+    ];
+    return {
+      exportScore,
+      downloadHref,
+      exportTables,
+      exportCommands,
+      seedFiles,
+      transformationRules,
+      validationScenarios,
+      privacySplit,
+      sourceBatches,
+      signalCards: [
+        ["Export readiness", `${exportScore}%`, "How ready the static data is to become backend fixture files", exportScore >= 80 ? "green" : "amber"],
+        ["Fixture files", seedFiles.length, "Copy-ready file targets for the private production repo", "teal"],
+        ["Backend rows", records.length + commercialRecords.length, "Operational rows plus protected commercial vault rows", "blue"],
+        ["Download", "JSON", "Static fixture manifest included in the GitHub upload folder", "green"],
+      ],
+      handoff: [
+        "v107 makes the seed pack tangible: the upload folder now includes a backend fixture JSON manifest that can be copied into the future private repo.",
+        "The fixture export keeps daily tracker data and commercial vault data separated, matching the role-access model you wanted for lower-level users.",
+        "Engineering should treat this export as the first contract between the public prototype, the private backend repo, migrations, smoke tests, and pilot data acceptance.",
+        "The next build can turn this fixture export, API contracts, issue export, and smoke script into the first backend sprint checklist.",
+      ],
+    };
+  }
+
+  function buildFirstBackendSprintChecklistModel(commandModel, privateRepoGuide, backendFixtureExport, stagingSmokeScript, apiContractPack, issueExport, repoKickoff, backendRepoStarter, alphaPlan) {
+    const records = commandModel.records || [];
+    const sprintScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoGuide.repoGuideScore * 0.18 +
+            backendFixtureExport.exportScore * 0.2 +
+            stagingSmokeScript.smokeScore * 0.18 +
+            apiContractPack.apiContractScore * 0.16 +
+            repoKickoff.kickoffScore * 0.12 +
+            backendRepoStarter.repoReadiness * 0.1 +
+            alphaPlan.alphaScopeScore * 0.06,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-sprint-checklist.json?v=115";
+    const sprintDays = [
+      ["Day 0", "Repo creation and protection", "Private repo, develop branch, labels, milestones, board, first issues, secrets list.", "Repo is private and branch rules are visible.", "Control Admin"],
+      ["Day 1", "Workspace skeleton", "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.", "Fresh clone can install and run the empty shell.", "Backend Lead"],
+      ["Day 2", "Tenant and auth foundation", "Tenant table, users table, session shell, roles, section access, inactive-user behavior.", "Admin/editor/viewer can be seeded and checked.", "Identity Owner"],
+      ["Day 3", "Operational records API", `${records.length} tracker-safe records, filters, status update, notes, CSV redaction, source trace.`, "Editor can move records without seeing commercial fields.", "Records Owner"],
+      ["Day 4", "Commercial vault and insights guard", "Commercial vault schema, management-only routes, audit proof, redaction denial tests.", "Operations user is denied with audit evidence.", "Security Owner"],
+      ["Day 5", "Import fixture and rollback", `${backendFixtureExport.sourceBatches.length} source batches, dry-run, quarantine, duplicate, commit, rollback, reconciliation.`, "Fixture import can be reversed cleanly.", "Migration Owner"],
+      ["Day 6", "Billing and feedback shells", `${BILLING_CURRENCY} test checkout, invoice, webhook, seat sync, feedback item, retest state, sponsor export.`, "Test-mode billing and feedback write audit events.", "Product Owner"],
+      ["Day 7", "Staging smoke rehearsal", `${stagingSmokeScript.smokeCommands.length} smoke commands, ${stagingSmokeScript.artifactPack.length} artifacts, release notes, issue cleanup.`, "Smoke report proves pass/fail before pilot data.", "Release Owner"],
+    ];
+    const workstreams = [
+      ["Foundation", "Repo, monorepo, CI, env, docs", "main/develop protected, install command passes, skeleton folders exist.", "green"],
+      ["Tenant identity", "Company, users, roles, access", "Admin/editor/viewer/inactive fixtures work with section permissions.", "blue"],
+      ["Operational records", "Tracker-safe API", "Tenders and Projects list, filter, edit, notes, and export without commercial leakage.", "teal"],
+      ["Commercial vault", "Restricted management data", "Value, agreement, LOA, negotiation, billing, and forecast facts require management access.", "red"],
+      ["Import migration", "Workbook fixtures", "Dry-run, quarantine, duplicate handling, commit, rollback, and reconciliation work.", "amber"],
+      ["Billing feedback", "Paid pilot path", "USD test billing, seat sync, access lock, feedback persistence, and sponsor export shells exist.", "green"],
+      ["Audit security", "Proof and denial", "Sensitive allow/deny actions write immutable audit events and request ids.", "red"],
+      ["Smoke release", "Staging proof", "Auth, records, redaction, import, billing, feedback, audit, rollback, and report smoke paths pass.", "blue"],
+    ];
+    const openingTickets = [
+      ["P0-01", "Create private repo skeleton", "Repo starter pack, README, apps/packages folder map, env examples, and CI shell.", "green"],
+      ["P0-02", "Create database migration baseline", "Tenant, users, access profiles, records, commercial vault, imports, audit, billing, feedback.", "red"],
+      ["P0-03", "Seed backend fixture export", `${backendFixtureExport.seedFiles.length} fixture files and manifest from v107 export.`, "teal"],
+      ["P0-04", "Implement auth/session shell", "Login, /me, role access, inactive user block, password reset placeholder.", "blue"],
+      ["P0-05", "Implement records API shell", "Tracker-safe list, detail, update, note, status movement, filters, CSV redaction.", "green"],
+      ["P0-06", "Implement commercial vault guard", "Management-only read routes, redaction denial, audit proof, and test fixtures.", "red"],
+      ["P0-07", "Implement import dry-run shell", "Staging rows, validation, quarantine, duplicate decisions, commit, rollback, reconciliation.", "amber"],
+      ["P0-08", "Implement billing test shell", "Checkout session, invoice state, webhook signature, seat sync, access lock.", "amber"],
+      ["P0-09", "Implement feedback persistence shell", "Session, item, owner, severity, retest state, activity history, sponsor export.", "blue"],
+      ["P0-10", "Wire smoke commands", "Auth, records, redaction, import, billing, feedback, audit, rollback, and report commands.", "teal"],
+      ["P0-11", "Create staging artifact report", "HTML and JUnit summary, redaction proof, import reconciliation, audit event export.", "green"],
+      ["P0-12", "Close sprint-zero review", "Acceptance checklist, blocker log, next sprint issues, staging deploy decision.", "red"],
+    ];
+    const pullRequestGates = [
+      ["Scope gate", "PR links one generated issue, one owner, one test path, and one acceptance outcome.", "green"],
+      ["Tenant gate", "Every query is tenant-scoped and rejects cross-tenant ids.", "red"],
+      ["Redaction gate", "Operational responses exclude commercial vault and billing fields.", "red"],
+      ["Audit gate", "Sensitive allow/deny behavior writes actor, target, tenant, request id, and result.", "blue"],
+      ["Fixture gate", "Changed code runs against v107 fixture export expectations.", "teal"],
+      ["Import gate", "Import logic has dry-run, quarantine, rollback, and reconciliation proof.", "amber"],
+      ["Billing gate", "Billing code is test-mode only until production approval.", "amber"],
+      ["Smoke gate", "The PR does not merge if its smoke path fails or produces missing artifacts.", "green"],
+    ];
+    const acceptanceChecklist = [
+      ["Repo ready", false, "Private repo exists with protected main, develop, labels, milestones, and project board.", "green"],
+      ["Fixture ready", false, "v107 backend fixture JSON is split into repo seed files and loads into empty staging DB.", "teal"],
+      ["Auth ready", false, "Admin, editor, viewer, inactive, and denied login cases pass.", "blue"],
+      ["Tracker ready", false, "Operational APIs can support Tenders and Projects without commercial fields.", "green"],
+      ["Vault ready", false, "Commercial vault reads require management/admin access and write audit proof.", "red"],
+      ["Import ready", false, "Dry-run, quarantine, duplicate, commit, rollback, and reconciliation pass.", "amber"],
+      ["Billing ready", false, "USD test checkout, invoice, webhook, seat sync, and lock rules pass.", "amber"],
+      ["Smoke ready", false, "Staging smoke report produces artifacts and linked failure issues.", "red"],
+    ];
+    const dailyRitual = [
+      ["09:00", "Open board", "Review P0 tickets, blockers, unassigned work, failing checks, and fixture drift.", "green"],
+      ["09:10", "Pick one thin slice", "One PR should touch one bounded route, schema slice, or fixture behavior.", "teal"],
+      ["13:00", "Run fixture proof", "Run seed, redaction, import, and relevant contract checks before review.", "blue"],
+      ["16:00", "Merge or park", "Do not leave half-working tenant, auth, redaction, or import logic hidden.", "amber"],
+      ["17:00", "Update handoff", "Write issue status, failing gate, next command, owner, and smoke artifact expectation.", "red"],
+    ];
+    const sprintRisks = [
+      ["Too much scope", "Keep sprint zero to foundation, fixture, access, redaction, import shell, billing shell, feedback shell, and smoke proof.", "amber"],
+      ["Commercial leakage", "Treat any value/agreement/negotiation/billing exposure in tracker endpoints as a stop-ship bug.", "red"],
+      ["Weak tenant guard", "No route should accept a company id from the client without server-side tenant verification.", "red"],
+      ["Import complexity", "Do dry-run and reconciliation before attempting perfect Excel parsing.", "blue"],
+      ["Billing overbuild", "Stay in test mode and prove seat lifecycle before live payment credentials.", "amber"],
+      ["No evidence", "Every done item needs command output, artifact, screenshot, test result, or audit event.", "teal"],
+    ];
+    return {
+      sprintScore,
+      downloadHref,
+      sprintDays,
+      workstreams,
+      openingTickets,
+      pullRequestGates,
+      acceptanceChecklist,
+      dailyRitual,
+      sprintRisks,
+      signalCards: [
+        ["Sprint readiness", `${sprintScore}%`, "How ready the product plan is to start backend sprint zero", sprintScore >= 80 ? "green" : "amber"],
+        ["Sprint days", sprintDays.length, "Day-by-day path from private repo to staging smoke rehearsal", "teal"],
+        ["Opening tickets", openingTickets.length, "First implementation issues to move from plan into code", "blue"],
+        ["PR gates", pullRequestGates.length, "Rules that keep the first backend PRs from drifting", "red"],
+      ],
+      handoff: [
+        "The first backend sprint checklist turns the planning library into a day plan, workstreams, opening tickets, PR gates, acceptance checks, rituals, risks, and downloadable JSON.",
+        "The private repo should start with thin vertical slices: tenant, users, records, commercial redaction, import dry-run, billing test mode, feedback, audit, and smoke proof.",
+        "Every first sprint ticket should prove one product promise with fixture data, role access, audit output, and a clear artifact.",
+        "The next build can move from sprint planning into the staging deployment checklist: environment, secrets, database, backups, monitoring, rollback, and go/no-go rehearsal.",
+      ],
+    };
+  }
+
+  function buildStagingDeploymentChecklistModel(commandModel, firstBackendSprint, backendFixtureExport, stagingSmokeScript, hostingRunbook, securityTestPack, billingTestPack, migrationTestPack, launchControl) {
+    const records = commandModel.records || [];
+    const openRecords = commandModel.openRecords || [];
+    const deploymentScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          firstBackendSprint.sprintScore * 0.18 +
+            backendFixtureExport.exportScore * 0.14 +
+            stagingSmokeScript.smokeScore * 0.16 +
+            hostingRunbook.hostingReadiness * 0.18 +
+            securityTestPack.testPackScore * 0.12 +
+            billingTestPack.billingTestScore * 0.08 +
+            migrationTestPack.migrationTestScore * 0.08 +
+            launchControl.launchScore * 0.06,
+        ),
+      ),
+    );
+    const downloadHref = "data/staging-deployment-checklist.json?v=115";
+    const environmentLanes = [
+      ["Staging URL", `staging.${BRAND_DOMAIN}`, "Private pilot preview with test data, HTTPS, cache headers, and admin-only deployment notes.", "green"],
+      ["API service", "api-staging", "Backend API deploys from develop or release candidate with health, version, and smoke endpoints.", "blue"],
+      ["Database", "PostgreSQL staging", "Tenant, users, operational records, commercial vault, imports, audit, billing, and feedback tables.", "red"],
+      ["Object storage", "Evidence artifacts", "Smoke reports, import reconciliation, screenshots, backup manifests, and redaction proof exports.", "teal"],
+      ["Email", "Test mode only", "Password reset, invite, invoice, support, and report emails route to a controlled test sink.", "amber"],
+      ["Billing", `${BILLING_CURRENCY} test mode`, `${BILLING_CURRENCY} ${BILLING_PRICE_PER_USER}/user/month checkout, invoice, webhook, and seat sync without live card capture.`, "amber"],
+      ["Monitoring", "Uptime and logs", "API health, database connections, error rate, audit writes, webhook failures, and backup jobs are visible.", "blue"],
+      ["Backup", "Snapshot and restore", "Staging backup snapshot is created before migration and restore rehearsal is documented.", "red"],
+    ];
+    const secretChecklist = [
+      ["DATABASE_URL", "Staging database connection string with least-privilege app user.", "red"],
+      ["SESSION_SECRET", "Long random session signing secret, never reused from local development.", "red"],
+      ["APP_BASE_URL", `https://staging.${BRAND_DOMAIN}`, "green"],
+      ["BILLING_SECRET_KEY", `${BILLING_CURRENCY} test-mode provider key; live keys stay out of staging until approval.`, "amber"],
+      ["BILLING_WEBHOOK_SECRET", "Webhook signature secret for invoice, checkout, renewal, cancel, and seat events.", "amber"],
+      ["OBJECT_STORAGE_KEY", "Artifact bucket key limited to staging evidence and report exports.", "teal"],
+      ["EMAIL_API_KEY", "Test-sink email provider key with no real customer recipient blast.", "blue"],
+      ["AUDIT_EXPORT_KEY", "Short-lived key or service account for release evidence export.", "blue"],
+      ["LOG_DRAIN_URL", "Error and access-log drain for deployment and smoke monitoring.", "teal"],
+      ["BACKUP_ENCRYPTION_KEY", "Key used to encrypt staging snapshots and restore rehearsal artifacts.", "red"],
+    ];
+    const deploymentRunbook = [
+      ["01", "Freeze release candidate", "Tag the exact commit, lock scope, confirm owner matrix, and link sprint-zero closing issue.", "Release Owner", "green"],
+      ["02", "Pull clean environment", "Create or refresh staging app, API service, database, storage bucket, log drain, and test email route.", "Platform Owner", "blue"],
+      ["03", "Install and build", "Run install, type checks, build, database client generation, and static asset build from a clean clone.", "Backend Lead", "teal"],
+      ["04", "Run migrations", "Apply schema migrations in order and capture migration id, duration, and rollback note.", "Database Owner", "red"],
+      ["05", "Seed fixtures", `Load ${records.length} operational rows, protected commercial vault records, users, access profiles, imports, and audit seeds.`, "Migration Owner", "amber"],
+      ["06", "Prove redaction", "Check that frontline tracker routes, CSV export, and non-management users cannot see commercial facts.", "Security Owner", "red"],
+      ["07", "Run smoke script", `${stagingSmokeScript.smokeCommands.length} smoke commands produce auth, record, redaction, import, billing, feedback, audit, rollback, and report evidence.`, "QA Owner", "green"],
+      ["08", "Create backup snapshot", "Take a snapshot after fixture seed and before any pilot import rehearsal.", "Database Owner", "blue"],
+      ["09", "Watch the dashboard", "Check health, logs, error rate, audit event writes, webhook status, queue jobs, and backup job.", "Release Owner", "teal"],
+      ["10", "Hold go/no-go review", "Review gates, evidence artifacts, open blockers, rollback proof, and pilot handoff before enabling users.", "Product Owner", "amber"],
+    ];
+    const databaseChecks = [
+      ["Migration order", "All schema files apply from empty database without manual patching.", "red"],
+      ["Tenant isolation", "Queries are tenant-scoped and cross-tenant ids are rejected with audit evidence.", "red"],
+      ["Operational records", `${records.length} tracker-safe rows load with reference, client, title, owner, dates, source, and status.`, "green"],
+      ["Commercial vault", "Value, LOA, agreement, negotiation, forecast, billing, and sensitive notes stay restricted.", "red"],
+      ["Import batches", `${backendFixtureExport.sourceBatches.length} source batches keep workbook, sheet, dry-run, quarantine, commit, rollback, and reconciliation lineage.`, "amber"],
+      ["Audit retention", "Login, denied access, record edit, commercial read, import, billing, backup, and smoke events are retained.", "blue"],
+      ["Backup restore", "Snapshot restore is rehearsed into a clean database and record counts reconcile.", "teal"],
+      ["Rollback path", "Failed migration can be rolled back or restored without losing audit evidence.", "red"],
+    ];
+    const monitoringChecks = [
+      ["HTTP health", "Frontend, API, and auth health endpoints respond with version and environment.", "green"],
+      ["Database connections", "Connection pool, slow queries, and migration failures are visible.", "blue"],
+      ["Error budget", "Unhandled exceptions, failed requests, and smoke failures create visible alerts.", "red"],
+      ["Audit writes", "Sensitive allow/deny events are counted and exportable after smoke.", "teal"],
+      ["Billing webhook", "Test checkout, invoice, renewal, cancel, and seat events produce signed logs.", "amber"],
+      ["Import job", "Dry-run, quarantine, commit, rollback, and reconciliation jobs report status.", "amber"],
+      ["Backup job", "Snapshot, restore rehearsal, and retention checks appear in release evidence.", "red"],
+      ["Pilot feedback", "Feedback form, retest state, sponsor export, and support owner flow are tracked.", "blue"],
+    ];
+    const rollbackPlan = [
+      ["Stop traffic", "Disable pilot access or move staging behind maintenance before any destructive recovery.", "red"],
+      ["Preserve evidence", "Export logs, audit events, smoke artifacts, migration id, backup id, and error samples.", "blue"],
+      ["Restore snapshot", "Restore the last verified staging snapshot and reconcile tenant, user, record, and vault counts.", "red"],
+      ["Rollback release", "Redeploy the previous release candidate and verify API version, assets, and env variables.", "amber"],
+      ["Re-run smoke", "Repeat auth, records, redaction, import, billing, audit, feedback, and report smoke paths.", "green"],
+      ["Write incident note", "Capture impact, root cause, owner, fix PR, retest evidence, and go/no-go decision.", "teal"],
+    ];
+    const goNoGoGates = [
+      ["Repo and branch ready", firstBackendSprint.sprintScore >= 80, "Private repo, protected branches, setup commands, and sprint-zero tickets are ready.", "green"],
+      ["Secrets loaded", false, "All staging secrets are loaded through the hosting provider, not committed to the repo.", "red"],
+      ["Database migrated", false, "Empty staging database migrates and seeds without manual fixes.", "red"],
+      ["Fixture parity", backendFixtureExport.exportScore >= 90, "Operational and commercial fixture counts reconcile with source expectations.", "teal"],
+      ["Auth and access", securityTestPack.testPackScore >= 55, "Admin, editor, viewer, inactive, management-only, and denied-access paths pass.", "blue"],
+      ["Commercial redaction", securityTestPack.testPackScore >= 55, "Frontline tracker screens and exports stay clean of commercial vault facts.", "red"],
+      ["Smoke artifacts", stagingSmokeScript.smokeScore >= 80, "Smoke script produces report, screenshots, JSON summary, audit export, and rollback evidence.", "green"],
+      ["Rollback proof", false, "Restore, redeploy, retest, and incident-note path is rehearsed before pilot users are enabled.", "amber"],
+    ];
+    const ownerMatrix = [
+      ["Release owner", "Owns deploy window, go/no-go call, smoke evidence, rollback decision, and launch notes.", "green"],
+      ["Backend lead", "Owns API service, route health, migrations, fixtures, route guards, and build errors.", "blue"],
+      ["Database owner", "Owns migration order, seed load, backup snapshot, restore rehearsal, and reconciliation.", "red"],
+      ["Security owner", "Owns tenant isolation, commercial redaction, audit proof, secret handling, and denied-access evidence.", "red"],
+      ["Billing owner", `Owns ${BILLING_CURRENCY} test checkout, webhook signature, invoice state, seat sync, and access locks.`, "amber"],
+      ["Product owner", "Owns pilot scope, acceptance gates, customer handoff, blocker decisions, and sponsor message.", "teal"],
+    ];
+    return {
+      deploymentScore,
+      downloadHref,
+      environmentLanes,
+      secretChecklist,
+      deploymentRunbook,
+      databaseChecks,
+      monitoringChecks,
+      rollbackPlan,
+      goNoGoGates,
+      ownerMatrix,
+      signalCards: [
+        ["Deployment readiness", `${deploymentScore}%`, "Combined sprint, fixture, smoke, hosting, security, billing, migration, and launch signal", deploymentScore >= 80 ? "green" : "amber"],
+        ["Environment lanes", environmentLanes.length, "Staging URL, API, database, storage, email, billing, monitoring, and backup", "blue"],
+        ["Secrets", secretChecklist.length, "Credentials and configuration that must live outside the repository", "red"],
+        ["Go/no-go gates", goNoGoGates.length, `${goNoGoGates.filter(([, ready]) => ready).length} gates already pass in prototype logic`, "teal"],
+      ],
+      handoff: [
+        "v109 turns the backend planning stack into a staging deployment checklist: environment lanes, secret inventory, deployment runbook, database checks, monitoring, rollback, owners, and go/no-go gates.",
+        "The first real deployment should stay in staging with fixture data, USD test billing, test email, protected secrets, and clear evidence artifacts before any pilot user touches live data.",
+        "The staging decision should be evidence-led: migrated counts, redaction proof, smoke report, audit export, backup id, rollback note, and owner sign-off.",
+        `Current launch posture remains ${launchControl.goStatus}: the prototype is strong, but staging still needs real repo, real environment, secrets, database, and executable smoke tests.`,
+      ],
+      releaseMemo: [
+        `Target: deploy the first private backend alpha to staging with ${records.length} records and ${openRecords.length} open operating items.`,
+        "Mode: fixture data only, no live customer data, no live billing keys, no unrestricted email delivery.",
+        "Decision: enable pilot users only after secrets, migration, auth, redaction, smoke artifacts, backup, monitoring, and rollback gates pass.",
+      ],
+    };
+  }
+
+  function buildBackendRouteSkeletonMapModel(commandModel, apiContractPack, issueExport, backendFixtureExport, firstBackendSprint, stagingDeployment, backendRepoStarter, securityTestPack, billingTestPack, migrationTestPack) {
+    const records = commandModel.records || [];
+    const routeSkeletonScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          apiContractPack.apiContractScore * 0.24 +
+            issueExport.issueExportScore * 0.14 +
+            backendFixtureExport.exportScore * 0.14 +
+            firstBackendSprint.sprintScore * 0.14 +
+            stagingDeployment.deploymentScore * 0.14 +
+            backendRepoStarter.repoReadiness * 0.1 +
+            securityTestPack.testPackScore * 0.06 +
+            billingTestPack.billingTestScore * 0.02 +
+            migrationTestPack.migrationTestScore * 0.02,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-route-skeleton-map.json?v=115";
+    const routeFiles = [
+      ["apps/api/src/server.ts", "Bootstrap", "Health route, request id, middleware chain, error shape, and route registration.", "Platform Owner", "green"],
+      ["apps/api/src/middleware/request-context.ts", "Context", "Request id, actor shell, tenant shell, logger scope, and response timing.", "Backend Lead", "blue"],
+      ["apps/api/src/middleware/tenant.ts", "Tenant guard", "Company scope resolution, cross-tenant block, safe 404 shape, and audit hook.", "Security Owner", "red"],
+      ["apps/api/src/middleware/access.ts", "Access guard", "Role, section grant, commercial vault, membership admin-only, and inactive-user checks.", "Security Owner", "red"],
+      ["apps/api/src/routes/auth.routes.ts", "Auth routes", "Login, reset request, current user, logout, inactive block, and session audit.", "Identity Owner", "red"],
+      ["apps/api/src/routes/users.routes.ts", "User routes", "Admin-only user list, create user, role update, section access, and preview payload.", "Admin Owner", "blue"],
+      ["apps/api/src/routes/records.routes.ts", "Operational routes", `List, create, update, notes, filters, export, and client memory for ${records.length} tracker-safe rows.`, "Records Owner", "teal"],
+      ["apps/api/src/routes/commercial.routes.ts", "Commercial vault", "Value, agreement, LOA, negotiation, forecast, contract facts, and redaction denial tests.", "Commercial Owner", "amber"],
+      ["apps/api/src/routes/imports.routes.ts", "Import routes", "Dry run, staging rows, quarantine, duplicate decisions, commit, rollback, and reconciliation.", "Migration Owner", "blue"],
+      ["apps/api/src/routes/billing.routes.ts", "Billing routes", `${BILLING_CURRENCY} checkout session, invoice state, webhook signature, seat sync, and access lock.`, "Billing Owner", "amber"],
+      ["apps/api/src/routes/feedback.routes.ts", "Feedback routes", "UAT item capture, owner workflow, retest state, attachments, decisions, and sponsor export.", "Product Owner", "green"],
+      ["apps/api/src/routes/audit.routes.ts", "Audit routes", "Admin event register, filters, exports, retention proof, and denied-route evidence.", "Governance Owner", "teal"],
+    ];
+    const controllerMap = [
+      ["Auth", "auth.routes.ts", "auth.controller.ts", "auth.service.ts", "auth.schema.ts", "auth.routes.test.ts", "red"],
+      ["Users", "users.routes.ts", "users.controller.ts", "users.service.ts", "users.schema.ts", "users.access.test.ts", "blue"],
+      ["Records", "records.routes.ts", "records.controller.ts", "records.service.ts", "records.schema.ts", "records.redaction.test.ts", "teal"],
+      ["Commercial", "commercial.routes.ts", "commercial.controller.ts", "commercialVault.service.ts", "commercial.schema.ts", "commercial.guard.test.ts", "amber"],
+      ["Imports", "imports.routes.ts", "imports.controller.ts", "importer.service.ts", "imports.schema.ts", "imports.rollback.test.ts", "blue"],
+      ["Billing", "billing.routes.ts", "billing.controller.ts", "billing.service.ts", "billing.schema.ts", "billing.webhook.test.ts", "amber"],
+      ["Feedback", "feedback.routes.ts", "feedback.controller.ts", "feedback.service.ts", "feedback.schema.ts", "feedback.workflow.test.ts", "green"],
+      ["Audit", "audit.routes.ts", "audit.controller.ts", "audit.service.ts", "audit.schema.ts", "audit.retention.test.ts", "teal"],
+    ];
+    const middlewareStack = [
+      ["Request id", "Attach request id before every handler and echo it in safe error responses.", "green"],
+      ["Body parser", "Reject oversized imports, malformed JSON, and unexpected content types.", "blue"],
+      ["Session", "Read signed session, reject expired session, and keep password/reset secrets out of logs.", "red"],
+      ["Tenant", "Resolve company scope server-side and block cross-tenant identifiers before service calls.", "red"],
+      ["Section access", "Check Command, Tenders, Projects, Insights, Import, Reports, Membership, and commercial grants.", "blue"],
+      ["Commercial vault", "Require management or commercial permission for value, agreement, LOA, negotiation, and billing facts.", "amber"],
+      ["Audit writer", "Write allow/deny events with actor, tenant, target, before/after, request id, and result.", "teal"],
+      ["Error handler", "Return safe validation, auth, conflict, dry-run, rate-limit, and server-error envelopes.", "red"],
+    ];
+    const serviceBoundaries = [
+      ["identityService", "Users, sessions, password reset shell, inactive-user behavior, and access snapshots.", "red"],
+      ["recordService", "Tracker-safe tenders, EOIs, projects, notes, filters, status moves, CSV redaction, and client memory.", "teal"],
+      ["commercialVaultService", "Restricted commercial facts, negotiation rounds, agreements, LOA, forecast, and contract handoff.", "amber"],
+      ["importService", "Source batch, dry-run, staging rows, validation, quarantine, duplicate decisions, commit, and rollback.", "blue"],
+      ["billingService", `${BILLING_CURRENCY} plan preview, checkout, invoice, webhook, subscription, seat sync, and access lock.`, "amber"],
+      ["feedbackService", "Pilot feedback sessions, UAT items, owner actions, retest states, attachments, and sponsor exports.", "green"],
+      ["auditService", "Append-only events, route denial proof, export pages, retention checks, and release evidence.", "teal"],
+      ["reportService", "Management pack, review brief, command metrics, redaction-safe report export, and sponsor summaries.", "blue"],
+    ];
+    const routeTestMatrix = [
+      ["Auth smoke", "POST /auth/login, GET /me, inactive block, failed login audit, reset request safety.", "red"],
+      ["Tenant isolation", "All list, detail, export, update, commercial, import, billing, feedback, and audit routes reject cross-tenant ids.", "red"],
+      ["Access sections", "Operations, management, viewer, admin, inactive, and system contexts match UI access grants.", "blue"],
+      ["Records redaction", "Tracker list, detail, export, search, and client-memory routes exclude value, agreement, invoice, and negotiation fields.", "teal"],
+      ["Commercial guard", "Commercial endpoints return restricted facts only for allowed users and audit both allowed and denied reads.", "amber"],
+      ["Import safety", "Dry-run creates staging rows only; commit writes counts; rollback restores counts and reconciliation.", "blue"],
+      ["Billing safety", "Webhook signature, idempotency, invoice lifecycle, subscription changes, seat sync, and lock rules stay test-mode.", "amber"],
+      ["Audit evidence", "Every sensitive allowed or denied route writes an event and can be retrieved by admin filters.", "teal"],
+    ];
+    const implementationSlices = [
+      ["Slice 1", "Server shell", "server.ts, request context, health, error envelope, logger, test harness.", "green"],
+      ["Slice 2", "Tenant and session", "tenant.ts, session middleware, auth routes, user fixtures, inactive checks.", "red"],
+      ["Slice 3", "Access and audit", "access.ts, audit service, denied-route events, section guard tests.", "blue"],
+      ["Slice 4", "Operational records", "records route, service, schema, filters, status update, notes, export redaction.", "teal"],
+      ["Slice 5", "Commercial vault", "commercial route, service, schema, redaction tests, management-only access.", "amber"],
+      ["Slice 6", "Import runner", "dry-run, validation, quarantine, duplicate handling, commit, rollback, reconciliation.", "blue"],
+      ["Slice 7", "Billing and feedback", "test checkout, webhook, invoice, seat sync, access lock, feedback workflow.", "green"],
+      ["Slice 8", "Smoke and release", "route test pack, smoke summary, artifact export, staging deploy handoff.", "teal"],
+    ];
+    const folderMap = [
+      ["routes", "Thin request/response route files; no business rules hidden inside handlers.", "green"],
+      ["controllers", "Translate validated request into service calls and response envelopes.", "blue"],
+      ["services", "Tenant-scoped business rules, commercial split, import operations, billing state, and audit writes.", "teal"],
+      ["schemas", "Request validation, response redaction shape, and safe error paths.", "amber"],
+      ["middleware", "Request id, session, tenant, access, commercial guard, audit, and errors.", "red"],
+      ["tests/routes", "Contract tests for every endpoint group and role profile.", "blue"],
+      ["fixtures", "Seed tenant, users, operational records, commercial vault, imports, audit, smoke expectations.", "green"],
+      ["docs", "API contracts, route skeleton, environment, staging deploy, and release evidence.", "teal"],
+    ];
+    return {
+      routeSkeletonScore,
+      downloadHref,
+      routeFiles,
+      controllerMap,
+      middlewareStack,
+      serviceBoundaries,
+      routeTestMatrix,
+      implementationSlices,
+      folderMap,
+      signalCards: [
+        ["Route skeleton", `${routeSkeletonScore}%`, "How ready API contracts are to become concrete backend files", routeSkeletonScore >= 80 ? "green" : "amber"],
+        ["Route files", routeFiles.length, "Exact route and middleware files to create in the private repo", "blue"],
+        ["Endpoint contracts", apiContractPack.endpointContracts.length, "Routes inherited from the alpha API contract pack", "teal"],
+        ["Route tests", routeTestMatrix.length, "Tests that protect auth, tenant, access, redaction, imports, billing, and audit", "red"],
+      ],
+      handoff: [
+        "v110 turns API contracts into a concrete backend route skeleton: route files, controllers, services, validators, middleware, tests, folders, and implementation slices.",
+        "This keeps the first backend repo from becoming vague. Every route group now has a file, controller, service, schema, test, owner, and release order.",
+        "The operational privacy rule remains central: Records routes stay tracker-safe; Commercial routes carry values and agreements behind explicit access guards.",
+        "The next build can turn this route skeleton into a database migration blueprint with table ownership, indexes, seed order, and rollback rules.",
+      ],
+    };
+  }
+
+  function buildDatabaseMigrationBlueprintModel(commandModel, migrationPack, seedFixturePack, backendFixtureExport, backendRouteSkeleton, apiContractPack, stagingDeployment, migrationTestPack, securityTestPack) {
+    const records = commandModel.records || [];
+    const migrationBlueprintScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          migrationPack.migrationScore * 0.18 +
+            seedFixturePack.seedScore * 0.18 +
+            backendFixtureExport.exportScore * 0.14 +
+            backendRouteSkeleton.routeSkeletonScore * 0.14 +
+            apiContractPack.apiContractScore * 0.12 +
+            stagingDeployment.deploymentScore * 0.1 +
+            migrationTestPack.migrationTestScore * 0.08 +
+            securityTestPack.testPackScore * 0.06,
+        ),
+      ),
+    );
+    const downloadHref = "data/database-migration-blueprint.json?v=115";
+    const migrationFiles = [
+      ["0001_tenant_identity.sql", "Tenant identity", "companies, users, access_profiles, sessions, invitations", "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data.", "Security Owner", "red"],
+      ["0002_operational_records.sql", "Operational records", "records, record_notes, record_status_events, client_memory", `Load ${records.length} tracker-safe tender and project records without commercial values.`, "Records Owner", "teal"],
+      ["0003_commercial_vault.sql", "Commercial vault", "commercial_facts, negotiation_rounds, agreements, forecast_inputs", "Keep values, agreements, LOA, negotiation, and forecast facts behind explicit management permissions.", "Commercial Owner", "amber"],
+      ["0004_import_pipeline.sql", "Import pipeline", "import_batches, staging_rows, validation_errors, quarantine_items, rollback_events", "Stage workbook data, show validation issues, commit only approved rows, and preserve rollback evidence.", "Migration Owner", "blue"],
+      ["0005_audit_events.sql", "Audit ledger", "audit_events, audit_exports, request_events", "Append allowed and denied sensitive actions with actor, tenant, target, request id, and before/after summary.", "Governance Owner", "teal"],
+      ["0006_billing_membership.sql", "Billing membership", "plans, subscriptions, invoices, billing_events, seat_events", `${BILLING_CURRENCY} membership, seat changes, invoices, test checkout, and access-lock state stay separate from operational records.`, "Billing Owner", "amber"],
+      ["0007_feedback_workflow.sql", "Pilot feedback", "feedback_sessions, feedback_items, feedback_activity, attachments", "Capture pilot UAT feedback, blockers, owner workflow, retest states, decisions, and sponsor exports.", "Product Owner", "green"],
+      ["0008_documents_reports.sql", "Evidence and reports", "document_evidence, report_exports, report_snapshots", "Hold evidence pack pointers, management report exports, and generated weekly snapshots.", "Governance Owner", "blue"],
+      ["0009_operational_indexes.sql", "Indexes", "tenant, status, owner, client, due date, source, audit, billing indexes", "Add query paths after base tables so filters, search, exports, and audits stay fast under tenant scope.", "Backend Lead", "green"],
+      ["0010_seed_assertions.sql", "Seed assertions", "migration_checks, fixture_assertions, smoke_expectations", "Store count parity, redaction, tenant isolation, import dry-run, rollback, and smoke proof expectations.", "QA Owner", "teal"],
+    ];
+    const tableOwnership = [
+      ["Tenant identity", "Security Owner", "companies, users, access_profiles, sessions", "Blocks cross-company data before any route or service can read records.", "red"],
+      ["Operational records", "Records Owner", "records, notes, status events, client memory", "The frontline Tenders and Projects sheets read only this layer.", "teal"],
+      ["Commercial vault", "Commercial Owner", "commercial facts, rounds, agreements, forecast inputs", "Management-only facts stay outside tracker routes and exports.", "amber"],
+      ["Import pipeline", "Migration Owner", "batches, staging rows, validation errors, quarantine, rollback", "Excel migration is observable, reversible, and auditable.", "blue"],
+      ["Audit ledger", "Governance Owner", "audit events, request events, audit exports", "Sensitive reads, denials, imports, billing, and membership changes become proof.", "teal"],
+      ["Billing membership", "Billing Owner", "plans, subscriptions, invoices, billing events, seat events", `${BILLING_CURRENCY} pricing and membership state are isolated from pursuit data.`, "amber"],
+      ["Feedback workflow", "Product Owner", "feedback sessions, items, activity, attachments", "Pilot feedback becomes a release-quality backlog, not loose notes.", "green"],
+      ["Reports and evidence", "Governance Owner", "document evidence, report exports, report snapshots", "Management packs can be rebuilt from governed data instead of screenshots.", "blue"],
+    ];
+    const indexPlan = [
+      ["tenant_scope_idx", "All tenant-owned tables", "company_id, id", "Every query starts tenant-first, then record or account lookup.", "red"],
+      ["record_lookup_idx", "records", "company_id, record_type, status, client, reference", "Powers Tenders, Projects, quick search, and duplicate checks.", "teal"],
+      ["due_pressure_idx", "records", "company_id, owner, due_date, status", "Keeps command rail, calendar, advisor, and overdue queues responsive.", "amber"],
+      ["source_trace_idx", "records + import tables", "source_workbook, source_sheet, source_row_hash", "Proves where every imported row came from.", "blue"],
+      ["commercial_guard_idx", "commercial_facts", "company_id, record_id, fact_type", "Lets insight rooms load restricted facts without exposing them to trackers.", "amber"],
+      ["import_batch_idx", "import_batches + staging_rows", "company_id, batch_status, created_at", "Supports dry-run, quarantine review, commit, rollback, and reconciliation.", "blue"],
+      ["audit_search_idx", "audit_events", "company_id, actor_id, target_type, created_at", "Makes allowed and denied access evidence searchable.", "teal"],
+      ["billing_events_idx", "billing_events", "company_id, subscription_id, external_event_id", "Protects webhook idempotency, invoice trace, and seat reconciliation.", "green"],
+    ];
+    const seedOrder = [
+      ["01", "Seed tenant", "companies", "Create CapSa demo company and base tenant settings before users.", "red"],
+      ["02", "Seed plans and access templates", "plans, access_profiles", "Create Operations User, Pursuit Manager, Control Admin, and membership plans.", "amber"],
+      ["03", "Seed users", "users, sessions", "Admin, editor, viewer, inactive, and denied-role cases become fixture users.", "red"],
+      ["04", "Seed operational records", "records, notes, status events", `${records.length} tracker-safe records load without commercial fields.`, "teal"],
+      ["05", "Seed commercial vault", "commercial_facts, negotiation_rounds, agreements", "Values, LOA, negotiation, and forecast facts load only after record ids exist.", "amber"],
+      ["06", "Seed import batches", "import_batches, staging_rows, validation_errors", `${migrationPack.sourceWorkbooks} source workbooks become dry-run, quarantine, and rollback fixtures.`, "blue"],
+      ["07", "Seed audit events", "audit_events", `${apiContractPack.auditEvents.length} allowed and denied sensitive events create proof coverage.`, "teal"],
+      ["08", "Seed billing", "subscriptions, invoices, billing_events, seat_events", `${BILLING_CURRENCY} test-mode membership and seat events prove commercial access locks.`, "amber"],
+      ["09", "Seed feedback", "feedback_sessions, feedback_items, feedback_activity", "Pilot blockers, retest states, sponsor exports, and decisions become persistent fixtures.", "green"],
+      ["10", "Seed smoke expectations", "migration_checks, fixture_assertions", "Counts, redaction, access, import, rollback, and report expectations are stored for CI.", "blue"],
+    ];
+    const rollbackRules = [
+      ["Snapshot first", "Take a tenant-scoped backup or restore point before any migration commit.", "red"],
+      ["Reversible migrations", "Every migration file needs a safe down path or a documented irreversible decision.", "amber"],
+      ["Batch rollback", "Import batches must be reversible by batch id without touching another tenant.", "blue"],
+      ["Commercial vault lock", "Commercial fact writes roll back only through vault events, not tracker updates.", "amber"],
+      ["Audit immutable", "Audit events are never deleted; rollback writes reversal events instead.", "teal"],
+      ["Billing no delete", "Invoices and billing events are cancelled or reversed, not removed.", "red"],
+      ["Seed idempotency", "Fixture seeds can run repeatedly without duplicating users, records, or invoices.", "green"],
+      ["Restore rehearsal", "Staging restore must be rehearsed before the first customer pilot.", "blue"],
+    ];
+    const validationGates = [
+      ["Count parity", "Imported operational, commercial, audit, feedback, and billing counts match the fixture manifest.", "green"],
+      ["Tenant isolation", "Every migrated row has company_id and rejects cross-tenant reads through route tests.", "red"],
+      ["Operational redaction", "Tracker queries and exports return no value, agreement, invoice, LOA, or negotiation fields.", "teal"],
+      ["Commercial integrity", "Commercial facts can be joined to records only through authorized insight routes.", "amber"],
+      ["Import reconciliation", "Dry-run, commit, rollback, and quarantine totals reconcile to source workbook inventory.", "blue"],
+      ["Audit coverage", "Allowed and denied reads write audit events with request id and actor context.", "teal"],
+      ["Index smoke", "High-use filtered lists, search, calendar, audit, and billing queries use planned indexes.", "green"],
+      ["Backup restore", "A tenant fixture can restore into staging and pass smoke tests within the release window.", "red"],
+    ];
+    const migrationCommands = [
+      ["pnpm db:migrate:dev", "Run local migration files in order", "Migration log and generated client", "green"],
+      ["pnpm db:seed:fixture capsa", "Load tenant, users, records, vault, imports, audit, billing, and feedback fixtures", "Seed summary", "teal"],
+      ["pnpm db:validate:counts", "Compare table counts against fixture manifest", "Count parity report", "green"],
+      ["pnpm db:redaction-proof", "Assert tracker-safe queries hide commercial fields", "Redaction proof artifact", "red"],
+      ["pnpm import:dry-run --fixture capsa", "Stage workbook rows without live writes", "Dry-run and quarantine report", "blue"],
+      ["pnpm import:rollback --last", "Reverse the last committed import batch", "Rollback reconciliation report", "amber"],
+      ["pnpm audit:export --release", "Export sensitive allowed and denied action evidence", "Audit evidence pack", "teal"],
+      ["pnpm db:restore:test", "Restore latest fixture backup into staging clone", "Restore smoke report", "red"],
+    ];
+    const dataContracts = [
+      ["Tracker record", "records", "reference, client, title, owner, status, due_date, category", "Visible to operations users without commercial fields.", "teal"],
+      ["Commercial fact", "commercial_facts", "value, currency, agreement, LOA, negotiation, forecast", "Visible only to insight, commercial, management, and admin roles.", "amber"],
+      ["Import batch", "import_batches", "source workbook, sheet, row hash, validation state, commit state", "Visible to admins and import owners.", "blue"],
+      ["Audit event", "audit_events", "actor, tenant, target, result, request id, before/after summary", "Visible to governance and admin roles.", "red"],
+      ["Billing event", "billing_events", "plan, subscription, invoice, webhook, seat count, lock state", "Visible only to company admins.", "amber"],
+      ["Feedback item", "feedback_items", "session, severity, owner, decision, retest status, sponsor note", "Visible to pilot owners and admins.", "green"],
+      ["Document evidence", "document_evidence", "record id, evidence type, source coverage, gap state", "Visible to reports, governance, and document roles.", "blue"],
+      ["Report export", "report_exports", "snapshot id, report type, redaction profile, generated by", "Visible through management rooms and audit trail.", "teal"],
+    ];
+    return {
+      migrationBlueprintScore,
+      downloadHref,
+      migrationFiles,
+      tableOwnership,
+      indexPlan,
+      seedOrder,
+      rollbackRules,
+      validationGates,
+      migrationCommands,
+      dataContracts,
+      signalCards: [
+        ["Blueprint readiness", `${migrationBlueprintScore}%`, "How ready the prototype data model is for production migrations", migrationBlueprintScore >= 85 ? "green" : "amber"],
+        ["Migration files", migrationFiles.length, "Ordered SQL files for tenant identity, records, vault, imports, audit, billing, feedback, reports, indexes, and assertions", "blue"],
+        ["Seed order", seedOrder.length, "Fixture loading sequence for one safe company tenant", "teal"],
+        ["Release gates", validationGates.length, "Checks that protect redaction, import, tenant isolation, rollback, audit, and restore", "red"],
+      ],
+      handoff: [
+        "v111 turns the backend route skeleton into a database migration blueprint with ordered migration files, table ownership, indexes, seed order, rollback rules, validation gates, commands, and data contracts.",
+        "The operating rule is now explicit: Tenders and Projects read operational records only; commercial facts live in a vault and move through insight, forecast, contract, report, and admin routes.",
+        "The migration plan is tenant-first. Every table, index, seed, import batch, rollback, and audit event carries company scope before the first pilot customer sees live data.",
+        "The next build should translate this migration blueprint into auth and tenant guard implementation details so routes, tables, permissions, and audit events all protect the same boundaries.",
+      ],
+    };
+  }
+
+  function buildAuthTenantGuardBlueprintModel(commandModel, securityModel, backendRouteSkeleton, databaseMigrationBlueprint, apiContractPack, seedFixturePack, securityTestPack) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const adminUsers = users.filter((user) => user.role === "Admin").length;
+    const editorUsers = users.filter((user) => user.role === "Editor").length;
+    const viewerUsers = users.filter((user) => user.role === "Viewer").length;
+    const accessConfigured = users.filter((user) => normalizeUserAccess(user).length).length;
+    const commercialUsers = users.filter(userHasCommercialAccess).length;
+    const governanceUsers = users.filter(userHasGovernanceAccess).length;
+    const operationsUsers = users.filter((user) => {
+      const access = normalizeUserAccess(user);
+      return access.includes("tenders") || access.includes("projects");
+    }).length;
+    const accessCoverage = users.length ? Math.round((accessConfigured / users.length) * 100) : 100;
+    const guardScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          securityModel.securityScore * 0.18 +
+            backendRouteSkeleton.routeSkeletonScore * 0.18 +
+            databaseMigrationBlueprint.migrationBlueprintScore * 0.18 +
+            apiContractPack.apiContractScore * 0.16 +
+            securityTestPack.testPackScore * 0.14 +
+            accessCoverage * 0.12 +
+            (adminUsers ? 4 : 0),
+        ),
+      ),
+    );
+    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=115";
+    const guardFiles = [
+      ["apps/api/src/auth/session.ts", "Session guard", "Verify signed session, expiry, inactive user, password reset freshness, and actor context.", "auth.session.test.ts", "Identity Owner", "red"],
+      ["apps/api/src/auth/password.ts", "Password policy", "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.", "auth.password.test.ts", "Identity Owner", "red"],
+      ["apps/api/src/middleware/request-context.ts", "Request context", "Attach request id, actor id, company id, route id, and safe logger scope.", "request-context.test.ts", "Backend Lead", "green"],
+      ["apps/api/src/middleware/tenant.ts", "Tenant guard", "Resolve company scope from session only and reject payload, query, or route tenant spoofing.", "tenant.guard.test.ts", "Security Owner", "red"],
+      ["apps/api/src/middleware/section-access.ts", "Section guard", "Check section key, can_view, can_edit, admin-only rooms, and inactive user state.", "section-access.test.ts", "Security Owner", "blue"],
+      ["apps/api/src/middleware/commercial-vault.ts", "Commercial vault guard", "Protect value, agreement, LOA, negotiation, forecast, billing, and management export facts.", "commercial-vault.guard.test.ts", "Commercial Owner", "amber"],
+      ["apps/api/src/middleware/membership-admin.ts", "Membership admin guard", "Allow membership, plan, invoice, seat, subscription, and user-invite changes only for company admins.", "membership-admin.guard.test.ts", "Billing Owner", "amber"],
+      ["apps/api/src/audit/deny-writer.ts", "Denied audit writer", "Append denied access, tenant mismatch, commercial denial, admin denial, and edit denial events.", "deny-writer.test.ts", "Governance Owner", "teal"],
+      ["apps/api/src/access/access-policy.ts", "Access policy catalog", "Centralize section keys, route groups, edit modes, commercial modes, and system-action exceptions.", "access-policy.test.ts", "Backend Lead", "blue"],
+      ["apps/api/src/tests/security/auth-tenant.matrix.test.ts", "Security matrix", "Run every role and route against tenant, section, edit, vault, membership, and audit expectations.", "auth-tenant.matrix.test.ts", "QA Owner", "green"],
+    ];
+    const middlewareOrder = [
+      ["01", "Request context", "Create request id, logger scope, response timing, and blank actor shell before auth.", "green"],
+      ["02", "Rate limit", "Throttle login, password reset, import commit, export, and billing webhook abuse paths.", "amber"],
+      ["03", "Session guard", "Verify signed session, account status, expiry, and fresh-session requirement for sensitive routes.", "red"],
+      ["04", "Tenant guard", "Resolve company_id from the server-side session and block cross-company identifiers.", "red"],
+      ["05", "Section guard", "Match route group to section grant and decide view/edit permission before controller logic.", "blue"],
+      ["06", "Commercial vault guard", "Block restricted value, agreement, negotiation, forecast, and report fields unless granted.", "amber"],
+      ["07", "Mutation guard", "Require can_edit, optimistic version, and safe field list for create/update/delete paths.", "teal"],
+      ["08", "Membership admin guard", "Require company admin for users, seats, plan, invoice, subscription, and access template changes.", "red"],
+      ["09", "Audit writer", "Write allowed and denied events with actor, tenant, target, route, request id, and result.", "teal"],
+      ["10", "Safe error handler", "Return validation, auth, access, tenant, commercial, conflict, and server errors without leaking data.", "blue"],
+    ];
+    const sectionRules = ACCESS_SECTIONS.map((section) => {
+      const isAdminOnly = ADMIN_ONLY_SECTION_KEYS.includes(section.key);
+      const isCommercial = COMMERCIAL_ACCESS_KEYS.includes(section.key);
+      const isGovernance = GOVERNANCE_ACCESS_KEYS.includes(section.key);
+      const defaultAccess = DEFAULT_OPERATION_ACCESS_KEYS.includes(section.key)
+        ? "Operations default"
+        : isAdminOnly
+          ? "Admin only"
+          : isCommercial
+            ? "Manager grant"
+            : isGovernance
+              ? "Governance grant"
+              : "Explicit grant";
+      const tone = isAdminOnly ? "red" : isCommercial ? "amber" : isGovernance ? "blue" : DEFAULT_OPERATION_ACCESS_KEYS.includes(section.key) ? "teal" : "green";
+      const route = section.view === "Membership" ? "/billing, /users, /access" : `/${section.view.toLowerCase().replaceAll(" ", "-")}`;
+      const rule = isAdminOnly
+        ? "Company admin role required; never grantable to editor or viewer users."
+        : isCommercial
+          ? "Requires explicit management/commercial access and commercial vault guard for restricted facts."
+          : isGovernance
+            ? "Requires explicit governance access and audit visibility."
+            : DEFAULT_OPERATION_ACCESS_KEYS.includes(section.key)
+              ? "Default operational section; still tenant-scoped and edit-scoped."
+              : "Requires explicit section grant before the route returns data.";
+      return [section.label, section.key, route, defaultAccess, rule, tone];
+    });
+    const tenantIsolationRules = [
+      ["Session owns tenant", "company_id comes from the verified session, never from browser payload.", "red"],
+      ["Every table scoped", "Tenant-owned tables require company_id and foreign keys back to company-owned records.", "red"],
+      ["Record ownership checked", "record_id, client_id, import_batch_id, invoice_id, and report_id are verified before service calls.", "blue"],
+      ["No cross-company search", "Search, filters, quick jump, CSV export, report export, and client memory stay tenant-filtered.", "teal"],
+      ["Object storage prefix", "Evidence files and source workbooks use company-scoped storage paths and signed URLs.", "amber"],
+      ["Import batch lock", "Dry-run, commit, rollback, and quarantine decisions can only touch the active company batch.", "blue"],
+      ["Billing tenant lock", "Webhook events map to one subscription and one company before changing access state.", "amber"],
+      ["Audit tenant lock", "Allowed and denied events carry company_id even when the user is denied.", "teal"],
+    ];
+    const deniedAuditEvents = [
+      ["auth.login.failed", "Email/password failed or inactive user tried to sign in.", "auth", "red"],
+      ["tenant.scope.denied", "Request tried to read or mutate another company record, batch, invoice, or export.", "tenant", "red"],
+      ["section.view.denied", "User tried to open a section without can_view access.", "access", "blue"],
+      ["section.edit.denied", "User tried to create, update, delete, import, dispatch, or export without can_edit access.", "access", "amber"],
+      ["commercial.read.denied", "User tried to read value, agreement, LOA, negotiation, forecast, or restricted report data.", "commercial", "amber"],
+      ["membership.admin.denied", "Non-admin tried to change seats, plan, invoices, users, or access templates.", "billing", "red"],
+      ["import.commit.denied", "User tried to commit or roll back an import batch without import/governance access.", "import", "blue"],
+      ["audit.read.denied", "User tried to read governance audit events without governance/admin access.", "audit", "teal"],
+    ];
+    const guardTests = [
+      ["Inactive user cannot sign in", "POST /auth/login denies inactive user and writes auth.login.failed.", "red"],
+      ["Tenant mismatch returns safe 404", "GET /records/:id with another company record never leaks existence.", "red"],
+      ["Operations user cannot see commercial facts", "GET /commercial/records/:id returns denied audit for tracker-only user.", "amber"],
+      ["Editor cannot open membership", "GET /billing/subscription denies every non-admin role.", "red"],
+      ["Viewer cannot edit records", "PATCH /records/:id denies can_edit and writes section.edit.denied.", "blue"],
+      ["Manager can open insights", "GET /commercial/dashboard succeeds for user with insight grant.", "green"],
+      ["Import owner can dry-run only inside tenant", "POST /imports/dry-run accepts same-company batch and blocks foreign batch ids.", "blue"],
+      ["Billing webhook is system-scoped", "Webhook validates signature and maps external subscription to exactly one company.", "amber"],
+      ["Audit is append-only", "DELETE /audit/:id is unavailable and audit export remains admin/governance scoped.", "teal"],
+      ["CSV export is redacted", "GET /records/export never includes value, agreement, invoice, LOA, or negotiation fields.", "green"],
+    ];
+    const sessionPolicy = [
+      ["Password storage", "Hash with strong adaptive hashing; never log passwords or reset tokens.", "red"],
+      ["Reset token", "One-time, short-lived, company-scoped, and invalidated after use.", "amber"],
+      ["Session expiry", "Idle timeout plus absolute timeout; admin sensitive routes require fresh session.", "red"],
+      ["Invite flow", "Company admin invites user; invite accepts only the invited email and company.", "blue"],
+      ["Inactive lock", "Inactive users cannot sign in, cannot refresh sessions, and keep historical audit identity.", "red"],
+      ["Admin MFA option", "Make admin MFA a production gate before larger customers.", "amber"],
+      ["System actor", "Billing webhooks, scheduled jobs, and import workers use system actor with tenant target.", "teal"],
+      ["Safe errors", "Auth and access errors reveal no company, user, record, invoice, or commercial fact details.", "blue"],
+    ];
+    const routeGuardMap = [
+      ["Auth", "/auth/*", "No tenant before login; tenant after session refresh", "Login rate limit, inactive user, reset token, session audit", "red"],
+      ["Users", "/users/*", "Tenant + membership admin guard", "Admin role, section grant updates, invite audit, preview state", "red"],
+      ["Records", "/records/*", "Tenant + section guard", "Tenders/Projects grants, edit mode, redacted export, record ownership", "teal"],
+      ["Commercial", "/commercial/*", "Tenant + commercial vault guard", "Insight grant, commercial facts, forecast, agreements, negotiations", "amber"],
+      ["Imports", "/imports/*", "Tenant + governance/import guard", "Dry-run, commit, rollback, source trace, quarantine ownership", "blue"],
+      ["Billing", "/billing/*", "Tenant + membership admin guard", "Plan, seats, invoice, subscription, webhook mapping", "amber"],
+      ["Feedback", "/feedback/*", "Tenant + pilot owner guard", "Feedback session, item owner, sponsor export, retest state", "green"],
+      ["Audit", "/audit/*", "Tenant + governance/admin guard", "Audit filters, exports, denial events, retention evidence", "teal"],
+      ["Reports", "/reports/*", "Tenant + report/commercial guard", "Management pack, redaction profile, commercial export gate", "blue"],
+    ];
+    return {
+      guardScore,
+      downloadHref,
+      userSignals: [
+        ["Company users", users.length, `${adminUsers} admin / ${editorUsers} editor / ${viewerUsers} viewer`, "green"],
+        ["Access coverage", `${accessCoverage}%`, `${accessConfigured}/${users.length} users have section grants`, accessCoverage >= 100 ? "green" : "amber"],
+        ["Operations users", operationsUsers, "Users who can open Tenders or Projects", "teal"],
+        ["Commercial users", commercialUsers, "Users who can reach insight or management rooms", "amber"],
+        ["Governance users", governanceUsers, "Users who can reach governance, import, or documents", "blue"],
+        ["Admin-only rooms", ADMIN_ONLY_SECTION_KEYS.length, "Membership remains company-admin only", "red"],
+      ],
+      signalCards: [
+        ["Guard readiness", `${guardScore}%`, "How ready the route, database, access, and security plans are to become real guards", guardScore >= 85 ? "green" : "amber"],
+        ["Guard files", guardFiles.length, "Backend files that implement sessions, tenant scope, section access, vault, membership, and denial audit", "blue"],
+        ["Section rules", sectionRules.length, "Every visible room mapped to a backend access rule", "teal"],
+        ["Denied events", deniedAuditEvents.length, "Access failures that must become immutable audit evidence", "red"],
+      ],
+      guardFiles,
+      middlewareOrder,
+      sectionRules,
+      tenantIsolationRules,
+      deniedAuditEvents,
+      guardTests,
+      sessionPolicy,
+      routeGuardMap,
+      handoff: [
+        "v112 turns the route skeleton and migration blueprint into the security guardrail map: sessions, tenant scope, section permissions, commercial vault, membership admin, mutation gates, and denied-access audit events.",
+        "The company boundary is now first-class. The backend must trust company_id from the server-side session only, then apply section and commercial rules before any controller returns data.",
+        "The operational privacy rule remains intact: Tenders and Projects get tracker-safe records, while values, agreements, invoices, LOA, negotiations, and forecast facts require explicit commercial or admin access.",
+        "The next build can convert this guard blueprint into backend test commands and CI jobs so each guard has executable proof.",
+      ],
+    };
+  }
+
+  function buildBackendTestCommandPackModel(commandModel, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint, stagingSmokeScript, securityTestPack, billingTestPack, migrationTestPack, apiContractPack, seedFixturePack) {
+    const records = commandModel.records || [];
+    const testCommandScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendRouteSkeleton.routeSkeletonScore * 0.14 +
+            databaseMigrationBlueprint.migrationBlueprintScore * 0.14 +
+            authTenantGuardBlueprint.guardScore * 0.16 +
+            stagingSmokeScript.smokeScore * 0.16 +
+            securityTestPack.testPackScore * 0.14 +
+            billingTestPack.billingTestScore * 0.1 +
+            migrationTestPack.migrationTestScore * 0.1 +
+            apiContractPack.apiContractScore * 0.06,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-test-command-pack.json?v=115";
+    const testCommands = [
+      ["01", "pnpm test:unit", "Domain unit tests", "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.", "junit-unit.xml", "green"],
+      ["02", "pnpm test:contracts", "API contract tests", `${apiContractPack.endpointContracts.length} endpoint contracts for auth, users, records, commercial, import, billing, feedback, and audit.`, "junit-contracts.xml", "blue"],
+      ["03", "pnpm test:routes", "Route skeleton tests", `${backendRouteSkeleton.routeTestMatrix.length} route groups prove controllers, services, schemas, middleware, and safe errors.`, "junit-routes.xml", "teal"],
+      ["04", "pnpm test:auth-tenant", "Auth and tenant guard tests", `${authTenantGuardBlueprint.guardTests.length} guard tests for sessions, tenant scope, section access, vault, membership, and denial audit.`, "junit-auth-tenant.xml", "red"],
+      ["05", "pnpm test:redaction", "Commercial redaction tests", "Tracker APIs and CSV exports never expose values, agreements, LOA, negotiations, invoices, or billing fields.", "redaction-proof.csv", "amber"],
+      ["06", "pnpm test:migrations", "Database migration tests", `${databaseMigrationBlueprint.migrationFiles.length} migration files plus seed order, rollback, restore, and count parity checks.`, "junit-migrations.xml", "blue"],
+      ["07", "pnpm test:import", "Workbook import tests", "Dry-run, staging rows, validation errors, quarantine, duplicate decisions, commit, rollback, and reconciliation.", "import-reconciliation.json", "teal"],
+      ["08", "pnpm test:billing", "Billing test-mode tests", `${billingTestPack.totalCases} billing cases for checkout, invoices, webhooks, seats, plan changes, and access locks.`, "junit-billing.xml", "amber"],
+      ["09", "pnpm test:audit", "Audit proof tests", "Allowed and denied events carry actor, tenant, target, route, request id, before/after, and result.", "audit-events.json", "green"],
+      ["10", "pnpm smoke:staging", "Staging smoke run", `${stagingSmokeScript.smokeCommands.length} smoke commands across auth, records, redaction, import, billing, feedback, audit, rollback, and reports.`, "smoke-summary.html", "red"],
+      ["11", "pnpm test:restore", "Backup and restore drill", "Restore fixture backup into staging clone, re-run route/auth/redaction smoke, and publish restore proof.", "restore-proof.json", "blue"],
+      ["12", "pnpm test:ci-gate", "Release gate command", "Aggregate P0/P1 status, artifacts, coverage, seed counts, and go/no-go decision for PR checks.", "ci-gate-summary.json", "green"],
+    ];
+    const ciJobs = [
+      ["install", "Install and cache", "pnpm install --frozen-lockfile", "Blocks all later jobs if workspace setup drifts.", "green"],
+      ["lint-typecheck", "Lint and typecheck", "pnpm lint && pnpm typecheck", "Blocks unsafe code, broken contracts, and type drift.", "blue"],
+      ["unit-contract", "Unit and API contracts", "pnpm test:unit && pnpm test:contracts", "Runs helpers and endpoint payload expectations.", "teal"],
+      ["auth-security", "Auth and tenant security", "pnpm test:auth-tenant && pnpm test:redaction", "Blocks tenant leaks, commercial leaks, and membership admin bypass.", "red"],
+      ["database-import", "Migrations and import", "pnpm test:migrations && pnpm test:import", "Blocks broken seed order, rollback, quarantine, and reconciliation.", "blue"],
+      ["billing-audit", "Billing and audit", "pnpm test:billing && pnpm test:audit", "Blocks unsafe webhooks, seat drift, and missing audit evidence.", "amber"],
+      ["staging-smoke", "Staging smoke", "pnpm smoke:staging", "Runs only after deploy-to-staging with fixture data and test-mode billing.", "red"],
+      ["release-gate", "Release decision", "pnpm test:ci-gate", "Collects artifacts and creates management-ready go/no-go summary.", "green"],
+    ];
+    const artifactMap = [
+      ["junit-unit.xml", "Unit test results", "GitHub Actions annotations for low-level helpers and domain rules.", "green"],
+      ["junit-contracts.xml", "API contract results", "Endpoint payload, guard, error shape, and audit-event expectations.", "blue"],
+      ["junit-auth-tenant.xml", "Auth guard results", "Session, tenant, section, vault, membership, and denial proof.", "red"],
+      ["redaction-proof.csv", "Redaction proof", "CSV sample proving operations users cannot export commercial fields.", "amber"],
+      ["import-reconciliation.json", "Import proof", "Accepted, quarantined, duplicate, committed, rollback, and count parity output.", "teal"],
+      ["billing-webhook-log.json", "Billing proof", "Test-mode webhook signature, idempotency, invoice, seat sync, and access lock output.", "amber"],
+      ["audit-events.json", "Audit proof", "Allowed and denied sensitive actions with actor, tenant, target, and request id.", "green"],
+      ["smoke-summary.html", "Human smoke report", "Management-readable command output, owners, artifacts, failures, and go/no-go status.", "blue"],
+      ["restore-proof.json", "Recovery proof", "Backup snapshot, restore command, restored counts, and post-restore smoke result.", "red"],
+      ["ci-gate-summary.json", "Release proof", "Aggregated status for PR, staging, P0 failures, artifacts, and blockers.", "teal"],
+    ];
+    const coverageMatrix = [
+      ["Routes", backendRouteSkeleton.routeTestMatrix.length, "test:routes", "Controllers, services, validators, middleware, and safe errors.", "teal"],
+      ["Auth guards", authTenantGuardBlueprint.guardTests.length, "test:auth-tenant", "Session, tenant, section, commercial vault, membership, and denial audit.", "red"],
+      ["Migration files", databaseMigrationBlueprint.migrationFiles.length, "test:migrations", "Forward migration, seed order, count parity, rollback, restore, and assertions.", "blue"],
+      ["Security suites", securityTestPack.securitySuites.length, "test:redaction", `${securityTestPack.totalCases} planned security cases become executable protections.`, "red"],
+      ["Billing suites", billingTestPack.billingSuites.length, "test:billing", `${billingTestPack.totalCases} billing cases across checkout, invoice, webhook, seats, and locks.`, "amber"],
+      ["Migration suites", migrationTestPack.migrationSuites.length, "test:import", `${migrationTestPack.totalCases} migration cases across dry-run, staging, quarantine, commit, rollback, and reconciliation.`, "blue"],
+      ["Smoke commands", stagingSmokeScript.smokeCommands.length, "smoke:staging", "End-to-end staging proof over fixture tenant and test billing.", "green"],
+      ["Seed fixtures", seedFixturePack.fixtureFiles.length, "db:seed:fixture", "Tenant, users, records, commercial vault, import batches, audit, billing, and feedback fixtures.", "teal"],
+    ];
+    const fixtureCommandMap = [
+      ["tenant-fixtures.json", "pnpm db:seed:fixture capsa", "Create company, settings, access profiles, and billing defaults.", "green"],
+      ["users.json", "pnpm test:auth-tenant", "Admin, editor, viewer, inactive, operations-only, commercial, and denied users.", "red"],
+      ["operational-records.json", "pnpm test:routes", `${records.length} tracker-safe tender, EOI, and project records.`, "teal"],
+      ["commercial-vault.json", "pnpm test:redaction", "Value, agreement, LOA, negotiation, forecast, and restricted report facts.", "amber"],
+      ["import-batches.json", "pnpm test:import", "Workbook dry-run, quarantine, duplicate, commit, rollback, and reconciliation cases.", "blue"],
+      ["billing-fixtures.json", "pnpm test:billing", "Plans, subscription state, invoices, webhooks, seat changes, and access locks.", "amber"],
+      ["audit-seed-events.json", "pnpm test:audit", "Allowed and denied events for user, access, commercial, import, billing, and exports.", "green"],
+      ["smoke-expectations.json", "pnpm smoke:staging", "Expected counts, hidden fields, role matrix, artifacts, and go/no-go gates.", "blue"],
+    ];
+    const failurePolicy = [
+      ["P0 tenant leak", "Stop CI immediately; no deploy and no staging data promotion.", "red"],
+      ["P0 commercial leak", "Stop CI immediately; block tracker export and commercial endpoints.", "red"],
+      ["P0 auth bypass", "Stop CI immediately; session, inactive user, or membership admin bypass found.", "red"],
+      ["P1 missing audit", "Fail PR until allowed and denied sensitive actions create audit events.", "amber"],
+      ["P1 import drift", "Fail PR until source, staging, commit, rollback, and reconciliation counts agree.", "blue"],
+      ["P1 billing drift", "Fail PR until webhook idempotency, invoice state, and seat lock reconcile.", "amber"],
+      ["P2 report drift", "Warn and attach artifact diff when smoke/report output changes unexpectedly.", "teal"],
+      ["P2 screenshot drift", "Warn and attach screenshot diff for visual smoke proof, not a release blocker.", "green"],
+    ];
+    const releaseGates = [
+      ["All P0 commands pass", "test:auth-tenant, test:redaction, test:migrations, and smoke:staging return zero P0 failures.", "red"],
+      ["Artifacts attached", "Every CI job uploads JUnit, JSON, CSV, HTML, or screenshot proof.", "blue"],
+      ["Fixture counts match", "Seeded users, records, commercial facts, imports, audit events, and billing fixtures match manifest.", "green"],
+      ["Denied events visible", "All denied access paths produce audit events and are exportable for governance review.", "teal"],
+      ["Billing test-mode only", "No live payment keys, charges, or invoices are allowed in staging tests.", "amber"],
+      ["Restore proof current", "Latest restore proof passes after migrations, seed, import, and smoke.", "red"],
+      ["Go/no-go summary exists", "Management can read one CI summary with owner, command, artifact, result, and blocker.", "green"],
+      ["Issue link on failure", "Any failed command links to backend issue labels, owner, and acceptance criteria.", "blue"],
+    ];
+    const localRunbook = [
+      ["Fresh clone", "pnpm install", "Install and confirm no lockfile drift.", "green"],
+      ["Local database", "pnpm db:migrate:dev", "Apply migrations against empty local database.", "blue"],
+      ["Fixture seed", "pnpm db:seed:fixture capsa", "Load one tenant and test users before API tests.", "teal"],
+      ["Core proof", "pnpm test:unit && pnpm test:contracts && pnpm test:routes", "Validate domain helpers, API shapes, and route skeleton.", "green"],
+      ["Security proof", "pnpm test:auth-tenant && pnpm test:redaction", "Validate tenant, access, membership, vault, and export restrictions.", "red"],
+      ["Data proof", "pnpm test:migrations && pnpm test:import", "Validate seed order, import dry-run, quarantine, commit, rollback, and restore.", "blue"],
+      ["Commercial proof", "pnpm test:billing && pnpm test:audit", "Validate billing test mode, invoice state, seat sync, and audit evidence.", "amber"],
+      ["Release proof", "pnpm smoke:staging && pnpm test:ci-gate", "Run full staging proof and publish go/no-go summary.", "red"],
+    ];
+    return {
+      testCommandScore,
+      downloadHref,
+      testCommands,
+      ciJobs,
+      artifactMap,
+      coverageMatrix,
+      fixtureCommandMap,
+      failurePolicy,
+      releaseGates,
+      localRunbook,
+      signalCards: [
+        ["Command readiness", `${testCommandScore}%`, "How ready the backend plan is to become executable tests and CI proof", testCommandScore >= 85 ? "green" : "amber"],
+        ["Test commands", testCommands.length, "Local, route, auth, migration, billing, audit, smoke, restore, and release commands", "blue"],
+        ["CI jobs", ciJobs.length, "GitHub Actions jobs from install through release gate", "teal"],
+        ["Proof artifacts", artifactMap.length, "JUnit, JSON, CSV, HTML, screenshot, webhook, audit, restore, and release evidence", "red"],
+      ],
+      handoff: [
+        "v113 turns the architecture stack into an executable backend test command pack: local commands, CI jobs, artifacts, coverage matrix, fixture mapping, failure policy, release gates, and a runbook.",
+        "The release rule is simple: route, migration, auth, tenant, commercial redaction, billing, import, audit, and restore proof must exist before staging can hold customer workbook data.",
+        "Every command has an artifact target, so failures become inspectable evidence instead of vague console output.",
+        "The next build can convert route, migration, auth, and test blueprints into the first file-by-file private backend repo pack.",
+      ],
+    };
+  }
+
+  function buildProductionBackendRepoFilePackModel(commandModel, privateRepoGuide, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint, backendTestCommandPack, seedFixturePack, apiContractPack, firstBackendSprint, stagingDeployment) {
+    const records = commandModel.records || [];
+    const repoFileReadiness = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoGuide.repoGuideScore * 0.14 +
+            backendRouteSkeleton.routeSkeletonScore * 0.14 +
+            databaseMigrationBlueprint.migrationBlueprintScore * 0.14 +
+            authTenantGuardBlueprint.guardScore * 0.14 +
+            backendTestCommandPack.testCommandScore * 0.14 +
+            seedFixturePack.seedScore * 0.1 +
+            apiContractPack.apiContractScore * 0.1 +
+            stagingDeployment.deploymentScore * 0.1,
+        ),
+      ),
+    );
+    const downloadHref = "data/production-backend-repo-file-pack.json?v=115";
+    const repositoryFolders = [
+      ["apps/web", "Frontend app", "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.", "Frontend Owner", "green"],
+      ["apps/api", "Backend API", "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.", "Backend Lead", "teal"],
+      ["packages/db", "Database layer", "Migrations, seed files, query helpers, tenant scope helpers, and restore scripts.", "Database Owner", "blue"],
+      ["packages/domain", "Business rules", "Status rules, due signals, redaction rules, access profiles, record transforms, and report calculations.", "Product Engineer", "green"],
+      ["packages/testing", "Test harness", "Fixtures, role contexts, route tests, redaction tests, audit assertions, and CI evidence builders.", "QA Owner", "red"],
+      ["packages/importer", "Workbook importer", "Dry-run parser, staging rows, validation, quarantine, duplicate decisions, commit, rollback, and reconciliation.", "Migration Owner", "blue"],
+      ["packages/billing", "Membership billing", "USD plan rules, checkout sessions, invoices, webhooks, seat sync, plan changes, and access locks.", "Billing Owner", "amber"],
+      ["packages/audit", "Audit proof", "Audit event writer, denied event helpers, export filters, retention rules, and immutable evidence formatting.", "Governance Owner", "teal"],
+      ["packages/reports", "Management reports", "Weekly pack builders, review summaries, evidence health, client heat, and redaction-safe exports.", "Reports Owner", "green"],
+      ["infra", "Infrastructure", "Docker, database, environment, staging deploy, backup, restore, monitoring, and release scripts.", "Platform Owner", "red"],
+      [".github", "GitHub operations", "Issue templates, pull request template, workflows, code owners, dependabot, and artifact retention.", "Repo Owner", "blue"],
+      ["docs", "Engineering docs", "Architecture decisions, API contracts, data model, import rules, test commands, and release runbooks.", "Product Owner", "teal"],
+    ];
+    const firstCommitFiles = [
+      ["README.md", "Start here", "Install, run, seed, test, deploy, alpha scope, and production boundaries.", "Repo Owner", "green"],
+      ["package.json", "Workspace root", "pnpm scripts for dev, test, lint, typecheck, migrate, seed, smoke, restore, and ci-gate.", "Platform Owner", "blue"],
+      ["pnpm-workspace.yaml", "Monorepo map", "apps and packages workspace boundaries for web, API, database, domain, testing, billing, importer, audit, and reports.", "Platform Owner", "teal"],
+      [".env.example", "Environment contract", "Document required keys without secrets: database, session, billing test mode, email, storage, audit, and app URLs.", "Security Owner", "red"],
+      [".github/CODEOWNERS", "Review ownership", "Route, migration, auth, billing, import, audit, and frontend owners are explicit before first PR.", "Repo Owner", "blue"],
+      [".github/pull_request_template.md", "PR evidence", "Every PR lists issue link, migrations, commands, artifacts, screenshots, and rollout notes.", "QA Owner", "green"],
+      [".github/workflows/ci.yml", "Primary CI", "Install, lint, typecheck, unit, contracts, routes, auth-tenant, redaction, migrations, billing, audit, and artifacts.", "Platform Owner", "red"],
+      ["docs/alpha-api-contracts.md", "API contract", `${apiContractPack.endpointContracts.length} endpoint groups with guards, payloads, errors, audit events, and tests.`, "Backend Lead", "teal"],
+      ["docs/data-model.md", "Schema map", `${databaseMigrationBlueprint.migrationFiles.length} ordered migration files, ownership, indexes, seed order, rollback, and restore gates.`, "Database Owner", "blue"],
+      ["docs/security-access.md", "Guard map", `${authTenantGuardBlueprint.guardFiles.length} guard files, section rules, session policy, tenant isolation, and denied audit events.`, "Security Owner", "red"],
+      ["docs/test-command-pack.md", "Command proof", `${backendTestCommandPack.testCommands.length} backend commands, CI jobs, artifacts, failure policies, and release gates.`, "QA Owner", "amber"],
+      ["docs/staging-deployment.md", "Staging runbook", "Environment lanes, secrets, deploy rehearsal, database checks, rollback, and go/no-go rules.", "Platform Owner", "blue"],
+    ];
+    const apiFileBatch = backendRouteSkeleton.controllerMap.map(([module, route, controller, service, schema, test, tone]) => [
+      module,
+      `apps/api/src/routes/${route}`,
+      `apps/api/src/controllers/${controller}`,
+      `apps/api/src/services/${service}`,
+      `apps/api/src/schemas/${schema}`,
+      `apps/api/tests/${test}`,
+      tone,
+    ]);
+    const migrationFileBatch = databaseMigrationBlueprint.migrationFiles.map(([file, label, tables, purpose, owner, tone]) => [
+      file,
+      label,
+      tables,
+      purpose,
+      owner,
+      tone,
+    ]);
+    const guardFileBatch = authTenantGuardBlueprint.guardFiles.map(([file, guard, policy, test, owner, tone]) => [
+      file,
+      guard,
+      policy,
+      test,
+      owner,
+      tone,
+    ]);
+    const testFileBatch = backendTestCommandPack.testCommands.map(([step, command, suite, proof, artifact, tone]) => [
+      step,
+      command,
+      `packages/testing/tests/${command.replace("pnpm ", "").replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "")}.test.ts`,
+      suite,
+      artifact,
+      proof,
+      tone,
+    ]);
+    const workflowFiles = [
+      [".github/workflows/ci.yml", "Primary PR gate", "Runs install, lint, typecheck, unit, contracts, routes, auth, redaction, migration, billing, audit, and artifact upload.", "red"],
+      [".github/workflows/staging-smoke.yml", "Staging smoke", "Runs after staging deploy with fixture tenant, test-mode billing, redaction proof, import dry run, rollback, and report summary.", "teal"],
+      [".github/workflows/migration-restore.yml", "Migration and restore", "Nightly migration rollback, fixture restore, import rollback, count parity, and restore proof.", "blue"],
+      [".github/workflows/security-audit.yml", "Security proof", "Tenant isolation, inactive user, section denial, commercial vault denial, denied audit, and audit export checks.", "red"],
+      [".github/workflows/billing-testmode.yml", "Billing proof", "USD checkout, invoice lifecycle, webhook idempotency, seat sync, plan changes, and access locks in test mode only.", "amber"],
+      [".github/workflows/release-gate.yml", "Go/no-go summary", "Aggregates command status, artifacts, blockers, owners, and release decision for management review.", "green"],
+    ];
+    const envFiles = [
+      [".env.example", "All environments", "Names only, no secrets; used as the contract for developers and hosting provider.", "green"],
+      [".env.local.example", "Local dev", "Local database, test session secret, mail sink, storage emulator, and billing test keys.", "blue"],
+      [".env.test.example", "Automated tests", "Disposable test database, fixed tenant fixture, deterministic session secret, and test webhook secret.", "teal"],
+      [".env.staging.example", "Staging", "Staging database, app URL, email provider, object storage, monitoring, and billing test-mode keys.", "amber"],
+      ["infra/secrets.staging.md", "Secret checklist", "Documents who owns each secret, where it is stored, rotation cadence, and live-key prohibition.", "red"],
+      ["infra/backup-restore.md", "Recovery contract", "Backup schedule, restore command, rollback drill, retention, owner, and evidence artifact.", "red"],
+    ];
+    const copyOrder = [
+      ["01", "Create repo shell", "README, package.json, workspace file, .gitignore, env examples, CODEOWNERS, PR template.", "green"],
+      ["02", "Copy docs", "API contracts, data model, security access, test command pack, staging deployment, and alpha scope.", "blue"],
+      ["03", "Add database package", "Migrations, seed files, schema helpers, tenant scope helpers, rollback and restore scripts.", "red"],
+      ["04", "Add API shell", "server.ts, request context, session, tenant, access, audit, error middleware, and health route.", "teal"],
+      ["05", "Add route groups", "Auth, users, records, commercial, imports, billing, feedback, audit, and reports files.", "amber"],
+      ["06", "Add fixtures", "Tenant, users, operational records, commercial vault, imports, audit, billing, and smoke expectations.", "green"],
+      ["07", "Add tests", "Unit, contract, routes, auth-tenant, redaction, migrations, imports, billing, audit, restore, and smoke tests.", "red"],
+      ["08", "Add CI workflows", "Primary CI, security audit, migration restore, billing test mode, staging smoke, and release gate.", "blue"],
+      ["09", "Open issues", "Use generated labels, milestones, acceptance criteria, owners, and command proof for sprint zero.", "teal"],
+      ["10", "Run first proof", "pnpm install, lint, typecheck, migrate, seed, test, smoke, restore, and ci-gate commands.", "red"],
+    ];
+    const acceptanceChecks = [
+      ["Folder tree complete", "All 12 repository folders exist with owner, purpose, and first file target.", "green"],
+      ["Docs committed", "Alpha scope, API contracts, data model, security, test commands, and staging docs are in docs/.", "blue"],
+      ["Route files mapped", `${apiFileBatch.length} route groups have route, controller, service, schema, and test files.`, "teal"],
+      ["Migration files mapped", `${migrationFileBatch.length} migration files have ownership, table scope, rollback, and validation notes.`, "red"],
+      ["Guard files mapped", `${guardFileBatch.length} auth, tenant, access, commercial, membership, mutation, and audit guard files are listed.`, "red"],
+      ["Test commands mapped", `${testFileBatch.length} command tests have artifact targets and proof statements.`, "amber"],
+      ["Workflow files mapped", `${workflowFiles.length} GitHub workflow files define PR, staging, security, billing, restore, and release gates.`, "blue"],
+      ["Secrets remain out", "Only example env files and secret names are committed; no live keys or customer data.", "red"],
+      ["Fixture copy clear", `${seedFixturePack.fixtureFiles.length} seed fixture families are available for the first backend test data contract.`, "green"],
+      ["Sprint handoff clear", `${firstBackendSprint.workstreamLanes?.length || 0} sprint lanes connect repo files to implementation movement.`, "teal"],
+    ];
+    const ownershipMatrix = [
+      ["Platform Owner", "repo shell, scripts, CI, staging, deployment, backup, restore, and release gate.", "red"],
+      ["Backend Lead", "API server, routes, controllers, services, schemas, error envelope, and OpenAPI contract.", "teal"],
+      ["Database Owner", "migrations, seed order, indexes, restore gates, tenant scope, and count parity.", "blue"],
+      ["Security Owner", "session, tenant, access, commercial vault, membership admin, denied audit, and redaction.", "red"],
+      ["Migration Owner", "workbook importer, dry-run, staging rows, quarantine, duplicates, commit, rollback, reconciliation.", "blue"],
+      ["Billing Owner", "USD pricing, checkout, invoice, webhook, subscription, seat sync, plan changes, and access locks.", "amber"],
+      ["QA Owner", "test harness, fixtures, command artifacts, smoke reports, failure policies, and CI evidence.", "green"],
+      ["Product Owner", "alpha scope, issue acceptance, feedback workflow, management report expectations, and pilot gates.", "teal"],
+    ];
+    return {
+      repoFileReadiness,
+      downloadHref,
+      repositoryFolders,
+      firstCommitFiles,
+      apiFileBatch,
+      migrationFileBatch,
+      guardFileBatch,
+      testFileBatch,
+      workflowFiles,
+      envFiles,
+      copyOrder,
+      acceptanceChecks,
+      ownershipMatrix,
+      signalCards: [
+        ["File-pack readiness", `${repoFileReadiness}%`, "How ready the backend plan is to become the first private repo commit", repoFileReadiness >= 90 ? "green" : "amber"],
+        ["Repo folders", repositoryFolders.length, "Apps, packages, infra, docs, and GitHub operation folders", "teal"],
+        ["First files", firstCommitFiles.length + workflowFiles.length + envFiles.length, "Initial docs, env examples, workflows, and repo shell files", "blue"],
+        ["Code batches", apiFileBatch.length + migrationFileBatch.length + guardFileBatch.length + testFileBatch.length, "Route, migration, guard, and test files ready for creation", "red"],
+      ],
+      handoff: [
+        "v114 converts the planning stack into a production backend repo file pack: folders, first commit files, API file batches, migration files, guard files, test files, workflow files, env examples, copy order, and owners.",
+        "This is the bridge from prototype to implementation. The private repo can now start with a disciplined file tree instead of a vague blank project.",
+        "No secrets or customer data belong in the first commit. Only env examples, fixture contracts, route shells, migration plans, guard plans, and test-command proof should be committed.",
+        "v115 now sits after this pack and standardizes route errors, request ids, audit envelopes, denial evidence, and middleware files before real coding begins.",
+      ],
+    };
+  }
+
+  function buildApiErrorAuditEnvelopePackModel(commandModel, backendRouteSkeleton, authTenantGuardBlueprint, productionBackendRepoFilePack, backendTestCommandPack, apiContractPack, databaseMigrationBlueprint) {
+    const routeCount = backendRouteSkeleton.controllerMap.length;
+    const guardCount = authTenantGuardBlueprint.guardFiles.length;
+    const auditCount = apiContractPack.auditEvents.length;
+    const envelopeScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          productionBackendRepoFilePack.repoFileReadiness * 0.22 +
+            backendRouteSkeleton.routeSkeletonScore * 0.18 +
+            authTenantGuardBlueprint.guardScore * 0.18 +
+            backendTestCommandPack.testCommandScore * 0.16 +
+            apiContractPack.apiContractScore * 0.16 +
+            databaseMigrationBlueprint.migrationBlueprintScore * 0.1,
+        ),
+      ),
+    );
+    const downloadHref = "data/api-error-audit-envelope-pack.json?v=115";
+    const errorEnvelopeFields = [
+      ["ok", "boolean", "Always false for errors and true for success responses.", "green"],
+      ["requestId", "string", "Public-safe trace id returned to the UI, logs, and audit rows.", "blue"],
+      ["timestamp", "ISO datetime", "Server time for support, audit review, and replay ordering.", "teal"],
+      ["code", "stable string", "Machine-readable code such as access_denied or validation_error.", "red"],
+      ["message", "safe text", "Human-readable message that never leaks secrets, tenant existence, or commercial values.", "amber"],
+      ["details", "safe object", "Field-level validation or safe remediation hints only.", "blue"],
+      ["path", "route path", "Route path without query secrets or raw uploaded content.", "teal"],
+      ["method", "HTTP method", "GET, POST, PATCH, DELETE, or webhook method for route diagnostics.", "green"],
+      ["tenantVisible", "boolean", "False when the response must avoid confirming a tenant or record exists.", "red"],
+      ["retryable", "boolean", "Helps UI decide retry, fix form, re-login, or contact admin.", "amber"],
+      ["supportHint", "safe text", "Short admin-friendly instruction tied to requestId.", "blue"],
+      ["auditEventId", "string/null", "Links denial or failure to the immutable audit event when one is written.", "teal"],
+    ];
+    const errorCatalog = [
+      ["validation_error", "400", "Form or payload field is invalid.", "Return field errors and safe correction hints.", "blue"],
+      ["not_authenticated", "401", "Session missing, expired, or invalid.", "Ask user to sign in again without saying whether account exists.", "red"],
+      ["tenant_not_resolved", "401", "Request has no valid company context.", "End request before any data query starts.", "red"],
+      ["section_access_denied", "403", "User lacks the requested room or section.", "Write denied audit event with section key and role.", "amber"],
+      ["commercial_vault_denied", "403", "User tried to access restricted value or negotiation facts.", "Redact payload and audit the denied target.", "red"],
+      ["membership_admin_required", "403", "Non-admin tried membership, billing, or user access control.", "Never allow Membership Model grants for editors or viewers.", "red"],
+      ["not_found", "404", "Record missing or hidden by tenant scope.", "Use identical shape for missing and cross-tenant ids.", "blue"],
+      ["conflict", "409", "Duplicate reference, stale version, committed import, or billing state conflict.", "Tell UI which safe next action is available.", "amber"],
+      ["import_quarantine", "422", "Workbook row failed dry-run rules.", "Return row number, mapped field, and quarantine reason.", "blue"],
+      ["rate_limited", "429", "Login, reset, export, import, or webhook retry limit reached.", "Return retryAfterSeconds without internal thresholds.", "amber"],
+      ["webhook_replay", "409", "Billing webhook event was already processed.", "Acknowledge idempotently and write provider event id.", "green"],
+      ["server_error", "500", "Unexpected exception.", "Return generic text, requestId, and alert-worthy audit context only.", "red"],
+    ];
+    const auditEnvelopeFields = [
+      ["eventId", "uuid", "Immutable audit row identifier linked to requestId.", "green"],
+      ["requestId", "uuid", "Same request id returned to the client or support workflow.", "blue"],
+      ["companyId", "tenant id", "Required for every user, record, import, billing, feedback, and report event.", "red"],
+      ["actorUserId", "user id/system", "Admin, editor, viewer, system worker, or webhook actor.", "teal"],
+      ["actorRole", "role", "Role at the time of the action, not current role after later edits.", "amber"],
+      ["route", "method path", "Backend route that created the event.", "blue"],
+      ["eventType", "catalog key", "Stable event key such as records.updated or access.denied.", "green"],
+      ["targetType", "domain object", "record, user, commercialFact, importBatch, invoice, feedback, report, or audit.", "teal"],
+      ["targetId", "safe id", "Internal id or hashed external reference; no secret payload.", "blue"],
+      ["decision", "allowed/denied/system", "Whether the request was allowed, denied, or processed as system work.", "red"],
+      ["beforeAfter", "redacted diff", "Only safe changed fields; commercial fields masked unless event is in vault.", "amber"],
+      ["retentionClass", "policy key", "Standard, restricted, billing, security, or support retention group.", "green"],
+    ];
+    const routeEnvelopeMap = backendRouteSkeleton.controllerMap.map(([module, route, controller, service, schema, test, tone]) => {
+      const auditEvent = (apiContractPack.auditEvents.find(([event]) => event.toLowerCase().includes(module.toLowerCase().split(" ")[0])) || apiContractPack.auditEvents[0] || ["audit.event"])[0];
+      const defaultErrors = module === "Commercial"
+        ? "commercial_vault_denied, section_access_denied, not_found"
+        : module === "Billing"
+          ? "membership_admin_required, webhook_replay, conflict"
+          : module === "Import"
+            ? "import_quarantine, validation_error, conflict"
+            : "not_authenticated, section_access_denied, validation_error";
+      return [
+        module,
+        route,
+        controller,
+        service,
+        schema,
+        defaultErrors,
+        auditEvent,
+        test,
+        tone,
+      ];
+    });
+    const auditEventMatrix = [
+      ["auth.login.success", "Allowed", "User session created", "actor, company, role, access snapshot, request id", "green"],
+      ["auth.login.failed", "Denied", "Bad credentials, inactive account, or throttled attempt", "email hash, reason, request id, IP hash", "red"],
+      ["access.denied", "Denied", "Section, role, membership, commercial vault, or tenant guard blocked", "actor, role, section, route, target hash", "red"],
+      ["records.created", "Allowed", "Operational tracker row created", "record id, type, section, owner, safe fields", "teal"],
+      ["records.updated", "Allowed", "Status, owner, date, note, or category changed", "changed fields, before, after, request id", "teal"],
+      ["records.exported", "Allowed", "CSV or report export generated", "filters, count, redaction mode, requester", "blue"],
+      ["commercial.viewed", "Allowed", "Restricted value or negotiation facts opened", "record id, user, reason, room, request id", "amber"],
+      ["commercial.updated", "Allowed", "Value, agreement, LOA, forecast, or negotiation facts changed", "restricted diff, owner, request id", "amber"],
+      ["imports.dry_run.created", "Allowed", "Workbook staged without live writes", "batch id, source, accepted, quarantined, duplicate", "blue"],
+      ["imports.committed", "Allowed", "Approved import wrote live rows", "batch id, counts, rollback id, approver", "red"],
+      ["billing.webhook.accepted", "System", "Signed provider event processed", "provider event id, invoice, subscription, seat delta", "green"],
+      ["billing.webhook.replayed", "System", "Duplicate provider event received", "provider event id, previous event id, request id", "amber"],
+      ["feedback.created", "Allowed", "Pilot or UAT feedback entered", "room, severity, owner, record link, retest state", "green"],
+      ["audit.exported", "Allowed", "Admin exported audit proof", "filters, date range, count, export id", "red"],
+    ];
+    const middlewareFiles = [
+      ["apps/api/src/middleware/request-id.ts", "Request identity", "Create or validate requestId, attach to response header, logger, and audit context.", "Platform Owner", "green"],
+      ["apps/api/src/middleware/error-envelope.ts", "Safe error wrapper", "Catch known errors and unexpected exceptions, then emit one safe response shape.", "Backend Lead", "red"],
+      ["apps/api/src/middleware/audit-context.ts", "Audit context", "Collect actor, company, route, method, target, decision, and retention class.", "Governance Owner", "teal"],
+      ["packages/audit/audit-writer.ts", "Immutable writer", "Insert allowed, denied, system, export, import, billing, and feedback events.", "Governance Owner", "blue"],
+      ["apps/api/src/middleware/tenant-scope.ts", "Tenant resolver", "Resolve companyId before handlers and block missing tenant context.", "Security Owner", "red"],
+      ["apps/api/src/middleware/access-decision.ts", "Section guard", "Centralize role, section, membership admin, management, and viewer decisions.", "Security Owner", "amber"],
+      ["packages/domain/redaction.ts", "Payload redaction", "Strip commercial, billing, invoice, agreement, LOA, and negotiation facts from frontline routes.", "Product Engineer", "green"],
+      ["apps/api/src/middleware/rate-limit.ts", "Abuse control", "Throttle login, reset, export, import, webhook, and report generation safely.", "Platform Owner", "amber"],
+      ["apps/api/src/middleware/idempotency.ts", "Replay control", "Protect billing webhooks, import commits, exports, and retryable write routes.", "Billing Owner", "blue"],
+      ["apps/api/src/middleware/response-logger.ts", "Response proof", "Log status, duration, requestId, route, actor, and safe error code without body secrets.", "QA Owner", "teal"],
+    ];
+    const denialProofScenarios = [
+      ["Cross-tenant record", "Editor requests another company record id", "Return 404 not_found, write access.denied, expose no tenant hint.", "red"],
+      ["Membership tab", "Editor calls membership route directly", "Return 403 membership_admin_required and audit role/access snapshot.", "red"],
+      ["Commercial vault", "Operations user requests value facts", "Return 403 commercial_vault_denied and no value fields.", "red"],
+      ["Inactive user", "Inactive user attempts login", "Return 401 not_authenticated with safe message and auth.login.failed audit.", "amber"],
+      ["Viewer mutation", "Viewer attempts PATCH record", "Return 403 section_access_denied with route and role evidence.", "blue"],
+      ["Import commit", "Non-admin attempts import commit", "Return 403 section_access_denied; dry-run stays untouched.", "amber"],
+      ["Webhook replay", "Provider event repeats", "Return 200/409 safe replay state, no duplicate invoice or seat writes.", "green"],
+      ["Report export", "Unauthorized report export", "Return 403 section_access_denied and audit export-denied target.", "blue"],
+      ["Validation failure", "Record payload misses required title", "Return 400 validation_error with field path and no stack trace.", "teal"],
+      ["Unexpected exception", "Handler throws", "Return 500 server_error with requestId only and alert event.", "red"],
+    ];
+    const testCommandBindings = [
+      ["pnpm test:errors", "Error envelopes", `${errorCatalog.length} error codes return the same safe envelope shape.`, "junit-error-envelope.xml", "red"],
+      ["pnpm test:audit", "Audit envelopes", `${auditEventMatrix.length} audit events write required fields and retention classes.`, "audit-event-proof.json", "teal"],
+      ["pnpm test:denials", "Denied evidence", `${denialProofScenarios.length} denial scenarios preserve tenant privacy and write audit proof.`, "denial-proof.json", "red"],
+      ["pnpm test:redaction", "Commercial privacy", "Tracker list, detail, search, and export do not leak vault fields.", "redaction-proof.json", "amber"],
+      ["pnpm test:request-id", "Traceability", "Every response and audit event carries the same requestId.", "request-id-proof.json", "blue"],
+      ["pnpm test:idempotency", "Replay safety", "Billing webhook and import commit retries are safe and auditable.", "idempotency-proof.json", "green"],
+      ["pnpm test:route-envelopes", "Route coverage", `${routeEnvelopeMap.length} route groups use shared error and audit middleware.`, "route-envelope-coverage.json", "blue"],
+      ["pnpm smoke:staging-audit", "Staging proof", "Login, denied access, record update, commercial view, import dry run, and report export produce evidence.", "staging-audit-smoke.json", "teal"],
+    ];
+    const implementationOrder = [
+      ["01", "Request id first", "Every inbound request receives a durable requestId before auth, tenant, or route handling.", "green"],
+      ["02", "Known error classes", "Create typed errors for validation, auth, tenant, section, commercial, membership, conflict, import, rate, and server failures.", "red"],
+      ["03", "Error middleware", "Convert every thrown error into the same safe envelope and response header.", "red"],
+      ["04", "Audit context", "Attach actor, company, section, route, target, decision, and requestId to the request context.", "teal"],
+      ["05", "Audit writer", "Persist allowed, denied, system, export, billing, import, feedback, and report events append-only.", "blue"],
+      ["06", "Denial helpers", "Centralize section, tenant, commercial, and membership denials so UI cannot bypass policy.", "red"],
+      ["07", "Route adoption", "Wrap all route groups with request, tenant, access, audit, redaction, and error middleware.", "amber"],
+      ["08", "Test proof", "Run error, audit, denial, redaction, idempotency, route-envelope, and staging smoke commands.", "green"],
+    ];
+    const acceptanceChecks = [
+      ["One error shape", "All backend routes return ok, requestId, code, message, path, method, retryable, and safe details.", "red"],
+      ["No inference leak", "Missing and cross-tenant records share the same not_found envelope.", "red"],
+      ["Audit on denial", "Every blocked section, commercial, membership, tenant, and inactive-user attempt writes evidence.", "teal"],
+      ["Request id joined", "Response header, client error, server log, and audit event all share the same requestId.", "blue"],
+      ["Commercial masked", "Operational tracker responses and exports never include value, agreement, LOA, invoice, or negotiation fields.", "amber"],
+      ["Webhook idempotent", "Repeated billing events do not double-write invoice, subscription, seat, or audit rows.", "green"],
+      ["Import safe", "Dry-run errors show row and field context; commit errors preserve rollback id and audit proof.", "blue"],
+      ["CI artifact ready", "Error, audit, denial, redaction, idempotency, and route-envelope tests publish evidence files.", "green"],
+    ];
+    return {
+      envelopeScore,
+      downloadHref,
+      errorEnvelopeFields,
+      errorCatalog,
+      auditEnvelopeFields,
+      routeEnvelopeMap,
+      auditEventMatrix,
+      middlewareFiles,
+      denialProofScenarios,
+      testCommandBindings,
+      implementationOrder,
+      acceptanceChecks,
+      examples: {
+        safeError: {
+          ok: false,
+          requestId: "req_01HY_PURSUIT_7G2M",
+          timestamp: "2026-05-14T10:35:00.000Z",
+          code: "commercial_vault_denied",
+          message: "You do not have access to this restricted commercial record.",
+          details: { section: "commercialVault", action: "read", remediation: "Ask a company admin to review access." },
+          path: "/commercial/records/:id",
+          method: "GET",
+          tenantVisible: false,
+          retryable: false,
+          supportHint: "Share this request id with the company admin.",
+          auditEventId: "aud_01HY_DENIED_91QK",
+        },
+        auditEvent: {
+          eventId: "aud_01HY_DENIED_91QK",
+          requestId: "req_01HY_PURSUIT_7G2M",
+          companyId: "capsa",
+          actorRole: "Editor",
+          eventType: "access.denied",
+          targetType: "commercialFact",
+          decision: "denied",
+          retentionClass: "restricted",
+        },
+      },
+      signalCards: [
+        ["Envelope readiness", `${envelopeScore}%`, "How ready route errors and audit evidence are for real backend implementation", envelopeScore >= 92 ? "green" : "amber"],
+        ["Error codes", errorCatalog.length, "Validation, auth, tenant, access, commercial, import, webhook, and server cases", "red"],
+        ["Audit events", auditEventMatrix.length, "Allowed, denied, system, export, billing, import, feedback, and report evidence", "teal"],
+        ["Route coverage", routeCount, `${routeCount} route groups / ${guardCount} guards / ${auditCount} source audit events`, "blue"],
+      ],
+      handoff: [
+        "v115 gives the future backend one safe response contract for every route, so UI, support, logs, audit, and CI can all trace the same request.",
+        "The important product decision is now explicit: frontline tracker users get operational records, while commercial and membership denials produce safe errors and audit evidence instead of accidental data leaks.",
+        "Engineering should implement request-id, typed errors, error middleware, audit context, audit writer, access denials, redaction, idempotency, and route adoption before adding deeper feature logic.",
+        "The next build can turn these tests and middleware expectations into GitHub Actions workflow files and branch-protection checks.",
+      ],
+    };
+  }
+
   function buildProductBuildTracker() {
     return {
-      version: "v104 Seed Data and Migration Fixture Pack",
-      phase: "Seed data and migration fixture pack",
+      version: "v115 API Error and Audit Envelope Pack",
+      phase: "API error and audit envelope pack",
       lane: "Static product prototype on GitHub Pages",
-      pace: "85 meaningful versions since rebrand",
-      summary: "The prototype now defines backend seed fixtures: tenant, users, operational records, commercial vault facts, import batches, audit events, migration assertions, fixture files, test scenarios, release gates, and handoff notes.",
+      pace: "96 meaningful versions since rebrand",
+      summary: "The prototype now defines the backend safety envelope: standard error responses, request ids, audit event payloads, denial evidence, middleware files, route coverage, test commands, acceptance checks, downloadable JSON, and implementation handoff.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, and seed fixture pack are live in demo form.", "teal"],
-        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, and fixture assertions are mapped.", "blue"],
-        ["Production backend", 95, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, and migration fixtures are mapped, but the real private repo is not created yet.", "red"],
-        ["Billing model", 68, "USD pricing, seat logic, checkout flow, invoice lifecycle, webhooks, plan changes, access locks, audit events, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, and billing seed cases are now mapped.", "amber"],
-        ["Pilot readiness", 99, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, security tests, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, and seed fixture checks.", "green"],
+        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, and API error/audit envelope pack are live in demo form.", "teal"],
+        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, and safe response examples are mapped.", "blue"],
+        ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, and route-envelope tests are mapped, but the real private repo and real staging environment are not created yet.", "red"],
+        ["Billing model", 85, "USD pricing, seat logic, checkout flow, invoice lifecycle, webhooks, plan changes, access locks, audit events, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "amber"],
+        ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, and safe error/audit envelope proof.", "green"],
       ],
       phases: [
         ["0", "Positioning", "Done", "PursuitDesk direction is set."],
@@ -7539,18 +9095,38 @@
         ["27", "Implementation issue export", "Active", "GitHub-ready issue titles, bodies, labels, owners, milestones, definitions of done, acceptance tests, import steps, and opening order are generated."],
         ["28", "Alpha API contract pack", "Active", "Auth, users, records, commercial vault, import, billing, feedback, and audit routes now have guards, payloads, responses, errors, audit events, and contract tests mapped."],
         ["29", "Seed data and migration fixture pack", "Active", "The exact seed tenant, users, operational records, commercial vault fixtures, import batches, audit events, fixture files, tests, and release gates are defined for backend tests."],
-        ["30", "Private repo creation guide", "Next", "The GitHub repository setup, labels, milestones, project board, branch protection, seed files, and first commands need to become a guided checklist."],
+        ["30", "Private repo creation guide", "Active", "The GitHub repository setup, labels, milestones, project board, branch protection, seed files, first commands, secrets, issue opening plan, and validation gates are now a guided checklist."],
+        ["31", "Staging smoke test script", "Active", "The first executable smoke path for install, migration, seed, login, records, redaction, import dry run, billing test mode, feedback, audit, rollback, and report artifacts is mapped."],
+        ["32", "Backend fixture export", "Active", "Concrete backend seed files, privacy split, validation scenarios, source batches, export commands, and downloadable fixture manifest are now mapped."],
+        ["33", "First backend sprint checklist", "Active", "The private repo guide, fixture export, issue export, API contracts, and smoke tests now become a daily sprint-zero implementation checklist."],
+        ["34", "Staging deployment checklist", "Active", "Environment lanes, secrets, database checks, monitoring, rollback, owner matrix, and go/no-go rehearsal are mapped for the first staging deployment."],
+        ["35", "Backend route skeleton map", "Active", "API contracts now become concrete route files, controllers, services, validators, middleware, tests, folders, and implementation slices."],
+        ["36", "Database migration blueprint", "Active", "Fixture export and route skeleton now become table ownership, indexes, seed order, migration files, rollback rules, and restore gates."],
+        ["37", "Auth and tenant guard blueprint", "Active", "Access profiles, route skeleton, and migration ownership now have session, tenant, section, vault, membership, and denied-audit implementation details."],
+        ["38", "Backend test command pack", "Active", "Route, migration, auth, tenant, commercial, billing, audit, restore, and release gates now have executable command proof."],
+        ["39", "Production backend repo file pack", "Active", "Route, migration, auth, test, workflow, env, docs, owner, and copy-order files now have a private repo creation pack."],
+        ["40", "API error and audit envelope pack", "Active", "Every backend route now has consistent safe errors, request ids, audit envelopes, denial proof, middleware targets, and tests mapped."],
+        ["41", "CI workflow file blueprint", "Next", "Backend test commands need real GitHub Actions workflow files, artifacts, branch protection, and release gates."],
       ],
       nextBuilds: [
-        ["v105", "Private Repo Creation Guide", "Turn the issue export and fixture pack into step-by-step GitHub repo creation, branch protection, labels, milestones, project board, seed files, and setup commands."],
-        ["v106", "Staging Smoke Test Script", "Define the first executable smoke test path for login, records, redaction, import dry run, billing test mode, feedback, audit, seed, and rollback."],
-        ["v107", "Backend Fixture Export", "Prepare copy-ready backend seed files and test fixture outlines for the private repo."],
+        ["v116", "CI Workflow File Blueprint", "Convert backend test commands into GitHub Actions workflow files, cache strategy, artifacts, and branch protection checks."],
+        ["v117", "Private Repo First Commit Builder", "Turn the v114 file pack and v115 envelope pack into first-commit file contents for the private production backend repo."],
+        ["v118", "Backend Issue Body Exporter", "Create copy-ready issue bodies for error middleware, audit writer, route wrappers, and CI gates."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
         "Generated issues still need to be opened in the private repo",
         "API contracts still need to be implemented in code",
-        "Seed fixtures still need to be committed into a real backend repository",
+        "Backend fixture export still needs to be copied into a real private backend repository",
+        "Staging deployment checklist is mapped, but no real staging environment exists yet",
+        "Staging secrets still need to be created in the hosting provider",
+        "Backend route skeleton is mapped, but route files are not created in a real private repo yet",
+        "Database migration blueprint is mapped, but migration files are not created or run in a real private repo yet",
+        "Auth and tenant guard blueprint is mapped, but the guards are not implemented in real middleware yet",
+        "Backend test command pack is mapped, but commands are not executable until the private repo exists",
+        "Production backend repo file pack is mapped, but files are not yet created in the private repo",
+        "API error and audit envelope pack is mapped, but middleware and audit writer are not implemented in a real backend yet",
+        "Staging smoke commands are planned but not executable until the backend repo exists",
         "Real workbook parser and migration runner are still modeled, not implemented",
         "Real company account isolation",
         "Backend database and API",
@@ -12081,6 +13657,2962 @@
             </div>
           </article>
         </div>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoCreationGuide(model) {
+    return `
+      <section class="private-repo-guide">
+        <div class="private-repo-hero">
+          <div>
+            <span class="metric-label">Private repo creation guide</span>
+            <h3>Create the real production repository without losing the product discipline.</h3>
+            <p>This guide turns the current prototype, API contracts, issue export, and seed fixtures into a practical GitHub setup path for the first private PursuitDesk backend repository.</p>
+            <div class="private-repo-action-row">
+              <button class="secondary-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
+            </div>
+          </div>
+          <div class="private-repo-score-card">
+            <span>Repo guide score</span>
+            <strong>${model.repoGuideScore}%</strong>
+            <i style="--width: ${model.repoGuideScore}%"></i>
+            <small>${model.creationSteps.length} setup steps / ${model.labelSetup.length} labels / ${model.milestoneSetup.length} milestones.</small>
+          </div>
+        </div>
+
+        <div class="private-repo-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="private-repo-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="private-repo-two-column">
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Repository identity</span>
+                <h3>Name, owner, privacy, and branch base</h3>
+              </div>
+            </div>
+            <div class="private-repo-identity-grid">
+              ${model.repoIdentity
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Creation checklist</span>
+                <h3>GitHub actions in the correct order</h3>
+              </div>
+              <span>${model.creationSteps.length} steps</span>
+            </div>
+            <div class="private-repo-step-list">
+              ${model.creationSteps
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="private-repo-two-column">
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Label system</span>
+                <h3>Create labels before opening issues</h3>
+              </div>
+              <span>${model.labelSetup.length} labels</span>
+            </div>
+            <div class="private-repo-label-grid">
+              ${model.labelSetup
+                .map(
+                  ([label, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Milestones</span>
+                <h3>Repo progress gates</h3>
+              </div>
+              <span>${model.milestoneSetup.length} milestones</span>
+            </div>
+            <div class="private-repo-milestone-grid">
+              ${model.milestoneSetup
+                .map(
+                  ([code, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(code)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="private-repo-two-column">
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Branch protection</span>
+                <h3>Rules before code starts moving</h3>
+              </div>
+            </div>
+            <div class="private-repo-branch-grid">
+              ${model.branchRules
+                .map(
+                  ([branch, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(title)}</span>
+                      <strong>${escapeHtml(branch)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Project board</span>
+                <h3>Simple lanes for sprint zero</h3>
+              </div>
+            </div>
+            <div class="private-repo-board-grid">
+              ${model.projectBoard
+                .map(
+                  ([lane, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(lane)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="private-repo-two-column">
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Secrets plan</span>
+                <h3>Staging names before live keys exist</h3>
+              </div>
+              <span>${model.secretPlan.length} secrets</span>
+            </div>
+            <div class="private-repo-secret-grid">
+              ${model.secretPlan
+                .map(
+                  ([key, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong><code>${escapeHtml(key)}</code></strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">First files</span>
+                <h3>What the first commit should contain</h3>
+              </div>
+              <span>${model.firstFiles.length} files</span>
+            </div>
+            <div class="private-repo-file-grid">
+              ${model.firstFiles
+                .map(
+                  ([path, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(path)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="private-repo-two-column">
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue opening plan</span>
+                <h3>The first issues to open</h3>
+              </div>
+              <span>${model.issueOpeningPlan.length} first moves</span>
+            </div>
+            <div class="private-repo-issue-list">
+              ${model.issueOpeningPlan
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Setup commands</span>
+                <h3>First local runbook</h3>
+              </div>
+              <span>${model.setupCommands.length} commands</span>
+            </div>
+            <div class="private-repo-command-list">
+              ${model.setupCommands
+                .map(
+                  ([step, command, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong><code>${escapeHtml(command)}</code></strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="private-repo-two-column">
+          <article class="private-repo-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Validation checklist</span>
+                <h3>Before the first backend sprint starts</h3>
+              </div>
+              <span>${model.validationChecklist.filter(([, , ready]) => ready).length}/${model.validationChecklist.length} pass</span>
+            </div>
+            <div class="private-repo-validation-list">
+              ${model.validationChecklist
+                .map(
+                  ([label, note, ready, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${ready ? "Ready" : "Pending"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="private-repo-panel private-repo-handoff-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Private repo handoff</span>
+                <h3>What v105 makes possible</h3>
+              </div>
+            </div>
+            <div class="private-repo-handoff-list">
+              ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderStagingSmokeTestScript(model) {
+    return `
+      <section class="staging-smoke-script">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Staging smoke test script</span>
+            <h3>Prove the first backend is safe before any live customer data.</h3>
+            <p>This script defines the first staging proof run: install, migrate, seed, authenticate, protect commercial data, dry-run imports, test billing, capture feedback, write audit proof, rehearse rollback, and generate a smoke report.</p>
+            <div class="staging-smoke-action-row">
+              <button class="secondary-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Smoke readiness</span>
+            <strong>${model.smokeScore}%</strong>
+            <i style="--width: ${model.smokeScore}%"></i>
+            <small>${model.smokeCommands.length} commands / ${model.smokePaths.length} smoke paths / ${model.acceptanceGates.length} gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Environment matrix</span>
+              <h3>Where the smoke run is allowed to execute</h3>
+            </div>
+            <span>${model.environmentMatrix.length} lanes</span>
+          </div>
+          <div class="staging-env-grid">
+            ${model.environmentMatrix
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(String(value))}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Smoke command script</span>
+              <h3>First run order from fresh clone to smoke report</h3>
+            </div>
+            <span>${model.smokeCommands.length} commands</span>
+          </div>
+          <div class="staging-command-list">
+            ${model.smokeCommands
+              .map(
+                ([step, command, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(step)}</span>
+                    <strong><code>${escapeHtml(command)}</code></strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Smoke paths</span>
+                <h3>Product promises the backend must prove</h3>
+              </div>
+              <span>${model.smokePaths.length} paths</span>
+            </div>
+            <div class="staging-path-grid">
+              ${model.smokePaths
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Fixture coverage</span>
+                <h3>Data the smoke script depends on</h3>
+              </div>
+              <span>${model.fixtureCoverage.length} fixtures</span>
+            </div>
+            <div class="staging-fixture-grid">
+              ${model.fixtureCoverage
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Role smoke matrix</span>
+                <h3>Access behavior that must be proven</h3>
+              </div>
+              <span>${model.roleSmokeMatrix.length} roles</span>
+            </div>
+            <div class="staging-role-grid">
+              ${model.roleSmokeMatrix
+                .map(
+                  ([role, scope, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(scope)}</span>
+                      <strong>${escapeHtml(role)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Failure rules</span>
+                <h3>When staging must stop</h3>
+              </div>
+              <span>${model.failureRules.length} rules</span>
+            </div>
+            <div class="staging-failure-list">
+              ${model.failureRules
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Artifact pack</span>
+                <h3>Evidence created by every smoke run</h3>
+              </div>
+              <span>${model.artifactPack.length} artifacts</span>
+            </div>
+            <div class="staging-artifact-grid">
+              ${model.artifactPack
+                .map(
+                  ([file, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(file)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance gates</span>
+                <h3>Before staging can be trusted</h3>
+              </div>
+              <span>${model.acceptanceGates.filter(([, ready]) => ready).length}/${model.acceptanceGates.length} pass</span>
+            </div>
+            <div class="staging-gate-list">
+              ${model.acceptanceGates
+                .map(
+                  ([label, ready, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${ready ? "Ready" : "Pending"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Smoke script handoff</span>
+              <h3>What v106 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendFixtureExport(model) {
+    return `
+      <section class="backend-fixture-export">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend fixture export</span>
+            <h3>Turn the prototype data into copy-ready backend fixtures.</h3>
+            <p>The export separates frontline tracker records from commercial vault data, keeps source workbook lineage, defines seed files, creates validation scenarios, and gives the private repo a repeatable fixture contract.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-fixture-export-v115.json">Download fixture JSON</a>
+              <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Export readiness</span>
+            <strong>${model.exportScore}%</strong>
+            <i style="--width: ${model.exportScore}%"></i>
+            <small>${model.seedFiles.length} seed files / ${model.exportTables.length} table exports / ${model.sourceBatches.length} source batches.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Export table map</span>
+              <h3>Files the first backend seed should create</h3>
+            </div>
+            <span>${model.exportTables.length} tables</span>
+          </div>
+          <div class="staging-env-grid">
+            ${model.exportTables
+              .map(
+                ([file, count, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(file)}</span>
+                    <strong>${escapeHtml(String(count))}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Fixture export commands</span>
+              <h3>How engineering should generate and prove the fixture pack</h3>
+            </div>
+            <span>${model.exportCommands.length} commands</span>
+          </div>
+          <div class="staging-command-list">
+            ${model.exportCommands
+              .map(
+                ([step, command, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(step)}</span>
+                    <strong><code>${escapeHtml(command)}</code></strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Seed file targets</span>
+                <h3>Where the private repo should place the exported data</h3>
+              </div>
+              <span>${model.seedFiles.length} files</span>
+            </div>
+            <div class="staging-path-grid">
+              ${model.seedFiles
+                .map(
+                  ([file, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(file)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Privacy split</span>
+                <h3>Tracker data versus restricted backend data</h3>
+              </div>
+              <span>${model.privacySplit.length} layers</span>
+            </div>
+            <div class="staging-role-grid">
+              ${model.privacySplit
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Transformation rules</span>
+                <h3>How the Excel-shaped demo becomes SaaS-shaped data</h3>
+              </div>
+              <span>${model.transformationRules.length} rules</span>
+            </div>
+            <div class="staging-fixture-grid">
+              ${model.transformationRules
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Validation scenarios</span>
+                <h3>What must match after import into the backend</h3>
+              </div>
+              <span>${model.validationScenarios.length} scenarios</span>
+            </div>
+            <div class="staging-gate-list">
+              ${model.validationScenarios
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(String(value))}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Source batch ledger</span>
+              <h3>Workbook lineage carried into the backend fixture</h3>
+            </div>
+            <span>${model.sourceBatches.length} batches</span>
+          </div>
+          <div class="fixture-source-table">
+            <div>
+              <span>Batch</span>
+              <span>Workbook</span>
+              <span>Sheet</span>
+              <span>Rows</span>
+              <span>Sample reference</span>
+            </div>
+            ${model.sourceBatches
+              .map(
+                ([batchId, workbook, sheet, count, sample]) => `
+                  <div>
+                    <strong>${escapeHtml(batchId)}</strong>
+                    <span>${escapeHtml(workbook)}</span>
+                    <span>${escapeHtml(sheet)}</span>
+                    <strong>${escapeHtml(String(count))}</strong>
+                    <span>${escapeHtml(sample)}</span>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Fixture export handoff</span>
+              <h3>What v107 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderFirstBackendSprintChecklist(model) {
+    return `
+      <section class="first-backend-sprint">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">First backend sprint checklist</span>
+            <h3>Move from product plan to the first private-repo sprint.</h3>
+            <p>This checklist turns the private repo guide, fixture export, API contracts, issue export, and staging smoke script into a sprint-zero operating rhythm for the first backend build.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-sprint-checklist-v115.json">Download sprint JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Sprint readiness</span>
+            <strong>${model.sprintScore}%</strong>
+            <i style="--width: ${model.sprintScore}%"></i>
+            <small>${model.sprintDays.length} sprint days / ${model.openingTickets.length} tickets / ${model.pullRequestGates.length} PR gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Sprint calendar</span>
+              <h3>Day-by-day path from private repo to first staging smoke</h3>
+            </div>
+            <span>${model.sprintDays.length} days</span>
+          </div>
+          <div class="sprint-calendar-table">
+            <div>
+              <span>Day</span>
+              <span>Focus</span>
+              <span>Output</span>
+              <span>Exit gate</span>
+              <span>Owner</span>
+            </div>
+            ${model.sprintDays
+              .map(
+                ([day, focus, output, gate, owner]) => `
+                  <div>
+                    <strong>${escapeHtml(day)}</strong>
+                    <span>${escapeHtml(focus)}</span>
+                    <span>${escapeHtml(output)}</span>
+                    <span>${escapeHtml(gate)}</span>
+                    <strong>${escapeHtml(owner)}</strong>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Workstream lanes</span>
+              <h3>What the sprint must keep moving in parallel</h3>
+            </div>
+            <span>${model.workstreams.length} lanes</span>
+          </div>
+          <div class="staging-env-grid">
+            ${model.workstreams
+              .map(
+                ([label, scope, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(scope)}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Opening implementation tickets</span>
+              <h3>First issues to move from plan into code</h3>
+            </div>
+            <span>${model.openingTickets.length} tickets</span>
+          </div>
+          <div class="staging-command-list">
+            ${model.openingTickets
+              .map(
+                ([id, title, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(id)}</span>
+                    <strong>${escapeHtml(title)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Pull request gates</span>
+                <h3>Rules for the first backend PRs</h3>
+              </div>
+              <span>${model.pullRequestGates.length} gates</span>
+            </div>
+            <div class="staging-gate-list">
+              ${model.pullRequestGates
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checklist</span>
+                <h3>What sprint zero must prove before staging deploy</h3>
+              </div>
+              <span>${model.acceptanceChecklist.filter(([, ready]) => ready).length}/${model.acceptanceChecklist.length} pass</span>
+            </div>
+            <div class="staging-role-grid">
+              ${model.acceptanceChecklist
+                .map(
+                  ([label, ready, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${ready ? "Ready" : "Pending"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Daily sprint rhythm</span>
+                <h3>How to run the first backend week</h3>
+              </div>
+              <span>${model.dailyRitual.length} touchpoints</span>
+            </div>
+            <div class="staging-fixture-grid">
+              ${model.dailyRitual
+                .map(
+                  ([time, label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(time)}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Sprint risk rules</span>
+                <h3>What not to let the first build drift into</h3>
+              </div>
+              <span>${model.sprintRisks.length} rules</span>
+            </div>
+            <div class="staging-failure-list">
+              ${model.sprintRisks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Sprint handoff</span>
+              <h3>What the sprint gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderStagingDeploymentChecklist(model) {
+    return `
+      <section class="staging-deployment-checklist">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Staging deployment checklist</span>
+            <h3>Turn sprint-zero output into a controlled staging release.</h3>
+            <p>This checklist defines the first private backend staging environment: environment lanes, secrets, database checks, monitoring, rollback, owners, and go/no-go gates before any pilot user touches live data.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-staging-deployment-checklist-v115.json">Download deployment JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Deployment readiness</span>
+            <strong>${model.deploymentScore}%</strong>
+            <i style="--width: ${model.deploymentScore}%"></i>
+            <small>${model.environmentLanes.length} lanes / ${model.secretChecklist.length} secrets / ${model.goNoGoGates.length} go-no-go gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Environment lanes</span>
+              <h3>What must exist before the first staging deploy</h3>
+            </div>
+            <span>${model.environmentLanes.length} lanes</span>
+          </div>
+          <div class="staging-env-grid">
+            ${model.environmentLanes
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Secret inventory</span>
+                <h3>Configuration that must never enter GitHub</h3>
+              </div>
+              <span>${model.secretChecklist.length} secrets</span>
+            </div>
+            <div class="deployment-secret-table">
+              <div>
+                <span>Secret</span>
+                <span>Purpose</span>
+                <span>Tone</span>
+              </div>
+              ${model.secretChecklist
+                .map(
+                  ([secret, purpose, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(secret)}</strong>
+                      <span>${escapeHtml(purpose)}</span>
+                      <span>${escapeHtml(tone)}</span>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Release memo</span>
+                <h3>The staging decision in plain English</h3>
+              </div>
+            </div>
+            <div class="staging-handoff-list">
+              ${model.releaseMemo.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Deployment runbook</span>
+              <h3>First staging deployment from clean repo to go/no-go review</h3>
+            </div>
+            <span>${model.deploymentRunbook.length} steps</span>
+          </div>
+          <div class="deployment-runbook-table">
+            <div>
+              <span>No</span>
+              <span>Step</span>
+              <span>Proof</span>
+              <span>Owner</span>
+            </div>
+            ${model.deploymentRunbook
+              .map(
+                ([no, step, proof, owner, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(no)}</strong>
+                    <strong>${escapeHtml(step)}</strong>
+                    <span>${escapeHtml(proof)}</span>
+                    <span>${escapeHtml(owner)}</span>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Database checks</span>
+                <h3>Migration, tenant, vault, import, audit, and restore proof</h3>
+              </div>
+              <span>${model.databaseChecks.length} checks</span>
+            </div>
+            <div class="staging-path-grid">
+              ${model.databaseChecks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Monitoring checks</span>
+                <h3>What the release owner watches after deploy</h3>
+              </div>
+              <span>${model.monitoringChecks.length} checks</span>
+            </div>
+            <div class="staging-fixture-grid">
+              ${model.monitoringChecks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Rollback plan</span>
+                <h3>How to recover before users feel the failure</h3>
+              </div>
+              <span>${model.rollbackPlan.length} moves</span>
+            </div>
+            <div class="staging-failure-list">
+              ${model.rollbackPlan
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Go/no-go gates</span>
+                <h3>What must be true before pilot users are enabled</h3>
+              </div>
+              <span>${model.goNoGoGates.filter(([, ready]) => ready).length}/${model.goNoGoGates.length} pass</span>
+            </div>
+            <div class="staging-gate-list">
+              ${model.goNoGoGates
+                .map(
+                  ([label, ready, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${ready ? "Pass" : "Pending"}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Owner matrix</span>
+              <h3>Named accountability for the first controlled staging release</h3>
+            </div>
+            <span>${model.ownerMatrix.length} owners</span>
+          </div>
+          <div class="staging-role-grid">
+            ${model.ownerMatrix
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Deployment handoff</span>
+              <h3>What deployment gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendRouteSkeletonMap(model) {
+    return `
+      <section class="backend-route-skeleton-map">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend route skeleton map</span>
+            <h3>Convert the API contract pack into files engineers can create.</h3>
+            <p>This map takes the alpha API contract pack and turns it into route files, controllers, services, validators, middleware, tests, folders, and implementation slices for the private backend repo.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-route-skeleton-map-v115.json">Download route JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Route skeleton readiness</span>
+            <strong>${model.routeSkeletonScore}%</strong>
+            <i style="--width: ${model.routeSkeletonScore}%"></i>
+            <small>${model.routeFiles.length} files / ${model.controllerMap.length} route groups / ${model.routeTestMatrix.length} tests.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Route file map</span>
+              <h3>The first backend files to create</h3>
+            </div>
+            <span>${model.routeFiles.length} files</span>
+          </div>
+          <div class="staging-command-list route-file-list">
+            ${model.routeFiles
+              .map(
+                ([path, label, note, owner, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(path)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                    <em>${escapeHtml(owner)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Controller and service map</span>
+              <h3>Route group boundaries for the private backend repo</h3>
+            </div>
+            <span>${model.controllerMap.length} groups</span>
+          </div>
+          <div class="route-skeleton-table">
+            <div>
+              <span>Group</span>
+              <span>Route</span>
+              <span>Controller</span>
+              <span>Service</span>
+              <span>Validator</span>
+              <span>Test</span>
+            </div>
+            ${model.controllerMap
+              .map(
+                ([group, route, controller, service, schema, test, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(group)}</strong>
+                    <span>${escapeHtml(route)}</span>
+                    <span>${escapeHtml(controller)}</span>
+                    <span>${escapeHtml(service)}</span>
+                    <span>${escapeHtml(schema)}</span>
+                    <span>${escapeHtml(test)}</span>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Middleware stack</span>
+                <h3>Rules that every route should pass through</h3>
+              </div>
+              <span>${model.middlewareStack.length} layers</span>
+            </div>
+            <div class="staging-path-grid">
+              ${model.middlewareStack
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Service boundaries</span>
+                <h3>Where the business logic should live</h3>
+              </div>
+              <span>${model.serviceBoundaries.length} services</span>
+            </div>
+            <div class="staging-fixture-grid">
+              ${model.serviceBoundaries
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Route test matrix</span>
+                <h3>Tests that protect the first backend build</h3>
+              </div>
+              <span>${model.routeTestMatrix.length} tests</span>
+            </div>
+            <div class="staging-gate-list">
+              ${model.routeTestMatrix
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Implementation slices</span>
+                <h3>Thin build order for sprint execution</h3>
+              </div>
+              <span>${model.implementationSlices.length} slices</span>
+            </div>
+            <div class="staging-failure-list">
+              ${model.implementationSlices
+                .map(
+                  ([slice, label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(slice)}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Folder boundaries</span>
+              <h3>How to keep the backend tidy from day one</h3>
+            </div>
+            <span>${model.folderMap.length} folders</span>
+          </div>
+          <div class="staging-role-grid">
+            ${model.folderMap
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Route skeleton handoff</span>
+              <h3>What v110 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderDatabaseMigrationBlueprint(model) {
+    return `
+      <section class="database-migration-blueprint">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Database migration blueprint</span>
+            <h3>Turn the route skeleton into a production database path.</h3>
+            <p>This blueprint defines migration files, table ownership, indexes, seed order, rollback rules, validation gates, commands, and data contracts for the first private backend database.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-database-migration-blueprint-v115.json">Download migration JSON</a>
+              <button class="ghost-btn" type="button" data-view="Import">Open import</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Migration blueprint readiness</span>
+            <strong>${model.migrationBlueprintScore}%</strong>
+            <i style="--width: ${model.migrationBlueprintScore}%"></i>
+            <small>${model.migrationFiles.length} migrations / ${model.tableOwnership.length} ownership areas / ${model.validationGates.length} gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Migration file order</span>
+              <h3>The SQL path for the first private database</h3>
+            </div>
+            <span>${model.migrationFiles.length} files</span>
+          </div>
+          <div class="migration-file-table">
+            <div>
+              <span>File</span>
+              <span>Layer</span>
+              <span>Tables</span>
+              <span>Purpose</span>
+              <span>Owner</span>
+            </div>
+            ${model.migrationFiles
+              .map(
+                ([file, layer, tables, purpose, owner, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(file)}</strong>
+                    <span>${escapeHtml(layer)}</span>
+                    <span>${escapeHtml(tables)}</span>
+                    <p>${escapeHtml(purpose)}</p>
+                    <em>${escapeHtml(owner)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Table ownership</span>
+                <h3>Who owns each data layer</h3>
+              </div>
+              <span>${model.tableOwnership.length} areas</span>
+            </div>
+            <div class="staging-path-grid">
+              ${model.tableOwnership
+                .map(
+                  ([layer, owner, tables, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(layer)}</span>
+                      <strong>${escapeHtml(owner)}</strong>
+                      <p>${escapeHtml(tables)}</p>
+                      <small>${escapeHtml(note)}</small>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Index plan</span>
+                <h3>Query paths that keep the app quick</h3>
+              </div>
+              <span>${model.indexPlan.length} indexes</span>
+            </div>
+            <div class="staging-fixture-grid">
+              ${model.indexPlan
+                .map(
+                  ([name, target, fields, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(name)}</span>
+                      <strong>${escapeHtml(target)}</strong>
+                      <p>${escapeHtml(fields)}</p>
+                      <small>${escapeHtml(note)}</small>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Seed order</span>
+              <h3>Fixture loading order for one safe tenant</h3>
+            </div>
+            <span>${model.seedOrder.length} steps</span>
+          </div>
+          <div class="migration-seed-table">
+            <div>
+              <span>Step</span>
+              <span>Seed</span>
+              <span>Target</span>
+              <span>Acceptance</span>
+            </div>
+            ${model.seedOrder
+              .map(
+                ([step, label, target, acceptance, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(step)}</strong>
+                    <span>${escapeHtml(label)}</span>
+                    <span>${escapeHtml(target)}</span>
+                    <p>${escapeHtml(acceptance)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Rollback rules</span>
+                <h3>How migrations stay reversible</h3>
+              </div>
+              <span>${model.rollbackRules.length} rules</span>
+            </div>
+            <div class="staging-failure-list">
+              ${model.rollbackRules
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Validation gates</span>
+                <h3>What must pass before pilot data</h3>
+              </div>
+              <span>${model.validationGates.length} gates</span>
+            </div>
+            <div class="staging-gate-list">
+              ${model.validationGates
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Data contracts</span>
+                <h3>Which layer each route can expose</h3>
+              </div>
+              <span>${model.dataContracts.length} contracts</span>
+            </div>
+            <div class="staging-role-grid">
+              ${model.dataContracts
+                .map(
+                  ([label, table, fields, access, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(table)}</strong>
+                      <p>${escapeHtml(fields)}</p>
+                      <small>${escapeHtml(access)}</small>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Migration commands</span>
+                <h3>First backend commands to wire into CI</h3>
+              </div>
+              <span>${model.migrationCommands.length} commands</span>
+            </div>
+            <div class="staging-command-list migration-command-list">
+              ${model.migrationCommands
+                .map(
+                  ([command, purpose, output, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <code>${escapeHtml(command)}</code>
+                      <strong>${escapeHtml(purpose)}</strong>
+                      <p>${escapeHtml(output)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Migration handoff</span>
+              <h3>What v111 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderAuthTenantGuardBlueprint(model) {
+    return `
+      <section class="auth-tenant-guard-blueprint">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Auth and tenant guard blueprint</span>
+            <h3>Protect every company, user, room, and commercial field.</h3>
+            <p>This guard map turns the access model into backend middleware for sessions, tenant isolation, section permissions, commercial vault access, membership admin, mutations, safe errors, and denied-access audit proof.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-auth-tenant-guard-blueprint-v115.json">Download auth guard JSON</a>
+              <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Auth guard readiness</span>
+            <strong>${model.guardScore}%</strong>
+            <i style="--width: ${model.guardScore}%"></i>
+            <small>${model.guardFiles.length} files / ${model.sectionRules.length} sections / ${model.deniedAuditEvents.length} denied events.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Access signal</span>
+              <h3>Current demo users become guard test profiles</h3>
+            </div>
+            <span>${model.userSignals.length} signals</span>
+          </div>
+          <div class="auth-signal-grid">
+            ${model.userSignals
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(String(value))}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Guard implementation files</span>
+              <h3>The backend files that enforce security</h3>
+            </div>
+            <span>${model.guardFiles.length} files</span>
+          </div>
+          <div class="auth-guard-table">
+            <div>
+              <span>File</span>
+              <span>Guard</span>
+              <span>Policy</span>
+              <span>Test</span>
+              <span>Owner</span>
+            </div>
+            ${model.guardFiles
+              .map(
+                ([file, guard, policy, test, owner, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(file)}</strong>
+                    <span>${escapeHtml(guard)}</span>
+                    <p>${escapeHtml(policy)}</p>
+                    <span>${escapeHtml(test)}</span>
+                    <em>${escapeHtml(owner)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Middleware order</span>
+              <h3>Every protected route should pass these gates</h3>
+            </div>
+            <span>${model.middlewareOrder.length} gates</span>
+          </div>
+          <div class="staging-command-list auth-middleware-list">
+            ${model.middlewareOrder
+              .map(
+                ([step, label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(step)}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Section permission matrix</span>
+              <h3>Each room gets a backend access rule</h3>
+            </div>
+            <span>${model.sectionRules.length} sections</span>
+          </div>
+          <div class="auth-section-table">
+            <div>
+              <span>Section</span>
+              <span>Key</span>
+              <span>Route</span>
+              <span>Default</span>
+              <span>Backend rule</span>
+            </div>
+            ${model.sectionRules
+              .map(
+                ([label, key, route, defaultAccess, rule, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(label)}</strong>
+                    <span>${escapeHtml(key)}</span>
+                    <span>${escapeHtml(route)}</span>
+                    <span>${escapeHtml(defaultAccess)}</span>
+                    <p>${escapeHtml(rule)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Tenant isolation</span>
+                <h3>Rules that keep companies separate</h3>
+              </div>
+              <span>${model.tenantIsolationRules.length} rules</span>
+            </div>
+            <div class="staging-path-grid">
+              ${model.tenantIsolationRules
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Session policy</span>
+                <h3>Identity rules before company data appears</h3>
+              </div>
+              <span>${model.sessionPolicy.length} policies</span>
+            </div>
+            <div class="staging-fixture-grid">
+              ${model.sessionPolicy
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Denied audit events</span>
+                <h3>Blocked access becomes proof</h3>
+              </div>
+              <span>${model.deniedAuditEvents.length} events</span>
+            </div>
+            <div class="staging-failure-list">
+              ${model.deniedAuditEvents
+                .map(
+                  ([event, note, scope, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(scope)}</span>
+                      <strong>${escapeHtml(event)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Guard test matrix</span>
+                <h3>Tests that prove the guards work</h3>
+              </div>
+              <span>${model.guardTests.length} tests</span>
+            </div>
+            <div class="staging-gate-list">
+              ${model.guardTests
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Route guard map</span>
+              <h3>How route groups connect to tenant, section, and vault rules</h3>
+            </div>
+            <span>${model.routeGuardMap.length} route groups</span>
+          </div>
+          <div class="auth-route-guard-grid">
+            ${model.routeGuardMap
+              .map(
+                ([group, route, guard, checks, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(group)}</span>
+                    <strong>${escapeHtml(route)}</strong>
+                    <p>${escapeHtml(guard)}</p>
+                    <small>${escapeHtml(checks)}</small>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Auth guard handoff</span>
+              <h3>What v112 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendTestCommandPack(model) {
+    return `
+      <section class="backend-test-command-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend test command pack</span>
+            <h3>Make the future backend prove itself before pilot data enters.</h3>
+            <p>This pack converts routes, migrations, auth guards, tenant isolation, commercial redaction, billing, import, audit, restore, and staging smoke checks into executable commands with CI artifacts and release gates.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-test-command-pack-v115.json">Download test command JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Command readiness</span>
+            <strong>${model.testCommandScore}%</strong>
+            <i style="--width: ${model.testCommandScore}%"></i>
+            <small>${model.testCommands.length} commands / ${model.ciJobs.length} CI jobs / ${model.artifactMap.length} artifacts.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Local command suite</span>
+              <h3>The commands engineering should be able to run</h3>
+            </div>
+            <span>${model.testCommands.length} commands</span>
+          </div>
+          <div class="backend-test-command-table">
+            <div>
+              <span>Step</span>
+              <span>Command</span>
+              <span>Suite</span>
+              <span>What it proves</span>
+              <span>Artifact</span>
+            </div>
+            ${model.testCommands
+              .map(
+                ([step, command, suite, proof, artifact, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(step)}</strong>
+                    <code>${escapeHtml(command)}</code>
+                    <span>${escapeHtml(suite)}</span>
+                    <p>${escapeHtml(proof)}</p>
+                    <em>${escapeHtml(artifact)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">CI workflow lanes</span>
+                <h3>GitHub Actions jobs for the private repo</h3>
+              </div>
+              <span>${model.ciJobs.length} jobs</span>
+            </div>
+            <div class="backend-ci-job-grid">
+              ${model.ciJobs
+                .map(
+                  ([key, label, command, proof, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(key)}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <code>${escapeHtml(command)}</code>
+                      <p>${escapeHtml(proof)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Proof artifacts</span>
+                <h3>Every pass or fail leaves evidence</h3>
+              </div>
+              <span>${model.artifactMap.length} artifacts</span>
+            </div>
+            <div class="backend-artifact-map-grid">
+              ${model.artifactMap
+                .map(
+                  ([file, label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(file)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Coverage matrix</span>
+              <h3>What each command family must cover</h3>
+            </div>
+            <span>${model.coverageMatrix.length} families</span>
+          </div>
+          <div class="backend-coverage-table">
+            <div>
+              <span>Family</span>
+              <span>Scope</span>
+              <span>Command</span>
+              <span>Coverage expectation</span>
+            </div>
+            ${model.coverageMatrix
+              .map(
+                ([family, count, command, expectation, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(family)}</strong>
+                    <span>${escapeHtml(String(count))}</span>
+                    <code>${escapeHtml(command)}</code>
+                    <p>${escapeHtml(expectation)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Fixture command binding</span>
+                <h3>Seed files connect directly to commands</h3>
+              </div>
+              <span>${model.fixtureCommandMap.length} bindings</span>
+            </div>
+            <div class="backend-fixture-command-grid">
+              ${model.fixtureCommandMap
+                .map(
+                  ([file, command, proof, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(file)}</span>
+                      <strong>${escapeHtml(command)}</strong>
+                      <p>${escapeHtml(proof)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Failure policy</span>
+                <h3>Which failures block release</h3>
+              </div>
+              <span>${model.failurePolicy.length} rules</span>
+            </div>
+            <div class="backend-failure-policy-grid">
+              ${model.failurePolicy
+                .map(
+                  ([level, policy, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(level)}</strong>
+                      <p>${escapeHtml(policy)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Release gates</span>
+                <h3>Non-negotiable proof before pilot</h3>
+              </div>
+              <span>${model.releaseGates.length} gates</span>
+            </div>
+            <div class="backend-release-gate-grid">
+              ${model.releaseGates
+                .map(
+                  ([gate, rule, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(gate)}</strong>
+                      <p>${escapeHtml(rule)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Local runbook</span>
+                <h3>How a developer should prove a fresh clone</h3>
+              </div>
+              <span>${model.localRunbook.length} steps</span>
+            </div>
+            <div class="backend-local-runbook-grid">
+              ${model.localRunbook
+                .map(
+                  ([label, command, proof, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(command)}</strong>
+                      <p>${escapeHtml(proof)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Backend test handoff</span>
+              <h3>What v113 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderProductionBackendRepoFilePack(model) {
+    return `
+      <section class="production-repo-file-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Production backend repo file pack</span>
+            <h3>Turn the private backend repo into a disciplined first commit.</h3>
+            <p>This file pack defines the folder tree, first commit files, API route batches, migration files, auth guard files, test files, CI workflows, environment examples, copy order, owners, and acceptance checks for the real PursuitDesk backend repository.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-file-pack-v115.json">Download repo file JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>File-pack readiness</span>
+            <strong>${model.repoFileReadiness}%</strong>
+            <i style="--width: ${model.repoFileReadiness}%"></i>
+            <small>${model.repositoryFolders.length} folders / ${model.firstCommitFiles.length} first files / ${model.workflowFiles.length} workflows.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Repository folders</span>
+              <h3>The private repo starts with clear ownership boundaries</h3>
+            </div>
+            <span>${model.repositoryFolders.length} folders</span>
+          </div>
+          <div class="production-folder-grid">
+            ${model.repositoryFolders
+              .map(
+                ([path, label, note, owner, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(path)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                    <em>${escapeHtml(owner)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">First commit files</span>
+              <h3>Do not start with a blank repo</h3>
+            </div>
+            <span>${model.firstCommitFiles.length} files</span>
+          </div>
+          <div class="production-file-table">
+            <div>
+              <span>File</span>
+              <span>Purpose</span>
+              <span>Why it matters</span>
+              <span>Owner</span>
+            </div>
+            ${model.firstCommitFiles
+              .map(
+                ([file, purpose, note, owner, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(file)}</strong>
+                    <span>${escapeHtml(purpose)}</span>
+                    <p>${escapeHtml(note)}</p>
+                    <em>${escapeHtml(owner)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">API file batches</span>
+              <h3>Each route group has a route, controller, service, schema, and test</h3>
+            </div>
+            <span>${model.apiFileBatch.length} groups</span>
+          </div>
+          <div class="production-api-table">
+            <div>
+              <span>Module</span>
+              <span>Route</span>
+              <span>Controller</span>
+              <span>Service</span>
+              <span>Schema</span>
+              <span>Test</span>
+            </div>
+            ${model.apiFileBatch
+              .map(
+                ([module, route, controller, service, schema, test, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(module)}</strong>
+                    <span>${escapeHtml(route)}</span>
+                    <span>${escapeHtml(controller)}</span>
+                    <span>${escapeHtml(service)}</span>
+                    <span>${escapeHtml(schema)}</span>
+                    <em>${escapeHtml(test)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Migration files</span>
+                <h3>Database files to create first</h3>
+              </div>
+              <span>${model.migrationFileBatch.length} files</span>
+            </div>
+            <div class="production-migration-table">
+              <div>
+                <span>File</span>
+                <span>Layer</span>
+                <span>Tables</span>
+                <span>Owner</span>
+              </div>
+              ${model.migrationFileBatch
+                .map(
+                  ([file, label, tables, purpose, owner, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(file)}</strong>
+                      <span>${escapeHtml(label)}</span>
+                      <p>${escapeHtml(tables)}</p>
+                      <em>${escapeHtml(owner)}</em>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Auth and tenant guard files</span>
+                <h3>Security files before business logic</h3>
+              </div>
+              <span>${model.guardFileBatch.length} files</span>
+            </div>
+            <div class="production-guard-table">
+              <div>
+                <span>File</span>
+                <span>Guard</span>
+                <span>Policy</span>
+                <span>Owner</span>
+              </div>
+              ${model.guardFileBatch
+                .map(
+                  ([file, guard, policy, test, owner, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(file)}</strong>
+                      <span>${escapeHtml(guard)}</span>
+                      <p>${escapeHtml(policy)}</p>
+                      <em>${escapeHtml(owner)}</em>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Test file batch</span>
+              <h3>The planned commands become test files</h3>
+            </div>
+            <span>${model.testFileBatch.length} tests</span>
+          </div>
+          <div class="production-test-table">
+            <div>
+              <span>Step</span>
+              <span>Command</span>
+              <span>Test file</span>
+              <span>Suite</span>
+              <span>Artifact</span>
+            </div>
+            ${model.testFileBatch
+              .map(
+                ([step, command, file, suite, artifact, proof, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(step)}</strong>
+                    <code>${escapeHtml(command)}</code>
+                    <span>${escapeHtml(file)}</span>
+                    <p>${escapeHtml(suite)}</p>
+                    <em>${escapeHtml(artifact)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">GitHub workflows</span>
+                <h3>CI files from day one</h3>
+              </div>
+              <span>${model.workflowFiles.length} workflows</span>
+            </div>
+            <div class="production-workflow-grid">
+              ${model.workflowFiles
+                .map(
+                  ([file, label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(file)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Environment examples</span>
+                <h3>Secret names without secret values</h3>
+              </div>
+              <span>${model.envFiles.length} files</span>
+            </div>
+            <div class="production-env-grid">
+              ${model.envFiles
+                .map(
+                  ([file, label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(file)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Copy order</span>
+                <h3>How to build the private repo without confusion</h3>
+              </div>
+              <span>${model.copyOrder.length} moves</span>
+            </div>
+            <div class="production-copy-list">
+              ${model.copyOrder
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Ownership matrix</span>
+                <h3>Every folder has a human owner</h3>
+              </div>
+              <span>${model.ownershipMatrix.length} owners</span>
+            </div>
+            <div class="production-owner-grid">
+              ${model.ownershipMatrix
+                .map(
+                  ([owner, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(owner)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What must be true before sprint-zero coding starts</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="production-acceptance-grid">
+            ${model.acceptanceChecks
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Repo file handoff</span>
+              <h3>What v114 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderApiErrorAuditEnvelopePack(model) {
+    return `
+      <section class="api-error-audit-envelope-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">API error and audit envelope pack</span>
+            <h3>Give every backend route one safe response and one evidence trail.</h3>
+            <p>This pack standardizes request ids, safe error bodies, audit payloads, denial evidence, route coverage, middleware files, and test proof before the private backend repo starts real implementation.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-api-error-audit-envelope-pack-v115.json">Download envelope JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Envelope readiness</span>
+            <strong>${model.envelopeScore}%</strong>
+            <i style="--width: ${model.envelopeScore}%"></i>
+            <small>${model.errorCatalog.length} errors / ${model.auditEventMatrix.length} audit events / ${model.routeEnvelopeMap.length} routes.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Error envelope fields</span>
+                <h3>One safe error body for UI, support, and logs</h3>
+              </div>
+              <span>${model.errorEnvelopeFields.length} fields</span>
+            </div>
+            <div class="api-envelope-field-grid">
+              ${model.errorEnvelopeFields
+                .map(
+                  ([field, type, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(type)}</span>
+                      <strong>${escapeHtml(field)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Audit envelope fields</span>
+                <h3>Every sensitive route leaves structured evidence</h3>
+              </div>
+              <span>${model.auditEnvelopeFields.length} fields</span>
+            </div>
+            <div class="api-audit-field-grid">
+              ${model.auditEnvelopeFields
+                .map(
+                  ([field, type, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(type)}</span>
+                      <strong>${escapeHtml(field)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Error catalog</span>
+              <h3>Stable codes instead of improvised backend failures</h3>
+            </div>
+            <span>${model.errorCatalog.length} codes</span>
+          </div>
+          <div class="api-error-catalog-table">
+            <div>
+              <span>Code</span>
+              <span>Status</span>
+              <span>Trigger</span>
+              <span>Safe behavior</span>
+            </div>
+            ${model.errorCatalog
+              .map(
+                ([code, status, trigger, behavior, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(code)}</strong>
+                    <span>${escapeHtml(status)}</span>
+                    <p>${escapeHtml(trigger)}</p>
+                    <em>${escapeHtml(behavior)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Route envelope map</span>
+              <h3>Every route group gets error codes, audit events, and tests</h3>
+            </div>
+            <span>${model.routeEnvelopeMap.length} route groups</span>
+          </div>
+          <div class="api-route-envelope-table">
+            <div>
+              <span>Module</span>
+              <span>Route</span>
+              <span>Controller</span>
+              <span>Safe errors</span>
+              <span>Audit event</span>
+              <span>Test</span>
+            </div>
+            ${model.routeEnvelopeMap
+              .map(
+                ([module, route, controller, service, schema, errors, auditEvent, test, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(module)}</strong>
+                    <span>${escapeHtml(route)}</span>
+                    <span>${escapeHtml(controller)}</span>
+                    <p>${escapeHtml(errors)}</p>
+                    <span>${escapeHtml(auditEvent)}</span>
+                    <em>${escapeHtml(test)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Audit event matrix</span>
+                <h3>Allowed, denied, and system events are named</h3>
+              </div>
+              <span>${model.auditEventMatrix.length} events</span>
+            </div>
+            <div class="api-audit-event-grid">
+              ${model.auditEventMatrix
+                .map(
+                  ([event, decision, trigger, fields, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(decision)}</span>
+                      <strong>${escapeHtml(event)}</strong>
+                      <p>${escapeHtml(trigger)}</p>
+                      <em>${escapeHtml(fields)}</em>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Middleware files</span>
+                <h3>Files engineering should create before business logic</h3>
+              </div>
+              <span>${model.middlewareFiles.length} files</span>
+            </div>
+            <div class="api-middleware-grid">
+              ${model.middlewareFiles
+                .map(
+                  ([file, label, note, owner, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(file)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                      <em>${escapeHtml(owner)}</em>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Denial proof scenarios</span>
+                <h3>Denied access must be safe and auditable</h3>
+              </div>
+              <span>${model.denialProofScenarios.length} cases</span>
+            </div>
+            <div class="api-denial-grid">
+              ${model.denialProofScenarios
+                .map(
+                  ([label, trigger, outcome, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(trigger)}</strong>
+                      <p>${escapeHtml(outcome)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Implementation order</span>
+                <h3>Build the safety spine before feature depth</h3>
+              </div>
+              <span>${model.implementationOrder.length} moves</span>
+            </div>
+            <div class="api-implementation-list">
+              ${model.implementationOrder
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Test command bindings</span>
+              <h3>Safety rules become CI evidence, not just good intentions</h3>
+            </div>
+            <span>${model.testCommandBindings.length} commands</span>
+          </div>
+          <div class="api-test-binding-table">
+            <div>
+              <span>Command</span>
+              <span>Suite</span>
+              <span>Proof</span>
+              <span>Artifact</span>
+            </div>
+            ${model.testCommandBindings
+              .map(
+                ([command, suite, proof, artifact, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <code>${escapeHtml(command)}</code>
+                    <strong>${escapeHtml(suite)}</strong>
+                    <p>${escapeHtml(proof)}</p>
+                    <em>${escapeHtml(artifact)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Response examples</span>
+                <h3>The UI and support desk see the same request id</h3>
+              </div>
+            </div>
+            <div class="api-example-grid">
+              <div>
+                <span>Safe error</span>
+                <pre>${escapeHtml(JSON.stringify(model.examples.safeError, null, 2))}</pre>
+              </div>
+              <div>
+                <span>Audit event</span>
+                <pre>${escapeHtml(JSON.stringify(model.examples.auditEvent, null, 2))}</pre>
+              </div>
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What must be true before route implementation deepens</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="api-acceptance-grid">
+              ${model.acceptanceChecks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Envelope handoff</span>
+              <h3>What v115 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
       </section>
     `;
   }

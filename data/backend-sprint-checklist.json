@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "pursuitdesk.backendSprintChecklist.v108",
+  "generatedOn": "2026-05-13",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "publicDemoRepository": "dhirajnyse/tendergrid",
+  "sprintName": "Sprint zero - backend foundation and staging proof",
+  "sprintGoal": "Create the private backend foundation, load the v107 fixture export, prove tenant access, operational tracker APIs, commercial redaction, import dry-run, billing test mode, feedback persistence, audit events, rollback, and smoke report before pilot data.",
+  "sprintLength": "8 working days",
+  "sourceFixtures": {
+    "backendFixtureExport": "data/backend-fixture-export.json",
+    "operationalRecords": 119,
+    "commercialVaultRows": 115,
+    "importBatches": 5,
+    "users": 3,
+    "migrationAssertions": 5
+  },
+  "dayPlan": [
+    {
+      "day": "Day 0",
+      "focus": "Repo creation and protection",
+      "output": "Private repo, develop branch, labels, milestones, board, first issues, secrets list.",
+      "exitGate": "Repo is private and branch rules are visible.",
+      "owner": "Control Admin"
+    },
+    {
+      "day": "Day 1",
+      "focus": "Workspace skeleton",
+      "output": "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.",
+      "exitGate": "Fresh clone can install and run the empty shell.",
+      "owner": "Backend Lead"
+    },
+    {
+      "day": "Day 2",
+      "focus": "Tenant and auth foundation",
+      "output": "Tenant table, users table, session shell, roles, section access, inactive-user behavior.",
+      "exitGate": "Admin/editor/viewer can be seeded and checked.",
+      "owner": "Identity Owner"
+    },
+    {
+      "day": "Day 3",
+      "focus": "Operational records API",
+      "output": "119 tracker-safe records, filters, status update, notes, CSV redaction, source trace.",
+      "exitGate": "Editor can move records without seeing commercial fields.",
+      "owner": "Records Owner"
+    },
+    {
+      "day": "Day 4",
+      "focus": "Commercial vault and insights guard",
+      "output": "Commercial vault schema, management-only routes, audit proof, redaction denial tests.",
+      "exitGate": "Operations user is denied with audit evidence.",
+      "owner": "Security Owner"
+    },
+    {
+      "day": "Day 5",
+      "focus": "Import fixture and rollback",
+      "output": "5 source batches, dry-run, quarantine, duplicate, commit, rollback, reconciliation.",
+      "exitGate": "Fixture import can be reversed cleanly.",
+      "owner": "Migration Owner"
+    },
+    {
+      "day": "Day 6",
+      "focus": "Billing and feedback shells",
+      "output": "USD test checkout, invoice, webhook, seat sync, feedback item, retest state, sponsor export.",
+      "exitGate": "Test-mode billing and feedback write audit events.",
+      "owner": "Product Owner"
+    },
+    {
+      "day": "Day 7",
+      "focus": "Staging smoke rehearsal",
+      "output": "Smoke commands, artifacts, release notes, issue cleanup.",
+      "exitGate": "Smoke report proves pass/fail before pilot data.",
+      "owner": "Release Owner"
+    }
+  ],
+  "workstreams": [
+    {
+      "id": "foundation",
+      "label": "Foundation",
+      "scope": "Repo, monorepo, CI, env, docs",
+      "doneWhen": "main/develop protected, install command passes, skeleton folders exist."
+    },
+    {
+      "id": "tenant-identity",
+      "label": "Tenant identity",
+      "scope": "Company, users, roles, access",
+      "doneWhen": "Admin/editor/viewer/inactive fixtures work with section permissions."
+    },
+    {
+      "id": "operational-records",
+      "label": "Operational records",
+      "scope": "Tracker-safe API",
+      "doneWhen": "Tenders and Projects list, filter, edit, notes, and export without commercial leakage."
+    },
+    {
+      "id": "commercial-vault",
+      "label": "Commercial vault",
+      "scope": "Restricted management data",
+      "doneWhen": "Value, agreement, LOA, negotiation, billing, and forecast facts require management access."
+    },
+    {
+      "id": "import-migration",
+      "label": "Import migration",
+      "scope": "Workbook fixtures",
+      "doneWhen": "Dry-run, quarantine, duplicate handling, commit, rollback, and reconciliation work."
+    },
+    {
+      "id": "billing-feedback",
+      "label": "Billing feedback",
+      "scope": "Paid pilot path",
+      "doneWhen": "USD test billing, seat sync, access lock, feedback persistence, and sponsor export shells exist."
+    },
+    {
+      "id": "audit-security",
+      "label": "Audit security",
+      "scope": "Proof and denial",
+      "doneWhen": "Sensitive allow/deny actions write immutable audit events and request ids."
+    },
+    {
+      "id": "smoke-release",
+      "label": "Smoke release",
+      "scope": "Staging proof",
+      "doneWhen": "Auth, records, redaction, import, billing, feedback, audit, rollback, and report smoke paths pass."
+    }
+  ],
+  "openingTickets": [
+    {
+      "id": "P0-01",
+      "title": "Create private repo skeleton",
+      "acceptance": "Repo starter pack, README, apps/packages folder map, env examples, and CI shell."
+    },
+    {
+      "id": "P0-02",
+      "title": "Create database migration baseline",
+      "acceptance": "Tenant, users, access profiles, records, commercial vault, imports, audit, billing, feedback."
+    },
+    {
+      "id": "P0-03",
+      "title": "Seed backend fixture export",
+      "acceptance": "Fixture files and manifest from v107 export are copied and loadable."
+    },
+    {
+      "id": "P0-04",
+      "title": "Implement auth/session shell",
+      "acceptance": "Login, /me, role access, inactive user block, password reset placeholder."
+    },
+    {
+      "id": "P0-05",
+      "title": "Implement records API shell",
+      "acceptance": "Tracker-safe list, detail, update, note, status movement, filters, CSV redaction."
+    },
+    {
+      "id": "P0-06",
+      "title": "Implement commercial vault guard",
+      "acceptance": "Management-only read routes, redaction denial, audit proof, and test fixtures."
+    },
+    {
+      "id": "P0-07",
+      "title": "Implement import dry-run shell",
+      "acceptance": "Staging rows, validation, quarantine, duplicate decisions, commit, rollback, reconciliation."
+    },
+    {
+      "id": "P0-08",
+      "title": "Implement billing test shell",
+      "acceptance": "Checkout session, invoice state, webhook signature, seat sync, access lock."
+    },
+    {
+      "id": "P0-09",
+      "title": "Implement feedback persistence shell",
+      "acceptance": "Session, item, owner, severity, retest state, activity history, sponsor export."
+    },
+    {
+      "id": "P0-10",
+      "title": "Wire smoke commands",
+      "acceptance": "Auth, records, redaction, import, billing, feedback, audit, rollback, and report commands."
+    },
+    {
+      "id": "P0-11",
+      "title": "Create staging artifact report",
+      "acceptance": "HTML and JUnit summary, redaction proof, import reconciliation, audit event export."
+    },
+    {
+      "id": "P0-12",
+      "title": "Close sprint-zero review",
+      "acceptance": "Acceptance checklist, blocker log, next sprint issues, staging deploy decision."
+    }
+  ],
+  "pullRequestGates": [
+    "PR links one generated issue, one owner, one test path, and one acceptance outcome.",
+    "Every query is tenant-scoped and rejects cross-tenant ids.",
+    "Operational responses exclude commercial vault and billing fields.",
+    "Sensitive allow/deny behavior writes actor, target, tenant, request id, and result.",
+    "Changed code runs against v107 fixture export expectations.",
+    "Import logic has dry-run, quarantine, rollback, and reconciliation proof.",
+    "Billing code is test-mode only until production approval.",
+    "The PR does not merge if its smoke path fails or produces missing artifacts."
+  ],
+  "acceptanceChecklist": [
+    "Private repo exists with protected main, develop, labels, milestones, and project board.",
+    "v107 backend fixture JSON is split into repo seed files and loads into empty staging DB.",
+    "Admin, editor, viewer, inactive, and denied login cases pass.",
+    "Operational APIs can support Tenders and Projects without commercial fields.",
+    "Commercial vault reads require management/admin access and write audit proof.",
+    "Dry-run, quarantine, duplicate, commit, rollback, and reconciliation pass.",
+    "USD test checkout, invoice, webhook, seat sync, and lock rules pass.",
+    "Staging smoke report produces artifacts and linked failure issues."
+  ],
+  "dailyRitual": [
+    {
+      "time": "09:00",
+      "move": "Open board",
+      "proof": "Review P0 tickets, blockers, unassigned work, failing checks, and fixture drift."
+    },
+    {
+      "time": "09:10",
+      "move": "Pick one thin slice",
+      "proof": "One PR should touch one bounded route, schema slice, or fixture behavior."
+    },
+    {
+      "time": "13:00",
+      "move": "Run fixture proof",
+      "proof": "Run seed, redaction, import, and relevant contract checks before review."
+    },
+    {
+      "time": "16:00",
+      "move": "Merge or park",
+      "proof": "Do not leave half-working tenant, auth, redaction, or import logic hidden."
+    },
+    {
+      "time": "17:00",
+      "move": "Update handoff",
+      "proof": "Write issue status, failing gate, next command, owner, and smoke artifact expectation."
+    }
+  ],
+  "stopRules": [
+    "Stop for cross-tenant data leakage.",
+    "Stop for commercial fields returned by operational tracker APIs.",
+    "Stop for sensitive allow/deny actions without audit events.",
+    "Stop for import commit without rollback id or reconciliation output.",
+    "Stop for billing code using live credentials before approval.",
+    "Stop for a passing claim without artifact evidence."
+  ]
+}

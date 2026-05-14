@@ -1,4 +1,4 @@
-PursuitDesk v104 seed data and migration fixture pack upload steps
+PursuitDesk v115 API error and audit envelope pack upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v104 seed data and migration fixture pack upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v104 seed data and migration fixture pack
+   PursuitDesk v115 API error and audit envelope pack
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Seed Data and Migration Fixture Pack inside Command Center with tenant seed, demo users, operational record slices, commercial vault fixtures, import batches, audit seed events, migration assertions, fixture files, backend smoke tests, release gates, and engineering handoff.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds an API Error and Audit Envelope Pack inside Command Center with a downloadable envelope JSON handoff, safe error response fields, request-id trace, error catalog, audit events, route coverage, denial proof, middleware files, test commands, response examples, and acceptance checks.
 
 Demo login:
 admin@pursuitdesk.app

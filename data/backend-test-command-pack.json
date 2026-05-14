@@ -1,0 +1,493 @@
+{
+  "schemaVersion": "pursuitdesk.backendTestCommandPack.v113",
+  "generatedOn": "2026-05-14",
+  "product": "PursuitDesk",
+  "version": "v113 Backend Test Command Pack",
+  "purpose": "Convert the static product architecture into executable backend test commands, CI jobs, proof artifacts, fixture bindings, failure policies, and release gates before pilot data enters a real environment.",
+  "sourceBlueprints": [
+    "backend-route-skeleton-map.json",
+    "database-migration-blueprint.json",
+    "auth-tenant-guard-blueprint.json",
+    "backend-fixture-export.json",
+    "backend-sprint-checklist.json",
+    "staging-deployment-checklist.json"
+  ],
+  "testCommands": [
+    {
+      "step": "01",
+      "command": "pnpm test:unit",
+      "suite": "Domain unit tests",
+      "proof": "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.",
+      "artifact": "junit-unit.xml",
+      "tone": "green"
+    },
+    {
+      "step": "02",
+      "command": "pnpm test:contracts",
+      "suite": "API contract tests",
+      "proof": "Endpoint contracts for auth, users, records, commercial vault, import, billing, feedback, and audit.",
+      "artifact": "junit-contracts.xml",
+      "tone": "blue"
+    },
+    {
+      "step": "03",
+      "command": "pnpm test:routes",
+      "suite": "Route skeleton tests",
+      "proof": "Controllers, services, schemas, middleware, and safe error envelopes.",
+      "artifact": "junit-routes.xml",
+      "tone": "teal"
+    },
+    {
+      "step": "04",
+      "command": "pnpm test:auth-tenant",
+      "suite": "Auth and tenant guard tests",
+      "proof": "Sessions, tenant scope, section access, commercial vault, membership admin, and denial audit.",
+      "artifact": "junit-auth-tenant.xml",
+      "tone": "red"
+    },
+    {
+      "step": "05",
+      "command": "pnpm test:redaction",
+      "suite": "Commercial redaction tests",
+      "proof": "Tracker APIs and CSV exports hide values, agreements, LOA, negotiations, invoices, and billing fields.",
+      "artifact": "redaction-proof.csv",
+      "tone": "amber"
+    },
+    {
+      "step": "06",
+      "command": "pnpm test:migrations",
+      "suite": "Database migration tests",
+      "proof": "Migration files, seed order, rollback, restore, and count parity checks.",
+      "artifact": "junit-migrations.xml",
+      "tone": "blue"
+    },
+    {
+      "step": "07",
+      "command": "pnpm test:import",
+      "suite": "Workbook import tests",
+      "proof": "Dry-run, staging rows, validation errors, quarantine, duplicate decisions, commit, rollback, and reconciliation.",
+      "artifact": "import-reconciliation.json",
+      "tone": "teal"
+    },
+    {
+      "step": "08",
+      "command": "pnpm test:billing",
+      "suite": "Billing test-mode tests",
+      "proof": "Checkout, invoices, webhooks, seats, plan changes, and access locks.",
+      "artifact": "junit-billing.xml",
+      "tone": "amber"
+    },
+    {
+      "step": "09",
+      "command": "pnpm test:audit",
+      "suite": "Audit proof tests",
+      "proof": "Allowed and denied events carry actor, tenant, target, route, request id, before/after, and result.",
+      "artifact": "audit-events.json",
+      "tone": "green"
+    },
+    {
+      "step": "10",
+      "command": "pnpm smoke:staging",
+      "suite": "Staging smoke run",
+      "proof": "Auth, records, redaction, import, billing, feedback, audit, rollback, and reports on staging.",
+      "artifact": "smoke-summary.html",
+      "tone": "red"
+    },
+    {
+      "step": "11",
+      "command": "pnpm test:restore",
+      "suite": "Backup and restore drill",
+      "proof": "Restore fixture backup into staging clone, re-run route/auth/redaction smoke, and publish restore proof.",
+      "artifact": "restore-proof.json",
+      "tone": "blue"
+    },
+    {
+      "step": "12",
+      "command": "pnpm test:ci-gate",
+      "suite": "Release gate command",
+      "proof": "Aggregate P0/P1 status, artifacts, coverage, seed counts, and go/no-go decision for PR checks.",
+      "artifact": "ci-gate-summary.json",
+      "tone": "green"
+    }
+  ],
+  "ciJobs": [
+    {
+      "key": "install",
+      "label": "Install and cache",
+      "command": "pnpm install --frozen-lockfile",
+      "proof": "Blocks all later jobs if workspace setup drifts.",
+      "tone": "green"
+    },
+    {
+      "key": "lint-typecheck",
+      "label": "Lint and typecheck",
+      "command": "pnpm lint && pnpm typecheck",
+      "proof": "Blocks unsafe code, broken contracts, and type drift.",
+      "tone": "blue"
+    },
+    {
+      "key": "unit-contract",
+      "label": "Unit and API contracts",
+      "command": "pnpm test:unit && pnpm test:contracts",
+      "proof": "Runs helpers and endpoint payload expectations.",
+      "tone": "teal"
+    },
+    {
+      "key": "auth-security",
+      "label": "Auth and tenant security",
+      "command": "pnpm test:auth-tenant && pnpm test:redaction",
+      "proof": "Blocks tenant leaks, commercial leaks, and membership admin bypass.",
+      "tone": "red"
+    },
+    {
+      "key": "database-import",
+      "label": "Migrations and import",
+      "command": "pnpm test:migrations && pnpm test:import",
+      "proof": "Blocks broken seed order, rollback, quarantine, and reconciliation.",
+      "tone": "blue"
+    },
+    {
+      "key": "billing-audit",
+      "label": "Billing and audit",
+      "command": "pnpm test:billing && pnpm test:audit",
+      "proof": "Blocks unsafe webhooks, seat drift, and missing audit evidence.",
+      "tone": "amber"
+    },
+    {
+      "key": "staging-smoke",
+      "label": "Staging smoke",
+      "command": "pnpm smoke:staging",
+      "proof": "Runs only after deploy-to-staging with fixture data and test-mode billing.",
+      "tone": "red"
+    },
+    {
+      "key": "release-gate",
+      "label": "Release decision",
+      "command": "pnpm test:ci-gate",
+      "proof": "Collects artifacts and creates management-ready go/no-go summary.",
+      "tone": "green"
+    }
+  ],
+  "artifactMap": [
+    {
+      "file": "junit-unit.xml",
+      "label": "Unit test results",
+      "note": "GitHub Actions annotations for low-level helpers and domain rules.",
+      "tone": "green"
+    },
+    {
+      "file": "junit-contracts.xml",
+      "label": "API contract results",
+      "note": "Endpoint payload, guard, error shape, and audit-event expectations.",
+      "tone": "blue"
+    },
+    {
+      "file": "junit-auth-tenant.xml",
+      "label": "Auth guard results",
+      "note": "Session, tenant, section, vault, membership, and denial proof.",
+      "tone": "red"
+    },
+    {
+      "file": "redaction-proof.csv",
+      "label": "Redaction proof",
+      "note": "CSV sample proving operations users cannot export commercial fields.",
+      "tone": "amber"
+    },
+    {
+      "file": "import-reconciliation.json",
+      "label": "Import proof",
+      "note": "Accepted, quarantined, duplicate, committed, rollback, and count parity output.",
+      "tone": "teal"
+    },
+    {
+      "file": "billing-webhook-log.json",
+      "label": "Billing proof",
+      "note": "Webhook signature, idempotency, invoice, seat sync, and access lock output.",
+      "tone": "amber"
+    },
+    {
+      "file": "audit-events.json",
+      "label": "Audit proof",
+      "note": "Allowed and denied sensitive actions with actor, tenant, target, and request id.",
+      "tone": "green"
+    },
+    {
+      "file": "smoke-summary.html",
+      "label": "Human smoke report",
+      "note": "Management-readable command output, owners, artifacts, failures, and go/no-go status.",
+      "tone": "blue"
+    },
+    {
+      "file": "restore-proof.json",
+      "label": "Recovery proof",
+      "note": "Backup snapshot, restore command, restored counts, and post-restore smoke result.",
+      "tone": "red"
+    },
+    {
+      "file": "ci-gate-summary.json",
+      "label": "Release proof",
+      "note": "Aggregated status for PR, staging, P0 failures, artifacts, and blockers.",
+      "tone": "teal"
+    }
+  ],
+  "coverageMatrix": [
+    {
+      "family": "Routes",
+      "scope": "Route groups",
+      "command": "pnpm test:routes",
+      "expectation": "Controllers, services, validators, middleware, and safe errors.",
+      "tone": "teal"
+    },
+    {
+      "family": "Auth guards",
+      "scope": "Guard matrix",
+      "command": "pnpm test:auth-tenant",
+      "expectation": "Session, tenant, section, commercial vault, membership, and denial audit.",
+      "tone": "red"
+    },
+    {
+      "family": "Migration files",
+      "scope": "Migration set",
+      "command": "pnpm test:migrations",
+      "expectation": "Forward migration, seed order, count parity, rollback, restore, and assertions.",
+      "tone": "blue"
+    },
+    {
+      "family": "Security suites",
+      "scope": "Security cases",
+      "command": "pnpm test:redaction",
+      "expectation": "Tenant isolation, access, privacy, audit, import, recovery, and monitoring proof.",
+      "tone": "red"
+    },
+    {
+      "family": "Billing suites",
+      "scope": "Billing cases",
+      "command": "pnpm test:billing",
+      "expectation": "Checkout, invoice, webhook, seats, plans, and locks.",
+      "tone": "amber"
+    },
+    {
+      "family": "Migration suites",
+      "scope": "Import cases",
+      "command": "pnpm test:import",
+      "expectation": "Dry-run, staging, quarantine, commit, rollback, and reconciliation.",
+      "tone": "blue"
+    },
+    {
+      "family": "Smoke commands",
+      "scope": "Smoke paths",
+      "command": "pnpm smoke:staging",
+      "expectation": "End-to-end staging proof over fixture tenant and test billing.",
+      "tone": "green"
+    },
+    {
+      "family": "Seed fixtures",
+      "scope": "Fixture files",
+      "command": "pnpm db:seed:fixture capsa",
+      "expectation": "Tenant, users, records, commercial vault, import batches, audit, billing, and feedback fixtures.",
+      "tone": "teal"
+    }
+  ],
+  "fixtureCommandMap": [
+    {
+      "file": "tenant-fixtures.json",
+      "command": "pnpm db:seed:fixture capsa",
+      "proof": "Create company, settings, access profiles, and billing defaults.",
+      "tone": "green"
+    },
+    {
+      "file": "users.json",
+      "command": "pnpm test:auth-tenant",
+      "proof": "Admin, editor, viewer, inactive, operations-only, commercial, and denied users.",
+      "tone": "red"
+    },
+    {
+      "file": "operational-records.json",
+      "command": "pnpm test:routes",
+      "proof": "Tracker-safe tender, EOI, and project records.",
+      "tone": "teal"
+    },
+    {
+      "file": "commercial-vault.json",
+      "command": "pnpm test:redaction",
+      "proof": "Value, agreement, LOA, negotiation, forecast, and restricted report facts.",
+      "tone": "amber"
+    },
+    {
+      "file": "import-batches.json",
+      "command": "pnpm test:import",
+      "proof": "Workbook dry-run, quarantine, duplicate, commit, rollback, and reconciliation cases.",
+      "tone": "blue"
+    },
+    {
+      "file": "billing-fixtures.json",
+      "command": "pnpm test:billing",
+      "proof": "Plans, subscription state, invoices, webhooks, seat changes, and access locks.",
+      "tone": "amber"
+    },
+    {
+      "file": "audit-seed-events.json",
+      "command": "pnpm test:audit",
+      "proof": "Allowed and denied events for user, access, commercial, import, billing, and exports.",
+      "tone": "green"
+    },
+    {
+      "file": "smoke-expectations.json",
+      "command": "pnpm smoke:staging",
+      "proof": "Expected counts, hidden fields, role matrix, artifacts, and go/no-go gates.",
+      "tone": "blue"
+    }
+  ],
+  "failurePolicy": [
+    {
+      "level": "P0 tenant leak",
+      "policy": "Stop CI immediately; no deploy and no staging data promotion.",
+      "tone": "red"
+    },
+    {
+      "level": "P0 commercial leak",
+      "policy": "Stop CI immediately; block tracker export and commercial endpoints.",
+      "tone": "red"
+    },
+    {
+      "level": "P0 auth bypass",
+      "policy": "Stop CI immediately; session, inactive user, or membership admin bypass found.",
+      "tone": "red"
+    },
+    {
+      "level": "P1 missing audit",
+      "policy": "Fail PR until allowed and denied sensitive actions create audit events.",
+      "tone": "amber"
+    },
+    {
+      "level": "P1 import drift",
+      "policy": "Fail PR until source, staging, commit, rollback, and reconciliation counts agree.",
+      "tone": "blue"
+    },
+    {
+      "level": "P1 billing drift",
+      "policy": "Fail PR until webhook idempotency, invoice state, and seat lock reconcile.",
+      "tone": "amber"
+    },
+    {
+      "level": "P2 report drift",
+      "policy": "Warn and attach artifact diff when smoke or report output changes unexpectedly.",
+      "tone": "teal"
+    },
+    {
+      "level": "P2 screenshot drift",
+      "policy": "Warn and attach screenshot diff for visual smoke proof, not a release blocker.",
+      "tone": "green"
+    }
+  ],
+  "releaseGates": [
+    {
+      "gate": "All P0 commands pass",
+      "rule": "test:auth-tenant, test:redaction, test:migrations, and smoke:staging return zero P0 failures.",
+      "tone": "red"
+    },
+    {
+      "gate": "Artifacts attached",
+      "rule": "Every CI job uploads JUnit, JSON, CSV, HTML, or screenshot proof.",
+      "tone": "blue"
+    },
+    {
+      "gate": "Fixture counts match",
+      "rule": "Seeded users, records, commercial facts, imports, audit events, and billing fixtures match manifest.",
+      "tone": "green"
+    },
+    {
+      "gate": "Denied events visible",
+      "rule": "All denied access paths produce audit events and are exportable for governance review.",
+      "tone": "teal"
+    },
+    {
+      "gate": "Billing test-mode only",
+      "rule": "No live payment keys, charges, or invoices are allowed in staging tests.",
+      "tone": "amber"
+    },
+    {
+      "gate": "Restore proof current",
+      "rule": "Latest restore proof passes after migrations, seed, import, and smoke.",
+      "tone": "red"
+    },
+    {
+      "gate": "Go/no-go summary exists",
+      "rule": "Management can read one CI summary with owner, command, artifact, result, and blocker.",
+      "tone": "green"
+    },
+    {
+      "gate": "Issue link on failure",
+      "rule": "Any failed command links to backend issue labels, owner, and acceptance criteria.",
+      "tone": "blue"
+    }
+  ],
+  "localRunbook": [
+    {
+      "label": "Fresh clone",
+      "command": "pnpm install",
+      "proof": "Install and confirm no lockfile drift.",
+      "tone": "green"
+    },
+    {
+      "label": "Local database",
+      "command": "pnpm db:migrate:dev",
+      "proof": "Apply migrations against empty local database.",
+      "tone": "blue"
+    },
+    {
+      "label": "Fixture seed",
+      "command": "pnpm db:seed:fixture capsa",
+      "proof": "Load one tenant and test users before API tests.",
+      "tone": "teal"
+    },
+    {
+      "label": "Core proof",
+      "command": "pnpm test:unit && pnpm test:contracts && pnpm test:routes",
+      "proof": "Validate domain helpers, API shapes, and route skeleton.",
+      "tone": "green"
+    },
+    {
+      "label": "Security proof",
+      "command": "pnpm test:auth-tenant && pnpm test:redaction",
+      "proof": "Validate tenant, access, membership, vault, and export restrictions.",
+      "tone": "red"
+    },
+    {
+      "label": "Data proof",
+      "command": "pnpm test:migrations && pnpm test:import",
+      "proof": "Validate seed order, import dry-run, quarantine, commit, rollback, and restore.",
+      "tone": "blue"
+    },
+    {
+      "label": "Commercial proof",
+      "command": "pnpm test:billing && pnpm test:audit",
+      "proof": "Validate billing test mode, invoice state, seat sync, and audit evidence.",
+      "tone": "amber"
+    },
+    {
+      "label": "Release proof",
+      "command": "pnpm smoke:staging && pnpm test:ci-gate",
+      "proof": "Run full staging proof and publish go/no-go summary.",
+      "tone": "red"
+    }
+  ],
+  "nonNegotiableRules": [
+    "Never allow a route to accept company_id from a client request.",
+    "Never expose commercial vault fields in Tenders or Projects tracker responses.",
+    "Never run billing tests with live payment keys.",
+    "Never merge if tenant isolation, redaction, migration rollback, or restore proof fails.",
+    "Every denied sensitive action must produce an audit event.",
+    "Every CI job must publish a readable artifact.",
+    "Every workbook import must reconcile source, staging, accepted, rejected, committed, and rollback counts.",
+    "Every seed fixture must be traceable to a test command.",
+    "Every release candidate must produce a go/no-go summary.",
+    "Every failed command must create or link to a backend issue with owner and acceptance criteria."
+  ],
+  "handoff": [
+    "Build the private backend repo with these command names from day one so test vocabulary stays stable.",
+    "Start with unit, route, auth-tenant, redaction, migration, import, billing, audit, restore, and smoke commands before adding more product scope.",
+    "Attach artifacts to every PR and staging run so management can review evidence without reading raw console output.",
+    "Treat this JSON as the first CI contract for the production backend repository."
+  ]
+}

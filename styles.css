@@ -8299,6 +8299,2181 @@ textarea:disabled {
   background: var(--blue-soft);
 }
 
+.private-repo-guide {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(36, 119, 71, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(228, 242, 232, 0.78));
+  box-shadow: var(--shadow);
+}
+
+.private-repo-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.private-repo-hero > div:first-child,
+.private-repo-score-card,
+.private-repo-panel {
+  border: 1px solid rgba(36, 119, 71, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.private-repo-hero > div:first-child {
+  padding: 16px;
+}
+
+.private-repo-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.private-repo-hero p,
+.private-repo-signal-card p,
+.private-repo-identity-grid p,
+.private-repo-step-list p,
+.private-repo-label-grid p,
+.private-repo-milestone-grid p,
+.private-repo-branch-grid p,
+.private-repo-board-grid p,
+.private-repo-secret-grid p,
+.private-repo-file-grid p,
+.private-repo-issue-list p,
+.private-repo-command-list p,
+.private-repo-validation-list p,
+.private-repo-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.private-repo-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.private-repo-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--green);
+}
+
+.private-repo-score-card span,
+.private-repo-signal-card span,
+.private-repo-identity-grid span,
+.private-repo-step-list span,
+.private-repo-label-grid span,
+.private-repo-milestone-grid span,
+.private-repo-branch-grid span,
+.private-repo-issue-list span,
+.private-repo-command-list span,
+.private-repo-validation-list span {
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.private-repo-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.private-repo-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--green) var(--width), rgba(36, 119, 71, 0.12) 0);
+}
+
+.private-repo-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.private-repo-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.private-repo-signal-card,
+.private-repo-identity-grid > div,
+.private-repo-step-list > div,
+.private-repo-label-grid > div,
+.private-repo-milestone-grid > div,
+.private-repo-branch-grid > div,
+.private-repo-board-grid > div,
+.private-repo-secret-grid > div,
+.private-repo-file-grid > div,
+.private-repo-issue-list > div,
+.private-repo-command-list > div,
+.private-repo-validation-list > div,
+.private-repo-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(36, 119, 71, 0.2);
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  background: var(--green-soft);
+}
+
+.private-repo-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.private-repo-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.private-repo-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--green);
+}
+
+.private-repo-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.private-repo-identity-grid,
+.private-repo-label-grid,
+.private-repo-milestone-grid,
+.private-repo-branch-grid,
+.private-repo-board-grid,
+.private-repo-secret-grid,
+.private-repo-file-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.private-repo-step-list,
+.private-repo-issue-list,
+.private-repo-command-list,
+.private-repo-validation-list,
+.private-repo-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.private-repo-identity-grid strong,
+.private-repo-step-list strong,
+.private-repo-label-grid strong,
+.private-repo-milestone-grid strong,
+.private-repo-branch-grid strong,
+.private-repo-board-grid strong,
+.private-repo-secret-grid strong,
+.private-repo-file-grid strong,
+.private-repo-issue-list strong,
+.private-repo-command-list strong,
+.private-repo-validation-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.private-repo-command-list code,
+.private-repo-secret-grid code {
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.private-repo-signal-card.tone-green,
+.private-repo-identity-grid .tone-green,
+.private-repo-step-list .tone-green,
+.private-repo-label-grid .tone-green,
+.private-repo-milestone-grid .tone-green,
+.private-repo-branch-grid .tone-green,
+.private-repo-board-grid .tone-green,
+.private-repo-secret-grid .tone-green,
+.private-repo-file-grid .tone-green,
+.private-repo-issue-list .tone-green,
+.private-repo-command-list .tone-green,
+.private-repo-validation-list .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.private-repo-signal-card.tone-teal,
+.private-repo-identity-grid .tone-teal,
+.private-repo-step-list .tone-teal,
+.private-repo-label-grid .tone-teal,
+.private-repo-milestone-grid .tone-teal,
+.private-repo-branch-grid .tone-teal,
+.private-repo-board-grid .tone-teal,
+.private-repo-secret-grid .tone-teal,
+.private-repo-file-grid .tone-teal,
+.private-repo-issue-list .tone-teal,
+.private-repo-command-list .tone-teal,
+.private-repo-validation-list .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.private-repo-signal-card.tone-blue,
+.private-repo-identity-grid .tone-blue,
+.private-repo-step-list .tone-blue,
+.private-repo-label-grid .tone-blue,
+.private-repo-milestone-grid .tone-blue,
+.private-repo-branch-grid .tone-blue,
+.private-repo-board-grid .tone-blue,
+.private-repo-secret-grid .tone-blue,
+.private-repo-file-grid .tone-blue,
+.private-repo-issue-list .tone-blue,
+.private-repo-command-list .tone-blue,
+.private-repo-validation-list .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.private-repo-signal-card.tone-amber,
+.private-repo-identity-grid .tone-amber,
+.private-repo-step-list .tone-amber,
+.private-repo-label-grid .tone-amber,
+.private-repo-milestone-grid .tone-amber,
+.private-repo-branch-grid .tone-amber,
+.private-repo-board-grid .tone-amber,
+.private-repo-secret-grid .tone-amber,
+.private-repo-file-grid .tone-amber,
+.private-repo-issue-list .tone-amber,
+.private-repo-command-list .tone-amber,
+.private-repo-validation-list .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.private-repo-signal-card.tone-red,
+.private-repo-identity-grid .tone-red,
+.private-repo-step-list .tone-red,
+.private-repo-label-grid .tone-red,
+.private-repo-milestone-grid .tone-red,
+.private-repo-branch-grid .tone-red,
+.private-repo-board-grid .tone-red,
+.private-repo-secret-grid .tone-red,
+.private-repo-file-grid .tone-red,
+.private-repo-issue-list .tone-red,
+.private-repo-command-list .tone-red,
+.private-repo-validation-list .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.private-repo-handoff-panel {
+  border-left-color: var(--teal);
+}
+
+.private-repo-handoff-list p {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.staging-smoke-script {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.8));
+  box-shadow: var(--shadow);
+}
+
+.staging-smoke-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  gap: 10px;
+  align-items: stretch;
+}
+
+.staging-smoke-hero > div:first-child,
+.staging-smoke-score-card,
+.staging-smoke-panel {
+  border: 1px solid rgba(49, 95, 147, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.staging-smoke-hero > div:first-child {
+  padding: 16px;
+}
+
+.staging-smoke-hero h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.staging-smoke-hero p,
+.staging-smoke-signal-card p,
+.staging-env-grid p,
+.staging-command-list p,
+.staging-path-grid p,
+.staging-fixture-grid p,
+.staging-role-grid p,
+.staging-failure-list p,
+.staging-artifact-grid p,
+.staging-gate-list p,
+.staging-handoff-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.staging-smoke-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.staging-smoke-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--blue);
+}
+
+.staging-smoke-score-card span,
+.staging-smoke-signal-card span,
+.staging-env-grid span,
+.staging-command-list span,
+.staging-path-grid span,
+.staging-fixture-grid span,
+.staging-role-grid span,
+.staging-gate-list span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.staging-smoke-score-card strong {
+  color: var(--ink);
+  font-size: 42px;
+  line-height: 0.95;
+}
+
+.staging-smoke-score-card i {
+  height: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.staging-smoke-score-card small {
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.staging-smoke-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.staging-smoke-signal-card,
+.staging-env-grid > div,
+.staging-command-list > div,
+.staging-path-grid > div,
+.staging-fixture-grid > div,
+.staging-role-grid > div,
+.staging-failure-list > div,
+.staging-artifact-grid > div,
+.staging-gate-list > div,
+.staging-handoff-list p {
+  display: grid;
+  gap: 6px;
+  padding: 11px;
+  border: 1px solid rgba(49, 95, 147, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: var(--blue-soft);
+}
+
+.staging-smoke-signal-card {
+  min-height: 116px;
+  padding: 13px;
+}
+
+.staging-smoke-signal-card strong {
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.staging-smoke-panel {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding: 13px;
+  border-left: 4px solid var(--blue);
+}
+
+.staging-smoke-two-column {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.staging-env-grid,
+.staging-path-grid,
+.staging-fixture-grid,
+.staging-role-grid,
+.staging-artifact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.staging-command-list,
+.staging-failure-list,
+.staging-gate-list,
+.staging-handoff-list {
+  display: grid;
+  gap: 7px;
+}
+
+.staging-env-grid strong,
+.staging-command-list strong,
+.staging-path-grid strong,
+.staging-fixture-grid strong,
+.staging-role-grid strong,
+.staging-failure-list strong,
+.staging-artifact-grid strong,
+.staging-gate-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.staging-command-list code {
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.staging-smoke-signal-card.tone-green,
+.staging-env-grid .tone-green,
+.staging-command-list .tone-green,
+.staging-path-grid .tone-green,
+.staging-fixture-grid .tone-green,
+.staging-role-grid .tone-green,
+.staging-failure-list .tone-green,
+.staging-artifact-grid .tone-green,
+.staging-gate-list .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.staging-smoke-signal-card.tone-teal,
+.staging-env-grid .tone-teal,
+.staging-command-list .tone-teal,
+.staging-path-grid .tone-teal,
+.staging-fixture-grid .tone-teal,
+.staging-role-grid .tone-teal,
+.staging-failure-list .tone-teal,
+.staging-artifact-grid .tone-teal,
+.staging-gate-list .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.staging-smoke-signal-card.tone-blue,
+.staging-env-grid .tone-blue,
+.staging-command-list .tone-blue,
+.staging-path-grid .tone-blue,
+.staging-fixture-grid .tone-blue,
+.staging-role-grid .tone-blue,
+.staging-failure-list .tone-blue,
+.staging-artifact-grid .tone-blue,
+.staging-gate-list .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.staging-smoke-signal-card.tone-amber,
+.staging-env-grid .tone-amber,
+.staging-command-list .tone-amber,
+.staging-path-grid .tone-amber,
+.staging-fixture-grid .tone-amber,
+.staging-role-grid .tone-amber,
+.staging-failure-list .tone-amber,
+.staging-artifact-grid .tone-amber,
+.staging-gate-list .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.staging-smoke-signal-card.tone-red,
+.staging-env-grid .tone-red,
+.staging-command-list .tone-red,
+.staging-path-grid .tone-red,
+.staging-fixture-grid .tone-red,
+.staging-role-grid .tone-red,
+.staging-failure-list .tone-red,
+.staging-artifact-grid .tone-red,
+.staging-gate-list .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.staging-smoke-handoff-panel {
+  border-left-color: var(--teal);
+}
+
+.staging-handoff-list p {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.backend-fixture-export {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 243, 238, 0.82));
+  box-shadow: var(--shadow);
+}
+
+.backend-fixture-export .staging-smoke-score-card,
+.backend-fixture-export .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.backend-fixture-export .staging-smoke-score-card span,
+.backend-fixture-export .staging-smoke-signal-card span,
+.backend-fixture-export .staging-env-grid span,
+.backend-fixture-export .staging-command-list span,
+.backend-fixture-export .staging-path-grid span,
+.backend-fixture-export .staging-fixture-grid span,
+.backend-fixture-export .staging-role-grid span,
+.backend-fixture-export .staging-gate-list span {
+  color: var(--teal-dark);
+}
+
+.backend-fixture-export .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(13, 111, 97, 0.12) 0);
+}
+
+.fixture-export-download {
+  text-decoration: none;
+}
+
+.fixture-source-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.fixture-source-table > div {
+  display: grid;
+  grid-template-columns: 90px minmax(190px, 1fr) minmax(150px, 0.9fr) 70px minmax(120px, 0.7fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.fixture-source-table > div:first-child {
+  background: rgba(13, 111, 97, 0.08);
+}
+
+.fixture-source-table > div:last-child {
+  border-bottom: 0;
+}
+
+.fixture-source-table span,
+.fixture-source-table strong {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.fixture-source-table > div:first-child span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.first-backend-sprint {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(184, 110, 23, 0.24);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 242, 218, 0.86));
+  box-shadow: var(--shadow);
+}
+
+.first-backend-sprint .staging-smoke-score-card,
+.first-backend-sprint .staging-smoke-panel {
+  border-left-color: var(--amber);
+}
+
+.first-backend-sprint .staging-smoke-score-card span,
+.first-backend-sprint .staging-smoke-signal-card span,
+.first-backend-sprint .staging-env-grid span,
+.first-backend-sprint .staging-command-list span,
+.first-backend-sprint .staging-path-grid span,
+.first-backend-sprint .staging-fixture-grid span,
+.first-backend-sprint .staging-role-grid span,
+.first-backend-sprint .staging-gate-list span {
+  color: var(--amber-dark);
+}
+
+.first-backend-sprint .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--amber) var(--width), rgba(184, 110, 23, 0.14) 0);
+}
+
+.sprint-calendar-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.sprint-calendar-table > div {
+  display: grid;
+  grid-template-columns: 76px minmax(150px, 0.7fr) minmax(260px, 1.3fr) minmax(220px, 1fr) minmax(120px, 0.55fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sprint-calendar-table > div:first-child {
+  background: rgba(184, 110, 23, 0.1);
+}
+
+.sprint-calendar-table > div:last-child {
+  border-bottom: 0;
+}
+
+.sprint-calendar-table span,
+.sprint-calendar-table strong {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.sprint-calendar-table > div:first-child span {
+  color: var(--amber-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.staging-deployment-checklist {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.82));
+  box-shadow: var(--shadow);
+}
+
+.staging-deployment-checklist .staging-smoke-score-card,
+.staging-deployment-checklist .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.staging-deployment-checklist .staging-smoke-score-card span,
+.staging-deployment-checklist .staging-smoke-signal-card span,
+.staging-deployment-checklist .staging-env-grid span,
+.staging-deployment-checklist .staging-command-list span,
+.staging-deployment-checklist .staging-path-grid span,
+.staging-deployment-checklist .staging-fixture-grid span,
+.staging-deployment-checklist .staging-role-grid span,
+.staging-deployment-checklist .staging-gate-list span {
+  color: var(--blue);
+}
+
+.staging-deployment-checklist .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.staging-deployment-checklist .staging-smoke-signal-card *,
+.staging-deployment-checklist .staging-env-grid > div *,
+.staging-deployment-checklist .staging-path-grid > div *,
+.staging-deployment-checklist .staging-fixture-grid > div *,
+.staging-deployment-checklist .staging-role-grid > div *,
+.staging-deployment-checklist .staging-failure-list > div *,
+.staging-deployment-checklist .staging-gate-list > div *,
+.deployment-secret-table > div > *,
+.deployment-runbook-table > div > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.deployment-secret-table,
+.deployment-runbook-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.deployment-secret-table > div,
+.deployment-runbook-table > div {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.deployment-secret-table > div {
+  grid-template-columns: minmax(160px, 0.7fr) minmax(250px, 1fr) 78px;
+}
+
+.deployment-runbook-table > div {
+  grid-template-columns: 54px minmax(170px, 0.75fr) minmax(320px, 1.3fr) minmax(120px, 0.55fr);
+}
+
+.deployment-secret-table > div:first-child,
+.deployment-runbook-table > div:first-child {
+  background: rgba(49, 95, 147, 0.08);
+}
+
+.deployment-secret-table > div:last-child,
+.deployment-runbook-table > div:last-child {
+  border-bottom: 0;
+}
+
+.deployment-secret-table span,
+.deployment-secret-table strong,
+.deployment-runbook-table span,
+.deployment-runbook-table strong {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.28;
+  overflow-wrap: anywhere;
+}
+
+.deployment-secret-table > div:first-child span,
+.deployment-runbook-table > div:first-child span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.deployment-secret-table .tone-green,
+.deployment-runbook-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.deployment-secret-table .tone-teal,
+.deployment-runbook-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.deployment-secret-table .tone-blue,
+.deployment-runbook-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.deployment-secret-table .tone-amber,
+.deployment-runbook-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.deployment-secret-table .tone-red,
+.deployment-runbook-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.backend-route-skeleton-map {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.84));
+  box-shadow: var(--shadow);
+}
+
+.backend-route-skeleton-map .staging-smoke-score-card,
+.backend-route-skeleton-map .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.backend-route-skeleton-map .staging-smoke-score-card span,
+.backend-route-skeleton-map .staging-smoke-signal-card span,
+.backend-route-skeleton-map .staging-env-grid span,
+.backend-route-skeleton-map .staging-command-list span,
+.backend-route-skeleton-map .staging-path-grid span,
+.backend-route-skeleton-map .staging-fixture-grid span,
+.backend-route-skeleton-map .staging-role-grid span,
+.backend-route-skeleton-map .staging-gate-list span {
+  color: var(--teal-dark);
+}
+
+.backend-route-skeleton-map .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(13, 111, 97, 0.12) 0);
+}
+
+.backend-route-skeleton-map .staging-smoke-signal-card *,
+.backend-route-skeleton-map .staging-command-list > div *,
+.backend-route-skeleton-map .staging-path-grid > div *,
+.backend-route-skeleton-map .staging-fixture-grid > div *,
+.backend-route-skeleton-map .staging-role-grid > div *,
+.backend-route-skeleton-map .staging-failure-list > div *,
+.backend-route-skeleton-map .staging-gate-list > div *,
+.route-skeleton-table > div > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.route-file-list em {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.route-skeleton-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.route-skeleton-table > div {
+  display: grid;
+  grid-template-columns: minmax(90px, 0.55fr) repeat(5, minmax(130px, 1fr));
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.route-skeleton-table > div:first-child {
+  background: rgba(13, 111, 97, 0.08);
+}
+
+.route-skeleton-table > div:last-child {
+  border-bottom: 0;
+}
+
+.route-skeleton-table span,
+.route-skeleton-table strong {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.28;
+  overflow-wrap: anywhere;
+}
+
+.route-skeleton-table > div:first-child span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.route-skeleton-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.route-skeleton-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.route-skeleton-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.route-skeleton-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.route-skeleton-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.database-migration-blueprint {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.84));
+  box-shadow: var(--shadow);
+}
+
+.database-migration-blueprint .staging-smoke-score-card,
+.database-migration-blueprint .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.database-migration-blueprint .staging-smoke-score-card span,
+.database-migration-blueprint .staging-smoke-signal-card span,
+.database-migration-blueprint .staging-command-list span,
+.database-migration-blueprint .staging-path-grid span,
+.database-migration-blueprint .staging-fixture-grid span,
+.database-migration-blueprint .staging-role-grid span,
+.database-migration-blueprint .staging-gate-list span {
+  color: var(--blue);
+}
+
+.database-migration-blueprint .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.database-migration-blueprint .staging-smoke-signal-card *,
+.database-migration-blueprint .staging-command-list > div *,
+.database-migration-blueprint .staging-path-grid > div *,
+.database-migration-blueprint .staging-fixture-grid > div *,
+.database-migration-blueprint .staging-role-grid > div *,
+.database-migration-blueprint .staging-failure-list > div *,
+.database-migration-blueprint .staging-gate-list > div *,
+.migration-file-table > div > *,
+.migration-seed-table > div > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.migration-file-table,
+.migration-seed-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.migration-file-table > div,
+.migration-seed-table > div {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.migration-file-table > div {
+  grid-template-columns: minmax(150px, 0.8fr) minmax(130px, 0.65fr) minmax(220px, 1fr) minmax(300px, 1.35fr) minmax(120px, 0.55fr);
+}
+
+.migration-seed-table > div {
+  grid-template-columns: minmax(60px, 0.22fr) minmax(160px, 0.72fr) minmax(220px, 1fr) minmax(360px, 1.55fr);
+}
+
+.migration-file-table > div:first-child,
+.migration-seed-table > div:first-child {
+  background: rgba(49, 95, 147, 0.08);
+}
+
+.migration-file-table > div:last-child,
+.migration-seed-table > div:last-child {
+  border-bottom: 0;
+}
+
+.migration-file-table span,
+.migration-file-table strong,
+.migration-file-table p,
+.migration-file-table em,
+.migration-seed-table span,
+.migration-seed-table strong,
+.migration-seed-table p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.28;
+}
+
+.migration-file-table > div:first-child span,
+.migration-seed-table > div:first-child span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.migration-file-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.migration-file-table .tone-green,
+.migration-seed-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.migration-file-table .tone-teal,
+.migration-seed-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.migration-file-table .tone-blue,
+.migration-seed-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.migration-file-table .tone-amber,
+.migration-seed-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.migration-file-table .tone-red,
+.migration-seed-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.auth-tenant-guard-blueprint {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(179, 59, 48, 0.24);
+  border-left: 4px solid var(--red);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 232, 229, 0.62));
+  box-shadow: var(--shadow);
+}
+
+.auth-tenant-guard-blueprint .staging-smoke-score-card,
+.auth-tenant-guard-blueprint .staging-smoke-panel {
+  border-left-color: var(--red);
+}
+
+.auth-tenant-guard-blueprint .staging-smoke-score-card span,
+.auth-tenant-guard-blueprint .staging-smoke-signal-card span,
+.auth-tenant-guard-blueprint .staging-command-list span,
+.auth-tenant-guard-blueprint .staging-path-grid span,
+.auth-tenant-guard-blueprint .staging-fixture-grid span,
+.auth-tenant-guard-blueprint .staging-gate-list span {
+  color: var(--red);
+}
+
+.auth-tenant-guard-blueprint .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--red) var(--width), rgba(179, 59, 48, 0.12) 0);
+}
+
+.auth-tenant-guard-blueprint .staging-smoke-signal-card *,
+.auth-tenant-guard-blueprint .staging-command-list > div *,
+.auth-tenant-guard-blueprint .staging-path-grid > div *,
+.auth-tenant-guard-blueprint .staging-fixture-grid > div *,
+.auth-tenant-guard-blueprint .staging-failure-list > div *,
+.auth-tenant-guard-blueprint .staging-gate-list > div *,
+.auth-signal-grid > div *,
+.auth-route-guard-grid > div *,
+.auth-guard-table > div > *,
+.auth-section-table > div > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.auth-signal-grid,
+.auth-route-guard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.auth-signal-grid > div,
+.auth-route-guard-grid > div {
+  display: grid;
+  gap: 6px;
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.auth-signal-grid span,
+.auth-route-guard-grid span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.auth-signal-grid strong,
+.auth-route-guard-grid strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.05;
+}
+
+.auth-signal-grid p,
+.auth-route-guard-grid p,
+.auth-route-guard-grid small {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.auth-guard-table,
+.auth-section-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.auth-guard-table > div,
+.auth-section-table > div {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.auth-guard-table > div {
+  grid-template-columns: minmax(190px, 1fr) minmax(140px, 0.65fr) minmax(320px, 1.35fr) minmax(170px, 0.75fr) minmax(120px, 0.55fr);
+}
+
+.auth-section-table > div {
+  grid-template-columns: minmax(150px, 0.8fr) minmax(120px, 0.55fr) minmax(160px, 0.7fr) minmax(140px, 0.62fr) minmax(360px, 1.55fr);
+}
+
+.auth-guard-table > div:first-child,
+.auth-section-table > div:first-child {
+  background: rgba(179, 59, 48, 0.08);
+}
+
+.auth-guard-table > div:last-child,
+.auth-section-table > div:last-child {
+  border-bottom: 0;
+}
+
+.auth-guard-table span,
+.auth-guard-table strong,
+.auth-guard-table p,
+.auth-guard-table em,
+.auth-section-table span,
+.auth-section-table strong,
+.auth-section-table p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.28;
+}
+
+.auth-guard-table > div:first-child span,
+.auth-section-table > div:first-child span {
+  color: var(--red);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.auth-guard-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.auth-signal-grid .tone-green,
+.auth-route-guard-grid .tone-green,
+.auth-guard-table .tone-green,
+.auth-section-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.auth-signal-grid .tone-teal,
+.auth-route-guard-grid .tone-teal,
+.auth-guard-table .tone-teal,
+.auth-section-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.auth-signal-grid .tone-blue,
+.auth-route-guard-grid .tone-blue,
+.auth-guard-table .tone-blue,
+.auth-section-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.auth-signal-grid .tone-amber,
+.auth-route-guard-grid .tone-amber,
+.auth-guard-table .tone-amber,
+.auth-section-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.auth-signal-grid .tone-red,
+.auth-route-guard-grid .tone-red,
+.auth-guard-table .tone-red,
+.auth-section-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.backend-test-command-pack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.62));
+  box-shadow: var(--shadow);
+}
+
+.backend-test-command-pack .staging-smoke-score-card,
+.backend-test-command-pack .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.backend-test-command-pack .staging-smoke-score-card span,
+.backend-test-command-pack .staging-smoke-signal-card span,
+.backend-ci-job-grid span,
+.backend-artifact-map-grid span,
+.backend-fixture-command-grid span,
+.backend-local-runbook-grid span {
+  color: var(--teal-dark);
+}
+
+.backend-test-command-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(13, 111, 97, 0.12) 0);
+}
+
+.backend-test-command-pack .staging-smoke-signal-card *,
+.backend-test-command-table > div > *,
+.backend-coverage-table > div > *,
+.backend-ci-job-grid > div *,
+.backend-artifact-map-grid > div *,
+.backend-fixture-command-grid > div *,
+.backend-failure-policy-grid > div *,
+.backend-release-gate-grid > div *,
+.backend-local-runbook-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.backend-test-command-table,
+.backend-coverage-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.backend-test-command-table > div,
+.backend-coverage-table > div {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.backend-test-command-table > div {
+  grid-template-columns: minmax(56px, 0.22fr) minmax(170px, 0.75fr) minmax(190px, 0.75fr) minmax(360px, 1.45fr) minmax(160px, 0.65fr);
+}
+
+.backend-coverage-table > div {
+  grid-template-columns: minmax(150px, 0.6fr) minmax(110px, 0.42fr) minmax(170px, 0.65fr) minmax(420px, 1.65fr);
+}
+
+.backend-test-command-table > div:first-child,
+.backend-coverage-table > div:first-child {
+  background: rgba(13, 111, 97, 0.08);
+}
+
+.backend-test-command-table > div:last-child,
+.backend-coverage-table > div:last-child {
+  border-bottom: 0;
+}
+
+.backend-test-command-table span,
+.backend-test-command-table strong,
+.backend-test-command-table p,
+.backend-test-command-table em,
+.backend-test-command-table code,
+.backend-coverage-table span,
+.backend-coverage-table strong,
+.backend-coverage-table p,
+.backend-coverage-table code {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.backend-test-command-table > div:first-child span,
+.backend-coverage-table > div:first-child span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-test-command-table code,
+.backend-coverage-table code,
+.backend-ci-job-grid code {
+  display: inline-grid;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-radius: 7px;
+  color: var(--teal-dark);
+  background: rgba(226, 243, 236, 0.58);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: normal;
+}
+
+.backend-test-command-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.backend-ci-job-grid,
+.backend-artifact-map-grid,
+.backend-fixture-command-grid,
+.backend-failure-policy-grid,
+.backend-release-gate-grid,
+.backend-local-runbook-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.backend-ci-job-grid,
+.backend-artifact-map-grid,
+.backend-fixture-command-grid,
+.backend-release-gate-grid,
+.backend-local-runbook-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-failure-policy-grid {
+  grid-template-columns: 1fr;
+}
+
+.backend-ci-job-grid > div,
+.backend-artifact-map-grid > div,
+.backend-fixture-command-grid > div,
+.backend-failure-policy-grid > div,
+.backend-release-gate-grid > div,
+.backend-local-runbook-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 96px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.backend-ci-job-grid span,
+.backend-artifact-map-grid span,
+.backend-fixture-command-grid span,
+.backend-local-runbook-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-ci-job-grid strong,
+.backend-artifact-map-grid strong,
+.backend-fixture-command-grid strong,
+.backend-failure-policy-grid strong,
+.backend-release-gate-grid strong,
+.backend-local-runbook-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.backend-ci-job-grid p,
+.backend-artifact-map-grid p,
+.backend-fixture-command-grid p,
+.backend-failure-policy-grid p,
+.backend-release-gate-grid p,
+.backend-local-runbook-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.backend-test-command-table .tone-green,
+.backend-coverage-table .tone-green,
+.backend-ci-job-grid .tone-green,
+.backend-artifact-map-grid .tone-green,
+.backend-fixture-command-grid .tone-green,
+.backend-failure-policy-grid .tone-green,
+.backend-release-gate-grid .tone-green,
+.backend-local-runbook-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.backend-test-command-table .tone-teal,
+.backend-coverage-table .tone-teal,
+.backend-ci-job-grid .tone-teal,
+.backend-artifact-map-grid .tone-teal,
+.backend-fixture-command-grid .tone-teal,
+.backend-failure-policy-grid .tone-teal,
+.backend-release-gate-grid .tone-teal,
+.backend-local-runbook-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.backend-test-command-table .tone-blue,
+.backend-coverage-table .tone-blue,
+.backend-ci-job-grid .tone-blue,
+.backend-artifact-map-grid .tone-blue,
+.backend-fixture-command-grid .tone-blue,
+.backend-failure-policy-grid .tone-blue,
+.backend-release-gate-grid .tone-blue,
+.backend-local-runbook-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.backend-test-command-table .tone-amber,
+.backend-coverage-table .tone-amber,
+.backend-ci-job-grid .tone-amber,
+.backend-artifact-map-grid .tone-amber,
+.backend-fixture-command-grid .tone-amber,
+.backend-failure-policy-grid .tone-amber,
+.backend-release-gate-grid .tone-amber,
+.backend-local-runbook-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.backend-test-command-table .tone-red,
+.backend-coverage-table .tone-red,
+.backend-ci-job-grid .tone-red,
+.backend-artifact-map-grid .tone-red,
+.backend-fixture-command-grid .tone-red,
+.backend-failure-policy-grid .tone-red,
+.backend-release-gate-grid .tone-red,
+.backend-local-runbook-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.production-repo-file-pack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.66));
+  box-shadow: var(--shadow);
+}
+
+.production-repo-file-pack .staging-smoke-score-card,
+.production-repo-file-pack .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.production-repo-file-pack .staging-smoke-score-card span,
+.production-repo-file-pack .staging-smoke-signal-card span,
+.production-folder-grid span,
+.production-workflow-grid span,
+.production-env-grid span {
+  color: var(--blue-dark);
+}
+
+.production-repo-file-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.production-repo-file-pack .staging-smoke-signal-card *,
+.production-folder-grid > div *,
+.production-workflow-grid > div *,
+.production-env-grid > div *,
+.production-copy-list > div *,
+.production-owner-grid > div *,
+.production-acceptance-grid > div *,
+.production-file-table > div > *,
+.production-api-table > div > *,
+.production-migration-table > div > *,
+.production-guard-table > div > *,
+.production-test-table > div > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.production-folder-grid,
+.production-workflow-grid,
+.production-env-grid,
+.production-owner-grid,
+.production-acceptance-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.production-folder-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.production-workflow-grid,
+.production-env-grid,
+.production-owner-grid,
+.production-acceptance-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.production-copy-list {
+  display: grid;
+  gap: 8px;
+}
+
+.production-folder-grid > div,
+.production-workflow-grid > div,
+.production-env-grid > div,
+.production-copy-list > div,
+.production-owner-grid > div,
+.production-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.production-folder-grid span,
+.production-workflow-grid span,
+.production-env-grid span,
+.production-copy-list span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.production-folder-grid strong,
+.production-workflow-grid strong,
+.production-env-grid strong,
+.production-copy-list strong,
+.production-owner-grid strong,
+.production-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.production-folder-grid p,
+.production-workflow-grid p,
+.production-env-grid p,
+.production-copy-list p,
+.production-owner-grid p,
+.production-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.production-folder-grid em {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.production-file-table,
+.production-api-table,
+.production-migration-table,
+.production-guard-table,
+.production-test-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.production-file-table > div,
+.production-api-table > div,
+.production-migration-table > div,
+.production-guard-table > div,
+.production-test-table > div {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.production-file-table > div {
+  grid-template-columns: minmax(190px, 0.75fr) minmax(150px, 0.52fr) minmax(380px, 1.45fr) minmax(130px, 0.48fr);
+}
+
+.production-api-table > div {
+  grid-template-columns: minmax(110px, 0.45fr) repeat(5, minmax(150px, 0.64fr));
+}
+
+.production-migration-table > div,
+.production-guard-table > div {
+  grid-template-columns: minmax(190px, 0.72fr) minmax(150px, 0.52fr) minmax(360px, 1.4fr) minmax(130px, 0.48fr);
+}
+
+.production-test-table > div {
+  grid-template-columns: minmax(56px, 0.2fr) minmax(170px, 0.66fr) minmax(270px, 1fr) minmax(220px, 0.8fr) minmax(150px, 0.5fr);
+}
+
+.production-file-table > div:first-child,
+.production-api-table > div:first-child,
+.production-migration-table > div:first-child,
+.production-guard-table > div:first-child,
+.production-test-table > div:first-child {
+  background: rgba(49, 95, 147, 0.08);
+}
+
+.production-file-table > div:last-child,
+.production-api-table > div:last-child,
+.production-migration-table > div:last-child,
+.production-guard-table > div:last-child,
+.production-test-table > div:last-child {
+  border-bottom: 0;
+}
+
+.production-file-table span,
+.production-file-table strong,
+.production-file-table p,
+.production-file-table em,
+.production-api-table span,
+.production-api-table strong,
+.production-api-table em,
+.production-migration-table span,
+.production-migration-table strong,
+.production-migration-table p,
+.production-migration-table em,
+.production-guard-table span,
+.production-guard-table strong,
+.production-guard-table p,
+.production-guard-table em,
+.production-test-table span,
+.production-test-table strong,
+.production-test-table p,
+.production-test-table em,
+.production-test-table code {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.production-file-table > div:first-child span,
+.production-api-table > div:first-child span,
+.production-migration-table > div:first-child span,
+.production-guard-table > div:first-child span,
+.production-test-table > div:first-child span {
+  color: var(--blue-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.production-test-table code {
+  display: inline-grid;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(49, 95, 147, 0.18);
+  border-radius: 7px;
+  color: var(--blue-dark);
+  background: rgba(231, 239, 248, 0.68);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: normal;
+}
+
+.production-file-table em,
+.production-api-table em,
+.production-migration-table em,
+.production-guard-table em,
+.production-test-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.production-folder-grid .tone-green,
+.production-workflow-grid .tone-green,
+.production-env-grid .tone-green,
+.production-copy-list .tone-green,
+.production-owner-grid .tone-green,
+.production-acceptance-grid .tone-green,
+.production-file-table .tone-green,
+.production-api-table .tone-green,
+.production-migration-table .tone-green,
+.production-guard-table .tone-green,
+.production-test-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.production-folder-grid .tone-teal,
+.production-workflow-grid .tone-teal,
+.production-env-grid .tone-teal,
+.production-copy-list .tone-teal,
+.production-owner-grid .tone-teal,
+.production-acceptance-grid .tone-teal,
+.production-file-table .tone-teal,
+.production-api-table .tone-teal,
+.production-migration-table .tone-teal,
+.production-guard-table .tone-teal,
+.production-test-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.production-folder-grid .tone-blue,
+.production-workflow-grid .tone-blue,
+.production-env-grid .tone-blue,
+.production-copy-list .tone-blue,
+.production-owner-grid .tone-blue,
+.production-acceptance-grid .tone-blue,
+.production-file-table .tone-blue,
+.production-api-table .tone-blue,
+.production-migration-table .tone-blue,
+.production-guard-table .tone-blue,
+.production-test-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.production-folder-grid .tone-amber,
+.production-workflow-grid .tone-amber,
+.production-env-grid .tone-amber,
+.production-copy-list .tone-amber,
+.production-owner-grid .tone-amber,
+.production-acceptance-grid .tone-amber,
+.production-file-table .tone-amber,
+.production-api-table .tone-amber,
+.production-migration-table .tone-amber,
+.production-guard-table .tone-amber,
+.production-test-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.production-folder-grid .tone-red,
+.production-workflow-grid .tone-red,
+.production-env-grid .tone-red,
+.production-copy-list .tone-red,
+.production-owner-grid .tone-red,
+.production-acceptance-grid .tone-red,
+.production-file-table .tone-red,
+.production-api-table .tone-red,
+.production-migration-table .tone-red,
+.production-guard-table .tone-red,
+.production-test-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.api-error-audit-envelope-pack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(192, 58, 49, 0.22);
+  border-left: 4px solid var(--red);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 232, 229, 0.48));
+  box-shadow: var(--shadow);
+}
+
+.api-error-audit-envelope-pack .staging-smoke-score-card,
+.api-error-audit-envelope-pack .staging-smoke-panel {
+  border-left-color: var(--red);
+}
+
+.api-error-audit-envelope-pack .staging-smoke-score-card span,
+.api-error-audit-envelope-pack .staging-smoke-signal-card span,
+.api-envelope-field-grid span,
+.api-audit-field-grid span,
+.api-audit-event-grid span,
+.api-middleware-grid span,
+.api-denial-grid span,
+.api-implementation-list span,
+.api-example-grid span {
+  color: var(--red-dark);
+}
+
+.api-error-audit-envelope-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--red) var(--width), rgba(192, 58, 49, 0.12) 0);
+}
+
+.api-error-audit-envelope-pack .staging-smoke-signal-card *,
+.api-envelope-field-grid > div *,
+.api-audit-field-grid > div *,
+.api-audit-event-grid > div *,
+.api-middleware-grid > div *,
+.api-denial-grid > div *,
+.api-implementation-list > div *,
+.api-acceptance-grid > div *,
+.api-error-catalog-table > div > *,
+.api-route-envelope-table > div > *,
+.api-test-binding-table > div > *,
+.api-example-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.api-envelope-field-grid,
+.api-audit-field-grid,
+.api-audit-event-grid,
+.api-middleware-grid,
+.api-denial-grid,
+.api-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.api-implementation-list {
+  display: grid;
+  gap: 8px;
+}
+
+.api-envelope-field-grid > div,
+.api-audit-field-grid > div,
+.api-audit-event-grid > div,
+.api-middleware-grid > div,
+.api-denial-grid > div,
+.api-implementation-list > div,
+.api-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 88px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--red);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.api-envelope-field-grid span,
+.api-audit-field-grid span,
+.api-audit-event-grid span,
+.api-middleware-grid span,
+.api-denial-grid span,
+.api-implementation-list span,
+.api-example-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.api-envelope-field-grid strong,
+.api-audit-field-grid strong,
+.api-audit-event-grid strong,
+.api-middleware-grid strong,
+.api-denial-grid strong,
+.api-implementation-list strong,
+.api-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.api-envelope-field-grid p,
+.api-audit-field-grid p,
+.api-audit-event-grid p,
+.api-middleware-grid p,
+.api-denial-grid p,
+.api-implementation-list p,
+.api-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.api-audit-event-grid em,
+.api-middleware-grid em {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.api-error-catalog-table,
+.api-route-envelope-table,
+.api-test-binding-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.api-error-catalog-table > div,
+.api-route-envelope-table > div,
+.api-test-binding-table > div {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.api-error-catalog-table > div {
+  grid-template-columns: minmax(170px, 0.5fr) minmax(70px, 0.2fr) minmax(260px, 1fr) minmax(380px, 1.2fr);
+}
+
+.api-route-envelope-table > div {
+  grid-template-columns: minmax(120px, 0.42fr) minmax(150px, 0.55fr) minmax(180px, 0.62fr) minmax(320px, 1.1fr) minmax(170px, 0.58fr) minmax(150px, 0.5fr);
+}
+
+.api-test-binding-table > div {
+  grid-template-columns: minmax(180px, 0.58fr) minmax(150px, 0.5fr) minmax(360px, 1.25fr) minmax(180px, 0.58fr);
+}
+
+.api-error-catalog-table > div:first-child,
+.api-route-envelope-table > div:first-child,
+.api-test-binding-table > div:first-child {
+  background: rgba(192, 58, 49, 0.08);
+}
+
+.api-error-catalog-table > div:last-child,
+.api-route-envelope-table > div:last-child,
+.api-test-binding-table > div:last-child {
+  border-bottom: 0;
+}
+
+.api-error-catalog-table span,
+.api-error-catalog-table strong,
+.api-error-catalog-table p,
+.api-error-catalog-table em,
+.api-route-envelope-table span,
+.api-route-envelope-table strong,
+.api-route-envelope-table p,
+.api-route-envelope-table em,
+.api-test-binding-table span,
+.api-test-binding-table strong,
+.api-test-binding-table p,
+.api-test-binding-table em,
+.api-test-binding-table code {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.api-error-catalog-table > div:first-child span,
+.api-route-envelope-table > div:first-child span,
+.api-test-binding-table > div:first-child span {
+  color: var(--red-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.api-error-catalog-table em,
+.api-route-envelope-table em,
+.api-test-binding-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.api-test-binding-table code {
+  display: inline-grid;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(192, 58, 49, 0.18);
+  border-radius: 7px;
+  color: var(--red-dark);
+  background: rgba(253, 232, 229, 0.68);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: normal;
+}
+
+.api-example-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.api-example-grid > div {
+  display: grid;
+  gap: 8px;
+  padding: 11px;
+  border: 1px solid rgba(49, 95, 147, 0.18);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: rgba(231, 239, 248, 0.54);
+}
+
+.api-example-grid pre {
+  max-height: 310px;
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.api-envelope-field-grid .tone-green,
+.api-audit-field-grid .tone-green,
+.api-audit-event-grid .tone-green,
+.api-middleware-grid .tone-green,
+.api-denial-grid .tone-green,
+.api-implementation-list .tone-green,
+.api-acceptance-grid .tone-green,
+.api-error-catalog-table .tone-green,
+.api-route-envelope-table .tone-green,
+.api-test-binding-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.api-envelope-field-grid .tone-teal,
+.api-audit-field-grid .tone-teal,
+.api-audit-event-grid .tone-teal,
+.api-middleware-grid .tone-teal,
+.api-denial-grid .tone-teal,
+.api-implementation-list .tone-teal,
+.api-acceptance-grid .tone-teal,
+.api-error-catalog-table .tone-teal,
+.api-route-envelope-table .tone-teal,
+.api-test-binding-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.api-envelope-field-grid .tone-blue,
+.api-audit-field-grid .tone-blue,
+.api-audit-event-grid .tone-blue,
+.api-middleware-grid .tone-blue,
+.api-denial-grid .tone-blue,
+.api-implementation-list .tone-blue,
+.api-acceptance-grid .tone-blue,
+.api-error-catalog-table .tone-blue,
+.api-route-envelope-table .tone-blue,
+.api-test-binding-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.api-envelope-field-grid .tone-amber,
+.api-audit-field-grid .tone-amber,
+.api-audit-event-grid .tone-amber,
+.api-middleware-grid .tone-amber,
+.api-denial-grid .tone-amber,
+.api-implementation-list .tone-amber,
+.api-acceptance-grid .tone-amber,
+.api-error-catalog-table .tone-amber,
+.api-route-envelope-table .tone-amber,
+.api-test-binding-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.api-envelope-field-grid .tone-red,
+.api-audit-field-grid .tone-red,
+.api-audit-event-grid .tone-red,
+.api-middleware-grid .tone-red,
+.api-denial-grid .tone-red,
+.api-implementation-list .tone-red,
+.api-acceptance-grid .tone-red,
+.api-error-catalog-table .tone-red,
+.api-route-envelope-table .tone-red,
+.api-test-binding-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
 @media (max-width: 1280px) {
   .saas-track-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -8385,7 +10560,19 @@ textarea:disabled {
   .seed-audit-grid,
   .seed-assertion-grid,
   .seed-file-grid,
-  .seed-test-grid {
+  .seed-test-grid,
+  .private-repo-identity-grid,
+  .private-repo-label-grid,
+  .private-repo-milestone-grid,
+  .private-repo-branch-grid,
+  .private-repo-board-grid,
+  .private-repo-secret-grid,
+  .private-repo-file-grid,
+  .staging-env-grid,
+  .staging-path-grid,
+  .staging-fixture-grid,
+  .staging-role-grid,
+  .staging-artifact-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -8414,12 +10601,64 @@ textarea:disabled {
   .repo-kickoff-two-column,
   .issue-export-two-column,
   .api-contract-two-column,
-  .seed-fixture-two-column {
+  .seed-fixture-two-column,
+  .private-repo-two-column,
+  .staging-smoke-two-column {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 820px) {
+  .fixture-source-table {
+    overflow-x: auto;
+  }
+
+  .sprint-calendar-table {
+    overflow-x: auto;
+  }
+
+  .deployment-secret-table,
+  .deployment-runbook-table,
+  .route-skeleton-table,
+  .migration-file-table,
+  .migration-seed-table,
+  .auth-guard-table,
+  .auth-section-table,
+  .backend-test-command-table,
+  .backend-coverage-table,
+  .production-file-table,
+  .production-api-table,
+  .production-migration-table,
+  .production-guard-table,
+  .production-test-table,
+  .api-error-catalog-table,
+  .api-route-envelope-table,
+  .api-test-binding-table {
+    overflow-x: auto;
+  }
+
+  .fixture-source-table > div,
+  .sprint-calendar-table > div,
+  .deployment-secret-table > div,
+  .deployment-runbook-table > div,
+  .route-skeleton-table > div,
+  .migration-file-table > div,
+  .migration-seed-table > div,
+  .auth-guard-table > div,
+  .auth-section-table > div,
+  .backend-test-command-table > div,
+  .backend-coverage-table > div,
+  .production-file-table > div,
+  .production-api-table > div,
+  .production-migration-table > div,
+  .production-guard-table > div,
+  .production-test-table > div,
+  .api-error-catalog-table > div,
+  .api-route-envelope-table > div,
+  .api-test-binding-table > div {
+    min-width: 680px;
+  }
+
   .saas-conversion-hero,
   .saas-signal-grid,
   .saas-track-grid,
@@ -8526,7 +10765,42 @@ textarea:disabled {
   .seed-audit-grid,
   .seed-assertion-grid,
   .seed-file-grid,
-  .seed-test-grid {
+  .seed-test-grid,
+  .private-repo-hero,
+  .private-repo-signal-grid,
+  .private-repo-identity-grid,
+  .private-repo-label-grid,
+  .private-repo-milestone-grid,
+  .private-repo-branch-grid,
+  .private-repo-board-grid,
+  .private-repo-secret-grid,
+  .private-repo-file-grid,
+  .staging-smoke-hero,
+  .staging-smoke-signal-grid,
+  .auth-signal-grid,
+  .auth-route-guard-grid,
+  .backend-ci-job-grid,
+  .backend-artifact-map-grid,
+  .backend-fixture-command-grid,
+  .backend-release-gate-grid,
+  .backend-local-runbook-grid,
+  .production-folder-grid,
+  .production-workflow-grid,
+  .production-env-grid,
+  .production-owner-grid,
+  .production-acceptance-grid,
+  .api-envelope-field-grid,
+  .api-audit-field-grid,
+  .api-audit-event-grid,
+  .api-middleware-grid,
+  .api-denial-grid,
+  .api-acceptance-grid,
+  .api-example-grid,
+  .staging-env-grid,
+  .staging-path-grid,
+  .staging-fixture-grid,
+  .staging-role-grid,
+  .staging-artifact-grid {
     grid-template-columns: 1fr;
   }
 

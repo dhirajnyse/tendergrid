@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "pursuitdesk.databaseMigrationBlueprint.v111",
+  "generatedOn": "2026-05-13",
+  "product": "PursuitDesk",
+  "publicDemoRepository": "dhirajnyse/tendergrid",
+  "targetPrivateRepository": "dhirajnyse/pursuitdesk-platform",
+  "purpose": "Convert the static PursuitDesk prototype into a production-ready database migration path with tenant-first tables, operational/commercial separation, seed order, rollback rules, validation gates, and backend commands.",
+  "sourceFixtures": {
+    "tenant": "CapSa Engineering & Contracting LLC",
+    "sourceWorkbooks": 2,
+    "sampleRecords": 119,
+    "operationalRecords": 119,
+    "commercialVaultPolicy": "Commercial values, agreements, LOA, negotiation rounds, billing, and forecast facts stay outside frontline Tenders and Projects tables."
+  },
+  "migrationFiles": [
+    {
+      "file": "0001_tenant_identity.sql",
+      "layer": "Tenant identity",
+      "tables": ["companies", "users", "access_profiles", "sessions", "invitations"],
+      "owner": "Security Owner",
+      "purpose": "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data."
+    },
+    {
+      "file": "0002_operational_records.sql",
+      "layer": "Operational records",
+      "tables": ["records", "record_notes", "record_status_events", "client_memory"],
+      "owner": "Records Owner",
+      "purpose": "Load tracker-safe tender and project records without commercial values."
+    },
+    {
+      "file": "0003_commercial_vault.sql",
+      "layer": "Commercial vault",
+      "tables": ["commercial_facts", "negotiation_rounds", "agreements", "forecast_inputs"],
+      "owner": "Commercial Owner",
+      "purpose": "Keep values, agreements, LOA, negotiation, and forecast facts behind explicit management permissions."
+    },
+    {
+      "file": "0004_import_pipeline.sql",
+      "layer": "Import pipeline",
+      "tables": ["import_batches", "staging_rows", "validation_errors", "quarantine_items", "rollback_events"],
+      "owner": "Migration Owner",
+      "purpose": "Stage workbook data, show validation issues, commit only approved rows, and preserve rollback evidence."
+    },
+    {
+      "file": "0005_audit_events.sql",
+      "layer": "Audit ledger",
+      "tables": ["audit_events", "audit_exports", "request_events"],
+      "owner": "Governance Owner",
+      "purpose": "Append allowed and denied sensitive actions with actor, tenant, target, request id, and before or after summary."
+    },
+    {
+      "file": "0006_billing_membership.sql",
+      "layer": "Billing membership",
+      "tables": ["plans", "subscriptions", "invoices", "billing_events", "seat_events"],
+      "owner": "Billing Owner",
+      "purpose": "USD membership, seat changes, invoices, test checkout, and access-lock state stay separate from operational records."
+    },
+    {
+      "file": "0007_feedback_workflow.sql",
+      "layer": "Pilot feedback",
+      "tables": ["feedback_sessions", "feedback_items", "feedback_activity", "attachments"],
+      "owner": "Product Owner",
+      "purpose": "Capture pilot UAT feedback, blockers, owner workflow, retest states, decisions, and sponsor exports."
+    },
+    {
+      "file": "0008_documents_reports.sql",
+      "layer": "Evidence and reports",
+      "tables": ["document_evidence", "report_exports", "report_snapshots"],
+      "owner": "Governance Owner",
+      "purpose": "Hold evidence pack pointers, management report exports, and generated weekly snapshots."
+    },
+    {
+      "file": "0009_operational_indexes.sql",
+      "layer": "Indexes",
+      "tables": ["tenant indexes", "record indexes", "due date indexes", "source trace indexes", "audit indexes", "billing indexes"],
+      "owner": "Backend Lead",
+      "purpose": "Add query paths after base tables so filters, search, exports, and audits stay fast under tenant scope."
+    },
+    {
+      "file": "0010_seed_assertions.sql",
+      "layer": "Seed assertions",
+      "tables": ["migration_checks", "fixture_assertions", "smoke_expectations"],
+      "owner": "QA Owner",
+      "purpose": "Store count parity, redaction, tenant isolation, import dry-run, rollback, and smoke proof expectations."
+    }
+  ],
+  "tableOwnership": [
+    {
+      "layer": "Tenant identity",
+      "owner": "Security Owner",
+      "tables": ["companies", "users", "access_profiles", "sessions"],
+      "rule": "Blocks cross-company data before any route or service can read records."
+    },
+    {
+      "layer": "Operational records",
+      "owner": "Records Owner",
+      "tables": ["records", "record_notes", "record_status_events", "client_memory"],
+      "rule": "The frontline Tenders and Projects sheets read only this layer."
+    },
+    {
+      "layer": "Commercial vault",
+      "owner": "Commercial Owner",
+      "tables": ["commercial_facts", "negotiation_rounds", "agreements", "forecast_inputs"],
+      "rule": "Management-only facts stay outside tracker routes and exports."
+    },
+    {
+      "layer": "Import pipeline",
+      "owner": "Migration Owner",
+      "tables": ["import_batches", "staging_rows", "validation_errors", "quarantine_items", "rollback_events"],
+      "rule": "Excel migration is observable, reversible, and auditable."
+    },
+    {
+      "layer": "Audit ledger",
+      "owner": "Governance Owner",
+      "tables": ["audit_events", "request_events", "audit_exports"],
+      "rule": "Sensitive reads, denials, imports, billing, and membership changes become proof."
+    },
+    {
+      "layer": "Billing membership",
+      "owner": "Billing Owner",
+      "tables": ["plans", "subscriptions", "invoices", "billing_events", "seat_events"],
+      "rule": "USD pricing and membership state are isolated from pursuit data."
+    },
+    {
+      "layer": "Feedback workflow",
+      "owner": "Product Owner",
+      "tables": ["feedback_sessions", "feedback_items", "feedback_activity", "attachments"],
+      "rule": "Pilot feedback becomes a release-quality backlog, not loose notes."
+    },
+    {
+      "layer": "Reports and evidence",
+      "owner": "Governance Owner",
+      "tables": ["document_evidence", "report_exports", "report_snapshots"],
+      "rule": "Management packs can be rebuilt from governed data instead of screenshots."
+    }
+  ],
+  "indexPlan": [
+    {
+      "name": "tenant_scope_idx",
+      "target": "All tenant-owned tables",
+      "fields": ["company_id", "id"],
+      "purpose": "Every query starts tenant-first, then record or account lookup."
+    },
+    {
+      "name": "record_lookup_idx",
+      "target": "records",
+      "fields": ["company_id", "record_type", "status", "client", "reference"],
+      "purpose": "Powers Tenders, Projects, quick search, and duplicate checks."
+    },
+    {
+      "name": "due_pressure_idx",
+      "target": "records",
+      "fields": ["company_id", "owner", "due_date", "status"],
+      "purpose": "Keeps command rail, calendar, advisor, and overdue queues responsive."
+    },
+    {
+      "name": "source_trace_idx",
+      "target": "records and import tables",
+      "fields": ["source_workbook", "source_sheet", "source_row_hash"],
+      "purpose": "Proves where every imported row came from."
+    },
+    {
+      "name": "commercial_guard_idx",
+      "target": "commercial_facts",
+      "fields": ["company_id", "record_id", "fact_type"],
+      "purpose": "Lets insight rooms load restricted facts without exposing them to trackers."
+    },
+    {
+      "name": "import_batch_idx",
+      "target": "import_batches and staging_rows",
+      "fields": ["company_id", "batch_status", "created_at"],
+      "purpose": "Supports dry-run, quarantine review, commit, rollback, and reconciliation."
+    },
+    {
+      "name": "audit_search_idx",
+      "target": "audit_events",
+      "fields": ["company_id", "actor_id", "target_type", "created_at"],
+      "purpose": "Makes allowed and denied access evidence searchable."
+    },
+    {
+      "name": "billing_events_idx",
+      "target": "billing_events",
+      "fields": ["company_id", "subscription_id", "external_event_id"],
+      "purpose": "Protects webhook idempotency, invoice trace, and seat reconciliation."
+    }
+  ],
+  "seedOrder": [
+    {"step": "01", "seed": "Seed tenant", "target": "companies", "acceptance": "Create CapSa demo company and base tenant settings before users."},
+    {"step": "02", "seed": "Seed plans and access templates", "target": "plans, access_profiles", "acceptance": "Create Operations User, Pursuit Manager, Control Admin, and membership plans."},
+    {"step": "03", "seed": "Seed users", "target": "users, sessions", "acceptance": "Admin, editor, viewer, inactive, and denied-role cases become fixture users."},
+    {"step": "04", "seed": "Seed operational records", "target": "records, notes, status events", "acceptance": "Tracker-safe records load without commercial fields."},
+    {"step": "05", "seed": "Seed commercial vault", "target": "commercial_facts, negotiation_rounds, agreements", "acceptance": "Values, LOA, negotiation, and forecast facts load only after record ids exist."},
+    {"step": "06", "seed": "Seed import batches", "target": "import_batches, staging_rows, validation_errors", "acceptance": "Source workbooks become dry-run, quarantine, and rollback fixtures."},
+    {"step": "07", "seed": "Seed audit events", "target": "audit_events", "acceptance": "Allowed and denied sensitive events create proof coverage."},
+    {"step": "08", "seed": "Seed billing", "target": "subscriptions, invoices, billing_events, seat_events", "acceptance": "USD test-mode membership and seat events prove commercial access locks."},
+    {"step": "09", "seed": "Seed feedback", "target": "feedback_sessions, feedback_items, feedback_activity", "acceptance": "Pilot blockers, retest states, sponsor exports, and decisions become persistent fixtures."},
+    {"step": "10", "seed": "Seed smoke expectations", "target": "migration_checks, fixture_assertions", "acceptance": "Counts, redaction, access, import, rollback, and report expectations are stored for CI."}
+  ],
+  "rollbackRules": [
+    {"rule": "Snapshot first", "detail": "Take a tenant-scoped backup or restore point before any migration commit."},
+    {"rule": "Reversible migrations", "detail": "Every migration file needs a safe down path or a documented irreversible decision."},
+    {"rule": "Batch rollback", "detail": "Import batches must be reversible by batch id without touching another tenant."},
+    {"rule": "Commercial vault lock", "detail": "Commercial fact writes roll back only through vault events, not tracker updates."},
+    {"rule": "Audit immutable", "detail": "Audit events are never deleted; rollback writes reversal events instead."},
+    {"rule": "Billing no delete", "detail": "Invoices and billing events are cancelled or reversed, not removed."},
+    {"rule": "Seed idempotency", "detail": "Fixture seeds can run repeatedly without duplicating users, records, or invoices."},
+    {"rule": "Restore rehearsal", "detail": "Staging restore must be rehearsed before the first customer pilot."}
+  ],
+  "validationGates": [
+    {"gate": "Count parity", "test": "Imported operational, commercial, audit, feedback, and billing counts match the fixture manifest."},
+    {"gate": "Tenant isolation", "test": "Every migrated row has company_id and rejects cross-tenant reads through route tests."},
+    {"gate": "Operational redaction", "test": "Tracker queries and exports return no value, agreement, invoice, LOA, or negotiation fields."},
+    {"gate": "Commercial integrity", "test": "Commercial facts can be joined to records only through authorized insight routes."},
+    {"gate": "Import reconciliation", "test": "Dry-run, commit, rollback, and quarantine totals reconcile to source workbook inventory."},
+    {"gate": "Audit coverage", "test": "Allowed and denied reads write audit events with request id and actor context."},
+    {"gate": "Index smoke", "test": "High-use filtered lists, search, calendar, audit, and billing queries use planned indexes."},
+    {"gate": "Backup restore", "test": "A tenant fixture can restore into staging and pass smoke tests within the release window."}
+  ],
+  "migrationCommands": [
+    {"command": "pnpm db:migrate:dev", "purpose": "Run local migration files in order", "expectedArtifact": "Migration log and generated client"},
+    {"command": "pnpm db:seed:fixture capsa", "purpose": "Load tenant, users, records, vault, imports, audit, billing, and feedback fixtures", "expectedArtifact": "Seed summary"},
+    {"command": "pnpm db:validate:counts", "purpose": "Compare table counts against fixture manifest", "expectedArtifact": "Count parity report"},
+    {"command": "pnpm db:redaction-proof", "purpose": "Assert tracker-safe queries hide commercial fields", "expectedArtifact": "Redaction proof artifact"},
+    {"command": "pnpm import:dry-run --fixture capsa", "purpose": "Stage workbook rows without live writes", "expectedArtifact": "Dry-run and quarantine report"},
+    {"command": "pnpm import:rollback --last", "purpose": "Reverse the last committed import batch", "expectedArtifact": "Rollback reconciliation report"},
+    {"command": "pnpm audit:export --release", "purpose": "Export sensitive allowed and denied action evidence", "expectedArtifact": "Audit evidence pack"},
+    {"command": "pnpm db:restore:test", "purpose": "Restore latest fixture backup into staging clone", "expectedArtifact": "Restore smoke report"}
+  ],
+  "dataContracts": [
+    {"contract": "Tracker record", "table": "records", "visibleFields": ["reference", "client", "title", "owner", "status", "due_date", "category"], "access": "Operations users without commercial fields"},
+    {"contract": "Commercial fact", "table": "commercial_facts", "visibleFields": ["value", "currency", "agreement", "LOA", "negotiation", "forecast"], "access": "Insight, commercial, management, and admin roles only"},
+    {"contract": "Import batch", "table": "import_batches", "visibleFields": ["source_workbook", "sheet", "row_hash", "validation_state", "commit_state"], "access": "Admins and import owners"},
+    {"contract": "Audit event", "table": "audit_events", "visibleFields": ["actor", "tenant", "target", "result", "request_id", "summary"], "access": "Governance and admin roles"},
+    {"contract": "Billing event", "table": "billing_events", "visibleFields": ["plan", "subscription", "invoice", "webhook", "seat_count", "lock_state"], "access": "Company admins only"},
+    {"contract": "Feedback item", "table": "feedback_items", "visibleFields": ["session", "severity", "owner", "decision", "retest_status", "sponsor_note"], "access": "Pilot owners and admins"},
+    {"contract": "Document evidence", "table": "document_evidence", "visibleFields": ["record_id", "evidence_type", "source_coverage", "gap_state"], "access": "Reports, governance, and document roles"},
+    {"contract": "Report export", "table": "report_exports", "visibleFields": ["snapshot_id", "report_type", "redaction_profile", "generated_by"], "access": "Management rooms and audit trail"}
+  ],
+  "nonNegotiableRules": [
+    "Every table that belongs to a customer carries company_id.",
+    "Tenders and Projects routes never expose commercial vault fields.",
+    "Commercial fields are joined only through authorized insight or management routes.",
+    "Import dry-run never writes live records.",
+    "Rollback is rehearsed before live pilot data.",
+    "Audit events are append-only.",
+    "Billing events are reversed, not deleted.",
+    "Seed fixtures are idempotent and safe to rerun."
+  ]
+}

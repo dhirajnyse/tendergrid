@@ -1,0 +1,276 @@
+{
+  "schemaVersion": "pursuitdesk.backendRouteSkeletonMap.v110",
+  "generatedOn": "2026-05-13",
+  "product": "PursuitDesk",
+  "targetRepository": "pursuitdesk-backend",
+  "publicDemoRepository": "dhirajnyse/tendergrid",
+  "purpose": "Turn the alpha API contract pack into concrete backend route files, controllers, services, validators, middleware, route tests, folders, and implementation slices for the first private backend repo.",
+  "routeFiles": [
+    {
+      "path": "apps/api/src/server.ts",
+      "responsibility": "Health route, request id, middleware chain, error shape, and route registration.",
+      "owner": "Platform Owner"
+    },
+    {
+      "path": "apps/api/src/middleware/request-context.ts",
+      "responsibility": "Request id, actor shell, tenant shell, logger scope, and response timing.",
+      "owner": "Backend Lead"
+    },
+    {
+      "path": "apps/api/src/middleware/tenant.ts",
+      "responsibility": "Company scope resolution, cross-tenant block, safe 404 shape, and audit hook.",
+      "owner": "Security Owner"
+    },
+    {
+      "path": "apps/api/src/middleware/access.ts",
+      "responsibility": "Role, section grant, commercial vault, membership admin-only, and inactive-user checks.",
+      "owner": "Security Owner"
+    },
+    {
+      "path": "apps/api/src/routes/auth.routes.ts",
+      "responsibility": "Login, reset request, current user, logout, inactive block, and session audit.",
+      "owner": "Identity Owner"
+    },
+    {
+      "path": "apps/api/src/routes/users.routes.ts",
+      "responsibility": "Admin-only user list, create user, role update, section access, and preview payload.",
+      "owner": "Admin Owner"
+    },
+    {
+      "path": "apps/api/src/routes/records.routes.ts",
+      "responsibility": "List, create, update, notes, filters, export, and client memory for tracker-safe rows.",
+      "owner": "Records Owner"
+    },
+    {
+      "path": "apps/api/src/routes/commercial.routes.ts",
+      "responsibility": "Value, agreement, LOA, negotiation, forecast, contract facts, and redaction denial tests.",
+      "owner": "Commercial Owner"
+    },
+    {
+      "path": "apps/api/src/routes/imports.routes.ts",
+      "responsibility": "Dry run, staging rows, quarantine, duplicate decisions, commit, rollback, and reconciliation.",
+      "owner": "Migration Owner"
+    },
+    {
+      "path": "apps/api/src/routes/billing.routes.ts",
+      "responsibility": "USD checkout session, invoice state, webhook signature, seat sync, and access lock.",
+      "owner": "Billing Owner"
+    },
+    {
+      "path": "apps/api/src/routes/feedback.routes.ts",
+      "responsibility": "UAT item capture, owner workflow, retest state, attachments, decisions, and sponsor export.",
+      "owner": "Product Owner"
+    },
+    {
+      "path": "apps/api/src/routes/audit.routes.ts",
+      "responsibility": "Admin event register, filters, exports, retention proof, and denied-route evidence.",
+      "owner": "Governance Owner"
+    }
+  ],
+  "controllerMap": [
+    {
+      "group": "Auth",
+      "route": "auth.routes.ts",
+      "controller": "auth.controller.ts",
+      "service": "auth.service.ts",
+      "validator": "auth.schema.ts",
+      "test": "auth.routes.test.ts"
+    },
+    {
+      "group": "Users",
+      "route": "users.routes.ts",
+      "controller": "users.controller.ts",
+      "service": "users.service.ts",
+      "validator": "users.schema.ts",
+      "test": "users.access.test.ts"
+    },
+    {
+      "group": "Records",
+      "route": "records.routes.ts",
+      "controller": "records.controller.ts",
+      "service": "records.service.ts",
+      "validator": "records.schema.ts",
+      "test": "records.redaction.test.ts"
+    },
+    {
+      "group": "Commercial",
+      "route": "commercial.routes.ts",
+      "controller": "commercial.controller.ts",
+      "service": "commercialVault.service.ts",
+      "validator": "commercial.schema.ts",
+      "test": "commercial.guard.test.ts"
+    },
+    {
+      "group": "Imports",
+      "route": "imports.routes.ts",
+      "controller": "imports.controller.ts",
+      "service": "importer.service.ts",
+      "validator": "imports.schema.ts",
+      "test": "imports.rollback.test.ts"
+    },
+    {
+      "group": "Billing",
+      "route": "billing.routes.ts",
+      "controller": "billing.controller.ts",
+      "service": "billing.service.ts",
+      "validator": "billing.schema.ts",
+      "test": "billing.webhook.test.ts"
+    },
+    {
+      "group": "Feedback",
+      "route": "feedback.routes.ts",
+      "controller": "feedback.controller.ts",
+      "service": "feedback.service.ts",
+      "validator": "feedback.schema.ts",
+      "test": "feedback.workflow.test.ts"
+    },
+    {
+      "group": "Audit",
+      "route": "audit.routes.ts",
+      "controller": "audit.controller.ts",
+      "service": "audit.service.ts",
+      "validator": "audit.schema.ts",
+      "test": "audit.retention.test.ts"
+    }
+  ],
+  "middlewareStack": [
+    "requestId",
+    "bodyParser",
+    "session",
+    "tenant",
+    "sectionAccess",
+    "commercialVault",
+    "auditWriter",
+    "errorHandler"
+  ],
+  "serviceBoundaries": [
+    {
+      "service": "identityService",
+      "scope": "Users, sessions, password reset shell, inactive-user behavior, and access snapshots."
+    },
+    {
+      "service": "recordService",
+      "scope": "Tracker-safe tenders, EOIs, projects, notes, filters, status moves, CSV redaction, and client memory."
+    },
+    {
+      "service": "commercialVaultService",
+      "scope": "Restricted commercial facts, negotiation rounds, agreements, LOA, forecast, and contract handoff."
+    },
+    {
+      "service": "importService",
+      "scope": "Source batch, dry-run, staging rows, validation, quarantine, duplicate decisions, commit, and rollback."
+    },
+    {
+      "service": "billingService",
+      "scope": "USD plan preview, checkout, invoice, webhook, subscription, seat sync, and access lock."
+    },
+    {
+      "service": "feedbackService",
+      "scope": "Pilot feedback sessions, UAT items, owner actions, retest states, attachments, and sponsor exports."
+    },
+    {
+      "service": "auditService",
+      "scope": "Append-only events, route denial proof, export pages, retention checks, and release evidence."
+    },
+    {
+      "service": "reportService",
+      "scope": "Management pack, review brief, command metrics, redaction-safe report export, and sponsor summaries."
+    }
+  ],
+  "routeTestMatrix": [
+    "Auth smoke: login, me, inactive block, failed login audit, reset request safety.",
+    "Tenant isolation: every route rejects cross-tenant identifiers with safe response shape.",
+    "Access sections: admin, operations, management, viewer, inactive, and system contexts match access grants.",
+    "Records redaction: tracker routes exclude value, agreement, invoice, LOA, and negotiation fields.",
+    "Commercial guard: commercial endpoints audit allowed and denied access.",
+    "Import safety: dry-run, staging, commit, rollback, and reconciliation preserve counts.",
+    "Billing safety: webhook signature, idempotency, invoice lifecycle, seat sync, and lock rules stay test-mode.",
+    "Audit evidence: every sensitive allowed or denied route writes an event."
+  ],
+  "implementationSlices": [
+    {
+      "slice": "Slice 1",
+      "name": "Server shell",
+      "output": "server.ts, request context, health, error envelope, logger, test harness."
+    },
+    {
+      "slice": "Slice 2",
+      "name": "Tenant and session",
+      "output": "tenant.ts, session middleware, auth routes, user fixtures, inactive checks."
+    },
+    {
+      "slice": "Slice 3",
+      "name": "Access and audit",
+      "output": "access.ts, audit service, denied-route events, section guard tests."
+    },
+    {
+      "slice": "Slice 4",
+      "name": "Operational records",
+      "output": "records route, service, schema, filters, status update, notes, export redaction."
+    },
+    {
+      "slice": "Slice 5",
+      "name": "Commercial vault",
+      "output": "commercial route, service, schema, redaction tests, management-only access."
+    },
+    {
+      "slice": "Slice 6",
+      "name": "Import runner",
+      "output": "dry-run, validation, quarantine, duplicate handling, commit, rollback, reconciliation."
+    },
+    {
+      "slice": "Slice 7",
+      "name": "Billing and feedback",
+      "output": "test checkout, webhook, invoice, seat sync, access lock, feedback workflow."
+    },
+    {
+      "slice": "Slice 8",
+      "name": "Smoke and release",
+      "output": "route test pack, smoke summary, artifact export, staging deploy handoff."
+    }
+  ],
+  "folderMap": [
+    {
+      "folder": "routes",
+      "rule": "Thin request and response route files; no business rules hidden inside handlers."
+    },
+    {
+      "folder": "controllers",
+      "rule": "Translate validated request into service calls and response envelopes."
+    },
+    {
+      "folder": "services",
+      "rule": "Tenant-scoped business rules, commercial split, import operations, billing state, and audit writes."
+    },
+    {
+      "folder": "schemas",
+      "rule": "Request validation, response redaction shape, and safe error paths."
+    },
+    {
+      "folder": "middleware",
+      "rule": "Request id, session, tenant, access, commercial guard, audit, and errors."
+    },
+    {
+      "folder": "tests/routes",
+      "rule": "Contract tests for every endpoint group and role profile."
+    },
+    {
+      "folder": "fixtures",
+      "rule": "Seed tenant, users, operational records, commercial vault, imports, audit, and smoke expectations."
+    },
+    {
+      "folder": "docs",
+      "rule": "API contracts, route skeleton, environment, staging deploy, and release evidence."
+    }
+  ],
+  "nonNegotiableRules": [
+    "Records routes must never return commercial vault fields.",
+    "Commercial routes must require explicit management or commercial access.",
+    "Every route must carry server-side tenant scope.",
+    "Denied access must write audit evidence.",
+    "Billing routes remain USD test-mode until live payment approval.",
+    "Import commit must have rollback and reconciliation proof.",
+    "Route tests must run against seed fixtures before staging deploy.",
+    "Error responses must never reveal tenant existence, secrets, or commercial values."
+  ]
+}

@@ -1,0 +1,288 @@
+{
+  "schemaVersion": "pursuitdesk.stagingDeploymentChecklist.v109",
+  "generatedOn": "2026-05-13",
+  "product": "PursuitDesk",
+  "targetRepository": "pursuitdesk-backend",
+  "publicDemoRepository": "dhirajnyse/tendergrid",
+  "deploymentGoal": "Deploy the first private backend alpha to staging with fixture data only, protected secrets, USD test billing, executable smoke proof, monitoring, backup, rollback, and go/no-go gates before any pilot user touches live data.",
+  "sourceFixtures": {
+    "tenant": 1,
+    "users": 5,
+    "accessProfiles": 3,
+    "operationalRecords": 119,
+    "commercialVaultRecords": 57,
+    "importBatches": 4,
+    "auditSeedEvents": 18,
+    "smokeExpectations": 12
+  },
+  "environmentLanes": [
+    {
+      "name": "Staging URL",
+      "target": "staging.pursuitdesk.app",
+      "proof": "HTTPS, cache headers, release version, and admin-only deployment notes are visible."
+    },
+    {
+      "name": "API service",
+      "target": "api-staging",
+      "proof": "Health, version, auth, and smoke endpoints respond from the release candidate."
+    },
+    {
+      "name": "Database",
+      "target": "PostgreSQL staging",
+      "proof": "Tenant, users, access, records, commercial vault, imports, audit, billing, and feedback tables migrate."
+    },
+    {
+      "name": "Object storage",
+      "target": "Staging evidence bucket",
+      "proof": "Smoke reports, reconciliation files, screenshots, backup manifests, and redaction proof are stored."
+    },
+    {
+      "name": "Email",
+      "target": "Test-sink provider",
+      "proof": "Invites, resets, invoice notices, support mail, and report delivery cannot blast real recipients."
+    },
+    {
+      "name": "Billing",
+      "target": "USD test mode",
+      "proof": "USD 5 per user checkout, invoice, webhook, seat sync, and access lock work without live cards."
+    },
+    {
+      "name": "Monitoring",
+      "target": "Uptime and log drain",
+      "proof": "API health, DB connections, error rate, audit writes, webhook failures, and backup job are visible."
+    },
+    {
+      "name": "Backup",
+      "target": "Snapshot and restore rehearsal",
+      "proof": "Snapshot is created before pilot import rehearsal and restored into a clean database."
+    }
+  ],
+  "secrets": [
+    {
+      "key": "DATABASE_URL",
+      "purpose": "Staging database connection string with least-privilege app user.",
+      "requiredBeforeDeploy": true
+    },
+    {
+      "key": "SESSION_SECRET",
+      "purpose": "Long random session signing secret, never reused from local development.",
+      "requiredBeforeDeploy": true
+    },
+    {
+      "key": "APP_BASE_URL",
+      "purpose": "Canonical staging app URL for redirects, links, and cookies.",
+      "requiredBeforeDeploy": true
+    },
+    {
+      "key": "BILLING_SECRET_KEY",
+      "purpose": "USD test-mode billing provider key; live keys stay out of staging.",
+      "requiredBeforeDeploy": true
+    },
+    {
+      "key": "BILLING_WEBHOOK_SECRET",
+      "purpose": "Webhook signature secret for invoice, checkout, renewal, cancel, and seat events.",
+      "requiredBeforeDeploy": true
+    },
+    {
+      "key": "OBJECT_STORAGE_KEY",
+      "purpose": "Artifact bucket key limited to staging evidence and report exports.",
+      "requiredBeforeDeploy": true
+    },
+    {
+      "key": "EMAIL_API_KEY",
+      "purpose": "Test-sink email provider key with no real customer recipient delivery.",
+      "requiredBeforeDeploy": true
+    },
+    {
+      "key": "AUDIT_EXPORT_KEY",
+      "purpose": "Short-lived key or service account for release evidence export.",
+      "requiredBeforeDeploy": false
+    },
+    {
+      "key": "LOG_DRAIN_URL",
+      "purpose": "Error and access-log drain for deployment and smoke monitoring.",
+      "requiredBeforeDeploy": true
+    },
+    {
+      "key": "BACKUP_ENCRYPTION_KEY",
+      "purpose": "Key used to encrypt staging snapshots and restore rehearsal artifacts.",
+      "requiredBeforeDeploy": true
+    }
+  ],
+  "runbook": [
+    {
+      "step": "01",
+      "title": "Freeze release candidate",
+      "owner": "Release Owner",
+      "proof": "Tag exact commit, lock scope, confirm owner matrix, and link sprint-zero closing issue."
+    },
+    {
+      "step": "02",
+      "title": "Pull clean environment",
+      "owner": "Platform Owner",
+      "proof": "Create or refresh staging app, API service, database, storage bucket, log drain, and test email route."
+    },
+    {
+      "step": "03",
+      "title": "Install and build",
+      "owner": "Backend Lead",
+      "proof": "Run install, type checks, build, database client generation, and static asset build from a clean clone."
+    },
+    {
+      "step": "04",
+      "title": "Run migrations",
+      "owner": "Database Owner",
+      "proof": "Apply schema migrations in order and capture migration id, duration, and rollback note."
+    },
+    {
+      "step": "05",
+      "title": "Seed fixtures",
+      "owner": "Migration Owner",
+      "proof": "Load tenant, users, access profiles, operational records, commercial vault, import batches, and audit seeds."
+    },
+    {
+      "step": "06",
+      "title": "Prove redaction",
+      "owner": "Security Owner",
+      "proof": "Frontline tracker routes, CSV export, and non-management users cannot see commercial facts."
+    },
+    {
+      "step": "07",
+      "title": "Run smoke script",
+      "owner": "QA Owner",
+      "proof": "Auth, records, redaction, import, billing, feedback, audit, rollback, and report evidence are produced."
+    },
+    {
+      "step": "08",
+      "title": "Create backup snapshot",
+      "owner": "Database Owner",
+      "proof": "Snapshot exists after fixture seed and before any pilot import rehearsal."
+    },
+    {
+      "step": "09",
+      "title": "Watch the dashboard",
+      "owner": "Release Owner",
+      "proof": "Health, logs, error rate, audit writes, webhook status, queue jobs, and backup job are reviewed."
+    },
+    {
+      "step": "10",
+      "title": "Hold go/no-go review",
+      "owner": "Product Owner",
+      "proof": "Gates, evidence artifacts, open blockers, rollback proof, and pilot handoff are reviewed before enabling users."
+    }
+  ],
+  "databaseChecks": [
+    "All schema migrations apply from an empty database without manual patching.",
+    "Every route query is tenant-scoped and rejects cross-tenant identifiers with audit evidence.",
+    "Operational records load with tracker-safe fields only.",
+    "Commercial vault fields stay restricted from frontline routes and CSV exports.",
+    "Import batches keep workbook, sheet, dry-run, quarantine, commit, rollback, and reconciliation lineage.",
+    "Audit events exist for login, denied access, edits, commercial reads, imports, billing, backup, and smoke paths.",
+    "Snapshot restore is rehearsed into a clean database and counts reconcile.",
+    "Failed migration recovery keeps audit evidence and writes a rollback note."
+  ],
+  "monitoringChecks": [
+    "Frontend, API, auth, and version health endpoints respond.",
+    "Database pool, slow queries, and migration failures are visible.",
+    "Unhandled exceptions, failed requests, and smoke failures create alerts.",
+    "Sensitive allow and deny audit writes are counted and exportable.",
+    "Billing webhook test events produce signed logs.",
+    "Import dry-run, quarantine, commit, rollback, and reconciliation jobs report status.",
+    "Backup snapshot, restore rehearsal, and retention checks are visible.",
+    "Feedback capture, retest state, sponsor export, and support owner flow are tracked."
+  ],
+  "rollbackPlan": [
+    "Stop pilot access or move staging behind maintenance before destructive recovery.",
+    "Preserve logs, audit events, smoke artifacts, migration id, backup id, and error samples.",
+    "Restore the last verified staging snapshot and reconcile tenant, user, record, and vault counts.",
+    "Redeploy the previous release candidate and verify API version, assets, and environment variables.",
+    "Repeat auth, records, redaction, import, billing, audit, feedback, and report smoke paths.",
+    "Write incident note with impact, root cause, owner, fix PR, retest evidence, and go/no-go decision."
+  ],
+  "goNoGoGates": [
+    {
+      "name": "Repo and branch ready",
+      "required": true,
+      "prototypeStatus": "mapped"
+    },
+    {
+      "name": "Secrets loaded outside Git",
+      "required": true,
+      "prototypeStatus": "pending real hosting provider"
+    },
+    {
+      "name": "Database migrated and seeded",
+      "required": true,
+      "prototypeStatus": "pending real staging database"
+    },
+    {
+      "name": "Fixture parity reconciled",
+      "required": true,
+      "prototypeStatus": "mapped"
+    },
+    {
+      "name": "Auth and access pass",
+      "required": true,
+      "prototypeStatus": "mapped"
+    },
+    {
+      "name": "Commercial redaction pass",
+      "required": true,
+      "prototypeStatus": "mapped"
+    },
+    {
+      "name": "Smoke artifacts exported",
+      "required": true,
+      "prototypeStatus": "mapped"
+    },
+    {
+      "name": "Rollback proof rehearsed",
+      "required": true,
+      "prototypeStatus": "pending real staging environment"
+    }
+  ],
+  "ownerMatrix": [
+    {
+      "role": "Release owner",
+      "accountability": "Deploy window, go/no-go call, smoke evidence, rollback decision, and launch notes."
+    },
+    {
+      "role": "Backend lead",
+      "accountability": "API service, route health, migrations, fixtures, route guards, and build errors."
+    },
+    {
+      "role": "Database owner",
+      "accountability": "Migration order, seed load, backup snapshot, restore rehearsal, and reconciliation."
+    },
+    {
+      "role": "Security owner",
+      "accountability": "Tenant isolation, commercial redaction, audit proof, secret handling, and denied-access evidence."
+    },
+    {
+      "role": "Billing owner",
+      "accountability": "USD test checkout, webhook signature, invoice state, seat sync, and access locks."
+    },
+    {
+      "role": "Product owner",
+      "accountability": "Pilot scope, acceptance gates, customer handoff, blocker decisions, and sponsor message."
+    }
+  ],
+  "evidenceArtifacts": [
+    "release-candidate-tag.txt",
+    "migration-report.json",
+    "fixture-seed-summary.json",
+    "redaction-proof.json",
+    "smoke-summary.html",
+    "audit-export.json",
+    "backup-restore-proof.json",
+    "go-no-go-decision.md"
+  ],
+  "stopRules": [
+    "Do not enable live customer data in staging.",
+    "Do not load live billing keys.",
+    "Do not merge code that leaks commercial vault fields to tracker routes.",
+    "Do not proceed without a backup snapshot and restore path.",
+    "Do not proceed if smoke artifacts are missing.",
+    "Do not enable pilot users until go/no-go gates are reviewed."
+  ]
+}

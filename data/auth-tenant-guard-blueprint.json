@@ -1,0 +1,188 @@
+{
+  "schemaVersion": "pursuitdesk.authTenantGuardBlueprint.v112",
+  "generatedOn": "2026-05-14",
+  "product": "PursuitDesk",
+  "publicDemoRepository": "dhirajnyse/tendergrid",
+  "targetPrivateRepository": "dhirajnyse/pursuitdesk-platform",
+  "purpose": "Convert PursuitDesk access profiles, route skeleton, and database migration boundaries into backend session, tenant, section, commercial vault, membership admin, mutation, safe error, and denied-audit guardrails.",
+  "sourceAccessModel": {
+    "tenant": "CapSa Engineering & Contracting LLC",
+    "demoUsers": 3,
+    "defaultOperationalSections": ["tenders", "projects"],
+    "commercialSections": ["tenderInsights", "projectInsights", "forecast", "clients", "contracts", "reports", "advisor", "command"],
+    "governanceSections": ["governance", "import", "documents"],
+    "adminOnlySections": ["membership"],
+    "rule": "Company admins can see Membership Model; editors and viewers cannot be granted membership access."
+  },
+  "guardFiles": [
+    {
+      "file": "apps/api/src/auth/session.ts",
+      "guard": "Session guard",
+      "policy": "Verify signed session, expiry, inactive user, password reset freshness, and actor context.",
+      "test": "auth.session.test.ts",
+      "owner": "Identity Owner"
+    },
+    {
+      "file": "apps/api/src/auth/password.ts",
+      "guard": "Password policy",
+      "policy": "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.",
+      "test": "auth.password.test.ts",
+      "owner": "Identity Owner"
+    },
+    {
+      "file": "apps/api/src/middleware/request-context.ts",
+      "guard": "Request context",
+      "policy": "Attach request id, actor id, company id, route id, and safe logger scope.",
+      "test": "request-context.test.ts",
+      "owner": "Backend Lead"
+    },
+    {
+      "file": "apps/api/src/middleware/tenant.ts",
+      "guard": "Tenant guard",
+      "policy": "Resolve company scope from session only and reject payload, query, or route tenant spoofing.",
+      "test": "tenant.guard.test.ts",
+      "owner": "Security Owner"
+    },
+    {
+      "file": "apps/api/src/middleware/section-access.ts",
+      "guard": "Section guard",
+      "policy": "Check section key, can_view, can_edit, admin-only rooms, and inactive user state.",
+      "test": "section-access.test.ts",
+      "owner": "Security Owner"
+    },
+    {
+      "file": "apps/api/src/middleware/commercial-vault.ts",
+      "guard": "Commercial vault guard",
+      "policy": "Protect value, agreement, LOA, negotiation, forecast, billing, and management export facts.",
+      "test": "commercial-vault.guard.test.ts",
+      "owner": "Commercial Owner"
+    },
+    {
+      "file": "apps/api/src/middleware/membership-admin.ts",
+      "guard": "Membership admin guard",
+      "policy": "Allow membership, plan, invoice, seat, subscription, and user-invite changes only for company admins.",
+      "test": "membership-admin.guard.test.ts",
+      "owner": "Billing Owner"
+    },
+    {
+      "file": "apps/api/src/audit/deny-writer.ts",
+      "guard": "Denied audit writer",
+      "policy": "Append denied access, tenant mismatch, commercial denial, admin denial, and edit denial events.",
+      "test": "deny-writer.test.ts",
+      "owner": "Governance Owner"
+    },
+    {
+      "file": "apps/api/src/access/access-policy.ts",
+      "guard": "Access policy catalog",
+      "policy": "Centralize section keys, route groups, edit modes, commercial modes, and system-action exceptions.",
+      "test": "access-policy.test.ts",
+      "owner": "Backend Lead"
+    },
+    {
+      "file": "apps/api/src/tests/security/auth-tenant.matrix.test.ts",
+      "guard": "Security matrix",
+      "policy": "Run every role and route against tenant, section, edit, vault, membership, and audit expectations.",
+      "test": "auth-tenant.matrix.test.ts",
+      "owner": "QA Owner"
+    }
+  ],
+  "middlewareOrder": [
+    {"step": "01", "guard": "Request context", "rule": "Create request id, logger scope, response timing, and blank actor shell before auth."},
+    {"step": "02", "guard": "Rate limit", "rule": "Throttle login, password reset, import commit, export, and billing webhook abuse paths."},
+    {"step": "03", "guard": "Session guard", "rule": "Verify signed session, account status, expiry, and fresh-session requirement for sensitive routes."},
+    {"step": "04", "guard": "Tenant guard", "rule": "Resolve company_id from the server-side session and block cross-company identifiers."},
+    {"step": "05", "guard": "Section guard", "rule": "Match route group to section grant and decide view/edit permission before controller logic."},
+    {"step": "06", "guard": "Commercial vault guard", "rule": "Block restricted value, agreement, negotiation, forecast, and report fields unless granted."},
+    {"step": "07", "guard": "Mutation guard", "rule": "Require can_edit, optimistic version, and safe field list for create/update/delete paths."},
+    {"step": "08", "guard": "Membership admin guard", "rule": "Require company admin for users, seats, plan, invoice, subscription, and access template changes."},
+    {"step": "09", "guard": "Audit writer", "rule": "Write allowed and denied events with actor, tenant, target, route, request id, and result."},
+    {"step": "10", "guard": "Safe error handler", "rule": "Return validation, auth, access, tenant, commercial, conflict, and server errors without leaking data."}
+  ],
+  "sectionRules": [
+    {"section": "Command", "key": "command", "route": "/command", "default": "Manager grant", "backendRule": "Requires explicit management/commercial access and commercial vault guard for restricted facts."},
+    {"section": "Advisor", "key": "advisor", "route": "/advisor", "default": "Manager grant", "backendRule": "Requires explicit management/commercial access and commercial vault guard for restricted facts."},
+    {"section": "Weekly Review", "key": "review", "route": "/weekly-review", "default": "Explicit grant", "backendRule": "Requires explicit section grant before the route returns data."},
+    {"section": "Intake", "key": "intake", "route": "/intake", "default": "Explicit grant", "backendRule": "Requires explicit section grant before the route returns data."},
+    {"section": "Import", "key": "import", "route": "/import", "default": "Governance grant", "backendRule": "Requires explicit governance access and audit visibility."},
+    {"section": "Governance", "key": "governance", "route": "/governance", "default": "Governance grant", "backendRule": "Requires explicit governance access and audit visibility."},
+    {"section": "Bid Desk", "key": "bidDesk", "route": "/bid-desk", "default": "Explicit grant", "backendRule": "Requires explicit section grant before the route returns data."},
+    {"section": "Calendar", "key": "calendar", "route": "/calendar", "default": "Explicit grant", "backendRule": "Requires explicit section grant before the route returns data."},
+    {"section": "Risk", "key": "risk", "route": "/risk", "default": "Explicit grant", "backendRule": "Requires explicit section grant before the route returns data."},
+    {"section": "Tenders", "key": "tenders", "route": "/tenders", "default": "Operations default", "backendRule": "Default operational section; still tenant-scoped and edit-scoped."},
+    {"section": "Tenders Insights", "key": "tenderInsights", "route": "/tenders-insights", "default": "Manager grant", "backendRule": "Requires explicit management/commercial access and commercial vault guard for restricted facts."},
+    {"section": "Projects", "key": "projects", "route": "/projects", "default": "Operations default", "backendRule": "Default operational section; still tenant-scoped and edit-scoped."},
+    {"section": "Project Insights", "key": "projectInsights", "route": "/project-insights", "default": "Manager grant", "backendRule": "Requires explicit management/commercial access and commercial vault guard for restricted facts."},
+    {"section": "Forecast", "key": "forecast", "route": "/forecast", "default": "Manager grant", "backendRule": "Requires explicit management/commercial access and commercial vault guard for restricted facts."},
+    {"section": "Clients", "key": "clients", "route": "/clients", "default": "Manager grant", "backendRule": "Requires explicit management/commercial access and commercial vault guard for restricted facts."},
+    {"section": "Contracts", "key": "contracts", "route": "/contracts", "default": "Manager grant", "backendRule": "Requires explicit management/commercial access and commercial vault guard for restricted facts."},
+    {"section": "Documents", "key": "documents", "route": "/documents", "default": "Governance grant", "backendRule": "Requires explicit governance access and audit visibility."},
+    {"section": "Reminders", "key": "reminders", "route": "/reminders", "default": "Explicit grant", "backendRule": "Requires explicit section grant before the route returns data."},
+    {"section": "Reports", "key": "reports", "route": "/reports", "default": "Manager grant", "backendRule": "Requires explicit management/commercial access and commercial vault guard for restricted facts."},
+    {"section": "Membership Model", "key": "membership", "route": "/billing, /users, /access", "default": "Admin only", "backendRule": "Company admin role required; never grantable to editor or viewer users."}
+  ],
+  "tenantIsolationRules": [
+    {"rule": "Session owns tenant", "detail": "company_id comes from the verified session, never from browser payload."},
+    {"rule": "Every table scoped", "detail": "Tenant-owned tables require company_id and foreign keys back to company-owned records."},
+    {"rule": "Record ownership checked", "detail": "record_id, client_id, import_batch_id, invoice_id, and report_id are verified before service calls."},
+    {"rule": "No cross-company search", "detail": "Search, filters, quick jump, CSV export, report export, and client memory stay tenant-filtered."},
+    {"rule": "Object storage prefix", "detail": "Evidence files and source workbooks use company-scoped storage paths and signed URLs."},
+    {"rule": "Import batch lock", "detail": "Dry-run, commit, rollback, and quarantine decisions can only touch the active company batch."},
+    {"rule": "Billing tenant lock", "detail": "Webhook events map to one subscription and one company before changing access state."},
+    {"rule": "Audit tenant lock", "detail": "Allowed and denied events carry company_id even when the user is denied."}
+  ],
+  "deniedAuditEvents": [
+    {"event": "auth.login.failed", "scope": "auth", "detail": "Email/password failed or inactive user tried to sign in."},
+    {"event": "tenant.scope.denied", "scope": "tenant", "detail": "Request tried to read or mutate another company record, batch, invoice, or export."},
+    {"event": "section.view.denied", "scope": "access", "detail": "User tried to open a section without can_view access."},
+    {"event": "section.edit.denied", "scope": "access", "detail": "User tried to create, update, delete, import, dispatch, or export without can_edit access."},
+    {"event": "commercial.read.denied", "scope": "commercial", "detail": "User tried to read value, agreement, LOA, negotiation, forecast, or restricted report data."},
+    {"event": "membership.admin.denied", "scope": "billing", "detail": "Non-admin tried to change seats, plan, invoices, users, or access templates."},
+    {"event": "import.commit.denied", "scope": "import", "detail": "User tried to commit or roll back an import batch without import/governance access."},
+    {"event": "audit.read.denied", "scope": "audit", "detail": "User tried to read governance audit events without governance/admin access."}
+  ],
+  "guardTests": [
+    {"test": "Inactive user cannot sign in", "expectation": "POST /auth/login denies inactive user and writes auth.login.failed."},
+    {"test": "Tenant mismatch returns safe 404", "expectation": "GET /records/:id with another company record never leaks existence."},
+    {"test": "Operations user cannot see commercial facts", "expectation": "GET /commercial/records/:id returns denied audit for tracker-only user."},
+    {"test": "Editor cannot open membership", "expectation": "GET /billing/subscription denies every non-admin role."},
+    {"test": "Viewer cannot edit records", "expectation": "PATCH /records/:id denies can_edit and writes section.edit.denied."},
+    {"test": "Manager can open insights", "expectation": "GET /commercial/dashboard succeeds for user with insight grant."},
+    {"test": "Import owner can dry-run only inside tenant", "expectation": "POST /imports/dry-run accepts same-company batch and blocks foreign batch ids."},
+    {"test": "Billing webhook is system-scoped", "expectation": "Webhook validates signature and maps external subscription to exactly one company."},
+    {"test": "Audit is append-only", "expectation": "DELETE /audit/:id is unavailable and audit export remains admin/governance scoped."},
+    {"test": "CSV export is redacted", "expectation": "GET /records/export never includes value, agreement, invoice, LOA, or negotiation fields."}
+  ],
+  "sessionPolicy": [
+    {"policy": "Password storage", "detail": "Hash with strong adaptive hashing; never log passwords or reset tokens."},
+    {"policy": "Reset token", "detail": "One-time, short-lived, company-scoped, and invalidated after use."},
+    {"policy": "Session expiry", "detail": "Idle timeout plus absolute timeout; admin sensitive routes require fresh session."},
+    {"policy": "Invite flow", "detail": "Company admin invites user; invite accepts only the invited email and company."},
+    {"policy": "Inactive lock", "detail": "Inactive users cannot sign in, cannot refresh sessions, and keep historical audit identity."},
+    {"policy": "Admin MFA option", "detail": "Make admin MFA a production gate before larger customers."},
+    {"policy": "System actor", "detail": "Billing webhooks, scheduled jobs, and import workers use system actor with tenant target."},
+    {"policy": "Safe errors", "detail": "Auth and access errors reveal no company, user, record, invoice, or commercial fact details."}
+  ],
+  "routeGuardMap": [
+    {"group": "Auth", "route": "/auth/*", "guard": "No tenant before login; tenant after session refresh", "checks": "Login rate limit, inactive user, reset token, session audit"},
+    {"group": "Users", "route": "/users/*", "guard": "Tenant + membership admin guard", "checks": "Admin role, section grant updates, invite audit, preview state"},
+    {"group": "Records", "route": "/records/*", "guard": "Tenant + section guard", "checks": "Tenders/Projects grants, edit mode, redacted export, record ownership"},
+    {"group": "Commercial", "route": "/commercial/*", "guard": "Tenant + commercial vault guard", "checks": "Insight grant, commercial facts, forecast, agreements, negotiations"},
+    {"group": "Imports", "route": "/imports/*", "guard": "Tenant + governance/import guard", "checks": "Dry-run, commit, rollback, source trace, quarantine ownership"},
+    {"group": "Billing", "route": "/billing/*", "guard": "Tenant + membership admin guard", "checks": "Plan, seats, invoice, subscription, webhook mapping"},
+    {"group": "Feedback", "route": "/feedback/*", "guard": "Tenant + pilot owner guard", "checks": "Feedback session, item owner, sponsor export, retest state"},
+    {"group": "Audit", "route": "/audit/*", "guard": "Tenant + governance/admin guard", "checks": "Audit filters, exports, denial events, retention evidence"},
+    {"group": "Reports", "route": "/reports/*", "guard": "Tenant + report/commercial guard", "checks": "Management pack, redaction profile, commercial export gate"}
+  ],
+  "nonNegotiableRules": [
+    "company_id comes from the verified server-side session.",
+    "Never trust tenant ids, company ids, or user ids from browser payloads.",
+    "Tenders and Projects routes return operational tracker fields only.",
+    "Commercial vault facts require explicit commercial or management access.",
+    "Membership Model requires company admin role.",
+    "Every denied sensitive action writes an audit event.",
+    "CSV exports and reports use a redaction profile.",
+    "Inactive users cannot sign in or refresh a session.",
+    "Webhook and scheduled jobs use system actor context with a single tenant target.",
+    "Safe errors never reveal hidden company, record, invoice, user, or commercial fact existence."
+  ]
+}
