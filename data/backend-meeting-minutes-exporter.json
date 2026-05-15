@@ -3,7 +3,7 @@
   "version": "v145",
   "title": "Backend Meeting Minutes Exporter",
   "meetingMinutesScore": 99,
-  "downloadHref": "data/backend-meeting-minutes-exporter.json?v=153",
+  "downloadHref": "data/backend-meeting-minutes-exporter.json?v=162",
   "minutesKpis": [
     {
       "label": "Minutes exporter",
