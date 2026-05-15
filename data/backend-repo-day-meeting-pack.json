@@ -1,0 +1,495 @@
+{
+  "schemaVersion": "pursuitdesk.backendRepoDayMeetingPack.v142",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "generatedOn": "2026-05-15",
+  "build": {
+    "version": "v142",
+    "name": "Backend Repo Day Meeting Pack",
+    "backendRepoDayMeetingScore": 87,
+    "purpose": "Run the first private backend repo day as a controlled evidence meeting.",
+    "scope": "Static prototype handoff for agenda, attendance, decisions, actions, evidence outputs, risk parking, and management closeout.",
+    "sourcePacks": [
+      "Private Repo Evidence Closeout Pack",
+      "Private Repo Handoff Email Pack",
+      "Backend Alpha Control Board",
+      "Private Repo Day One Script",
+      "Backend PR Review Gate Matrix",
+      "Evidence Artifact Status Board",
+      "Production Backend Repo Decision Memo"
+    ]
+  },
+  "meetingKpis": [
+    {
+      "label": "Meeting pack",
+      "value": "87%",
+      "note": "Readiness to run the first private repo day as a controlled evidence meeting.",
+      "tone": "green"
+    },
+    {
+      "label": "Agenda blocks",
+      "value": 8,
+      "note": "Time-boxed blocks for scope, proof, review gates, actions, and closeout.",
+      "tone": "teal"
+    },
+    {
+      "label": "Attendee roles",
+      "value": 8,
+      "note": "Decision, repo, backend, security, data, QA, billing, and scribe ownership.",
+      "tone": "blue"
+    },
+    {
+      "label": "Evidence outputs",
+      "value": 8,
+      "note": "Attendance, decisions, actions, PR notes, no-leak, rollback, evidence index, and management summary.",
+      "tone": "red"
+    }
+  ],
+  "sourceReadiness": [
+    {
+      "label": "Evidence closeout",
+      "value": "96%",
+      "note": "v141 closeout lanes feed the meeting minutes.",
+      "tone": "green"
+    },
+    {
+      "label": "Handoff email",
+      "value": "95%",
+      "note": "Recipient lanes and briefing agenda seed the meeting invite.",
+      "tone": "teal"
+    },
+    {
+      "label": "Control board",
+      "value": "97%",
+      "note": "Repo status, blockers, evidence health, and action queue orient the meeting.",
+      "tone": "blue"
+    },
+    {
+      "label": "Open work",
+      "value": 95,
+      "note": "Open pursuit and project records remain operational context, not meeting scope.",
+      "tone": "amber"
+    }
+  ],
+  "meetingAgendaBlocks": [
+    {
+      "label": "Opening and scope",
+      "duration": "10 min",
+      "note": "Confirm private repo objective, alpha boundary, non-goals, and stop rules before anyone starts commands.",
+      "tone": "green"
+    },
+    {
+      "label": "Repo visibility proof",
+      "duration": "8 min",
+      "note": "Confirm private repository, owner access, branch posture, and no public exposure.",
+      "tone": "red"
+    },
+    {
+      "label": "Issue wave and first PR",
+      "duration": "12 min",
+      "note": "Confirm issue wave, first PR scope, reviewer lanes, branch name, and draft status.",
+      "tone": "blue"
+    },
+    {
+      "label": "Evidence walkthrough",
+      "duration": "15 min",
+      "note": "Walk through artifact slots and mark ready, hold, deferred, or blocked.",
+      "tone": "teal"
+    },
+    {
+      "label": "Review gate decisions",
+      "duration": "12 min",
+      "note": "Use review gates to decide approve, hold, request changes, or defer.",
+      "tone": "amber"
+    },
+    {
+      "label": "No-leak and rollback",
+      "duration": "10 min",
+      "note": "Repeat no workbook, no secret, no billing, no commercial export, and rollback path before any closeout language.",
+      "tone": "red"
+    },
+    {
+      "label": "Owner action capture",
+      "duration": "10 min",
+      "note": "Assign every hold or blocker to one owner and one date.",
+      "tone": "amber"
+    },
+    {
+      "label": "Management closeout",
+      "duration": "8 min",
+      "note": "Write the final passed, held, blocked, deferred, no-leak, rollback, and next-owner summary.",
+      "tone": "green"
+    }
+  ],
+  "attendeeRoles": [
+    {
+      "role": "Product sponsor",
+      "responsibility": "Decision owner",
+      "note": "Approves alpha scope, business value, and go/no-go posture.",
+      "tone": "green"
+    },
+    {
+      "role": "Platform owner",
+      "responsibility": "Repo owner",
+      "note": "Shows private repo visibility, branch protection timing, checks, and environment posture.",
+      "tone": "teal"
+    },
+    {
+      "role": "Backend lead",
+      "responsibility": "Implementation owner",
+      "note": "Explains route shell, migrations, seed data, tests, and command outputs.",
+      "tone": "blue"
+    },
+    {
+      "role": "Security reviewer",
+      "responsibility": "Trust owner",
+      "note": "Checks tenant isolation, no secrets, no workbook, no commercial leakage, and denial audit proof.",
+      "tone": "red"
+    },
+    {
+      "role": "Data owner",
+      "responsibility": "Import owner",
+      "note": "Confirms fixture boundary, source trace, quarantine, dry-run, rollback, and reconciliation thinking.",
+      "tone": "amber"
+    },
+    {
+      "role": "QA / Release owner",
+      "responsibility": "Evidence owner",
+      "note": "Captures screenshots, transcripts, PR notes, issue links, signoffs, and closeout ledger.",
+      "tone": "green"
+    },
+    {
+      "role": "Billing owner",
+      "responsibility": "Commercial privacy",
+      "note": "Confirms billing is test-mode only and no invoice, payment, or commercial export is exposed.",
+      "tone": "amber"
+    },
+    {
+      "role": "Meeting scribe",
+      "responsibility": "Record keeper",
+      "note": "Writes decisions, action owners, due dates, parked questions, and final management note.",
+      "tone": "blue"
+    }
+  ],
+  "decisionCaptureBoard": [
+    {
+      "label": "Create or keep repo",
+      "value": "Decision",
+      "note": "Confirm repo name, private visibility, owner, and whether the day proceeds.",
+      "tone": "red"
+    },
+    {
+      "label": "Open issue wave",
+      "value": "Decision",
+      "note": "Confirm which issues are opened now, deferred, or parked for later sprint work.",
+      "tone": "blue"
+    },
+    {
+      "label": "Open first PR",
+      "value": "Decision",
+      "note": "Confirm draft PR scope, reviewers, evidence links, rollback note, and no-leak statement.",
+      "tone": "teal"
+    },
+    {
+      "label": "Approve lane",
+      "value": "Decision",
+      "note": "Record each reviewer lane as go, hold, request changes, defer, or no-go.",
+      "tone": "green"
+    },
+    {
+      "label": "Resolve holds",
+      "value": "Action",
+      "note": "Assign each hold to owner, proof item, command, target date, and follow-up point.",
+      "tone": "amber"
+    },
+    {
+      "label": "Stop on blocker",
+      "value": "Action",
+      "note": "Record request-changes reason, redaction, rollback, owner, and restart path.",
+      "tone": "red"
+    },
+    {
+      "label": "Close meeting",
+      "value": "Record",
+      "note": "Capture passed, held, blocked, deferred, no-leak, rollback, and next owner.",
+      "tone": "green"
+    },
+    {
+      "label": "Next build input",
+      "value": "Queue",
+      "note": "Feed replies and real outcomes into the v143 reply capture board.",
+      "tone": "blue"
+    }
+  ],
+  "actionFollowupQueue": [
+    {
+      "action": "Repo proof",
+      "owner": "Platform owner",
+      "note": "Attach private visibility screenshot, branch name, check names, and branch-protection timing.",
+      "tone": "red"
+    },
+    {
+      "action": "Issue URLs",
+      "owner": "Product sponsor",
+      "note": "Paste real issue URLs into first PR body and closeout ledger.",
+      "tone": "blue"
+    },
+    {
+      "action": "Command transcript",
+      "owner": "Backend lead",
+      "note": "Attach install, lint, test, migration, seed, smoke, and audit command outputs.",
+      "tone": "teal"
+    },
+    {
+      "action": "No-leak proof",
+      "owner": "Security reviewer",
+      "note": "Confirm no workbook, secrets, billing export, invoice, or commercial tracker value moved.",
+      "tone": "red"
+    },
+    {
+      "action": "Fixture proof",
+      "owner": "Data owner",
+      "note": "Attach fixture boundary, import dry-run, quarantine, duplicate, and rollback notes.",
+      "tone": "amber"
+    },
+    {
+      "action": "Review comments",
+      "owner": "QA / Release owner",
+      "note": "Post comments or holds using the PR review comment pack and record thread URLs.",
+      "tone": "green"
+    },
+    {
+      "action": "Meeting minutes",
+      "owner": "Meeting scribe",
+      "note": "Publish decision log, attendance, open holds, blockers, and management closeout summary.",
+      "tone": "blue"
+    },
+    {
+      "action": "Follow-up review",
+      "owner": "Product sponsor",
+      "note": "Schedule the next checkpoint for held, blocked, or deferred evidence.",
+      "tone": "amber"
+    }
+  ],
+  "meetingEvidenceArtifacts": [
+    {
+      "label": "Attendance log",
+      "value": "Required",
+      "note": "Names, role, organization lane, attendance status, and decision authority.",
+      "tone": "green"
+    },
+    {
+      "label": "Decision log",
+      "value": "Required",
+      "note": "Every go, hold, request changes, defer, no-go, and closeout decision is recorded.",
+      "tone": "blue"
+    },
+    {
+      "label": "Action register",
+      "value": "Required",
+      "note": "Owner, action, due date, evidence file, risk level, and follow-up status.",
+      "tone": "amber"
+    },
+    {
+      "label": "PR review notes",
+      "value": "Required",
+      "note": "Real PR URL, review comments, line comments, requested changes, and approvals.",
+      "tone": "teal"
+    },
+    {
+      "label": "No-leak signoff",
+      "value": "Required",
+      "note": "No workbook, secret, billing, invoice, or commercial export statement.",
+      "tone": "red"
+    },
+    {
+      "label": "Rollback note",
+      "value": "Required",
+      "note": "Branch, PR, repo recreation, credential rotation, and data path reset.",
+      "tone": "red"
+    },
+    {
+      "label": "Evidence index",
+      "value": "Required",
+      "note": "Screenshots, transcripts, issue URLs, workflow names, branch proof, and signoff files.",
+      "tone": "green"
+    },
+    {
+      "label": "Management summary",
+      "value": "Required",
+      "note": "Short report line for passed, held, blocked, deferred, next owner, and next build.",
+      "tone": "blue"
+    }
+  ],
+  "riskParkingLot": [
+    {
+      "label": "Scope creep",
+      "value": "Park",
+      "note": "Anything beyond first backend PR alpha is moved into a later issue or decision memo.",
+      "tone": "amber"
+    },
+    {
+      "label": "Unknown check names",
+      "value": "Hold",
+      "note": "Branch protection waits until real GitHub Actions check names exist.",
+      "tone": "blue"
+    },
+    {
+      "label": "Commercial leakage",
+      "value": "Block",
+      "note": "Any value, invoice, LOA, agreement, billing, or negotiation leak stops the session.",
+      "tone": "red"
+    },
+    {
+      "label": "Credential exposure",
+      "value": "Block",
+      "note": "Any token, key, certificate, or live secret exposure triggers rotation and rollback.",
+      "tone": "red"
+    },
+    {
+      "label": "Unowned action",
+      "value": "Hold",
+      "note": "No action leaves the meeting without one named owner and one due date.",
+      "tone": "amber"
+    },
+    {
+      "label": "Unclear approval",
+      "value": "Park",
+      "note": "Any vague approval is converted into lane-specific go, hold, defer, or request changes.",
+      "tone": "teal"
+    }
+  ],
+  "meetingTimeline": [
+    {
+      "moment": "Before meeting",
+      "action": "Send pack",
+      "note": "Send agenda, attendee roles, evidence links, decision scope, and stop rules.",
+      "tone": "blue"
+    },
+    {
+      "moment": "First 15 min",
+      "action": "Confirm safety",
+      "note": "Confirm private visibility, no-leak boundary, and rollback posture before commands.",
+      "tone": "red"
+    },
+    {
+      "moment": "Middle block",
+      "action": "Review evidence",
+      "note": "Walk issue wave, PR body, command outputs, artifact board, and review gates.",
+      "tone": "teal"
+    },
+    {
+      "moment": "Decision block",
+      "action": "Capture outcomes",
+      "note": "Record go, hold, request changes, defer, no-go, and owner actions.",
+      "tone": "green"
+    },
+    {
+      "moment": "Closeout",
+      "action": "Publish minutes",
+      "note": "Send management summary and action queue the same day.",
+      "tone": "amber"
+    },
+    {
+      "moment": "Next day",
+      "action": "Chase proof",
+      "note": "Resolve holds, blockers, deferred evidence, and real reviewer replies.",
+      "tone": "blue"
+    }
+  ],
+  "managementBriefLines": [
+    {
+      "label": "Meeting purpose",
+      "text": "The private backend repo day is controlled around first PR evidence, not general development discussion.",
+      "tone": "green"
+    },
+    {
+      "label": "Decision standard",
+      "text": "No pass is accepted without evidence, issue trace, no-leak proof, rollback visibility, and owner.",
+      "tone": "teal"
+    },
+    {
+      "label": "Risk standard",
+      "text": "Public repo, secret movement, workbook leakage, commercial leakage, missing rollback, or missing owner blocks closeout.",
+      "tone": "red"
+    },
+    {
+      "label": "Action standard",
+      "text": "Every hold or deferred item has owner, proof item, next command, target date, and review path.",
+      "tone": "amber"
+    },
+    {
+      "label": "Output standard",
+      "text": "Meeting minutes produce attendance, decision log, action register, PR note links, and management summary.",
+      "tone": "blue"
+    },
+    {
+      "label": "Next build",
+      "text": "Real reviewer replies and outcomes feed the v143 reply capture board.",
+      "tone": "green"
+    }
+  ],
+  "copyReadyMeetingScript": "PursuitDesk backend repo day meeting script\n\n1. Open by confirming purpose: create controlled evidence for the first private backend PR, not to expand the product scope.\n2. Confirm private repo visibility before discussing files, commands, screenshots, or issue URLs.\n3. Restate the no-leak boundary: no workbook, no production secret, no payment key, no billing export, no invoice, and no commercial tracker values.\n4. Walk the issue wave, first PR body, command runner pack, artifact board, and review gate matrix.\n5. Ask each reviewer lane for go, hold, request changes, defer, or no-go. Do not accept vague approval.\n6. For every hold, capture owner, missing proof, target date, next command, and evidence file name.\n7. For every blocker, stop the merge path and record redaction, rollback, credential rotation, or restart decision.\n8. Close with the management summary: passed, held, blocked, deferred, no-leak, rollback, next owner, and next meeting input.",
+  "acceptanceChecks": [
+    {
+      "label": "Agenda ready",
+      "note": "Eight blocks cover opening, proof, review, action capture, and closeout.",
+      "tone": "green"
+    },
+    {
+      "label": "Attendance ready",
+      "note": "Eight roles name who can decide, review, own evidence, and write minutes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Decision capture ready",
+      "note": "Eight decision rows prevent vague meeting outcomes.",
+      "tone": "blue"
+    },
+    {
+      "label": "Action queue ready",
+      "note": "Eight owner actions are ready for post-meeting follow-up.",
+      "tone": "amber"
+    },
+    {
+      "label": "Evidence outputs ready",
+      "note": "Eight artifacts define what must exist after the meeting.",
+      "tone": "green"
+    },
+    {
+      "label": "Risk parking ready",
+      "note": "Six parking lot rows keep blockers from disappearing.",
+      "tone": "red"
+    },
+    {
+      "label": "Meeting script ready",
+      "note": "Copy-ready facilitator script keeps the meeting focused on private repo proof.",
+      "tone": "teal"
+    },
+    {
+      "label": "Next handoff ready",
+      "note": "v143 can capture real reviewer replies, decisions, holds, and requested changes after the meeting.",
+      "tone": "blue"
+    }
+  ],
+  "handoff": [
+    "v142 turns the private repo closeout pack into a meeting-ready operating packet.",
+    "The pack names the agenda, attendee roles, decision rows, owner actions, risk parking lot, evidence outputs, and management summary.",
+    "The static demo still cannot run the meeting or connect to GitHub; it now defines what the real repo day should produce.",
+    "v143 can now become the Private Repo Reply Capture Board for real reviewer replies, holds, requested changes, and approval outcomes."
+  ],
+  "counts": {
+    "meetingKpis": 4,
+    "sourceReadiness": 4,
+    "meetingAgendaBlocks": 8,
+    "attendeeRoles": 8,
+    "decisionCaptureBoard": 8,
+    "actionFollowupQueue": 8,
+    "meetingEvidenceArtifacts": 8,
+    "riskParkingLot": 6,
+    "meetingTimeline": 6,
+    "managementBriefLines": 6,
+    "acceptanceChecks": 8,
+    "signalCards": 4
+  }
+}

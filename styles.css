@@ -10474,6 +10474,5708 @@ textarea:disabled {
   border-left: 4px solid var(--red);
 }
 
+.ci-workflow-file-blueprint {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(31, 125, 111, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.58));
+  box-shadow: var(--shadow);
+}
+
+.ci-workflow-file-blueprint .staging-smoke-score-card,
+.ci-workflow-file-blueprint .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.ci-workflow-file-blueprint .staging-smoke-score-card span,
+.ci-workflow-file-blueprint .staging-smoke-signal-card span,
+.ci-workflow-grid span,
+.ci-artifact-grid span,
+.ci-cache-grid span,
+.ci-secret-grid span,
+.ci-branch-grid span,
+.ci-matrix-grid span,
+.ci-adoption-list span,
+.ci-example-grid span {
+  color: var(--teal-dark);
+}
+
+.ci-workflow-file-blueprint .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(31, 125, 111, 0.12) 0);
+}
+
+.ci-workflow-file-blueprint .staging-smoke-signal-card *,
+.ci-workflow-grid > div *,
+.ci-artifact-grid > div *,
+.ci-cache-grid > div *,
+.ci-secret-grid > div *,
+.ci-branch-grid > div *,
+.ci-matrix-grid > div *,
+.ci-release-gate-grid > div *,
+.ci-adoption-list > div *,
+.ci-acceptance-grid > div *,
+.ci-job-table > div > *,
+.ci-command-binding-table > div > *,
+.ci-example-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.ci-workflow-grid,
+.ci-artifact-grid,
+.ci-cache-grid,
+.ci-secret-grid,
+.ci-branch-grid,
+.ci-matrix-grid,
+.ci-release-gate-grid,
+.ci-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ci-workflow-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.ci-adoption-list {
+  display: grid;
+  gap: 8px;
+}
+
+.ci-workflow-grid > div,
+.ci-artifact-grid > div,
+.ci-cache-grid > div,
+.ci-secret-grid > div,
+.ci-branch-grid > div,
+.ci-matrix-grid > div,
+.ci-release-gate-grid > div,
+.ci-adoption-list > div,
+.ci-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 88px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.ci-workflow-grid span,
+.ci-artifact-grid span,
+.ci-cache-grid span,
+.ci-secret-grid span,
+.ci-branch-grid span,
+.ci-matrix-grid span,
+.ci-adoption-list span,
+.ci-example-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.ci-workflow-grid strong,
+.ci-artifact-grid strong,
+.ci-cache-grid strong,
+.ci-secret-grid strong,
+.ci-branch-grid strong,
+.ci-matrix-grid strong,
+.ci-release-gate-grid strong,
+.ci-adoption-list strong,
+.ci-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.ci-workflow-grid p,
+.ci-artifact-grid p,
+.ci-cache-grid p,
+.ci-secret-grid p,
+.ci-branch-grid p,
+.ci-matrix-grid p,
+.ci-release-gate-grid p,
+.ci-adoption-list p,
+.ci-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.ci-workflow-grid em {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ci-job-table,
+.ci-command-binding-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.ci-job-table > div,
+.ci-command-binding-table > div {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ci-job-table > div {
+  grid-template-columns: minmax(130px, 0.45fr) minmax(130px, 0.42fr) minmax(250px, 1fr) minmax(140px, 0.46fr) minmax(180px, 0.6fr);
+}
+
+.ci-command-binding-table > div {
+  grid-template-columns: minmax(56px, 0.2fr) minmax(180px, 0.64fr) minmax(210px, 0.78fr) minmax(250px, 0.95fr) minmax(180px, 0.6fr);
+}
+
+.ci-job-table > div:first-child,
+.ci-command-binding-table > div:first-child {
+  background: rgba(31, 125, 111, 0.08);
+}
+
+.ci-job-table > div:last-child,
+.ci-command-binding-table > div:last-child {
+  border-bottom: 0;
+}
+
+.ci-job-table span,
+.ci-job-table strong,
+.ci-job-table em,
+.ci-job-table code,
+.ci-command-binding-table span,
+.ci-command-binding-table strong,
+.ci-command-binding-table p,
+.ci-command-binding-table em,
+.ci-command-binding-table code {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.ci-job-table > div:first-child span,
+.ci-command-binding-table > div:first-child span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.ci-job-table em,
+.ci-command-binding-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.ci-job-table code,
+.ci-command-binding-table code {
+  display: inline-grid;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(31, 125, 111, 0.18);
+  border-radius: 7px;
+  color: var(--teal-dark);
+  background: rgba(226, 243, 236, 0.66);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: normal;
+}
+
+.ci-example-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ci-example-grid > div {
+  display: grid;
+  gap: 8px;
+  padding: 11px;
+  border: 1px solid rgba(31, 125, 111, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: rgba(226, 243, 236, 0.54);
+}
+
+.ci-example-grid pre {
+  max-height: 260px;
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.ci-workflow-grid .tone-green,
+.ci-artifact-grid .tone-green,
+.ci-cache-grid .tone-green,
+.ci-secret-grid .tone-green,
+.ci-branch-grid .tone-green,
+.ci-matrix-grid .tone-green,
+.ci-release-gate-grid .tone-green,
+.ci-adoption-list .tone-green,
+.ci-acceptance-grid .tone-green,
+.ci-job-table .tone-green,
+.ci-command-binding-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.ci-workflow-grid .tone-teal,
+.ci-artifact-grid .tone-teal,
+.ci-cache-grid .tone-teal,
+.ci-secret-grid .tone-teal,
+.ci-branch-grid .tone-teal,
+.ci-matrix-grid .tone-teal,
+.ci-release-gate-grid .tone-teal,
+.ci-adoption-list .tone-teal,
+.ci-acceptance-grid .tone-teal,
+.ci-job-table .tone-teal,
+.ci-command-binding-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.ci-workflow-grid .tone-blue,
+.ci-artifact-grid .tone-blue,
+.ci-cache-grid .tone-blue,
+.ci-secret-grid .tone-blue,
+.ci-branch-grid .tone-blue,
+.ci-matrix-grid .tone-blue,
+.ci-release-gate-grid .tone-blue,
+.ci-adoption-list .tone-blue,
+.ci-acceptance-grid .tone-blue,
+.ci-job-table .tone-blue,
+.ci-command-binding-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.ci-workflow-grid .tone-amber,
+.ci-artifact-grid .tone-amber,
+.ci-cache-grid .tone-amber,
+.ci-secret-grid .tone-amber,
+.ci-branch-grid .tone-amber,
+.ci-matrix-grid .tone-amber,
+.ci-release-gate-grid .tone-amber,
+.ci-adoption-list .tone-amber,
+.ci-acceptance-grid .tone-amber,
+.ci-job-table .tone-amber,
+.ci-command-binding-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.ci-workflow-grid .tone-red,
+.ci-artifact-grid .tone-red,
+.ci-cache-grid .tone-red,
+.ci-secret-grid .tone-red,
+.ci-branch-grid .tone-red,
+.ci-matrix-grid .tone-red,
+.ci-release-gate-grid .tone-red,
+.ci-adoption-list .tone-red,
+.ci-acceptance-grid .tone-red,
+.ci-job-table .tone-red,
+.ci-command-binding-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.private-repo-first-commit-builder {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(47, 100, 157, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.58));
+  box-shadow: var(--shadow);
+}
+
+.private-repo-first-commit-builder .staging-smoke-score-card,
+.private-repo-first-commit-builder .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.private-repo-first-commit-builder .staging-smoke-score-card span,
+.private-repo-first-commit-builder .staging-smoke-signal-card span,
+.first-commit-shell-grid span,
+.first-commit-package-grid span,
+.first-commit-env-grid span,
+.first-commit-order-list span,
+.first-commit-example-grid span {
+  color: var(--blue);
+}
+
+.private-repo-first-commit-builder .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(47, 100, 157, 0.12) 0);
+}
+
+.private-repo-first-commit-builder .staging-smoke-signal-card *,
+.first-commit-shell-grid > div *,
+.first-commit-api-table > div > *,
+.first-commit-package-grid > div *,
+.first-commit-workflow-table > div > *,
+.first-commit-script-table > div > *,
+.first-commit-env-grid > div *,
+.first-commit-order-list > div *,
+.first-commit-acceptance-grid > div *,
+.first-commit-example-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.first-commit-shell-grid,
+.first-commit-package-grid,
+.first-commit-env-grid,
+.first-commit-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.first-commit-shell-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.first-commit-package-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.first-commit-order-list {
+  display: grid;
+  gap: 8px;
+}
+
+.first-commit-shell-grid > div,
+.first-commit-package-grid > div,
+.first-commit-env-grid > div,
+.first-commit-order-list > div,
+.first-commit-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 92px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.first-commit-shell-grid span,
+.first-commit-package-grid span,
+.first-commit-env-grid span,
+.first-commit-order-list span,
+.first-commit-example-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.first-commit-shell-grid strong,
+.first-commit-package-grid strong,
+.first-commit-env-grid strong,
+.first-commit-order-list strong,
+.first-commit-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.first-commit-shell-grid p,
+.first-commit-package-grid p,
+.first-commit-env-grid p,
+.first-commit-order-list p,
+.first-commit-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.first-commit-env-grid code {
+  display: inline-grid;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(47, 100, 157, 0.18);
+  border-radius: 7px;
+  color: var(--blue);
+  background: rgba(231, 239, 248, 0.7);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: normal;
+}
+
+.first-commit-api-table,
+.first-commit-workflow-table,
+.first-commit-script-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.first-commit-api-table > div,
+.first-commit-workflow-table > div,
+.first-commit-script-table > div {
+  display: grid;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.first-commit-api-table > div {
+  grid-template-columns: minmax(240px, 0.8fr) minmax(160px, 0.45fr) minmax(320px, 1fr) minmax(140px, 0.35fr);
+}
+
+.first-commit-workflow-table > div {
+  grid-template-columns: minmax(230px, 0.72fr) minmax(160px, 0.42fr) minmax(320px, 1fr) minmax(180px, 0.52fr) minmax(300px, 0.9fr);
+}
+
+.first-commit-script-table > div {
+  grid-template-columns: minmax(56px, 0.2fr) minmax(180px, 0.64fr) minmax(210px, 0.78fr) minmax(250px, 0.95fr) minmax(180px, 0.6fr);
+}
+
+.first-commit-api-table > div:first-child,
+.first-commit-workflow-table > div:first-child,
+.first-commit-script-table > div:first-child {
+  background: rgba(47, 100, 157, 0.08);
+}
+
+.first-commit-api-table > div:last-child,
+.first-commit-workflow-table > div:last-child,
+.first-commit-script-table > div:last-child {
+  border-bottom: 0;
+}
+
+.first-commit-api-table span,
+.first-commit-api-table strong,
+.first-commit-api-table p,
+.first-commit-api-table em,
+.first-commit-workflow-table span,
+.first-commit-workflow-table strong,
+.first-commit-workflow-table p,
+.first-commit-workflow-table em,
+.first-commit-workflow-table small,
+.first-commit-script-table span,
+.first-commit-script-table strong,
+.first-commit-script-table p,
+.first-commit-script-table em,
+.first-commit-script-table code {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.first-commit-api-table > div:first-child span,
+.first-commit-workflow-table > div:first-child span,
+.first-commit-script-table > div:first-child span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.first-commit-api-table em,
+.first-commit-workflow-table em,
+.first-commit-script-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.first-commit-script-table code {
+  display: inline-grid;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(47, 100, 157, 0.18);
+  border-radius: 7px;
+  color: var(--blue);
+  background: rgba(231, 239, 248, 0.7);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: normal;
+}
+
+.first-commit-example-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.first-commit-example-grid > div {
+  display: grid;
+  gap: 8px;
+  padding: 11px;
+  border: 1px solid rgba(47, 100, 157, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: rgba(231, 239, 248, 0.58);
+}
+
+.first-commit-example-grid pre {
+  max-height: 260px;
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.first-commit-shell-grid .tone-green,
+.first-commit-package-grid .tone-green,
+.first-commit-env-grid .tone-green,
+.first-commit-order-list .tone-green,
+.first-commit-acceptance-grid .tone-green,
+.first-commit-api-table .tone-green,
+.first-commit-workflow-table .tone-green,
+.first-commit-script-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.first-commit-shell-grid .tone-teal,
+.first-commit-package-grid .tone-teal,
+.first-commit-env-grid .tone-teal,
+.first-commit-order-list .tone-teal,
+.first-commit-acceptance-grid .tone-teal,
+.first-commit-api-table .tone-teal,
+.first-commit-workflow-table .tone-teal,
+.first-commit-script-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.first-commit-shell-grid .tone-blue,
+.first-commit-package-grid .tone-blue,
+.first-commit-env-grid .tone-blue,
+.first-commit-order-list .tone-blue,
+.first-commit-acceptance-grid .tone-blue,
+.first-commit-api-table .tone-blue,
+.first-commit-workflow-table .tone-blue,
+.first-commit-script-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.first-commit-shell-grid .tone-amber,
+.first-commit-package-grid .tone-amber,
+.first-commit-env-grid .tone-amber,
+.first-commit-order-list .tone-amber,
+.first-commit-acceptance-grid .tone-amber,
+.first-commit-api-table .tone-amber,
+.first-commit-workflow-table .tone-amber,
+.first-commit-script-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.first-commit-shell-grid .tone-red,
+.first-commit-package-grid .tone-red,
+.first-commit-env-grid .tone-red,
+.first-commit-order-list .tone-red,
+.first-commit-acceptance-grid .tone-red,
+.first-commit-api-table .tone-red,
+.first-commit-workflow-table .tone-red,
+.first-commit-script-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.backend-issue-body-exporter {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(31, 125, 111, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.58));
+  box-shadow: var(--shadow);
+}
+
+.backend-issue-body-exporter .staging-smoke-score-card,
+.backend-issue-body-exporter .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.backend-issue-body-exporter .staging-smoke-score-card span,
+.backend-issue-body-exporter .staging-smoke-signal-card span,
+.backend-issue-batch-grid span,
+.backend-issue-card-grid span,
+.backend-issue-opening-list span,
+.backend-issue-body-preview summary span {
+  color: var(--teal-dark);
+}
+
+.backend-issue-body-exporter .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(31, 125, 111, 0.12) 0);
+}
+
+.backend-issue-body-exporter .staging-smoke-signal-card *,
+.backend-issue-batch-grid > div *,
+.backend-issue-card-grid > div *,
+.backend-issue-label-grid > div *,
+.backend-issue-milestone-grid > div *,
+.backend-issue-command-table > div > *,
+.backend-issue-opening-list > div *,
+.backend-issue-template-grid > div *,
+.backend-issue-acceptance-grid > div *,
+.backend-issue-body-preview details * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.backend-issue-batch-grid,
+.backend-issue-card-grid,
+.backend-issue-label-grid,
+.backend-issue-milestone-grid,
+.backend-issue-template-grid,
+.backend-issue-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-issue-batch-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.backend-issue-card-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.backend-issue-label-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-issue-opening-list,
+.backend-issue-body-preview {
+  display: grid;
+  gap: 8px;
+}
+
+.backend-issue-batch-grid > div,
+.backend-issue-card-grid > div,
+.backend-issue-label-grid > div,
+.backend-issue-milestone-grid > div,
+.backend-issue-opening-list > div,
+.backend-issue-template-grid > div,
+.backend-issue-acceptance-grid > div,
+.backend-issue-body-preview details {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 92px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.backend-issue-card-grid > div > div,
+.backend-issue-body-preview summary {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.backend-issue-batch-grid span,
+.backend-issue-card-grid span,
+.backend-issue-opening-list span,
+.backend-issue-body-preview summary span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-issue-batch-grid strong,
+.backend-issue-card-grid strong,
+.backend-issue-label-grid strong,
+.backend-issue-milestone-grid strong,
+.backend-issue-opening-list strong,
+.backend-issue-template-grid strong,
+.backend-issue-acceptance-grid strong,
+.backend-issue-body-preview summary strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.backend-issue-batch-grid p,
+.backend-issue-card-grid p,
+.backend-issue-label-grid p,
+.backend-issue-milestone-grid p,
+.backend-issue-opening-list p,
+.backend-issue-template-grid p,
+.backend-issue-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.backend-issue-batch-grid em,
+.backend-issue-card-grid em,
+.backend-issue-card-grid small,
+.backend-issue-body-preview summary em {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.backend-issue-command-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.backend-issue-command-table > div {
+  display: grid;
+  grid-template-columns: minmax(56px, 0.2fr) minmax(180px, 0.64fr) minmax(210px, 0.78fr) minmax(250px, 0.95fr) minmax(260px, 0.85fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.backend-issue-command-table > div:first-child {
+  background: rgba(31, 125, 111, 0.08);
+}
+
+.backend-issue-command-table > div:last-child {
+  border-bottom: 0;
+}
+
+.backend-issue-command-table span,
+.backend-issue-command-table strong,
+.backend-issue-command-table p,
+.backend-issue-command-table em,
+.backend-issue-command-table code {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.backend-issue-command-table > div:first-child span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-issue-command-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.backend-issue-command-table code {
+  display: inline-grid;
+  width: fit-content;
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(31, 125, 111, 0.18);
+  border-radius: 7px;
+  color: var(--teal-dark);
+  background: rgba(226, 243, 236, 0.66);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 900;
+  white-space: normal;
+}
+
+.backend-issue-body-preview details {
+  min-height: 0;
+}
+
+.backend-issue-body-preview summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.backend-issue-body-preview summary::-webkit-details-marker {
+  display: none;
+}
+
+.backend-issue-body-preview pre {
+  max-height: 320px;
+  margin: 8px 0 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.backend-issue-batch-grid .tone-green,
+.backend-issue-card-grid .tone-green,
+.backend-issue-label-grid .tone-green,
+.backend-issue-milestone-grid .tone-green,
+.backend-issue-opening-list .tone-green,
+.backend-issue-template-grid .tone-green,
+.backend-issue-acceptance-grid .tone-green,
+.backend-issue-command-table .tone-green,
+.backend-issue-body-preview .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.backend-issue-batch-grid .tone-teal,
+.backend-issue-card-grid .tone-teal,
+.backend-issue-label-grid .tone-teal,
+.backend-issue-milestone-grid .tone-teal,
+.backend-issue-opening-list .tone-teal,
+.backend-issue-template-grid .tone-teal,
+.backend-issue-acceptance-grid .tone-teal,
+.backend-issue-command-table .tone-teal,
+.backend-issue-body-preview .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.backend-issue-batch-grid .tone-blue,
+.backend-issue-card-grid .tone-blue,
+.backend-issue-label-grid .tone-blue,
+.backend-issue-milestone-grid .tone-blue,
+.backend-issue-opening-list .tone-blue,
+.backend-issue-template-grid .tone-blue,
+.backend-issue-acceptance-grid .tone-blue,
+.backend-issue-command-table .tone-blue,
+.backend-issue-body-preview .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.backend-issue-batch-grid .tone-amber,
+.backend-issue-card-grid .tone-amber,
+.backend-issue-label-grid .tone-amber,
+.backend-issue-milestone-grid .tone-amber,
+.backend-issue-opening-list .tone-amber,
+.backend-issue-template-grid .tone-amber,
+.backend-issue-acceptance-grid .tone-amber,
+.backend-issue-command-table .tone-amber,
+.backend-issue-body-preview .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.backend-issue-batch-grid .tone-red,
+.backend-issue-card-grid .tone-red,
+.backend-issue-label-grid .tone-red,
+.backend-issue-milestone-grid .tone-red,
+.backend-issue-opening-list .tone-red,
+.backend-issue-template-grid .tone-red,
+.backend-issue-acceptance-grid .tone-red,
+.backend-issue-command-table .tone-red,
+.backend-issue-body-preview .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.branch-protection-release-checklist {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(184, 110, 23, 0.24);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 216, 0.52));
+  box-shadow: var(--shadow);
+}
+
+.branch-protection-release-checklist .staging-smoke-score-card,
+.branch-protection-release-checklist .staging-smoke-panel {
+  border-left-color: var(--amber);
+}
+
+.branch-protection-release-checklist .staging-smoke-score-card span,
+.branch-protection-release-checklist .staging-smoke-signal-card span,
+.branch-protection-branch-grid span,
+.branch-protection-env-grid span,
+.branch-protection-artifact-grid span,
+.branch-protection-ritual-list span {
+  color: var(--teal-dark);
+}
+
+.branch-protection-release-checklist .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--amber) var(--width), rgba(184, 110, 23, 0.12) 0);
+}
+
+.branch-protection-release-checklist .staging-smoke-signal-card *,
+.branch-protection-branch-grid > div *,
+.branch-protection-env-grid > div *,
+.branch-protection-owner-grid > div *,
+.branch-protection-artifact-grid > div *,
+.branch-protection-ritual-list > div *,
+.branch-protection-rollback-list > div *,
+.branch-protection-setup-grid > div *,
+.branch-protection-acceptance-grid > div *,
+.branch-protection-status-table > div > *,
+.branch-protection-issue-table > div > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.branch-protection-branch-grid,
+.branch-protection-env-grid,
+.branch-protection-owner-grid,
+.branch-protection-artifact-grid,
+.branch-protection-setup-grid,
+.branch-protection-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.branch-protection-branch-grid,
+.branch-protection-artifact-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.branch-protection-ritual-list,
+.branch-protection-rollback-list {
+  display: grid;
+  gap: 8px;
+}
+
+.branch-protection-branch-grid > div,
+.branch-protection-env-grid > div,
+.branch-protection-owner-grid > div,
+.branch-protection-artifact-grid > div,
+.branch-protection-ritual-list > div,
+.branch-protection-rollback-list > div,
+.branch-protection-setup-grid > div,
+.branch-protection-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 92px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.branch-protection-branch-grid span,
+.branch-protection-env-grid span,
+.branch-protection-artifact-grid span,
+.branch-protection-ritual-list span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.branch-protection-branch-grid strong,
+.branch-protection-env-grid strong,
+.branch-protection-owner-grid strong,
+.branch-protection-artifact-grid strong,
+.branch-protection-ritual-list strong,
+.branch-protection-rollback-list strong,
+.branch-protection-setup-grid strong,
+.branch-protection-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.branch-protection-branch-grid p,
+.branch-protection-env-grid p,
+.branch-protection-owner-grid p,
+.branch-protection-artifact-grid p,
+.branch-protection-ritual-list p,
+.branch-protection-rollback-list p,
+.branch-protection-setup-grid p,
+.branch-protection-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.branch-protection-branch-grid em,
+.branch-protection-artifact-grid em {
+  color: var(--ink);
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.branch-protection-status-table,
+.branch-protection-issue-table {
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.branch-protection-status-table > div,
+.branch-protection-issue-table > div {
+  display: grid;
+  gap: 10px;
+  align-items: center;
+  padding: 11px;
+  border-bottom: 1px solid var(--line);
+  background: #ffffff;
+}
+
+.branch-protection-status-table > div:last-child,
+.branch-protection-issue-table > div:last-child {
+  border-bottom: 0;
+}
+
+.branch-protection-status-table > div {
+  grid-template-columns: 1fr 1.1fr 1.7fr 1.1fr;
+}
+
+.branch-protection-issue-table > div {
+  grid-template-columns: 0.7fr 1.8fr 1.1fr 1.2fr 1.2fr;
+}
+
+.branch-protection-status-table .table-heading,
+.branch-protection-issue-table .table-heading {
+  background: #f3f7f3;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.branch-protection-status-table strong,
+.branch-protection-issue-table strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.branch-protection-status-table span,
+.branch-protection-status-table em,
+.branch-protection-issue-table span,
+.branch-protection-issue-table em,
+.branch-protection-issue-table small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-style: normal;
+}
+
+.branch-protection-status-table code,
+.branch-protection-issue-table code {
+  display: inline-block;
+  max-width: 100%;
+  padding: 5px 7px;
+  border: 1px solid rgba(13, 111, 97, 0.14);
+  border-radius: 7px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.74);
+  font-family: var(--mono);
+  font-size: 11px;
+  white-space: normal;
+}
+
+.branch-protection-status-table .tone-green,
+.branch-protection-issue-table .tone-green,
+.branch-protection-branch-grid .tone-green,
+.branch-protection-env-grid .tone-green,
+.branch-protection-owner-grid .tone-green,
+.branch-protection-artifact-grid .tone-green,
+.branch-protection-ritual-list .tone-green,
+.branch-protection-rollback-list .tone-green,
+.branch-protection-setup-grid .tone-green,
+.branch-protection-acceptance-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.branch-protection-status-table .tone-teal,
+.branch-protection-issue-table .tone-teal,
+.branch-protection-branch-grid .tone-teal,
+.branch-protection-env-grid .tone-teal,
+.branch-protection-owner-grid .tone-teal,
+.branch-protection-artifact-grid .tone-teal,
+.branch-protection-ritual-list .tone-teal,
+.branch-protection-rollback-list .tone-teal,
+.branch-protection-setup-grid .tone-teal,
+.branch-protection-acceptance-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.branch-protection-status-table .tone-blue,
+.branch-protection-issue-table .tone-blue,
+.branch-protection-branch-grid .tone-blue,
+.branch-protection-env-grid .tone-blue,
+.branch-protection-owner-grid .tone-blue,
+.branch-protection-artifact-grid .tone-blue,
+.branch-protection-ritual-list .tone-blue,
+.branch-protection-rollback-list .tone-blue,
+.branch-protection-setup-grid .tone-blue,
+.branch-protection-acceptance-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.branch-protection-status-table .tone-amber,
+.branch-protection-issue-table .tone-amber,
+.branch-protection-branch-grid .tone-amber,
+.branch-protection-env-grid .tone-amber,
+.branch-protection-owner-grid .tone-amber,
+.branch-protection-artifact-grid .tone-amber,
+.branch-protection-ritual-list .tone-amber,
+.branch-protection-rollback-list .tone-amber,
+.branch-protection-setup-grid .tone-amber,
+.branch-protection-acceptance-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.branch-protection-status-table .tone-red,
+.branch-protection-issue-table .tone-red,
+.branch-protection-branch-grid .tone-red,
+.branch-protection-env-grid .tone-red,
+.branch-protection-owner-grid .tone-red,
+.branch-protection-artifact-grid .tone-red,
+.branch-protection-ritual-list .tone-red,
+.branch-protection-rollback-list .tone-red,
+.branch-protection-setup-grid .tone-red,
+.branch-protection-acceptance-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.first-backend-file-content-export {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.55));
+  box-shadow: var(--shadow);
+}
+
+.first-backend-file-content-export .staging-smoke-score-card,
+.first-backend-file-content-export .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.first-backend-file-content-export .staging-smoke-score-card span,
+.first-backend-file-content-export .staging-smoke-signal-card span,
+.backend-file-group-grid span,
+.backend-file-card-grid span,
+.backend-file-copy-order span,
+.backend-file-preview-list summary span {
+  color: var(--teal-dark);
+}
+
+.first-backend-file-content-export .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.first-backend-file-content-export .staging-smoke-signal-card *,
+.backend-file-group-grid > div *,
+.backend-file-card-grid > div *,
+.backend-file-copy-order > div *,
+.backend-file-guardrail-grid > div *,
+.backend-file-acceptance-grid > div *,
+.backend-file-preview-list details *,
+.backend-file-inventory-table > div > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.backend-file-group-grid,
+.backend-file-card-grid,
+.backend-file-guardrail-grid,
+.backend-file-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-file-group-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.backend-file-card-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-file-copy-order,
+.backend-file-preview-list {
+  display: grid;
+  gap: 8px;
+}
+
+.backend-file-group-grid > div,
+.backend-file-card-grid > div,
+.backend-file-copy-order > div,
+.backend-file-guardrail-grid > div,
+.backend-file-acceptance-grid > div,
+.backend-file-preview-list details {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 92px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.backend-file-preview-list details {
+  min-height: 0;
+}
+
+.backend-file-preview-list summary {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+}
+
+.backend-file-preview-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.backend-file-group-grid span,
+.backend-file-card-grid span,
+.backend-file-copy-order span,
+.backend-file-preview-list summary span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-file-group-grid strong,
+.backend-file-card-grid strong,
+.backend-file-copy-order strong,
+.backend-file-guardrail-grid strong,
+.backend-file-acceptance-grid strong,
+.backend-file-preview-list summary strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.backend-file-group-grid p,
+.backend-file-card-grid p,
+.backend-file-copy-order p,
+.backend-file-guardrail-grid p,
+.backend-file-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.backend-file-card-grid em,
+.backend-file-preview-list summary em {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.backend-file-preview-list pre {
+  max-height: 360px;
+  margin: 8px 0 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.backend-file-inventory-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.backend-file-inventory-table > div {
+  display: grid;
+  grid-template-columns: minmax(240px, 1.25fr) minmax(130px, 0.55fr) minmax(90px, 0.35fr) minmax(280px, 1.2fr) minmax(56px, 0.2fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.backend-file-inventory-table > div:last-child {
+  border-bottom: 0;
+}
+
+.backend-file-inventory-table .table-heading {
+  background: #f3f7f3;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-file-inventory-table strong,
+.backend-file-inventory-table span,
+.backend-file-inventory-table em,
+.backend-file-inventory-table p,
+.backend-file-inventory-table small {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.backend-file-inventory-table em,
+.backend-file-inventory-table small {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.backend-file-inventory-table p {
+  color: var(--ink-soft);
+}
+
+.backend-file-group-grid .tone-green,
+.backend-file-card-grid .tone-green,
+.backend-file-copy-order .tone-green,
+.backend-file-guardrail-grid .tone-green,
+.backend-file-acceptance-grid .tone-green,
+.backend-file-preview-list .tone-green,
+.backend-file-inventory-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.backend-file-group-grid .tone-teal,
+.backend-file-card-grid .tone-teal,
+.backend-file-copy-order .tone-teal,
+.backend-file-guardrail-grid .tone-teal,
+.backend-file-acceptance-grid .tone-teal,
+.backend-file-preview-list .tone-teal,
+.backend-file-inventory-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.backend-file-group-grid .tone-blue,
+.backend-file-card-grid .tone-blue,
+.backend-file-copy-order .tone-blue,
+.backend-file-guardrail-grid .tone-blue,
+.backend-file-acceptance-grid .tone-blue,
+.backend-file-preview-list .tone-blue,
+.backend-file-inventory-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.backend-file-group-grid .tone-amber,
+.backend-file-card-grid .tone-amber,
+.backend-file-copy-order .tone-amber,
+.backend-file-guardrail-grid .tone-amber,
+.backend-file-acceptance-grid .tone-amber,
+.backend-file-preview-list .tone-amber,
+.backend-file-inventory-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.backend-file-group-grid .tone-red,
+.backend-file-card-grid .tone-red,
+.backend-file-copy-order .tone-red,
+.backend-file-guardrail-grid .tone-red,
+.backend-file-acceptance-grid .tone-red,
+.backend-file-preview-list .tone-red,
+.backend-file-inventory-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.private-repo-setup-script-draft {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(22, 120, 105, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.58));
+  box-shadow: var(--shadow);
+}
+
+.private-repo-setup-script-draft .staging-smoke-score-card,
+.private-repo-setup-script-draft .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.private-repo-setup-script-draft .staging-smoke-score-card span,
+.private-repo-setup-script-draft .staging-smoke-signal-card span,
+.repo-setup-prereq-grid span,
+.repo-setup-script-file-grid span,
+.repo-setup-metadata-grid span,
+.repo-setup-folder-grid span,
+.repo-setup-secret-grid span,
+.repo-setup-proof-grid span,
+.repo-setup-gate-grid span,
+.repo-setup-acceptance-grid span,
+.repo-setup-command-list summary span {
+  color: var(--teal-dark);
+}
+
+.private-repo-setup-script-draft .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(22, 120, 105, 0.12) 0);
+}
+
+.private-repo-setup-script-draft .staging-smoke-signal-card *,
+.repo-setup-prereq-grid > div *,
+.repo-setup-script-file-grid > div *,
+.repo-setup-metadata-grid > div *,
+.repo-setup-folder-grid > div *,
+.repo-setup-secret-grid > div *,
+.repo-setup-proof-grid > div *,
+.repo-setup-gate-grid > div *,
+.repo-setup-acceptance-grid > div *,
+.repo-setup-command-list details * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.repo-setup-prereq-grid,
+.repo-setup-script-file-grid,
+.repo-setup-metadata-grid,
+.repo-setup-folder-grid,
+.repo-setup-secret-grid,
+.repo-setup-proof-grid,
+.repo-setup-gate-grid,
+.repo-setup-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.repo-setup-script-file-grid,
+.repo-setup-metadata-grid,
+.repo-setup-secret-grid,
+.repo-setup-proof-grid,
+.repo-setup-gate-grid,
+.repo-setup-acceptance-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.repo-setup-command-list {
+  display: grid;
+  gap: 8px;
+}
+
+.repo-setup-prereq-grid > div,
+.repo-setup-script-file-grid > div,
+.repo-setup-metadata-grid > div,
+.repo-setup-folder-grid > div,
+.repo-setup-secret-grid > div,
+.repo-setup-proof-grid > div,
+.repo-setup-gate-grid > div,
+.repo-setup-acceptance-grid > div,
+.repo-setup-command-list details {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 92px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.repo-setup-command-list details {
+  min-height: 0;
+}
+
+.repo-setup-command-list summary {
+  display: grid;
+  grid-template-columns: 46px minmax(160px, 0.45fr) minmax(280px, 1fr);
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+}
+
+.repo-setup-command-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.repo-setup-prereq-grid span,
+.repo-setup-script-file-grid span,
+.repo-setup-metadata-grid span,
+.repo-setup-folder-grid span,
+.repo-setup-secret-grid span,
+.repo-setup-proof-grid span,
+.repo-setup-gate-grid span,
+.repo-setup-acceptance-grid span,
+.repo-setup-command-list summary span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.repo-setup-prereq-grid strong,
+.repo-setup-script-file-grid strong,
+.repo-setup-metadata-grid strong,
+.repo-setup-folder-grid strong,
+.repo-setup-secret-grid strong,
+.repo-setup-proof-grid strong,
+.repo-setup-gate-grid strong,
+.repo-setup-acceptance-grid strong,
+.repo-setup-command-list summary strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.repo-setup-prereq-grid p,
+.repo-setup-script-file-grid p,
+.repo-setup-metadata-grid p,
+.repo-setup-folder-grid p,
+.repo-setup-secret-grid p,
+.repo-setup-proof-grid p,
+.repo-setup-gate-grid p,
+.repo-setup-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.repo-setup-command-list summary em {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.4;
+}
+
+.repo-setup-command-list pre {
+  max-height: 320px;
+  margin: 8px 0 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.repo-setup-prereq-grid .tone-green,
+.repo-setup-script-file-grid .tone-green,
+.repo-setup-metadata-grid .tone-green,
+.repo-setup-folder-grid .tone-green,
+.repo-setup-secret-grid .tone-green,
+.repo-setup-proof-grid .tone-green,
+.repo-setup-gate-grid .tone-green,
+.repo-setup-acceptance-grid .tone-green,
+.repo-setup-command-list .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.repo-setup-prereq-grid .tone-teal,
+.repo-setup-script-file-grid .tone-teal,
+.repo-setup-metadata-grid .tone-teal,
+.repo-setup-folder-grid .tone-teal,
+.repo-setup-secret-grid .tone-teal,
+.repo-setup-proof-grid .tone-teal,
+.repo-setup-gate-grid .tone-teal,
+.repo-setup-acceptance-grid .tone-teal,
+.repo-setup-command-list .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.repo-setup-prereq-grid .tone-blue,
+.repo-setup-script-file-grid .tone-blue,
+.repo-setup-metadata-grid .tone-blue,
+.repo-setup-folder-grid .tone-blue,
+.repo-setup-secret-grid .tone-blue,
+.repo-setup-proof-grid .tone-blue,
+.repo-setup-gate-grid .tone-blue,
+.repo-setup-acceptance-grid .tone-blue,
+.repo-setup-command-list .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.repo-setup-prereq-grid .tone-amber,
+.repo-setup-script-file-grid .tone-amber,
+.repo-setup-metadata-grid .tone-amber,
+.repo-setup-folder-grid .tone-amber,
+.repo-setup-secret-grid .tone-amber,
+.repo-setup-proof-grid .tone-amber,
+.repo-setup-gate-grid .tone-amber,
+.repo-setup-acceptance-grid .tone-amber,
+.repo-setup-command-list .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.repo-setup-prereq-grid .tone-red,
+.repo-setup-script-file-grid .tone-red,
+.repo-setup-metadata-grid .tone-red,
+.repo-setup-folder-grid .tone-red,
+.repo-setup-secret-grid .tone-red,
+.repo-setup-proof-grid .tone-red,
+.repo-setup-gate-grid .tone-red,
+.repo-setup-acceptance-grid .tone-red,
+.repo-setup-command-list .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.github-labels-milestones-import-pack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(192, 113, 31, 0.24);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 216, 0.48));
+  box-shadow: var(--shadow);
+}
+
+.github-labels-milestones-import-pack .staging-smoke-score-card,
+.github-labels-milestones-import-pack .staging-smoke-panel {
+  border-left-color: var(--amber);
+}
+
+.github-labels-milestones-import-pack .staging-smoke-score-card span,
+.github-labels-milestones-import-pack .staging-smoke-signal-card span,
+.github-taxonomy-label-group-grid span,
+.github-taxonomy-milestone-grid span,
+.github-taxonomy-board-grid span,
+.github-taxonomy-routing-grid span,
+.github-taxonomy-import-step-grid span,
+.github-taxonomy-file-grid span,
+.github-taxonomy-gate-grid span,
+.github-taxonomy-acceptance-grid span,
+.github-taxonomy-command-list summary span {
+  color: var(--teal-dark);
+}
+
+.github-labels-milestones-import-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--amber) var(--width), rgba(192, 113, 31, 0.12) 0);
+}
+
+.github-labels-milestones-import-pack .staging-smoke-signal-card *,
+.github-taxonomy-label-group-grid > div *,
+.github-taxonomy-milestone-grid > div *,
+.github-taxonomy-board-grid > div *,
+.github-taxonomy-routing-grid > div *,
+.github-taxonomy-import-step-grid > div *,
+.github-taxonomy-file-grid > div *,
+.github-taxonomy-gate-grid > div *,
+.github-taxonomy-acceptance-grid > div *,
+.github-taxonomy-command-list details *,
+.github-taxonomy-label-table > div > * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.github-taxonomy-label-group-grid,
+.github-taxonomy-milestone-grid,
+.github-taxonomy-board-grid,
+.github-taxonomy-routing-grid,
+.github-taxonomy-import-step-grid,
+.github-taxonomy-file-grid,
+.github-taxonomy-gate-grid,
+.github-taxonomy-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.github-taxonomy-label-group-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.github-taxonomy-command-list {
+  display: grid;
+  gap: 8px;
+}
+
+.github-taxonomy-label-group-grid > div,
+.github-taxonomy-milestone-grid > div,
+.github-taxonomy-board-grid > div,
+.github-taxonomy-routing-grid > div,
+.github-taxonomy-import-step-grid > div,
+.github-taxonomy-file-grid > div,
+.github-taxonomy-gate-grid > div,
+.github-taxonomy-acceptance-grid > div,
+.github-taxonomy-command-list details {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 92px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.github-taxonomy-command-list details {
+  min-height: 0;
+}
+
+.github-taxonomy-command-list summary {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+}
+
+.github-taxonomy-command-list summary::-webkit-details-marker {
+  display: none;
+}
+
+.github-taxonomy-label-group-grid span,
+.github-taxonomy-milestone-grid span,
+.github-taxonomy-board-grid span,
+.github-taxonomy-routing-grid span,
+.github-taxonomy-import-step-grid span,
+.github-taxonomy-file-grid span,
+.github-taxonomy-gate-grid span,
+.github-taxonomy-acceptance-grid span,
+.github-taxonomy-command-list summary span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.github-taxonomy-label-group-grid strong,
+.github-taxonomy-milestone-grid strong,
+.github-taxonomy-board-grid strong,
+.github-taxonomy-routing-grid strong,
+.github-taxonomy-import-step-grid strong,
+.github-taxonomy-file-grid strong,
+.github-taxonomy-gate-grid strong,
+.github-taxonomy-acceptance-grid strong,
+.github-taxonomy-command-list summary strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.github-taxonomy-label-group-grid p,
+.github-taxonomy-milestone-grid p,
+.github-taxonomy-board-grid p,
+.github-taxonomy-routing-grid p,
+.github-taxonomy-import-step-grid p,
+.github-taxonomy-file-grid p,
+.github-taxonomy-gate-grid p,
+.github-taxonomy-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.github-taxonomy-command-list pre {
+  max-height: 260px;
+  margin: 8px 0 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.github-taxonomy-label-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.github-taxonomy-label-table > div {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.75fr) minmax(90px, 0.35fr) minmax(82px, 0.25fr) minmax(320px, 1fr);
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.github-taxonomy-label-table > div:last-child {
+  border-bottom: 0;
+}
+
+.github-taxonomy-label-table .table-heading {
+  background: #f7f3ec;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.github-taxonomy-label-table strong,
+.github-taxonomy-label-table span,
+.github-taxonomy-label-table em,
+.github-taxonomy-label-table p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.github-taxonomy-label-table em {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 900;
+}
+
+.github-taxonomy-label-table p {
+  color: var(--ink-soft);
+}
+
+.github-taxonomy-label-group-grid .tone-green,
+.github-taxonomy-milestone-grid .tone-green,
+.github-taxonomy-board-grid .tone-green,
+.github-taxonomy-routing-grid .tone-green,
+.github-taxonomy-import-step-grid .tone-green,
+.github-taxonomy-file-grid .tone-green,
+.github-taxonomy-gate-grid .tone-green,
+.github-taxonomy-acceptance-grid .tone-green,
+.github-taxonomy-command-list .tone-green,
+.github-taxonomy-label-table .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left: 4px solid var(--green);
+}
+
+.github-taxonomy-label-group-grid .tone-teal,
+.github-taxonomy-milestone-grid .tone-teal,
+.github-taxonomy-board-grid .tone-teal,
+.github-taxonomy-routing-grid .tone-teal,
+.github-taxonomy-import-step-grid .tone-teal,
+.github-taxonomy-file-grid .tone-teal,
+.github-taxonomy-gate-grid .tone-teal,
+.github-taxonomy-acceptance-grid .tone-teal,
+.github-taxonomy-command-list .tone-teal,
+.github-taxonomy-label-table .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left: 4px solid var(--teal);
+}
+
+.github-taxonomy-label-group-grid .tone-blue,
+.github-taxonomy-milestone-grid .tone-blue,
+.github-taxonomy-board-grid .tone-blue,
+.github-taxonomy-routing-grid .tone-blue,
+.github-taxonomy-import-step-grid .tone-blue,
+.github-taxonomy-file-grid .tone-blue,
+.github-taxonomy-gate-grid .tone-blue,
+.github-taxonomy-acceptance-grid .tone-blue,
+.github-taxonomy-command-list .tone-blue,
+.github-taxonomy-label-table .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left: 4px solid var(--blue);
+}
+
+.github-taxonomy-label-group-grid .tone-amber,
+.github-taxonomy-milestone-grid .tone-amber,
+.github-taxonomy-board-grid .tone-amber,
+.github-taxonomy-routing-grid .tone-amber,
+.github-taxonomy-import-step-grid .tone-amber,
+.github-taxonomy-file-grid .tone-amber,
+.github-taxonomy-gate-grid .tone-amber,
+.github-taxonomy-acceptance-grid .tone-amber,
+.github-taxonomy-command-list .tone-amber,
+.github-taxonomy-label-table .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left: 4px solid var(--amber);
+}
+
+.github-taxonomy-label-group-grid .tone-red,
+.github-taxonomy-milestone-grid .tone-red,
+.github-taxonomy-board-grid .tone-red,
+.github-taxonomy-routing-grid .tone-red,
+.github-taxonomy-import-step-grid .tone-red,
+.github-taxonomy-file-grid .tone-red,
+.github-taxonomy-gate-grid .tone-red,
+.github-taxonomy-acceptance-grid .tone-red,
+.github-taxonomy-command-list .tone-red,
+.github-taxonomy-label-table .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left: 4px solid var(--red);
+}
+
+.first-backend-commit-qa-checklist {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(36, 119, 71, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(228, 242, 232, 0.6));
+  box-shadow: var(--shadow);
+}
+
+.first-backend-commit-qa-checklist .staging-smoke-score-card,
+.first-backend-commit-qa-checklist .staging-smoke-panel {
+  border-left-color: var(--green);
+}
+
+.first-backend-commit-qa-checklist .staging-smoke-score-card span,
+.first-backend-commit-qa-checklist .staging-smoke-signal-card span,
+.first-commit-qa-lane-grid span,
+.first-commit-qa-file-table span,
+.first-commit-qa-proof-grid span,
+.first-commit-qa-review-grid span,
+.first-commit-qa-artifact-grid span,
+.first-commit-qa-decision-grid span,
+.first-commit-qa-signoff-grid span,
+.first-commit-qa-pr-grid span,
+.first-commit-qa-file-grid span,
+.first-commit-qa-acceptance-grid span {
+  color: var(--teal-dark);
+}
+
+.first-backend-commit-qa-checklist .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--green) var(--width), rgba(36, 119, 71, 0.12) 0);
+}
+
+.first-backend-commit-qa-checklist .staging-smoke-signal-card *,
+.first-commit-qa-lane-grid > div *,
+.first-commit-qa-file-table > div > *,
+.first-commit-qa-proof-grid > div *,
+.first-commit-qa-review-grid > div *,
+.first-commit-qa-artifact-grid > div *,
+.first-commit-qa-decision-grid > div *,
+.first-commit-qa-signoff-grid > div *,
+.first-commit-qa-pr-grid > div *,
+.first-commit-qa-file-grid > div *,
+.first-commit-qa-acceptance-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.first-commit-qa-lane-grid,
+.first-commit-qa-proof-grid,
+.first-commit-qa-review-grid,
+.first-commit-qa-artifact-grid,
+.first-commit-qa-decision-grid,
+.first-commit-qa-signoff-grid,
+.first-commit-qa-pr-grid,
+.first-commit-qa-file-grid,
+.first-commit-qa-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.first-commit-qa-lane-grid,
+.first-commit-qa-artifact-grid,
+.first-commit-qa-acceptance-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.first-commit-qa-lane-grid > div,
+.first-commit-qa-proof-grid > div,
+.first-commit-qa-review-grid > div,
+.first-commit-qa-artifact-grid > div,
+.first-commit-qa-decision-grid > div,
+.first-commit-qa-signoff-grid > div,
+.first-commit-qa-pr-grid > div,
+.first-commit-qa-file-grid > div,
+.first-commit-qa-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.first-commit-qa-file-table {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.first-commit-qa-file-table > div {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.42fr) minmax(86px, 0.22fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.first-commit-qa-file-table > div:last-child {
+  border-bottom: 0;
+}
+
+.first-commit-qa-file-table .table-heading {
+  background: #f7f3ec;
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.first-commit-qa-lane-grid span,
+.first-commit-qa-file-table span,
+.first-commit-qa-proof-grid span,
+.first-commit-qa-review-grid span,
+.first-commit-qa-artifact-grid span,
+.first-commit-qa-decision-grid span,
+.first-commit-qa-signoff-grid span,
+.first-commit-qa-pr-grid span,
+.first-commit-qa-file-grid span,
+.first-commit-qa-acceptance-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.first-commit-qa-lane-grid strong,
+.first-commit-qa-file-table strong,
+.first-commit-qa-proof-grid strong,
+.first-commit-qa-review-grid strong,
+.first-commit-qa-artifact-grid strong,
+.first-commit-qa-decision-grid strong,
+.first-commit-qa-signoff-grid strong,
+.first-commit-qa-pr-grid strong,
+.first-commit-qa-file-grid strong,
+.first-commit-qa-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.first-commit-qa-proof-grid strong {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.first-commit-qa-lane-grid p,
+.first-commit-qa-file-table p,
+.first-commit-qa-proof-grid p,
+.first-commit-qa-review-grid p,
+.first-commit-qa-artifact-grid p,
+.first-commit-qa-decision-grid p,
+.first-commit-qa-signoff-grid p,
+.first-commit-qa-pr-grid p,
+.first-commit-qa-file-grid p,
+.first-commit-qa-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.first-commit-qa-lane-grid .tone-green,
+.first-commit-qa-file-table .tone-green,
+.first-commit-qa-proof-grid .tone-green,
+.first-commit-qa-review-grid .tone-green,
+.first-commit-qa-artifact-grid .tone-green,
+.first-commit-qa-decision-grid .tone-green,
+.first-commit-qa-signoff-grid .tone-green,
+.first-commit-qa-pr-grid .tone-green,
+.first-commit-qa-file-grid .tone-green,
+.first-commit-qa-acceptance-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.first-commit-qa-lane-grid .tone-teal,
+.first-commit-qa-file-table .tone-teal,
+.first-commit-qa-proof-grid .tone-teal,
+.first-commit-qa-review-grid .tone-teal,
+.first-commit-qa-artifact-grid .tone-teal,
+.first-commit-qa-decision-grid .tone-teal,
+.first-commit-qa-signoff-grid .tone-teal,
+.first-commit-qa-pr-grid .tone-teal,
+.first-commit-qa-file-grid .tone-teal,
+.first-commit-qa-acceptance-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.first-commit-qa-lane-grid .tone-blue,
+.first-commit-qa-file-table .tone-blue,
+.first-commit-qa-proof-grid .tone-blue,
+.first-commit-qa-review-grid .tone-blue,
+.first-commit-qa-artifact-grid .tone-blue,
+.first-commit-qa-decision-grid .tone-blue,
+.first-commit-qa-signoff-grid .tone-blue,
+.first-commit-qa-pr-grid .tone-blue,
+.first-commit-qa-file-grid .tone-blue,
+.first-commit-qa-acceptance-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.first-commit-qa-lane-grid .tone-amber,
+.first-commit-qa-file-table .tone-amber,
+.first-commit-qa-proof-grid .tone-amber,
+.first-commit-qa-review-grid .tone-amber,
+.first-commit-qa-artifact-grid .tone-amber,
+.first-commit-qa-decision-grid .tone-amber,
+.first-commit-qa-signoff-grid .tone-amber,
+.first-commit-qa-pr-grid .tone-amber,
+.first-commit-qa-file-grid .tone-amber,
+.first-commit-qa-acceptance-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.first-commit-qa-lane-grid .tone-red,
+.first-commit-qa-file-table .tone-red,
+.first-commit-qa-proof-grid .tone-red,
+.first-commit-qa-review-grid .tone-red,
+.first-commit-qa-artifact-grid .tone-red,
+.first-commit-qa-decision-grid .tone-red,
+.first-commit-qa-signoff-grid .tone-red,
+.first-commit-qa-pr-grid .tone-red,
+.first-commit-qa-file-grid .tone-red,
+.first-commit-qa-acceptance-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.private-repo-opening-day-runbook {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.64));
+  box-shadow: var(--shadow);
+}
+
+.private-repo-opening-day-runbook .staging-smoke-score-card,
+.private-repo-opening-day-runbook .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.private-repo-opening-day-runbook .staging-smoke-score-card span,
+.private-repo-opening-day-runbook .staging-smoke-signal-card span,
+.opening-day-sequence-list span,
+.opening-day-command-grid span,
+.opening-day-issue-wave-grid span,
+.opening-day-evidence-grid span,
+.opening-day-owner-grid span,
+.opening-day-gate-grid span,
+.opening-day-stop-grid span,
+.opening-day-acceptance-grid span {
+  color: var(--teal-dark);
+}
+
+.private-repo-opening-day-runbook .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(13, 111, 97, 0.12) 0);
+}
+
+.private-repo-opening-day-runbook .staging-smoke-signal-card *,
+.opening-day-sequence-list > div *,
+.opening-day-command-grid > div *,
+.opening-day-issue-wave-grid > div *,
+.opening-day-evidence-grid > div *,
+.opening-day-owner-grid > div *,
+.opening-day-gate-grid > div *,
+.opening-day-stop-grid > div *,
+.opening-day-acceptance-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.opening-day-sequence-list {
+  display: grid;
+  gap: 8px;
+}
+
+.opening-day-sequence-list > div {
+  display: grid;
+  grid-template-columns: 72px minmax(160px, 0.35fr) minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.opening-day-command-grid,
+.opening-day-issue-wave-grid,
+.opening-day-evidence-grid,
+.opening-day-owner-grid,
+.opening-day-gate-grid,
+.opening-day-stop-grid,
+.opening-day-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.opening-day-evidence-grid,
+.opening-day-gate-grid,
+.opening-day-acceptance-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.opening-day-command-grid > div,
+.opening-day-issue-wave-grid > div,
+.opening-day-evidence-grid > div,
+.opening-day-owner-grid > div,
+.opening-day-gate-grid > div,
+.opening-day-stop-grid > div,
+.opening-day-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.opening-day-sequence-list span,
+.opening-day-command-grid span,
+.opening-day-issue-wave-grid span,
+.opening-day-evidence-grid span,
+.opening-day-owner-grid span,
+.opening-day-gate-grid span,
+.opening-day-stop-grid span,
+.opening-day-acceptance-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.opening-day-sequence-list strong,
+.opening-day-command-grid strong,
+.opening-day-issue-wave-grid strong,
+.opening-day-evidence-grid strong,
+.opening-day-owner-grid strong,
+.opening-day-gate-grid strong,
+.opening-day-stop-grid strong,
+.opening-day-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.opening-day-command-grid strong {
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.opening-day-sequence-list p,
+.opening-day-command-grid p,
+.opening-day-issue-wave-grid p,
+.opening-day-evidence-grid p,
+.opening-day-owner-grid p,
+.opening-day-gate-grid p,
+.opening-day-stop-grid p,
+.opening-day-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.opening-day-sequence-list .tone-green,
+.opening-day-command-grid .tone-green,
+.opening-day-issue-wave-grid .tone-green,
+.opening-day-evidence-grid .tone-green,
+.opening-day-owner-grid .tone-green,
+.opening-day-gate-grid .tone-green,
+.opening-day-stop-grid .tone-green,
+.opening-day-acceptance-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.opening-day-sequence-list .tone-teal,
+.opening-day-command-grid .tone-teal,
+.opening-day-issue-wave-grid .tone-teal,
+.opening-day-evidence-grid .tone-teal,
+.opening-day-owner-grid .tone-teal,
+.opening-day-gate-grid .tone-teal,
+.opening-day-stop-grid .tone-teal,
+.opening-day-acceptance-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.opening-day-sequence-list .tone-blue,
+.opening-day-command-grid .tone-blue,
+.opening-day-issue-wave-grid .tone-blue,
+.opening-day-evidence-grid .tone-blue,
+.opening-day-owner-grid .tone-blue,
+.opening-day-gate-grid .tone-blue,
+.opening-day-stop-grid .tone-blue,
+.opening-day-acceptance-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.opening-day-sequence-list .tone-amber,
+.opening-day-command-grid .tone-amber,
+.opening-day-issue-wave-grid .tone-amber,
+.opening-day-evidence-grid .tone-amber,
+.opening-day-owner-grid .tone-amber,
+.opening-day-gate-grid .tone-amber,
+.opening-day-stop-grid .tone-amber,
+.opening-day-acceptance-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.opening-day-sequence-list .tone-red,
+.opening-day-command-grid .tone-red,
+.opening-day-issue-wave-grid .tone-red,
+.opening-day-evidence-grid .tone-red,
+.opening-day-owner-grid .tone-red,
+.opening-day-gate-grid .tone-red,
+.opening-day-stop-grid .tone-red,
+.opening-day-acceptance-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.production-backend-repo-decision-memo {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(49, 95, 147, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.66));
+  box-shadow: var(--shadow);
+}
+
+.production-backend-repo-decision-memo .staging-smoke-score-card,
+.production-backend-repo-decision-memo .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.production-backend-repo-decision-memo .staging-smoke-score-card span,
+.production-backend-repo-decision-memo .staging-smoke-signal-card span,
+.decision-memo-section-grid span,
+.decision-memo-basis-grid span,
+.decision-memo-scope-grid span,
+.decision-memo-evidence-grid span,
+.decision-memo-option-grid span,
+.decision-memo-blocker-grid span,
+.decision-memo-approval-grid span,
+.decision-memo-next-grid span,
+.decision-memo-risk-grid span,
+.decision-memo-acceptance-grid span {
+  color: var(--teal-dark);
+}
+
+.production-backend-repo-decision-memo .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 95, 147, 0.12) 0);
+}
+
+.production-backend-repo-decision-memo .staging-smoke-signal-card *,
+.decision-memo-section-grid > div *,
+.decision-memo-basis-grid > div *,
+.decision-memo-scope-grid > div *,
+.decision-memo-evidence-grid > div *,
+.decision-memo-option-grid > div *,
+.decision-memo-blocker-grid > div *,
+.decision-memo-approval-grid > div *,
+.decision-memo-next-grid > div *,
+.decision-memo-risk-grid > div *,
+.decision-memo-acceptance-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.decision-memo-section-grid,
+.decision-memo-basis-grid,
+.decision-memo-scope-grid,
+.decision-memo-evidence-grid,
+.decision-memo-option-grid,
+.decision-memo-blocker-grid,
+.decision-memo-approval-grid,
+.decision-memo-next-grid,
+.decision-memo-risk-grid,
+.decision-memo-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.decision-memo-section-grid,
+.decision-memo-evidence-grid,
+.decision-memo-acceptance-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.decision-memo-section-grid > div,
+.decision-memo-basis-grid > div,
+.decision-memo-scope-grid > div,
+.decision-memo-evidence-grid > div,
+.decision-memo-option-grid > div,
+.decision-memo-blocker-grid > div,
+.decision-memo-approval-grid > div,
+.decision-memo-next-grid > div,
+.decision-memo-risk-grid > div,
+.decision-memo-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.decision-memo-section-grid span,
+.decision-memo-basis-grid span,
+.decision-memo-scope-grid span,
+.decision-memo-evidence-grid span,
+.decision-memo-option-grid span,
+.decision-memo-blocker-grid span,
+.decision-memo-approval-grid span,
+.decision-memo-next-grid span,
+.decision-memo-risk-grid span,
+.decision-memo-acceptance-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.decision-memo-section-grid strong,
+.decision-memo-basis-grid strong,
+.decision-memo-scope-grid strong,
+.decision-memo-evidence-grid strong,
+.decision-memo-option-grid strong,
+.decision-memo-blocker-grid strong,
+.decision-memo-approval-grid strong,
+.decision-memo-next-grid strong,
+.decision-memo-risk-grid strong,
+.decision-memo-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.decision-memo-section-grid p,
+.decision-memo-basis-grid p,
+.decision-memo-scope-grid p,
+.decision-memo-evidence-grid p,
+.decision-memo-option-grid p,
+.decision-memo-blocker-grid p,
+.decision-memo-approval-grid p,
+.decision-memo-next-grid p,
+.decision-memo-risk-grid p,
+.decision-memo-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.decision-memo-section-grid .tone-green,
+.decision-memo-basis-grid .tone-green,
+.decision-memo-scope-grid .tone-green,
+.decision-memo-evidence-grid .tone-green,
+.decision-memo-option-grid .tone-green,
+.decision-memo-blocker-grid .tone-green,
+.decision-memo-approval-grid .tone-green,
+.decision-memo-next-grid .tone-green,
+.decision-memo-risk-grid .tone-green,
+.decision-memo-acceptance-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.decision-memo-section-grid .tone-teal,
+.decision-memo-basis-grid .tone-teal,
+.decision-memo-scope-grid .tone-teal,
+.decision-memo-evidence-grid .tone-teal,
+.decision-memo-option-grid .tone-teal,
+.decision-memo-blocker-grid .tone-teal,
+.decision-memo-approval-grid .tone-teal,
+.decision-memo-next-grid .tone-teal,
+.decision-memo-risk-grid .tone-teal,
+.decision-memo-acceptance-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.decision-memo-section-grid .tone-blue,
+.decision-memo-basis-grid .tone-blue,
+.decision-memo-scope-grid .tone-blue,
+.decision-memo-evidence-grid .tone-blue,
+.decision-memo-option-grid .tone-blue,
+.decision-memo-blocker-grid .tone-blue,
+.decision-memo-approval-grid .tone-blue,
+.decision-memo-next-grid .tone-blue,
+.decision-memo-risk-grid .tone-blue,
+.decision-memo-acceptance-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.decision-memo-section-grid .tone-amber,
+.decision-memo-basis-grid .tone-amber,
+.decision-memo-scope-grid .tone-amber,
+.decision-memo-evidence-grid .tone-amber,
+.decision-memo-option-grid .tone-amber,
+.decision-memo-blocker-grid .tone-amber,
+.decision-memo-approval-grid .tone-amber,
+.decision-memo-next-grid .tone-amber,
+.decision-memo-risk-grid .tone-amber,
+.decision-memo-acceptance-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.decision-memo-section-grid .tone-red,
+.decision-memo-basis-grid .tone-red,
+.decision-memo-scope-grid .tone-red,
+.decision-memo-evidence-grid .tone-red,
+.decision-memo-option-grid .tone-red,
+.decision-memo-blocker-grid .tone-red,
+.decision-memo-approval-grid .tone-red,
+.decision-memo-next-grid .tone-red,
+.decision-memo-risk-grid .tone-red,
+.decision-memo-acceptance-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.backend-alpha-risk-register {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(179, 59, 48, 0.22);
+  border-left: 4px solid var(--red);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 232, 229, 0.5));
+  box-shadow: var(--shadow);
+}
+
+.backend-alpha-risk-register .staging-smoke-score-card,
+.backend-alpha-risk-register .staging-smoke-panel {
+  border-left-color: var(--red);
+}
+
+.backend-alpha-risk-register .staging-smoke-hero h3,
+.backend-alpha-risk-register .staging-smoke-score-card strong,
+.backend-alpha-risk-register .staging-smoke-signal-card strong {
+  display: block;
+  line-height: 1.18;
+}
+
+.backend-alpha-risk-register .staging-smoke-score-card span,
+.backend-alpha-risk-register .staging-smoke-signal-card span,
+.backend-alpha-risk-domain-grid span,
+.backend-alpha-risk-register-grid span,
+.backend-alpha-trigger-grid span,
+.backend-alpha-mitigation-grid span,
+.backend-alpha-owner-grid span,
+.backend-alpha-decision-grid span,
+.backend-alpha-monitoring-grid span,
+.backend-alpha-residual-grid span,
+.backend-alpha-acceptance-grid span {
+  color: var(--teal-dark);
+}
+
+.backend-alpha-risk-register .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--red) var(--width), rgba(179, 59, 48, 0.12) 0);
+}
+
+.backend-alpha-risk-register .staging-smoke-signal-card *,
+.backend-alpha-risk-domain-grid > div *,
+.backend-alpha-risk-register-grid > div *,
+.backend-alpha-trigger-grid > div *,
+.backend-alpha-mitigation-grid > div *,
+.backend-alpha-owner-grid > div *,
+.backend-alpha-decision-grid > div *,
+.backend-alpha-monitoring-grid > div *,
+.backend-alpha-residual-grid > div *,
+.backend-alpha-acceptance-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.backend-alpha-risk-domain-grid,
+.backend-alpha-risk-register-grid,
+.backend-alpha-trigger-grid,
+.backend-alpha-mitigation-grid,
+.backend-alpha-owner-grid,
+.backend-alpha-decision-grid,
+.backend-alpha-monitoring-grid,
+.backend-alpha-residual-grid,
+.backend-alpha-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-alpha-risk-domain-grid,
+.backend-alpha-acceptance-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.backend-alpha-risk-register-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.backend-alpha-risk-domain-grid > div,
+.backend-alpha-risk-register-grid > div,
+.backend-alpha-trigger-grid > div,
+.backend-alpha-mitigation-grid > div,
+.backend-alpha-owner-grid > div,
+.backend-alpha-decision-grid > div,
+.backend-alpha-monitoring-grid > div,
+.backend-alpha-residual-grid > div,
+.backend-alpha-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--red);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.backend-alpha-risk-domain-grid span,
+.backend-alpha-risk-register-grid span,
+.backend-alpha-trigger-grid span,
+.backend-alpha-mitigation-grid span,
+.backend-alpha-owner-grid span,
+.backend-alpha-decision-grid span,
+.backend-alpha-monitoring-grid span,
+.backend-alpha-residual-grid span,
+.backend-alpha-acceptance-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-alpha-risk-domain-grid strong,
+.backend-alpha-risk-register-grid strong,
+.backend-alpha-trigger-grid strong,
+.backend-alpha-mitigation-grid strong,
+.backend-alpha-owner-grid strong,
+.backend-alpha-decision-grid strong,
+.backend-alpha-monitoring-grid strong,
+.backend-alpha-residual-grid strong,
+.backend-alpha-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.backend-alpha-risk-domain-grid p,
+.backend-alpha-risk-register-grid p,
+.backend-alpha-trigger-grid p,
+.backend-alpha-mitigation-grid p,
+.backend-alpha-owner-grid p,
+.backend-alpha-decision-grid p,
+.backend-alpha-monitoring-grid p,
+.backend-alpha-residual-grid p,
+.backend-alpha-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.backend-alpha-risk-domain-grid .tone-green,
+.backend-alpha-risk-register-grid .tone-green,
+.backend-alpha-trigger-grid .tone-green,
+.backend-alpha-mitigation-grid .tone-green,
+.backend-alpha-owner-grid .tone-green,
+.backend-alpha-decision-grid .tone-green,
+.backend-alpha-monitoring-grid .tone-green,
+.backend-alpha-residual-grid .tone-green,
+.backend-alpha-acceptance-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.backend-alpha-risk-domain-grid .tone-teal,
+.backend-alpha-risk-register-grid .tone-teal,
+.backend-alpha-trigger-grid .tone-teal,
+.backend-alpha-mitigation-grid .tone-teal,
+.backend-alpha-owner-grid .tone-teal,
+.backend-alpha-decision-grid .tone-teal,
+.backend-alpha-monitoring-grid .tone-teal,
+.backend-alpha-residual-grid .tone-teal,
+.backend-alpha-acceptance-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.backend-alpha-risk-domain-grid .tone-blue,
+.backend-alpha-risk-register-grid .tone-blue,
+.backend-alpha-trigger-grid .tone-blue,
+.backend-alpha-mitigation-grid .tone-blue,
+.backend-alpha-owner-grid .tone-blue,
+.backend-alpha-decision-grid .tone-blue,
+.backend-alpha-monitoring-grid .tone-blue,
+.backend-alpha-residual-grid .tone-blue,
+.backend-alpha-acceptance-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.backend-alpha-risk-domain-grid .tone-amber,
+.backend-alpha-risk-register-grid .tone-amber,
+.backend-alpha-trigger-grid .tone-amber,
+.backend-alpha-mitigation-grid .tone-amber,
+.backend-alpha-owner-grid .tone-amber,
+.backend-alpha-decision-grid .tone-amber,
+.backend-alpha-monitoring-grid .tone-amber,
+.backend-alpha-residual-grid .tone-amber,
+.backend-alpha-acceptance-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.backend-alpha-risk-domain-grid .tone-red,
+.backend-alpha-risk-register-grid .tone-red,
+.backend-alpha-trigger-grid .tone-red,
+.backend-alpha-mitigation-grid .tone-red,
+.backend-alpha-owner-grid .tone-red,
+.backend-alpha-decision-grid .tone-red,
+.backend-alpha-monitoring-grid .tone-red,
+.backend-alpha-residual-grid .tone-red,
+.backend-alpha-acceptance-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.backend-opening-day-evidence-pack {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(36, 119, 71, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(228, 242, 232, 0.62));
+  box-shadow: var(--shadow);
+}
+
+.backend-opening-day-evidence-pack .staging-smoke-score-card,
+.backend-opening-day-evidence-pack .staging-smoke-panel {
+  border-left-color: var(--green);
+}
+
+.backend-opening-day-evidence-pack .staging-smoke-hero h3,
+.backend-opening-day-evidence-pack .staging-smoke-score-card strong,
+.backend-opening-day-evidence-pack .staging-smoke-signal-card strong {
+  display: block;
+  line-height: 1.18;
+}
+
+.backend-opening-day-evidence-pack .staging-smoke-score-card span,
+.backend-opening-day-evidence-pack .staging-smoke-signal-card span,
+.backend-evidence-lane-grid span,
+.backend-evidence-capture-grid span,
+.backend-evidence-artifact-grid span,
+.backend-evidence-command-grid span,
+.backend-evidence-screenshot-grid span,
+.backend-evidence-pr-grid span,
+.backend-evidence-workflow-grid span,
+.backend-evidence-protection-grid span,
+.backend-evidence-signoff-grid span,
+.backend-evidence-acceptance-grid span {
+  color: var(--teal-dark);
+}
+
+.backend-opening-day-evidence-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--green) var(--width), rgba(36, 119, 71, 0.12) 0);
+}
+
+.backend-opening-day-evidence-pack .staging-smoke-signal-card *,
+.backend-evidence-lane-grid > div *,
+.backend-evidence-capture-grid > div *,
+.backend-evidence-artifact-grid > div *,
+.backend-evidence-command-grid > div *,
+.backend-evidence-screenshot-grid > div *,
+.backend-evidence-pr-grid > div *,
+.backend-evidence-workflow-grid > div *,
+.backend-evidence-protection-grid > div *,
+.backend-evidence-signoff-grid > div *,
+.backend-evidence-acceptance-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.backend-evidence-lane-grid,
+.backend-evidence-capture-grid,
+.backend-evidence-artifact-grid,
+.backend-evidence-command-grid,
+.backend-evidence-screenshot-grid,
+.backend-evidence-pr-grid,
+.backend-evidence-workflow-grid,
+.backend-evidence-protection-grid,
+.backend-evidence-signoff-grid,
+.backend-evidence-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-evidence-lane-grid,
+.backend-evidence-capture-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.backend-evidence-lane-grid > div,
+.backend-evidence-capture-grid > div,
+.backend-evidence-artifact-grid > div,
+.backend-evidence-command-grid > div,
+.backend-evidence-screenshot-grid > div,
+.backend-evidence-pr-grid > div,
+.backend-evidence-workflow-grid > div,
+.backend-evidence-protection-grid > div,
+.backend-evidence-signoff-grid > div,
+.backend-evidence-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.backend-evidence-lane-grid span,
+.backend-evidence-capture-grid span,
+.backend-evidence-artifact-grid span,
+.backend-evidence-command-grid span,
+.backend-evidence-screenshot-grid span,
+.backend-evidence-pr-grid span,
+.backend-evidence-workflow-grid span,
+.backend-evidence-protection-grid span,
+.backend-evidence-signoff-grid span,
+.backend-evidence-acceptance-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-evidence-lane-grid strong,
+.backend-evidence-capture-grid strong,
+.backend-evidence-artifact-grid strong,
+.backend-evidence-command-grid strong,
+.backend-evidence-screenshot-grid strong,
+.backend-evidence-pr-grid strong,
+.backend-evidence-workflow-grid strong,
+.backend-evidence-protection-grid strong,
+.backend-evidence-signoff-grid strong,
+.backend-evidence-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.backend-evidence-lane-grid p,
+.backend-evidence-capture-grid p,
+.backend-evidence-artifact-grid p,
+.backend-evidence-command-grid p,
+.backend-evidence-screenshot-grid p,
+.backend-evidence-pr-grid p,
+.backend-evidence-workflow-grid p,
+.backend-evidence-protection-grid p,
+.backend-evidence-signoff-grid p,
+.backend-evidence-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.backend-evidence-lane-grid .tone-green,
+.backend-evidence-capture-grid .tone-green,
+.backend-evidence-artifact-grid .tone-green,
+.backend-evidence-command-grid .tone-green,
+.backend-evidence-screenshot-grid .tone-green,
+.backend-evidence-pr-grid .tone-green,
+.backend-evidence-workflow-grid .tone-green,
+.backend-evidence-protection-grid .tone-green,
+.backend-evidence-signoff-grid .tone-green,
+.backend-evidence-acceptance-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.backend-evidence-lane-grid .tone-teal,
+.backend-evidence-capture-grid .tone-teal,
+.backend-evidence-artifact-grid .tone-teal,
+.backend-evidence-command-grid .tone-teal,
+.backend-evidence-screenshot-grid .tone-teal,
+.backend-evidence-pr-grid .tone-teal,
+.backend-evidence-workflow-grid .tone-teal,
+.backend-evidence-protection-grid .tone-teal,
+.backend-evidence-signoff-grid .tone-teal,
+.backend-evidence-acceptance-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.backend-evidence-lane-grid .tone-blue,
+.backend-evidence-capture-grid .tone-blue,
+.backend-evidence-artifact-grid .tone-blue,
+.backend-evidence-command-grid .tone-blue,
+.backend-evidence-screenshot-grid .tone-blue,
+.backend-evidence-pr-grid .tone-blue,
+.backend-evidence-workflow-grid .tone-blue,
+.backend-evidence-protection-grid .tone-blue,
+.backend-evidence-signoff-grid .tone-blue,
+.backend-evidence-acceptance-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.backend-evidence-lane-grid .tone-amber,
+.backend-evidence-capture-grid .tone-amber,
+.backend-evidence-artifact-grid .tone-amber,
+.backend-evidence-command-grid .tone-amber,
+.backend-evidence-screenshot-grid .tone-amber,
+.backend-evidence-pr-grid .tone-amber,
+.backend-evidence-workflow-grid .tone-amber,
+.backend-evidence-protection-grid .tone-amber,
+.backend-evidence-signoff-grid .tone-amber,
+.backend-evidence-acceptance-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.backend-evidence-lane-grid .tone-red,
+.backend-evidence-capture-grid .tone-red,
+.backend-evidence-artifact-grid .tone-red,
+.backend-evidence-command-grid .tone-red,
+.backend-evidence-screenshot-grid .tone-red,
+.backend-evidence-pr-grid .tone-red,
+.backend-evidence-workflow-grid .tone-red,
+.backend-evidence-protection-grid .tone-red,
+.backend-evidence-signoff-grid .tone-red,
+.backend-evidence-acceptance-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.private-repo-execution-checklist {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(24, 125, 107, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.68));
+  box-shadow: var(--shadow);
+}
+
+.private-repo-execution-checklist .staging-smoke-score-card,
+.private-repo-execution-checklist .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.private-repo-execution-checklist .staging-smoke-hero h3,
+.private-repo-execution-checklist .staging-smoke-score-card strong,
+.private-repo-execution-checklist .staging-smoke-signal-card strong {
+  display: block;
+  line-height: 1.18;
+}
+
+.private-repo-execution-checklist .staging-smoke-score-card span,
+.private-repo-execution-checklist .staging-smoke-signal-card span,
+.repo-execution-gate-grid span,
+.repo-execution-sequence-grid span,
+.repo-execution-operator-grid span,
+.repo-execution-stop-grid span,
+.repo-execution-proof-grid span,
+.repo-execution-screen-grid span,
+.repo-execution-command-grid span,
+.repo-execution-issue-grid span,
+.repo-execution-owner-grid span,
+.repo-execution-branch-grid span,
+.repo-execution-completion-grid span {
+  color: var(--teal-dark);
+}
+
+.private-repo-execution-checklist .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(24, 125, 107, 0.12) 0);
+}
+
+.private-repo-execution-checklist .staging-smoke-signal-card *,
+.repo-execution-gate-grid > div *,
+.repo-execution-sequence-grid > div *,
+.repo-execution-operator-grid > div *,
+.repo-execution-stop-grid > div *,
+.repo-execution-proof-grid > div *,
+.repo-execution-screen-grid > div *,
+.repo-execution-command-grid > div *,
+.repo-execution-issue-grid > div *,
+.repo-execution-owner-grid > div *,
+.repo-execution-branch-grid > div *,
+.repo-execution-completion-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.repo-execution-gate-grid,
+.repo-execution-sequence-grid,
+.repo-execution-operator-grid,
+.repo-execution-stop-grid,
+.repo-execution-proof-grid,
+.repo-execution-screen-grid,
+.repo-execution-command-grid,
+.repo-execution-issue-grid,
+.repo-execution-owner-grid,
+.repo-execution-branch-grid,
+.repo-execution-completion-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.repo-execution-gate-grid,
+.repo-execution-sequence-grid,
+.repo-execution-operator-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.repo-execution-gate-grid > div,
+.repo-execution-sequence-grid > div,
+.repo-execution-operator-grid > div,
+.repo-execution-stop-grid > div,
+.repo-execution-proof-grid > div,
+.repo-execution-screen-grid > div,
+.repo-execution-command-grid > div,
+.repo-execution-issue-grid > div,
+.repo-execution-owner-grid > div,
+.repo-execution-branch-grid > div,
+.repo-execution-completion-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.repo-execution-gate-grid span,
+.repo-execution-sequence-grid span,
+.repo-execution-operator-grid span,
+.repo-execution-stop-grid span,
+.repo-execution-proof-grid span,
+.repo-execution-screen-grid span,
+.repo-execution-command-grid span,
+.repo-execution-issue-grid span,
+.repo-execution-owner-grid span,
+.repo-execution-branch-grid span,
+.repo-execution-completion-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.repo-execution-gate-grid strong,
+.repo-execution-sequence-grid strong,
+.repo-execution-operator-grid strong,
+.repo-execution-stop-grid strong,
+.repo-execution-proof-grid strong,
+.repo-execution-screen-grid strong,
+.repo-execution-command-grid strong,
+.repo-execution-issue-grid strong,
+.repo-execution-owner-grid strong,
+.repo-execution-branch-grid strong,
+.repo-execution-completion-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.repo-execution-gate-grid p,
+.repo-execution-sequence-grid p,
+.repo-execution-operator-grid p,
+.repo-execution-stop-grid p,
+.repo-execution-proof-grid p,
+.repo-execution-screen-grid p,
+.repo-execution-command-grid p,
+.repo-execution-issue-grid p,
+.repo-execution-owner-grid p,
+.repo-execution-branch-grid p,
+.repo-execution-completion-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.repo-execution-gate-grid .tone-green,
+.repo-execution-sequence-grid .tone-green,
+.repo-execution-operator-grid .tone-green,
+.repo-execution-stop-grid .tone-green,
+.repo-execution-proof-grid .tone-green,
+.repo-execution-screen-grid .tone-green,
+.repo-execution-command-grid .tone-green,
+.repo-execution-issue-grid .tone-green,
+.repo-execution-owner-grid .tone-green,
+.repo-execution-branch-grid .tone-green,
+.repo-execution-completion-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.repo-execution-gate-grid .tone-teal,
+.repo-execution-sequence-grid .tone-teal,
+.repo-execution-operator-grid .tone-teal,
+.repo-execution-stop-grid .tone-teal,
+.repo-execution-proof-grid .tone-teal,
+.repo-execution-screen-grid .tone-teal,
+.repo-execution-command-grid .tone-teal,
+.repo-execution-issue-grid .tone-teal,
+.repo-execution-owner-grid .tone-teal,
+.repo-execution-branch-grid .tone-teal,
+.repo-execution-completion-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.repo-execution-gate-grid .tone-blue,
+.repo-execution-sequence-grid .tone-blue,
+.repo-execution-operator-grid .tone-blue,
+.repo-execution-stop-grid .tone-blue,
+.repo-execution-proof-grid .tone-blue,
+.repo-execution-screen-grid .tone-blue,
+.repo-execution-command-grid .tone-blue,
+.repo-execution-issue-grid .tone-blue,
+.repo-execution-owner-grid .tone-blue,
+.repo-execution-branch-grid .tone-blue,
+.repo-execution-completion-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.repo-execution-gate-grid .tone-amber,
+.repo-execution-sequence-grid .tone-amber,
+.repo-execution-operator-grid .tone-amber,
+.repo-execution-stop-grid .tone-amber,
+.repo-execution-proof-grid .tone-amber,
+.repo-execution-screen-grid .tone-amber,
+.repo-execution-command-grid .tone-amber,
+.repo-execution-issue-grid .tone-amber,
+.repo-execution-owner-grid .tone-amber,
+.repo-execution-branch-grid .tone-amber,
+.repo-execution-completion-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.repo-execution-gate-grid .tone-red,
+.repo-execution-sequence-grid .tone-red,
+.repo-execution-operator-grid .tone-red,
+.repo-execution-stop-grid .tone-red,
+.repo-execution-proof-grid .tone-red,
+.repo-execution-screen-grid .tone-red,
+.repo-execution-command-grid .tone-red,
+.repo-execution-issue-grid .tone-red,
+.repo-execution-owner-grid .tone-red,
+.repo-execution-branch-grid .tone-red,
+.repo-execution-completion-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.backend-alpha-control-board {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(54, 101, 152, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.68));
+  box-shadow: var(--shadow);
+}
+
+.backend-alpha-control-board .staging-smoke-score-card,
+.backend-alpha-control-board .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.backend-alpha-control-board .staging-smoke-hero h3,
+.backend-alpha-control-board .staging-smoke-score-card strong,
+.backend-alpha-control-board .staging-smoke-signal-card strong {
+  display: block;
+  line-height: 1.18;
+}
+
+.backend-alpha-control-board .staging-smoke-score-card span,
+.backend-alpha-control-board .staging-smoke-signal-card span,
+.backend-alpha-board-kpi-grid span,
+.backend-alpha-board-lane-grid span,
+.backend-alpha-board-swimlane-grid span,
+.backend-alpha-board-blocker-grid span,
+.backend-alpha-board-owner-grid span,
+.backend-alpha-board-evidence-grid span,
+.backend-alpha-board-pr-grid span,
+.backend-alpha-board-github-grid span,
+.backend-alpha-board-decision-grid span,
+.backend-alpha-board-action-grid span,
+.backend-alpha-board-acceptance-grid span {
+  color: var(--teal-dark);
+}
+
+.backend-alpha-control-board .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(54, 101, 152, 0.12) 0);
+}
+
+.backend-alpha-control-board .staging-smoke-signal-card *,
+.backend-alpha-board-kpi-grid > div *,
+.backend-alpha-board-lane-grid > div *,
+.backend-alpha-board-swimlane-grid > div *,
+.backend-alpha-board-blocker-grid > div *,
+.backend-alpha-board-owner-grid > div *,
+.backend-alpha-board-evidence-grid > div *,
+.backend-alpha-board-pr-grid > div *,
+.backend-alpha-board-github-grid > div *,
+.backend-alpha-board-decision-grid > div *,
+.backend-alpha-board-action-grid > div *,
+.backend-alpha-board-acceptance-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.backend-alpha-board-kpi-grid,
+.backend-alpha-board-lane-grid,
+.backend-alpha-board-swimlane-grid,
+.backend-alpha-board-blocker-grid,
+.backend-alpha-board-owner-grid,
+.backend-alpha-board-evidence-grid,
+.backend-alpha-board-pr-grid,
+.backend-alpha-board-github-grid,
+.backend-alpha-board-decision-grid,
+.backend-alpha-board-action-grid,
+.backend-alpha-board-acceptance-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backend-alpha-board-kpi-grid,
+.backend-alpha-board-lane-grid,
+.backend-alpha-board-swimlane-grid,
+.backend-alpha-board-action-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.backend-alpha-board-kpi-grid > div,
+.backend-alpha-board-lane-grid > div,
+.backend-alpha-board-swimlane-grid > div,
+.backend-alpha-board-blocker-grid > div,
+.backend-alpha-board-owner-grid > div,
+.backend-alpha-board-evidence-grid > div,
+.backend-alpha-board-pr-grid > div,
+.backend-alpha-board-github-grid > div,
+.backend-alpha-board-decision-grid > div,
+.backend-alpha-board-action-grid > div,
+.backend-alpha-board-acceptance-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.backend-alpha-board-kpi-grid span,
+.backend-alpha-board-lane-grid span,
+.backend-alpha-board-swimlane-grid span,
+.backend-alpha-board-blocker-grid span,
+.backend-alpha-board-owner-grid span,
+.backend-alpha-board-evidence-grid span,
+.backend-alpha-board-pr-grid span,
+.backend-alpha-board-github-grid span,
+.backend-alpha-board-decision-grid span,
+.backend-alpha-board-action-grid span,
+.backend-alpha-board-acceptance-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.backend-alpha-board-kpi-grid strong,
+.backend-alpha-board-lane-grid strong,
+.backend-alpha-board-swimlane-grid strong,
+.backend-alpha-board-blocker-grid strong,
+.backend-alpha-board-owner-grid strong,
+.backend-alpha-board-evidence-grid strong,
+.backend-alpha-board-pr-grid strong,
+.backend-alpha-board-github-grid strong,
+.backend-alpha-board-decision-grid strong,
+.backend-alpha-board-action-grid strong,
+.backend-alpha-board-acceptance-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.backend-alpha-board-kpi-grid p,
+.backend-alpha-board-lane-grid p,
+.backend-alpha-board-swimlane-grid p,
+.backend-alpha-board-blocker-grid p,
+.backend-alpha-board-owner-grid p,
+.backend-alpha-board-evidence-grid p,
+.backend-alpha-board-pr-grid p,
+.backend-alpha-board-github-grid p,
+.backend-alpha-board-decision-grid p,
+.backend-alpha-board-action-grid p,
+.backend-alpha-board-acceptance-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.backend-alpha-board-kpi-grid .tone-green,
+.backend-alpha-board-lane-grid .tone-green,
+.backend-alpha-board-swimlane-grid .tone-green,
+.backend-alpha-board-blocker-grid .tone-green,
+.backend-alpha-board-owner-grid .tone-green,
+.backend-alpha-board-evidence-grid .tone-green,
+.backend-alpha-board-pr-grid .tone-green,
+.backend-alpha-board-github-grid .tone-green,
+.backend-alpha-board-decision-grid .tone-green,
+.backend-alpha-board-action-grid .tone-green,
+.backend-alpha-board-acceptance-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.backend-alpha-board-kpi-grid .tone-teal,
+.backend-alpha-board-lane-grid .tone-teal,
+.backend-alpha-board-swimlane-grid .tone-teal,
+.backend-alpha-board-blocker-grid .tone-teal,
+.backend-alpha-board-owner-grid .tone-teal,
+.backend-alpha-board-evidence-grid .tone-teal,
+.backend-alpha-board-pr-grid .tone-teal,
+.backend-alpha-board-github-grid .tone-teal,
+.backend-alpha-board-decision-grid .tone-teal,
+.backend-alpha-board-action-grid .tone-teal,
+.backend-alpha-board-acceptance-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.backend-alpha-board-kpi-grid .tone-blue,
+.backend-alpha-board-lane-grid .tone-blue,
+.backend-alpha-board-swimlane-grid .tone-blue,
+.backend-alpha-board-blocker-grid .tone-blue,
+.backend-alpha-board-owner-grid .tone-blue,
+.backend-alpha-board-evidence-grid .tone-blue,
+.backend-alpha-board-pr-grid .tone-blue,
+.backend-alpha-board-github-grid .tone-blue,
+.backend-alpha-board-decision-grid .tone-blue,
+.backend-alpha-board-action-grid .tone-blue,
+.backend-alpha-board-acceptance-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.backend-alpha-board-kpi-grid .tone-amber,
+.backend-alpha-board-lane-grid .tone-amber,
+.backend-alpha-board-swimlane-grid .tone-amber,
+.backend-alpha-board-blocker-grid .tone-amber,
+.backend-alpha-board-owner-grid .tone-amber,
+.backend-alpha-board-evidence-grid .tone-amber,
+.backend-alpha-board-pr-grid .tone-amber,
+.backend-alpha-board-github-grid .tone-amber,
+.backend-alpha-board-decision-grid .tone-amber,
+.backend-alpha-board-action-grid .tone-amber,
+.backend-alpha-board-acceptance-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.backend-alpha-board-kpi-grid .tone-red,
+.backend-alpha-board-lane-grid .tone-red,
+.backend-alpha-board-swimlane-grid .tone-red,
+.backend-alpha-board-blocker-grid .tone-red,
+.backend-alpha-board-owner-grid .tone-red,
+.backend-alpha-board-evidence-grid .tone-red,
+.backend-alpha-board-pr-grid .tone-red,
+.backend-alpha-board-github-grid .tone-red,
+.backend-alpha-board-decision-grid .tone-red,
+.backend-alpha-board-action-grid .tone-red,
+.backend-alpha-board-acceptance-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.private-repo-day-one-script {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(23, 122, 104, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.7));
+  box-shadow: var(--shadow);
+}
+
+.private-repo-day-one-script .staging-smoke-score-card,
+.private-repo-day-one-script .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.private-repo-day-one-script .staging-smoke-hero h3,
+.private-repo-day-one-script .staging-smoke-score-card strong,
+.private-repo-day-one-script .staging-smoke-signal-card strong {
+  display: block;
+  line-height: 1.18;
+}
+
+.private-repo-day-one-script .staging-smoke-score-card span,
+.private-repo-day-one-script .staging-smoke-signal-card span,
+.repo-day-one-kpi-grid span,
+.repo-day-one-preflight-grid span,
+.repo-day-one-command-card span,
+.repo-day-one-manual-grid span,
+.repo-day-one-evidence-grid span,
+.repo-day-one-issue-grid span,
+.repo-day-one-pr-grid span,
+.repo-day-one-branch-grid span,
+.repo-day-one-stop-grid span,
+.repo-day-one-owner-grid span,
+.repo-day-one-closeout-grid span {
+  color: var(--teal-dark);
+}
+
+.private-repo-day-one-script .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(23, 122, 104, 0.12) 0);
+}
+
+.private-repo-day-one-script .staging-smoke-signal-card *,
+.repo-day-one-kpi-grid > div *,
+.repo-day-one-preflight-grid > div *,
+.repo-day-one-command-card *,
+.repo-day-one-manual-grid > div *,
+.repo-day-one-evidence-grid > div *,
+.repo-day-one-issue-grid > div *,
+.repo-day-one-pr-grid > div *,
+.repo-day-one-branch-grid > div *,
+.repo-day-one-stop-grid > div *,
+.repo-day-one-owner-grid > div *,
+.repo-day-one-closeout-grid > div * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.repo-day-one-kpi-grid,
+.repo-day-one-preflight-grid,
+.repo-day-one-command-grid,
+.repo-day-one-manual-grid,
+.repo-day-one-evidence-grid,
+.repo-day-one-issue-grid,
+.repo-day-one-pr-grid,
+.repo-day-one-branch-grid,
+.repo-day-one-stop-grid,
+.repo-day-one-owner-grid,
+.repo-day-one-closeout-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.repo-day-one-kpi-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.repo-day-one-command-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.repo-day-one-kpi-grid > div,
+.repo-day-one-preflight-grid > div,
+.repo-day-one-command-card,
+.repo-day-one-manual-grid > div,
+.repo-day-one-evidence-grid > div,
+.repo-day-one-issue-grid > div,
+.repo-day-one-pr-grid > div,
+.repo-day-one-branch-grid > div,
+.repo-day-one-stop-grid > div,
+.repo-day-one-owner-grid > div,
+.repo-day-one-closeout-grid > div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.repo-day-one-command-card {
+  min-height: 132px;
+}
+
+.repo-day-one-command-card > div {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.repo-day-one-command-card code {
+  display: block;
+  padding: 9px;
+  border: 1px solid rgba(23, 122, 104, 0.2);
+  border-radius: 7px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: normal;
+}
+
+.repo-day-one-command-card em {
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.repo-day-one-kpi-grid span,
+.repo-day-one-preflight-grid span,
+.repo-day-one-command-card span,
+.repo-day-one-manual-grid span,
+.repo-day-one-evidence-grid span,
+.repo-day-one-issue-grid span,
+.repo-day-one-pr-grid span,
+.repo-day-one-branch-grid span,
+.repo-day-one-stop-grid span,
+.repo-day-one-owner-grid span,
+.repo-day-one-closeout-grid span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.repo-day-one-kpi-grid strong,
+.repo-day-one-preflight-grid strong,
+.repo-day-one-command-card strong,
+.repo-day-one-manual-grid strong,
+.repo-day-one-evidence-grid strong,
+.repo-day-one-issue-grid strong,
+.repo-day-one-pr-grid strong,
+.repo-day-one-branch-grid strong,
+.repo-day-one-stop-grid strong,
+.repo-day-one-owner-grid strong,
+.repo-day-one-closeout-grid strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.repo-day-one-kpi-grid p,
+.repo-day-one-preflight-grid p,
+.repo-day-one-command-card p,
+.repo-day-one-manual-grid p,
+.repo-day-one-evidence-grid p,
+.repo-day-one-issue-grid p,
+.repo-day-one-pr-grid p,
+.repo-day-one-branch-grid p,
+.repo-day-one-stop-grid p,
+.repo-day-one-owner-grid p,
+.repo-day-one-closeout-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.repo-day-one-kpi-grid .tone-green,
+.repo-day-one-preflight-grid .tone-green,
+.repo-day-one-command-card.tone-green,
+.repo-day-one-manual-grid .tone-green,
+.repo-day-one-evidence-grid .tone-green,
+.repo-day-one-issue-grid .tone-green,
+.repo-day-one-pr-grid .tone-green,
+.repo-day-one-branch-grid .tone-green,
+.repo-day-one-stop-grid .tone-green,
+.repo-day-one-owner-grid .tone-green,
+.repo-day-one-closeout-grid .tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.repo-day-one-kpi-grid .tone-teal,
+.repo-day-one-preflight-grid .tone-teal,
+.repo-day-one-command-card.tone-teal,
+.repo-day-one-manual-grid .tone-teal,
+.repo-day-one-evidence-grid .tone-teal,
+.repo-day-one-issue-grid .tone-teal,
+.repo-day-one-pr-grid .tone-teal,
+.repo-day-one-branch-grid .tone-teal,
+.repo-day-one-stop-grid .tone-teal,
+.repo-day-one-owner-grid .tone-teal,
+.repo-day-one-closeout-grid .tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.repo-day-one-kpi-grid .tone-blue,
+.repo-day-one-preflight-grid .tone-blue,
+.repo-day-one-command-card.tone-blue,
+.repo-day-one-manual-grid .tone-blue,
+.repo-day-one-evidence-grid .tone-blue,
+.repo-day-one-issue-grid .tone-blue,
+.repo-day-one-pr-grid .tone-blue,
+.repo-day-one-branch-grid .tone-blue,
+.repo-day-one-stop-grid .tone-blue,
+.repo-day-one-owner-grid .tone-blue,
+.repo-day-one-closeout-grid .tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.repo-day-one-kpi-grid .tone-amber,
+.repo-day-one-preflight-grid .tone-amber,
+.repo-day-one-command-card.tone-amber,
+.repo-day-one-manual-grid .tone-amber,
+.repo-day-one-evidence-grid .tone-amber,
+.repo-day-one-issue-grid .tone-amber,
+.repo-day-one-pr-grid .tone-amber,
+.repo-day-one-branch-grid .tone-amber,
+.repo-day-one-stop-grid .tone-amber,
+.repo-day-one-owner-grid .tone-amber,
+.repo-day-one-closeout-grid .tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.repo-day-one-kpi-grid .tone-red,
+.repo-day-one-preflight-grid .tone-red,
+.repo-day-one-command-card.tone-red,
+.repo-day-one-manual-grid .tone-red,
+.repo-day-one-evidence-grid .tone-red,
+.repo-day-one-issue-grid .tone-red,
+.repo-day-one-pr-grid .tone-red,
+.repo-day-one-branch-grid .tone-red,
+.repo-day-one-stop-grid .tone-red,
+.repo-day-one-owner-grid .tone-red,
+.repo-day-one-closeout-grid .tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.backend-repo-proof-exporter {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(39, 128, 78, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(228, 242, 232, 0.68));
+  box-shadow: var(--shadow);
+}
+
+.backend-repo-proof-exporter .staging-smoke-score-card,
+.backend-repo-proof-exporter .staging-smoke-panel {
+  border-left-color: var(--green);
+}
+
+.backend-repo-proof-exporter .staging-smoke-hero h3,
+.backend-repo-proof-exporter .staging-smoke-score-card strong,
+.backend-repo-proof-exporter .staging-smoke-signal-card strong {
+  display: block;
+  line-height: 1.18;
+}
+
+.backend-repo-proof-exporter .staging-smoke-score-card span,
+.backend-repo-proof-exporter .staging-smoke-signal-card span,
+.repo-proof-kpi-grid span,
+.repo-proof-template-card span,
+.repo-proof-pr-grid span,
+.repo-proof-screenshot-grid span,
+.repo-proof-command-grid span,
+.repo-proof-owner-grid span,
+.repo-proof-closeout-grid span,
+.repo-proof-sequence-grid span,
+.repo-proof-gate-grid span,
+.repo-proof-snippet-card span {
+  color: var(--teal-dark);
+}
+
+.backend-repo-proof-exporter .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--green) var(--width), rgba(39, 128, 78, 0.12) 0);
+}
+
+.backend-repo-proof-exporter .staging-smoke-signal-card *,
+.repo-proof-kpi-grid > div *,
+.repo-proof-template-card *,
+.repo-proof-pr-grid > div *,
+.repo-proof-screenshot-grid > div *,
+.repo-proof-command-grid > div *,
+.repo-proof-owner-grid > div *,
+.repo-proof-closeout-grid > div *,
+.repo-proof-sequence-grid > div *,
+.repo-proof-gate-grid > div *,
+.repo-proof-snippet-card * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.repo-proof-kpi-grid,
+.repo-proof-template-grid,
+.repo-proof-pr-grid,
+.repo-proof-screenshot-grid,
+.repo-proof-command-grid,
+.repo-proof-owner-grid,
+.repo-proof-closeout-grid,
+.repo-proof-sequence-grid,
+.repo-proof-gate-grid,
+.repo-proof-snippet-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.repo-proof-kpi-grid,
+.repo-proof-gate-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.repo-proof-template-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.repo-proof-kpi-grid > div,
+.repo-proof-template-card,
+.repo-proof-pr-grid > div,
+.repo-proof-screenshot-grid > div,
+.repo-proof-command-grid > div,
+.repo-proof-owner-grid > div,
+.repo-proof-closeout-grid > div,
+.repo-proof-sequence-grid > div,
+.repo-proof-gate-grid > div,
+.repo-proof-snippet-card {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.repo-proof-snippet-card {
+  min-height: 126px;
+}
+
+.repo-proof-snippet-card > div {
+  display: grid;
+  gap: 4px;
+}
+
+.repo-proof-snippet-card code {
+  display: block;
+  padding: 9px;
+  border: 1px solid rgba(39, 128, 78, 0.2);
+  border-radius: 7px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 11px;
+  line-height: 1.45;
+  white-space: normal;
+}
+
+.repo-proof-kpi-grid span,
+.repo-proof-template-card span,
+.repo-proof-pr-grid span,
+.repo-proof-screenshot-grid span,
+.repo-proof-command-grid span,
+.repo-proof-owner-grid span,
+.repo-proof-closeout-grid span,
+.repo-proof-sequence-grid span,
+.repo-proof-gate-grid span,
+.repo-proof-snippet-card span {
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.repo-proof-kpi-grid strong,
+.repo-proof-template-card strong,
+.repo-proof-pr-grid strong,
+.repo-proof-screenshot-grid strong,
+.repo-proof-command-grid strong,
+.repo-proof-owner-grid strong,
+.repo-proof-closeout-grid strong,
+.repo-proof-sequence-grid strong,
+.repo-proof-gate-grid strong,
+.repo-proof-snippet-card strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.repo-proof-kpi-grid p,
+.repo-proof-template-card p,
+.repo-proof-pr-grid p,
+.repo-proof-screenshot-grid p,
+.repo-proof-command-grid p,
+.repo-proof-owner-grid p,
+.repo-proof-closeout-grid p,
+.repo-proof-sequence-grid p,
+.repo-proof-gate-grid p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.repo-proof-kpi-grid .tone-green,
+.repo-proof-template-card.tone-green,
+.repo-proof-pr-grid .tone-green,
+.repo-proof-screenshot-grid .tone-green,
+.repo-proof-command-grid .tone-green,
+.repo-proof-owner-grid .tone-green,
+.repo-proof-closeout-grid .tone-green,
+.repo-proof-sequence-grid .tone-green,
+.repo-proof-gate-grid .tone-green,
+.repo-proof-snippet-card.tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.repo-proof-kpi-grid .tone-teal,
+.repo-proof-template-card.tone-teal,
+.repo-proof-pr-grid .tone-teal,
+.repo-proof-screenshot-grid .tone-teal,
+.repo-proof-command-grid .tone-teal,
+.repo-proof-owner-grid .tone-teal,
+.repo-proof-closeout-grid .tone-teal,
+.repo-proof-sequence-grid .tone-teal,
+.repo-proof-gate-grid .tone-teal,
+.repo-proof-snippet-card.tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.repo-proof-kpi-grid .tone-blue,
+.repo-proof-template-card.tone-blue,
+.repo-proof-pr-grid .tone-blue,
+.repo-proof-screenshot-grid .tone-blue,
+.repo-proof-command-grid .tone-blue,
+.repo-proof-owner-grid .tone-blue,
+.repo-proof-closeout-grid .tone-blue,
+.repo-proof-sequence-grid .tone-blue,
+.repo-proof-gate-grid .tone-blue,
+.repo-proof-snippet-card.tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.repo-proof-kpi-grid .tone-amber,
+.repo-proof-template-card.tone-amber,
+.repo-proof-pr-grid .tone-amber,
+.repo-proof-screenshot-grid .tone-amber,
+.repo-proof-command-grid .tone-amber,
+.repo-proof-owner-grid .tone-amber,
+.repo-proof-closeout-grid .tone-amber,
+.repo-proof-sequence-grid .tone-amber,
+.repo-proof-gate-grid .tone-amber,
+.repo-proof-snippet-card.tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.repo-proof-kpi-grid .tone-red,
+.repo-proof-template-card.tone-red,
+.repo-proof-pr-grid .tone-red,
+.repo-proof-screenshot-grid .tone-red,
+.repo-proof-command-grid .tone-red,
+.repo-proof-owner-grid .tone-red,
+.repo-proof-closeout-grid .tone-red,
+.repo-proof-sequence-grid .tone-red,
+.repo-proof-gate-grid .tone-red,
+.repo-proof-snippet-card.tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.github-repo-opening-packet {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.72));
+}
+
+.github-repo-opening-packet .staging-smoke-score-card,
+.github-repo-opening-packet .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.github-repo-opening-packet .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(51, 104, 158, 0.12) 0);
+}
+
+.github-repo-opening-packet .repo-opening-artifact-card,
+.github-repo-opening-packet .repo-opening-file-card {
+  min-height: 108px;
+}
+
+.backend-alpha-issue-import-kit {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.72));
+}
+
+.backend-alpha-issue-import-kit .staging-smoke-score-card,
+.backend-alpha-issue-import-kit .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.backend-alpha-issue-import-kit .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(25, 132, 115, 0.12) 0);
+}
+
+.issue-import-row-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.issue-import-row-card {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-height: 142px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: #ffffff;
+}
+
+.issue-import-row-card * {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.issue-import-row-card > div {
+  display: grid;
+  gap: 4px;
+}
+
+.issue-import-row-card span,
+.issue-import-row-card small {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.issue-import-row-card strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.24;
+}
+
+.issue-import-row-card p,
+.issue-import-row-card em {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.38;
+}
+
+.issue-import-row-card.tone-green {
+  background: rgba(228, 242, 232, 0.58);
+  border-left-color: var(--green);
+}
+
+.issue-import-row-card.tone-teal {
+  background: rgba(226, 243, 236, 0.62);
+  border-left-color: var(--teal);
+}
+
+.issue-import-row-card.tone-blue {
+  background: rgba(231, 239, 248, 0.68);
+  border-left-color: var(--blue);
+}
+
+.issue-import-row-card.tone-amber {
+  background: rgba(255, 240, 216, 0.76);
+  border-left-color: var(--amber);
+}
+
+.issue-import-row-card.tone-red {
+  background: rgba(253, 232, 229, 0.7);
+  border-left-color: var(--red);
+}
+
+.first-pr-body-builder {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 216, 0.62));
+}
+
+.first-pr-body-builder .staging-smoke-score-card,
+.first-pr-body-builder .staging-smoke-panel {
+  border-left-color: var(--amber);
+}
+
+.first-pr-body-builder .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--amber) var(--width), rgba(196, 114, 29, 0.12) 0);
+}
+
+.first-pr-body-builder .first-pr-issue-card,
+.first-pr-body-builder .first-pr-evidence-card {
+  min-height: 128px;
+}
+
+.first-pr-body-builder .first-pr-copy-card {
+  min-height: 148px;
+}
+
+.first-pr-body-builder .first-pr-body-skeleton {
+  grid-column: 1 / -1;
+}
+
+.first-pr-body-builder .first-pr-body-skeleton code {
+  white-space: pre-wrap;
+}
+
+.repo-evidence-folder-writer {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.66));
+}
+
+.repo-evidence-folder-writer .staging-smoke-score-card,
+.repo-evidence-folder-writer .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.repo-evidence-folder-writer .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(51, 104, 158, 0.12) 0);
+}
+
+.repo-evidence-folder-writer .evidence-folder-manifest-card,
+.repo-evidence-folder-writer .evidence-folder-transcript-card,
+.repo-evidence-folder-writer .evidence-folder-issue-card,
+.repo-evidence-folder-writer .evidence-folder-tree-card {
+  min-height: 124px;
+}
+
+.repo-evidence-folder-writer .evidence-folder-copy-card,
+.repo-evidence-folder-writer .evidence-folder-template-card {
+  min-height: 156px;
+}
+
+.repo-evidence-folder-writer .evidence-folder-template-card code {
+  white-space: pre-wrap;
+}
+
+.private-repo-command-runner-pack {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.7));
+}
+
+.private-repo-command-runner-pack .staging-smoke-score-card,
+.private-repo-command-runner-pack .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.private-repo-command-runner-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(25, 132, 115, 0.12) 0);
+}
+
+.private-repo-command-runner-pack .command-runner-output-card,
+.private-repo-command-runner-pack .command-runner-evidence-card,
+.private-repo-command-runner-pack .command-runner-artifact-card {
+  min-height: 126px;
+}
+
+.private-repo-command-runner-pack .command-runner-runbook-card {
+  min-height: 176px;
+}
+
+.private-repo-command-runner-pack .command-runner-runbook-card p {
+  margin-top: 10px;
+}
+
+.private-repo-command-runner-pack .command-runner-copy-card {
+  min-height: 152px;
+}
+
+.private-repo-command-runner-pack .command-runner-runbook-card code,
+.private-repo-command-runner-pack .command-runner-copy-card code {
+  white-space: pre-wrap;
+}
+
+.backend-pr-review-gate-matrix {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 242, 219, 0.72));
+}
+
+.backend-pr-review-gate-matrix .staging-smoke-score-card,
+.backend-pr-review-gate-matrix .staging-smoke-panel {
+  border-left-color: var(--amber);
+}
+
+.backend-pr-review-gate-matrix .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--amber) var(--width), rgba(193, 113, 28, 0.14) 0);
+}
+
+.backend-pr-review-gate-matrix .review-gate-lane-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.backend-pr-review-gate-matrix .review-gate-lane-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-teal);
+  min-height: 238px;
+}
+
+.backend-pr-review-gate-matrix .review-gate-lane-card div {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.backend-pr-review-gate-matrix .review-gate-lane-card span,
+.backend-pr-review-gate-matrix .review-gate-lane-card b {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.backend-pr-review-gate-matrix .review-gate-lane-card strong {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+.backend-pr-review-gate-matrix .review-gate-lane-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.backend-pr-review-gate-matrix .review-gate-evidence-card,
+.backend-pr-review-gate-matrix .review-gate-packet-card,
+.backend-pr-review-gate-matrix .review-gate-comment-card {
+  min-height: 154px;
+}
+
+.backend-pr-review-gate-matrix .review-gate-packet-card code,
+.backend-pr-review-gate-matrix .review-gate-comment-card code {
+  white-space: pre-wrap;
+}
+
+.evidence-artifact-status-board {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 234, 246, 0.72));
+}
+
+.evidence-artifact-status-board .staging-smoke-score-card,
+.evidence-artifact-status-board .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.evidence-artifact-status-board .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(51, 104, 158, 0.14) 0);
+}
+
+.artifact-status-column-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.artifact-status-column {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  min-height: 420px;
+}
+
+.artifact-status-column > p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.artifact-status-column-list {
+  display: grid;
+  gap: 10px;
+}
+
+.artifact-status-card {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--paper);
+  min-height: 158px;
+}
+
+.artifact-status-card div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.artifact-status-card span,
+.artifact-status-card small {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.artifact-status-card em {
+  border: 1px solid rgba(25, 132, 115, 0.18);
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.76);
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.artifact-status-card strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  line-height: 1.25;
+}
+
+.artifact-status-card code {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.artifact-status-card p {
+  margin: 8px 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.artifact-status-card.status-ready {
+  border-left-color: var(--teal);
+  background: var(--soft-teal);
+}
+
+.artifact-status-card.status-hold {
+  border-left-color: var(--amber);
+  background: var(--soft-amber);
+}
+
+.artifact-status-card.status-deferred {
+  border-left-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.artifact-status-card.status-blocked {
+  border-left-color: var(--red);
+  background: var(--soft-red);
+}
+
+.artifact-board-lane-grid,
+.artifact-board-source-grid,
+.artifact-board-escalation-grid,
+.artifact-board-capture-grid,
+.artifact-board-quality-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.artifact-board-lane-grid > div,
+.artifact-board-source-grid > div,
+.artifact-board-escalation-grid > div,
+.artifact-board-capture-grid > div,
+.artifact-board-quality-grid > div {
+  min-height: 118px;
+}
+
+.private-repo-handoff-email-pack {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 243, 236, 0.78));
+}
+
+.private-repo-handoff-email-pack .staging-smoke-score-card,
+.private-repo-handoff-email-pack .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.private-repo-handoff-email-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(25, 132, 115, 0.14) 0);
+}
+
+.handoff-email-copy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.handoff-email-copy code {
+  white-space: pre-wrap;
+}
+
+.handoff-email-section-grid,
+.handoff-email-approval-grid,
+.handoff-email-agenda-grid,
+.handoff-email-send-grid,
+.handoff-email-followup-grid,
+.handoff-email-risk-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.handoff-email-audience-grid,
+.handoff-email-link-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.handoff-email-audience-card,
+.handoff-email-link-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-teal);
+  min-height: 142px;
+}
+
+.handoff-email-audience-card span,
+.handoff-email-link-card span {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.handoff-email-audience-card strong,
+.handoff-email-link-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.96rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.handoff-email-audience-card p,
+.handoff-email-link-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.handoff-email-section-grid > div,
+.handoff-email-approval-grid > div,
+.handoff-email-agenda-grid > div,
+.handoff-email-send-grid > div,
+.handoff-email-followup-grid > div,
+.handoff-email-risk-grid > div {
+  min-height: 116px;
+}
+
+.first-backend-pr-review-comment-pack {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.74));
+}
+
+.first-backend-pr-review-comment-pack .staging-smoke-score-card,
+.first-backend-pr-review-comment-pack .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.first-backend-pr-review-comment-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(51, 104, 158, 0.14) 0);
+}
+
+.pr-review-comment-copy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--blue);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pr-review-comment-copy code {
+  white-space: pre-wrap;
+}
+
+.pr-review-decision-grid,
+.pr-review-send-grid,
+.pr-review-reply-grid,
+.pr-review-source-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pr-review-comment-library-grid,
+.pr-review-comment-packet-grid,
+.pr-review-inline-snippet-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pr-review-comment-library-card,
+.pr-review-comment-packet-card,
+.pr-review-inline-snippet-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--blue);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-blue);
+  color: var(--ink);
+  min-height: 164px;
+}
+
+.pr-review-comment-library-card div,
+.pr-review-comment-packet-card div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.pr-review-comment-library-card span,
+.pr-review-comment-packet-card span,
+.pr-review-inline-snippet-card span {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.pr-review-comment-library-card em,
+.pr-review-inline-snippet-card em {
+  border: 1px solid rgba(51, 104, 158, 0.2);
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.78);
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.pr-review-comment-library-card strong,
+.pr-review-comment-packet-card strong,
+.pr-review-inline-snippet-card strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.96rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.pr-review-comment-library-card code,
+.pr-review-comment-packet-card code {
+  display: block;
+  margin-top: 10px;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pr-review-inline-snippet-card p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.pr-review-decision-grid > div,
+.pr-review-send-grid > div,
+.pr-review-reply-grid > div,
+.pr-review-source-grid > div {
+  min-height: 116px;
+}
+
+.pr-review-comment-library-grid .tone-green,
+.pr-review-comment-packet-grid .tone-green,
+.pr-review-inline-snippet-grid .tone-green {
+  border-left-color: var(--green);
+  background: var(--soft-green);
+}
+
+.pr-review-comment-library-grid .tone-teal,
+.pr-review-comment-packet-grid .tone-teal,
+.pr-review-inline-snippet-grid .tone-teal {
+  border-left-color: var(--teal);
+  background: var(--soft-teal);
+}
+
+.pr-review-comment-library-grid .tone-blue,
+.pr-review-comment-packet-grid .tone-blue,
+.pr-review-inline-snippet-grid .tone-blue {
+  border-left-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.pr-review-comment-library-grid .tone-amber,
+.pr-review-comment-packet-grid .tone-amber,
+.pr-review-inline-snippet-grid .tone-amber {
+  border-left-color: var(--amber);
+  background: var(--soft-amber);
+}
+
+.pr-review-comment-library-grid .tone-red,
+.pr-review-comment-packet-grid .tone-red,
+.pr-review-inline-snippet-grid .tone-red {
+  border-left-color: var(--red);
+  background: var(--soft-red);
+}
+
+.private-repo-evidence-closeout-pack {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(228, 242, 232, 0.76));
+}
+
+.private-repo-evidence-closeout-pack .staging-smoke-score-card,
+.private-repo-evidence-closeout-pack .staging-smoke-panel {
+  border-left-color: var(--green);
+}
+
+.private-repo-evidence-closeout-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--green) var(--width), rgba(42, 139, 84, 0.14) 0);
+}
+
+.evidence-closeout-copy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.evidence-closeout-copy code {
+  white-space: pre-wrap;
+}
+
+.evidence-closeout-register-grid,
+.evidence-closeout-decision-grid,
+.evidence-closeout-trust-grid,
+.evidence-closeout-timeline-grid,
+.evidence-closeout-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.evidence-closeout-outcome-grid,
+.evidence-closeout-owner-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.evidence-closeout-outcome-card,
+.evidence-closeout-owner-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-green);
+  color: var(--ink);
+  min-height: 142px;
+}
+
+.evidence-closeout-outcome-card span,
+.evidence-closeout-owner-card span {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.evidence-closeout-outcome-card strong,
+.evidence-closeout-owner-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.evidence-closeout-outcome-card p,
+.evidence-closeout-owner-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.evidence-closeout-register-grid > div,
+.evidence-closeout-decision-grid > div,
+.evidence-closeout-trust-grid > div,
+.evidence-closeout-timeline-grid > div,
+.evidence-closeout-summary-grid > div {
+  min-height: 116px;
+}
+
+.evidence-closeout-outcome-grid .tone-green,
+.evidence-closeout-owner-grid .tone-green {
+  border-left-color: var(--green);
+  background: var(--soft-green);
+}
+
+.evidence-closeout-outcome-grid .tone-teal,
+.evidence-closeout-owner-grid .tone-teal {
+  border-left-color: var(--teal);
+  background: var(--soft-teal);
+}
+
+.evidence-closeout-outcome-grid .tone-blue,
+.evidence-closeout-owner-grid .tone-blue {
+  border-left-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.evidence-closeout-outcome-grid .tone-amber,
+.evidence-closeout-owner-grid .tone-amber {
+  border-left-color: var(--amber);
+  background: var(--soft-amber);
+}
+
+.evidence-closeout-outcome-grid .tone-red,
+.evidence-closeout-owner-grid .tone-red {
+  border-left-color: var(--red);
+  background: var(--soft-red);
+}
+
+.backend-repo-day-meeting-pack {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(220, 242, 237, 0.78));
+}
+
+.backend-repo-day-meeting-pack .staging-smoke-score-card,
+.backend-repo-day-meeting-pack .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.backend-repo-day-meeting-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(20, 126, 112, 0.14) 0);
+}
+
+.backend-meeting-copy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.backend-meeting-copy code {
+  white-space: pre-wrap;
+}
+
+.backend-meeting-source-grid,
+.backend-meeting-decision-grid,
+.backend-meeting-evidence-grid,
+.backend-meeting-risk-grid,
+.backend-meeting-timeline-grid,
+.backend-meeting-brief-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.backend-meeting-agenda-grid,
+.backend-meeting-attendee-grid,
+.backend-meeting-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.backend-meeting-card,
+.backend-meeting-agenda-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-teal);
+  color: var(--ink);
+  min-height: 142px;
+}
+
+.backend-meeting-agenda-card div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.backend-meeting-card span,
+.backend-meeting-agenda-card span {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.backend-meeting-agenda-card em {
+  border: 1px solid rgba(20, 126, 112, 0.2);
+  border-radius: 999px;
+  padding: 4px 8px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.backend-meeting-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.backend-meeting-card p,
+.backend-meeting-agenda-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.backend-meeting-source-grid > div,
+.backend-meeting-decision-grid > div,
+.backend-meeting-evidence-grid > div,
+.backend-meeting-risk-grid > div,
+.backend-meeting-timeline-grid > div,
+.backend-meeting-brief-grid > div {
+  min-height: 116px;
+}
+
+.backend-meeting-agenda-grid .tone-green,
+.backend-meeting-attendee-grid .tone-green,
+.backend-meeting-action-grid .tone-green {
+  border-left-color: var(--green);
+  background: var(--soft-green);
+}
+
+.backend-meeting-agenda-grid .tone-teal,
+.backend-meeting-attendee-grid .tone-teal,
+.backend-meeting-action-grid .tone-teal {
+  border-left-color: var(--teal);
+  background: var(--soft-teal);
+}
+
+.backend-meeting-agenda-grid .tone-blue,
+.backend-meeting-attendee-grid .tone-blue,
+.backend-meeting-action-grid .tone-blue {
+  border-left-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.backend-meeting-agenda-grid .tone-amber,
+.backend-meeting-attendee-grid .tone-amber,
+.backend-meeting-action-grid .tone-amber {
+  border-left-color: var(--amber);
+  background: var(--soft-amber);
+}
+
+.backend-meeting-agenda-grid .tone-red,
+.backend-meeting-attendee-grid .tone-red,
+.backend-meeting-action-grid .tone-red {
+  border-left-color: var(--red);
+  background: var(--soft-red);
+}
+
+.private-repo-reply-capture-board {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 236, 247, 0.78));
+}
+
+.private-repo-reply-capture-board .staging-smoke-score-card,
+.private-repo-reply-capture-board .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.private-repo-reply-capture-board .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(51, 104, 158, 0.14) 0);
+}
+
+.reply-capture-copy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--blue);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.reply-capture-copy code {
+  white-space: pre-wrap;
+}
+
+.reply-capture-source-grid,
+.reply-capture-state-grid,
+.reply-capture-thread-grid,
+.reply-capture-approval-grid,
+.reply-capture-merge-grid,
+.reply-capture-sla-grid,
+.reply-capture-brief-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.reply-capture-lane-grid,
+.reply-capture-request-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.reply-capture-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--blue);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-blue);
+  color: var(--ink);
+  min-height: 142px;
+}
+
+.reply-capture-card span {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.reply-capture-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.reply-capture-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.reply-capture-source-grid > div,
+.reply-capture-state-grid > div,
+.reply-capture-thread-grid > div,
+.reply-capture-approval-grid > div,
+.reply-capture-merge-grid > div,
+.reply-capture-sla-grid > div,
+.reply-capture-brief-grid > div {
+  min-height: 116px;
+}
+
+.reply-capture-lane-grid .tone-green,
+.reply-capture-request-grid .tone-green {
+  border-left-color: var(--green);
+  background: var(--soft-green);
+}
+
+.reply-capture-lane-grid .tone-teal,
+.reply-capture-request-grid .tone-teal {
+  border-left-color: var(--teal);
+  background: var(--soft-teal);
+}
+
+.reply-capture-lane-grid .tone-blue,
+.reply-capture-request-grid .tone-blue {
+  border-left-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.reply-capture-lane-grid .tone-amber,
+.reply-capture-request-grid .tone-amber {
+  border-left-color: var(--amber);
+  background: var(--soft-amber);
+}
+
+.reply-capture-lane-grid .tone-red,
+.reply-capture-request-grid .tone-red {
+  border-left-color: var(--red);
+  background: var(--soft-red);
+}
+
+.evidence-closeout-pdf-export-plan {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 242, 236, 0.72));
+}
+
+.evidence-closeout-pdf-export-plan .staging-smoke-score-card,
+.evidence-closeout-pdf-export-plan .staging-smoke-panel {
+  border-left-color: var(--green);
+}
+
+.evidence-closeout-pdf-export-plan .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--green) var(--width), rgba(34, 128, 85, 0.14) 0);
+}
+
+.pdf-export-copy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pdf-export-copy code {
+  white-space: pre-wrap;
+}
+
+.pdf-export-source-grid,
+.pdf-export-section-grid,
+.pdf-export-redaction-grid,
+.pdf-export-qa-grid,
+.pdf-export-archive-grid,
+.pdf-export-brief-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.pdf-export-page-grid,
+.pdf-export-distribution-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pdf-export-card,
+.pdf-export-page-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--green);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-green);
+  color: var(--ink);
+  min-height: 132px;
+}
+
+.pdf-export-card span,
+.pdf-export-page-card span {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.pdf-export-page-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.pdf-export-card p,
+.pdf-export-page-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.pdf-export-source-grid > div,
+.pdf-export-section-grid > div,
+.pdf-export-redaction-grid > div,
+.pdf-export-qa-grid > div,
+.pdf-export-archive-grid > div,
+.pdf-export-brief-grid > div {
+  min-height: 112px;
+}
+
+.pdf-export-page-grid .tone-green,
+.pdf-export-distribution-grid .tone-green {
+  border-left-color: var(--green);
+  background: var(--soft-green);
+}
+
+.pdf-export-page-grid .tone-teal,
+.pdf-export-distribution-grid .tone-teal {
+  border-left-color: var(--teal);
+  background: var(--soft-teal);
+}
+
+.pdf-export-page-grid .tone-blue,
+.pdf-export-distribution-grid .tone-blue {
+  border-left-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.pdf-export-page-grid .tone-amber,
+.pdf-export-distribution-grid .tone-amber {
+  border-left-color: var(--amber);
+  background: var(--soft-amber);
+}
+
+.pdf-export-page-grid .tone-red,
+.pdf-export-distribution-grid .tone-red {
+  border-left-color: var(--red);
+  background: var(--soft-red);
+}
+
+.backend-meeting-minutes-exporter {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(220, 245, 239, 0.72));
+}
+
+.backend-meeting-minutes-exporter .staging-smoke-score-card,
+.backend-meeting-minutes-exporter .staging-smoke-panel {
+  border-left-color: var(--teal);
+}
+
+.backend-meeting-minutes-exporter .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--teal) var(--width), rgba(15, 130, 118, 0.14) 0);
+}
+
+.minutes-export-copy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.minutes-export-copy code {
+  white-space: pre-wrap;
+}
+
+.minutes-export-source-grid,
+.minutes-export-section-grid,
+.minutes-export-email-grid,
+.minutes-export-cadence-grid,
+.minutes-export-privacy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.minutes-export-attendance-grid,
+.minutes-export-decision-grid,
+.minutes-export-action-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.minutes-export-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-teal);
+  color: var(--ink);
+  min-height: 142px;
+}
+
+.minutes-export-card span {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.minutes-export-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.minutes-export-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.minutes-export-source-grid > div,
+.minutes-export-section-grid > div,
+.minutes-export-email-grid > div,
+.minutes-export-cadence-grid > div,
+.minutes-export-privacy-grid > div {
+  min-height: 112px;
+}
+
+.minutes-export-attendance-grid .tone-green,
+.minutes-export-decision-grid .tone-green,
+.minutes-export-action-grid .tone-green {
+  border-left-color: var(--green);
+  background: var(--soft-green);
+}
+
+.minutes-export-attendance-grid .tone-teal,
+.minutes-export-decision-grid .tone-teal,
+.minutes-export-action-grid .tone-teal {
+  border-left-color: var(--teal);
+  background: var(--soft-teal);
+}
+
+.minutes-export-attendance-grid .tone-blue,
+.minutes-export-decision-grid .tone-blue,
+.minutes-export-action-grid .tone-blue {
+  border-left-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.minutes-export-attendance-grid .tone-amber,
+.minutes-export-decision-grid .tone-amber,
+.minutes-export-action-grid .tone-amber {
+  border-left-color: var(--amber);
+  background: var(--soft-amber);
+}
+
+.minutes-export-attendance-grid .tone-red,
+.minutes-export-decision-grid .tone-red,
+.minutes-export-action-grid .tone-red {
+  border-left-color: var(--red);
+  background: var(--soft-red);
+}
+
+.reviewer-decision-email-pack {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 238, 250, 0.72));
+}
+
+.reviewer-decision-email-pack .staging-smoke-score-card,
+.reviewer-decision-email-pack .staging-smoke-panel {
+  border-left-color: var(--blue);
+}
+
+.reviewer-decision-email-pack .staging-smoke-score-card i {
+  background: linear-gradient(90deg, var(--blue) var(--width), rgba(49, 99, 151, 0.14) 0);
+}
+
+.reviewer-email-copy {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--blue);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.reviewer-email-copy code {
+  white-space: pre-wrap;
+}
+
+.reviewer-email-kpi-grid,
+.reviewer-email-source-grid,
+.reviewer-email-trigger-grid,
+.reviewer-email-checklist-grid,
+.reviewer-email-cadence-grid,
+.reviewer-email-privacy-grid,
+.reviewer-email-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.reviewer-email-source-grid,
+.reviewer-email-cadence-grid,
+.reviewer-email-privacy-grid,
+.reviewer-email-summary-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.reviewer-email-lane-grid,
+.reviewer-email-template-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.reviewer-email-card {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--teal);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--soft-teal);
+  color: var(--ink);
+  min-height: 128px;
+}
+
+.reviewer-email-card span {
+  color: var(--muted);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.reviewer-email-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.reviewer-email-card p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.reviewer-email-card.tone-green,
+.reviewer-email-kpi-grid .tone-green,
+.reviewer-email-source-grid .tone-green,
+.reviewer-email-trigger-grid .tone-green,
+.reviewer-email-checklist-grid .tone-green,
+.reviewer-email-cadence-grid .tone-green,
+.reviewer-email-privacy-grid .tone-green,
+.reviewer-email-summary-grid .tone-green {
+  border-left-color: var(--green);
+  background: var(--soft-green);
+}
+
+.reviewer-email-card.tone-teal,
+.reviewer-email-kpi-grid .tone-teal,
+.reviewer-email-source-grid .tone-teal,
+.reviewer-email-trigger-grid .tone-teal,
+.reviewer-email-checklist-grid .tone-teal,
+.reviewer-email-cadence-grid .tone-teal,
+.reviewer-email-privacy-grid .tone-teal,
+.reviewer-email-summary-grid .tone-teal {
+  border-left-color: var(--teal);
+  background: var(--soft-teal);
+}
+
+.reviewer-email-card.tone-blue,
+.reviewer-email-kpi-grid .tone-blue,
+.reviewer-email-source-grid .tone-blue,
+.reviewer-email-trigger-grid .tone-blue,
+.reviewer-email-checklist-grid .tone-blue,
+.reviewer-email-cadence-grid .tone-blue,
+.reviewer-email-privacy-grid .tone-blue,
+.reviewer-email-summary-grid .tone-blue {
+  border-left-color: var(--blue);
+  background: var(--soft-blue);
+}
+
+.reviewer-email-card.tone-amber,
+.reviewer-email-kpi-grid .tone-amber,
+.reviewer-email-source-grid .tone-amber,
+.reviewer-email-trigger-grid .tone-amber,
+.reviewer-email-checklist-grid .tone-amber,
+.reviewer-email-cadence-grid .tone-amber,
+.reviewer-email-privacy-grid .tone-amber,
+.reviewer-email-summary-grid .tone-amber {
+  border-left-color: var(--amber);
+  background: var(--soft-amber);
+}
+
+.reviewer-email-card.tone-red,
+.reviewer-email-kpi-grid .tone-red,
+.reviewer-email-source-grid .tone-red,
+.reviewer-email-trigger-grid .tone-red,
+.reviewer-email-checklist-grid .tone-red,
+.reviewer-email-cadence-grid .tone-red,
+.reviewer-email-privacy-grid .tone-red,
+.reviewer-email-summary-grid .tone-red {
+  border-left-color: var(--red);
+  background: var(--soft-red);
+}
+
+@media (max-width: 1280px) {
+  .repo-execution-gate-grid,
+  .repo-execution-sequence-grid,
+  .repo-execution-operator-grid,
+  .repo-execution-stop-grid,
+  .repo-execution-proof-grid,
+  .repo-execution-screen-grid,
+  .repo-execution-command-grid,
+  .repo-execution-issue-grid,
+  .repo-execution-owner-grid,
+  .repo-execution-branch-grid,
+  .repo-execution-completion-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .backend-alpha-board-kpi-grid,
+  .backend-alpha-board-lane-grid,
+  .backend-alpha-board-swimlane-grid,
+  .backend-alpha-board-blocker-grid,
+  .backend-alpha-board-owner-grid,
+  .backend-alpha-board-evidence-grid,
+  .backend-alpha-board-pr-grid,
+  .backend-alpha-board-github-grid,
+  .backend-alpha-board-decision-grid,
+  .backend-alpha-board-action-grid,
+  .backend-alpha-board-acceptance-grid,
+  .artifact-status-column-grid,
+  .handoff-email-audience-grid,
+  .handoff-email-link-grid,
+  .pr-review-comment-library-grid,
+  .pr-review-comment-packet-grid,
+  .pr-review-inline-snippet-grid,
+  .evidence-closeout-outcome-grid,
+  .evidence-closeout-owner-grid,
+  .backend-meeting-agenda-grid,
+  .backend-meeting-attendee-grid,
+  .backend-meeting-action-grid,
+  .reply-capture-lane-grid,
+  .reply-capture-request-grid,
+  .pdf-export-page-grid,
+  .pdf-export-distribution-grid,
+  .minutes-export-attendance-grid,
+  .minutes-export-decision-grid,
+  .minutes-export-action-grid,
+  .reviewer-email-kpi-grid,
+  .reviewer-email-trigger-grid,
+  .reviewer-email-checklist-grid,
+  .reviewer-email-lane-grid,
+  .reviewer-email-template-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .repo-day-one-kpi-grid,
+  .repo-day-one-preflight-grid,
+  .repo-day-one-command-grid,
+  .repo-day-one-manual-grid,
+  .repo-day-one-evidence-grid,
+  .repo-day-one-issue-grid,
+  .repo-day-one-pr-grid,
+  .repo-day-one-branch-grid,
+  .repo-day-one-stop-grid,
+  .repo-day-one-owner-grid,
+  .repo-day-one-closeout-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .repo-proof-kpi-grid,
+  .repo-proof-template-grid,
+  .repo-proof-pr-grid,
+  .repo-proof-screenshot-grid,
+  .repo-proof-command-grid,
+  .repo-proof-owner-grid,
+  .repo-proof-closeout-grid,
+  .repo-proof-sequence-grid,
+  .repo-proof-gate-grid,
+  .repo-proof-snippet-grid,
+  .issue-import-row-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .repo-execution-gate-grid,
+  .repo-execution-sequence-grid,
+  .repo-execution-operator-grid,
+  .repo-execution-stop-grid,
+  .repo-execution-proof-grid,
+  .repo-execution-screen-grid,
+  .repo-execution-command-grid,
+  .repo-execution-issue-grid,
+  .repo-execution-owner-grid,
+  .repo-execution-branch-grid,
+  .repo-execution-completion-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .backend-alpha-board-kpi-grid,
+  .backend-alpha-board-lane-grid,
+  .backend-alpha-board-swimlane-grid,
+  .backend-alpha-board-blocker-grid,
+  .backend-alpha-board-owner-grid,
+  .backend-alpha-board-evidence-grid,
+  .backend-alpha-board-pr-grid,
+  .backend-alpha-board-github-grid,
+  .backend-alpha-board-decision-grid,
+  .backend-alpha-board-action-grid,
+  .backend-alpha-board-acceptance-grid,
+  .artifact-status-column-grid,
+  .artifact-board-lane-grid,
+  .artifact-board-source-grid,
+  .artifact-board-escalation-grid,
+  .artifact-board-capture-grid,
+  .artifact-board-quality-grid,
+  .handoff-email-section-grid,
+  .handoff-email-approval-grid,
+  .handoff-email-agenda-grid,
+  .handoff-email-send-grid,
+  .handoff-email-followup-grid,
+  .handoff-email-risk-grid,
+  .handoff-email-audience-grid,
+  .handoff-email-link-grid,
+  .pr-review-comment-library-grid,
+  .pr-review-comment-packet-grid,
+  .pr-review-inline-snippet-grid,
+  .pr-review-decision-grid,
+  .pr-review-send-grid,
+  .pr-review-reply-grid,
+  .pr-review-source-grid,
+  .pr-review-acceptance-grid,
+  .evidence-closeout-register-grid,
+  .evidence-closeout-decision-grid,
+  .evidence-closeout-trust-grid,
+  .evidence-closeout-timeline-grid,
+  .evidence-closeout-summary-grid,
+  .evidence-closeout-outcome-grid,
+  .evidence-closeout-owner-grid,
+  .evidence-closeout-acceptance-grid,
+  .backend-meeting-source-grid,
+  .backend-meeting-decision-grid,
+  .backend-meeting-evidence-grid,
+  .backend-meeting-risk-grid,
+  .backend-meeting-timeline-grid,
+  .backend-meeting-brief-grid,
+  .backend-meeting-agenda-grid,
+  .backend-meeting-attendee-grid,
+  .backend-meeting-action-grid,
+  .backend-meeting-acceptance-grid,
+  .reply-capture-source-grid,
+  .reply-capture-state-grid,
+  .reply-capture-thread-grid,
+  .reply-capture-approval-grid,
+  .reply-capture-merge-grid,
+  .reply-capture-sla-grid,
+  .reply-capture-brief-grid,
+  .reply-capture-lane-grid,
+  .reply-capture-request-grid,
+  .reply-capture-acceptance-grid,
+  .pdf-export-source-grid,
+  .pdf-export-section-grid,
+  .pdf-export-redaction-grid,
+  .pdf-export-qa-grid,
+  .pdf-export-archive-grid,
+  .pdf-export-brief-grid,
+  .pdf-export-page-grid,
+  .pdf-export-distribution-grid,
+  .pdf-export-acceptance-grid,
+  .minutes-export-source-grid,
+  .minutes-export-section-grid,
+  .minutes-export-email-grid,
+  .minutes-export-cadence-grid,
+  .minutes-export-privacy-grid,
+  .minutes-export-attendance-grid,
+  .minutes-export-decision-grid,
+  .minutes-export-action-grid,
+  .minutes-export-acceptance-grid,
+  .reviewer-email-kpi-grid,
+  .reviewer-email-source-grid,
+  .reviewer-email-lane-grid,
+  .reviewer-email-template-grid,
+  .reviewer-email-trigger-grid,
+  .reviewer-email-checklist-grid,
+  .reviewer-email-cadence-grid,
+  .reviewer-email-privacy-grid,
+  .reviewer-email-summary-grid,
+  .reviewer-email-acceptance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .repo-day-one-kpi-grid,
+  .repo-day-one-preflight-grid,
+  .repo-day-one-command-grid,
+  .repo-day-one-manual-grid,
+  .repo-day-one-evidence-grid,
+  .repo-day-one-issue-grid,
+  .repo-day-one-pr-grid,
+  .repo-day-one-branch-grid,
+  .repo-day-one-stop-grid,
+  .repo-day-one-owner-grid,
+  .repo-day-one-closeout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .repo-proof-kpi-grid,
+  .repo-proof-template-grid,
+  .repo-proof-pr-grid,
+  .repo-proof-screenshot-grid,
+  .repo-proof-command-grid,
+  .repo-proof-owner-grid,
+  .repo-proof-closeout-grid,
+  .repo-proof-sequence-grid,
+  .repo-proof-gate-grid,
+  .repo-proof-snippet-grid,
+  .issue-import-row-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1280px) {
   .saas-track-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -10568,6 +16270,88 @@ textarea:disabled {
   .private-repo-board-grid,
   .private-repo-secret-grid,
   .private-repo-file-grid,
+  .first-commit-shell-grid,
+  .first-commit-package-grid,
+  .first-commit-env-grid,
+  .first-commit-acceptance-grid,
+  .first-commit-example-grid,
+  .backend-issue-batch-grid,
+  .backend-issue-card-grid,
+  .backend-issue-label-grid,
+  .backend-issue-milestone-grid,
+  .backend-issue-template-grid,
+  .backend-issue-acceptance-grid,
+  .branch-protection-branch-grid,
+  .branch-protection-env-grid,
+  .branch-protection-owner-grid,
+  .branch-protection-artifact-grid,
+  .branch-protection-setup-grid,
+  .branch-protection-acceptance-grid,
+  .backend-file-group-grid,
+  .backend-file-card-grid,
+  .backend-file-guardrail-grid,
+  .backend-file-acceptance-grid,
+  .repo-setup-prereq-grid,
+  .repo-setup-script-file-grid,
+  .repo-setup-metadata-grid,
+  .repo-setup-folder-grid,
+  .repo-setup-secret-grid,
+  .repo-setup-proof-grid,
+  .repo-setup-gate-grid,
+  .repo-setup-acceptance-grid,
+  .github-taxonomy-label-group-grid,
+  .github-taxonomy-milestone-grid,
+  .github-taxonomy-board-grid,
+  .github-taxonomy-routing-grid,
+  .github-taxonomy-import-step-grid,
+  .github-taxonomy-file-grid,
+  .github-taxonomy-gate-grid,
+  .github-taxonomy-acceptance-grid,
+  .first-commit-qa-lane-grid,
+  .first-commit-qa-proof-grid,
+  .first-commit-qa-review-grid,
+  .first-commit-qa-artifact-grid,
+  .first-commit-qa-decision-grid,
+  .first-commit-qa-signoff-grid,
+  .first-commit-qa-pr-grid,
+  .first-commit-qa-file-grid,
+  .first-commit-qa-acceptance-grid,
+  .opening-day-command-grid,
+  .opening-day-issue-wave-grid,
+  .opening-day-evidence-grid,
+  .opening-day-owner-grid,
+  .opening-day-gate-grid,
+  .opening-day-stop-grid,
+  .opening-day-acceptance-grid,
+  .decision-memo-section-grid,
+  .decision-memo-basis-grid,
+  .decision-memo-scope-grid,
+  .decision-memo-evidence-grid,
+  .decision-memo-option-grid,
+  .decision-memo-blocker-grid,
+  .decision-memo-approval-grid,
+  .decision-memo-next-grid,
+  .decision-memo-risk-grid,
+  .decision-memo-acceptance-grid,
+  .backend-alpha-risk-domain-grid,
+  .backend-alpha-risk-register-grid,
+  .backend-alpha-trigger-grid,
+  .backend-alpha-mitigation-grid,
+  .backend-alpha-owner-grid,
+  .backend-alpha-decision-grid,
+  .backend-alpha-monitoring-grid,
+  .backend-alpha-residual-grid,
+  .backend-alpha-acceptance-grid,
+  .backend-evidence-lane-grid,
+  .backend-evidence-capture-grid,
+  .backend-evidence-artifact-grid,
+  .backend-evidence-command-grid,
+  .backend-evidence-screenshot-grid,
+  .backend-evidence-pr-grid,
+  .backend-evidence-workflow-grid,
+  .backend-evidence-protection-grid,
+  .backend-evidence-signoff-grid,
+  .backend-evidence-acceptance-grid,
   .staging-env-grid,
   .staging-path-grid,
   .staging-fixture-grid,
@@ -10633,7 +16417,24 @@ textarea:disabled {
   .production-test-table,
   .api-error-catalog-table,
   .api-route-envelope-table,
-  .api-test-binding-table {
+  .api-test-binding-table,
+  .ci-job-table,
+  .ci-command-binding-table,
+  .first-commit-api-table,
+  .first-commit-workflow-table,
+  .first-commit-script-table,
+  .backend-issue-command-table,
+  .branch-protection-status-table,
+  .branch-protection-issue-table,
+  .backend-file-inventory-table {
+    overflow-x: auto;
+  }
+
+  .github-taxonomy-label-table {
+    overflow-x: auto;
+  }
+
+  .first-commit-qa-file-table {
     overflow-x: auto;
   }
 
@@ -10655,7 +16456,24 @@ textarea:disabled {
   .production-test-table > div,
   .api-error-catalog-table > div,
   .api-route-envelope-table > div,
-  .api-test-binding-table > div {
+  .api-test-binding-table > div,
+  .ci-job-table > div,
+  .ci-command-binding-table > div,
+  .first-commit-api-table > div,
+  .first-commit-workflow-table > div,
+  .first-commit-script-table > div,
+  .backend-issue-command-table > div,
+  .branch-protection-status-table > div,
+  .branch-protection-issue-table > div,
+  .backend-file-inventory-table > div {
+    min-width: 680px;
+  }
+
+  .github-taxonomy-label-table > div {
+    min-width: 720px;
+  }
+
+  .first-commit-qa-file-table > div {
     min-width: 680px;
   }
 
@@ -10796,11 +16614,120 @@ textarea:disabled {
   .api-denial-grid,
   .api-acceptance-grid,
   .api-example-grid,
+  .ci-workflow-grid,
+  .ci-artifact-grid,
+  .ci-cache-grid,
+  .ci-secret-grid,
+  .ci-branch-grid,
+  .ci-matrix-grid,
+  .ci-release-gate-grid,
+  .ci-acceptance-grid,
+  .ci-example-grid,
+  .first-commit-shell-grid,
+  .first-commit-package-grid,
+  .first-commit-env-grid,
+  .first-commit-order-list,
+  .first-commit-acceptance-grid,
+  .first-commit-example-grid,
+  .backend-issue-batch-grid,
+  .backend-issue-card-grid,
+  .backend-issue-label-grid,
+  .backend-issue-milestone-grid,
+  .backend-issue-opening-list,
+  .backend-issue-template-grid,
+  .backend-issue-acceptance-grid,
+  .branch-protection-branch-grid,
+  .branch-protection-env-grid,
+  .branch-protection-owner-grid,
+  .branch-protection-artifact-grid,
+  .branch-protection-ritual-list,
+  .branch-protection-rollback-list,
+  .branch-protection-setup-grid,
+  .branch-protection-acceptance-grid,
+  .backend-file-group-grid,
+  .backend-file-card-grid,
+  .backend-file-copy-order,
+  .backend-file-guardrail-grid,
+  .backend-file-acceptance-grid,
+  .repo-setup-prereq-grid,
+  .repo-setup-script-file-grid,
+  .repo-setup-metadata-grid,
+  .repo-setup-folder-grid,
+  .repo-setup-secret-grid,
+  .repo-setup-proof-grid,
+  .repo-setup-gate-grid,
+  .repo-setup-acceptance-grid,
+  .github-taxonomy-label-group-grid,
+  .github-taxonomy-milestone-grid,
+  .github-taxonomy-board-grid,
+  .github-taxonomy-routing-grid,
+  .github-taxonomy-import-step-grid,
+  .github-taxonomy-file-grid,
+  .github-taxonomy-gate-grid,
+  .github-taxonomy-acceptance-grid,
+  .first-commit-qa-lane-grid,
+  .first-commit-qa-proof-grid,
+  .first-commit-qa-review-grid,
+  .first-commit-qa-artifact-grid,
+  .first-commit-qa-decision-grid,
+  .first-commit-qa-signoff-grid,
+  .first-commit-qa-pr-grid,
+  .first-commit-qa-file-grid,
+  .first-commit-qa-acceptance-grid,
+  .opening-day-sequence-list,
+  .opening-day-command-grid,
+  .opening-day-issue-wave-grid,
+  .opening-day-evidence-grid,
+  .opening-day-owner-grid,
+  .opening-day-gate-grid,
+  .opening-day-stop-grid,
+  .opening-day-acceptance-grid,
+  .decision-memo-section-grid,
+  .decision-memo-basis-grid,
+  .decision-memo-scope-grid,
+  .decision-memo-evidence-grid,
+  .decision-memo-option-grid,
+  .decision-memo-blocker-grid,
+  .decision-memo-approval-grid,
+  .decision-memo-next-grid,
+  .decision-memo-risk-grid,
+  .decision-memo-acceptance-grid,
+  .backend-alpha-risk-domain-grid,
+  .backend-alpha-risk-register-grid,
+  .backend-alpha-trigger-grid,
+  .backend-alpha-mitigation-grid,
+  .backend-alpha-owner-grid,
+  .backend-alpha-decision-grid,
+  .backend-alpha-monitoring-grid,
+  .backend-alpha-residual-grid,
+  .backend-alpha-acceptance-grid,
+  .backend-evidence-lane-grid,
+  .backend-evidence-capture-grid,
+  .backend-evidence-artifact-grid,
+  .backend-evidence-command-grid,
+  .backend-evidence-screenshot-grid,
+  .backend-evidence-pr-grid,
+  .backend-evidence-workflow-grid,
+  .backend-evidence-protection-grid,
+  .backend-evidence-signoff-grid,
+  .backend-evidence-acceptance-grid,
   .staging-env-grid,
   .staging-path-grid,
   .staging-fixture-grid,
   .staging-role-grid,
   .staging-artifact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .repo-setup-command-list summary {
+    grid-template-columns: 1fr;
+  }
+
+  .github-taxonomy-command-list summary {
+    grid-template-columns: 1fr;
+  }
+
+  .opening-day-sequence-list > div {
     grid-template-columns: 1fr;
   }
 

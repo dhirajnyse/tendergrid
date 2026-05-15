@@ -1,0 +1,494 @@
+{
+  "schemaVersion": "pursuitdesk.privateRepoReplyCaptureBoard.v143",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "generatedOn": "2026-05-15",
+  "build": {
+    "version": "v143",
+    "name": "Private Repo Reply Capture Board",
+    "replyCaptureScore": 96,
+    "purpose": "Convert real private repo reviewer replies into controlled approval, hold, requested-change, deferred, blocked, no-response, and merge-readiness states.",
+    "scope": "Static prototype handoff for post-meeting GitHub PR reply capture.",
+    "sourcePacks": [
+      "Backend Repo Day Meeting Pack",
+      "Private Repo Evidence Closeout Pack",
+      "First Backend PR Review Comment Pack",
+      "Backend PR Review Gate Matrix",
+      "Evidence Artifact Status Board",
+      "Private Repo Handoff Email Pack"
+    ]
+  },
+  "replyKpis": [
+    {
+      "label": "Reply capture",
+      "value": "96%",
+      "note": "Readiness to turn real reviewer replies into controlled outcomes.",
+      "tone": "green"
+    },
+    {
+      "label": "Reviewer lanes",
+      "value": 8,
+      "note": "Product, platform, backend, security, data, QA, billing, and scribe reply lanes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Reply states",
+      "value": 8,
+      "note": "Approved, commented, held, requested changes, deferred, blocked, no response, and merge-ready states.",
+      "tone": "blue"
+    },
+    {
+      "label": "Merge gates",
+      "value": 8,
+      "note": "Required conditions before any merge-ready status is accepted.",
+      "tone": "red"
+    }
+  ],
+  "sourceReadiness": [
+    {
+      "label": "Meeting pack",
+      "value": "87%",
+      "note": "v142 agenda and action queue create the reply capture rhythm.",
+      "tone": "green"
+    },
+    {
+      "label": "Evidence closeout",
+      "value": "96%",
+      "note": "v141 closeout lanes become reply outcomes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Review comments",
+      "value": "96%",
+      "note": "v140 comment templates become thread capture rows.",
+      "tone": "blue"
+    },
+    {
+      "label": "Open work",
+      "value": 95,
+      "note": "Operational context remains visible while reply capture stays repo-specific.",
+      "tone": "amber"
+    }
+  ],
+  "reviewerReplyLanes": [
+    {
+      "lane": "Product sponsor",
+      "state": "Waiting reply",
+      "note": "Scope, non-goals, issue wave, and next release decision need go, hold, defer, or no-go.",
+      "tone": "green"
+    },
+    {
+      "lane": "Platform owner",
+      "state": "Waiting reply",
+      "note": "Repo privacy, branch posture, check names, protected environment, and branch-protection timing need confirmation.",
+      "tone": "teal"
+    },
+    {
+      "lane": "Backend lead",
+      "state": "Waiting reply",
+      "note": "Route shell, migrations, command output, seed path, and unresolved implementation holds need response.",
+      "tone": "blue"
+    },
+    {
+      "lane": "Security reviewer",
+      "state": "Waiting reply",
+      "note": "Tenant guard, no-secret proof, no-workbook proof, no-commercial-leak proof, and denial audit evidence need signoff.",
+      "tone": "red"
+    },
+    {
+      "lane": "Data owner",
+      "state": "Waiting reply",
+      "note": "Fixture boundary, import dry-run, quarantine, duplicate handling, rollback, and reconciliation need response.",
+      "tone": "amber"
+    },
+    {
+      "lane": "QA / Release",
+      "state": "Waiting reply",
+      "note": "Evidence index, screenshots, transcripts, PR notes, issue links, and closeout ledger need review state.",
+      "tone": "green"
+    },
+    {
+      "lane": "Billing owner",
+      "state": "Waiting reply",
+      "note": "Test-mode billing boundary, no invoice, no payment key, and no commercial export need confirmation.",
+      "tone": "amber"
+    },
+    {
+      "lane": "Meeting scribe",
+      "state": "Waiting reply",
+      "note": "Attendance, decision log, action register, parked questions, and management summary need publishing status.",
+      "tone": "blue"
+    }
+  ],
+  "replyStateBoard": [
+    {
+      "label": "Approved",
+      "value": "Go",
+      "note": "Reviewer lane is approved with evidence, issue trace, no-leak proof, rollback note, and next owner.",
+      "tone": "green"
+    },
+    {
+      "label": "Commented",
+      "value": "Track",
+      "note": "Neutral comment exists but does not approve merge; record thread URL and follow-up status.",
+      "tone": "blue"
+    },
+    {
+      "label": "Held",
+      "value": "Owner needed",
+      "note": "Direction is acceptable but missing proof, owner, target date, or next command is still open.",
+      "tone": "amber"
+    },
+    {
+      "label": "Requested changes",
+      "value": "Stop merge",
+      "note": "Trust, privacy, test, tenant, audit, branch, or rollback evidence failed.",
+      "tone": "red"
+    },
+    {
+      "label": "Deferred proof",
+      "value": "Date needed",
+      "note": "Proof is intentionally moved forward with owner, reason, target date, and next evidence action.",
+      "tone": "blue"
+    },
+    {
+      "label": "Blocked",
+      "value": "No-go",
+      "note": "Public repo, secret, workbook, commercial leakage, missing rollback, or direct-main risk blocks closeout.",
+      "tone": "red"
+    },
+    {
+      "label": "No response",
+      "value": "Chase",
+      "note": "Reviewer lane has not replied; meeting scribe or owner must chase before closeout.",
+      "tone": "amber"
+    },
+    {
+      "label": "Merge-ready",
+      "value": "Final gate",
+      "note": "All lanes are green, required checks are exact, no-leak is repeated, rollback is visible, and next owner is named.",
+      "tone": "teal"
+    }
+  ],
+  "threadCaptureChecklist": [
+    {
+      "label": "PR URL",
+      "value": "Required",
+      "note": "Every reply row links to the real private pull request.",
+      "tone": "red"
+    },
+    {
+      "label": "Thread URL",
+      "value": "Required",
+      "note": "Every comment, hold, approval, or request-changes row links to a thread or review.",
+      "tone": "blue"
+    },
+    {
+      "label": "Reviewer handle",
+      "value": "Required",
+      "note": "GitHub handle and reviewer lane are recorded without guessing.",
+      "tone": "teal"
+    },
+    {
+      "label": "Action type",
+      "value": "Required",
+      "note": "COMMENT, APPROVE, REQUEST_CHANGES, hold, defer, or no-response is explicit.",
+      "tone": "green"
+    },
+    {
+      "label": "Evidence link",
+      "value": "Required",
+      "note": "Screenshot, transcript, issue, branch proof, signoff, or rollback note is linked.",
+      "tone": "amber"
+    },
+    {
+      "label": "Owner",
+      "value": "Required",
+      "note": "Every hold, blocker, or deferred proof row has one named owner.",
+      "tone": "red"
+    },
+    {
+      "label": "Due date",
+      "value": "Required",
+      "note": "Every unresolved reply has a due date or next meeting checkpoint.",
+      "tone": "amber"
+    },
+    {
+      "label": "Closeout state",
+      "value": "Required",
+      "note": "Each row ends as open, resolved, deferred, blocked, accepted, or merge-ready.",
+      "tone": "green"
+    }
+  ],
+  "requestedChangesResolver": [
+    {
+      "issue": "Commercial leakage",
+      "owner": "Security owner",
+      "note": "Remove value, invoice, LOA, agreement, billing, and negotiation content; record no-leak proof.",
+      "tone": "red"
+    },
+    {
+      "issue": "Secret exposure",
+      "owner": "Platform owner",
+      "note": "Rotate credential, remove secret, attach proof, and update rollback note.",
+      "tone": "red"
+    },
+    {
+      "issue": "Tenant guard gap",
+      "owner": "Backend lead",
+      "note": "Add or prove tenant isolation middleware and denied audit event.",
+      "tone": "amber"
+    },
+    {
+      "issue": "Missing checks",
+      "owner": "Platform owner",
+      "note": "Run workflow, capture exact check names, then update branch protection.",
+      "tone": "blue"
+    },
+    {
+      "issue": "Missing transcript",
+      "owner": "QA / Release",
+      "note": "Attach command output for install, lint, test, migration, seed, smoke, and audit.",
+      "tone": "teal"
+    },
+    {
+      "issue": "Rollback unclear",
+      "owner": "Data owner",
+      "note": "Write branch, PR, repo recreation, credential rotation, and data path reset instructions.",
+      "tone": "amber"
+    }
+  ],
+  "approvalReadinessBoard": [
+    {
+      "label": "Product lane",
+      "value": "Needs reply",
+      "note": "Scope approved and non-goals repeated.",
+      "tone": "green"
+    },
+    {
+      "label": "Platform lane",
+      "value": "Needs reply",
+      "note": "Repo privacy, branch rules, and check names confirmed.",
+      "tone": "teal"
+    },
+    {
+      "label": "Backend lane",
+      "value": "Needs reply",
+      "note": "Routes, migrations, tests, and command outputs linked.",
+      "tone": "blue"
+    },
+    {
+      "label": "Security lane",
+      "value": "Needs reply",
+      "note": "No secrets, no workbooks, no commercial leakage, tenant guard, and audit denial proof linked.",
+      "tone": "red"
+    },
+    {
+      "label": "Data lane",
+      "value": "Needs reply",
+      "note": "Fixture boundary, dry-run, quarantine, reconciliation, and rollback linked.",
+      "tone": "amber"
+    },
+    {
+      "label": "QA lane",
+      "value": "Needs reply",
+      "note": "Evidence folder, screenshots, transcripts, issue URLs, and closeout ledger complete.",
+      "tone": "green"
+    },
+    {
+      "label": "Billing lane",
+      "value": "Needs reply",
+      "note": "Test-mode only, no invoice, no payment key, no commercial export confirmed.",
+      "tone": "amber"
+    },
+    {
+      "label": "Release lane",
+      "value": "Needs reply",
+      "note": "Merge gate, rollback, next owner, and management summary confirmed.",
+      "tone": "blue"
+    }
+  ],
+  "mergeReadinessLanes": [
+    {
+      "label": "All reviewer lanes green",
+      "value": "Required",
+      "note": "No merge-ready state until every reviewer lane is go or intentionally deferred with owner.",
+      "tone": "green"
+    },
+    {
+      "label": "No request changes open",
+      "value": "Required",
+      "note": "Every requested-change thread is resolved, accepted, or blocked with no-go decision.",
+      "tone": "red"
+    },
+    {
+      "label": "No-leak repeated",
+      "value": "Required",
+      "note": "No workbook, no secret, no billing, no invoice, no commercial export statement is present.",
+      "tone": "red"
+    },
+    {
+      "label": "Required checks exact",
+      "value": "Required",
+      "note": "Required GitHub Actions names come from real workflow output, not guessed labels.",
+      "tone": "blue"
+    },
+    {
+      "label": "Rollback visible",
+      "value": "Required",
+      "note": "Rollback path is linked in PR body, evidence folder, and management closeout.",
+      "tone": "amber"
+    },
+    {
+      "label": "Evidence index complete",
+      "value": "Required",
+      "note": "Screenshots, transcripts, issue URLs, branch proof, signoffs, and closeout note are linked.",
+      "tone": "teal"
+    },
+    {
+      "label": "Owner queue closed",
+      "value": "Required",
+      "note": "Every hold or deferred proof has owner, due date, next command, and follow-up path.",
+      "tone": "amber"
+    },
+    {
+      "label": "Management note ready",
+      "value": "Required",
+      "note": "Passed, held, blocked, deferred, no-leak, rollback, next owner, and next build are summarized.",
+      "tone": "green"
+    }
+  ],
+  "replySlaCadence": [
+    {
+      "moment": "Same day",
+      "action": "Capture replies",
+      "note": "Record any approve, comment, hold, request changes, defer, no-response, or blocker before the session ends.",
+      "tone": "green"
+    },
+    {
+      "moment": "Next morning",
+      "action": "Chase no response",
+      "note": "Ping reviewer lane owners that have no response or vague approval.",
+      "tone": "amber"
+    },
+    {
+      "moment": "48 hours",
+      "action": "Resolve holds",
+      "note": "Attach proof, update owner, or convert hold to request changes or defer.",
+      "tone": "blue"
+    },
+    {
+      "moment": "Before merge",
+      "action": "Reconfirm no-leak",
+      "note": "Repeat no workbook, no secret, no billing, no invoice, and no commercial export.",
+      "tone": "red"
+    },
+    {
+      "moment": "Weekly review",
+      "action": "Report open rows",
+      "note": "Bring unresolved reply rows into Command Center and Reports.",
+      "tone": "teal"
+    },
+    {
+      "moment": "Next build",
+      "action": "Export minutes",
+      "note": "v144 or v145 can print closeout and minutes once real replies exist.",
+      "tone": "green"
+    }
+  ],
+  "managementReplyBrief": [
+    {
+      "label": "Reply status",
+      "text": "Reviewer replies are tracked by lane, action type, evidence link, owner, due date, and closeout state.",
+      "tone": "green"
+    },
+    {
+      "label": "Approval rule",
+      "text": "Approval is valid only with evidence, issue trace, no-leak proof, rollback note, and next owner.",
+      "tone": "teal"
+    },
+    {
+      "label": "Hold rule",
+      "text": "Hold remains acceptable only with missing proof, owner, date, and next command.",
+      "tone": "amber"
+    },
+    {
+      "label": "Request-changes rule",
+      "text": "Request changes stops merge until trust failure is removed and documented.",
+      "tone": "red"
+    },
+    {
+      "label": "No-response rule",
+      "text": "No response is a management action, not silence; owner must chase or defer.",
+      "tone": "blue"
+    },
+    {
+      "label": "Next build",
+      "text": "Reply capture becomes the evidence source for exportable closeout and meeting minutes.",
+      "tone": "green"
+    }
+  ],
+  "copyReadyReplyLog": "PursuitDesk private repo reply capture log\n\nPR URL:\nReviewer lane:\nReviewer handle:\nReply state: Approved / Commented / Held / Requested changes / Deferred proof / Blocked / No response / Merge-ready\nThread URL:\nEvidence link:\nOwner:\nDue date:\nCloseout state:\n\nNo-leak reminder: no workbook, no production secret, no payment key, no billing export, no invoice, and no commercial tracker values are approved in this reply.\nRollback reminder: branch, PR, repo recreation, credential rotation, and data path reset stay visible until final merge or no-go.",
+  "acceptanceChecks": [
+    {
+      "label": "Reply lanes ready",
+      "note": "Eight reviewer lanes can capture real replies.",
+      "tone": "green"
+    },
+    {
+      "label": "Reply states ready",
+      "note": "Eight reply states keep approval, hold, defer, and block language precise.",
+      "tone": "teal"
+    },
+    {
+      "label": "Thread capture ready",
+      "note": "Eight fields prevent vague GitHub reply records.",
+      "tone": "blue"
+    },
+    {
+      "label": "Request-changes resolver ready",
+      "note": "Six resolver rows convert blockers into owner work.",
+      "tone": "red"
+    },
+    {
+      "label": "Approval readiness ready",
+      "note": "Eight lane checks define when approval can be trusted.",
+      "tone": "green"
+    },
+    {
+      "label": "Merge readiness ready",
+      "note": "Eight merge gates must pass before closeout.",
+      "tone": "amber"
+    },
+    {
+      "label": "SLA cadence ready",
+      "note": "Six follow-up moments prevent silence after the meeting.",
+      "tone": "blue"
+    },
+    {
+      "label": "Next handoff ready",
+      "note": "v144 can turn captured replies into a printable closeout or v145 can generate minutes.",
+      "tone": "teal"
+    }
+  ],
+  "handoff": [
+    "v143 turns the backend repo day meeting pack into a reply capture board.",
+    "The board separates approved, commented, held, requested-changes, deferred, blocked, no-response, and merge-ready states.",
+    "The static demo still cannot read GitHub replies; it now defines exactly how the real replies should be recorded after the private repo meeting.",
+    "v144 can now prepare an evidence closeout PDF/export plan, while v145 can generate backend meeting minutes from captured replies."
+  ],
+  "counts": {
+    "replyKpis": 4,
+    "sourceReadiness": 4,
+    "reviewerReplyLanes": 8,
+    "replyStateBoard": 8,
+    "threadCaptureChecklist": 8,
+    "requestedChangesResolver": 6,
+    "approvalReadinessBoard": 8,
+    "mergeReadinessLanes": 8,
+    "replySlaCadence": 6,
+    "managementReplyBrief": 6,
+    "acceptanceChecks": 8,
+    "signalCards": 4
+  }
+}

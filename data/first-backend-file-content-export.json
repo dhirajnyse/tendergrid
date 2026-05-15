@@ -1,0 +1,281 @@
+{
+  "schemaVersion": "pursuitdesk.firstBackendFileContentExport.v120",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "purpose": "Export paste-ready starter file contents for the future private backend repository.",
+  "fileContentScore": 96,
+  "fileGroups": [
+    {
+      "label": "Root shell",
+      "count": 8,
+      "note": "README, package, workspace, gitignore, env example, CODEOWNERS, PR template, release runbook.",
+      "tone": "green"
+    },
+    {
+      "label": "API shell",
+      "count": 8,
+      "note": "Server, app composition, health route, request id, safe error, tenant, and access middleware.",
+      "tone": "teal"
+    },
+    {
+      "label": "Packages",
+      "count": 8,
+      "note": "Shared result, env parser, audit, redaction, schema, seeds, fixtures, and importer dry run.",
+      "tone": "blue"
+    },
+    {
+      "label": "Workflows",
+      "count": 8,
+      "note": "CI, security, migration, billing, import, staging, release, and dependency workflow starter files.",
+      "tone": "red"
+    }
+  ],
+  "rootFiles": [
+    {
+      "path": "README.md",
+      "owner": "Platform Owner",
+      "issue": "PD-BE-001",
+      "purpose": "Private backend alpha orientation and first proof commands.",
+      "tone": "green"
+    },
+    {
+      "path": "package.json",
+      "owner": "Platform Owner",
+      "issue": "PD-BE-001",
+      "purpose": "Workspace scripts used by local development and GitHub Actions.",
+      "tone": "blue"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "owner": "Platform Owner",
+      "issue": "PD-BE-001",
+      "purpose": "Monorepo workspace boundary for apps and packages.",
+      "tone": "teal"
+    },
+    {
+      "path": ".gitignore",
+      "owner": "Platform Owner",
+      "issue": "PD-BE-001",
+      "purpose": "Prevent secrets, builds, dependencies, and generated reports from entering git.",
+      "tone": "green"
+    },
+    {
+      "path": ".env.example",
+      "owner": "Security Owner",
+      "issue": "PD-BE-001",
+      "purpose": "Safe environment keys with test-only placeholders.",
+      "tone": "red"
+    },
+    {
+      "path": ".github/CODEOWNERS",
+      "owner": "Platform Owner",
+      "issue": "PD-BE-001",
+      "purpose": "Owner review map for protected files.",
+      "tone": "amber"
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "owner": "Platform Owner",
+      "issue": "PD-BE-001",
+      "purpose": "PR evidence checklist tied to protected branch rules.",
+      "tone": "blue"
+    },
+    {
+      "path": "docs/release-runbook.md",
+      "owner": "Product Owner",
+      "issue": "PD-BE-011",
+      "purpose": "Release ritual and rollback control for staging alpha.",
+      "tone": "red"
+    }
+  ],
+  "apiStarterFiles": [
+    {
+      "path": "apps/api/src/server.ts",
+      "owner": "Backend Lead",
+      "issue": "PD-BE-002",
+      "purpose": "HTTP entrypoint that starts the API shell.",
+      "tone": "teal"
+    },
+    {
+      "path": "apps/api/src/app.ts",
+      "owner": "Backend Lead",
+      "issue": "PD-BE-002",
+      "purpose": "App composition with request id, tenant scope, access, and safe errors.",
+      "tone": "green"
+    },
+    {
+      "path": "apps/api/src/routes/index.ts",
+      "owner": "Backend Lead",
+      "issue": "PD-BE-002",
+      "purpose": "Route registry for alpha endpoints.",
+      "tone": "blue"
+    },
+    {
+      "path": "apps/api/src/routes/health.ts",
+      "owner": "Backend Lead",
+      "issue": "PD-BE-002",
+      "purpose": "Health endpoint that proves request id propagation.",
+      "tone": "green"
+    },
+    {
+      "path": "apps/api/src/middleware/request-id.ts",
+      "owner": "Security Owner",
+      "issue": "PD-BE-003",
+      "purpose": "Attach a request id to every response and audit event.",
+      "tone": "blue"
+    },
+    {
+      "path": "apps/api/src/middleware/safe-error.ts",
+      "owner": "Security Owner",
+      "issue": "PD-BE-003",
+      "purpose": "Single safe error envelope for frontend and audit trace.",
+      "tone": "red"
+    },
+    {
+      "path": "apps/api/src/middleware/tenant-scope.ts",
+      "owner": "Security Owner",
+      "issue": "PD-BE-004",
+      "purpose": "Attach tenant context and block cross-company movement later.",
+      "tone": "red"
+    },
+    {
+      "path": "apps/api/src/middleware/access-decision.ts",
+      "owner": "Security Owner",
+      "issue": "PD-BE-004",
+      "purpose": "Central access decision placeholder for section guards.",
+      "tone": "red"
+    }
+  ],
+  "packageFiles": [
+    {
+      "path": "packages/shared/result.ts",
+      "owner": "Backend Lead",
+      "issue": "PD-BE-003",
+      "purpose": "Typed result contract shared by services and routes.",
+      "tone": "green"
+    },
+    {
+      "path": "packages/shared/env.ts",
+      "owner": "Platform Owner",
+      "issue": "PD-BE-001",
+      "purpose": "Environment parser that rejects missing required keys.",
+      "tone": "red"
+    },
+    {
+      "path": "packages/audit/audit-writer.ts",
+      "owner": "Governance Owner",
+      "issue": "PD-BE-005",
+      "purpose": "Append-only audit writer interface for allowed and denied movements.",
+      "tone": "teal"
+    },
+    {
+      "path": "packages/domain/redaction.ts",
+      "owner": "Security Owner",
+      "issue": "PD-BE-004",
+      "purpose": "Remove commercial fields from operational tracker payloads.",
+      "tone": "red"
+    },
+    {
+      "path": "packages/db/schema.ts",
+      "owner": "Database Owner",
+      "issue": "PD-BE-006",
+      "purpose": "First table names and ownership boundaries.",
+      "tone": "blue"
+    },
+    {
+      "path": "packages/db/seeds/index.ts",
+      "owner": "Database Owner",
+      "issue": "PD-BE-006",
+      "purpose": "Seed runner entrypoint for tenant and fixture records.",
+      "tone": "green"
+    },
+    {
+      "path": "packages/testing/fixtures/index.ts",
+      "owner": "QA Owner",
+      "issue": "PD-BE-012",
+      "purpose": "Fixture manifest used by route, migration, import, and smoke tests.",
+      "tone": "teal"
+    },
+    {
+      "path": "packages/importer/dry-run.ts",
+      "owner": "Migration Owner",
+      "issue": "PD-BE-007",
+      "purpose": "Workbook dry-run shell for validation before commit.",
+      "tone": "amber"
+    }
+  ],
+  "workflowFiles": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/security-audit.yml",
+    ".github/workflows/migration-restore.yml",
+    ".github/workflows/billing-testmode.yml",
+    ".github/workflows/import-dryrun.yml",
+    ".github/workflows/staging-smoke.yml",
+    ".github/workflows/release-gate.yml",
+    ".github/workflows/dependency-review.yml"
+  ],
+  "contentPreviews": [
+    {
+      "path": "README.md",
+      "content": "# PursuitDesk Backend\n\nPrivate production backend for the PursuitDesk alpha.\n\n## First proof\n\npnpm install\npnpm lint\npnpm typecheck\npnpm test:contracts\npnpm test:route-envelopes\npnpm test:auth-tenant\npnpm ci:release-gate"
+    },
+    {
+      "path": "package.json",
+      "content": "{\"name\":\"pursuitdesk-platform\",\"private\":true,\"type\":\"module\",\"scripts\":{\"dev:api\":\"tsx apps/api/src/server.ts\",\"lint\":\"eslint .\",\"typecheck\":\"tsc --noEmit\",\"test:contracts\":\"vitest run packages/testing/contracts\",\"test:route-envelopes\":\"vitest run packages/testing/route-envelopes\",\"test:auth-tenant\":\"vitest run packages/testing/auth-tenant\",\"ci:release-gate\":\"node scripts/release-gate.mjs\"}}"
+    },
+    {
+      "path": ".github/pull_request_template.md",
+      "content": "## Linked issue\n\n- Closes:\n\n## Proof\n\n- [ ] pnpm lint\n- [ ] pnpm typecheck\n- [ ] pnpm test:contracts\n- [ ] pnpm test:route-envelopes\n- [ ] pnpm test:auth-tenant\n- [ ] pnpm ci:release-gate\n\n## Release notes\n\n- Rollback plan:\n- Affected rooms:"
+    },
+    {
+      "path": "apps/api/src/app.ts",
+      "content": "import express from \"express\";\nimport { requestId } from \"./middleware/request-id\";\nimport { safeError } from \"./middleware/safe-error\";\nimport { tenantScope } from \"./middleware/tenant-scope\";\nimport { accessDecision } from \"./middleware/access-decision\";\nimport { routes } from \"./routes\";\n\nexport const app = express();\napp.use(express.json({ limit: \"1mb\" }));\napp.use(requestId);\napp.use(tenantScope);\napp.use(accessDecision);\napp.use(routes);\napp.use(safeError);"
+    },
+    {
+      "path": "apps/api/src/middleware/safe-error.ts",
+      "content": "import type { ErrorRequestHandler } from \"express\";\n\nexport const safeError: ErrorRequestHandler = (err, req, res, _next) => {\n  const status = Number(err.status || 500);\n  res.status(status).json({ ok: false, requestId: res.locals.requestId, code: err.code || \"internal_error\", message: status >= 500 ? \"Unexpected server error.\" : err.message, path: req.path, method: req.method, retryable: status >= 500 });\n};"
+    },
+    {
+      "path": "packages/audit/audit-writer.ts",
+      "content": "export type AuditEvent = { requestId: string; companyId: string; actorId: string; eventType: string; targetType: string; targetId?: string; decision: \"allowed\" | \"denied\" | \"system\" };\n\nexport async function writeAuditEvent(event: AuditEvent) {\n  return { ...event, eventId: `audit_${Date.now()}`, createdAt: new Date().toISOString() };\n}"
+    },
+    {
+      "path": "packages/domain/redaction.ts",
+      "content": "const blockedKeys = new Set([\"valueAmount\", \"valueText\", \"agreementNo\", \"invoiceId\", \"loaNo\", \"negotiations\"]);\n\nexport function redactOperationalRecord<T extends Record<string, unknown>>(record: T) {\n  return Object.fromEntries(Object.entries(record).filter(([key]) => !blockedKeys.has(key)));\n}"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "content": "name: Primary PR gate\n\non:\n  pull_request:\n\njobs:\n  primary-pr-gate:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n      - run: corepack enable\n      - run: pnpm install --frozen-lockfile\n      - run: pnpm lint\n      - run: pnpm typecheck\n      - run: pnpm test:contracts"
+    }
+  ],
+  "copyOrder": [
+    { "step": "01", "title": "Create repository root", "note": "Copy README, package, workspace, gitignore, env example, CODEOWNERS, and PR template.", "tone": "green" },
+    { "step": "02", "title": "Create docs", "note": "Add release runbook before branch protection is turned on.", "tone": "teal" },
+    { "step": "03", "title": "Create API app", "note": "Copy server, app, routes, health, request id, safe error, tenant, and access files.", "tone": "blue" },
+    { "step": "04", "title": "Create shared packages", "note": "Copy result, env, audit, redaction, schema, seeds, fixtures, and importer shells.", "tone": "green" },
+    { "step": "05", "title": "Create workflows", "note": "Copy GitHub Actions files after scripts and file paths are in place.", "tone": "red" },
+    { "step": "06", "title": "Install and typecheck", "note": "Run install, lint, typecheck, contracts, route envelopes, auth tenant, and release gate.", "tone": "amber" },
+    { "step": "07", "title": "Open first PR", "note": "Attach issue links, proof output, artifacts, migration note, and rollback note.", "tone": "blue" },
+    { "step": "08", "title": "Apply protection", "note": "After first successful workflow names appear, apply v119 branch rules and required checks.", "tone": "red" }
+  ],
+  "implementationGuardrails": [
+    { "label": "No live secrets", "note": "Only .env.example is exported; real secrets stay in GitHub environments or hosting provider.", "tone": "red" },
+    { "label": "Commercial privacy first", "note": "Operational route examples are designed to support redaction from day one.", "tone": "red" },
+    { "label": "Request id everywhere", "note": "API shell begins with request id so errors, logs, and audit can join later.", "tone": "blue" },
+    { "label": "Tenant before features", "note": "Tenant scope middleware appears before record, commercial, import, and billing route depth.", "tone": "teal" },
+    { "label": "Audit from day one", "note": "Audit writer starts as a package boundary before sensitive actions are implemented.", "tone": "green" },
+    { "label": "Workflow names stable", "note": "Required status checks need stable job names before protection is applied.", "tone": "amber" },
+    { "label": "Issue-linked files", "note": "Every file group maps back to PD-BE issues from the v118 exporter.", "tone": "blue" },
+    { "label": "Rollback documented", "note": "Release runbook exists before staging alpha or production movement.", "tone": "red" }
+  ],
+  "acceptanceChecks": [
+    { "label": "File inventory complete", "note": "32 starter files cover root, API, packages, and workflow boundaries.", "tone": "green" },
+    { "label": "Content previews ready", "note": "8 paste-ready examples are visible for the first commit.", "tone": "teal" },
+    { "label": "Issue trace ready", "note": "12 backend issues can point to file paths and proof commands.", "tone": "blue" },
+    { "label": "Branch rules aligned", "note": "12 required checks are reflected in workflow starter files.", "tone": "red" },
+    { "label": "Privacy starts early", "note": "Request id, safe errors, tenant scope, access decision, redaction, and audit appear before feature routes.", "tone": "red" },
+    { "label": "Env is safe", "note": "Only test-mode placeholder keys are exported, with no live customer or billing secrets.", "tone": "amber" },
+    { "label": "Copy order clear", "note": "8 steps define how to build the private repo first commit without confusion.", "tone": "green" },
+    { "label": "Next handoff ready", "note": "v121 can turn this content into a setup script and command sequence for repo creation.", "tone": "blue" }
+  ]
+}

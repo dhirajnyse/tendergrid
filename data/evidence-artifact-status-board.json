@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "pursuitdesk.evidenceArtifactStatusBoard.v138",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "build": "v138 Evidence Artifact Status Board",
+  "evidenceBoardScore": 91,
+  "generatedFor": "Future private backend repository",
+  "artifactRowCount": 65,
+  "visibleArtifactCards": 32,
+  "boardKpis": [
+    ["Artifact board", "91%", "How ready the proof packet is to move from planned evidence into real captured artifacts.", "green"],
+    ["Artifact rows", 65, "Markdown, screenshots, transcripts, signoffs, issue traces, branch proof, closeout, and block rules.", "teal"],
+    ["Real holds", 32, "Items waiting on real GitHub screenshots, command output, issue URLs, or owner signoff.", "amber"],
+    ["Hard blocked", 16, "Branch proof and trust failures that cannot be marked complete without real evidence.", "red"]
+  ],
+  "statusSummary": [
+    ["Ready templates", 17, "Files and closeout shells are prepared before the private repo exists.", "green"],
+    ["Hold for capture", 16, "Screenshots and command transcripts need real GitHub or terminal output.", "amber"],
+    ["Deferred to repo day", 16, "Issue URLs and owner signoffs wait for the private repo session.", "blue"],
+    ["Blocked until proof", 16, "Branch rules and trust failures require real check names and no-leak proof.", "red"]
+  ],
+  "evidenceLanes": [
+    ["Identity and privacy", "Preflight, private repo, clean-copy, no-live-data, and no-secret evidence.", "Security owner", "red"],
+    ["Repository structure", "Folder tree, starter files, branch, labels, milestones, and first copy-set proof.", "Platform owner", "teal"],
+    ["Command transcripts", "Preflight, repo view, branch, file tree, scan, quality proof, issue wave, and workflow output.", "Backend lead", "blue"],
+    ["Issue and PR trace", "Issue URLs, PR URL, evidence links, reviewer lanes, rollback, and closeout notes.", "Product / QA", "green"],
+    ["Branch protection", "Workflow names, required checks, review rules, protected branch proof, and bypass decision.", "Release owner", "amber"],
+    ["Owner signoff", "Product, platform, backend, security, data, and QA go, hold, no-go, or defer notes.", "Owner lanes", "green"]
+  ],
+  "artifactStatusGroups": {
+    "ready": [
+      ["docs/evidence/00-preflight.md", "Preflight proof", "Markdown template ready for identity, local path, tool versions, decision owner, and no-live-data boundary.", "green"],
+      ["docs/evidence/01-repo-private.md", "Private repo proof", "Markdown template ready for private visibility, repo URL, owner, timestamp, and public-demo separation.", "green"],
+      ["docs/evidence/02-clean-copy-set.md", "Clean copy proof", "Markdown template ready for no secrets, workbooks, certificates, invoices, commercial exports, or live keys.", "green"],
+      ["docs/evidence/03-file-tree.md", "Starter tree proof", "Markdown template ready for folder tree, copied starter files, approved omissions, and branch name.", "green"],
+      ["docs/evidence/08-closeout.md", "Closeout proof", "Closeout shell ready for passed, deferred, blocked, no-leak, rollback, owners, and next owner.", "green"]
+    ],
+    "hold": [
+      ["docs/evidence/screenshots/repo-private.png", "Private visibility screenshot", "Hold until the private GitHub repository exists.", "red"],
+      ["docs/evidence/screenshots/tree-after-first-copy.png", "Starter file tree screenshot", "Hold until approved starter files are copied.", "green"],
+      ["docs/evidence/transcripts/preflight-auth.txt", "Preflight transcript", "Hold until command output or dated blocker note is saved.", "blue"],
+      ["docs/evidence/transcripts/workflow-names.txt", "Workflow names transcript", "Hold until the first GitHub Actions run exposes exact check names.", "teal"]
+    ],
+    "deferred": [
+      ["docs/evidence/signoffs/product-owner.md", "Product owner signoff", "Deferred until owner records go, hold, no-go, or defer.", "green"],
+      ["docs/evidence/signoffs/security-owner.md", "Security owner signoff", "Deferred until no-secret, no-live-data, and commercial privacy proof is reviewed.", "red"],
+      ["docs/issues/PD-BE-001.md", "Primary issue URL", "Deferred until the real GitHub issue is opened and linked.", "green"],
+      ["docs/issues/PD-BE-011.md", "Branch protection issue URL", "Deferred until workflow names and branch rules can be traced.", "amber"]
+    ],
+    "blocked": [
+      ["docs/evidence/07-branch-protection.md", "Branch check names", "Blocked until exact GitHub Actions check names exist.", "red"],
+      ["docs/evidence/07-branch-protection.md", "Review policy proof", "Blocked until required review and conversation-resolution settings are captured.", "red"],
+      ["docs/evidence/08-closeout.md", "Public repository", "Block immediately if production backend work appears in a public repository.", "red"],
+      ["docs/evidence/08-closeout.md", "Secret or credential", "Block and rotate if any token, certificate, live key, or secret appears.", "red"]
+    ]
+  },
+  "sourceOfTruthMap": [
+    ["GitHub repo settings", "Private visibility screenshot", "Hard proof source for repo privacy and owner account.", "red"],
+    ["GitHub Issues", "Issue URLs and labels", "Traceability source for backend alpha scope and owner lanes.", "blue"],
+    ["GitHub Pull Request", "Draft PR URL and review comments", "Source for review status, proof links, rollback, and blockers.", "green"],
+    ["GitHub Actions", "Workflow and job names", "Source for required status checks and branch-protection setup.", "amber"],
+    ["docs/evidence", "Markdown proof packet", "Source for snapshots, transcripts, signoffs, closeout, and no-leak notes.", "teal"],
+    ["Command Center", "Management status", "Executive source for ready, hold, blocked, deferred, and next owner state.", "green"]
+  ],
+  "escalationQueue": [
+    ["Repo URL missing", "Hold review", "Private repo URL and visibility proof must be pasted before review starts.", "red"],
+    ["Issue URLs missing", "Hold review", "Generated issue links must replace placeholders in the first PR body.", "teal"],
+    ["Evidence placeholder only", "Hold review", "Placeholder evidence is allowed in draft, but must be explicit before review.", "amber"],
+    ["Workflow names pending", "Hold branch protection", "Required check names cannot be guessed before the first Actions run.", "blue"],
+    ["Owner signoff missing", "Hold approval", "Each lane needs go, hold, no-go, or defer with reason.", "green"],
+    ["Public repository", "Block immediately", "No production backend work can proceed in a public repo.", "red"],
+    ["Secret or credential", "Block and rotate", "Any secret, token, certificate, or live key requires removal and rotation review.", "red"],
+    ["Customer workbook", "Block and restart", "Live Excel source data cannot enter the production backend repo.", "red"]
+  ],
+  "captureSequence": [
+    ["01", "Create evidence index", "Create docs/evidence/README.md and list every artifact row before commands run.", "green"],
+    ["02", "Capture private repo", "Save private visibility proof before moving files or creating issues.", "red"],
+    ["03", "Write clean copy note", "Confirm no workbooks, secrets, certificates, invoices, live keys, or commercial exports.", "red"],
+    ["04", "Save tree and taxonomy", "Capture file tree, labels, milestones, and issue wave before first PR review.", "teal"],
+    ["05", "Paste transcripts", "Save command output or blocker notes under transcript slots.", "blue"],
+    ["06", "Open draft PR", "Link issues, evidence files, proof commands, rollback, reviewers, and closeout.", "green"],
+    ["07", "Record check names", "Use exact GitHub Actions check names before branch protection is applied.", "amber"],
+    ["08", "Close out board", "Mark passed, held, blocked, deferred, no-leak proof, owner signoffs, and next owner.", "green"]
+  ],
+  "qualityRules": [
+    ["No guessed checks", "Blocked", "Branch protection stays blocked until real GitHub Actions check names exist.", "red"],
+    ["No silent placeholders", "Hold", "Any placeholder must name owner, blocker reason, and next command.", "amber"],
+    ["No live data", "Blocked", "Any workbook, source export, secret, certificate, payment key, or production file fails the board.", "red"],
+    ["No orphan artifact", "Hold", "Every screenshot, transcript, and signoff needs a PR link or issue trace.", "blue"],
+    ["One owner per gap", "Required", "Each hold, block, and deferred artifact has an owner lane.", "teal"],
+    ["Closeout always written", "Required", "Passed, deferred, blocked, no-leak statement, rollback, and next owner are recorded.", "green"],
+    ["Review lane aligned", "Required", "Product, platform, backend, security, data, and QA lanes use the v137 review matrix.", "green"],
+    ["Downloadable handoff", "Required", "The JSON handoff can be used as a checklist outside the static demo.", "blue"]
+  ],
+  "acceptanceChecks": [
+    ["Statuses separated", "4 status groups split ready, hold, deferred, and blocked work.", "green"],
+    ["Artifacts indexed", "65 artifacts are normalized into one board.", "teal"],
+    ["Evidence lanes clear", "6 owner lanes explain who captures which proof.", "blue"],
+    ["Escalations visible", "14 hold and block items are ready for management review.", "amber"],
+    ["Capture rhythm clear", "8 steps explain how proof moves from planned to captured.", "green"],
+    ["Quality rules explicit", "8 rules prevent guessed checks, silent placeholders, and data leakage.", "red"],
+    ["Source map ready", "6 source systems define where each proof fact lives.", "blue"],
+    ["Next handoff ready", "v139 can prepare the private repo handoff email and owner briefing pack.", "teal"]
+  ],
+  "signalCards": [
+    ["Artifact board", "91%", "Readiness to track evidence capture instead of relying on memory.", "green"],
+    ["Ready", 17, "Prepared templates and closeout shells.", "green"],
+    ["Hold or deferred", 32, "Real GitHub outputs, URLs, screenshots, or signoffs still needed.", "amber"],
+    ["Blocked", 16, "Trust items that need real branch or no-leak proof.", "red"]
+  ],
+  "handoff": [
+    "v138 turns the review gate matrix, evidence folder writer, proof exporter, and command runner into one artifact status board.",
+    "The board separates ready templates from real holds, deferred repo-day items, and hard blocks so proof gaps are visible before the private backend repo starts.",
+    "It remains honest: real screenshots, transcripts, issue URLs, workflow names, branch proof, and owner signoffs still require the real private GitHub repository.",
+    "v139 can now prepare the private repo handoff email, owner briefing, upload checklist, and meeting script for the execution day."
+  ]
+}

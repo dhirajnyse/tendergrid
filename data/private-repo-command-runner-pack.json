@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "pursuitdesk.privateRepoCommandRunnerPack.v136",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "build": "v136 Private Repo Command Runner Pack",
+  "commandRunnerScore": 76,
+  "generatedFor": "Future private backend repository",
+  "runnerKpis": [
+    ["Runner readiness", "76%", "How ready the real private repo command session is to run without improvising.", "amber"],
+    ["Command blocks", 10, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
+    ["Evidence writes", 13, "Evidence paths that must be created, updated, or intentionally deferred.", "teal"],
+    ["Hard stops", 4, "Public repo, secret, workbook, or commercial data leak stops execution immediately.", "red"]
+  ],
+  "preflightCommands": [
+    ["01", "Confirm operator", "gh auth status", "The output must show the expected GitHub identity before any repository action.", "blue"],
+    ["02", "Confirm tools", "git --version; node --version; npm --version", "Tool versions are written to the preflight transcript.", "blue"],
+    ["03", "Confirm workspace", "Get-Location", "The local folder is captured before copy or setup steps begin.", "teal"],
+    ["04", "Confirm no live data", "Review copy set manually", "No Excel workbook, secret, certificate, payment key, invoice, or customer file may enter the private repo.", "red"],
+    ["05", "Confirm decision", "Owner go/hold/no-go", "Repo opening approval must exist before creating the private repo.", "green"],
+    ["06", "Confirm evidence path", "Create docs/evidence first", "Screenshots and transcripts need a named destination before commands start.", "teal"]
+  ],
+  "commandRunbook": [
+    ["01", "Preflight", "PowerShell: gh auth status; git --version; node --version; npm --version", "Confirms local operator identity and basic tooling before any repo action. Save output or blocker note to docs/evidence/transcripts/00-preflight-auth.txt.", "blue"],
+    ["02", "Create private repo", "GitHub CLI: gh repo create dhirajnyse/pursuitdesk-platform --private --description PursuitDesk-production-backend --confirm", "Creates the private production backend repository; capture visibility proof immediately. Save output or blocker note to docs/evidence/transcripts/01-private-repo.txt.", "red"],
+    ["03", "Clone and branch", "Git: git clone git@github.com:dhirajnyse/pursuitdesk-platform.git; cd pursuitdesk-platform; git checkout -b codex/backend-alpha-shell", "Keeps main clean and starts all work on a reviewable branch. Save output or blocker note to docs/evidence/transcripts/02-branch.txt.", "teal"],
+    ["04", "Create shell folders", "PowerShell: New-Item -ItemType Directory -Force apps/api/src packages/domain packages/db infra docs/evidence .github/workflows scripts", "Creates the minimum repo skeleton for backend alpha work. Save output or blocker note to docs/evidence/transcripts/03-file-tree.txt.", "green"],
+    ["05", "Copy starter files", "Manual controlled copy: Copy only approved root, API, package, workflow, env-example, script, and evidence files from the generated packs.", "Moves generated shell files only; no Excel source files, secrets, or live credentials. Save output or blocker note to docs/evidence/transcripts/04-clean-copy-set.txt.", "amber"],
+    ["06", "Install and first proof", "Package manager: npm install; npm run lint; npm run test -- --runInBand", "Runs available proof commands or records exact placeholders linked to issues if scripts are not ready. Save output or blocker note to docs/evidence/transcripts/05-quality-proof.txt.", "blue"],
+    ["07", "Import taxonomy", "GitHub CLI: Create labels and milestones from the taxonomy pack, then capture the labels and milestones screens.", "Makes issue routing visible before backlog import. Save output or blocker note to docs/evidence/transcripts/06-taxonomy-import.txt.", "teal"],
+    ["08", "Open issue wave", "GitHub CLI: Open the first M0/M1 wave from generated issue bodies and record each URL in evidence.", "Creates traceability before the first PR is opened. Save output or blocker note to docs/evidence/transcripts/07-issue-wave.txt.", "green"],
+    ["09", "Open first PR", "GitHub CLI: git add .; git commit -m \"Backend alpha shell\"; git push -u origin codex/backend-alpha-shell; gh pr create --draft --title \"Backend alpha shell\" --body-file docs/evidence/first-pr.md", "Creates a draft first PR with proof, rollback, risk reference, and reviewer lanes. Save output or blocker note to docs/evidence/transcripts/08-first-pr.txt.", "amber"],
+    ["10", "Closeout and protect main", "GitHub settings: Capture workflow check names after the first Actions run, then apply branch protection only with real check names.", "Ends with branch protection proof, owner signoffs, blockers, and next owner. Save output or blocker note to docs/evidence/transcripts/09-closeout.txt.", "red"]
+  ],
+  "expectedOutputs": [
+    ["Preflight output", "docs/evidence/transcripts/00-preflight-auth.txt", "GitHub account, git version, node version, npm version, and local path are captured.", "blue"],
+    ["Private repo output", "docs/evidence/01-repo-private.md", "Private visibility, repo URL, owner, and timestamp are written before file copy.", "red"],
+    ["Clean copy output", "docs/evidence/02-clean-copy-set.md", "No source workbook, secret, certificate, invoice, billing key, or commercial export is present.", "red"],
+    ["File tree output", "docs/evidence/03-file-tree.md", "Root, apps, packages, infra, docs, workflows, scripts, and evidence folders are visible.", "green"],
+    ["Taxonomy output", "docs/evidence/04-issue-wave.md", "Labels, milestones, issue waves, owner lanes, and generated URLs are recorded.", "teal"],
+    ["Draft PR output", "docs/evidence/05-first-pr.md", "PR title, URL, scope, proof links, rollback text, reviewers, and blockers are captured.", "green"],
+    ["Actions output", "docs/evidence/06-workflow-check-names.md", "Exact workflow, job, required check names, failed check notes, and artifact links are captured.", "amber"],
+    ["Closeout output", "docs/evidence/08-closeout.md", "Passed, deferred, blocked, no-leak proof, owner signoffs, rollback status, and next owner are written.", "blue"]
+  ],
+  "failureHolds": [
+    ["Immediate stop", "Repo is public", "Stop before adding files. Switch to private or recreate, then document the event.", "red"],
+    ["Immediate stop", "Secret appears", "Stop, remove it, rotate if needed, check history, and write an incident note.", "red"],
+    ["Immediate stop", "Workbook appears", "Stop and restart from generated fixtures only.", "red"],
+    ["Immediate stop", "Commercial leak appears", "Remove value, LOA, agreement, invoice, billing, and negotiation data from operational examples.", "red"],
+    ["Hold", "Owner decision missing", "Pause until the owner confirms go, hold, or no-go.", "amber"],
+    ["Hold", "Workflow names unknown", "Do not apply branch protection until exact check names appear.", "blue"],
+    ["Hold", "PR proof incomplete", "Add issue links, scope, proof, rollback, blockers, and reviewer lanes before requesting review.", "teal"],
+    ["Hold", "Evidence not saved", "Write proof files and screenshot names before closing repo day.", "green"]
+  ],
+  "evidenceWriteMap": [
+    ["docs/evidence/README.md", "Evidence path", "Index and status map. Create, update, or mark deferred before the first PR body links here.", "green"],
+    ["docs/evidence/00-preflight.md", "Evidence path", "Identity and no-live-data proof. Create, update, or mark deferred before the first PR body links here.", "blue"],
+    ["docs/evidence/01-repo-private.md", "Evidence path", "Private repo proof. Create, update, or mark deferred before the first PR body links here.", "red"],
+    ["docs/evidence/02-clean-copy-set.md", "Evidence path", "No secret and no workbook proof. Create, update, or mark deferred before the first PR body links here.", "red"],
+    ["docs/evidence/03-file-tree.md", "Evidence path", "Starter file tree proof. Create, update, or mark deferred before the first PR body links here.", "green"],
+    ["docs/evidence/04-issue-wave.md", "Evidence path", "Issue URL and label proof. Create, update, or mark deferred before the first PR body links here.", "teal"],
+    ["docs/evidence/05-first-pr.md", "Evidence path", "Draft PR body and link proof. Create, update, or mark deferred before the first PR body links here.", "green"],
+    ["docs/evidence/06-workflow-check-names.md", "Evidence path", "Actions names proof. Create, update, or mark deferred before the first PR body links here.", "amber"],
+    ["docs/evidence/07-branch-protection.md", "Evidence path", "Main protection proof. Create, update, or mark deferred before the first PR body links here.", "red"],
+    ["docs/evidence/08-closeout.md", "Evidence path", "Passed, deferred, blocked, and next owner. Create, update, or mark deferred before the first PR body links here.", "blue"],
+    ["docs/evidence/screenshots/", "Evidence path", "8 screenshot slots. Create, update, or mark deferred before the first PR body links here.", "blue"],
+    ["docs/evidence/transcripts/", "Evidence path", "8 transcript slots. Create, update, or mark deferred before the first PR body links here.", "teal"],
+    ["docs/evidence/signoffs/", "Evidence path", "6 owner signoff files. Create, update, or mark deferred before the first PR body links here.", "green"]
+  ],
+  "artifactSlots": [
+    ["docs/evidence/screenshots/repo-private.png", "Private visibility", "Capture before any file, issue, or PR work begins.", "red"],
+    ["docs/evidence/screenshots/tree-after-first-copy.png", "Starter file tree", "Capture root, apps, packages, docs, scripts, workflows, and evidence folders.", "green"],
+    ["docs/evidence/screenshots/labels-and-milestones.png", "Taxonomy proof", "Capture labels and milestones after import and before issue creation.", "teal"],
+    ["docs/evidence/screenshots/issue-wave.png", "Issue wave", "Capture filtered first wave with labels, milestones, owners, and issue numbers.", "blue"],
+    ["docs/evidence/screenshots/first-pr-body.png", "Draft PR body", "Capture summary, scope, out-of-scope, proof, rollback, reviewers, and closeout sections.", "green"],
+    ["docs/evidence/screenshots/actions-check-names.png", "Actions names", "Capture exact workflow and job names after the first run.", "amber"],
+    ["docs/evidence/screenshots/branch-protection.png", "Main protection", "Capture required checks, review settings, conversation resolution, and bypass rules.", "red"],
+    ["docs/evidence/screenshots/closeout-board.png", "Repo day closeout", "Capture passed, deferred, blocked, no-leak proof, and next owner.", "blue"],
+    ["repo-private.png", "Private visibility screenshot", "Capture immediately after repo creation and before files are added.", "red"],
+    ["tree-after-first-copy.png", "Starter file tree screenshot", "Capture root, apps, packages, docs, scripts, workflows, and evidence folders.", "green"],
+    ["labels-and-milestones.png", "Taxonomy screenshot", "Capture labels and milestones after import and before issue wave.", "teal"],
+    ["issue-wave.csv", "Issue opening ledger", "Record issue keys, URLs, labels, milestones, owners, and opening wave.", "blue"],
+    ["first-pr.md", "Draft PR body", "Store title, scope, out-of-scope, proof, rollback, blockers, and reviewers.", "green"],
+    ["command-transcripts.zip", "Command evidence archive", "Store preflight, repo, tree, secret scan, install, test, issue, workflow, and release output.", "amber"],
+    ["docs/evidence/private-repo-command-runner-pack.json", "Runner JSON", "Attach this v136 handoff as the command source-of-truth for repo day.", "teal"]
+  ],
+  "manualProofActions": [
+    ["Repo visibility screenshot", "After repo creation", "Capture private visibility before files or issues move.", "red"],
+    ["Clean copy-set note", "Before file copy", "Write that no source workbook, .env, certificate, customer file, or commercial export entered the repo.", "red"],
+    ["Folder tree capture", "After shell folders", "Save the starter tree showing apps, packages, infra, docs, workflows, scripts, and evidence.", "green"],
+    ["Issue URLs", "After issue wave", "Paste the first wave URLs into docs/evidence/issue-wave.md.", "blue"],
+    ["PR proof note", "Before review", "Add scope, commands, rollback, open blockers, risk reference, and reviewer lanes to the PR body.", "teal"],
+    ["Workflow names", "After Actions run", "Copy exact GitHub check names before creating branch protection rules.", "amber"],
+    ["Branch rule proof", "After protection", "Capture required checks, PR review rules, conversation resolution, and bypass decision.", "red"],
+    ["Closeout note", "End of day", "Record passed, deferred, blocked, next owner, and go/hold/no-go status.", "green"]
+  ],
+  "ownerPromptRun": [
+    ["Founder / Product", "Do you approve repo opening only, with no live data and no production launch?", "green"],
+    ["Platform owner", "Can you prove private visibility, branch discipline, workflow names, and main protection?", "teal"],
+    ["Backend lead", "Can you own starter files, scripts, route shells, and first PR quality proof?", "blue"],
+    ["Security owner", "Can you confirm no secrets, no live data, tenant guard scope, and commercial redaction?", "red"],
+    ["Data owner", "Can you confirm generated fixtures only, migration rollback, and no workbook import?", "amber"],
+    ["QA / Release", "Can you confirm evidence files, screenshots, branch rules, blockers, and closeout?", "green"]
+  ],
+  "branchTimingRun": [
+    ["Before first Actions run", "Do not configure required checks", "GitHub check names do not exist yet, so guessing creates broken protection.", "red"],
+    ["After first run", "Capture exact names", "Copy workflow, job, and check labels exactly as GitHub displays them.", "blue"],
+    ["Before enabling rules", "Confirm reviewer lanes", "Make sure review policy matches product, platform, backend, security, data, and QA ownership.", "teal"],
+    ["Enable rules", "Protect main", "Require PR, required checks, review approval, and conversation resolution.", "green"],
+    ["After rules", "Try a small follow-up PR", "Confirm the protection blocks unsafe merge and produces expected status names.", "amber"],
+    ["Closeout", "Save proof", "Write branch protection evidence and unresolved exceptions into closeout notes.", "red"]
+  ],
+  "closeoutRun": [
+    ["Repo URL recorded", "Private repository URL and visibility proof are saved.", "red"],
+    ["Branch URL recorded", "Working branch and first PR link are saved.", "blue"],
+    ["Issue wave recorded", "First issue URLs, labels, milestones, and owner lanes are written.", "teal"],
+    ["Command output saved", "Tooling, install, quality, placeholder, and release-gate output are captured.", "green"],
+    ["No leak confirmed", "No secrets, no workbooks, no customer files, and no commercial fields are present.", "red"],
+    ["Workflow names saved", "Exact check names and any failed check reasons are recorded.", "amber"],
+    ["Main protected", "Branch protection proof exists or a dated defer reason is written.", "red"],
+    ["Next owner named", "The next implementation owner and first backlog move are explicit.", "green"]
+  ],
+  "copyReadyCommands": [
+    ["Preflight", "PowerShell", "gh auth status\ngit --version\nnode --version\nnpm --version\nGet-Location", "blue"],
+    ["Create private repo", "GitHub CLI", "gh repo create dhirajnyse/pursuitdesk-platform --private --description PursuitDesk-production-backend --confirm", "red"],
+    ["Clone and branch", "Git", "git clone git@github.com:dhirajnyse/pursuitdesk-platform.git\ncd pursuitdesk-platform\ngit checkout -b codex/backend-alpha-shell", "teal"],
+    ["Create evidence shell", "PowerShell", "New-Item -ItemType Directory -Force docs/evidence/screenshots docs/evidence/transcripts docs/evidence/signoffs", "green"],
+    ["Create backend shell", "PowerShell", "New-Item -ItemType Directory -Force apps/api/src packages/domain packages/db infra .github/workflows scripts", "green"],
+    ["Quality proof", "Package manager", "npm install\nnpm run lint\nnpm run test -- --runInBand", "blue"],
+    ["First PR", "GitHub CLI", "git add .\ngit commit -m \"Backend alpha shell\"\ngit push -u origin codex/backend-alpha-shell\ngh pr create --draft --title \"Backend alpha shell\" --body-file docs/evidence/first-pr.md", "amber"],
+    ["Branch protection hold", "GitHub settings", "Capture exact workflow and job names from the first Actions run before creating required status checks.", "red"]
+  ],
+  "acceptanceChecks": [
+    ["Preflight captured", "6 preflight commands or manual checks are named before repo creation.", "blue"],
+    ["Runbook complete", "10 command blocks cover create, clone, shell, proof, issues, PR, checks, protection, and closeout.", "green"],
+    ["Outputs named", "8 expected outputs map commands to evidence files.", "teal"],
+    ["Failure holds clear", "8 stop or hold rules prevent unsafe execution.", "red"],
+    ["Evidence paths ready", "13 evidence writes map to the repo folder.", "green"],
+    ["Artifacts named", "15 screenshot, manifest, and JSON artifact slots are named.", "blue"],
+    ["Owners prompted", "6 owner prompts define approval accountability.", "teal"],
+    ["Closeout explicit", "8 closeout checks define what must be true before implementation depth.", "amber"]
+  ],
+  "signalCards": [
+    ["Command runner", "76%", "Readiness to run the private repo day from a controlled sequence.", "amber"],
+    ["Commands", 10, "Executable or manually controlled steps with transcript destinations.", "blue"],
+    ["Evidence writes", 13, "Proof files, folders, screenshots, transcripts, and signoffs to create.", "teal"],
+    ["Stop rules", 4, "Conditions that stop the day before trust is compromised.", "red"]
+  ],
+  "handoff": [
+    "v136 turns the evidence folder writer and day-one script into a private repo command runner pack.",
+    "The pack names preflight commands, command order, expected outputs, evidence write paths, screenshot slots, owner prompts, branch-protection timing, closeout checks, and copy-ready commands.",
+    "It deliberately does not execute against GitHub from the static demo; it prepares the exact run sheet for the real private backend repository session.",
+    "v137 can now define the backend PR review gate matrix so reviewers know what to approve, hold, or block after the command runner produces evidence."
+  ]
+}

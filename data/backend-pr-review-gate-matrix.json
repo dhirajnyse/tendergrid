@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "pursuitdesk.backendPrReviewGateMatrix.v137",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "build": "v137 Backend PR Review Gate Matrix",
+  "reviewGateScore": 85,
+  "generatedFor": "Future private backend repository",
+  "reviewKpis": [
+    ["Review readiness", "85%", "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", "green"],
+    ["Reviewer lanes", 6, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
+    ["Evidence links", 9, "Evidence files the PR body should link before formal approval.", "blue"],
+    ["Hard blocks", 8, "Unsafe conditions that prevent review or merge.", "red"]
+  ],
+  "reviewerGateMatrix": [
+    ["Product owner", "Approve alpha scope", "Approve when alpha scope is explicit, the PR does not launch production SaaS, and no live customer data is accepted.", "Hold when evidence links are placeholders or issue URLs are not opened.", "Block if production launch, live data, or commercial scope creep appears.", "green"],
+    ["Platform owner", "Repo and branch rules", "Approve when private visibility, branch naming, workflow names, and protection timing are proven.", "Hold when workflow names, branch proof, or repo visibility evidence is missing.", "Block if the repo is public, main is directly pushed, or required checks are guessed.", "teal"],
+    ["Backend lead", "Starter shell", "Approve when root files, API shell, scripts, route boundaries, and first PR quality are clear.", "Hold when install, lint, test, file tree, or ownership output is missing.", "Block if backend files are unowned, unsafe, or outside the first PR scope.", "blue"],
+    ["Security owner", "No leak proof", "Approve when no-secret, tenant guardrail, commercial redaction, and denial proof are visible.", "Hold when scans, redaction proof, or audit evidence are missing.", "Block if secrets, customer workbook data, certificates, live keys, invoices, or commercial values appear.", "red"],
+    ["Data owner", "Fixture boundary", "Approve when generated fixtures, migration rollback, no workbook import, and source trace are clear.", "Hold when seed, migration, rollback, or source-trace proof is incomplete.", "Block if live workbook data or customer exports enter the repo.", "amber"],
+    ["QA owner", "Evidence closeout", "Approve when screenshots, transcripts, issue links, PR proof, and go/hold/no-go notes are complete.", "Hold when any proof file, screenshot, transcript, or closeout note is missing.", "Block if merge readiness is claimed without full closeout evidence.", "green"]
+  ],
+  "decisionGates": [
+    ["Draft only", "Evidence incomplete", "The PR stays draft while repo URL, issue URLs, command outputs, workflow names, or owner signoffs are missing.", "amber"],
+    ["Reviewable", "Evidence linked", "The PR can request review after scope, proof links, rollback, blockers, and reviewer lanes are visible.", "blue"],
+    ["Hold", "Proof waiting", "A reviewer can hold when a proof file, screenshot, transcript, check name, or owner answer is incomplete.", "amber"],
+    ["Block", "Trust failure", "A reviewer must block if public repo, secret, workbook, commercial leak, direct main push, or no rollback appears.", "red"],
+    ["Approve", "Lane clear", "A reviewer can approve only their lane after evidence and issue trace match the PR body.", "green"],
+    ["Merge ready", "All gates clear", "Merge only after approvals, exact checks, no-leak proof, branch rules, closeout, and next owner are recorded.", "teal"]
+  ],
+  "evidenceReviewMap": [
+    ["docs/evidence/00-preflight.md", "Preflight proof", "Reviewer confirms identity, local path, tool versions, decision owner, and no-live-data boundary.", "blue"],
+    ["docs/evidence/01-repo-private.md", "Private repo proof", "Reviewer confirms private visibility, repo URL, owner, timestamp, and public-demo separation.", "red"],
+    ["docs/evidence/02-clean-copy-set.md", "Clean copy proof", "Reviewer confirms no secrets, workbooks, certificates, invoices, commercial exports, or live keys.", "red"],
+    ["docs/evidence/03-file-tree.md", "Starter tree proof", "Reviewer confirms folder tree, copied starter files, approved omissions, and branch name.", "green"],
+    ["docs/evidence/04-issue-wave.md", "Issue wave proof", "Reviewer confirms issue URLs, labels, milestones, owners, and opening order.", "teal"],
+    ["docs/evidence/05-first-pr.md", "First PR proof", "Reviewer confirms PR link, title, scope, commands, risk reference, rollback note, reviewers, and blockers.", "green"],
+    ["docs/evidence/06-workflow-check-names.md", "Workflow names proof", "Reviewer confirms exact workflow names, job names, required checks, artifacts, and failed check notes.", "amber"],
+    ["docs/evidence/07-branch-protection.md", "Branch protection proof", "Reviewer confirms required checks, review policy, conversation resolution, bypass decision, and screenshot reference.", "red"],
+    ["docs/evidence/08-closeout.md", "Closeout proof", "Reviewer confirms passed, deferred, blocked, owner signoffs, next action, and packet handoff.", "blue"],
+    ["docs/evidence/transcripts/00-preflight-auth.txt", "Preflight output", "Reviewer checks whether GitHub account, git version, node version, npm version, and local path are captured.", "blue"],
+    ["docs/evidence/01-repo-private.md", "Private repo output", "Reviewer checks whether private visibility, repo URL, owner, and timestamp are written before file copy.", "red"],
+    ["docs/evidence/02-clean-copy-set.md", "Clean copy output", "Reviewer checks whether no source workbook, secret, certificate, invoice, billing key, or commercial export is present.", "red"],
+    ["docs/evidence/03-file-tree.md", "File tree output", "Reviewer checks whether root, apps, packages, infra, docs, workflows, scripts, and evidence folders are visible.", "green"],
+    ["docs/evidence/04-issue-wave.md", "Taxonomy output", "Reviewer checks labels, milestones, issue waves, owner lanes, and generated URLs.", "teal"],
+    ["docs/evidence/05-first-pr.md", "Draft PR output", "Reviewer checks PR title, URL, scope, proof links, rollback text, reviewers, and blockers.", "green"],
+    ["docs/evidence/06-workflow-check-names.md", "Actions output", "Reviewer checks exact workflow, job, required check names, failed check notes, and artifact links.", "amber"],
+    ["docs/evidence/08-closeout.md", "Closeout output", "Reviewer checks passed, deferred, blocked, no-leak proof, owner signoffs, rollback status, and next owner.", "blue"]
+  ],
+  "holdQueue": [
+    ["Repo URL missing", "Hold review", "Private repo URL and visibility proof must be pasted before review starts.", "red"],
+    ["Issue URLs missing", "Hold review", "Generated issue links must replace placeholders in the first PR body.", "teal"],
+    ["Evidence placeholder only", "Hold review", "Placeholder evidence is allowed in draft, but must be explicit before review.", "amber"],
+    ["Workflow names pending", "Hold branch protection", "Required check names cannot be guessed before the first Actions run.", "blue"],
+    ["Owner signoff missing", "Hold approval", "Each lane needs go, hold, no-go, or defer with reason.", "green"],
+    ["Rollback not written", "Hold review", "Close PR, delete branch, recreate repo, rotate credential, or restart data path must be named.", "amber"],
+    ["Command output missing", "Hold proof", "Preflight, setup, quality, issue, PR, and closeout transcripts need output or blocker notes.", "blue"],
+    ["Closeout missing", "Hold merge", "Passed, deferred, blocked, no-leak, owners, and next owner must be written.", "green"]
+  ],
+  "blockRules": [
+    ["Public repository", "Block immediately", "No production backend work can proceed in a public repo.", "red"],
+    ["Secret or credential", "Block and rotate", "Any secret, token, certificate, or live key requires removal and rotation review.", "red"],
+    ["Customer workbook", "Block and restart", "Live Excel source data cannot enter the production backend repo.", "red"],
+    ["Commercial leakage", "Block and redact", "Value, LOA, agreement, invoice, billing, and negotiation facts stay out of frontline examples.", "red"],
+    ["No rollback path", "Block merge", "A first backend PR must be safely closable without production effects.", "amber"],
+    ["Direct main push", "Block release", "All production backend work must stay on reviewable branches.", "red"],
+    ["Missing required checks", "Block merge", "Workflow and job names must be exact before branch protection or merge trust.", "blue"],
+    ["No owner accountability", "Block review", "Reviewer lane, next owner, and closeout owner must be named.", "teal"]
+  ],
+  "mergeReadinessChecklist": [
+    ["PR remains draft until proof exists", "Required", "A draft PR can carry placeholders; a review-ready PR must link real proof or explicit holds.", "amber"],
+    ["Private visibility proven", "Required", "Visibility screenshot and repo URL are recorded.", "red"],
+    ["No-leak proof written", "Required", "No secrets, workbooks, certificates, live keys, invoices, or commercial exports are present.", "red"],
+    ["Issue trace complete", "10 rows", "Issue URLs replace placeholders and map to generated issue lanes.", "teal"],
+    ["Evidence links complete", "9 links", "Evidence links point to files, screenshots, transcripts, or deferred blockers.", "blue"],
+    ["Reviewers clear", "6 lanes", "Each lane has approve, hold, block, and next action rules.", "green"],
+    ["Branch checks real", "Required", "Required check names come from an actual Actions run, not guesses.", "blue"],
+    ["Closeout ready", "Required", "Passed, deferred, blocked, no-leak, rollback, owners, and next owner are written.", "green"]
+  ],
+  "prCommentTemplates": [
+    ["Approve", "Review comment", "Approved for my lane. Evidence is linked, issue trace is visible, rollback is clear, and no-live-data/no-secret boundaries are preserved.", "green"],
+    ["Hold", "Review comment", "Holding approval until the listed evidence file, command output, screenshot, owner response, workflow name, or issue URL is completed.", "amber"],
+    ["Block", "Review comment", "Requesting changes because the PR contains a trust blocker: public visibility, secret, workbook, commercial leak, no rollback, missing owner, or unsafe branch posture.", "red"],
+    ["Merge summary", "PR closeout", "Merge is allowed only after all reviewer lanes are green, required checks are exact, branch protection is documented, and closeout names the next owner.", "teal"],
+    ["No-leak signoff", "Security note", "I confirm no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.", "red"],
+    ["Deferred proof", "Review note", "Deferred proof is acceptable only if the blocker file names the missing proof, owner, date, and next command.", "blue"]
+  ],
+  "acceptanceChecks": [
+    ["Reviewer lanes complete", "6 lanes define approve, hold, and block language.", "green"],
+    ["Decision gates clear", "6 gates describe draft, reviewable, hold, block, approve, and merge-ready states.", "teal"],
+    ["Evidence reviewable", "17 evidence and command-output rows are mapped for reviewers.", "blue"],
+    ["Holds actionable", "8 hold reasons name the missing proof and owner action.", "amber"],
+    ["Blocks explicit", "8 block rules stop unsafe repo trust.", "red"],
+    ["Merge checklist ready", "8 merge-readiness checks prevent accidental production trust.", "green"],
+    ["Comment templates ready", "6 reusable review comments help keep review language consistent.", "blue"],
+    ["Runner linked", "8 runner acceptance checks feed the review gate.", "teal"]
+  ],
+  "signalCards": [
+    ["Review gates", "85%", "Readiness to control the first backend PR review by lane.", "green"],
+    ["Reviewer lanes", 6, "Product, platform, backend, security, data, and release accountability.", "teal"],
+    ["Hold reasons", 8, "Actionable holds before approval or merge.", "amber"],
+    ["Block rules", 8, "Hard trust failures that require changes.", "red"]
+  ],
+  "handoff": [
+    "v137 turns the first backend PR body and command runner evidence into a review gate matrix.",
+    "Each reviewer lane now has approve, hold, block, and merge-readiness language tied to evidence files, issue trace, branch proof, and no-leak controls.",
+    "The static demo still cannot approve a real PR; it now defines how the real PR should be reviewed once GitHub evidence exists.",
+    "v138 can now turn screenshots, transcripts, signoffs, issue URLs, and branch proof into an evidence artifact status board."
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "pursuitdesk.githubRepoOpeningPacket.v132",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "build": "v132 GitHub Repo Opening Packet",
+  "openingReadinessScore": 69,
+  "generatedFor": "Future private backend repository",
+  "openingKpis": [
+    ["Opening readiness", "69%", "How ready the private GitHub repo opening packet is before the real repo exists.", "amber"],
+    ["Issue wave", 12, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
+    ["Taxonomy", 39, "34 labels and 5 milestones shape the first backlog.", "blue"],
+    ["Repo facts pending", "Real GitHub", "URL, issue URLs, PR URL, Actions names, and approvals still need the private repository.", "red"]
+  ],
+  "repoIdentity": [
+    ["Repository name", "pursuitdesk-platform", "Suggested private production backend repo name for the first alpha build.", "green"],
+    ["Owner account", "dhirajnyse", "Current GitHub owner lane for the future private repository.", "teal"],
+    ["Visibility", "Private only", "Public demo remains in tendergrid; backend repo must stay private.", "red"],
+    ["Default branch", "main", "Protected after the first workflow run exposes exact required check names.", "blue"],
+    ["Working branch", "alpha/backend-day-one", "First implementation branch for repo shell and proof packet.", "green"],
+    ["Opening status", "Go with holds", "Open the repo only after no-live-data and private-visibility proof are captured.", "amber"]
+  ],
+  "ownerMatrix": [
+    ["Product owner", "Approve alpha scope", "Confirms repo opening does not launch production SaaS or accept live customer data.", "green"],
+    ["Platform owner", "Repo and branch rules", "Owns private visibility, branch naming, workflow names, and branch protection timing.", "teal"],
+    ["Backend lead", "Starter shell", "Owns root files, API shell, scripts, route boundaries, and first PR quality.", "blue"],
+    ["Security owner", "No leak proof", "Owns secret scan, tenant guardrail, commercial redaction, and denial proof.", "red"],
+    ["Data owner", "Fixture boundary", "Owns generated fixtures, migration rollback, no workbook import, and source trace.", "amber"],
+    ["QA owner", "Evidence closeout", "Owns screenshots, command transcripts, issue links, PR proof, and go/hold/no-go note.", "green"]
+  ],
+  "issueOpeningWave": [
+    ["Wave 1", "Repo shell", "Open PD-BE-001 first with repo shell, README, PR template, CODEOWNERS, env example, and proof commands.", "green"],
+    ["Wave 2", "API privacy core", "Open request id, safe errors, tenant scope, access decision, redaction, and audit writer issues together.", "red"],
+    ["Wave 3", "Data fixtures", "Open migration runner, seed runner, restore proof, and workbook dry-run boundaries after fixture names are stable.", "blue"],
+    ["Wave 4", "Billing and reports", "Open USD billing test-mode and redaction-safe reports after audit context exists.", "amber"],
+    ["Wave 5", "Workflow proof", "Open GitHub Actions workflow files and artifact-upload issue after package scripts are named.", "teal"],
+    ["Wave 6", "Release control", "Open branch protection and staging smoke issues after check names and proof artifacts are visible.", "green"]
+  ],
+  "firstPrStarter": [
+    ["Title", "chore: create backend alpha shell and proof packet", "Keep the first PR boring, reviewable, and evidence-led.", "green"],
+    ["Summary", "Creates the private backend alpha shell, proof packet, and opening evidence only.", "blue"],
+    ["Scope", "Root docs, env example, ownership files, workflow shells, evidence files, and fixture-only planning artifacts.", "teal"],
+    ["Out of scope", "No production launch, no live customer data, no real billing keys, no workbook import, no commercial values.", "red"],
+    ["Proof commands", "Paste install, lint, test, secret-scan, issue-wave, workflow-name, and release-gate transcripts.", "amber"],
+    ["Evidence links", "Link 9 evidence files, screenshots, command slots, issue URLs, and closeout note.", "green"],
+    ["Rollback", "Close draft PR, delete alpha branch, rotate credentials, or recreate repo if visibility or leak proof fails.", "red"],
+    ["Reviewers", "Product, platform, backend, security, data, QA, and release lanes must be named before trust.", "blue"]
+  ],
+  "artifactManifest": [
+    ["repo-private.png", "Private visibility screenshot", "Capture immediately after repo creation and before files are added.", "red"],
+    ["tree-after-first-copy.png", "Starter file tree screenshot", "Capture root, apps, packages, docs, scripts, workflows, and evidence folders.", "green"],
+    ["labels-and-milestones.png", "Taxonomy screenshot", "Capture labels and milestones after import and before issue wave.", "teal"],
+    ["issue-wave.csv", "Issue opening ledger", "Record issue keys, URLs, labels, milestones, owners, and opening wave.", "blue"],
+    ["first-pr.md", "Draft PR body", "Store title, scope, out-of-scope, proof, rollback, blockers, and reviewers.", "green"],
+    ["command-transcripts.zip", "Command evidence archive", "Store preflight, repo, tree, secret scan, install, test, issue, workflow, and release output.", "amber"],
+    ["branch-protection.png", "Branch rule screenshot", "Capture only after exact required check names are known.", "red"],
+    ["owner-signoff.md", "Owner approval trail", "Record go, hold, no-go, or defer by owner lane.", "blue"],
+    ["closeout.md", "Repo day closeout", "State passed, deferred, blocked, no-leak proof, rollback path, and next owner.", "green"]
+  ],
+  "openingSequence": [
+    ["01", "Confirm go/no-go decision", "Use the decision memo and risk register before touching GitHub.", "red"],
+    ["02", "Create private repo shell", "Create pursuitdesk-platform as private and capture visibility proof.", "green"],
+    ["03", "Copy starter files", "Add root shell, API shell, package boundaries, workflows, env example, and docs.", "blue"],
+    ["04", "Create evidence folder", "Create evidence markdown files and transcript placeholders before commands run.", "teal"],
+    ["05", "Import taxonomy", "Create labels, milestones, and board columns before issues are opened.", "amber"],
+    ["06", "Open issue wave", "Open P0 issues first, then data, billing, reports, workflow, and release-control issues.", "green"],
+    ["07", "Open first draft PR", "Attach proof packet, issue links, commands, rollback, reviewers, blockers, and no-live-data statement.", "blue"],
+    ["08", "Close repo day", "Write closeout, owner approvals, remaining blockers, workflow names, and next implementation move.", "red"]
+  ],
+  "closeoutLedger": [
+    ["Repo URL", "Pending real repo", "Paste private repository URL and visibility proof reference.", "red"],
+    ["Issue URLs", "12 planned", "Paste opened issue URLs and confirm label, milestone, and owner routing.", "teal"],
+    ["PR URL", "Pending first PR", "Paste draft PR URL and confirm evidence links are present.", "blue"],
+    ["Workflow names", "Pending Actions run", "Paste exact workflow and job names before branch protection is marked complete.", "amber"],
+    ["Branch rules", "Hold until checks exist", "Record protected main rules, required reviews, and conversation resolution.", "red"],
+    ["No-leak proof", "Required", "Confirm no secrets, workbooks, certificates, live keys, invoices, or commercial exports.", "red"],
+    ["Owner approvals", "Six lanes", "Record go, hold, no-go, or defer from each owner lane.", "green"],
+    ["Next move", "First backend PR", "Name the owner and first implementation issue after repo opening closes.", "blue"]
+  ],
+  "riskLocks": [
+    ["Public repo leakage", "Fail packet", "If backend files or proof land in the public demo repo, stop and recreate privately.", "red"],
+    ["Live data present", "Fail packet", "Any workbook, customer export, certificate, payment key, or live secret fails opening.", "red"],
+    ["Missing visibility proof", "Hold", "Do not open issue wave until private visibility screenshot exists.", "amber"],
+    ["Unknown check names", "Hold protection", "Do not guess branch protection required checks before GitHub Actions runs.", "blue"],
+    ["Unassigned owner", "Hold review", "No first PR review until product, platform, backend, security, data, and QA lanes are named.", "teal"],
+    ["Evidence not linked", "Hold PR", "A PR without evidence links, command proof, or rollback note should remain draft.", "amber"],
+    ["Commercial field drift", "Fail section", "Operational tracker files must not expose values, agreements, LOA, invoices, or negotiation notes.", "red"],
+    ["Closeout missing", "Hold next build", "Do not start implementation depth until closeout names passed, deferred, blocked, and next owner.", "green"]
+  ],
+  "launchFiles": [
+    ["docs/repo-opening/README.md", "One-page map of repo purpose, scope, owner lanes, and no-live-data boundary.", "green"],
+    ["docs/repo-opening/repo-facts.md", "Repo name, owner, visibility, branches, URLs, environment, and opening status.", "teal"],
+    ["docs/repo-opening/owner-matrix.md", "Product, platform, backend, security, data, QA, release roles and approvals.", "blue"],
+    ["docs/repo-opening/issue-wave.md", "Issue opening sequence, batch order, labels, milestones, owners, and URL placeholders.", "green"],
+    ["docs/repo-opening/first-pr.md", "Copy-ready PR body with scope, proof, rollback, reviewers, blockers, and checklist.", "amber"],
+    ["docs/repo-opening/artifacts.md", "Screenshot names, command transcript files, evidence docs, and retention notes.", "blue"],
+    ["docs/repo-opening/risk-locks.md", "Fail, hold, and defer rules for visibility, data, owners, checks, and closeout.", "red"],
+    ["docs/repo-opening/closeout.md", "Passed, deferred, blocked, no-leak statement, owner signoff, and next implementation move.", "green"]
+  ],
+  "copyReadyBlocks": [
+    ["Repo description", "GitHub About", "Private backend alpha repository for PursuitDesk. Contains generated fixtures, API shell, proof artifacts, and controlled implementation issues only. No live customer data or production billing keys are approved.", "blue"],
+    ["First PR summary", "docs/repo-opening/first-pr.md", "This draft PR creates the backend alpha shell and repo-opening proof packet only. It does not launch production SaaS, import live workbooks, or expose commercial tracker values.", "green"],
+    ["No-live-data proof", "docs/repo-opening/README.md", "Repo opening is approved only for generated fixtures, placeholder secrets, and evidence artifacts. Any live customer data, workbook, certificate, payment key, invoice, or commercial export blocks the packet.", "red"],
+    ["Closeout line", "docs/repo-opening/closeout.md", "Repo opening closes only when private visibility, issue wave, first PR, workflow names or holds, owner approvals, no-leak proof, and next owner are recorded.", "amber"]
+  ],
+  "signalCards": [
+    ["Opening packet", "69%", "Readiness to open the future private repo with a controlled handoff.", "amber"],
+    ["Repo files", 8, "Opening docs for facts, owners, issues, PR, artifacts, risks, and closeout.", "teal"],
+    ["Artifacts", 9, "Screenshots, transcripts, PR body, issue ledger, approvals, and closeout.", "blue"],
+    ["Risk locks", 3, "Rules that fail or hold the repo opening immediately.", "red"]
+  ],
+  "handoff": [
+    "v132 turns the proof exporter into one GitHub Repo Opening Packet for the real private backend repo.",
+    "The packet now names repo identity, owner lanes, issue waves, first PR text, proof artifacts, launch files, risk locks, closeout ledger, and copy-ready starter blocks.",
+    "The static demo still cannot create the repo or URLs; it now defines exactly what must be captured when the real repo is opened.",
+    "v133 can turn the issue wave into a cleaner Backend Alpha Issue Import Kit with CSV-ready issue rows, label mapping, and import validation."
+  ]
+}

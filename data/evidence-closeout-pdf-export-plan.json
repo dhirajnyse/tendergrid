@@ -1,0 +1,419 @@
+{
+  "schemaVersion": "pursuitdesk.evidenceCloseoutPdfExportPlan.v144",
+  "version": "v144",
+  "title": "Evidence Closeout PDF Export Plan",
+  "pdfExportScore": 96,
+  "downloadHref": "data/evidence-closeout-pdf-export-plan.json?v=144",
+  "pdfKpis": [
+    {
+      "label": "Export plan",
+      "value": "96%",
+      "note": "Readiness to turn captured replies into a management-ready PDF closeout plan.",
+      "tone": "green"
+    },
+    {
+      "label": "Page blueprint",
+      "value": 8,
+      "note": "Cover, executive, decisions, reply ledger, evidence, no-leak, rollback, and actions.",
+      "tone": "teal"
+    },
+    {
+      "label": "Redaction checks",
+      "value": 8,
+      "note": "Privacy checks before any printable packet leaves the workspace.",
+      "tone": "red"
+    },
+    {
+      "label": "QA gates",
+      "value": 8,
+      "note": "Validation checks before the closeout packet is archived or distributed.",
+      "tone": "blue"
+    }
+  ],
+  "sourceReadiness": [
+    {
+      "label": "Reply capture",
+      "value": "96%",
+      "note": "v143 captured reply states feed the PDF source ledger.",
+      "tone": "green"
+    },
+    {
+      "label": "Evidence closeout",
+      "value": "96%",
+      "note": "v141 passed, held, blocked, deferred, no-leak, and rollback outcomes feed the packet.",
+      "tone": "teal"
+    },
+    {
+      "label": "Meeting pack",
+      "value": "96%",
+      "note": "v142 agenda and action outputs become printable minutes source.",
+      "tone": "blue"
+    },
+    {
+      "label": "Evidence board",
+      "value": "96%",
+      "note": "Artifact statuses become proof index and redaction checks.",
+      "tone": "amber"
+    }
+  ],
+  "pageBlueprint": [
+    {
+      "page": "Cover",
+      "purpose": "Export identity",
+      "content": "Version, private repo placeholder, PR placeholder, date, sponsor, and confidentiality note.",
+      "tone": "green"
+    },
+    {
+      "page": "Executive summary",
+      "purpose": "Management view",
+      "content": "Passed, held, blocked, deferred, no-leak, rollback, and next owner in one page.",
+      "tone": "teal"
+    },
+    {
+      "page": "Decision register",
+      "purpose": "Evidence decisions",
+      "content": "Approval, hold, request changes, defer, no-response, and merge-ready decisions are grouped.",
+      "tone": "blue"
+    },
+    {
+      "page": "Reviewer reply ledger",
+      "purpose": "Thread proof",
+      "content": "Reviewer lane, handle, reply state, thread URL, owner, due date, and closeout status.",
+      "tone": "amber"
+    },
+    {
+      "page": "Evidence index",
+      "purpose": "Artifact map",
+      "content": "Screenshots, transcripts, issue links, PR notes, branch proof, and signoff records.",
+      "tone": "green"
+    },
+    {
+      "page": "No-leak proof",
+      "purpose": "Privacy page",
+      "content": "No workbook, no secret, no billing, no invoice, and no commercial tracker values are repeated.",
+      "tone": "red"
+    },
+    {
+      "page": "Rollback page",
+      "purpose": "Recovery page",
+      "content": "Branch rollback, repo recreation, credential rotation, and seed/data reset path stay visible.",
+      "tone": "amber"
+    },
+    {
+      "page": "Owner action appendix",
+      "purpose": "Follow-up work",
+      "content": "Open holds, deferred proof, blockers, target dates, next commands, and meeting handoff.",
+      "tone": "blue"
+    }
+  ],
+  "printableSections": [
+    {
+      "label": "Scope and non-goals",
+      "note": "Defines what the first backend closeout proves and what remains intentionally outside scope.",
+      "tone": "green"
+    },
+    {
+      "label": "Passed/Held/Blocked/Deferred summary",
+      "note": "Separates clean approvals from owner work, hard stops, and dated deferrals.",
+      "tone": "teal"
+    },
+    {
+      "label": "Approval lanes",
+      "note": "Shows product, platform, backend, security, data, QA, billing, and release lane outcomes.",
+      "tone": "green"
+    },
+    {
+      "label": "Requested changes",
+      "note": "Records stop-merge items with owner, thread, evidence, due date, and resolver status.",
+      "tone": "red"
+    },
+    {
+      "label": "Evidence files",
+      "note": "Names the proof files that must exist before the packet is management-ready.",
+      "tone": "blue"
+    },
+    {
+      "label": "Owner queue",
+      "note": "Lists every unresolved owner action without mixing it into the operational tracker.",
+      "tone": "amber"
+    },
+    {
+      "label": "Management note",
+      "note": "Gives leadership a short narrative they can paste into review notes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Next build handoff",
+      "note": "Links the PDF plan to the next minutes exporter and archive control board.",
+      "tone": "blue"
+    }
+  ],
+  "redactionChecks": [
+    {
+      "label": "No workbook",
+      "note": "Source Excel files are excluded from the management export.",
+      "tone": "red"
+    },
+    {
+      "label": "No secrets",
+      "note": "Environment variables, tokens, keys, and credentials are never printed.",
+      "tone": "red"
+    },
+    {
+      "label": "No payment keys",
+      "note": "Billing test mode can be described without publishing payment credentials.",
+      "tone": "red"
+    },
+    {
+      "label": "No invoices",
+      "note": "Invoices, tax documents, and customer billing exports stay outside the closeout packet.",
+      "tone": "amber"
+    },
+    {
+      "label": "No commercial values",
+      "note": "Operational closeout avoids tender values unless the authorized insight page exports them.",
+      "tone": "amber"
+    },
+    {
+      "label": "No live customer payload",
+      "note": "Demo and seed records are allowed; live customer data requires a separate approval.",
+      "tone": "blue"
+    },
+    {
+      "label": "Redacted URLs",
+      "note": "Private URLs are represented as placeholders unless the recipient has repo access.",
+      "tone": "teal"
+    },
+    {
+      "label": "Access classification",
+      "note": "Every page carries internal, sponsor, platform, or security review classification.",
+      "tone": "green"
+    }
+  ],
+  "exportQaChecklist": [
+    {
+      "label": "JSON source matched",
+      "note": "The downloadable JSON version matches the UI section and build tracker.",
+      "tone": "green"
+    },
+    {
+      "label": "Counts matched",
+      "note": "Page, section, redaction, distribution, and acceptance counts are validated.",
+      "tone": "teal"
+    },
+    {
+      "label": "No stale cache",
+      "note": "App, data, and asset links use the current version query.",
+      "tone": "blue"
+    },
+    {
+      "label": "Links checked",
+      "note": "Every referenced packet has a placeholder or planned evidence URL.",
+      "tone": "amber"
+    },
+    {
+      "label": "Print layout checked",
+      "note": "The eventual PDF route should be checked at desktop, tablet, and mobile widths.",
+      "tone": "green"
+    },
+    {
+      "label": "Mobile fallback",
+      "note": "The printable plan remains readable when cards stack into one column.",
+      "tone": "blue"
+    },
+    {
+      "label": "Owner reviewed",
+      "note": "Sponsor, platform, backend, security, data, and QA owners review distribution.",
+      "tone": "amber"
+    },
+    {
+      "label": "Archive name set",
+      "note": "Filename, date, version, PR placeholder, and owner are set before release.",
+      "tone": "teal"
+    }
+  ],
+  "distributionMatrix": [
+    {
+      "recipient": "Sponsor",
+      "receives": "Executive summary, decision register, owner queue, and management note.",
+      "tone": "green"
+    },
+    {
+      "recipient": "Platform",
+      "receives": "Branch, workflow, environment, required checks, and rollback proof.",
+      "tone": "teal"
+    },
+    {
+      "recipient": "Backend",
+      "receives": "Route, migration, test, command transcript, and unresolved implementation holds.",
+      "tone": "blue"
+    },
+    {
+      "recipient": "Security",
+      "receives": "Tenant guard, no-secret, no-workbook, no-commercial-leak, and audit denial proof.",
+      "tone": "red"
+    },
+    {
+      "recipient": "Data",
+      "receives": "Seed boundary, dry-run, quarantine, reconciliation, duplicate, and rollback proof.",
+      "tone": "amber"
+    },
+    {
+      "recipient": "QA / Release",
+      "receives": "Evidence index, screenshots, transcripts, signoffs, archive name, and release gate.",
+      "tone": "green"
+    }
+  ],
+  "archiveNamingRules": [
+    {
+      "label": "Filename",
+      "note": "pursuitdesk-closeout-v144-{repo}-{pr}.pdf",
+      "tone": "green"
+    },
+    {
+      "label": "Version",
+      "note": "Use the build number and closeout packet version together.",
+      "tone": "teal"
+    },
+    {
+      "label": "Date",
+      "note": "Use ISO date so exports sort correctly in a shared folder.",
+      "tone": "blue"
+    },
+    {
+      "label": "PR number placeholder",
+      "note": "Keep PR number blank until the real private PR exists.",
+      "tone": "amber"
+    },
+    {
+      "label": "Repo name placeholder",
+      "note": "Use private backend repo slug only after repo creation.",
+      "tone": "amber"
+    },
+    {
+      "label": "Owner",
+      "note": "One accountable owner signs the PDF export before archive.",
+      "tone": "red"
+    }
+  ],
+  "managementCloseoutLines": [
+    {
+      "label": "Opening line",
+      "note": "The first private backend closeout has a PDF-ready export plan tied to captured replies.",
+      "tone": "green"
+    },
+    {
+      "label": "Decision line",
+      "note": "Approvals, holds, blockers, deferrals, no responses, and merge readiness are separated.",
+      "tone": "teal"
+    },
+    {
+      "label": "Evidence line",
+      "note": "Screenshots, transcripts, issue URLs, PR notes, and signoffs must be attached before final export.",
+      "tone": "blue"
+    },
+    {
+      "label": "Privacy line",
+      "note": "The packet repeats no workbook, no secret, no billing, no invoice, and no commercial tracker values.",
+      "tone": "red"
+    },
+    {
+      "label": "Owner line",
+      "note": "Every unresolved item has owner, due date, next command, and closeout state.",
+      "tone": "amber"
+    },
+    {
+      "label": "Next line",
+      "note": "The next build can turn this plan into meeting minutes or an archive control board.",
+      "tone": "green"
+    }
+  ],
+  "copyReadyExportBrief": "PursuitDesk evidence closeout PDF export plan\n\nExport purpose: create a management-ready closeout packet from captured private repo replies.\nSource packets: reply capture board, evidence closeout pack, repo-day meeting pack, evidence artifact board, PR review comments, and review gate matrix.\nRequired pages: cover, executive summary, decision register, reviewer reply ledger, evidence index, no-leak proof, rollback page, and owner action appendix.\nPrivacy statement: no workbook, no production secret, no payment key, no invoice, no billing export, and no commercial tracker values are included unless separately authorized.\nArchive statement: filename, version, date, repo placeholder, PR placeholder, owner, distribution list, and acceptance checks must be complete before release.",
+  "signalCards": [
+    {
+      "label": "PDF export",
+      "value": "96%",
+      "note": "The closeout packet has pages, privacy checks, owners, and QA gates mapped.",
+      "tone": "green"
+    },
+    {
+      "label": "Open work",
+      "value": 95,
+      "note": "Open operational records remain outside the PDF except as approved summary signals.",
+      "tone": "teal"
+    },
+    {
+      "label": "Inputs",
+      "value": "6 packs",
+      "note": "Reply, closeout, meeting, evidence, comments, and review gates feed the plan.",
+      "tone": "blue"
+    },
+    {
+      "label": "Privacy",
+      "value": 8,
+      "note": "Redaction checks keep commercial and live-data exposure controlled.",
+      "tone": "red"
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "label": "Page blueprint ready",
+      "note": "8 pages define the printable closeout structure.",
+      "tone": "green"
+    },
+    {
+      "label": "Printable sections ready",
+      "note": "8 management sections separate operations, evidence, and owners.",
+      "tone": "teal"
+    },
+    {
+      "label": "Redaction ready",
+      "note": "8 redaction checks protect workbook, secret, billing, invoice, commercial, URL, and live-data exposure.",
+      "tone": "red"
+    },
+    {
+      "label": "QA ready",
+      "note": "8 QA checks make the packet reviewable before archive.",
+      "tone": "blue"
+    },
+    {
+      "label": "Distribution ready",
+      "note": "6 recipient lanes define who receives which page family.",
+      "tone": "green"
+    },
+    {
+      "label": "Archive ready",
+      "note": "6 naming rules prevent loose files after export.",
+      "tone": "amber"
+    },
+    {
+      "label": "Brief ready",
+      "note": "6 management lines can be pasted into review notes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Next handoff ready",
+      "note": "v145 can turn this export plan into meeting minutes, and v146 can prepare reviewer decision emails.",
+      "tone": "blue"
+    }
+  ],
+  "handoff": [
+    "v144 turns captured replies and closeout outcomes into a PDF-ready export plan.",
+    "The plan defines pages, printable sections, redaction checks, distribution lanes, archive naming, and QA gates.",
+    "The static demo still does not render a real PDF; it now defines exactly what the production exporter must assemble.",
+    "v145 can now prepare backend meeting minutes from this closeout structure, while v146 can prepare reviewer decision emails."
+  ],
+  "counts": {
+    "pdfKpis": 4,
+    "sourceReadiness": 4,
+    "pageBlueprint": 8,
+    "printableSections": 8,
+    "redactionChecks": 8,
+    "exportQaChecklist": 8,
+    "distributionMatrix": 6,
+    "archiveNamingRules": 6,
+    "managementCloseoutLines": 6,
+    "signalCards": 4,
+    "acceptanceChecks": 8
+  }
+}

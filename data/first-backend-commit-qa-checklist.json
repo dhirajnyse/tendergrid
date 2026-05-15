@@ -1,0 +1,473 @@
+{
+  "schemaVersion": "pursuitdesk.firstBackendCommitQaChecklist.v123",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "purpose": "Review the first private backend pull request before feature coding begins.",
+  "qaScore": 98,
+  "qaLanes": [
+    {
+      "label": "Repository shell",
+      "tone": "green",
+      "check": "Root files, workspace, README, env example, CODEOWNERS, PR template, and release runbook exist."
+    },
+    {
+      "label": "API shell",
+      "tone": "teal",
+      "check": "Server, app, route registry, health route, request id, safe error, tenant scope, and access decision exist."
+    },
+    {
+      "label": "Package boundaries",
+      "tone": "blue",
+      "check": "Shared result, env parser, audit writer, redaction, schema, seeds, fixtures, and importer dry-run exist."
+    },
+    {
+      "label": "Workflow shells",
+      "tone": "red",
+      "check": "CI, security, migration, billing, import, staging, release, and dependency workflows exist with stable names."
+    },
+    {
+      "label": "Backlog taxonomy",
+      "tone": "amber",
+      "check": "Labels, milestones, board columns, routing rules, and import steps are ready before the first issue opens."
+    },
+    {
+      "label": "Branch protection timing",
+      "tone": "red",
+      "check": "Protection waits until the first workflow run exposes exact required status check names."
+    },
+    {
+      "label": "Evidence artifacts",
+      "tone": "green",
+      "check": "Install, lint, typecheck, route envelope, auth tenant, redaction, audit, and release-gate proof is expected."
+    },
+    {
+      "label": "Commercial privacy",
+      "tone": "red",
+      "check": "Operational tracker payloads stay free of value, agreement, LOA, invoice, billing, and negotiation data."
+    }
+  ],
+  "fileQaMatrix": [
+    {
+      "area": "Root files",
+      "state": "Ready",
+      "tone": "green",
+      "check": "Starter inventory from the file-content export is present before feature depth."
+    },
+    {
+      "area": "README",
+      "state": "Ready",
+      "tone": "green",
+      "check": "Explains alpha scope, first proof commands, and commercial privacy rule."
+    },
+    {
+      "area": "package.json",
+      "state": "Review",
+      "tone": "amber",
+      "check": "Scripts exist in the export; real dependencies still need first repo install."
+    },
+    {
+      "area": ".env.example",
+      "state": "Ready",
+      "tone": "red",
+      "check": "Contains placeholder keys only; no live secrets allowed."
+    },
+    {
+      "area": "CODEOWNERS",
+      "state": "Ready",
+      "tone": "blue",
+      "check": "Maps platform, API, database, audit, importer, billing, workflows, and docs ownership."
+    },
+    {
+      "area": "PR template",
+      "state": "Ready",
+      "tone": "teal",
+      "check": "Requires linked issue, proof commands, release notes, affected rooms, and rollback plan."
+    },
+    {
+      "area": "API middleware",
+      "state": "Ready",
+      "tone": "red",
+      "check": "Request id, safe error, tenant scope, and access decision are present before feature routes."
+    },
+    {
+      "area": "Package boundaries",
+      "state": "Ready",
+      "tone": "green",
+      "check": "Audit, redaction, importer, seed, fixture, schema, and shared result boundaries are visible."
+    },
+    {
+      "area": "Workflow files",
+      "state": "Review",
+      "tone": "blue",
+      "check": "Workflow shells map to required proof lanes; exact branch-protection names wait for first CI run."
+    },
+    {
+      "area": "Release runbook",
+      "state": "Ready",
+      "tone": "red",
+      "check": "Merge, staging, rollback, and release ritual are documented before staging depth."
+    }
+  ],
+  "proofCommands": [
+    {
+      "label": "Install",
+      "command": "pnpm install",
+      "tone": "green",
+      "proof": "Fresh clone can install workspace dependencies."
+    },
+    {
+      "label": "Lint",
+      "command": "pnpm lint",
+      "tone": "blue",
+      "proof": "Code style and obvious syntax drift are caught before review."
+    },
+    {
+      "label": "Typecheck",
+      "command": "pnpm typecheck",
+      "tone": "teal",
+      "proof": "Type contracts compile before feature depth."
+    },
+    {
+      "label": "Contracts",
+      "command": "pnpm test:contracts",
+      "tone": "blue",
+      "proof": "Endpoint and payload contract shell is visible."
+    },
+    {
+      "label": "Route envelopes",
+      "command": "pnpm test:route-envelopes",
+      "tone": "red",
+      "proof": "Safe response shape, request id, and error body are expected."
+    },
+    {
+      "label": "Auth tenant",
+      "command": "pnpm test:auth-tenant",
+      "tone": "red",
+      "proof": "Company scope and role gates are tested early."
+    },
+    {
+      "label": "Commercial redaction",
+      "command": "pnpm test:redaction",
+      "tone": "red",
+      "proof": "Operational payloads do not leak restricted fields."
+    },
+    {
+      "label": "Audit",
+      "command": "pnpm test:audit",
+      "tone": "teal",
+      "proof": "Allowed and denied action evidence can be produced."
+    },
+    {
+      "label": "Release gate",
+      "command": "pnpm ci:release-gate",
+      "tone": "green",
+      "proof": "Single command summarizes checks, artifacts, blockers, and decision state."
+    },
+    {
+      "label": "Local smoke placeholder",
+      "command": "pnpm smoke:local",
+      "tone": "amber",
+      "proof": "Connects later staging smoke to the first proof chain."
+    }
+  ],
+  "reviewChecklist": [
+    {
+      "label": "Repository",
+      "tone": "green",
+      "check": "No files committed outside the starter inventory unless named in setup handoff."
+    },
+    {
+      "label": "Secrets",
+      "tone": "red",
+      "check": "No .env, access token, private key, live billing key, or customer file is committed."
+    },
+    {
+      "label": "Issue trace",
+      "tone": "blue",
+      "check": "First PR links to a generated backend issue."
+    },
+    {
+      "label": "Labels",
+      "tone": "teal",
+      "check": "Issue has type, priority, area, owner, proof, and status labels from the taxonomy pack."
+    },
+    {
+      "label": "Milestone",
+      "tone": "amber",
+      "check": "Issue belongs to M0 or M1 before deeper billing, reports, or import issues start."
+    },
+    {
+      "label": "Proof",
+      "tone": "green",
+      "check": "PR description includes command output or explains why a placeholder cannot run yet."
+    },
+    {
+      "label": "Workflow names",
+      "tone": "red",
+      "check": "Branch protection waits for exact GitHub check names after the first run."
+    },
+    {
+      "label": "Commercial privacy",
+      "tone": "red",
+      "check": "Review confirms tracker shell and API examples do not expose commercial vault fields."
+    },
+    {
+      "label": "Rollback",
+      "tone": "amber",
+      "check": "PR template contains rollback note even for repo-shell initialization."
+    },
+    {
+      "label": "Docs",
+      "tone": "blue",
+      "check": "README and release runbook reflect what actually exists in the first commit."
+    }
+  ],
+  "artifactExpectations": [
+    {
+      "file": "install-log.txt",
+      "tone": "green",
+      "expectation": "Result of pnpm install or dependency placeholder note."
+    },
+    {
+      "file": "lint-output.txt",
+      "tone": "blue",
+      "expectation": "Lint output or documented placeholder while dependencies are introduced."
+    },
+    {
+      "file": "typecheck-output.txt",
+      "tone": "teal",
+      "expectation": "Typecheck output or documented placeholder while TypeScript config is introduced."
+    },
+    {
+      "file": "route-envelope-proof.json",
+      "tone": "red",
+      "expectation": "Expected safe error and request id proof once route tests exist."
+    },
+    {
+      "file": "tenant-access-proof.json",
+      "tone": "red",
+      "expectation": "Expected tenant and access decision proof once auth tests exist."
+    },
+    {
+      "file": "redaction-proof.json",
+      "tone": "red",
+      "expectation": "Expected operational payload without commercial fields."
+    },
+    {
+      "file": "audit-proof.json",
+      "tone": "teal",
+      "expectation": "Expected allowed or denied audit event envelope."
+    },
+    {
+      "file": "release-gate-summary.md",
+      "tone": "green",
+      "expectation": "Human-readable pass, warn, block, artifact, and owner decision summary."
+    }
+  ],
+  "goNoGoRules": [
+    {
+      "status": "Go",
+      "tone": "green",
+      "rule": "Root files, API shell, package boundaries, workflow shells, labels, milestones, and PR template are present."
+    },
+    {
+      "status": "Go",
+      "tone": "green",
+      "rule": "No live secrets, customer files, or commercial workbook data are committed."
+    },
+    {
+      "status": "Go",
+      "tone": "teal",
+      "rule": "First PR links to an issue, milestone, labels, proof commands, release note, and rollback note."
+    },
+    {
+      "status": "Hold",
+      "tone": "amber",
+      "rule": "Workflow names are unknown; apply branch protection after first CI run only."
+    },
+    {
+      "status": "Hold",
+      "tone": "amber",
+      "rule": "package.json scripts reference commands that are not yet implemented; mark proof as placeholder."
+    },
+    {
+      "status": "No-go",
+      "tone": "red",
+      "rule": "Any live secret, customer data, or unrestricted commercial value appears in the commit."
+    },
+    {
+      "status": "No-go",
+      "tone": "red",
+      "rule": "Tenant, access, redaction, or audit boundaries are removed from the starter shell."
+    },
+    {
+      "status": "No-go",
+      "tone": "red",
+      "rule": "Main branch receives direct commits before PR proof and review discipline exist."
+    }
+  ],
+  "roleSignoffs": [
+    {
+      "role": "Platform Owner",
+      "tone": "green",
+      "scope": "Repo shell, scripts, workflows, CODEOWNERS, labels, milestones, and PR evidence."
+    },
+    {
+      "role": "Backend Lead",
+      "tone": "teal",
+      "scope": "API boot files, route registry, middleware order, and package boundaries."
+    },
+    {
+      "role": "Security Owner",
+      "tone": "red",
+      "scope": "No secrets, tenant guard, access decision, redaction rule, safe error, and denial proof."
+    },
+    {
+      "role": "Database Owner",
+      "tone": "blue",
+      "scope": "Schema placeholder, seed runner, fixture plan, migration readiness, and no live data."
+    },
+    {
+      "role": "Governance Owner",
+      "tone": "teal",
+      "scope": "Audit writer boundary, release runbook, evidence artifacts, and retention thinking."
+    },
+    {
+      "role": "QA Owner",
+      "tone": "amber",
+      "scope": "First proof commands, smoke placeholder, artifact names, and release-gate summary."
+    }
+  ],
+  "firstPrTemplateChecks": [
+    {
+      "label": "Linked issue",
+      "tone": "green",
+      "check": "PR body references PD-BE-001 or the relevant generated backend issue."
+    },
+    {
+      "label": "Scope",
+      "tone": "blue",
+      "check": "Files changed match issue scope and starter inventory."
+    },
+    {
+      "label": "Proof",
+      "tone": "red",
+      "check": "Install, lint, typecheck, route envelope, auth tenant, redaction, audit, and release gate outputs are addressed."
+    },
+    {
+      "label": "Release notes",
+      "tone": "amber",
+      "check": "Affected rooms and rollback plan are filled, even for initial shell."
+    },
+    {
+      "label": "Reviewer path",
+      "tone": "teal",
+      "check": "CODEOWNERS and role signoffs match sensitive file groups."
+    },
+    {
+      "label": "Taxonomy",
+      "tone": "green",
+      "check": "Labels, milestone, status, and proof tags come from the taxonomy catalog."
+    },
+    {
+      "label": "Branch plan",
+      "tone": "red",
+      "check": "develop opens the first PR to main; main is not direct-pushed."
+    },
+    {
+      "label": "Protection note",
+      "tone": "blue",
+      "check": "Branch protection is scheduled after first workflow check names are visible."
+    }
+  ],
+  "qaFiles": [
+    {
+      "path": "data/first-backend-commit-qa-checklist.json",
+      "tone": "green",
+      "purpose": "Structured checklist for first private backend commit review."
+    },
+    {
+      "path": "docs/first-backend-commit-qa.md",
+      "tone": "blue",
+      "purpose": "Human-readable QA checklist for reviewers and owners."
+    },
+    {
+      "path": "docs/first-pr-evidence-template.md",
+      "tone": "teal",
+      "purpose": "Evidence template for install, checks, artifacts, labels, milestone, release note, and rollback."
+    },
+    {
+      "path": "scripts/setup/verify-first-commit.ps1",
+      "tone": "green",
+      "purpose": "Local verification wrapper for files, secrets, labels, scripts, and proof placeholders."
+    },
+    {
+      "path": "scripts/setup/scan-for-secrets.ps1",
+      "tone": "red",
+      "purpose": "Safety scan reminder for .env, tokens, keys, and live customer data."
+    },
+    {
+      "path": "scripts/setup/check-taxonomy.ps1",
+      "tone": "amber",
+      "purpose": "Confirms required labels and milestones exist before issues are imported."
+    },
+    {
+      "path": "scripts/setup/check-workflow-names.md",
+      "tone": "blue",
+      "purpose": "Manual guide for waiting on exact GitHub Actions status check names."
+    },
+    {
+      "path": "docs/first-commit-go-no-go.md",
+      "tone": "red",
+      "purpose": "Go, hold, and no-go decision rules for the first backend PR."
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "label": "QA lanes complete",
+      "tone": "green",
+      "check": "Eight lanes cover repo shell, API, packages, workflows, taxonomy, protection, evidence, and privacy."
+    },
+    {
+      "label": "File QA ready",
+      "tone": "blue",
+      "check": "Ten file checks validate starter inventory and sensitive boundaries."
+    },
+    {
+      "label": "Proof commands ready",
+      "tone": "teal",
+      "check": "Ten proof commands define first PR evidence expectations."
+    },
+    {
+      "label": "Review checklist ready",
+      "tone": "green",
+      "check": "Ten reviewer checks keep the first commit disciplined."
+    },
+    {
+      "label": "Artifacts named",
+      "tone": "amber",
+      "check": "Eight evidence artifacts are named before CI is deep."
+    },
+    {
+      "label": "Go/no-go clear",
+      "tone": "red",
+      "check": "Eight rules define when to proceed, hold, or stop."
+    },
+    {
+      "label": "Signoffs mapped",
+      "tone": "blue",
+      "check": "Six owner signoffs cover platform, backend, security, data, governance, and QA."
+    },
+    {
+      "label": "Next handoff ready",
+      "tone": "green",
+      "check": "v124 can turn setup, issue import, first PR, and proof evidence into an opening-day runbook."
+    }
+  ],
+  "handoff": [
+    "v123 turns the backend planning stack into a first-commit QA gate.",
+    "The first private backend PR should prove discipline before feature depth: file inventory, no secrets, issue trace, taxonomy, proof commands, release note, rollback note, and branch protection timing.",
+    "This checklist intentionally allows some proof commands to begin as placeholders, but only if the PR says that clearly and names the artifact expected later.",
+    "v124 can convert setup, issue import, first PR evidence, and owner signoffs into a private repo opening-day runbook."
+  ]
+}

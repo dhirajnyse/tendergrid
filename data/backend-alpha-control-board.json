@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "pursuitdesk.backendAlphaControlBoard.v129",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "build": "v129 Backend Alpha Control Board",
+  "controlReadinessScore": 59,
+  "purpose": "Turn private repo execution planning into one operating board for repo status, first PR, evidence, blockers, owners, GitHub signals, and go/hold/no-go movement.",
+  "boardKpis": [
+    ["Control readiness", "59%", "How ready the private repo day is to be managed from one board", "amber"],
+    ["Repo status", "Not opened", "The private production backend repo still needs real GitHub creation.", "red"],
+    ["First PR", "Planned", "First PR proof is designed but not yet opened in GitHub.", "blue"],
+    ["Evidence health", "56%", "Evidence pack score feeding the board.", "teal"]
+  ],
+  "controlLanes": [
+    ["Repo", "Not opened", "Private visibility, repo URL, clone proof, and owner decision are pending real execution.", "red"],
+    ["Branch", "Planned", "Working branch and PR-first discipline are mapped but not created.", "amber"],
+    ["First PR", "Planned", "Scope, rollback, reviewers, linked issue, and proof notes are ready for a future PR.", "blue"],
+    ["Issue wave", "Ready", "Generated issue bodies exist; real GitHub issue URLs are pending.", "teal"],
+    ["Evidence", "Template ready", "Proof files, screenshots, logs, signoffs, and closeout files are named.", "green"],
+    ["CI checks", "Planned", "Workflow files are mapped; exact status names wait for first Actions run.", "blue"],
+    ["Branch protection", "Deferred", "Required checks must wait until GitHub exposes actual check names.", "amber"],
+    ["Signoff", "Pending", "Product, platform, backend, security, data, and QA owners still need real go/hold/no-go status.", "red"]
+  ],
+  "statusSwimlanes": [
+    ["Ready to execute", "Decision memo", "Controlled-go memo, runbook, evidence pack, and execution checklist are ready for owner review.", "green"],
+    ["Ready to execute", "Starter files", "File content, repo file pack, route skeleton, workflows, env examples, and package boundaries are mapped.", "teal"],
+    ["Needs proof", "Repo private", "Capture private visibility screenshot before files or issues move.", "red"],
+    ["Needs proof", "No-secret scan", "Record no keys, no customer files, no workbooks, and no commercial leakage.", "red"],
+    ["Waiting on GitHub", "Workflow check names", "Run first Actions workflow and copy exact check names before branch protection.", "amber"],
+    ["Waiting on GitHub", "Issue URLs", "Open first issue wave and save URLs to the evidence map.", "blue"],
+    ["Blocked until real repo", "First PR", "Cannot show PR link, checks, reviewers, or artifacts until repo exists.", "amber"],
+    ["Blocked until real repo", "Branch protection", "Cannot apply rules until workflows run in the real repo.", "red"],
+    ["Closeout", "Owner signoffs", "Record go/hold/no-go status after the first PR evidence packet is assembled.", "green"],
+    ["Closeout", "v130 handoff", "Convert the board into a command-by-command private repo day-one script.", "teal"]
+  ],
+  "blockerQueue": [
+    ["Critical", "Private repo absent", "No real `dhirajnyse/pursuitdesk-platform` repository has been created yet.", "red"],
+    ["Critical", "No real visibility proof", "The board needs an actual private repo screenshot or evidence note.", "red"],
+    ["Critical", "No secret scan transcript", "Execution cannot continue without proving no keys, workbooks, or customer files entered.", "red"],
+    ["High", "First PR not opened", "Scope, rollback, reviewers, commands, and evidence remain planned until PR exists.", "amber"],
+    ["High", "Workflow names unknown", "Branch protection cannot be configured from guessed names.", "amber"],
+    ["High", "Issue URLs missing", "Generated issues exist, but GitHub issue numbers are not real yet.", "blue"],
+    ["Medium", "Signoffs pending", "Owner lanes are designed but not accepted by named people yet.", "teal"],
+    ["Medium", "Closeout not written", "No passed/deferred/blocked summary exists until execution day completes.", "green"]
+  ],
+  "ownerReadiness": [
+    ["Founder / Product", "Decision pending", "Approve controlled repo opening and no-live-data boundary.", "green"],
+    ["Platform owner", "Execution pending", "Create repo, branch, taxonomy, workflow proof, branch protection evidence.", "teal"],
+    ["Backend lead", "PR pending", "Open backend shell PR with proof commands, route shells, scripts, and rollback note.", "blue"],
+    ["Security owner", "Safety pending", "Confirm no secrets, no customer data, tenant guard scope, and commercial redaction.", "red"],
+    ["Data owner", "Fixture pending", "Confirm generated fixtures only, source trace, migration rollback, and no workbook import.", "amber"],
+    ["QA / Release", "Evidence pending", "Validate proof folder, screenshots, check names, branch rules, blockers, and closeout.", "green"]
+  ],
+  "evidenceMeters": [
+    ["Private repo proof", "0/1", "Real private visibility proof is still missing.", "red"],
+    ["Proof files named", "10/10", "Evidence file naming plan exists.", "green"],
+    ["Screenshots planned", "8/8", "Screenshot targets are mapped.", "blue"],
+    ["Commands mapped", "8/8", "Command run order exists, but transcripts are pending.", "amber"],
+    ["Stop rules", "4/8", "Immediate stop conditions are visible.", "red"],
+    ["Completion checks", "8/8", "Closeout rules are mapped.", "teal"]
+  ],
+  "prControlChecklist": [
+    ["PR title", "Pending", "Use a narrow backend shell title linked to the first issue.", "blue"],
+    ["Issue link", "Pending", "Attach generated issue URL once real issue exists.", "amber"],
+    ["Scope note", "Ready", "State shell setup only; no live SaaS, billing capture, or customer import.", "green"],
+    ["Risk reference", "Ready", "Reference backend alpha risk register and stop rules.", "red"],
+    ["Proof commands", "Planned", "Attach install, lint, typecheck, auth tenant, route envelope, and release gate notes.", "teal"],
+    ["Rollback", "Ready", "Explain branch/PR closeout and credential rotation if needed.", "red"],
+    ["Reviewers", "Pending", "Platform, backend, security, data, governance, and QA reviewers need real assignment.", "blue"],
+    ["Checks", "Waiting", "Exact check names arrive after first workflow run.", "amber"]
+  ],
+  "githubSignalMap": [
+    ["Repository", "Private visibility", "Source of truth for whether files can move.", "red"],
+    ["Issues", "URL and status", "Source of truth for backlog traceability.", "blue"],
+    ["Pull request", "Review and checks", "Source of truth for first backend PR status.", "green"],
+    ["Actions", "Workflow names", "Source of truth for required status check names.", "amber"],
+    ["Rulesets", "Branch protection", "Source of truth for main protection and review rules.", "red"],
+    ["Projects", "Execution board", "Source of truth for owner movement and blocked work.", "teal"]
+  ],
+  "decisionLog": [
+    ["Go", "Repo creation", "Allowed only after owner accepts private repo and no-live-data boundary.", "green"],
+    ["Hold", "File movement", "Hold until repo privacy proof and clean copy-set check are captured.", "red"],
+    ["Hold", "First PR review", "Hold if proof commands, rollback note, issue link, or risk reference is missing.", "amber"],
+    ["Hold", "Branch protection", "Hold until actual workflow check names are visible.", "blue"],
+    ["No-go", "Secrets or live data", "Stop, rotate, clean history, and restart if keys or customer workbooks appear.", "red"],
+    ["Go", "Closeout", "Allowed when blockers, placeholders, signoffs, and next owner are written.", "teal"]
+  ],
+  "nextActionQueue": [
+    ["1", "Confirm owner decision", "Accept controlled repo opening and no-live-data scope.", "green"],
+    ["2", "Create private repo", "Capture private visibility evidence before moving files.", "red"],
+    ["3", "Run clean copy-set scan", "Confirm no secrets, customer files, workbooks, certificates, or commercial leakage.", "red"],
+    ["4", "Copy starter shell", "Move approved root, API, package, workflow, script, env example, and evidence files.", "teal"],
+    ["5", "Open issue wave", "Create first milestone issues and record URLs.", "blue"],
+    ["6", "Open first PR", "Attach scope, risk reference, proof commands, rollback, and reviewers.", "green"],
+    ["7", "Capture check names", "Record exact Actions check labels after first workflow run.", "amber"],
+    ["8", "Protect main and close out", "Apply rules, capture proof, record signoffs, and hand off v130 script.", "red"]
+  ],
+  "acceptanceChecks": [
+    ["Board lanes ready", "8 control lanes cover repo, branch, PR, issues, evidence, CI, protection, and signoff.", "green"],
+    ["Swimlanes mapped", "10 cards separate ready, proof, waiting, blocked, and closeout work.", "teal"],
+    ["Blockers visible", "8 blocker cards show what prevents real backend execution.", "red"],
+    ["Owners visible", "6 owner lanes identify signoff expectations.", "blue"],
+    ["PR checklist ready", "8 PR checks define reviewability.", "amber"],
+    ["GitHub sources mapped", "6 GitHub surfaces define source-of-truth signals.", "green"],
+    ["Decision log ready", "6 go/hold/no-go decisions are explicit.", "red"],
+    ["Next handoff ready", "v130 can turn the control board into a command-by-command private repo day-one script.", "teal"]
+  ],
+  "handoff": [
+    "v129 turns execution planning into a live-looking backend alpha control board.",
+    "The board is intentionally honest: repo, PR, workflow names, issue URLs, branch protection, and signoffs stay pending until the real private GitHub repo exists.",
+    "The key management rhythm is now visible in one place: control lanes, blockers, evidence meters, PR checklist, GitHub signal map, decision log, and next action queue.",
+    "v130 can now become the exact day-one script that a person follows command by command when opening the private backend repo."
+  ]
+}

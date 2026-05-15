@@ -1,0 +1,506 @@
+{
+  "schemaVersion": "pursuitdesk.backendOpeningDayEvidencePack.v127",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "build": "v127 Backend Opening Day Evidence Pack",
+  "evidenceReadinessScore": 56,
+  "downloadPurpose": "Private backend repo opening-day evidence handoff before real GitHub execution.",
+  "evidenceLanes": [
+    {
+      "label": "Repo privacy proof",
+      "stage": "Hard gate",
+      "note": "Screenshot or note proving the production backend repo is private before files move.",
+      "tone": "red"
+    },
+    {
+      "label": "Setup command proof",
+      "stage": "Execution",
+      "note": "Capture preflight, folder creation, starter file copy, install, and first quality command output.",
+      "tone": "green"
+    },
+    {
+      "label": "Issue import proof",
+      "stage": "Traceability",
+      "note": "Backend issue bodies need issue URLs, labels, milestones, owners, and opening order evidence.",
+      "tone": "blue"
+    },
+    {
+      "label": "First PR proof",
+      "stage": "Review",
+      "note": "First PR needs scope note, linked issue, command proof, rollback note, risk reference, and owner review.",
+      "tone": "teal"
+    },
+    {
+      "label": "CI workflow proof",
+      "stage": "Automation",
+      "note": "Planned workflow lanes need first run status, artifact names, and exact check labels.",
+      "tone": "blue"
+    },
+    {
+      "label": "Branch protection proof",
+      "stage": "Release gate",
+      "note": "Only apply required checks after real workflow names appear, then capture settings evidence.",
+      "tone": "amber"
+    },
+    {
+      "label": "Secret and data proof",
+      "stage": "Stop control",
+      "note": "Capture scan notes proving no live keys, customer files, or commercial fields entered the repo.",
+      "tone": "red"
+    },
+    {
+      "label": "Signoff proof",
+      "stage": "Governance",
+      "note": "Product, platform, backend, security, data, and QA owners need go/hold/no-go evidence.",
+      "tone": "green"
+    }
+  ],
+  "captureChecklist": [
+    {
+      "moment": "Before create",
+      "proof": "Repo name and privacy",
+      "note": "Screenshot or saved note confirms pursuitdesk-platform, private visibility, owner, and no-live-data scope.",
+      "tone": "red"
+    },
+    {
+      "moment": "Before files",
+      "proof": "Secret preflight",
+      "note": "Confirm no .env, live key, billing token, customer workbook, or certificate is in the copy set.",
+      "tone": "red"
+    },
+    {
+      "moment": "After setup",
+      "proof": "Folder tree",
+      "note": "Capture apps, packages, infra, docs, scripts, workflows, env examples, and starter files in place.",
+      "tone": "green"
+    },
+    {
+      "moment": "After taxonomy",
+      "proof": "Labels and milestones",
+      "note": "Capture labels, milestones, board columns, and issue routing rules imported or intentionally deferred.",
+      "tone": "blue"
+    },
+    {
+      "moment": "After issues",
+      "proof": "Issue wave",
+      "note": "Capture first M0/M1 issue URLs with owner, label, milestone, proof command, and acceptance criteria.",
+      "tone": "teal"
+    },
+    {
+      "moment": "After first branch",
+      "proof": "Branch discipline",
+      "note": "Capture develop or feature branch creation and confirm main remains protected from direct work.",
+      "tone": "amber"
+    },
+    {
+      "moment": "After first PR",
+      "proof": "PR opening note",
+      "note": "Capture PR title, scope, issue link, risk reference, proof checklist, rollback note, and reviewer list.",
+      "tone": "green"
+    },
+    {
+      "moment": "After commands",
+      "proof": "Command outputs",
+      "note": "Capture install, lint/typecheck placeholder, route envelope placeholder, auth tenant placeholder, and release-gate notes.",
+      "tone": "blue"
+    },
+    {
+      "moment": "After workflows",
+      "proof": "Check names",
+      "note": "Capture exact GitHub Actions check names that branch protection must later require.",
+      "tone": "amber"
+    },
+    {
+      "moment": "After protection",
+      "proof": "Protected main",
+      "note": "Capture required checks, review requirement, conversation resolution, and admin bypass policy.",
+      "tone": "red"
+    },
+    {
+      "moment": "Before merge",
+      "proof": "Evidence packet",
+      "note": "Capture artifacts, screenshots, logs, PR notes, signoffs, and open blockers in one folder.",
+      "tone": "green"
+    },
+    {
+      "moment": "After closeout",
+      "proof": "Handoff note",
+      "note": "Capture what passed, what remains placeholder, what is blocked, and what v128 execution checklist must enforce.",
+      "tone": "teal"
+    }
+  ],
+  "artifactFiles": [
+    {
+      "path": "evidence/00-repo-privacy.md",
+      "type": "Privacy proof",
+      "note": "Repo URL, visibility, owner, screenshot name, and no-live-data confirmation.",
+      "tone": "red"
+    },
+    {
+      "path": "evidence/01-preflight.txt",
+      "type": "Tool proof",
+      "note": "GitHub auth, git, node, package manager, and local environment checks.",
+      "tone": "blue"
+    },
+    {
+      "path": "evidence/02-setup-transcript.txt",
+      "type": "Setup proof",
+      "note": "Folder creation, starter file copy, and first command sequence transcript.",
+      "tone": "green"
+    },
+    {
+      "path": "evidence/03-issue-import-map.md",
+      "type": "Backlog proof",
+      "note": "Issue URLs, labels, milestones, owners, and acceptance links.",
+      "tone": "teal"
+    },
+    {
+      "path": "evidence/04-first-pr-note.md",
+      "type": "PR proof",
+      "note": "PR scope, linked issue, proof commands, risk register link, rollback note, and review owners.",
+      "tone": "green"
+    },
+    {
+      "path": "evidence/05-ci-check-names.md",
+      "type": "CI proof",
+      "note": "Actual workflow names, job names, status check labels, artifacts, and failure policy.",
+      "tone": "blue"
+    },
+    {
+      "path": "evidence/06-secret-data-scan.md",
+      "type": "Security proof",
+      "note": "Manual scan notes for secrets, customer data, commercial values, and restricted files.",
+      "tone": "red"
+    },
+    {
+      "path": "evidence/07-branch-protection.md",
+      "type": "Release proof",
+      "note": "Protected branch settings, required checks, environment gates, and conversation resolution.",
+      "tone": "amber"
+    },
+    {
+      "path": "evidence/08-owner-signoffs.md",
+      "type": "Signoff proof",
+      "note": "Product, platform, backend, security, data, and QA go/hold/no-go status.",
+      "tone": "green"
+    },
+    {
+      "path": "evidence/09-opening-day-summary.md",
+      "type": "Closeout proof",
+      "note": "What happened, what passed, what remains placeholder, blockers, and next build handoff.",
+      "tone": "teal"
+    }
+  ],
+  "proofCommands": [
+    {
+      "command": "gh auth status",
+      "purpose": "Preflight",
+      "note": "Proves GitHub CLI account before private repo work starts.",
+      "tone": "blue"
+    },
+    {
+      "command": "git status --short",
+      "purpose": "Clean handoff",
+      "note": "Shows local file set before copying starter content into the private repo.",
+      "tone": "green"
+    },
+    {
+      "command": "pnpm install",
+      "purpose": "Dependency proof",
+      "note": "First dependency install proof or documented placeholder if repo shell is not executable yet.",
+      "tone": "amber"
+    },
+    {
+      "command": "pnpm lint",
+      "purpose": "Quality proof",
+      "note": "Lint proof once package scripts exist; placeholder accepted only with clear next command.",
+      "tone": "green"
+    },
+    {
+      "command": "pnpm typecheck",
+      "purpose": "Type proof",
+      "note": "Typecheck proof once TS shell exists; placeholder accepted only with issue link.",
+      "tone": "blue"
+    },
+    {
+      "command": "pnpm test:route-envelopes",
+      "purpose": "API proof",
+      "note": "Route envelope tests prove safe response and request-id expectations.",
+      "tone": "teal"
+    },
+    {
+      "command": "pnpm test:auth-tenant",
+      "purpose": "Security proof",
+      "note": "Tenant isolation and section access command proof.",
+      "tone": "red"
+    },
+    {
+      "command": "pnpm ci:release-gate",
+      "purpose": "Release proof",
+      "note": "Aggregates checks, artifacts, blockers, owner decision, and rollback status.",
+      "tone": "amber"
+    }
+  ],
+  "screenshotPlan": [
+    {
+      "screen": "Repo settings",
+      "proof": "Private visibility",
+      "note": "Capture before files or issues are added.",
+      "tone": "red"
+    },
+    {
+      "screen": "Repo file tree",
+      "proof": "Starter files",
+      "note": "Capture after first commit or PR branch push.",
+      "tone": "green"
+    },
+    {
+      "screen": "Labels view",
+      "proof": "Taxonomy",
+      "note": "Capture label groups and priority/security/proof labels.",
+      "tone": "blue"
+    },
+    {
+      "screen": "Milestones view",
+      "proof": "Roadmap",
+      "note": "Capture M0/M1/M2 milestone structure.",
+      "tone": "teal"
+    },
+    {
+      "screen": "Issue list",
+      "proof": "Backlog wave",
+      "note": "Capture opened issues filtered by first milestone.",
+      "tone": "blue"
+    },
+    {
+      "screen": "Pull request",
+      "proof": "First PR",
+      "note": "Capture title, linked issue, checks area, and reviewers.",
+      "tone": "green"
+    },
+    {
+      "screen": "Actions run",
+      "proof": "Workflow proof",
+      "note": "Capture job names, check names, artifacts, and failures if any.",
+      "tone": "amber"
+    },
+    {
+      "screen": "Branch protection",
+      "proof": "Main guard",
+      "note": "Capture required checks only after workflow names are known.",
+      "tone": "red"
+    }
+  ],
+  "prNoteSections": [
+    {
+      "section": "Purpose",
+      "topic": "Why this PR exists",
+      "note": "Create the backend shell and evidence path, not a full SaaS launch.",
+      "tone": "green"
+    },
+    {
+      "section": "Scope",
+      "topic": "Included files",
+      "note": "Root docs, API shell, packages, workflows, env examples, scripts, and evidence folder.",
+      "tone": "blue"
+    },
+    {
+      "section": "Out of scope",
+      "topic": "Explicit limits",
+      "note": "No live customer data, no live payment capture, no production hosting, no real imports.",
+      "tone": "red"
+    },
+    {
+      "section": "Risk reference",
+      "topic": "v126 link",
+      "note": "Name the risk register and explain hard-stop, hold, and watch conditions.",
+      "tone": "amber"
+    },
+    {
+      "section": "Proof commands",
+      "topic": "Run or placeholder",
+      "note": "List command outputs, placeholder reason, owner, and follow-up issue.",
+      "tone": "teal"
+    },
+    {
+      "section": "CI checks",
+      "topic": "Actual names",
+      "note": "Add exact workflow and job names once GitHub Actions runs.",
+      "tone": "blue"
+    },
+    {
+      "section": "Rollback",
+      "topic": "How to back out",
+      "note": "Delete branch, close PR, revert starter files, or rotate any exposed credential.",
+      "tone": "red"
+    },
+    {
+      "section": "Signoff",
+      "topic": "Who reviewed",
+      "note": "Product, platform, backend, security, data, and QA lanes with go/hold/no-go status.",
+      "tone": "green"
+    }
+  ],
+  "workflowNameMap": [
+    {
+      "file": "ci.yml",
+      "lane": "Primary CI",
+      "proof": "install, lint, typecheck, unit, contracts, routes, audit",
+      "tone": "blue"
+    },
+    {
+      "file": "security-audit.yml",
+      "lane": "Security audit",
+      "proof": "auth tenant, redaction, denial audit, secret posture",
+      "tone": "red"
+    },
+    {
+      "file": "staging-smoke.yml",
+      "lane": "Staging smoke",
+      "proof": "login, records, commercial denial, import dry run, billing test mode, feedback",
+      "tone": "teal"
+    },
+    {
+      "file": "migration-check.yml",
+      "lane": "Migration check",
+      "proof": "migration files, seed order, rollback, restore, source trace",
+      "tone": "amber"
+    },
+    {
+      "file": "release-gate.yml",
+      "lane": "Release gate",
+      "proof": "artifact summary, blockers, owner decision, rollback proof",
+      "tone": "green"
+    },
+    {
+      "file": "branch-protection",
+      "lane": "Required checks",
+      "proof": "Configured only after actual workflow check names exist.",
+      "tone": "red"
+    }
+  ],
+  "branchProtectionEvidence": [
+    {
+      "item": "Main rule",
+      "proof": "Protect main",
+      "note": "Pull request required, direct pushes blocked, and conversation resolution enabled.",
+      "tone": "red"
+    },
+    {
+      "item": "Required checks",
+      "proof": "Use actual names",
+      "note": "Names come from first workflow run, not guessed from file names.",
+      "tone": "amber"
+    },
+    {
+      "item": "Review owner",
+      "proof": "CODEOWNERS",
+      "note": "Security, backend, platform, and data owners review their lanes.",
+      "tone": "green"
+    },
+    {
+      "item": "Admin bypass",
+      "proof": "Explicit policy",
+      "note": "Document whether admins can bypass and who can approve emergency merge.",
+      "tone": "red"
+    },
+    {
+      "item": "Artifact retention",
+      "proof": "Evidence kept",
+      "note": "CI artifacts and proof notes are saved for the first backend PR.",
+      "tone": "blue"
+    },
+    {
+      "item": "Rollback ritual",
+      "proof": "Release note",
+      "note": "Rollback command, owner, and restore path are visible before merge.",
+      "tone": "teal"
+    }
+  ],
+  "signoffTrail": [
+    {
+      "owner": "Founder / Product",
+      "scope": "Scope and decision",
+      "note": "Approves controlled repo opening without approving live SaaS.",
+      "tone": "green"
+    },
+    {
+      "owner": "Platform owner",
+      "scope": "Repo and workflow",
+      "note": "Confirms repo privacy, branch flow, setup sequence, and workflow check capture.",
+      "tone": "teal"
+    },
+    {
+      "owner": "Backend lead",
+      "scope": "Shell correctness",
+      "note": "Confirms starter API, packages, scripts, and route proof expectations.",
+      "tone": "blue"
+    },
+    {
+      "owner": "Security owner",
+      "scope": "Secrets and access",
+      "note": "Confirms no secrets, no customer data, commercial redaction, tenant guard expectations.",
+      "tone": "red"
+    },
+    {
+      "owner": "Data owner",
+      "scope": "Fixtures and migration",
+      "note": "Confirms only demo fixtures, source trace expectations, rollback path, and no real workbook import.",
+      "tone": "amber"
+    },
+    {
+      "owner": "QA / Release",
+      "scope": "Evidence packet",
+      "note": "Confirms proof files, screenshots, command logs, PR notes, and open blocker summary.",
+      "tone": "green"
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "check": "Evidence lanes mapped",
+      "note": "Eight lanes define what proof must be captured.",
+      "tone": "green"
+    },
+    {
+      "check": "Capture checklist ready",
+      "note": "Twelve capture points cover before, during, and after repo opening.",
+      "tone": "blue"
+    },
+    {
+      "check": "Artifact files named",
+      "note": "Ten evidence files are named for the future private repo.",
+      "tone": "teal"
+    },
+    {
+      "check": "Proof commands listed",
+      "note": "Eight commands define the first transcript expectations.",
+      "tone": "amber"
+    },
+    {
+      "check": "Screenshots planned",
+      "note": "Eight screenshots cover repo, issues, PR, Actions, and branch protection.",
+      "tone": "green"
+    },
+    {
+      "check": "PR note template ready",
+      "note": "Eight PR sections keep the first backend PR bounded.",
+      "tone": "blue"
+    },
+    {
+      "check": "Branch proof clear",
+      "note": "Six branch-protection evidence items are required after CI names appear.",
+      "tone": "red"
+    },
+    {
+      "check": "Next handoff ready",
+      "note": "v128 can turn the evidence pack into a concrete private repo execution checklist.",
+      "tone": "green"
+    }
+  ],
+  "handoff": [
+    "v127 turns the runbook and risk register into an evidence pack for the first real private backend repo day.",
+    "The pack makes the future repo day auditable by naming proof files, screenshots, command transcripts, PR note sections, workflow names, branch-protection evidence, and owner signoffs.",
+    "The most important rule remains: capture private repo visibility, no-secret/no-live-data proof, first PR scope, and exact workflow check names before branch protection is finalized.",
+    "v128 can now convert this evidence plan into a concrete execution checklist that someone can follow line by line in GitHub."
+  ]
+}

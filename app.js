@@ -1,8 +1,8 @@
-(function () {
+﻿(function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=115";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=115";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=146";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=146";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -4329,6 +4329,37 @@
     const backendTestCommandPack = buildBackendTestCommandPackModel(model, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint, stagingSmokeScript, securityTestPack, billingTestPack, migrationTestPack, apiContractPack, seedFixturePack);
     const productionBackendRepoFilePack = buildProductionBackendRepoFilePackModel(model, privateRepoGuide, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint, backendTestCommandPack, seedFixturePack, apiContractPack, firstBackendSprint, stagingDeployment);
     const apiErrorAuditEnvelopePack = buildApiErrorAuditEnvelopePackModel(model, backendRouteSkeleton, authTenantGuardBlueprint, productionBackendRepoFilePack, backendTestCommandPack, apiContractPack, databaseMigrationBlueprint);
+    const ciWorkflowFileBlueprint = buildCiWorkflowFileBlueprintModel(model, backendTestCommandPack, productionBackendRepoFilePack, apiErrorAuditEnvelopePack, stagingDeployment, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint);
+    const privateRepoFirstCommitBuilder = buildPrivateRepoFirstCommitBuilderModel(model, productionBackendRepoFilePack, apiErrorAuditEnvelopePack, ciWorkflowFileBlueprint, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint, backendTestCommandPack);
+    const backendIssueBodyExporter = buildBackendIssueBodyExporterModel(model, privateRepoFirstCommitBuilder, productionBackendRepoFilePack, apiErrorAuditEnvelopePack, ciWorkflowFileBlueprint, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint);
+    const branchProtectionReleaseChecklist = buildBranchProtectionReleaseChecklistModel(model, backendIssueBodyExporter, ciWorkflowFileBlueprint, privateRepoFirstCommitBuilder, productionBackendRepoFilePack, apiErrorAuditEnvelopePack);
+    const firstBackendFileContentExport = buildFirstBackendFileContentExportModel(model, branchProtectionReleaseChecklist, privateRepoFirstCommitBuilder, backendIssueBodyExporter, productionBackendRepoFilePack, apiErrorAuditEnvelopePack, ciWorkflowFileBlueprint);
+    const privateRepoSetupScriptDraft = buildPrivateRepoSetupScriptDraftModel(model, firstBackendFileContentExport, branchProtectionReleaseChecklist, backendIssueBodyExporter, privateRepoGuide, privateRepoFirstCommitBuilder);
+    const githubLabelsMilestonesImportPack = buildGithubLabelsMilestonesImportPackModel(model, privateRepoSetupScriptDraft, backendIssueBodyExporter, privateRepoGuide, branchProtectionReleaseChecklist);
+    const firstBackendCommitQaChecklist = buildFirstBackendCommitQaChecklistModel(model, githubLabelsMilestonesImportPack, privateRepoSetupScriptDraft, firstBackendFileContentExport, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint, privateRepoFirstCommitBuilder);
+    const privateRepoOpeningDayRunbook = buildPrivateRepoOpeningDayRunbookModel(model, firstBackendCommitQaChecklist, githubLabelsMilestonesImportPack, privateRepoSetupScriptDraft, backendIssueBodyExporter, firstBackendFileContentExport, branchProtectionReleaseChecklist, ciWorkflowFileBlueprint);
+    const productionBackendRepoDecisionMemo = buildProductionBackendRepoDecisionMemoModel(model, privateRepoOpeningDayRunbook, firstBackendCommitQaChecklist, privateRepoSetupScriptDraft, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint, privateRepoGuide, alphaPlan);
+    const backendAlphaRiskRegister = buildBackendAlphaRiskRegisterModel(model, productionBackendRepoDecisionMemo, privateRepoOpeningDayRunbook, firstBackendCommitQaChecklist, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint, privateRepoSetupScriptDraft);
+    const backendOpeningDayEvidencePack = buildBackendOpeningDayEvidencePackModel(model, privateRepoOpeningDayRunbook, backendAlphaRiskRegister, firstBackendCommitQaChecklist, branchProtectionReleaseChecklist, ciWorkflowFileBlueprint, backendIssueBodyExporter, privateRepoSetupScriptDraft, productionBackendRepoDecisionMemo);
+    const privateRepoExecutionChecklist = buildPrivateRepoExecutionChecklistModel(model, backendOpeningDayEvidencePack, privateRepoOpeningDayRunbook, backendAlphaRiskRegister, productionBackendRepoDecisionMemo, privateRepoSetupScriptDraft, firstBackendCommitQaChecklist, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint);
+    const backendAlphaControlBoard = buildBackendAlphaControlBoardModel(model, privateRepoExecutionChecklist, backendOpeningDayEvidencePack, backendAlphaRiskRegister, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint, firstBackendCommitQaChecklist);
+    const privateRepoDayOneScript = buildPrivateRepoDayOneScriptModel(model, backendAlphaControlBoard, privateRepoExecutionChecklist, privateRepoSetupScriptDraft, githubLabelsMilestonesImportPack, firstBackendCommitQaChecklist, backendOpeningDayEvidencePack, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint);
+    const backendRepoProofExporter = buildBackendRepoProofExporterModel(model, privateRepoDayOneScript, backendOpeningDayEvidencePack, firstBackendCommitQaChecklist, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint);
+    const githubRepoOpeningPacket = buildGithubRepoOpeningPacketModel(model, backendRepoProofExporter, privateRepoDayOneScript, backendIssueBodyExporter, githubLabelsMilestonesImportPack, branchProtectionReleaseChecklist, privateRepoSetupScriptDraft, privateRepoOpeningDayRunbook, productionBackendRepoDecisionMemo);
+    const backendAlphaIssueImportKit = buildBackendAlphaIssueImportKitModel(model, githubRepoOpeningPacket, backendIssueBodyExporter, githubLabelsMilestonesImportPack, branchProtectionReleaseChecklist, privateRepoSetupScriptDraft);
+    const firstPrBodyBuilder = buildFirstPrBodyBuilderModel(model, backendAlphaIssueImportKit, githubRepoOpeningPacket, backendRepoProofExporter, branchProtectionReleaseChecklist, backendIssueBodyExporter);
+    const repoEvidenceFolderWriter = buildRepoEvidenceFolderWriterModel(model, firstPrBodyBuilder, backendRepoProofExporter, githubRepoOpeningPacket, branchProtectionReleaseChecklist, backendAlphaIssueImportKit);
+    const privateRepoCommandRunnerPack = buildPrivateRepoCommandRunnerPackModel(model, repoEvidenceFolderWriter, privateRepoDayOneScript, privateRepoSetupScriptDraft, githubRepoOpeningPacket, branchProtectionReleaseChecklist);
+    const backendPrReviewGateMatrix = buildBackendPrReviewGateMatrixModel(model, privateRepoCommandRunnerPack, firstPrBodyBuilder, repoEvidenceFolderWriter, backendAlphaIssueImportKit, branchProtectionReleaseChecklist);
+    const evidenceArtifactStatusBoard = buildEvidenceArtifactStatusBoardModel(model, backendPrReviewGateMatrix, privateRepoCommandRunnerPack, repoEvidenceFolderWriter, backendRepoProofExporter, backendOpeningDayEvidencePack, branchProtectionReleaseChecklist);
+    const privateRepoHandoffEmailPack = buildPrivateRepoHandoffEmailPackModel(model, evidenceArtifactStatusBoard, backendPrReviewGateMatrix, privateRepoCommandRunnerPack, githubRepoOpeningPacket, firstPrBodyBuilder, productionBackendRepoDecisionMemo);
+    const firstBackendPrReviewCommentPack = buildFirstBackendPrReviewCommentPackModel(model, backendPrReviewGateMatrix, privateRepoHandoffEmailPack, evidenceArtifactStatusBoard, firstPrBodyBuilder, privateRepoCommandRunnerPack);
+    const privateRepoEvidenceCloseoutPack = buildPrivateRepoEvidenceCloseoutPackModel(model, firstBackendPrReviewCommentPack, evidenceArtifactStatusBoard, privateRepoHandoffEmailPack, backendPrReviewGateMatrix, privateRepoCommandRunnerPack);
+    const backendRepoDayMeetingPack = buildBackendRepoDayMeetingPackModel(model, privateRepoEvidenceCloseoutPack, privateRepoHandoffEmailPack, backendAlphaControlBoard, privateRepoDayOneScript, backendPrReviewGateMatrix, evidenceArtifactStatusBoard, productionBackendRepoDecisionMemo);
+    const privateRepoReplyCaptureBoard = buildPrivateRepoReplyCaptureBoardModel(model, backendRepoDayMeetingPack, privateRepoEvidenceCloseoutPack, firstBackendPrReviewCommentPack, backendPrReviewGateMatrix, evidenceArtifactStatusBoard, privateRepoHandoffEmailPack);
+    const evidenceCloseoutPdfExportPlan = buildEvidenceCloseoutPdfExportPlanModel(model, privateRepoReplyCaptureBoard, privateRepoEvidenceCloseoutPack, backendRepoDayMeetingPack, evidenceArtifactStatusBoard, firstBackendPrReviewCommentPack, backendPrReviewGateMatrix);
+    const backendMeetingMinutesExporter = buildBackendMeetingMinutesExporterModel(model, evidenceCloseoutPdfExportPlan, backendRepoDayMeetingPack, privateRepoReplyCaptureBoard, privateRepoEvidenceCloseoutPack, firstBackendPrReviewCommentPack);
+    const reviewerDecisionEmailPack = buildReviewerDecisionEmailPackModel(model, backendMeetingMinutesExporter, privateRepoReplyCaptureBoard, evidenceCloseoutPdfExportPlan, backendPrReviewGateMatrix, firstBackendPrReviewCommentPack);
     return `
       <section class="command-center">
         <section class="command-console">
@@ -4390,6 +4421,68 @@
         ${canAdmin() ? renderProductionBackendRepoFilePack(productionBackendRepoFilePack) : ""}
 
         ${canAdmin() ? renderApiErrorAuditEnvelopePack(apiErrorAuditEnvelopePack) : ""}
+
+        ${canAdmin() ? renderCiWorkflowFileBlueprint(ciWorkflowFileBlueprint) : ""}
+
+        ${canAdmin() ? renderPrivateRepoFirstCommitBuilder(privateRepoFirstCommitBuilder) : ""}
+
+        ${canAdmin() ? renderBackendIssueBodyExporter(backendIssueBodyExporter) : ""}
+
+        ${canAdmin() ? renderBranchProtectionReleaseChecklist(branchProtectionReleaseChecklist) : ""}
+
+        ${canAdmin() ? renderFirstBackendFileContentExport(firstBackendFileContentExport) : ""}
+
+        ${canAdmin() ? renderPrivateRepoSetupScriptDraft(privateRepoSetupScriptDraft) : ""}
+
+        ${canAdmin() ? renderGithubLabelsMilestonesImportPack(githubLabelsMilestonesImportPack) : ""}
+
+        ${canAdmin() ? renderFirstBackendCommitQaChecklist(firstBackendCommitQaChecklist) : ""}
+
+        ${canAdmin() ? renderPrivateRepoOpeningDayRunbook(privateRepoOpeningDayRunbook) : ""}
+
+        ${canAdmin() ? renderProductionBackendRepoDecisionMemo(productionBackendRepoDecisionMemo) : ""}
+
+        ${canAdmin() ? renderBackendAlphaRiskRegister(backendAlphaRiskRegister) : ""}
+
+        ${canAdmin() ? renderBackendOpeningDayEvidencePack(backendOpeningDayEvidencePack) : ""}
+
+        ${canAdmin() ? renderPrivateRepoExecutionChecklist(privateRepoExecutionChecklist) : ""}
+
+        ${canAdmin() ? renderBackendAlphaControlBoard(backendAlphaControlBoard) : ""}
+
+        ${canAdmin() ? renderPrivateRepoDayOneScript(privateRepoDayOneScript) : ""}
+
+        ${canAdmin() ? renderBackendRepoProofExporter(backendRepoProofExporter) : ""}
+
+        ${canAdmin() ? renderGithubRepoOpeningPacket(githubRepoOpeningPacket) : ""}
+
+        ${canAdmin() ? renderBackendAlphaIssueImportKit(backendAlphaIssueImportKit) : ""}
+
+        ${canAdmin() ? renderFirstPrBodyBuilder(firstPrBodyBuilder) : ""}
+
+        ${canAdmin() ? renderRepoEvidenceFolderWriter(repoEvidenceFolderWriter) : ""}
+
+        ${canAdmin() ? renderPrivateRepoCommandRunnerPack(privateRepoCommandRunnerPack) : ""}
+
+        ${canAdmin() ? renderBackendPrReviewGateMatrix(backendPrReviewGateMatrix) : ""}
+
+        ${canAdmin() ? renderEvidenceArtifactStatusBoard(evidenceArtifactStatusBoard) : ""}
+
+        ${canAdmin() ? renderPrivateRepoHandoffEmailPack(privateRepoHandoffEmailPack) : ""}
+
+        ${canAdmin() ? renderFirstBackendPrReviewCommentPack(firstBackendPrReviewCommentPack) : ""}
+
+        ${canAdmin() ? renderPrivateRepoEvidenceCloseoutPack(privateRepoEvidenceCloseoutPack) : ""}
+
+        ${canAdmin() ? renderBackendRepoDayMeetingPack(backendRepoDayMeetingPack) : ""}
+
+        ${canAdmin() ? renderPrivateRepoReplyCaptureBoard(privateRepoReplyCaptureBoard) : ""}
+
+        ${canAdmin() ? renderEvidenceCloseoutPdfExportPlan(evidenceCloseoutPdfExportPlan) : ""}
+
+        ${canAdmin() ? renderBackendMeetingMinutesExporter(backendMeetingMinutesExporter) : ""}
+
+        ${canAdmin() ? renderReviewerDecisionEmailPack(reviewerDecisionEmailPack) : ""}
 
         ${canAdmin() ? renderPilotReadinessChecklist(pilotReadiness) : ""}
 
@@ -7819,7 +7912,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-fixture-export.json?v=115";
+    const downloadHref = "data/backend-fixture-export.json?v=146";
     const exportTables = [
       ["tenants.json", 1, "Company, workspace defaults, billing currency, plan state, and retention settings.", "green"],
       ["users.json", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and role-access fixture users.", "blue"],
@@ -7912,7 +8005,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-sprint-checklist.json?v=115";
+    const downloadHref = "data/backend-sprint-checklist.json?v=146";
     const sprintDays = [
       ["Day 0", "Repo creation and protection", "Private repo, develop branch, labels, milestones, board, first issues, secrets list.", "Repo is private and branch rules are visible.", "Control Admin"],
       ["Day 1", "Workspace skeleton", "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.", "Fresh clone can install and run the empty shell.", "Backend Lead"],
@@ -8026,7 +8119,7 @@
         ),
       ),
     );
-    const downloadHref = "data/staging-deployment-checklist.json?v=115";
+    const downloadHref = "data/staging-deployment-checklist.json?v=146";
     const environmentLanes = [
       ["Staging URL", `staging.${BRAND_DOMAIN}`, "Private pilot preview with test data, HTTPS, cache headers, and admin-only deployment notes.", "green"],
       ["API service", "api-staging", "Backend API deploys from develop or release candidate with health, version, and smoke endpoints.", "blue"],
@@ -8157,7 +8250,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-route-skeleton-map.json?v=115";
+    const downloadHref = "data/backend-route-skeleton-map.json?v=146";
     const routeFiles = [
       ["apps/api/src/server.ts", "Bootstrap", "Health route, request id, middleware chain, error shape, and route registration.", "Platform Owner", "green"],
       ["apps/api/src/middleware/request-context.ts", "Context", "Request id, actor shell, tenant shell, logger scope, and response timing.", "Backend Lead", "blue"],
@@ -8275,7 +8368,7 @@
         ),
       ),
     );
-    const downloadHref = "data/database-migration-blueprint.json?v=115";
+    const downloadHref = "data/database-migration-blueprint.json?v=146";
     const migrationFiles = [
       ["0001_tenant_identity.sql", "Tenant identity", "companies, users, access_profiles, sessions, invitations", "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data.", "Security Owner", "red"],
       ["0002_operational_records.sql", "Operational records", "records, record_notes, record_status_events, client_memory", `Load ${records.length} tracker-safe tender and project records without commercial values.`, "Records Owner", "teal"],
@@ -8414,7 +8507,7 @@
         ),
       ),
     );
-    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=115";
+    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=146";
     const guardFiles = [
       ["apps/api/src/auth/session.ts", "Session guard", "Verify signed session, expiry, inactive user, password reset freshness, and actor context.", "auth.session.test.ts", "Identity Owner", "red"],
       ["apps/api/src/auth/password.ts", "Password policy", "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.", "auth.password.test.ts", "Identity Owner", "red"],
@@ -8570,7 +8663,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-test-command-pack.json?v=115";
+    const downloadHref = "data/backend-test-command-pack.json?v=146";
     const testCommands = [
       ["01", "pnpm test:unit", "Domain unit tests", "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.", "junit-unit.xml", "green"],
       ["02", "pnpm test:contracts", "API contract tests", `${apiContractPack.endpointContracts.length} endpoint contracts for auth, users, records, commercial, import, billing, feedback, and audit.`, "junit-contracts.xml", "blue"],
@@ -8701,7 +8794,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-file-pack.json?v=115";
+    const downloadHref = "data/production-backend-repo-file-pack.json?v=146";
     const repositoryFolders = [
       ["apps/web", "Frontend app", "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.", "Frontend Owner", "green"],
       ["apps/api", "Backend API", "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.", "Backend Lead", "teal"],
@@ -8861,7 +8954,7 @@
         ),
       ),
     );
-    const downloadHref = "data/api-error-audit-envelope-pack.json?v=115";
+    const downloadHref = "data/api-error-audit-envelope-pack.json?v=146";
     const errorEnvelopeFields = [
       ["ok", "boolean", "Always false for errors and true for success responses.", "green"],
       ["requestId", "string", "Public-safe trace id returned to the UI, logs, and audit rows.", "blue"],
@@ -9044,25 +9137,5345 @@
         "v115 gives the future backend one safe response contract for every route, so UI, support, logs, audit, and CI can all trace the same request.",
         "The important product decision is now explicit: frontline tracker users get operational records, while commercial and membership denials produce safe errors and audit evidence instead of accidental data leaks.",
         "Engineering should implement request-id, typed errors, error middleware, audit context, audit writer, access denials, redaction, idempotency, and route adoption before adding deeper feature logic.",
-        "The next build can turn these tests and middleware expectations into GitHub Actions workflow files and branch-protection checks.",
+        "v116 now converts these tests and middleware expectations into GitHub Actions workflow files, branch protection checks, and release artifacts.",
+      ],
+    };
+  }
+
+  function buildCiWorkflowFileBlueprintModel(commandModel, backendTestCommandPack, productionBackendRepoFilePack, apiErrorAuditEnvelopePack, stagingDeployment, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint) {
+    const ciBlueprintScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendTestCommandPack.testCommandScore * 0.22 +
+            productionBackendRepoFilePack.repoFileReadiness * 0.2 +
+            apiErrorAuditEnvelopePack.envelopeScore * 0.2 +
+            stagingDeployment.deploymentScore * 0.14 +
+            backendRouteSkeleton.routeSkeletonScore * 0.1 +
+            databaseMigrationBlueprint.migrationBlueprintScore * 0.08 +
+            authTenantGuardBlueprint.guardScore * 0.06,
+        ),
+      ),
+    );
+    const downloadHref = "data/ci-workflow-file-blueprint.json?v=146";
+    const workflowFiles = [
+      [".github/workflows/ci.yml", "Primary PR gate", "Pull request", "install, lint, typecheck, unit, contracts, route envelopes, audit envelopes", "ci-summary.json", "red"],
+      [".github/workflows/security-audit.yml", "Security and tenant proof", "Pull request + nightly", "auth tenant guards, section denials, commercial vault denial, redaction, request id", "security-audit-proof.json", "red"],
+      [".github/workflows/migration-restore.yml", "Migration and restore proof", "Pull request + nightly", "migration apply, seed, rollback, restore, count parity, fixture reconciliation", "migration-restore-proof.json", "blue"],
+      [".github/workflows/billing-testmode.yml", "Billing test mode proof", "Pull request", "checkout preview, webhook signature, idempotency, invoice lifecycle, seat sync", "billing-testmode-proof.json", "amber"],
+      [".github/workflows/import-dryrun.yml", "Import dry-run proof", "Pull request", "workbook staging, validation, quarantine, duplicate decisions, rollback id", "import-dryrun-proof.json", "blue"],
+      [".github/workflows/staging-smoke.yml", "Staging smoke proof", "Deploy to staging", "login, records, commercial denial, import dry run, billing test, feedback, audit, report", "staging-smoke-report.json", "teal"],
+      [".github/workflows/release-gate.yml", "Release gate summary", "Manual dispatch + protected branch", "collect required checks, blockers, artifacts, owner signoff, release decision", "release-gate-summary.md", "green"],
+      [".github/workflows/dependency-review.yml", "Dependency and secret scan", "Pull request", "dependency review, license check, secret scan, vulnerable package stop", "dependency-review.json", "amber"],
+    ];
+    const jobMatrix = [
+      ["install", "ubuntu-latest", "pnpm install --frozen-lockfile", "node_modules cache", "green"],
+      ["lint", "ubuntu-latest", "pnpm lint", "lint-report.txt", "blue"],
+      ["typecheck", "ubuntu-latest", "pnpm typecheck", "typecheck-report.txt", "blue"],
+      ["unit", "ubuntu-latest", "pnpm test:unit", "junit-unit.xml", "green"],
+      ["contracts", "ubuntu-latest", "pnpm test:contracts", "junit-contracts.xml", "teal"],
+      ["route-envelopes", "ubuntu-latest", "pnpm test:route-envelopes", "route-envelope-coverage.json", "red"],
+      ["auth-tenant", "ubuntu-latest", "pnpm test:auth-tenant", "tenant-isolation-proof.json", "red"],
+      ["redaction", "ubuntu-latest", "pnpm test:redaction", "redaction-proof.json", "amber"],
+      ["audit", "ubuntu-latest", "pnpm test:audit", "audit-event-proof.json", "teal"],
+      ["migration", "ubuntu-latest", "pnpm db:migrate:test && pnpm db:seed:test", "migration-proof.json", "blue"],
+      ["billing", "ubuntu-latest", "pnpm test:billing-testmode", "billing-proof.json", "amber"],
+      ["release-summary", "ubuntu-latest", "pnpm ci:release-gate", "release-gate-summary.md", "green"],
+    ];
+    const artifactPlan = [
+      ["ci-summary.json", "Primary CI", "Status, duration, commit, PR, branch, and required-check list.", "green"],
+      ["junit-contracts.xml", "API contracts", `${backendRouteSkeleton.controllerMap.length} route groups and contract behavior.`, "teal"],
+      ["route-envelope-coverage.json", "Error/audit routes", `${apiErrorAuditEnvelopePack.routeEnvelopeMap.length} route envelope bindings.`, "red"],
+      ["audit-event-proof.json", "Audit proof", `${apiErrorAuditEnvelopePack.auditEventMatrix.length} allowed, denied, and system events.`, "teal"],
+      ["denial-proof.json", "Denied access", `${apiErrorAuditEnvelopePack.denialProofScenarios.length} denial cases protect tenant and commercial privacy.`, "red"],
+      ["redaction-proof.json", "Commercial privacy", "Tracker list, detail, CSV, and search endpoints exclude restricted fields.", "amber"],
+      ["migration-restore-proof.json", "Data safety", `${databaseMigrationBlueprint.migrationFiles.length} migration files, rollback, restore, and count parity.`, "blue"],
+      ["billing-testmode-proof.json", "Billing safety", "Webhook idempotency, invoice state, subscription sync, and seat locks.", "amber"],
+      ["staging-smoke-report.json", "Staging rehearsal", "Critical user paths, role checks, rollback proof, and report export.", "teal"],
+      ["release-gate-summary.md", "Management release note", "Required checks, blockers, owners, artifacts, and go/no-go decision.", "green"],
+    ];
+    const cachePlan = [
+      ["pnpm-store", "pnpm-lock.yaml", "Reuse package store while lockfile stays unchanged.", "green"],
+      ["node-build", "package.json + tsconfig", "Cache build/typecheck output only for PR speed, not correctness.", "blue"],
+      ["playwright-browsers", "playwright version", "Cache browser binaries for smoke tests when enabled.", "teal"],
+      ["migration-fixtures", "fixture manifest hash", "Reuse seed fixtures only when fixture JSON does not change.", "amber"],
+      ["coverage", "commit sha", "Upload coverage as artifact; do not restore stale coverage into checks.", "red"],
+      ["reports", "workflow run id", "Keep release reports tied to exact run id and commit.", "green"],
+    ];
+    const secretPolicy = [
+      ["DATABASE_URL_TEST", "Repository secret", "Disposable test database only; no production data.", "red"],
+      ["DATABASE_URL_STAGING", "Environment secret", "Staging environment protected by manual approval.", "red"],
+      ["SESSION_SECRET_TEST", "Repository secret", "Deterministic test secret for CI only.", "blue"],
+      ["BILLING_SECRET_KEY_TEST", "Environment secret", "Test-mode provider key, never live card capture.", "amber"],
+      ["BILLING_WEBHOOK_SECRET_TEST", "Environment secret", "Webhook signature tests and replay checks.", "amber"],
+      ["OBJECT_STORAGE_TEST_KEY", "Repository secret", "Temporary evidence/artifact storage for smoke tests.", "teal"],
+      ["EMAIL_TEST_KEY", "Repository secret", "Mail sink or sandbox provider only.", "green"],
+      ["AUDIT_EXPORT_TEST_KEY", "Environment secret", "Restricted export proof for audit reports in staging.", "red"],
+    ];
+    const branchProtection = [
+      ["main", "Require pull request review", "No direct pushes; owner review required before production release.", "red"],
+      ["main", "Require ci.yml", "Install, lint, typecheck, unit, contracts, envelope, audit, and release summary pass.", "red"],
+      ["main", "Require security-audit.yml", "Tenant, access, commercial, redaction, and denied audit checks pass.", "red"],
+      ["main", "Require migration-restore.yml", "Migration, seed, rollback, restore, and count parity pass.", "blue"],
+      ["main", "Require billing-testmode.yml", "Billing workflows prove test mode, idempotency, and seat sync.", "amber"],
+      ["develop", "Require primary CI", "Integration branch accepts feature PRs only after base checks pass.", "blue"],
+      ["release/*", "Require staging-smoke.yml", "Release branch needs staging rehearsal before merge.", "teal"],
+      ["all protected", "Block force push", "Preserve audit history, branch evidence, and release traceability.", "green"],
+    ];
+    const commandBindings = backendTestCommandPack.testCommands.map(([step, command, suite, proof, artifact, tone]) => [
+      step,
+      command,
+      suite,
+      artifact,
+      workflowFiles[Math.min(workflowFiles.length - 1, Math.max(0, Number(step) % workflowFiles.length))][0],
+      proof,
+      tone,
+    ]);
+    const matrixStrategy = [
+      ["Node version", "20.x, 22.x", "Keep first backend alpha on modern LTS compatibility.", "blue"],
+      ["Database mode", "sqlite test, postgres test", "Unit speed plus realistic tenant/migration behavior.", "teal"],
+      ["Role fixture", "admin, operations, manager, viewer, inactive", "Route permissions are proved for every access profile.", "red"],
+      ["Route group", "auth, users, records, commercial, import, billing, feedback, audit", "Contract tests stay scoped and readable.", "green"],
+      ["Import source", "Telecom workbook, Negotiation workbook, manual rows", "Importer dry-run covers current source reality.", "amber"],
+      ["Artifact retention", "7, 14, 30 days", "Short for PR, longer for staging and release decisions.", "blue"],
+    ];
+    const releaseGates = [
+      ["Required checks green", "All protected workflows pass on the exact commit.", "red"],
+      ["Artifacts uploaded", "CI summary, route coverage, audit proof, denial proof, migration proof, and smoke report exist.", "blue"],
+      ["No secret leakage", "Secret scan and env example review pass before merge.", "red"],
+      ["Tenant proof current", "Cross-tenant and membership denial tests pass with request ids.", "red"],
+      ["Commercial redaction current", "Operations routes and exports contain no value, agreement, LOA, invoice, or negotiation fields.", "amber"],
+      ["Migration restore passes", "Rollback and restore proof exist for the same schema version.", "blue"],
+      ["Billing remains test mode", "No live billing key can run in CI or staging alpha.", "amber"],
+      ["Owner decision recorded", "Release gate summary has owner signoff and next action.", "green"],
+    ];
+    const adoptionOrder = [
+      ["01", "Commit workflow skeletons", "Add ci, security, migration, billing, import, staging smoke, release gate, and dependency workflows.", "green"],
+      ["02", "Add scripts to package.json", "Bind every workflow job to a local command that developers can run before pushing.", "blue"],
+      ["03", "Add artifact upload", "Upload reports even on failure so review is not blind.", "teal"],
+      ["04", "Add branch rules", "Protect main and release branches after first workflow run succeeds.", "red"],
+      ["05", "Add staging environment", "Require manual approval and scoped secrets before smoke checks.", "amber"],
+      ["06", "Add required status checks", "Make primary CI, security, migration, billing, and release gates non-optional.", "red"],
+      ["07", "Run first proof", "Open a test PR and prove artifacts, failures, cache, and denial reports are visible.", "green"],
+      ["08", "Document release ritual", "README and docs explain local proof, PR proof, staging proof, and go/no-go evidence.", "teal"],
+    ];
+    const acceptanceChecks = [
+      ["Workflow files listed", `${workflowFiles.length} GitHub workflow files have trigger, jobs, command scope, and artifact.`, "green"],
+      ["Jobs mapped", `${jobMatrix.length} CI jobs map to commands, runner, cache, and proof artifact.`, "blue"],
+      ["Safety commands bound", `${commandBindings.length} backend test commands are tied to workflow files and artifacts.`, "red"],
+      ["Branch protection ready", `${branchProtection.length} branch rules define required checks and push restrictions.`, "red"],
+      ["Secrets scoped", `${secretPolicy.length} secrets are test or staging scoped with no live customer data.`, "amber"],
+      ["Artifacts named", `${artifactPlan.length} artifacts support engineering, security, migration, billing, and management review.`, "teal"],
+      ["Release gates explicit", `${releaseGates.length} go/no-go rules prevent blind merges.`, "green"],
+      ["Next repo handoff clear", "v117 can turn this blueprint into first-commit workflow file contents.", "blue"],
+    ];
+    return {
+      ciBlueprintScore,
+      downloadHref,
+      workflowFiles,
+      jobMatrix,
+      artifactPlan,
+      cachePlan,
+      secretPolicy,
+      branchProtection,
+      commandBindings,
+      matrixStrategy,
+      releaseGates,
+      adoptionOrder,
+      acceptanceChecks,
+      examples: {
+        ciJob: {
+          name: "route-envelopes",
+          runsOn: "ubuntu-latest",
+          command: "pnpm test:route-envelopes",
+          uploads: ["route-envelope-coverage.json", "junit-route-envelopes.xml"],
+          requiredFor: ["main", "develop", "release/*"],
+        },
+        releaseSummary: {
+          commit: "HEAD",
+          requiredChecks: ["ci", "security-audit", "migration-restore", "billing-testmode", "release-gate"],
+          decision: "blocked until all artifacts exist",
+          owner: "Platform Owner",
+        },
+      },
+      signalCards: [
+        ["Workflow readiness", `${ciBlueprintScore}%`, "How ready the private repo is to enforce checks through GitHub Actions", ciBlueprintScore >= 92 ? "green" : "amber"],
+        ["Workflow files", workflowFiles.length, "CI, security, migration, billing, import, staging, release, and dependency checks", "blue"],
+        ["Required jobs", jobMatrix.length, "Install through release summary, each with artifact proof", "red"],
+        ["Release gates", releaseGates.length, "Go/no-go rules before staging or production movement", "teal"],
+      ],
+      handoff: [
+        "v116 turns backend intent into enforcement: route contracts, error envelopes, audit evidence, migration safety, billing test mode, and staging smoke all become required workflow proof.",
+        "The future private repo should not rely on memory or manual checking. Every sensitive rule should produce an artifact that a reviewer can open.",
+        "Branch protection should only be enabled after the first workflow run proves the checks exist; after that, main and release branches should reject unproven changes.",
+        "The next build can create first-commit file contents for these workflow files, package scripts, README proof instructions, and branch-protection setup notes.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoFirstCommitBuilderModel(commandModel, productionBackendRepoFilePack, apiErrorAuditEnvelopePack, ciWorkflowFileBlueprint, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint, backendTestCommandPack) {
+    const firstCommitScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          productionBackendRepoFilePack.repoFileReadiness * 0.28 +
+            apiErrorAuditEnvelopePack.envelopeScore * 0.2 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.2 +
+            backendRouteSkeleton.routeSkeletonScore * 0.12 +
+            databaseMigrationBlueprint.migrationBlueprintScore * 0.1 +
+            authTenantGuardBlueprint.guardScore * 0.1,
+        ),
+      ),
+    );
+    const downloadHref = "data/private-repo-first-commit-builder.json?v=146";
+    const repoShellFiles = [
+      ["README.md", "Repository orientation", "Explains alpha scope, local setup, proof commands, privacy rules, and release ritual.", "Repo Owner", "green"],
+      ["package.json", "Root command map", "Defines install, dev, lint, typecheck, test, migrate, seed, smoke, and release-gate scripts.", "Platform Owner", "blue"],
+      ["pnpm-workspace.yaml", "Monorepo boundary", "Keeps apps and packages separated before the backend code grows.", "Platform Owner", "teal"],
+      [".gitignore", "Safety guard", "Keeps node_modules, env files, coverage, local databases, and generated evidence out of git.", "Security Owner", "red"],
+      [".env.example", "Environment contract", "Names database, session, billing test mode, mail, storage, audit, and app URL keys without secrets.", "Security Owner", "red"],
+      [".github/CODEOWNERS", "Review ownership", "Routes platform, backend, database, security, billing, importer, audit, and docs changes to owners.", "Repo Owner", "blue"],
+      [".github/pull_request_template.md", "PR proof", "Forces issue link, commands, artifacts, migrations, screenshots, rollout, and rollback notes.", "QA Owner", "green"],
+      ["docs/architecture.md", "Architecture map", "Captures apps, packages, API groups, data model, access model, and deployment boundaries.", "Product Owner", "teal"],
+      ["docs/release-runbook.md", "Release ritual", "Records required checks, artifact names, branch rules, owner signoff, and rollback decision.", "Platform Owner", "amber"],
+      ["docs/security-and-audit.md", "Access proof", "Documents safe errors, request ids, audit envelope, denied events, redaction, and tenant rules.", "Security Owner", "red"],
+    ];
+    const appApiFiles = [
+      ["apps/api/src/server.ts", "HTTP entry", "Boots the app, port, health endpoint, graceful shutdown, and request id.", "Backend Lead", "green"],
+      ["apps/api/src/app.ts", "App composition", "Connects middleware, routes, error handler, audit context, and tenant scope.", "Backend Lead", "teal"],
+      ["apps/api/src/routes/index.ts", "Route registry", `Registers ${backendRouteSkeleton.controllerMap.length} route groups behind auth, tenant, and section guards.`, "Backend Lead", "blue"],
+      ["apps/api/src/middleware/request-id.ts", "Trace identity", "Adds one request id to responses, logs, errors, and audit evidence.", "Security Owner", "red"],
+      ["apps/api/src/middleware/error-envelope.ts", "Safe errors", `Returns the v115 envelope shape for ${apiErrorAuditEnvelopePack.errorCatalog.length} catalogued error cases.`, "Security Owner", "red"],
+      ["apps/api/src/middleware/audit-context.ts", "Audit context", "Builds actor, tenant, section, request id, target, decision, and retention context.", "Governance Owner", "teal"],
+      ["apps/api/src/middleware/tenant-scope.ts", "Tenant isolation", "Rejects cross-company reads and writes before controller code runs.", "Security Owner", "red"],
+      ["apps/api/src/middleware/access-decision.ts", "Section access", "Centralizes tracker, insight, membership, import, billing, and audit permission decisions.", "Security Owner", "amber"],
+      ["apps/api/src/middleware/rate-limit.ts", "Abuse guard", "Adds conservative limits for login, import, export, billing webhooks, and report generation.", "Platform Owner", "blue"],
+      ["apps/api/src/middleware/response-logger.ts", "Evidence log", "Logs status, route, actor, tenant, duration, and audit event id without leaking restricted values.", "Governance Owner", "green"],
+    ];
+    const packageFiles = [
+      ["packages/db/migrations/index.ts", "Migration runner", `${databaseMigrationBlueprint.migrationFiles.length} ordered migrations, rollback names, owner notes, and restore proof hooks.`, "Database Owner", "blue"],
+      ["packages/db/seeds/index.ts", "Seed runner", "Creates demo tenant, users, operational records, commercial facts, audit events, and billing state.", "Database Owner", "green"],
+      ["packages/domain/redaction.ts", "Privacy rules", "Removes values, agreements, LOA, invoices, and negotiation notes from frontline tracker payloads.", "Security Owner", "red"],
+      ["packages/audit/audit-writer.ts", "Audit evidence", `Writes allowed, denied, system, import, billing, feedback, and report events from ${apiErrorAuditEnvelopePack.auditEventMatrix.length} event classes.`, "Governance Owner", "teal"],
+      ["packages/testing/fixtures/index.ts", "Test fixtures", "Exports tenants, users, roles, records, commercial vault rows, import batches, and expected assertions.", "QA Owner", "green"],
+      ["packages/importer/dry-run.ts", "Workbook staging", "Normalizes Excel rows, validates fields, quarantines issues, and returns commit-ready batches.", "Migration Owner", "blue"],
+      ["packages/billing/test-mode.ts", "Billing shell", "Keeps USD plans, checkout preview, webhook signature, invoices, seats, and access locks in test mode.", "Billing Owner", "amber"],
+      ["packages/reports/weekly-pack.ts", "Report builder", "Generates management pack metrics from redaction-safe operational and commercial signals.", "Reports Owner", "teal"],
+      ["packages/shared/result.ts", "Typed result", "Standardizes success, validation failure, access denial, and retryable backend outcomes.", "Backend Lead", "green"],
+      ["packages/shared/env.ts", "Env parser", "Validates required env keys and blocks live billing/customer-data secrets during alpha tests.", "Platform Owner", "red"],
+    ];
+    const workflowFileContents = ciWorkflowFileBlueprint.workflowFiles.map(([file, title, trigger, commandScope, artifact, tone]) => [
+      file,
+      title,
+      trigger,
+      commandScope,
+      artifact,
+      `Create ${file} with checkout, Node setup, pnpm install, scoped commands, artifact upload, and failure summary.`,
+      tone,
+    ]);
+    const scriptCommands = ciWorkflowFileBlueprint.commandBindings.slice(0, 12).map(([step, command, suite, artifact, workflow, proof, tone]) => [
+      step,
+      command,
+      suite,
+      workflow,
+      artifact,
+      proof,
+      tone,
+    ]);
+    const envExampleBlocks = ciWorkflowFileBlueprint.secretPolicy.map(([secret, scope, note, tone]) => [
+      secret,
+      scope,
+      note,
+      secret.includes("DATABASE") ? "DATABASE_URL_TEST=postgres://user:password@localhost:5432/pursuitdesk_test" : `${secret}=replace-with-${secret.toLowerCase().replaceAll("_", "-")}`,
+      tone,
+    ]);
+    const copyPasteOrder = [
+      ["01", "Create root shell files", "README, package, workspace, gitignore, env example, CODEOWNERS, and PR template.", "green"],
+      ["02", "Create docs", "Architecture, security/audit, release runbook, API contract, data model, and test command notes.", "teal"],
+      ["03", "Create API shell", "server, app, route registry, request id, safe error, audit context, tenant scope, access decision.", "blue"],
+      ["04", "Create packages", "db, domain, audit, testing, importer, billing, reports, and shared utilities.", "green"],
+      ["05", "Create workflow files", `${workflowFileContents.length} GitHub Actions files from CI blueprint v116.`, "red"],
+      ["06", "Bind package scripts", `${scriptCommands.length} commands from backend test command pack and CI workflow blueprint.`, "amber"],
+      ["07", "Copy fixture contracts", "Seed tenant, users, records, commercial vault, import batches, audit events, and billing state.", "blue"],
+      ["08", "Run first proof", "Install, lint, typecheck, route envelopes, auth tenant, migrations, billing test mode, audit, and release gate.", "red"],
+    ];
+    const acceptanceChecks = [
+      ["No secrets committed", `${envExampleBlocks.length} env blocks use examples only, with no live billing keys or customer data.`, "red"],
+      ["Root repo can install", "package.json and workspace files define one clear install and local command path.", "green"],
+      ["API shell can boot", `${appApiFiles.length} API files identify the first backend boundary and middleware order.`, "teal"],
+      ["Privacy starts at commit one", "Redaction, tenant scope, access decisions, safe errors, and audit writer are named as first files.", "red"],
+      ["Workflows are present", `${workflowFileContents.length} workflow files are ready to paste into .github/workflows.`, "blue"],
+      ["Commands are traceable", `${scriptCommands.length} scripts point to workflow files and expected proof artifacts.`, "amber"],
+      ["Packages are owned", `${packageFiles.length} package starter files have owners and implementation purpose.`, "green"],
+      ["Next step is visible", "v118 can turn this into copy-ready GitHub issue bodies for the private repo backlog.", "blue"],
+    ];
+    const examples = {
+      readme:
+        "# PursuitDesk Backend\n\nPrivate production backend for PursuitDesk alpha.\n\n## First proof\npnpm install\npnpm lint\npnpm typecheck\npnpm test:route-envelopes\npnpm test:auth-tenant\npnpm ci:release-gate\n",
+      packageJson:
+        "{\n  \"name\": \"pursuitdesk-platform\",\n  \"private\": true,\n  \"scripts\": {\n    \"lint\": \"eslint .\",\n    \"typecheck\": \"tsc --noEmit\",\n    \"test:route-envelopes\": \"vitest run packages/testing/route-envelopes\",\n    \"test:auth-tenant\": \"vitest run packages/testing/auth-tenant\",\n    \"ci:release-gate\": \"node scripts/release-gate.mjs\"\n  }\n}",
+      workflow:
+        "name: CI\non: [pull_request]\njobs:\n  route-envelopes:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/setup-node@v4\n        with:\n          node-version: 22\n      - run: corepack enable\n      - run: pnpm install --frozen-lockfile\n      - run: pnpm test:route-envelopes\n",
+    };
+    return {
+      firstCommitScore,
+      downloadHref,
+      repoShellFiles,
+      appApiFiles,
+      packageFiles,
+      workflowFileContents,
+      scriptCommands,
+      envExampleBlocks,
+      copyPasteOrder,
+      acceptanceChecks,
+      examples,
+      signalCards: [
+        ["First commit readiness", `${firstCommitScore}%`, "How ready v114-v116 are to become the first private repo commit", firstCommitScore >= 92 ? "green" : "amber"],
+        ["Root files", repoShellFiles.length, "README, package, workspace, env, docs, and GitHub operation files", "teal"],
+        ["Starter code files", appApiFiles.length + packageFiles.length, "API shell, middleware, packages, fixtures, billing, audit, and reports", "blue"],
+        ["Proof bindings", workflowFileContents.length + scriptCommands.length, "Workflow files plus scripts tied to artifacts and release evidence", "red"],
+      ],
+      handoff: [
+        "v117 converts the planning stack into a first-commit builder for the future private repo.",
+        "This keeps the real repository disciplined: no secrets, no customer data, no vague setup, and no invisible commercial exposure.",
+        "The first commit should contain shell files, docs, API middleware names, package boundaries, env examples, workflow files, and proof commands before feature coding begins.",
+        "After this, v118 can generate copy-ready GitHub issue bodies so the first private repo backlog can be opened with acceptance tests already attached.",
+      ],
+    };
+  }
+
+  function buildBackendIssueBodyExporterModel(commandModel, privateRepoFirstCommitBuilder, productionBackendRepoFilePack, apiErrorAuditEnvelopePack, ciWorkflowFileBlueprint, backendRouteSkeleton, databaseMigrationBlueprint, authTenantGuardBlueprint) {
+    const issueExportScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoFirstCommitBuilder.firstCommitScore * 0.32 +
+            productionBackendRepoFilePack.repoFileReadiness * 0.2 +
+            apiErrorAuditEnvelopePack.envelopeScore * 0.18 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.14 +
+            backendRouteSkeleton.routeSkeletonScore * 0.08 +
+            authTenantGuardBlueprint.guardScore * 0.08,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-issue-body-exporter.json?v=146";
+    const labelPlan = [
+      ["type:foundation", "Repository shell, docs, env examples, and workspace wiring.", "green"],
+      ["type:api", "Server, routes, controllers, services, validators, and contracts.", "teal"],
+      ["type:security", "Request ids, safe errors, tenant scope, access decisions, redaction, and denial proof.", "red"],
+      ["type:data", "Migrations, seeds, restore, tenant scope, and fixture parity.", "blue"],
+      ["type:audit", "Audit context, event writer, retention, exports, and evidence files.", "teal"],
+      ["type:billing", "USD plans, test-mode checkout, invoices, webhooks, seat sync, and access locks.", "amber"],
+      ["type:import", "Workbook staging, dry run, quarantine, duplicates, commit, rollback, and reconciliation.", "blue"],
+      ["type:ci", "GitHub Actions, artifacts, branch protection, cache policy, and release gates.", "red"],
+      ["priority:p0", "Required before the first backend alpha can be trusted.", "red"],
+      ["priority:p1", "Required before staging can accept pilot rehearsal data.", "amber"],
+    ];
+    const milestonePlan = [
+      ["M0 Repo shell", "Root files, workspace, env examples, docs, owners, and PR proof.", "green"],
+      ["M1 API and privacy core", "API boot, request id, error envelope, tenant scope, access decision, and route registry.", "red"],
+      ["M2 Data and fixtures", "Migrations, seed runner, fixtures, import dry-run, restore, and parity checks.", "blue"],
+      ["M3 Workflow proof", "CI, security audit, migration restore, billing test mode, import dry run, and release gate workflows.", "teal"],
+      ["M4 Staging alpha gate", "Smoke test, branch protection, owner signoff, and first release decision.", "amber"],
+    ];
+    const makeIssueBody = ({ title, owner, milestone, labels, files, scope, acceptance, commands }) => [
+      `## Goal`,
+      scope,
+      "",
+      `## Owner`,
+      owner,
+      "",
+      `## Files`,
+      ...files.map((file) => `- ${file}`),
+      "",
+      `## Acceptance`,
+      ...acceptance.map((item) => `- [ ] ${item}`),
+      "",
+      `## Proof commands`,
+      ...commands.map((command) => `- ${command}`),
+      "",
+      `## Labels`,
+      labels.join(", "),
+      "",
+      `## Milestone`,
+      milestone,
+      "",
+      `## Source`,
+      "Generated by PursuitDesk v118 Backend Issue Body Exporter from the v114-v117 production planning stack.",
+    ].join("\n");
+    const copyReadyIssues = [
+      {
+        id: "PD-BE-001",
+        title: "Create private repo shell and first proof docs",
+        owner: "Platform Owner",
+        milestone: "M0 Repo shell",
+        labels: ["type:foundation", "priority:p0"],
+        tone: "green",
+        files: ["README.md", "package.json", "pnpm-workspace.yaml", ".gitignore", ".env.example", ".github/CODEOWNERS", ".github/pull_request_template.md"],
+        scope: "Create the root repository shell so every later backend change has install commands, ownership, PR evidence, and secret-safe environment examples from day one.",
+        acceptance: ["Repo shell files exist without secrets", "README explains alpha scope and first proof commands", "PR template requires issue link, artifacts, migrations, rollout, and rollback notes", "CODEOWNERS routes platform, backend, database, security, billing, importer, audit, and docs changes"],
+        commands: ["pnpm install", "pnpm lint", "pnpm typecheck"],
+      },
+      {
+        id: "PD-BE-002",
+        title: "Boot API shell with request id and health route",
+        owner: "Backend Lead",
+        milestone: "M1 API and privacy core",
+        labels: ["type:api", "priority:p0"],
+        tone: "teal",
+        files: ["apps/api/src/server.ts", "apps/api/src/app.ts", "apps/api/src/routes/index.ts", "apps/api/src/middleware/request-id.ts"],
+        scope: "Create the smallest API shell that boots locally, attaches a request id, exposes health, and gives every later route a consistent entry path.",
+        acceptance: ["API process starts locally", "Health route returns a request id", "Route registry exists and is ready for protected route groups", "Request id is available to logs, response headers, and future audit context"],
+        commands: ["pnpm dev:api", "pnpm test:contracts", "pnpm test:route-envelopes"],
+      },
+      {
+        id: "PD-BE-003",
+        title: "Implement safe error envelope middleware",
+        owner: "Security Owner",
+        milestone: "M1 API and privacy core",
+        labels: ["type:security", "priority:p0"],
+        tone: "red",
+        files: ["apps/api/src/middleware/error-envelope.ts", "packages/shared/result.ts", "packages/testing/fixtures/index.ts"],
+        scope: "Implement the standard safe error body for validation, auth, tenant, access, commercial, import, billing, webhook, and server failures.",
+        acceptance: ["All route errors include requestId, code, message, details, path, method, retryable, supportHint, and auditEventId where relevant", "Denied commercial or tenant errors never leak restricted data", "Route-envelope tests cover the catalogued v115 error cases", "Failures produce inspectable JSON artifacts in CI"],
+        commands: ["pnpm test:route-envelopes", "pnpm test:redaction", "pnpm ci:release-gate"],
+      },
+      {
+        id: "PD-BE-004",
+        title: "Create tenant scope and section access decision middleware",
+        owner: "Security Owner",
+        milestone: "M1 API and privacy core",
+        labels: ["type:security", "priority:p0"],
+        tone: "red",
+        files: ["apps/api/src/middleware/tenant-scope.ts", "apps/api/src/middleware/access-decision.ts", "packages/domain/redaction.ts"],
+        scope: "Block cross-company access and centralize permissions for tracker, insight, membership, import, billing, and audit sections before controller code runs.",
+        acceptance: ["Cross-tenant reads and writes are rejected before controller execution", "Membership Model remains admin-only", "Operational tracker payloads exclude values, agreements, LOA, invoices, and negotiation notes", "Access-denied tests emit audit-ready denial proof"],
+        commands: ["pnpm test:auth-tenant", "pnpm test:redaction", "pnpm test:audit"],
+      },
+      {
+        id: "PD-BE-005",
+        title: "Create audit context and audit writer",
+        owner: "Governance Owner",
+        milestone: "M1 API and privacy core",
+        labels: ["type:audit", "priority:p0"],
+        tone: "teal",
+        files: ["apps/api/src/middleware/audit-context.ts", "apps/api/src/middleware/response-logger.ts", "packages/audit/audit-writer.ts"],
+        scope: "Write allowed, denied, system, import, billing, feedback, report, and export audit events with actor, tenant, section, request id, decision, target, and retention class.",
+        acceptance: ["Allowed and denied events share one envelope", "Access denial includes request id and audit event id", "Response logger avoids commercial-value leakage", "Audit tests generate proof artifacts for reviewer inspection"],
+        commands: ["pnpm test:audit", "pnpm test:auth-tenant", "pnpm ci:release-gate"],
+      },
+      {
+        id: "PD-BE-006",
+        title: "Create migration runner, seed runner, and restore proof",
+        owner: "Database Owner",
+        milestone: "M2 Data and fixtures",
+        labels: ["type:data", "priority:p0"],
+        tone: "blue",
+        files: ["packages/db/migrations/index.ts", "packages/db/seeds/index.ts", "packages/testing/fixtures/index.ts"],
+        scope: "Turn the migration blueprint and seed fixture pack into an ordered migration runner, deterministic seed runner, rollback labels, restore proof, and count parity checks.",
+        acceptance: ["Migration runner follows the ordered migration blueprint", "Seed runner creates tenant, users, records, commercial facts, imports, audit, and billing test state", "Rollback and restore commands are documented", "Count parity artifact is generated"],
+        commands: ["pnpm db:migrate:test && pnpm db:seed:test", "pnpm test:migrations", "pnpm test:restore"],
+      },
+      {
+        id: "PD-BE-007",
+        title: "Create workbook import dry-run package",
+        owner: "Migration Owner",
+        milestone: "M2 Data and fixtures",
+        labels: ["type:import", "priority:p1"],
+        tone: "blue",
+        files: ["packages/importer/dry-run.ts", "packages/testing/fixtures/index.ts"],
+        scope: "Normalize current Excel workbook rows into staging data with validation, quarantine, duplicate decisions, commercial split, and rollback id before any commit.",
+        acceptance: ["Telecom and negotiation workbook fixtures dry-run without customer data leakage", "Invalid rows are quarantined with reason codes", "Duplicate decisions are explicit", "Import proof artifact names source batch, accepted rows, rejected rows, and rollback id"],
+        commands: ["pnpm test:import-dryrun", "pnpm test:migrations", "pnpm ci:release-gate"],
+      },
+      {
+        id: "PD-BE-008",
+        title: "Create billing test-mode package",
+        owner: "Billing Owner",
+        milestone: "M2 Data and fixtures",
+        labels: ["type:billing", "priority:p1"],
+        tone: "amber",
+        files: ["packages/billing/test-mode.ts", "packages/shared/env.ts"],
+        scope: "Create the USD billing package boundary for plan rules, checkout preview, webhook signature, invoice lifecycle, seat sync, plan changes, and access locks in test mode only.",
+        acceptance: ["Live billing keys are rejected in alpha/test environments", "USD 5/user/month logic is centralized", "Webhook replay and idempotency tests pass", "Seat sync and access lock behavior have proof artifacts"],
+        commands: ["pnpm test:billing-testmode", "pnpm test:audit", "pnpm ci:release-gate"],
+      },
+      {
+        id: "PD-BE-009",
+        title: "Create report pack and redaction-safe export boundary",
+        owner: "Reports Owner",
+        milestone: "M3 Workflow proof",
+        labels: ["type:api", "type:audit", "priority:p1"],
+        tone: "green",
+        files: ["packages/reports/weekly-pack.ts", "packages/domain/redaction.ts", "packages/audit/audit-writer.ts"],
+        scope: "Build the first weekly pack boundary so reports can read operational and commercial signals safely while exporting management proof with audit evidence.",
+        acceptance: ["Weekly pack never exposes restricted commercial fields to tracker-only users", "Report export creates audit event", "Management pack includes health, actions, evidence, client heat, and risk signals", "Redaction test covers reports"],
+        commands: ["pnpm test:redaction", "pnpm test:audit", "pnpm test:reports"],
+      },
+      {
+        id: "PD-BE-010",
+        title: "Create GitHub Actions workflow files and artifact uploads",
+        owner: "Platform Owner",
+        milestone: "M3 Workflow proof",
+        labels: ["type:ci", "priority:p0"],
+        tone: "red",
+        files: ciWorkflowFileBlueprint.workflowFiles.map(([file]) => file),
+        scope: "Commit the workflow files that run primary CI, security audit, migration restore, billing test mode, import dry-run, staging smoke, release gate, and dependency review.",
+        acceptance: ["All workflow files exist in .github/workflows", "Required jobs upload proof artifacts even on failure", "CI commands match package.json scripts", "Release gate summarizes checks, blockers, artifacts, and owner decision"],
+        commands: ["pnpm lint", "pnpm typecheck", "pnpm ci:release-gate"],
+      },
+      {
+        id: "PD-BE-011",
+        title: "Create branch protection and release gate checklist",
+        owner: "Repo Owner",
+        milestone: "M4 Staging alpha gate",
+        labels: ["type:ci", "priority:p1"],
+        tone: "amber",
+        files: ["docs/release-runbook.md", ".github/CODEOWNERS", ".github/pull_request_template.md"],
+        scope: "Document the exact branch protection setup, required checks, protected environments, owner reviews, artifact expectations, and release decision ritual before staging alpha.",
+        acceptance: ["main and release branch rules are documented", "Required checks match workflow names", "Release gate blocks when artifacts are missing", "Owner signoff path is explicit"],
+        commands: ["pnpm ci:release-gate", "pnpm smoke:staging"],
+      },
+      {
+        id: "PD-BE-012",
+        title: "Create first staging smoke and alpha handoff proof",
+        owner: "QA Owner",
+        milestone: "M4 Staging alpha gate",
+        labels: ["type:ci", "type:security", "priority:p1"],
+        tone: "teal",
+        files: ["docs/release-runbook.md", ".github/workflows/staging-smoke.yml", "packages/testing/fixtures/index.ts"],
+        scope: "Create the first staging rehearsal issue that proves login, records, commercial denial, import dry run, billing test mode, feedback, audit, rollback, and management report paths.",
+        acceptance: ["Smoke path uses seed tenant and no live customer data", "Commercial denial and redaction proof are included", "Rollback and report artifacts are attached", "Go/no-go result is visible to management"],
+        commands: ["pnpm smoke:staging", "pnpm test:auth-tenant", "pnpm ci:release-gate"],
+      },
+    ].map((issue) => ({
+      ...issue,
+      body: makeIssueBody(issue),
+    }));
+    const issueBatches = [
+      ["Batch 1", "Repo shell", "Open PD-BE-001 first so all later issues have scripts, owners, PR proof, and docs.", "M0 Repo shell", "green"],
+      ["Batch 2", "API privacy core", "Open PD-BE-002 to PD-BE-005 together; these define request identity, errors, tenant scope, access, redaction, and audit.", "M1 API and privacy core", "red"],
+      ["Batch 3", "Data and fixtures", "Open PD-BE-006 and PD-BE-007 after repo shell; migrations and importer must share fixtures.", "M2 Data and fixtures", "blue"],
+      ["Batch 4", "Billing and reports", "Open PD-BE-008 and PD-BE-009 once env parsing and audit context exist.", "M2-M3", "amber"],
+      ["Batch 5", "Workflow proof", "Open PD-BE-010 after package scripts are named so workflow jobs can call real commands.", "M3 Workflow proof", "teal"],
+      ["Batch 6", "Staging alpha gate", "Open PD-BE-011 and PD-BE-012 last to connect branch protection, release gates, and staging rehearsal.", "M4 Staging alpha gate", "green"],
+    ];
+    const issueTemplates = [
+      ["Implementation issue", "Goal, owner, files, acceptance, proof commands, labels, milestone, source.", "green"],
+      ["Security issue", "Threat/control statement, denial proof, redaction check, audit event, request id, negative tests.", "red"],
+      ["Data issue", "Tables, migrations, seed fixtures, rollback, restore, count parity, import source, release proof.", "blue"],
+      ["CI issue", "Workflow file, trigger, required jobs, cache, artifact upload, branch rule, release gate.", "amber"],
+    ];
+    const commandProofMap = privateRepoFirstCommitBuilder.scriptCommands.map(([step, command, suite, workflow, artifact, proof, tone]) => [
+      step,
+      command,
+      suite,
+      workflow,
+      artifact,
+      `Attach ${artifact} to the issue or PR before asking for review.`,
+      tone,
+    ]);
+    const openingOrder = [
+      ["01", "Open foundation issue", "Create PD-BE-001 and attach the private repo first-commit JSON.", "green"],
+      ["02", "Open API boot issue", "Create PD-BE-002 so the team can prove the server boots before middleware work.", "teal"],
+      ["03", "Open privacy core issues", "Create PD-BE-003 to PD-BE-005 together because errors, access, and audit share request id.", "red"],
+      ["04", "Open data fixture issues", "Create PD-BE-006 and PD-BE-007 after fixture names are stable.", "blue"],
+      ["05", "Open billing and report boundaries", "Create PD-BE-008 and PD-BE-009 after audit context is planned.", "amber"],
+      ["06", "Open CI workflow issue", "Create PD-BE-010 after scripts and artifacts are named.", "red"],
+      ["07", "Open branch protection issue", "Create PD-BE-011 after the first workflow run proves check names.", "amber"],
+      ["08", "Open staging smoke issue", "Create PD-BE-012 when seed tenant, denial proof, and release summary exist.", "green"],
+    ];
+    const acceptanceChecks = [
+      ["Issue count", `${copyReadyIssues.length} copy-ready backend issues cover foundation, API, security, data, import, billing, reports, CI, branch rules, and smoke proof.`, "green"],
+      ["Every issue has proof", `${commandProofMap.length} command bindings map scripts to workflow files and artifacts.`, "red"],
+      ["Labels ready", `${labelPlan.length} labels separate type, priority, and review intent.`, "teal"],
+      ["Milestones ready", `${milestonePlan.length} milestones match the alpha implementation path.`, "blue"],
+      ["Files are explicit", "Every issue lists files so engineers know the intended write scope before coding.", "green"],
+      ["Security is early", "Request id, error envelope, tenant scope, access decision, redaction, and audit writer appear before feature depth.", "red"],
+      ["Opening order clear", `${openingOrder.length} steps prevent opening dependent work before repo shell, scripts, or fixture names exist.`, "amber"],
+      ["Next handoff ready", "v119 can turn workflow and issue proof into branch protection settings and release ritual.", "blue"],
+    ];
+    return {
+      issueExportScore,
+      downloadHref,
+      issueBatches,
+      copyReadyIssues,
+      issueTemplates,
+      labelPlan,
+      milestonePlan,
+      commandProofMap,
+      openingOrder,
+      acceptanceChecks,
+      signalCards: [
+        ["Issue export readiness", `${issueExportScore}%`, "How ready the backend plan is to become a private-repo issue backlog", issueExportScore >= 92 ? "green" : "amber"],
+        ["Copy-ready issues", copyReadyIssues.length, "Foundation, API, privacy, data, billing, reports, CI, branch rules, and smoke proof", "teal"],
+        ["Labels and milestones", labelPlan.length + milestonePlan.length, "Backlog taxonomy for priority, type, and implementation stage", "blue"],
+        ["Proof commands", commandProofMap.length, "Every issue expects commands and artifacts before review", "red"],
+      ],
+      handoff: [
+        "v118 turns the private-repo plan into copy-ready issue bodies, so repo creation is followed by a real backlog rather than a blank task list.",
+        "Each issue carries owner, milestone, labels, file scope, acceptance checks, and proof commands to reduce ambiguity before coding starts.",
+        "The first backend backlog now protects the product principle: operational trackers stay simple, while commercial, audit, billing, and management proof stay controlled.",
+        "v119 should convert the CI blueprint and issue proof into branch protection settings, required checks, environment gates, and release rituals.",
+      ],
+    };
+  }
+
+  function buildBranchProtectionReleaseChecklistModel(commandModel, backendIssueBodyExporter, ciWorkflowFileBlueprint, privateRepoFirstCommitBuilder, productionBackendRepoFilePack, apiErrorAuditEnvelopePack) {
+    const releaseChecklistScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendIssueBodyExporter.issueExportScore * 0.28 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.24 +
+            privateRepoFirstCommitBuilder.firstCommitScore * 0.18 +
+            productionBackendRepoFilePack.repoFileReadiness * 0.16 +
+            apiErrorAuditEnvelopePack.envelopeScore * 0.14,
+        ),
+      ),
+    );
+    const downloadHref = "data/branch-protection-release-checklist.json?v=146";
+    const protectedBranches = [
+      ["main", "Require pull request review", "ci.yml, security-audit.yml, migration-restore.yml, billing-testmode.yml, release-gate.yml", "No direct push, no force push, owner approval before production release.", "red"],
+      ["develop", "Require primary CI", "ci.yml, security-audit.yml", "Feature integration only after lint, typecheck, route envelopes, auth tenant, and redaction proof.", "blue"],
+      ["release/*", "Require staging smoke", "staging-smoke.yml, release-gate.yml", "Release branches need staging rehearsal, artifacts, and owner go/no-go decision.", "teal"],
+      ["hotfix/*", "Require security audit", "ci.yml, security-audit.yml, release-gate.yml", "Emergency fixes still need tenant, access, commercial redaction, and audit proof.", "red"],
+      ["all protected", "Block force pushes", "branch history", "Preserve audit traceability, release evidence, and rollback confidence.", "green"],
+      ["all protected", "Dismiss stale reviews", "changed files", "Require fresh review after new commits change protected files.", "amber"],
+      ["all protected", "Require conversation resolution", "review threads", "No merge while release blockers or security questions are unresolved.", "blue"],
+      ["all protected", "Prefer signed commits", "commit provenance", "Use verified history when production backend work begins.", "green"],
+    ];
+    const requiredStatusChecks = [
+      ["install", "ci.yml", "pnpm install --frozen-lockfile", "node_modules cache", "green"],
+      ["lint", "ci.yml", "pnpm lint", "lint-report.txt", "blue"],
+      ["typecheck", "ci.yml", "pnpm typecheck", "typecheck-report.txt", "blue"],
+      ["contracts", "ci.yml", "pnpm test:contracts", "junit-contracts.xml", "teal"],
+      ["route-envelopes", "ci.yml", "pnpm test:route-envelopes", "route-envelope-coverage.json", "red"],
+      ["auth-tenant", "security-audit.yml", "pnpm test:auth-tenant", "tenant-isolation-proof.json", "red"],
+      ["redaction", "security-audit.yml", "pnpm test:redaction", "redaction-proof.json", "amber"],
+      ["audit", "security-audit.yml", "pnpm test:audit", "audit-event-proof.json", "teal"],
+      ["migration-restore", "migration-restore.yml", "pnpm db:migrate:test && pnpm db:seed:test", "migration-restore-proof.json", "blue"],
+      ["billing-testmode", "billing-testmode.yml", "pnpm test:billing-testmode", "billing-proof.json", "amber"],
+      ["import-dryrun", "import-dryrun.yml", "pnpm test:import-dryrun", "import-dryrun-proof.json", "blue"],
+      ["release-gate", "release-gate.yml", "pnpm ci:release-gate", "release-gate-summary.md", "green"],
+    ];
+    const environmentGates = [
+      ["Preview branch", "Automatic", "Safe UI and API preview for feature branches, no customer data.", "green"],
+      ["Staging alpha", "Manual approval", "Protected test tenant, scoped secrets, smoke report, and owner go/no-go.", "red"],
+      ["Staging data", "Manual approval", "Migration fixtures only after import dry run, restore proof, and redaction checks.", "blue"],
+      ["Billing test mode", "Manual approval", "Checkout, invoices, webhooks, and seat sync run with test keys only.", "amber"],
+      ["Audit export", "Manual approval", "Restricted evidence export requires governance owner signoff.", "teal"],
+      ["Production lock", "Admin approval", "No production deploy until release summary, rollback plan, and sponsor decision exist.", "red"],
+    ];
+    const reviewOwnership = [
+      ["Platform Owner", "Repo shell, workflow files, protected branch setup, environment rules.", "green"],
+      ["Backend Lead", "API shell, routes, services, validators, command bindings.", "teal"],
+      ["Security Owner", "Tenant isolation, access denial, commercial redaction, safe errors.", "red"],
+      ["Database Owner", "Migrations, seeds, rollback, restore, count parity.", "blue"],
+      ["Migration Owner", "Import dry run, quarantine, source trace, reconciliation.", "blue"],
+      ["Billing Owner", "USD plan, test checkout, invoice lifecycle, webhook proof.", "amber"],
+      ["QA Owner", "Staging smoke, acceptance proof, release artifact review.", "green"],
+      ["Product Owner", "Scope, non-goals, go/no-go, pilot handoff, release note.", "teal"],
+    ];
+    const artifactRetention = ciWorkflowFileBlueprint.artifactPlan.slice(0, 10).map(([artifact, area, note, tone]) => [
+      artifact,
+      area,
+      artifact.includes("release") || artifact.includes("staging") ? "30 days" : artifact.includes("audit") || artifact.includes("denial") ? "14 days" : "7 days",
+      note,
+      tone,
+    ]);
+    const issueCheckById = {
+      "PD-BE-001": "install, lint, typecheck",
+      "PD-BE-002": "contracts, route-envelopes",
+      "PD-BE-003": "route-envelopes, audit",
+      "PD-BE-004": "auth-tenant, redaction",
+      "PD-BE-005": "audit, auth-tenant",
+      "PD-BE-006": "migration-restore",
+      "PD-BE-007": "import-dryrun, migration-restore",
+      "PD-BE-008": "billing-testmode, audit",
+      "PD-BE-009": "contracts, audit",
+      "PD-BE-010": "all primary CI checks",
+      "PD-BE-011": "branch rules, release-gate",
+      "PD-BE-012": "staging-smoke, release-gate",
+    };
+    const issueToCheckMap = backendIssueBodyExporter.copyReadyIssues.map((issue) => [
+      issue.id,
+      issue.title,
+      issue.milestone,
+      issue.labels.join(", "),
+      issueCheckById[issue.id] || "ci.yml",
+      issue.tone,
+    ]);
+    const releaseRitual = [
+      ["01", "Open PR from feature branch", "PR template links issue, scope, proof commands, migrations, rollback, and affected rooms.", "green"],
+      ["02", "Run required checks", "Primary CI, security audit, migration restore, billing test mode, import dry run, and release gate must pass.", "red"],
+      ["03", "Attach artifacts", "Route envelope, tenant proof, redaction proof, migration proof, billing proof, and release summary are visible.", "blue"],
+      ["04", "Review protected data", "Security owner confirms tracker payloads stay commercial-safe and denied routes audit correctly.", "red"],
+      ["05", "Approve staging", "Staging alpha environment needs manual approval and scoped test secrets.", "amber"],
+      ["06", "Run smoke rehearsal", "Login, records, redaction, import, billing, feedback, audit, reports, and rollback proof run on seed data.", "teal"],
+      ["07", "Record go/no-go", "Product owner and platform owner sign the release summary before merge.", "green"],
+      ["08", "Tag handoff", "Release note, rollback point, issue links, artifacts, and next defects are stored before the next sprint.", "blue"],
+    ];
+    const rollbackPlaybook = [
+      ["Identify bad commit", "Use release-gate-summary.md, PR id, and workflow run id to identify the exact deploy candidate.", "red"],
+      ["Freeze new merges", "Pause merge queue and block production environment while impact is assessed.", "amber"],
+      ["Restore previous artifact", "Redeploy the last passing build or revert the exact PR after owner approval.", "blue"],
+      ["Run smoke subset", "Health, login, records, commercial denial, audit write, and report export must pass after rollback.", "red"],
+      ["Check migration state", "If schema changed, run rollback or forward-fix with restore proof and count parity.", "blue"],
+      ["Confirm billing mode", "Make sure no live billing event replayed during rollback or staging rehearsal.", "amber"],
+      ["Write incident note", "Audit the decision, actor, reason, affected rooms, and next corrective issue.", "teal"],
+      ["Reopen release gate", "Only retry after failed check has a linked issue and fresh artifact proof.", "green"],
+    ];
+    const setupChecklist = [
+      ["Create protected branches", "main, develop, release/*, and hotfix/* branch rules are defined.", "red"],
+      ["Add required checks", `${requiredStatusChecks.length} checks are selected exactly as workflow job names appear.`, "red"],
+      ["Disable force pushes", "Protected branch history remains auditable.", "green"],
+      ["Require PR review", "At least one owner review before merge to main or release branch.", "teal"],
+      ["Require conversation resolution", "Unresolved review threads block merge.", "blue"],
+      ["Configure environments", `${environmentGates.length} protected environments have approvers and scoped secrets.`, "amber"],
+      ["Add CODEOWNERS", `${reviewOwnership.length} owner lanes are named before coding starts.`, "green"],
+      ["Set artifact retention", `${artifactRetention.length} critical artifacts have retention expectations.`, "blue"],
+      ["Document release ritual", `${releaseRitual.length} release steps are written into docs/release-runbook.md.`, "teal"],
+      ["Document rollback", `${rollbackPlaybook.length} rollback moves are ready before staging alpha.`, "red"],
+    ];
+    const acceptanceChecks = [
+      ["Branch rules complete", `${protectedBranches.length} branch rules cover main, develop, release, hotfix, and all protected branch behavior.`, "red"],
+      ["Status checks complete", `${requiredStatusChecks.length} required checks cover install, lint, contracts, privacy, data, billing, import, and release.`, "green"],
+      ["Environment gates complete", `${environmentGates.length} environment gates separate preview, staging, billing, audit, and production movement.`, "amber"],
+      ["Owners complete", `${reviewOwnership.length} review owners make the merge path visible before backend coding starts.`, "teal"],
+      ["Artifacts complete", `${artifactRetention.length} artifacts define the proof expected from CI and staging.`, "blue"],
+      ["Issues linked", `${issueToCheckMap.length} copy-ready backend issues are mapped to required checks.`, "green"],
+      ["Rollback ready", `${rollbackPlaybook.length} rollback steps are documented before real data enters staging.`, "red"],
+      ["Next handoff ready", "v120 can generate paste-ready file contents after the repo protection contract is understood.", "blue"],
+    ];
+    return {
+      releaseChecklistScore,
+      downloadHref,
+      protectedBranches,
+      requiredStatusChecks,
+      environmentGates,
+      reviewOwnership,
+      artifactRetention,
+      issueToCheckMap,
+      releaseRitual,
+      rollbackPlaybook,
+      setupChecklist,
+      acceptanceChecks,
+      signalCards: [
+        ["Release checklist score", `${releaseChecklistScore}%`, "How ready the private repo is for protected branch and release discipline", releaseChecklistScore >= 92 ? "green" : "amber"],
+        ["Required checks", requiredStatusChecks.length, "CI, security, migration, billing, import, staging, and release proof", "red"],
+        ["Protected gates", protectedBranches.length + environmentGates.length, "Branch rules plus protected environments before live movement", "blue"],
+        ["Issue coverage", issueToCheckMap.length, "Every v118 backend issue maps to at least one required proof check", "teal"],
+      ],
+      handoff: [
+        "v119 converts CI and issue planning into exact GitHub settings, so the future private backend repo starts controlled instead of casual.",
+        "The main rule is simple: no merge without proof, no staging without scoped secrets, and no production movement without a release summary and rollback path.",
+        "Branch protection should be applied after the first workflow run proves the exact status-check names.",
+        "v120 can now generate paste-ready backend files because the repo guardrails, owner reviews, and release evidence path are clear.",
+      ],
+    };
+  }
+
+  function buildFirstBackendFileContentExportModel(commandModel, branchProtectionReleaseChecklist, privateRepoFirstCommitBuilder, backendIssueBodyExporter, productionBackendRepoFilePack, apiErrorAuditEnvelopePack, ciWorkflowFileBlueprint) {
+    const fileContentScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          branchProtectionReleaseChecklist.releaseChecklistScore * 0.28 +
+            privateRepoFirstCommitBuilder.firstCommitScore * 0.24 +
+            backendIssueBodyExporter.issueExportScore * 0.18 +
+            productionBackendRepoFilePack.repoFileReadiness * 0.16 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.14,
+        ),
+      ),
+    );
+    const downloadHref = "data/first-backend-file-content-export.json?v=146";
+    const makeFile = (path, owner, issue, purpose, tone, contentLines) => {
+      const content = contentLines.join("\n");
+      return {
+        path,
+        owner,
+        issue,
+        purpose,
+        tone,
+        content,
+        lines: contentLines.length,
+      };
+    };
+    const rootFiles = [
+      makeFile("README.md", "Platform Owner", "PD-BE-001", "Private backend alpha orientation and first proof commands.", "green", [
+        "# PursuitDesk Backend",
+        "",
+        "Private production backend for the PursuitDesk alpha.",
+        "",
+        "## First proof",
+        "",
+        "```bash",
+        "pnpm install",
+        "pnpm lint",
+        "pnpm typecheck",
+        "pnpm test:contracts",
+        "pnpm test:route-envelopes",
+        "pnpm test:auth-tenant",
+        "pnpm ci:release-gate",
+        "```",
+        "",
+        "## Alpha rule",
+        "",
+        "Operational tracker routes stay commercial-safe. Value, agreement, invoice, LOA, and negotiation details belong in controlled management routes only.",
+      ]),
+      makeFile("package.json", "Platform Owner", "PD-BE-001", "Workspace scripts used by local development and GitHub Actions.", "blue", [
+        "{",
+        "  \"name\": \"pursuitdesk-platform\",",
+        "  \"private\": true,",
+        "  \"type\": \"module\",",
+        "  \"scripts\": {",
+        "    \"dev:api\": \"tsx apps/api/src/server.ts\",",
+        "    \"lint\": \"eslint .\",",
+        "    \"typecheck\": \"tsc --noEmit\",",
+        "    \"test:contracts\": \"vitest run packages/testing/contracts\",",
+        "    \"test:route-envelopes\": \"vitest run packages/testing/route-envelopes\",",
+        "    \"test:auth-tenant\": \"vitest run packages/testing/auth-tenant\",",
+        "    \"test:redaction\": \"vitest run packages/testing/redaction\",",
+        "    \"test:audit\": \"vitest run packages/testing/audit\",",
+        "    \"ci:release-gate\": \"node scripts/release-gate.mjs\"",
+        "  }",
+        "}",
+      ]),
+      makeFile("pnpm-workspace.yaml", "Platform Owner", "PD-BE-001", "Monorepo workspace boundary for apps and packages.", "teal", [
+        "packages:",
+        "  - \"apps/*\"",
+        "  - \"packages/*\"",
+      ]),
+      makeFile(".gitignore", "Platform Owner", "PD-BE-001", "Prevent secrets, builds, dependencies, and generated reports from entering git.", "green", [
+        "node_modules/",
+        "dist/",
+        ".env",
+        ".env.*",
+        "!.env.example",
+        "coverage/",
+        "playwright-report/",
+        "test-results/",
+        "*.log",
+        "*.local",
+      ]),
+      makeFile(".env.example", "Security Owner", "PD-BE-001", "Safe environment keys with test-only placeholders.", "red", [
+        "NODE_ENV=development",
+        "PORT=4000",
+        "DATABASE_URL_TEST=postgres://user:password@localhost:5432/pursuitdesk_test",
+        "SESSION_SECRET_TEST=replace-with-test-secret",
+        "BILLING_SECRET_KEY_TEST=replace-with-test-mode-key",
+        "BILLING_WEBHOOK_SECRET_TEST=replace-with-test-webhook-secret",
+        "OBJECT_STORAGE_TEST_KEY=replace-with-test-storage-key",
+        "AUDIT_EXPORT_TEST_KEY=replace-with-test-audit-key",
+      ]),
+      makeFile(".github/CODEOWNERS", "Platform Owner", "PD-BE-001", "Owner review map for protected files.", "amber", [
+        "* @dhirajnyse",
+        "/apps/api/ @dhirajnyse",
+        "/packages/db/ @dhirajnyse",
+        "/packages/audit/ @dhirajnyse",
+        "/packages/importer/ @dhirajnyse",
+        "/packages/billing/ @dhirajnyse",
+        "/.github/workflows/ @dhirajnyse",
+        "/docs/security-audit.md @dhirajnyse",
+      ]),
+      makeFile(".github/pull_request_template.md", "Platform Owner", "PD-BE-001", "PR evidence checklist tied to protected branch rules.", "blue", [
+        "## Linked issue",
+        "",
+        "- Closes:",
+        "",
+        "## Scope",
+        "",
+        "-",
+        "",
+        "## Proof",
+        "",
+        "- [ ] pnpm lint",
+        "- [ ] pnpm typecheck",
+        "- [ ] pnpm test:contracts",
+        "- [ ] pnpm test:route-envelopes",
+        "- [ ] pnpm test:auth-tenant",
+        "- [ ] pnpm ci:release-gate",
+        "",
+        "## Release notes",
+        "",
+        "- Rollback plan:",
+        "- Affected rooms:",
+      ]),
+      makeFile("docs/release-runbook.md", "Product Owner", "PD-BE-011", "Release ritual and rollback control for staging alpha.", "red", [
+        "# Release Runbook",
+        "",
+        "## Merge rule",
+        "",
+        "No merge to main until required checks, review approval, artifact upload, and release-gate summary are complete.",
+        "",
+        "## Staging rule",
+        "",
+        "Staging alpha requires manual approval, scoped secrets, test tenant data, smoke proof, and rollback note.",
+        "",
+        "## Rollback rule",
+        "",
+        "Freeze new merges, identify the failing commit, restore the last passing artifact, run the smoke subset, and write an incident note before retry.",
+      ]),
+    ];
+    const apiStarterFiles = [
+      makeFile("apps/api/src/server.ts", "Backend Lead", "PD-BE-002", "HTTP entrypoint that starts the API shell.", "teal", [
+        "import { createServer } from \"node:http\";",
+        "import { app } from \"./app\";",
+        "",
+        "const port = Number(process.env.PORT || 4000);",
+        "",
+        "createServer(app).listen(port, () => {",
+        "  console.log(`PursuitDesk API listening on :${port}`);",
+        "});",
+      ]),
+      makeFile("apps/api/src/app.ts", "Backend Lead", "PD-BE-002", "App composition with request id, tenant scope, access, and safe errors.", "green", [
+        "import express from \"express\";",
+        "import { requestId } from \"./middleware/request-id\";",
+        "import { safeError } from \"./middleware/safe-error\";",
+        "import { tenantScope } from \"./middleware/tenant-scope\";",
+        "import { accessDecision } from \"./middleware/access-decision\";",
+        "import { routes } from \"./routes\";",
+        "",
+        "export const app = express();",
+        "",
+        "app.use(express.json({ limit: \"1mb\" }));",
+        "app.use(requestId);",
+        "app.use(tenantScope);",
+        "app.use(accessDecision);",
+        "app.use(routes);",
+        "app.use(safeError);",
+      ]),
+      makeFile("apps/api/src/routes/index.ts", "Backend Lead", "PD-BE-002", "Route registry for alpha endpoints.", "blue", [
+        "import { Router } from \"express\";",
+        "import { healthRoutes } from \"./health\";",
+        "",
+        "export const routes = Router();",
+        "",
+        "routes.use(\"/health\", healthRoutes);",
+        "routes.use(\"/auth\", Router());",
+        "routes.use(\"/records\", Router());",
+        "routes.use(\"/commercial\", Router());",
+        "routes.use(\"/import\", Router());",
+        "routes.use(\"/billing\", Router());",
+        "routes.use(\"/audit\", Router());",
+      ]),
+      makeFile("apps/api/src/routes/health.ts", "Backend Lead", "PD-BE-002", "Health endpoint that proves request id propagation.", "green", [
+        "import { Router } from \"express\";",
+        "",
+        "export const healthRoutes = Router();",
+        "",
+        "healthRoutes.get(\"/\", (req, res) => {",
+        "  res.json({ ok: true, service: \"pursuitdesk-api\", requestId: res.locals.requestId });",
+        "});",
+      ]),
+      makeFile("apps/api/src/middleware/request-id.ts", "Security Owner", "PD-BE-003", "Attach a request id to every response and audit event.", "blue", [
+        "import { randomUUID } from \"node:crypto\";",
+        "import type { RequestHandler } from \"express\";",
+        "",
+        "export const requestId: RequestHandler = (_req, res, next) => {",
+        "  const id = randomUUID();",
+        "  res.locals.requestId = id;",
+        "  res.setHeader(\"x-request-id\", id);",
+        "  next();",
+        "};",
+      ]),
+      makeFile("apps/api/src/middleware/safe-error.ts", "Security Owner", "PD-BE-003", "Single safe error envelope for frontend and audit trace.", "red", [
+        "import type { ErrorRequestHandler } from \"express\";",
+        "",
+        "export const safeError: ErrorRequestHandler = (err, req, res, _next) => {",
+        "  const status = Number(err.status || 500);",
+        "  res.status(status).json({",
+        "    ok: false,",
+        "    requestId: res.locals.requestId,",
+        "    code: err.code || \"internal_error\",",
+        "    message: status >= 500 ? \"Unexpected server error.\" : err.message,",
+        "    path: req.path,",
+        "    method: req.method,",
+        "    retryable: status >= 500,",
+        "  });",
+        "};",
+      ]),
+      makeFile("apps/api/src/middleware/tenant-scope.ts", "Security Owner", "PD-BE-004", "Attach tenant context and block cross-company movement later.", "red", [
+        "import type { RequestHandler } from \"express\";",
+        "",
+        "export const tenantScope: RequestHandler = (req, res, next) => {",
+        "  const tenantId = req.header(\"x-pursuitdesk-tenant\") || \"capsa\";",
+        "  res.locals.tenantId = tenantId;",
+        "  next();",
+        "};",
+      ]),
+      makeFile("apps/api/src/middleware/access-decision.ts", "Security Owner", "PD-BE-004", "Central access decision placeholder for section guards.", "red", [
+        "import type { RequestHandler } from \"express\";",
+        "",
+        "export const accessDecision: RequestHandler = (_req, res, next) => {",
+        "  res.locals.access = {",
+        "    role: \"Admin\",",
+        "    canReadOperational: true,",
+        "    canReadCommercial: true,",
+        "    canManageMembership: true,",
+        "  };",
+        "  next();",
+        "};",
+      ]),
+    ];
+    const packageFiles = [
+      makeFile("packages/shared/result.ts", "Backend Lead", "PD-BE-003", "Typed result contract shared by services and routes.", "green", [
+        "export type Ok<T> = { ok: true; data: T };",
+        "export type Fail = { ok: false; code: string; message: string; retryable?: boolean };",
+        "export type Result<T> = Ok<T> | Fail;",
+        "",
+        "export const ok = <T>(data: T): Ok<T> => ({ ok: true, data });",
+        "export const fail = (code: string, message: string, retryable = false): Fail => ({ ok: false, code, message, retryable });",
+      ]),
+      makeFile("packages/shared/env.ts", "Platform Owner", "PD-BE-001", "Environment parser that rejects missing required keys.", "red", [
+        "const required = [\"DATABASE_URL_TEST\", \"SESSION_SECRET_TEST\"] as const;",
+        "",
+        "export function readEnv(source = process.env) {",
+        "  const missing = required.filter((key) => !source[key]);",
+        "  if (missing.length) throw new Error(`Missing environment keys: ${missing.join(\", \")}`);",
+        "  return { databaseUrl: source.DATABASE_URL_TEST!, sessionSecret: source.SESSION_SECRET_TEST! };",
+        "}",
+      ]),
+      makeFile("packages/audit/audit-writer.ts", "Governance Owner", "PD-BE-005", "Append-only audit writer interface for allowed and denied movements.", "teal", [
+        "export type AuditEvent = {",
+        "  requestId: string;",
+        "  companyId: string;",
+        "  actorId: string;",
+        "  eventType: string;",
+        "  targetType: string;",
+        "  targetId?: string;",
+        "  decision: \"allowed\" | \"denied\" | \"system\";",
+        "};",
+        "",
+        "export async function writeAuditEvent(event: AuditEvent) {",
+        "  return { ...event, eventId: `audit_${Date.now()}`, createdAt: new Date().toISOString() };",
+        "}",
+      ]),
+      makeFile("packages/domain/redaction.ts", "Security Owner", "PD-BE-004", "Remove commercial fields from operational tracker payloads.", "red", [
+        "const blockedKeys = new Set([\"valueAmount\", \"valueText\", \"agreementNo\", \"invoiceId\", \"loaNo\", \"negotiations\"]);",
+        "",
+        "export function redactOperationalRecord<T extends Record<string, unknown>>(record: T) {",
+        "  return Object.fromEntries(Object.entries(record).filter(([key]) => !blockedKeys.has(key)));",
+        "}",
+      ]),
+      makeFile("packages/db/schema.ts", "Database Owner", "PD-BE-006", "First table names and ownership boundaries.", "blue", [
+        "export const tables = {",
+        "  tenants: \"tenants\",",
+        "  users: \"users\",",
+        "  operationalRecords: \"operational_records\",",
+        "  commercialFacts: \"commercial_facts\",",
+        "  importBatches: \"import_batches\",",
+        "  auditEvents: \"audit_events\",",
+        "  invoices: \"invoices\",",
+        "} as const;",
+      ]),
+      makeFile("packages/db/seeds/index.ts", "Database Owner", "PD-BE-006", "Seed runner entrypoint for tenant and fixture records.", "green", [
+        "export async function seedCapsaDemoTenant() {",
+        "  return {",
+        "    tenant: \"capsa\",",
+        "    users: [\"admin@pursuitdesk.app\", \"editor@pursuitdesk.app\", \"viewer@pursuitdesk.app\"],",
+        "    note: \"Load operational records, commercial facts, audit rows, and billing fixtures here.\"",
+        "  };",
+        "}",
+      ]),
+      makeFile("packages/testing/fixtures/index.ts", "QA Owner", "PD-BE-012", "Fixture manifest used by route, migration, import, and smoke tests.", "teal", [
+        "export const fixtureManifest = {",
+        "  tenantId: \"capsa\",",
+        "  expectedUsers: 3,",
+        "  operationalRecordSource: \"sample-data.js\",",
+        "  commercialVaultSource: \"commercial-vault-fixtures.json\",",
+        "  requiredProof: [\"tenant\", \"redaction\", \"audit\", \"migration\", \"billing\"],",
+        "};",
+      ]),
+      makeFile("packages/importer/dry-run.ts", "Migration Owner", "PD-BE-007", "Workbook dry-run shell for validation before commit.", "amber", [
+        "export type ImportRow = Record<string, unknown>;",
+        "",
+        "export function dryRunImport(rows: ImportRow[]) {",
+        "  return rows.map((row, index) => ({",
+        "    rowNumber: index + 1,",
+        "    accepted: Boolean(row.reference || row.Reference),",
+        "    issues: row.reference || row.Reference ? [] : [\"missing_reference\"],",
+        "  }));",
+        "}",
+      ]),
+    ];
+    const workflowFiles = ciWorkflowFileBlueprint.workflowFiles.map(([path, title, trigger, commandScope, artifact, tone]) =>
+      makeFile(path, "Platform Owner", "PD-BE-010", title, tone, [
+        `name: ${title}`,
+        "",
+        "on:",
+        trigger.includes("Pull request") ? "  pull_request:" : "  workflow_dispatch:",
+        "",
+        "jobs:",
+        `  ${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}:`,
+        "    runs-on: ubuntu-latest",
+        "    steps:",
+        "      - uses: actions/checkout@v4",
+        "      - uses: actions/setup-node@v4",
+        "        with:",
+        "          node-version: 22",
+        "      - run: corepack enable",
+        "      - run: pnpm install --frozen-lockfile",
+        `      - run: echo \"Run ${commandScope}\"`,
+        `      - run: echo \"Upload ${artifact}\"`,
+      ]),
+    );
+    const allFiles = [...rootFiles, ...apiStarterFiles, ...packageFiles, ...workflowFiles];
+    const fileGroups = [
+      ["Root shell", rootFiles.length, "README, package, workspace, gitignore, env, CODEOWNERS, PR template, release runbook.", "green"],
+      ["API shell", apiStarterFiles.length, "Server, app composition, health route, request id, safe error, tenant, and access middleware.", "teal"],
+      ["Packages", packageFiles.length, "Shared result, env parser, audit, redaction, schema, seeds, fixtures, and importer dry run.", "blue"],
+      ["Workflows", workflowFiles.length, "CI, security, migration, billing, import, staging, release, and dependency workflow starter files.", "red"],
+    ];
+    const contentPreviews = [
+      rootFiles[0],
+      rootFiles[1],
+      rootFiles[6],
+      apiStarterFiles[1],
+      apiStarterFiles[5],
+      packageFiles[2],
+      packageFiles[3],
+      workflowFiles[0],
+    ];
+    const copyOrder = [
+      ["01", "Create repository root", "Copy README, package, workspace, gitignore, env example, CODEOWNERS, and PR template.", "green"],
+      ["02", "Create docs", "Add release runbook before branch protection is turned on.", "teal"],
+      ["03", "Create API app", "Copy server, app, routes, health, request id, safe error, tenant, and access files.", "blue"],
+      ["04", "Create shared packages", "Copy result, env, audit, redaction, schema, seeds, fixtures, and importer shells.", "green"],
+      ["05", "Create workflows", "Copy GitHub Actions files after scripts and file paths are in place.", "red"],
+      ["06", "Install and typecheck", "Run install, lint, typecheck, contracts, route envelopes, auth tenant, and release gate.", "amber"],
+      ["07", "Open first PR", "Attach issue links, proof output, artifacts, migration note, and rollback note.", "blue"],
+      ["08", "Apply protection", "After first successful workflow names appear, apply v119 branch rules and required checks.", "red"],
+    ];
+    const implementationGuardrails = [
+      ["No live secrets", "Only .env.example is exported; real secrets stay in GitHub environments or hosting provider.", "red"],
+      ["Commercial privacy first", "Operational route examples are designed to support redaction from day one.", "red"],
+      ["Request id everywhere", "API shell begins with request id so errors, logs, and audit can join later.", "blue"],
+      ["Tenant before features", "Tenant scope middleware appears before record, commercial, import, and billing route depth.", "teal"],
+      ["Audit from day one", "Audit writer starts as a package boundary before sensitive actions are implemented.", "green"],
+      ["Workflow names stable", "Required status checks need stable job names before protection is applied.", "amber"],
+      ["Issue-linked files", "Every file group maps back to PD-BE issues from the v118 exporter.", "blue"],
+      ["Rollback documented", "Release runbook exists before staging alpha or production movement.", "red"],
+    ];
+    const acceptanceChecks = [
+      ["File inventory complete", `${allFiles.length} starter files cover root, API, packages, and workflow boundaries.`, "green"],
+      ["Content previews ready", `${contentPreviews.length} paste-ready examples are visible for the first commit.`, "teal"],
+      ["Issue trace ready", `${backendIssueBodyExporter.copyReadyIssues.length} backend issues can point to file paths and proof commands.`, "blue"],
+      ["Branch rules aligned", `${branchProtectionReleaseChecklist.requiredStatusChecks.length} required checks are reflected in workflow starter files.`, "red"],
+      ["Privacy starts early", "Request id, safe errors, tenant scope, access decision, redaction, and audit appear before feature routes.", "red"],
+      ["Env is safe", "Only test-mode placeholder keys are exported, with no live customer or billing secrets.", "amber"],
+      ["Copy order clear", `${copyOrder.length} steps define how to build the private repo first commit without confusion.`, "green"],
+      ["Next handoff ready", "v121 can turn this content into a setup script and command sequence for repo creation.", "blue"],
+    ];
+    return {
+      fileContentScore,
+      downloadHref,
+      rootFiles,
+      apiStarterFiles,
+      packageFiles,
+      workflowFiles,
+      allFiles,
+      fileGroups,
+      contentPreviews,
+      copyOrder,
+      implementationGuardrails,
+      acceptanceChecks,
+      signalCards: [
+        ["File content score", `${fileContentScore}%`, "How ready the first private backend commit is to be pasted into a real repo", fileContentScore >= 92 ? "green" : "amber"],
+        ["Starter files", allFiles.length, "Root, API, packages, and workflow files with owners and issue trace", "teal"],
+        ["Preview blocks", contentPreviews.length, "Readable file contents for the first repo commit review", "blue"],
+        ["Guardrails", implementationGuardrails.length, "Privacy, audit, tenant, workflow, and rollback rules before implementation depth", "red"],
+      ],
+      handoff: [
+        "v120 turns the planning stack into paste-ready starter file contents for the future private backend repo.",
+        "The export is intentionally small: it creates the shell, control files, middleware boundaries, package placeholders, and workflow starters without pretending the full backend is done.",
+        "The first real commit should prove structure, privacy, tenant identity, safe errors, audit boundary, scripts, and CI names before feature coding begins.",
+        "v121 can now turn this into a setup script draft so repository creation, folder creation, labels, milestones, files, and first proof commands become one guided run.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoSetupScriptDraftModel(commandModel, firstBackendFileContentExport, branchProtectionReleaseChecklist, backendIssueBodyExporter, privateRepoGuide, privateRepoFirstCommitBuilder) {
+    const labelCount = privateRepoGuide.labelSetup?.length || 0;
+    const milestoneCount = privateRepoGuide.milestoneSetup?.length || 0;
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || backendIssueBodyExporter.issueCards?.length || 0;
+    const setupScriptScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          firstBackendFileContentExport.fileContentScore * 0.28 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.22 +
+            privateRepoFirstCommitBuilder.firstCommitScore * 0.2 +
+            privateRepoGuide.repoGuideScore * 0.18 +
+            Math.min(100, issueCount * 4) * 0.12,
+        ),
+      ),
+    );
+    const targetRepository = "dhirajnyse/pursuitdesk-platform";
+    const downloadHref = "data/private-repo-setup-script-draft.json?v=146";
+    const prerequisites = [
+      ["GitHub access", "Admin rights for dhirajnyse and permission to create a private repository.", "red"],
+      ["GitHub CLI", "gh auth status should show the account that will own pursuitdesk-platform.", "blue"],
+      ["Node 22", "Runtime target for the first API shell and workflow files.", "green"],
+      ["pnpm via corepack", "Use corepack enable before installing workspace dependencies.", "teal"],
+      ["No live secrets", "Only placeholder secret names are scripted; real values stay manual.", "red"],
+      ["v120 file export", `${firstBackendFileContentExport.allFiles.length} starter files are the source for the first commit.`, "green"],
+      ["v118 issue bodies", `${issueCount} backend issues can be opened after labels and milestones exist.`, "blue"],
+      ["v119 protection plan", `${branchProtectionReleaseChecklist.requiredStatusChecks.length} required checks guide branch rules after first CI run.`, "red"],
+    ];
+    const scriptFiles = [
+      ["scripts/setup/check-prereqs.ps1", "Local preflight", "Confirms gh, git, node, pnpm, and authenticated account before repo work.", "green"],
+      ["scripts/setup/create-private-repo.ps1", "Repository bootstrap", "Creates the private GitHub repo, clone folder, develop branch, and remote check.", "red"],
+      ["scripts/setup/write-starter-files.ps1", "Starter file writer", `Creates folders and writes ${firstBackendFileContentExport.allFiles.length} v120 starter file contents.`, "blue"],
+      ["scripts/setup/create-labels-milestones.ps1", "Backlog metadata", `Creates ${labelCount} labels and ${milestoneCount} milestones before importing issues.`, "amber"],
+      ["scripts/setup/open-backend-issues.md", "Issue opening guide", `Manual or gh-based opening order for ${issueCount} generated backend issues.`, "teal"],
+      ["scripts/setup/first-proof-run.ps1", "First local proof", "Runs install, lint, typecheck, contract, auth, redaction, audit, and release-gate checks.", "green"],
+      ["scripts/setup/apply-branch-protection.md", "Protection guide", "Apply branch protection only after GitHub Actions exposes exact check names.", "red"],
+      ["docs/setup-handoff.md", "Setup handoff", "Records what was created, what remains manual, and what blocks first backend coding.", "blue"],
+    ];
+    const folderPlan = [
+      [".github/workflows", "Workflow shells and required check names from v116/v119.", "red"],
+      [".github/ISSUE_TEMPLATE", "Backend task templates and PR evidence rules.", "blue"],
+      ["apps/api/src/middleware", "Request id, tenant scope, access decision, and safe error middleware.", "red"],
+      ["apps/api/src/routes", "Health, auth, records, commercial, import, billing, and audit route boundaries.", "green"],
+      ["packages/shared", "Result and environment helper contracts.", "teal"],
+      ["packages/audit", "Append-only audit writer boundary.", "blue"],
+      ["packages/domain", "Commercial redaction helpers for operational routes.", "red"],
+      ["packages/db/seeds", "Tenant, users, records, commercial facts, billing, and audit fixtures.", "green"],
+      ["packages/importer", "Workbook dry-run and validation staging boundary.", "amber"],
+      ["packages/testing/fixtures", "Contract, migration, redaction, and smoke fixture manifest.", "blue"],
+      ["docs", "Release runbook, setup handoff, alpha scope, and migration notes.", "teal"],
+      ["scripts/setup", "Private repo setup scripts and manual safety guides.", "green"],
+    ];
+    const commandBlocks = [
+      [
+        "01",
+        "Local preflight",
+        "Run this before creating anything. It should only read tool versions and GitHub auth state.",
+        "green",
+        [
+          "gh auth status",
+          "git --version",
+          "node --version",
+          "corepack --version",
+          "pnpm --version",
+        ],
+      ],
+      [
+        "02",
+        "Create private repository",
+        "Creates the future production backend repo while keeping the public tendergrid demo untouched.",
+        "red",
+        [
+          "gh repo create dhirajnyse/pursuitdesk-platform --private --description \"Private SaaS backend for PursuitDesk\"",
+          "gh repo clone dhirajnyse/pursuitdesk-platform",
+          "cd pursuitdesk-platform",
+          "git checkout -b develop",
+        ],
+      ],
+      [
+        "03",
+        "Create folder skeleton",
+        "Creates only the folders needed by the v120 file-content export and setup handoff.",
+        "teal",
+        [
+          "New-Item -ItemType Directory -Force .github/workflows,.github/ISSUE_TEMPLATE,apps/api/src/middleware,apps/api/src/routes",
+          "New-Item -ItemType Directory -Force packages/shared,packages/audit,packages/domain,packages/db/seeds,packages/importer,packages/testing/fixtures",
+          "New-Item -ItemType Directory -Force docs,scripts/setup",
+        ],
+      ],
+      [
+        "04",
+        "Write starter files",
+        `Use the v120 export to create ${firstBackendFileContentExport.allFiles.length} root, API, package, and workflow starter files.`,
+        "blue",
+        [
+          "Use data/first-backend-file-content-export.json as the source of truth",
+          "Write each allFiles[].path with allFiles[].content",
+          "Do not write .env or any live secret file",
+          "Review generated files before first commit",
+        ],
+      ],
+      [
+        "05",
+        "Create labels and milestones",
+        "Backlog metadata should exist before issues are opened, otherwise the first board gets messy.",
+        "amber",
+        [
+          "gh label create area:backend --color 315f93 --description \"Backend platform work\"",
+          "gh label create area:security --color bf3f35 --description \"Auth, tenant, access, privacy, audit\"",
+          "gh label create priority:p0 --color bf3f35 --description \"Blocks alpha safety\"",
+          "gh api repos/dhirajnyse/pursuitdesk-platform/milestones -f title=\"M0 Repo opens\" -f state=open",
+        ],
+      ],
+      [
+        "06",
+        "Install and first proof",
+        "The first proof run should show script names and file boundaries even before full backend depth exists.",
+        "green",
+        [
+          "corepack enable",
+          "pnpm install",
+          "pnpm lint",
+          "pnpm typecheck",
+          "pnpm test:contracts",
+          "pnpm test:route-envelopes",
+          "pnpm test:auth-tenant",
+          "pnpm ci:release-gate",
+        ],
+      ],
+      [
+        "07",
+        "First commit and PR",
+        "Commit the skeleton on develop and open the first PR to main with proof output attached.",
+        "blue",
+        [
+          "git add .",
+          "git commit -m \"Initialize PursuitDesk backend alpha shell\"",
+          "git push -u origin develop",
+          "gh pr create --base main --head develop --title \"Initialize backend alpha shell\" --body-file .github/pull_request_template.md",
+        ],
+      ],
+      [
+        "08",
+        "Apply branch protection after CI names are visible",
+        "Required checks should use exact GitHub Actions check names from the first workflow run.",
+        "red",
+        [
+          "Open repository Settings > Branches",
+          "Protect main and require pull request reviews",
+          "Require the successful checks mapped in v119",
+          "Block force pushes and deletions",
+          "Require staging environment approval before deployment workflows",
+        ],
+      ],
+    ];
+    const repoMetadata = [
+      ["Repository", targetRepository, "Private production backend alpha repository.", "red"],
+      ["Public demo stays", "dhirajnyse/tendergrid", "Current GitHub Pages demo remains the feedback and sales surface.", "blue"],
+      ["Default branch", "main", "Protected after first workflow names are known.", "green"],
+      ["Integration branch", "develop", "First backend alpha shell can start here.", "teal"],
+      ["Labels", labelCount, "Create area, priority, type, milestone, and proof labels before issues.", "amber"],
+      ["Milestones", milestoneCount, "Open sprint-zero and alpha milestones before importing backlog.", "blue"],
+      ["Issue bodies", issueCount, "Generated issue bodies from v118 are ready to open in order.", "green"],
+      ["Starter files", firstBackendFileContentExport.allFiles.length, "Root, API, package, and workflow files from v120.", "teal"],
+    ];
+    const secretPlaceholders = (privateRepoGuide.secretPlan || []).slice(0, 8).map(([key, note, tone]) => [
+      key,
+      "Manual only",
+      note,
+      tone,
+    ]);
+    const firstProofRun = [
+      ["Install", "pnpm install", "Workspace installs from a clean clone.", "green"],
+      ["Static checks", "pnpm lint && pnpm typecheck", "Syntax, lint, and type contracts are visible early.", "blue"],
+      ["Route envelope", "pnpm test:route-envelopes", "Safe response shape, request id, and failure body are tested.", "red"],
+      ["Tenant access", "pnpm test:auth-tenant", "Company scope and role gates are tested before features deepen.", "red"],
+      ["Commercial privacy", "pnpm test:redaction", "Operational payloads do not leak commercial facts.", "amber"],
+      ["Audit boundary", "pnpm test:audit", "Allowed and denied actions can emit audit events.", "teal"],
+      ["Release gate", "pnpm ci:release-gate", "Branch protection proof has a single gate command.", "green"],
+      ["Smoke placeholder", "pnpm smoke:local", "Later staging smoke can attach to the same proof chain.", "blue"],
+    ];
+    const safetyGates = [
+      ["Do not create live production secrets", "Use test or staging placeholder names until hosting and billing providers are chosen.", "red"],
+      ["Do not protect main too early", "Run the first workflow once, capture exact check names, then apply protection.", "amber"],
+      ["Do not open issues before labels", "Create labels and milestones first so imported issues are searchable from day one.", "blue"],
+      ["Do not mix demo and backend repos", "The public tendergrid repo remains static; production backend code belongs in pursuitdesk-platform.", "red"],
+      ["Do not start feature depth first", "First commit proves repo shell, tenant, request id, safe errors, audit, redaction, and CI names.", "green"],
+      ["Do not paste private keys into JSON", "The downloadable handoff names secret slots but never contains real values.", "red"],
+      ["Do not skip the PR template", "The first PR should already ask for issue links, proof, release notes, and rollback notes.", "teal"],
+      ["Do not force branch rules manually blind", "Branch protection follows the v119 checklist and exact status checks after CI exists.", "blue"],
+    ];
+    const acceptanceChecks = [
+      ["Script inventory ready", `${scriptFiles.length} setup script/guide files define the private repo bootstrap pack.`, "green"],
+      ["Command order ready", `${commandBlocks.length} command blocks cover preflight through branch protection.`, "teal"],
+      ["Folder skeleton ready", `${folderPlan.length} folders map directly to v120 starter file paths.`, "blue"],
+      ["Metadata ready", `${labelCount} labels and ${milestoneCount} milestones are available from the repo creation guide.`, "amber"],
+      ["Issue path ready", `${issueCount} generated backend issue bodies can be opened after metadata exists.`, "green"],
+      ["Secrets stay manual", `${secretPlaceholders.length} secret names are documented without storing values.`, "red"],
+      ["Proof path ready", `${firstProofRun.length} first-run commands define early engineering proof.`, "blue"],
+      ["Protection timing clear", "Branch rules wait until workflow check names are visible.", "red"],
+    ];
+    return {
+      setupScriptScore,
+      downloadHref,
+      targetRepository,
+      prerequisites,
+      scriptFiles,
+      folderPlan,
+      commandBlocks,
+      repoMetadata,
+      secretPlaceholders,
+      firstProofRun,
+      safetyGates,
+      acceptanceChecks,
+      signalCards: [
+        ["Setup script score", `${setupScriptScore}%`, "How ready the private backend repo is for guided setup", setupScriptScore >= 92 ? "green" : "amber"],
+        ["Command blocks", commandBlocks.length, "Preflight, repo creation, folders, files, metadata, proof, PR, and protection", "teal"],
+        ["Starter files", firstBackendFileContentExport.allFiles.length, "File contents from v120 that the setup script writes into the private repo", "blue"],
+        ["Manual safety gates", safetyGates.length, "Controls that prevent secrets, branch rules, and issues from becoming messy", "red"],
+      ],
+      handoff: [
+        "v121 turns the file-content export into a practical private repo setup script draft.",
+        "The setup remains deliberately cautious: create the private repo, create folders, write starter files, create labels and milestones, run proof commands, open the first PR, and only then apply branch protection.",
+        "Real secret values stay outside the export. The script only names secret slots so deployment setup remains controlled.",
+        "v122 can now generate a richer GitHub labels and milestones import pack so backlog setup becomes even more automatic.",
+      ],
+    };
+  }
+
+  function buildGithubLabelsMilestonesImportPackModel(commandModel, privateRepoSetupScriptDraft, backendIssueBodyExporter, privateRepoGuide, branchProtectionReleaseChecklist) {
+    const toneColor = {
+      red: "bf3f35",
+      amber: "c0711f",
+      blue: "315f93",
+      green: "267a47",
+      teal: "167869",
+    };
+    const cleanCliText = (value) => String(value || "").replace(/"/g, "'").slice(0, 100);
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || backendIssueBodyExporter.issueCards?.length || 0;
+    const baseLabels = (backendIssueBodyExporter.labelPlan || []).map(([name, description, tone]) => ({
+      name,
+      group: name.includes(":") ? name.split(":")[0] : "general",
+      title: name,
+      description,
+      tone,
+      color: toneColor[tone] || toneColor.teal,
+    }));
+    const supplementalLabels = [
+      ["area:repo-shell", "Root files, workspace setup, README, env examples, docs, and PR template.", "green"],
+      ["area:api-shell", "Express app shell, health route, route registry, and route envelope proof.", "teal"],
+      ["area:tenant-access", "Tenant isolation, section permissions, membership admin guard, and denial proof.", "red"],
+      ["area:commercial-vault", "Value, agreement, LOA, negotiation, forecast, invoice, and redaction boundaries.", "red"],
+      ["area:importer", "Workbook staging, dry-run validation, quarantine, duplicate decisions, and rollback.", "blue"],
+      ["area:billing", "USD plans, checkout preview, invoice lifecycle, webhooks, seat sync, and access lock.", "amber"],
+      ["area:audit", "Request id, audit envelope, allowed/denied events, retention, and export proof.", "teal"],
+      ["area:reports", "Management pack, weekly report, evidence health, and redaction-safe export.", "green"],
+      ["area:ci-release", "GitHub Actions, status checks, artifacts, release gate, and branch protection.", "red"],
+      ["owner:platform", "Repository shell, workflows, setup scripts, branch protection, and release evidence.", "green"],
+      ["owner:backend", "API app, route groups, services, validators, and contract tests.", "teal"],
+      ["owner:security", "Auth, tenant, access, redaction, error envelope, and denial proof.", "red"],
+      ["owner:database", "Migrations, seeds, restore, parity checks, and data contracts.", "blue"],
+      ["owner:migration", "Workbook import, staging batches, quarantine, and reconciliation.", "amber"],
+      ["owner:billing", "Billing package, webhooks, invoices, seats, and access lock.", "amber"],
+      ["owner:qa", "Smoke tests, fixtures, evidence artifacts, and release gates.", "blue"],
+      ["proof:contract", "Endpoint contract or payload test evidence is required before review.", "blue"],
+      ["proof:redaction", "Operational users cannot receive commercial or billing fields.", "red"],
+      ["proof:migration", "Migration, seed, restore, rollback, and count parity proof required.", "blue"],
+      ["proof:billing", "Test-mode billing event, webhook, invoice, and seat-sync proof required.", "amber"],
+      ["proof:audit", "Allowed and denied actions emit request-id-linked audit events.", "teal"],
+      ["proof:smoke", "Staging or local smoke artifact is required for release movement.", "green"],
+      ["status:ready-for-dev", "Issue has owner, files, acceptance checks, and proof commands.", "green"],
+      ["status:needs-evidence", "Issue cannot merge until artifact or proof command output is attached.", "amber"],
+      ["status:blocked", "Blocked by missing repo setup, secrets, workflow names, or upstream issue.", "red"],
+    ].map(([name, description, tone]) => ({
+      name,
+      group: name.split(":")[0],
+      title: name,
+      description,
+      tone,
+      color: toneColor[tone],
+    }));
+    const labelMap = new Map();
+    [...baseLabels, ...supplementalLabels].forEach((label) => {
+      if (!labelMap.has(label.name)) labelMap.set(label.name, label);
+    });
+    const labelCatalog = [...labelMap.values()].map((label) => ({
+      ...label,
+      command: `gh label create "${label.name}" --color ${label.color} --description "${cleanCliText(label.description)}" --force`,
+    }));
+    const groupMap = new Map();
+    labelCatalog.forEach((label) => {
+      const labels = groupMap.get(label.group) || [];
+      labels.push(label);
+      groupMap.set(label.group, labels);
+    });
+    const labelGroups = [...groupMap.entries()].map(([group, labels], index) => [
+      group,
+      labels.length,
+      labels.slice(0, 5).map((label) => label.name).join(", "),
+      ["green", "teal", "blue", "amber", "red"][index % 5],
+    ]);
+    const baseMilestones = (backendIssueBodyExporter.milestonePlan || []).map(([title, description, tone], index) => ({
+      code: `M${index}`,
+      title,
+      description,
+      dueWindow: `Alpha week ${index}`,
+      tone,
+    }));
+    const supplementalMilestones = [
+      { code: "M5", title: "Pilot hardening", description: "Fix staging smoke findings, support pilot feedback, and close release blockers.", dueWindow: "After first staging rehearsal", tone: "green" },
+      { code: "M6", title: "First customer readiness", description: "Prepare customer onboarding, billing test handoff, import rehearsal, support path, and go/no-go memo.", dueWindow: "Before paid pilot", tone: "amber" },
+    ];
+    const milestoneMap = new Map();
+    [...baseMilestones, ...supplementalMilestones].forEach((milestone) => {
+      if (!milestoneMap.has(milestone.title)) milestoneMap.set(milestone.title, milestone);
+    });
+    const milestoneCatalog = [...milestoneMap.values()].map((milestone) => ({
+      ...milestone,
+      command: `gh api repos/dhirajnyse/pursuitdesk-platform/milestones -f title="${cleanCliText(milestone.title)}" -f state=open -f description="${cleanCliText(`${milestone.code}: ${milestone.description}`)}"`,
+    }));
+    const boardColumns = [
+      ["Backlog", "New imported issues wait for owner confirmation, milestone check, and dependency review.", "blue"],
+      ["Ready for sprint zero", "Issues with owner, files, proof commands, and no upstream blockers.", "green"],
+      ["In progress", "One owner, one branch, one linked issue, one definition of done.", "teal"],
+      ["Needs evidence", "Implementation exists but proof commands, artifacts, or screenshots are missing.", "amber"],
+      ["Security review", "Tenant, redaction, audit, billing, import, or access-sensitive changes wait here.", "red"],
+      ["Staging gate", "Release candidates wait for smoke, rollback, artifacts, and owner signoff.", "red"],
+      ["Done", "Merged, proved, documented, and linked to release evidence.", "green"],
+      ["Blocked", "Waiting on repo setup, secrets, workflow names, migration decision, or upstream scope.", "amber"],
+    ];
+    const issueRoutingRules = [
+      ["priority:p0", "M0-M1 first", "Must be opened before feature depth because it protects repo shell, API boot, privacy, tenant, or audit.", "red"],
+      ["type:foundation", "M0 Repo shell", "Route to Platform Owner and require install, lint, typecheck proof.", "green"],
+      ["type:security", "M1 API and privacy core", "Route to Security Owner and require denial, redaction, and audit proof.", "red"],
+      ["type:data", "M2 Data and fixtures", "Route to Database Owner and require migration, seed, restore, and parity proof.", "blue"],
+      ["type:import", "M2 Data and fixtures", "Route to Migration Owner and require dry-run, quarantine, rollback, and reconciliation proof.", "amber"],
+      ["type:billing", "M2 Data and fixtures", "Route to Billing Owner and require test-mode checkout, webhook, invoice, and seat proof.", "amber"],
+      ["type:ci", "M3-M4 workflow proof", "Route to Platform Owner and require workflow artifact and release-gate proof.", "red"],
+      ["proof:smoke", "M4 Staging alpha gate", "Route to QA Owner and require smoke summary, audit events, rollback proof, and screenshots.", "teal"],
+    ];
+    const importSteps = [
+      ["01", "Dry-run label names", "Check duplicates, spelling, colors, descriptions, and group prefixes before creating anything.", "green"],
+      ["02", "Create labels", `${labelCatalog.length} labels are created with stable colors and descriptions.`, "teal"],
+      ["03", "Create milestones", `${milestoneCatalog.length} milestones are created before issues are opened.`, "blue"],
+      ["04", "Create board columns", `${boardColumns.length} columns define backlog movement from Backlog to Done.`, "green"],
+      ["05", "Open P0 issues", "Open foundation, API shell, safe error, tenant access, and audit issues first.", "red"],
+      ["06", "Open data and fixture issues", "Open migration, seed, import, billing, and report boundaries after P0 issue IDs exist.", "amber"],
+      ["07", "Attach proof expectations", "Each issue receives command proof, artifact names, and acceptance checks.", "blue"],
+      ["08", "Lock taxonomy changes", "After first sprint starts, label and milestone changes require admin review.", "red"],
+    ];
+    const commandPreview = [
+      ...labelCatalog.slice(0, 8).map((label) => ["Label", label.name, label.command, label.tone]),
+      ...milestoneCatalog.slice(0, 5).map((milestone) => ["Milestone", milestone.title, milestone.command, milestone.tone]),
+    ];
+    const importFiles = [
+      ["data/github-labels-milestones-import-pack.json", "Structured taxonomy handoff for labels, milestones, board columns, routing, and gates.", "green"],
+      ["scripts/github/create-labels.ps1", "Creates or updates the label catalog with colors and descriptions.", "teal"],
+      ["scripts/github/create-milestones.ps1", "Creates milestones in the correct alpha order before issue import.", "blue"],
+      ["scripts/github/create-project-columns.md", "Manual board-column setup guide for Backlog through Done.", "green"],
+      ["scripts/github/import-backend-issues.md", "Issue import order linked to labels, milestones, owners, and proof expectations.", "amber"],
+      ["docs/github-taxonomy.md", "Readable explanation of label groups, milestone meaning, issue routing, and freeze rules.", "blue"],
+      ["docs/backlog-governance.md", "Rules for changing labels, milestones, board columns, owners, and proof requirements.", "red"],
+      ["docs/first-sprint-board-review.md", "Checklist for validating imported issues before sprint-zero coding starts.", "green"],
+    ];
+    const qualityGates = [
+      ["No duplicate labels", "The same label name must not be created twice with different color or meaning.", "red"],
+      ["Milestones before issues", "Issues should not be opened until milestones exist, otherwise backlog triage becomes noisy.", "amber"],
+      ["Owners visible", "Every P0 issue must carry owner labels or explicit owner text in the issue body.", "green"],
+      ["Proof labels present", "Security, data, billing, audit, and staging issues need proof labels before review.", "red"],
+      ["Board columns fixed", "Column names should not drift during the first sprint-zero import.", "blue"],
+      ["P0 first", "Foundation, API shell, privacy, tenant access, and audit issues open before billing or reports.", "red"],
+      ["Protected branch alignment", "Required status checks from v119 should match the issue proof labels.", "teal"],
+      ["Taxonomy freeze note", "After import, changes to labels or milestones need admin review and release-note mention.", "amber"],
+    ];
+    const acceptanceChecks = [
+      ["Label catalog complete", `${labelCatalog.length} labels cover type, priority, area, owner, proof, and status groups.`, "green"],
+      ["Milestone catalog complete", `${milestoneCatalog.length} milestones cover repo shell through first customer readiness.`, "blue"],
+      ["Board flow complete", `${boardColumns.length} columns show how work moves from backlog to release evidence.`, "teal"],
+      ["Routing rules complete", `${issueRoutingRules.length} routing rules prevent issues from landing in the wrong milestone.`, "red"],
+      ["Command preview ready", `${commandPreview.length} sample commands prove the catalog can be created with GitHub CLI.`, "green"],
+      ["Issue import ready", `${issueCount} generated backend issues can now inherit clean labels and milestones.`, "amber"],
+      ["Quality gates visible", `${qualityGates.length} gates protect naming, sequencing, proof, and taxonomy freeze.`, "red"],
+      ["Next handoff ready", "v123 can validate starter files, scripts, workflows, branch protection, and release evidence before coding depth.", "blue"],
+    ];
+    const importPackScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoSetupScriptDraft.setupScriptScore * 0.24 +
+            backendIssueBodyExporter.issueExportScore * 0.24 +
+            privateRepoGuide.repoGuideScore * 0.18 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.16 +
+            Math.min(100, labelCatalog.length * 2.2) * 0.1 +
+            Math.min(100, milestoneCatalog.length * 12) * 0.08,
+        ),
+      ),
+    );
+    return {
+      importPackScore,
+      downloadHref: "data/github-labels-milestones-import-pack.json?v=146",
+      labelCatalog,
+      labelGroups,
+      milestoneCatalog,
+      boardColumns,
+      issueRoutingRules,
+      importSteps,
+      commandPreview,
+      importFiles,
+      qualityGates,
+      acceptanceChecks,
+      signalCards: [
+        ["Import pack score", `${importPackScore}%`, "How ready the future private repo is for clean GitHub metadata import", importPackScore >= 92 ? "green" : "amber"],
+        ["Labels", labelCatalog.length, "Type, priority, area, owner, proof, and status labels", "teal"],
+        ["Milestones", milestoneCatalog.length, "Repo shell through first customer readiness", "blue"],
+        ["Routing rules", issueRoutingRules.length, "Rules that connect issues to owner, proof, and milestone expectations", "red"],
+      ],
+      handoff: [
+        "v122 makes the future private repository backlog clean before the first issue is opened.",
+        "The pack creates one taxonomy across labels, milestones, owners, proof types, board columns, and routing rules, so backend work does not become a loose list of tasks.",
+        "P0 work stays first: repo shell, API boot, safe errors, tenant access, redaction, and audit happen before billing, reports, or staging depth.",
+        "v123 can now validate the first backend commit readiness against files, scripts, workflow checks, labels, milestones, branch protection, and release evidence.",
+      ],
+    };
+  }
+
+  function buildFirstBackendCommitQaChecklistModel(commandModel, githubLabelsMilestonesImportPack, privateRepoSetupScriptDraft, firstBackendFileContentExport, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint, privateRepoFirstCommitBuilder) {
+    const fileCount = firstBackendFileContentExport.allFiles?.length || 0;
+    const labelCount = githubLabelsMilestonesImportPack.labelCatalog?.length || 0;
+    const milestoneCount = githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0;
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const qaScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          githubLabelsMilestonesImportPack.importPackScore * 0.2 +
+            privateRepoSetupScriptDraft.setupScriptScore * 0.18 +
+            firstBackendFileContentExport.fileContentScore * 0.18 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.16 +
+            privateRepoFirstCommitBuilder.firstCommitScore * 0.14 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.14,
+        ),
+      ),
+    );
+    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=146";
+    const qaLanes = [
+      ["Repository shell", "Root files, workspace, README, env example, CODEOWNERS, PR template, and release runbook exist.", "green"],
+      ["API shell", "Server, app, route registry, health route, request id, safe error, tenant scope, and access decision exist.", "teal"],
+      ["Package boundaries", "Shared result, env parser, audit writer, redaction, schema, seeds, fixtures, and importer dry-run exist.", "blue"],
+      ["Workflow shells", "CI, security, migration, billing, import, staging, release, and dependency workflows exist with stable names.", "red"],
+      ["Backlog taxonomy", `${labelCount} labels, ${milestoneCount} milestones, board columns, routing rules, and import steps are ready.`, "amber"],
+      ["Branch protection timing", "Protection waits until the first workflow run exposes exact required status check names.", "red"],
+      ["Evidence artifacts", "Install, lint, typecheck, contract, route envelope, auth tenant, redaction, audit, and release-gate proof is expected.", "green"],
+      ["Commercial privacy", "Operational tracker payloads stay free of value, agreement, LOA, invoice, billing, and negotiation data.", "red"],
+    ];
+    const fileQaMatrix = [
+      ["Root files", fileCount >= 32 ? "Ready" : "Review", `${fileCount} starter files exported from v120.`, "green"],
+      ["README", "Ready", "Explains alpha scope, first proof commands, and commercial privacy rule.", "green"],
+      ["package.json", "Review", "Scripts exist in the export; real dependencies still need first repo install.", "amber"],
+      [".env.example", "Ready", "Contains placeholder keys only; no live secrets allowed.", "red"],
+      ["CODEOWNERS", "Ready", "Maps platform, API, database, audit, importer, billing, workflows, and docs ownership.", "blue"],
+      ["PR template", "Ready", "Requires linked issue, proof commands, release notes, affected rooms, and rollback plan.", "teal"],
+      ["API middleware", "Ready", "Request id, safe error, tenant scope, and access decision are present before feature routes.", "red"],
+      ["Package boundaries", "Ready", "Audit, redaction, importer, seed, fixture, schema, and shared result boundaries are visible.", "green"],
+      ["Workflow files", "Review", `${ciWorkflowFileBlueprint.workflowFiles.length} workflow shells map to required proof lanes.`, "blue"],
+      ["Release runbook", "Ready", "Merge, staging, rollback, and release ritual are documented before staging depth.", "red"],
+    ];
+    const proofCommands = [
+      ["Install", "pnpm install", "Fresh clone can install workspace dependencies.", "green"],
+      ["Lint", "pnpm lint", "Code style and obvious syntax drift are caught before review.", "blue"],
+      ["Typecheck", "pnpm typecheck", "Type contracts compile before feature depth.", "teal"],
+      ["Contracts", "pnpm test:contracts", "Endpoint and payload contract shell is visible.", "blue"],
+      ["Route envelopes", "pnpm test:route-envelopes", "Safe response shape, request id, and error body are expected.", "red"],
+      ["Auth tenant", "pnpm test:auth-tenant", "Company scope and role gates are tested early.", "red"],
+      ["Commercial redaction", "pnpm test:redaction", "Operational payloads do not leak restricted fields.", "red"],
+      ["Audit", "pnpm test:audit", "Allowed and denied action evidence can be produced.", "teal"],
+      ["Release gate", "pnpm ci:release-gate", "Single command summarizes checks, artifacts, blockers, and decision state.", "green"],
+      ["Local smoke placeholder", "pnpm smoke:local", "Connects later staging smoke to the first proof chain.", "amber"],
+    ];
+    const reviewChecklist = [
+      ["Repository", "No files committed outside the v120 starter inventory unless named in setup handoff.", "green"],
+      ["Secrets", "No .env, access token, private key, live billing key, or customer file is committed.", "red"],
+      ["Issue trace", `First PR links to one of ${issueCount} generated backend issues.`, "blue"],
+      ["Labels", "Issue has type, priority, area, owner, proof, and status labels from v122.", "teal"],
+      ["Milestone", "Issue belongs to M0 or M1 before deeper billing/report/import issues start.", "amber"],
+      ["Proof", "PR description includes command output or explains why a placeholder cannot run yet.", "green"],
+      ["Workflow names", "Branch protection waits for exact GitHub check names after the first run.", "red"],
+      ["Commercial privacy", "Review confirms tracker shell and API examples do not expose commercial vault fields.", "red"],
+      ["Rollback", "PR template contains rollback note even for repo-shell initialization.", "amber"],
+      ["Docs", "README and release runbook reflect what actually exists in the first commit.", "blue"],
+    ];
+    const artifactExpectations = [
+      ["install-log.txt", "Result of pnpm install or dependency placeholder note.", "green"],
+      ["lint-output.txt", "Lint output or documented placeholder while dependencies are introduced.", "blue"],
+      ["typecheck-output.txt", "Typecheck output or documented placeholder while TypeScript config is introduced.", "teal"],
+      ["route-envelope-proof.json", "Expected safe error and request id proof once route tests exist.", "red"],
+      ["tenant-access-proof.json", "Expected tenant and access decision proof once auth tests exist.", "red"],
+      ["redaction-proof.json", "Expected operational payload without commercial fields.", "red"],
+      ["audit-proof.json", "Expected allowed/denied audit event envelope.", "teal"],
+      ["release-gate-summary.md", "Human-readable pass, warn, block, artifact, and owner decision summary.", "green"],
+    ];
+    const goNoGoRules = [
+      ["Go", "Root files, API shell, package boundaries, workflow shells, labels, milestones, and PR template are present.", "green"],
+      ["Go", "No live secrets, customer files, or commercial workbook data are committed.", "green"],
+      ["Go", "First PR links to an issue, milestone, labels, proof commands, release note, and rollback note.", "teal"],
+      ["Hold", "Workflow names are unknown; apply branch protection after first CI run only.", "amber"],
+      ["Hold", "package.json scripts reference commands that are not yet implemented; mark proof as placeholder.", "amber"],
+      ["No-go", "Any live secret, customer data, or unrestricted commercial value appears in the commit.", "red"],
+      ["No-go", "Tenant, access, redaction, or audit boundaries are removed from the starter shell.", "red"],
+      ["No-go", "Main branch receives direct commits before PR proof and review discipline exist.", "red"],
+    ];
+    const roleSignoffs = [
+      ["Platform Owner", "Repo shell, scripts, workflows, CODEOWNERS, labels, milestones, and PR evidence.", "green"],
+      ["Backend Lead", "API boot files, route registry, middleware order, and package boundaries.", "teal"],
+      ["Security Owner", "No secrets, tenant guard, access decision, redaction rule, safe error, and denial proof.", "red"],
+      ["Database Owner", "Schema placeholder, seed runner, fixture plan, migration readiness, and no live data.", "blue"],
+      ["Governance Owner", "Audit writer boundary, release runbook, evidence artifacts, and retention thinking.", "teal"],
+      ["QA Owner", "First proof commands, smoke placeholder, artifact names, and release-gate summary.", "amber"],
+    ];
+    const firstPrTemplateChecks = [
+      ["Linked issue", "PR body references PD-BE-001 or the relevant generated backend issue.", "green"],
+      ["Scope", "Files changed match issue scope and v120 starter inventory.", "blue"],
+      ["Proof", "Install, lint, typecheck, route envelope, auth tenant, redaction, audit, and release gate outputs are addressed.", "red"],
+      ["Release notes", "Affected rooms and rollback plan are filled, even for initial shell.", "amber"],
+      ["Reviewer path", "CODEOWNERS and role signoffs match sensitive file groups.", "teal"],
+      ["Taxonomy", "Labels, milestone, status, and proof tags come from v122 catalog.", "green"],
+      ["Branch plan", "develop opens the first PR to main; main is not direct-pushed.", "red"],
+      ["Protection note", "Branch protection is scheduled after first workflow check names are visible.", "blue"],
+    ];
+    const qaFiles = [
+      ["data/first-backend-commit-qa-checklist.json", "Structured checklist for first private backend commit review.", "green"],
+      ["docs/first-backend-commit-qa.md", "Human-readable QA checklist for reviewers and owners.", "blue"],
+      ["docs/first-pr-evidence-template.md", "Evidence template for install, checks, artifacts, labels, milestone, release note, and rollback.", "teal"],
+      ["scripts/setup/verify-first-commit.ps1", "Local verification wrapper for files, secrets, labels, scripts, and proof placeholders.", "green"],
+      ["scripts/setup/scan-for-secrets.ps1", "Safety scan reminder for .env, tokens, keys, and live customer data.", "red"],
+      ["scripts/setup/check-taxonomy.ps1", "Confirms required labels and milestones exist before issues are imported.", "amber"],
+      ["scripts/setup/check-workflow-names.md", "Manual guide for waiting on exact GitHub Actions status check names.", "blue"],
+      ["docs/first-commit-go-no-go.md", "Go, hold, and no-go decision rules for the first backend PR.", "red"],
+    ];
+    const acceptanceChecks = [
+      ["QA lanes complete", `${qaLanes.length} lanes cover repo shell, API, packages, workflows, taxonomy, protection, evidence, and privacy.`, "green"],
+      ["File QA ready", `${fileQaMatrix.length} file checks validate starter inventory and sensitive boundaries.`, "blue"],
+      ["Proof commands ready", `${proofCommands.length} proof commands define first PR evidence expectations.`, "teal"],
+      ["Review checklist ready", `${reviewChecklist.length} reviewer checks keep the first commit disciplined.`, "green"],
+      ["Artifacts named", `${artifactExpectations.length} evidence artifacts are named before CI is deep.`, "amber"],
+      ["Go/no-go clear", `${goNoGoRules.length} rules define when to proceed, hold, or stop.`, "red"],
+      ["Signoffs mapped", `${roleSignoffs.length} owner signoffs cover platform, backend, security, data, governance, and QA.`, "blue"],
+      ["Next handoff ready", "v124 can turn setup, issue import, first PR, and proof evidence into an opening-day runbook.", "green"],
+    ];
+    return {
+      qaScore,
+      downloadHref,
+      qaLanes,
+      fileQaMatrix,
+      proofCommands,
+      reviewChecklist,
+      artifactExpectations,
+      goNoGoRules,
+      roleSignoffs,
+      firstPrTemplateChecks,
+      qaFiles,
+      acceptanceChecks,
+      signalCards: [
+        ["QA score", `${qaScore}%`, "How ready the first private backend commit is for disciplined review", qaScore >= 94 ? "green" : "amber"],
+        ["Starter files", fileCount, "Root, API, package, and workflow files checked before first PR", "teal"],
+        ["Taxonomy proof", labelCount + milestoneCount, "Labels and milestones available before issue import", "blue"],
+        ["No-go rules", goNoGoRules.filter(([status]) => status === "No-go").length, "Hard stops for secrets, data leaks, missing guards, or direct main commits", "red"],
+      ],
+      handoff: [
+        "v123 turns the backend planning stack into a first-commit QA gate.",
+        "The first private backend PR should prove discipline before feature depth: file inventory, no secrets, issue trace, taxonomy, proof commands, release note, rollback note, and branch protection timing.",
+        "This checklist intentionally allows some proof commands to begin as placeholders, but only if the PR says that clearly and names the artifact expected later.",
+        "v124 can now convert setup, issue import, first PR evidence, and owner signoffs into a private repo opening-day runbook.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoOpeningDayRunbookModel(commandModel, firstBackendCommitQaChecklist, githubLabelsMilestonesImportPack, privateRepoSetupScriptDraft, backendIssueBodyExporter, firstBackendFileContentExport, branchProtectionReleaseChecklist, ciWorkflowFileBlueprint) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const labelCount = githubLabelsMilestonesImportPack.labelCatalog?.length || 0;
+    const milestoneCount = githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0;
+    const workflowCount = ciWorkflowFileBlueprint.workflowFiles?.length || 0;
+    const starterFileCount = firstBackendFileContentExport.allFiles?.length || 0;
+    const runbookScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          firstBackendCommitQaChecklist.qaScore * 0.24 +
+            githubLabelsMilestonesImportPack.importPackScore * 0.2 +
+            privateRepoSetupScriptDraft.setupScriptScore * 0.2 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.18 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.18,
+        ),
+      ),
+    );
+    const downloadHref = "data/private-repo-opening-day-runbook.json?v=146";
+    const daySequence = [
+      ["08:30", "Preflight", "Confirm GitHub access, repo name, owners, no live secrets, and local folder location.", "green"],
+      ["09:00", "Create private repo", "Create dhirajnyse/pursuitdesk-platform as private, with main protected later after first checks appear.", "red"],
+      ["09:20", "Clone and branch", "Clone locally, create develop, and keep main clean until first PR evidence is ready.", "teal"],
+      ["09:45", "Copy starter files", `${starterFileCount} starter files move from the file-content export into the private repo shell.`, "blue"],
+      ["10:30", "Import taxonomy", `${labelCount} labels and ${milestoneCount} milestones are created before issues are opened.`, "amber"],
+      ["11:15", "Open first issue wave", `${issueCount} generated issue bodies are imported in M0/M1 order, with P0 shell and guard work first.`, "green"],
+      ["12:30", "First proof run", "Run install, lint, typecheck, route envelope, auth tenant, redaction, audit, and release gate placeholders.", "blue"],
+      ["14:00", "Open first PR", "Push develop, open the first PR to main, attach proof output, release note, rollback note, and signoffs.", "teal"],
+      ["15:00", "Review and evidence", "Platform, backend, security, database, governance, and QA owners review their lanes.", "green"],
+      ["16:15", "Protect main", `${workflowCount} workflow names are captured from the first run before branch rules become strict.`, "red"],
+    ];
+    const commandBlocks = [
+      ["Preflight", "gh auth status", "Confirms GitHub CLI identity before creating anything.", "green"],
+      ["Create repo", "gh repo create dhirajnyse/pursuitdesk-platform --private --description \"Production SaaS backend for PursuitDesk\" --confirm", "Creates the private target repo.", "red"],
+      ["Clone", "gh repo clone dhirajnyse/pursuitdesk-platform", "Pulls the clean private repo locally.", "teal"],
+      ["Develop branch", "git checkout -b develop", "Starts work away from main.", "green"],
+      ["Taxonomy", "gh label create ... / gh api repos/:owner/:repo/milestones", "Applies the v122 label and milestone catalog.", "amber"],
+      ["Issue import", "gh issue create --title ... --body-file ... --label ... --milestone ...", "Opens generated issue bodies in the planned order.", "blue"],
+      ["Install proof", "pnpm install", "Creates the first dependency proof or a clear placeholder note.", "green"],
+      ["Quality proof", "pnpm lint && pnpm typecheck", "Captures first static quality evidence.", "blue"],
+      ["Release proof", "pnpm ci:release-gate", "Produces the first release-gate summary.", "teal"],
+      ["First PR", "gh pr create --base main --head develop --draft --title \"Initialize PursuitDesk backend shell\"", "Keeps the first merge reviewable and evidence-led.", "red"],
+    ];
+    const issueWaves = [
+      ["Wave 1", "Repo shell", "Open root shell, README, CODEOWNERS, PR template, env example, and release runbook issues first.", "green"],
+      ["Wave 2", "API boot", "Open server, app, route registry, safe error, request id, tenant scope, and access decision issues.", "red"],
+      ["Wave 3", "Data foundation", "Open schema, migration, seed, fixture, import dry-run, and restore gate issues.", "blue"],
+      ["Wave 4", "Security proof", "Open tenant isolation, section access, commercial redaction, denial audit, and secrets checks.", "red"],
+      ["Wave 5", "CI and release", "Open workflow files, artifact retention, release gate, branch protection, and rollback issues.", "amber"],
+      ["Wave 6", "Later alpha", "Hold billing, feedback, reports, customer success, and production hosting depth until shell proof is merged.", "teal"],
+    ];
+    const evidencePackets = [
+      ["repo-created.md", "Repo URL, visibility, owners, created branch, and local path.", "green"],
+      ["taxonomy-import-summary.md", "Labels, milestones, board columns, and issue routing rules applied.", "amber"],
+      ["issue-import-log.md", "Issue wave order, issue URLs, labels, milestones, and owner mapping.", "blue"],
+      ["starter-file-inventory.md", "Files copied from v120 export and any intentional deviation.", "green"],
+      ["first-proof-output.md", "Install, lint, typecheck, test placeholders, and release gate outputs.", "teal"],
+      ["first-pr-review-note.md", "Linked issue, PR URL, reviewers, proof status, release note, and rollback note.", "red"],
+      ["workflow-check-name-map.md", "Exact GitHub Actions check names after the first run completes.", "blue"],
+      ["branch-protection-applied.md", "Required checks, reviews, environments, and bypass decisions after workflow names are known.", "red"],
+    ];
+    const ownerCheckpoints = [
+      ["Founder / Product", "Approves repo identity, alpha scope, issue priority, and no-go rules.", "green"],
+      ["Platform owner", "Owns repo creation, file copy, workflow names, branch rules, and PR evidence.", "teal"],
+      ["Backend lead", "Owns API boot shell, route registry, package boundaries, and first proof commands.", "blue"],
+      ["Security owner", "Owns no-secret check, tenant/access guard, safe errors, redaction, and denial audit.", "red"],
+      ["Data owner", "Owns schema placeholders, seed fixture location, migration order, and no-live-data rule.", "amber"],
+      ["QA / Release", "Owns evidence packet, release-gate summary, branch protection timing, and go/no-go note.", "green"],
+    ];
+    const liveGates = [
+      ["Before repo create", "Repo name, privacy, owner, local folder, GitHub login, and no live data confirmed.", "green"],
+      ["Before taxonomy import", "Label catalog, milestone catalog, owner lanes, and proof labels checked.", "amber"],
+      ["Before issue import", "M0/M1 opening order and issue body templates reviewed.", "blue"],
+      ["Before first PR", "Starter file inventory, no-secret scan, proof placeholders, and release note prepared.", "red"],
+      ["Before branch protection", "First workflow run has produced exact status check names.", "red"],
+      ["Before merge", "Role signoffs, proof outputs, linked issue, rollback note, and no-go scan complete.", "green"],
+      ["Before staging work", "Shell PR merged cleanly and release-gate summary has no hard blockers.", "teal"],
+      ["Before live data", "Tenant, access, redaction, audit, import rollback, backups, and billing test mode are real.", "red"],
+    ];
+    const noGoStops = [
+      ["Live secret appears", "Stop, rotate the secret, purge history, and restart with a clean branch.", "red"],
+      ["Repo is public", "Stop before uploading starter files; recreate or change visibility to private.", "red"],
+      ["Main receives direct commit", "Stop and restore PR discipline before any protection rule is applied.", "amber"],
+      ["Workflow checks unknown", "Hold branch protection until exact GitHub check names are visible.", "amber"],
+      ["Commercial data leaks", "Stop, remove value/agreement/billing/negotiation data from operational examples.", "red"],
+      ["Issue trace missing", "Hold the PR until it links to generated issue, labels, milestone, and proof lane.", "blue"],
+    ];
+    const acceptanceChecks = [
+      ["Sequence is executable", `${daySequence.length} timed steps cover preflight through branch protection.`, "green"],
+      ["Commands are named", `${commandBlocks.length} command blocks define the opening-day path.`, "blue"],
+      ["Issues are sequenced", `${issueWaves.length} import waves keep foundation and security work first.`, "teal"],
+      ["Evidence is named", `${evidencePackets.length} proof packets tell the team what to save.`, "green"],
+      ["Owners are assigned", `${ownerCheckpoints.length} owner lanes show who signs off.`, "amber"],
+      ["Gates are clear", `${liveGates.length} decision gates prevent premature merge, protection, staging, or live data.`, "red"],
+      ["Stops are explicit", `${noGoStops.length} no-go stops tell the team when to pause.`, "red"],
+      ["Next handoff ready", "v125 can turn this into an executive decision memo for creating the real repo.", "green"],
+    ];
+    return {
+      runbookScore,
+      downloadHref,
+      daySequence,
+      commandBlocks,
+      issueWaves,
+      evidencePackets,
+      ownerCheckpoints,
+      liveGates,
+      noGoStops,
+      acceptanceChecks,
+      signalCards: [
+        ["Runbook score", `${runbookScore}%`, "Readiness to execute private repo opening day with discipline", runbookScore >= 95 ? "green" : "amber"],
+        ["Opening steps", daySequence.length, "Timed actions from preflight to protected main", "teal"],
+        ["Issue wave", issueWaves.length, "Backlog import order before feature coding starts", "blue"],
+        ["Hard stops", noGoStops.length, "Conditions that pause the launch before damage spreads", "red"],
+      ],
+      handoff: [
+        "v124 converts the backend preparation stack into a day-one private repo operating rhythm.",
+        "The runbook keeps repo creation, taxonomy import, starter files, first issues, proof commands, first PR, owner signoffs, and branch protection in the correct order.",
+        "Branch protection remains deliberately late: the team first lets GitHub Actions reveal exact required status check names, then protects main.",
+        "v125 can now produce the executive decision memo for opening the real private backend repo with known scope, evidence, blockers, and approval gates.",
+      ],
+    };
+  }
+
+  function buildProductionBackendRepoDecisionMemoModel(commandModel, privateRepoOpeningDayRunbook, firstBackendCommitQaChecklist, privateRepoSetupScriptDraft, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint, privateRepoGuide, alphaPlan) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const workflowCount = ciWorkflowFileBlueprint.workflowFiles?.length || 0;
+    const approvalScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoOpeningDayRunbook.runbookScore * 0.26 +
+            firstBackendCommitQaChecklist.qaScore * 0.24 +
+            privateRepoSetupScriptDraft.setupScriptScore * 0.2 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.16 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.14,
+        ),
+      ),
+    );
+    const downloadHref = "data/production-backend-repo-decision-memo.json?v=146";
+    const memoSections = [
+      ["Decision requested", "Approve creation of dhirajnyse/pursuitdesk-platform as the private production backend repo.", "green"],
+      ["Why now", "Prototype has reached a stable SaaS blueprint with repo files, issues, QA gates, taxonomy, and opening-day sequence.", "teal"],
+      ["Decision type", "Proceed with repo creation and first PR only; do not approve live customer data or paid billing yet.", "red"],
+      ["Primary owner", "Founder / product owner signs the decision; platform owner executes repository opening day.", "blue"],
+      ["Decision window", "Approve when repo privacy, issue order, proof packet, no-secret rule, and branch protection timing are accepted.", "amber"],
+      ["Next milestone", "First backend shell PR merged with evidence, not full SaaS launch.", "green"],
+    ];
+    const approvalBasis = [
+      ["Product scope", "PursuitDesk product direction, operational tracker split, commercial privacy rule, and module growth path are stable.", "green"],
+      ["Backend plan", "API groups, route skeleton, migrations, auth guards, tenant boundaries, audit envelope, and CI jobs are mapped.", "teal"],
+      ["Repository pack", "Starter files, setup script, taxonomy import, first commit checklist, and opening-day runbook exist.", "blue"],
+      ["Governance", "Branch protection timing, review owners, release ritual, rollback playbook, evidence artifacts, and no-go stops are mapped.", "red"],
+      ["Backlog", `${issueCount} copy-ready issues can seed M0/M1 work without inventing scope during the first repo day.`, "amber"],
+      ["CI readiness", `${workflowCount} workflow shells are planned; exact required status check names wait for first GitHub Actions run.`, "blue"],
+    ];
+    const scopeCutline = [
+      ["Approved", "Create private repo, copy starter files, import labels/milestones, open foundation issues, run first proof, open first PR.", "green"],
+      ["Approved", "Protect main after first workflow names are visible, not before.", "teal"],
+      ["Approved", "Use generated seed fixtures and demo tenant only for early backend proof.", "blue"],
+      ["Not approved", "No live customer workbooks, secrets, production billing keys, or customer documents in the repo.", "red"],
+      ["Not approved", "No public repo, direct commits to main, or branch protection before required check names exist.", "red"],
+      ["Not approved", "No live SaaS pilot until tenant access, redaction, audit, import rollback, backups, and billing test-mode checks are real.", "amber"],
+    ];
+    const evidenceReadiness = [
+      ["Opening day runbook", `${privateRepoOpeningDayRunbook.daySequence.length} timed steps, ${privateRepoOpeningDayRunbook.commandBlocks.length} commands, and ${privateRepoOpeningDayRunbook.liveGates.length} gates.`, "green"],
+      ["First commit QA", `${firstBackendCommitQaChecklist.qaLanes.length} QA lanes, ${firstBackendCommitQaChecklist.proofCommands.length} proof commands, and ${firstBackendCommitQaChecklist.goNoGoRules.length} decision rules.`, "teal"],
+      ["Setup script", "Preflight, private repo creation, folder skeleton, first proof, first PR, and branch protection timing are mapped.", "blue"],
+      ["Branch protection", "Required checks, protected environments, owner reviews, artifacts, release ritual, and rollback playbook are mapped.", "red"],
+      ["Issue import", `${issueCount} issue bodies include labels, milestones, acceptance checks, proof commands, and opening order.`, "amber"],
+      ["CI blueprint", `${workflowCount} workflow files map to quality, security, migration, billing, import, staging, release, and dependency checks.`, "blue"],
+    ];
+    const decisionOptions = [
+      ["Go", "Create repo and run v124 opening-day sequence", "Recommended if the owner accepts no-live-data and PR-first controls.", "green"],
+      ["Conditional go", "Create repo but pause issue import", "Use if GitHub access or taxonomy ownership still needs confirmation.", "amber"],
+      ["Hold", "Do not create repo yet", "Use if privacy, ownership, or proof expectations are not accepted.", "red"],
+      ["No-go", "Stop production backend move", "Use if live secrets/data, public repo risk, or owner ambiguity cannot be removed.", "red"],
+    ];
+    const blockerRegister = [
+      ["Repo absent", "Private production repository has not been created yet.", "red"],
+      ["No first PR evidence", "The first proof outputs and release-gate summary do not exist until the repo is opened.", "amber"],
+      ["Branch rules pending", "Protected branch rules wait for exact workflow check names after the first CI run.", "blue"],
+      ["No live staging", "Staging environment, secrets, database, monitoring, and backups are still planned, not real.", "red"],
+      ["Billing not live", "USD pricing and billing tests are mapped, but payment processor checkout is not implemented.", "amber"],
+      ["Data import not real", "Workbook migration and importer rollback remain modeled until backend code exists.", "blue"],
+      ["Customer success not persistent", "Pilot feedback, onboarding, and support workflows still need backend persistence.", "teal"],
+      ["Decision not signed", "Owner approval, execution owner, and no-go authority must be explicitly accepted.", "red"],
+    ];
+    const approvalChecklist = [
+      ["Repo identity", "Name, owner, visibility, local path, and private status confirmed.", "green"],
+      ["Scope cutline", "Approved and not-approved items accepted before any repo action.", "red"],
+      ["No-secret rule", "No .env, live keys, customer files, or unrestricted commercial values are committed.", "red"],
+      ["Issue order", "M0/M1 opening waves keep repo shell, API boot, security, data, and CI first.", "amber"],
+      ["Proof packet", "Evidence files are named before first PR is opened.", "blue"],
+      ["Reviewers", "Platform, backend, security, data, governance, and QA signoff lanes are accepted.", "teal"],
+      ["Branch timing", "Main protection waits until GitHub check names are visible.", "red"],
+      ["Exit rule", "Live customer data remains blocked until tenant, access, redaction, audit, rollback, backup, and billing checks are real.", "green"],
+    ];
+    const nextActions = [
+      ["Approve memo", "Founder/product owner confirms decision option and scope cutline.", "green"],
+      ["Prepare repo day", "Platform owner prepares local folder, GitHub CLI, starter file export, taxonomy JSON, and issue bodies.", "teal"],
+      ["Create repo", "Execute v124 opening-day runbook with repo-created and taxonomy-import evidence packets.", "red"],
+      ["Open first PR", "Attach install, lint, typecheck, proof placeholders, release note, rollback note, and signoffs.", "blue"],
+      ["Protect main", "Apply required status checks only after the first workflow run reveals exact names.", "amber"],
+      ["Write evidence pack", "Capture issue import log, workflow name map, branch protection evidence, and first PR review note.", "green"],
+    ];
+    const riskControls = [
+      ["Privacy", "Repository must be private before starter files are copied.", "red"],
+      ["Data", "Only generated fixtures and demo tenant data are allowed.", "green"],
+      ["Commercial", "Operational examples stay free of value, agreement, LOA, billing, and negotiation fields.", "red"],
+      ["Security", "No live secrets; any accidental key triggers immediate stop, rotation, and history cleanup.", "red"],
+      ["Governance", "Every first-day change links to an issue, proof lane, owner, release note, and rollback note.", "teal"],
+      ["Release", "Main branch protection is applied after the first workflow check names are known.", "amber"],
+    ];
+    const acceptanceChecks = [
+      ["Decision clear", `${memoSections.length} memo sections state what is being approved and what is not.`, "green"],
+      ["Basis complete", `${approvalBasis.length} approval reasons connect product, backend, repo, governance, backlog, and CI.`, "blue"],
+      ["Scope bounded", `${scopeCutline.length} cutline items prevent accidental live SaaS launch.`, "red"],
+      ["Evidence ready", `${evidenceReadiness.length} evidence lanes connect the previous backend packs.`, "teal"],
+      ["Options visible", `${decisionOptions.length} decision options support go, conditional go, hold, and no-go.`, "amber"],
+      ["Blockers explicit", `${blockerRegister.length} blockers remain visible before execution.`, "red"],
+      ["Approval checklist ready", `${approvalChecklist.length} owner checks define signoff expectations.`, "green"],
+      ["Next handoff ready", "v126 can turn remaining backend risks into a formal alpha risk register.", "blue"],
+    ];
+    return {
+      approvalScore,
+      recommendedDecision: approvalScore >= 95 ? "Go for private repo creation, not live SaaS launch" : "Conditional go",
+      downloadHref,
+      memoSections,
+      approvalBasis,
+      scopeCutline,
+      evidenceReadiness,
+      decisionOptions,
+      blockerRegister,
+      approvalChecklist,
+      nextActions,
+      riskControls,
+      acceptanceChecks,
+      signalCards: [
+        ["Approval score", `${approvalScore}%`, "Readiness to approve private backend repo creation", approvalScore >= 95 ? "green" : "amber"],
+        ["Decision", "Go", "Create private repo with strict no-live-data controls", "teal"],
+        ["Open blockers", blockerRegister.length, "Items still blocking live SaaS or staging depth", "red"],
+        ["First target", "First PR", "Success is backend shell PR evidence, not full product launch", "blue"],
+      ],
+      handoff: [
+        "v125 turns the preparation stack into an executive decision memo.",
+        "The memo deliberately approves only private repo creation and first PR evidence, while keeping live customer data, paid billing, and production hosting out of scope.",
+        "The best decision is a controlled go: create the private repo, run the opening-day runbook, open the first PR, collect proof, then protect main after workflow names are known.",
+        "v126 can now convert the remaining risks into a formal backend alpha risk register before real implementation begins.",
+      ],
+    };
+  }
+
+  function buildBackendAlphaRiskRegisterModel(commandModel, productionBackendRepoDecisionMemo, privateRepoOpeningDayRunbook, firstBackendCommitQaChecklist, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint, privateRepoSetupScriptDraft) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const workflowCount = ciWorkflowFileBlueprint.workflowFiles?.length || 0;
+    const riskReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          productionBackendRepoDecisionMemo.approvalScore * 0.22 +
+            privateRepoOpeningDayRunbook.runbookScore * 0.2 +
+            firstBackendCommitQaChecklist.qaScore * 0.2 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.14 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.12 +
+            privateRepoSetupScriptDraft.setupScriptScore * 0.12,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-alpha-risk-register.json?v=146";
+    const riskDomains = [
+      ["Repository control", "Critical", "Private visibility, PR-first branch discipline, and no direct main commits.", "red"],
+      ["Secret handling", "Critical", "No live keys, .env files, billing secrets, tokens, or private certificates in the first repo.", "red"],
+      ["Commercial privacy", "Critical", "Operational tracker examples must not expose values, agreements, LOA, invoices, or negotiation detail.", "red"],
+      ["Tenant security", "Critical", "Company isolation, section access, denial audit, and commercial vault guards must exist before live data.", "red"],
+      ["Data migration", "High", "Demo fixtures are allowed; real workbook import needs rollback, duplicate checks, and source trace.", "amber"],
+      ["CI and release", "High", `${workflowCount} workflow shells exist, but exact status check names appear only after first run.`, "blue"],
+      ["Scope control", "High", "Repo opening day approves shell and proof, not billing, production hosting, or live customer pilot.", "amber"],
+      ["Owner signoff", "Medium", "Founder, platform, backend, security, data, governance, and QA lanes must be explicit.", "teal"],
+    ];
+    const riskRegister = [
+      ["R-01 Public repo exposure", "Critical", "Repo created public or starter files uploaded before privacy is confirmed.", "red"],
+      ["R-02 Secret committed", "Critical", "Any live token, .env file, key, or billing credential appears in the private repo.", "red"],
+      ["R-03 Direct main commit", "High", "Main receives direct files before develop branch, PR proof, and review discipline exist.", "amber"],
+      ["R-04 Early branch protection", "Medium", "Required checks are configured before GitHub exposes the exact workflow status names.", "blue"],
+      ["R-05 Commercial data leakage", "Critical", "Operational examples include value, agreement, LOA, invoice, billing, or negotiation fields.", "red"],
+      ["R-06 Tenant isolation gap", "Critical", "Route shells skip company scope, section access, denied audit, or commercial vault guard.", "red"],
+      ["R-07 Migration rollback gap", "High", "Importer or seed work proceeds without dry-run, rollback, duplicate quarantine, or source trace.", "amber"],
+      ["R-08 CI proof ambiguity", "Medium", "First PR says checks pass but proof artifacts or placeholder notes are missing.", "blue"],
+      ["R-09 Billing too early", "High", "Payment keys, invoice workflow, or subscription logic moves before test-mode guardrails exist.", "red"],
+      ["R-10 Staging assumption", "High", "Team treats GitHub Pages prototype as production staging before real hosting, backups, and monitoring.", "amber"],
+      ["R-11 Scope creep", "Medium", "Reports, customer success, billing depth, or live import work enters the first backend shell PR.", "blue"],
+      ["R-12 Signoff ambiguity", "Medium", "No clear owner has authority to pause, approve, or reject the first backend PR.", "teal"],
+    ];
+    const triggerMatrix = [
+      ["Immediate stop", "Secret or live data", "Rotate, purge history, restart clean, and record the incident before continuing.", "red"],
+      ["Immediate stop", "Public repo", "Stop file upload until the repository is private and visibility evidence is saved.", "red"],
+      ["Immediate stop", "Commercial leak", "Remove restricted fields from examples and review redaction rules before PR continues.", "red"],
+      ["Hold", "Workflow names unknown", "Wait for first GitHub Actions run before applying branch protection.", "amber"],
+      ["Hold", "No issue link", "Do not review PR until issue, labels, milestone, proof lane, and owner are attached.", "blue"],
+      ["Hold", "No rollback note", "Add rollback thinking even for shell initialization work.", "amber"],
+      ["Watch", "Placeholder proof", "Accept only when the PR clearly names why command output is placeholder and what will replace it.", "teal"],
+      ["Watch", "Scope expansion", "Move non-shell work into later M1/M2 issues before first PR approval.", "blue"],
+    ];
+    const mitigationPlan = [
+      ["Privacy gate", "Before repo create", "Owner confirms private visibility before any starter file, issue, or evidence packet moves.", "red"],
+      ["Secret scan", "Before first PR", "Run manual scan for .env, tokens, keys, billing credentials, certificates, and customer files.", "red"],
+      ["Commercial redaction", "Before API examples", "Keep operational payloads free of restricted commercial fields.", "red"],
+      ["Issue trace", "Before review", `${issueCount} generated issues provide labels, milestones, owners, and proof lanes for traceability.`, "green"],
+      ["Workflow timing", "Before protection", "Capture exact status check names from the first workflow run, then protect main.", "blue"],
+      ["Rollback packet", "Before merge", "First PR includes release note, rollback note, evidence files, and owner signoffs.", "amber"],
+      ["Fixture-only rule", "Before seed/import", "Use generated demo fixtures only until import rollback and tenant guards are implemented.", "teal"],
+      ["Live-data lock", "Before pilot", "Block customer data until tenant access, audit, redaction, backup, billing test mode, and restore checks pass.", "red"],
+    ];
+    const ownerActions = [
+      ["Founder / Product", "Decision owner", "Confirms scope cutline, no-live-data rule, and go/hold/no-go decision.", "green"],
+      ["Platform owner", "Execution owner", "Creates repo, opens branch, copies files, imports taxonomy, and captures workflow names.", "teal"],
+      ["Backend lead", "Shell owner", "Owns API boot, route registry, middleware order, proof commands, and PR scope.", "blue"],
+      ["Security owner", "Control owner", "Owns secrets, tenant isolation, access decisions, commercial redaction, and denial audit.", "red"],
+      ["Data owner", "Migration owner", "Owns fixtures, seed order, migration rollback, duplicate quarantine, and source trace.", "amber"],
+      ["QA / Release", "Evidence owner", "Owns proof packet, release gate, branch protection evidence, and signoff checklist.", "green"],
+    ];
+    const decisionRules = [
+      ["Go", "Private repo, no secrets, issue trace, proof packet, rollback note, and owner signoffs are ready.", "green"],
+      ["Go", "Branch protection is delayed until check names are visible, and this is documented.", "teal"],
+      ["Conditional go", "Repo can be created, but issue import waits for taxonomy or owner confirmation.", "amber"],
+      ["Hold", "First PR lacks proof outputs, placeholder explanation, or release-gate summary.", "blue"],
+      ["Hold", "Branch protection settings are guessed before first workflow run.", "amber"],
+      ["No-go", "Repository is public, live secrets are committed, or customer data enters the repo.", "red"],
+      ["No-go", "Commercial fields leak into operational examples or tracker payloads.", "red"],
+      ["No-go", "Tenant, access, redaction, or audit guardrails are removed from starter scope.", "red"],
+    ];
+    const monitoringSignals = [
+      ["Repo visibility", "Private", "Visibility proof must be captured before files move.", "red"],
+      ["Branch discipline", "PR first", "Develop branch opens first PR to main; no direct main commits.", "green"],
+      ["Secret posture", "Zero live keys", "Any secret-like material triggers stop, rotation, and cleanup.", "red"],
+      ["Proof posture", "Evidence packet", "Install, quality, route, auth, redaction, audit, and release proof are addressed.", "blue"],
+      ["CI posture", `${workflowCount} planned workflows`, "Check names are mapped after first run, then branch rules are applied.", "teal"],
+      ["Backlog posture", `${issueCount} issue bodies`, "M0/M1 opening order keeps foundation and security first.", "amber"],
+    ];
+    const residualRisks = [
+      ["Staging not real", "Accepted for now", "No live staging exists until hosting, database, secrets, monitoring, and backups are implemented.", "amber"],
+      ["Billing not real", "Accepted for now", "Membership is modeled; checkout and invoices remain future backend work.", "amber"],
+      ["Importer not real", "Accepted for now", "Workbook parser and rollback runner are not implemented until backend routes exist.", "blue"],
+      ["Customer success not persistent", "Accepted for now", "Feedback, training, and support workflows still need database persistence.", "teal"],
+      ["Performance unknown", "Watch", "No scale testing exists until API and database are real.", "blue"],
+      ["Compliance depth unknown", "Watch", "Formal legal/security review waits until production stack and data residency are chosen.", "red"],
+    ];
+    const acceptanceChecks = [
+      ["Domains mapped", `${riskDomains.length} domains cover repo, secret, commercial, tenant, data, CI, scope, and owner risk.`, "green"],
+      ["Register complete", `${riskRegister.length} alpha risks have severity, trigger, and mitigation language.`, "red"],
+      ["Triggers clear", `${triggerMatrix.length} triggers define stop, hold, and watch behavior.`, "amber"],
+      ["Mitigations ready", `${mitigationPlan.length} mitigations connect timing to exact controls.`, "teal"],
+      ["Owners assigned", `${ownerActions.length} owner lanes define accountability.`, "green"],
+      ["Decision rules ready", `${decisionRules.length} rules define go, conditional go, hold, and no-go.`, "blue"],
+      ["Residual risk visible", `${residualRisks.length} accepted or watched risks remain transparent.`, "amber"],
+      ["Next handoff ready", "v127 can turn the runbook into evidence files, proof screenshots, logs, and PR notes.", "green"],
+    ];
+    return {
+      riskReadinessScore,
+      downloadHref,
+      riskDomains,
+      riskRegister,
+      triggerMatrix,
+      mitigationPlan,
+      ownerActions,
+      decisionRules,
+      monitoringSignals,
+      residualRisks,
+      acceptanceChecks,
+      signalCards: [
+        ["Risk readiness", `${riskReadinessScore}%`, "How prepared the alpha move is to handle known repo risks", riskReadinessScore >= 94 ? "green" : "amber"],
+        ["Critical risks", riskRegister.filter(([, severity]) => severity === "Critical").length, "Hard-stop risks around privacy, secrets, commercial data, and tenant isolation", "red"],
+        ["Owners", ownerActions.length, "Named signoff lanes for product, platform, backend, security, data, and QA", "teal"],
+        ["No-go rules", decisionRules.filter(([status]) => status === "No-go").length, "Conditions that block repo execution until fixed", "blue"],
+      ],
+      handoff: [
+        "v126 turns the repo decision into an alpha risk register before real backend execution begins.",
+        "The register makes the controlled-go decision safer by naming hard stops, hold points, owner lanes, mitigations, residual risks, and monitoring signals.",
+        "The biggest risks remain repo visibility, secrets, commercial leakage, tenant isolation, branch discipline, and treating prototype planning as live SaaS readiness.",
+        "v127 can now produce the opening-day evidence pack: proof files, screenshots, logs, PR notes, workflow check names, and branch-protection evidence.",
+      ],
+    };
+  }
+
+  function buildBackendOpeningDayEvidencePackModel(commandModel, privateRepoOpeningDayRunbook, backendAlphaRiskRegister, firstBackendCommitQaChecklist, branchProtectionReleaseChecklist, ciWorkflowFileBlueprint, backendIssueBodyExporter, privateRepoSetupScriptDraft, productionBackendRepoDecisionMemo) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const workflowCount = ciWorkflowFileBlueprint.workflowFiles?.length || 0;
+    const evidenceReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoOpeningDayRunbook.runbookScore * 0.18 +
+            firstBackendCommitQaChecklist.qaScore * 0.18 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.14 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.12 +
+            privateRepoSetupScriptDraft.setupScriptScore * 0.12 +
+            productionBackendRepoDecisionMemo.approvalScore * 0.12 +
+            backendAlphaRiskRegister.riskReadinessScore * 0.14,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=146";
+    const evidenceLanes = [
+      ["Repo privacy proof", "Hard gate", "Screenshot or note proving the production backend repo is private before files move.", "red"],
+      ["Setup command proof", "Execution", "Capture preflight, folder creation, starter file copy, install, and first quality command output.", "green"],
+      ["Issue import proof", "Traceability", `${issueCount} backend issue bodies need issue URLs, labels, milestones, owners, and opening order evidence.`, "blue"],
+      ["First PR proof", "Review", "First PR needs scope note, linked issue, command proof, rollback note, risk reference, and owner review.", "teal"],
+      ["CI workflow proof", "Automation", `${workflowCount} planned workflow lanes need first run status, artifact names, and exact check labels.`, "blue"],
+      ["Branch protection proof", "Release gate", "Only apply required checks after real workflow names appear, then capture settings evidence.", "amber"],
+      ["Secret and data proof", "Stop control", "Capture scan notes proving no live keys, customer files, or commercial fields entered the repo.", "red"],
+      ["Signoff proof", "Governance", "Product, platform, backend, security, data, and QA owners need go/hold/no-go evidence.", "green"],
+    ];
+    const captureChecklist = [
+      ["Before create", "Repo name and privacy", "Screenshot or saved note confirms `pursuitdesk-platform`, private visibility, owner, and no-live-data scope.", "red"],
+      ["Before files", "Secret preflight", "Confirm no .env, live key, billing token, customer workbook, or certificate is in the copy set.", "red"],
+      ["After setup", "Folder tree", "Capture apps, packages, infra, docs, scripts, workflows, env examples, and starter files in place.", "green"],
+      ["After taxonomy", "Labels and milestones", "Capture labels, milestones, board columns, and issue routing rules imported or intentionally deferred.", "blue"],
+      ["After issues", "Issue wave", "Capture first M0/M1 issue URLs with owner, label, milestone, proof command, and acceptance criteria.", "teal"],
+      ["After first branch", "Branch discipline", "Capture develop or feature branch creation and confirm main remains protected from direct work.", "amber"],
+      ["After first PR", "PR opening note", "Capture PR title, scope, issue link, risk reference, proof checklist, rollback note, and reviewer list.", "green"],
+      ["After commands", "Command outputs", "Capture install, lint/typecheck placeholder, route envelope placeholder, auth tenant placeholder, and release-gate notes.", "blue"],
+      ["After workflows", "Check names", "Capture exact GitHub Actions check names that branch protection must later require.", "amber"],
+      ["After protection", "Protected main", "Capture required checks, review requirement, conversation resolution, and admin bypass policy.", "red"],
+      ["Before merge", "Evidence packet", "Capture artifacts, screenshots, logs, PR notes, signoffs, and open blockers in one folder.", "green"],
+      ["After closeout", "Handoff note", "Capture what passed, what remains placeholder, what is blocked, and what v128 execution checklist must enforce.", "teal"],
+    ];
+    const artifactFiles = [
+      ["evidence/00-repo-privacy.md", "Privacy proof", "Repo URL, visibility, owner, screenshot name, and no-live-data confirmation.", "red"],
+      ["evidence/01-preflight.txt", "Tool proof", "GitHub auth, git, node, package manager, and local environment checks.", "blue"],
+      ["evidence/02-setup-transcript.txt", "Setup proof", "Folder creation, starter file copy, and first command sequence transcript.", "green"],
+      ["evidence/03-issue-import-map.md", "Backlog proof", "Issue URLs, labels, milestones, owners, and acceptance links.", "teal"],
+      ["evidence/04-first-pr-note.md", "PR proof", "PR scope, linked issue, proof commands, risk register link, rollback note, and review owners.", "green"],
+      ["evidence/05-ci-check-names.md", "CI proof", "Actual workflow names, job names, status check labels, artifacts, and failure policy.", "blue"],
+      ["evidence/06-secret-data-scan.md", "Security proof", "Manual scan notes for secrets, customer data, commercial values, and restricted files.", "red"],
+      ["evidence/07-branch-protection.md", "Release proof", "Protected branch settings, required checks, environment gates, and conversation resolution.", "amber"],
+      ["evidence/08-owner-signoffs.md", "Signoff proof", "Product, platform, backend, security, data, and QA go/hold/no-go status.", "green"],
+      ["evidence/09-opening-day-summary.md", "Closeout proof", "What happened, what passed, what remains placeholder, blockers, and next build handoff.", "teal"],
+    ];
+    const proofCommands = [
+      ["gh auth status", "Preflight", "Proves GitHub CLI account before private repo work starts.", "blue"],
+      ["git status --short", "Clean handoff", "Shows local file set before copying starter content into the private repo.", "green"],
+      ["pnpm install", "Dependency proof", "First dependency install proof or documented placeholder if repo shell is not executable yet.", "amber"],
+      ["pnpm lint", "Quality proof", "Lint proof once package scripts exist; placeholder accepted only with clear next command.", "green"],
+      ["pnpm typecheck", "Type proof", "Typecheck proof once TS shell exists; placeholder accepted only with issue link.", "blue"],
+      ["pnpm test:route-envelopes", "API proof", "Route envelope tests prove safe response and request-id expectations.", "teal"],
+      ["pnpm test:auth-tenant", "Security proof", "Tenant isolation and section access command proof.", "red"],
+      ["pnpm ci:release-gate", "Release proof", "Aggregates checks, artifacts, blockers, owner decision, and rollback status.", "amber"],
+    ];
+    const screenshotPlan = [
+      ["Repo settings", "Private visibility", "Capture before files or issues are added.", "red"],
+      ["Repo file tree", "Starter files", "Capture after first commit or PR branch push.", "green"],
+      ["Labels view", "Taxonomy", "Capture label groups and priority/security/proof labels.", "blue"],
+      ["Milestones view", "Roadmap", "Capture M0/M1/M2 milestone structure.", "teal"],
+      ["Issue list", "Backlog wave", "Capture opened issues filtered by first milestone.", "blue"],
+      ["Pull request", "First PR", "Capture title, linked issue, checks area, and reviewers.", "green"],
+      ["Actions run", "Workflow proof", "Capture job names, check names, artifacts, and failures if any.", "amber"],
+      ["Branch protection", "Main guard", "Capture required checks only after workflow names are known.", "red"],
+    ];
+    const prNoteSections = [
+      ["Purpose", "Why this PR exists", "Create the backend shell and evidence path, not a full SaaS launch.", "green"],
+      ["Scope", "Included files", "Root docs, API shell, packages, workflows, env examples, scripts, and evidence folder.", "blue"],
+      ["Out of scope", "Explicit limits", "No live customer data, no live payment capture, no production hosting, no real imports.", "red"],
+      ["Risk reference", "v126 link", "Name the risk register and explain hard-stop, hold, and watch conditions.", "amber"],
+      ["Proof commands", "Run or placeholder", "List command outputs, placeholder reason, owner, and follow-up issue.", "teal"],
+      ["CI checks", "Actual names", "Add exact workflow and job names once GitHub Actions runs.", "blue"],
+      ["Rollback", "How to back out", "Delete branch, close PR, revert starter files, or rotate any exposed credential.", "red"],
+      ["Signoff", "Who reviewed", "Product, platform, backend, security, data, and QA lanes with go/hold/no-go status.", "green"],
+    ];
+    const workflowNameMap = [
+      ["ci.yml", "Primary CI", "install, lint, typecheck, unit, contracts, routes, audit", "blue"],
+      ["security-audit.yml", "Security audit", "auth tenant, redaction, denial audit, secret posture", "red"],
+      ["staging-smoke.yml", "Staging smoke", "login, records, commercial denial, import dry run, billing test mode, feedback", "teal"],
+      ["migration-check.yml", "Migration check", "migration files, seed order, rollback, restore, source trace", "amber"],
+      ["release-gate.yml", "Release gate", "artifact summary, blockers, owner decision, rollback proof", "green"],
+      ["branch-protection", "Required checks", "Configured only after actual workflow check names exist.", "red"],
+    ];
+    const branchProtectionEvidence = [
+      ["Main rule", "Protect main", "Pull request required, direct pushes blocked, and conversation resolution enabled.", "red"],
+      ["Required checks", "Use actual names", "Names come from first workflow run, not guessed from file names.", "amber"],
+      ["Review owner", "CODEOWNERS", "Security, backend, platform, and data owners review their lanes.", "green"],
+      ["Admin bypass", "Explicit policy", "Document whether admins can bypass and who can approve emergency merge.", "red"],
+      ["Artifact retention", "Evidence kept", "CI artifacts and proof notes are saved for the first backend PR.", "blue"],
+      ["Rollback ritual", "Release note", "Rollback command, owner, and restore path are visible before merge.", "teal"],
+    ];
+    const signoffTrail = [
+      ["Founder / Product", "Scope and decision", "Approves controlled repo opening without approving live SaaS.", "green"],
+      ["Platform owner", "Repo and workflow", "Confirms repo privacy, branch flow, setup sequence, and workflow check capture.", "teal"],
+      ["Backend lead", "Shell correctness", "Confirms starter API, packages, scripts, and route proof expectations.", "blue"],
+      ["Security owner", "Secrets and access", "Confirms no secrets, no customer data, commercial redaction, tenant guard expectations.", "red"],
+      ["Data owner", "Fixtures and migration", "Confirms only demo fixtures, source trace expectations, rollback path, and no real workbook import.", "amber"],
+      ["QA / Release", "Evidence packet", "Confirms proof files, screenshots, command logs, PR notes, and open blocker summary.", "green"],
+    ];
+    const acceptanceChecks = [
+      ["Evidence lanes mapped", `${evidenceLanes.length} lanes define what proof must be captured.`, "green"],
+      ["Capture checklist ready", `${captureChecklist.length} capture points cover before, during, and after repo opening.`, "blue"],
+      ["Artifact files named", `${artifactFiles.length} evidence files are named for the future private repo.`, "teal"],
+      ["Proof commands listed", `${proofCommands.length} commands define the first transcript expectations.`, "amber"],
+      ["Screenshots planned", `${screenshotPlan.length} screenshots cover repo, issues, PR, Actions, and branch protection.`, "green"],
+      ["PR note template ready", `${prNoteSections.length} PR sections keep the first backend PR bounded.`, "blue"],
+      ["Branch proof clear", `${branchProtectionEvidence.length} branch-protection evidence items are required after CI names appear.`, "red"],
+      ["Next handoff ready", "v128 can turn the evidence pack into a concrete private repo execution checklist.", "green"],
+    ];
+    return {
+      evidenceReadinessScore,
+      downloadHref,
+      evidenceLanes,
+      captureChecklist,
+      artifactFiles,
+      proofCommands,
+      screenshotPlan,
+      prNoteSections,
+      workflowNameMap,
+      branchProtectionEvidence,
+      signoffTrail,
+      acceptanceChecks,
+      signalCards: [
+        ["Evidence readiness", `${evidenceReadinessScore}%`, "How ready the repo opening day is to produce auditable proof", evidenceReadinessScore >= 70 ? "green" : "amber"],
+        ["Evidence files", artifactFiles.length, "Named proof files for privacy, setup, PR, CI, protection, signoff, and closeout", "teal"],
+        ["Capture points", captureChecklist.length, "Before, during, and after execution points that need proof", "blue"],
+        ["Hard proof lanes", evidenceLanes.filter(([, , , tone]) => tone === "red").length, "Privacy, secrets, branch protection, and commercial-data proof", "red"],
+      ],
+      handoff: [
+        "v127 turns the runbook and risk register into an evidence pack for the first real private backend repo day.",
+        "The pack makes the future repo day auditable by naming proof files, screenshots, command transcripts, PR note sections, workflow names, branch-protection evidence, and owner signoffs.",
+        "The most important rule remains: capture private repo visibility, no-secret/no-live-data proof, first PR scope, and exact workflow check names before branch protection is finalized.",
+        "v128 can now convert this evidence plan into a concrete execution checklist that someone can follow line by line in GitHub.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoExecutionChecklistModel(commandModel, backendOpeningDayEvidencePack, privateRepoOpeningDayRunbook, backendAlphaRiskRegister, productionBackendRepoDecisionMemo, privateRepoSetupScriptDraft, firstBackendCommitQaChecklist, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const workflowCount = ciWorkflowFileBlueprint.workflowFiles?.length || 0;
+    const executionReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendOpeningDayEvidencePack.evidenceReadinessScore * 0.18 +
+            privateRepoOpeningDayRunbook.runbookScore * 0.16 +
+            backendAlphaRiskRegister.riskReadinessScore * 0.14 +
+            productionBackendRepoDecisionMemo.approvalScore * 0.12 +
+            privateRepoSetupScriptDraft.setupScriptScore * 0.12 +
+            firstBackendCommitQaChecklist.qaScore * 0.12 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.08 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.08,
+        ),
+      ),
+    );
+    const downloadHref = "data/private-repo-execution-checklist.json?v=146";
+    const executionGates = [
+      ["Gate 0", "Owner go/no-go", "Product owner confirms the controlled go is for repo creation and first PR evidence only.", "green"],
+      ["Gate 1", "Private visibility", "Repo is private before files, labels, issues, or screenshots are added.", "red"],
+      ["Gate 2", "No-secret preflight", "No .env, live token, billing key, certificate, workbook, or customer file is in the copy set.", "red"],
+      ["Gate 3", "Taxonomy ready", "Labels, milestones, issue waves, and board columns are either imported or explicitly deferred.", "blue"],
+      ["Gate 4", "First branch ready", "Work starts on a branch with PR discipline; main is not used as a working branch.", "teal"],
+      ["Gate 5", "Proof packet open", "Evidence folder exists before commands run so transcripts, screenshots, and notes have a home.", "green"],
+      ["Gate 6", "Workflow names captured", "Branch protection waits until actual GitHub Actions check names appear.", "amber"],
+      ["Gate 7", "Closeout signed", "Open blockers, placeholders, rollback note, and next owner are documented before merge.", "green"],
+    ];
+    const executionSequence = [
+      ["00:00", "Confirm decision", "Open the decision memo, state go/hold/no-go, and record the owner who can stop the session.", "green"],
+      ["00:10", "Create private repo", "Create `dhirajnyse/pursuitdesk-platform` as private and capture visibility proof.", "red"],
+      ["00:20", "Clone and branch", "Clone locally, create the working branch, and keep main untouched.", "teal"],
+      ["00:35", "Copy starter files", "Copy root docs, API shell, packages, workflow shells, env examples, scripts, and evidence folder.", "blue"],
+      ["00:55", "Run preflight commands", "Capture auth, install, quality, route, auth tenant, and release-gate proof or placeholder notes.", "amber"],
+      ["01:20", "Import taxonomy", "Create labels, milestones, owner lanes, and project board columns.", "blue"],
+      ["01:40", "Open issue wave", `Open the first M0/M1 issues from ${issueCount} generated bodies with proof commands and acceptance criteria.`, "teal"],
+      ["02:10", "Open first PR", "Link issue, scope, risk register, evidence pack, rollback note, reviewers, and placeholders.", "green"],
+      ["02:40", "Capture workflow names", `${workflowCount} workflow files need exact job/check names from the first Actions run.`, "amber"],
+      ["03:10", "Apply branch protection", "Only after check names exist, configure required PR review and status checks.", "red"],
+      ["03:35", "Complete evidence pack", "Save screenshots, command transcripts, PR note, branch rules, and owner signoffs.", "green"],
+      ["04:00", "Closeout review", "Record what passed, what was deferred, what blocks live SaaS, and who owns v129.", "teal"],
+    ];
+    const operatorChecklist = [
+      ["Decision memo open", "Founder / Product", "Controlled repo opening approved; live SaaS, live data, billing capture, and production hosting stay out of scope.", "green"],
+      ["Repo private", "Platform", "Visibility proof captured before adding files or issues.", "red"],
+      ["Clean copy set", "Platform", "No secrets, customer files, commercial values, invoices, certificates, or live keys in source folder.", "red"],
+      ["Starter files copied", "Backend", "Root docs, API shell, packages, scripts, workflow files, env examples, and evidence folder copied.", "blue"],
+      ["Taxonomy prepared", "Governance", "Labels, milestones, issue routing, proof labels, owner lanes, and project columns created.", "teal"],
+      ["Issue wave opened", "Backend", "Foundation, security, data, CI, billing, and release issues opened in the planned order.", "amber"],
+      ["First PR opened", "Backend", "Scope, linked issue, risk note, command proof, rollback note, and reviewer list included.", "green"],
+      ["Security scan noted", "Security", "Secret and live-data scan documented before review.", "red"],
+      ["CI names recorded", "Platform", "Actual workflow check names copied into the evidence pack.", "blue"],
+      ["Branch rules applied", "QA / Release", "Required checks use actual names; conversation resolution and review rules are captured.", "red"],
+      ["Open blockers listed", "QA / Release", "Placeholder commands, failed checks, missing secrets, and deferred work are explicit.", "amber"],
+      ["Closeout signed", "All owners", "Go/hold/no-go status recorded for product, platform, backend, security, data, and QA.", "green"],
+    ];
+    const stopRules = [
+      ["Stop now", "Repo is public", "Do not upload files. Change visibility or recreate the repo privately, then capture evidence.", "red"],
+      ["Stop now", "Secret found", "Remove it, rotate the credential, clean history if needed, and record the incident.", "red"],
+      ["Stop now", "Customer workbook present", "Remove workbook, restart from generated fixture-only data, and update proof notes.", "red"],
+      ["Stop now", "Commercial fields leak", "Remove value, LOA, agreement, invoice, billing, and negotiation fields from operational examples.", "red"],
+      ["Hold", "No owner decision", "Pause until the person with stop authority confirms go/hold/no-go.", "amber"],
+      ["Hold", "Workflow names unknown", "Do not configure required status checks until the first Actions run exposes actual names.", "amber"],
+      ["Hold", "First PR lacks rollback", "Add rollback note, release impact, and evidence path before review.", "blue"],
+      ["Hold", "Issue trace missing", "Every first PR change must link to issue, owner, milestone, acceptance checks, and proof command.", "teal"],
+    ];
+    const proofLog = [
+      ["repo-private.png", "Before files", "Repo settings or visibility area proving private status.", "red"],
+      ["preflight-auth.txt", "Before copy", "`gh auth status`, git version, node version, package manager, and local path notes.", "blue"],
+      ["copy-tree.txt", "After copy", "Folder tree showing apps, packages, infra, docs, workflows, scripts, env examples, and evidence.", "green"],
+      ["secret-scan.md", "Before PR", "Manual scan results for secrets, workbooks, certificates, billing keys, and commercial fields.", "red"],
+      ["issue-wave.md", "After issues", "Issue URLs, labels, milestones, owners, proof commands, and opening order.", "teal"],
+      ["first-pr.md", "After PR", "PR link, title, scope, risk reference, command proof, rollback, and reviewer lanes.", "green"],
+      ["workflow-check-names.md", "After Actions", "Exact workflow names, job labels, check names, artifacts, and failure policy.", "amber"],
+      ["branch-protection.md", "After protection", "Required checks, review policy, admin bypass decision, conversation resolution, and release gate.", "red"],
+    ];
+    const repoScreenPlan = [
+      ["Settings", "Private visibility", "Capture before first file upload or issue import.", "red"],
+      ["Code tree", "Starter files", "Capture first branch file tree and evidence folder.", "green"],
+      ["Labels", "Taxonomy", "Capture labels grouped by scope, priority, security, proof, and release.", "blue"],
+      ["Issues", "Opening wave", "Capture filtered M0/M1 issue wave with owners and milestones.", "teal"],
+      ["Pull request", "First PR", "Capture PR body, linked issue, reviewers, checks, and evidence references.", "green"],
+      ["Actions", "Check names", "Capture workflow run summary and exact check names before branch protection.", "amber"],
+      ["Rules", "Branch protection", "Capture required status checks, review settings, and conversation resolution.", "red"],
+      ["Project board", "Execution board", "Capture opening columns, blocked items, and owner movement.", "blue"],
+    ];
+    const commandRunOrder = [
+      ["1", "gh auth status", "Confirm the GitHub account before repo execution.", "blue"],
+      ["2", "git clone git@github.com:dhirajnyse/pursuitdesk-platform.git", "Clone the private repo after visibility proof.", "green"],
+      ["3", "git checkout -b codex/backend-alpha-shell", "Create the working branch; main stays clean.", "teal"],
+      ["4", "pnpm install", "Install dependencies or record exact blocker if package shell is not yet executable.", "amber"],
+      ["5", "pnpm lint", "Run quality proof once scripts exist; otherwise create issue-linked placeholder.", "green"],
+      ["6", "pnpm typecheck", "Run type proof once TS shell exists; otherwise attach placeholder and owner.", "blue"],
+      ["7", "pnpm test:auth-tenant", "Run tenant/access proof when middleware is present.", "red"],
+      ["8", "pnpm ci:release-gate", "Summarize proof, blockers, rollback, and owner decision.", "amber"],
+    ];
+    const issueWave = [
+      ["M0", "Repository shell", "Root docs, workspace, scripts, environment examples, and evidence folder.", "green"],
+      ["M0", "Security baseline", "No secrets, tenant guard placeholder, commercial redaction, and denial audit expectations.", "red"],
+      ["M0", "API skeleton", "Health, auth, users, records, commercial vault, import, billing, feedback, and audit route shells.", "blue"],
+      ["M1", "Data foundation", "Tenant seed, migration order, source trace, rollback, duplicate quarantine, and fixture assertions.", "amber"],
+      ["M1", "CI and release", "Workflow shells, artifact policy, release gate, exact check names, and branch protection.", "teal"],
+      ["M1", "Billing and membership", "USD plans, test-mode checkout, seat reconciliation, access locks, and billing audit events.", "green"],
+    ];
+    const ownerBoard = [
+      ["Founder / Product", "Decision owner", "Approves controlled repo day and confirms what is not approved.", "green"],
+      ["Platform owner", "Execution lead", "Creates repo, branch, taxonomy, workflow proof, and branch protection evidence.", "teal"],
+      ["Backend lead", "Implementation owner", "Owns starter files, package scripts, route shells, and first PR quality proof.", "blue"],
+      ["Security owner", "Safety owner", "Owns no-secret rule, tenant guards, access checks, commercial redaction, and denial audit.", "red"],
+      ["Data owner", "Fixture owner", "Owns generated data, migration sequence, source trace, rollback, and no-workbook rule.", "amber"],
+      ["QA / Release", "Gate owner", "Owns proof folder, screenshots, check names, branch rules, signoffs, and closeout.", "green"],
+    ];
+    const branchTiming = [
+      ["Before Actions", "Do not guess checks", "Keep branch protection note in draft until first workflow run exists.", "amber"],
+      ["After first run", "Copy exact names", "Capture workflow, job, and required status check names exactly as GitHub shows them.", "blue"],
+      ["Before protection", "Confirm reviewers", "CODEOWNERS or reviewer policy must match platform, backend, security, data, and QA lanes.", "teal"],
+      ["Apply protection", "Main guard", "Require PR, required checks, conversation resolution, and review approval.", "red"],
+      ["After protection", "Test bypass policy", "Document admin bypass policy and emergency merge owner.", "red"],
+      ["Before merge", "Release packet", "Evidence folder, rollback note, open blockers, and owner signoffs are complete.", "green"],
+    ];
+    const completionChecklist = [
+      ["Repo opened safely", "Private repo evidence exists before any files moved.", "red"],
+      ["Starter files staged", "File tree and first branch show only approved shell files and generated fixtures.", "green"],
+      ["Issues trace work", `${issueCount} issue bodies are ready; first wave URLs are recorded or explicitly deferred.`, "blue"],
+      ["Commands recorded", "Proof command output or issue-linked placeholders are stored in evidence files.", "amber"],
+      ["No restricted data", "Secret, customer file, workbook, and commercial-field scan is complete.", "red"],
+      ["First PR reviewable", "Scope, risk, proof, rollback, reviewers, and blocker notes are clear.", "teal"],
+      ["Branch protection correct", "Required status checks use actual GitHub names, not guessed file names.", "red"],
+      ["Closeout complete", "Passed, deferred, blocked, next owner, and v129 control board handoff are written.", "green"],
+    ];
+    return {
+      executionReadinessScore,
+      downloadHref,
+      executionGates,
+      executionSequence,
+      operatorChecklist,
+      stopRules,
+      proofLog,
+      repoScreenPlan,
+      commandRunOrder,
+      issueWave,
+      ownerBoard,
+      branchTiming,
+      completionChecklist,
+      signalCards: [
+        ["Execution readiness", `${executionReadinessScore}%`, "Readiness to run the private repo day without improvising", executionReadinessScore >= 70 ? "green" : "amber"],
+        ["Execution gates", executionGates.length, "Hard gates before repo, branch, PR, workflows, branch protection, and closeout", "red"],
+        ["Operator checks", operatorChecklist.length, "Line-by-line checklist for product, platform, backend, security, data, and QA", "teal"],
+        ["Stop rules", stopRules.filter(([status]) => status === "Stop now").length, "Conditions that stop the repo day immediately", "red"],
+      ],
+      handoff: [
+        "v128 turns the decision memo, risk register, runbook, and evidence pack into a concrete private repo execution checklist.",
+        "The checklist is intentionally practical: gates, timeline, owners, proof logs, command order, issue wave, branch timing, stop rules, and completion checks.",
+        "The safest next real-world move is to run this checklist only when the private GitHub repo is ready, then capture proof before branch protection and first merge.",
+        "v129 can now turn execution into a live Backend Alpha Control Board for repo status, PR status, evidence, blockers, and owner signoff movement.",
+      ],
+    };
+  }
+
+  function buildBackendAlphaControlBoardModel(commandModel, privateRepoExecutionChecklist, backendOpeningDayEvidencePack, backendAlphaRiskRegister, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint, firstBackendCommitQaChecklist) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const workflowCount = ciWorkflowFileBlueprint.workflowFiles?.length || 0;
+    const stopRuleCount = privateRepoExecutionChecklist.stopRules.filter(([status]) => status === "Stop now").length;
+    const controlReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoExecutionChecklist.executionReadinessScore * 0.24 +
+            backendOpeningDayEvidencePack.evidenceReadinessScore * 0.16 +
+            backendAlphaRiskRegister.riskReadinessScore * 0.16 +
+            firstBackendCommitQaChecklist.qaScore * 0.14 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.12 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.1 +
+            8,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-alpha-control-board.json?v=146";
+    const boardKpis = [
+      ["Control readiness", `${controlReadinessScore}%`, "How ready the private repo day is to be managed from one board", controlReadinessScore >= 70 ? "green" : "amber"],
+      ["Repo status", "Not opened", "The private production backend repo still needs real GitHub creation.", "red"],
+      ["First PR", "Planned", "First PR proof is designed but not yet opened in GitHub.", "blue"],
+      ["Evidence health", `${backendOpeningDayEvidencePack.evidenceReadinessScore}%`, "Evidence pack score feeding the board.", "teal"],
+    ];
+    const controlLanes = [
+      ["Repo", "Not opened", "Private visibility, repo URL, clone proof, and owner decision are pending real execution.", "red"],
+      ["Branch", "Planned", "Working branch and PR-first discipline are mapped but not created.", "amber"],
+      ["First PR", "Planned", "Scope, rollback, reviewers, linked issue, and proof notes are ready for a future PR.", "blue"],
+      ["Issue wave", `${issueCount} ready`, "Generated issue bodies exist; real GitHub issue URLs are pending.", "teal"],
+      ["Evidence", "Template ready", "Proof files, screenshots, logs, signoffs, and closeout files are named.", "green"],
+      ["CI checks", `${workflowCount} planned`, "Workflow files are mapped; exact status names wait for first Actions run.", "blue"],
+      ["Branch protection", "Deferred", "Required checks must wait until GitHub exposes actual check names.", "amber"],
+      ["Signoff", "Pending", "Product, platform, backend, security, data, and QA owners still need real go/hold/no-go status.", "red"],
+    ];
+    const statusSwimlanes = [
+      ["Ready to execute", "Decision memo", "Controlled-go memo, runbook, evidence pack, and execution checklist are ready for owner review.", "green"],
+      ["Ready to execute", "Starter files", "File content, repo file pack, route skeleton, workflows, env examples, and package boundaries are mapped.", "teal"],
+      ["Needs proof", "Repo private", "Capture private visibility screenshot before files or issues move.", "red"],
+      ["Needs proof", "No-secret scan", "Record no keys, no customer files, no workbooks, and no commercial leakage.", "red"],
+      ["Waiting on GitHub", "Workflow check names", "Run first Actions workflow and copy exact check names before branch protection.", "amber"],
+      ["Waiting on GitHub", "Issue URLs", "Open first issue wave and save URLs to the evidence map.", "blue"],
+      ["Blocked until real repo", "First PR", "Cannot show PR link, checks, reviewers, or artifacts until repo exists.", "amber"],
+      ["Blocked until real repo", "Branch protection", "Cannot apply rules until workflows run in the real repo.", "red"],
+      ["Closeout", "Owner signoffs", "Record go/hold/no-go status after the first PR evidence packet is assembled.", "green"],
+      ["Closeout", "v130 handoff", "Convert the board into a command-by-command private repo day-one script.", "teal"],
+    ];
+    const blockerQueue = [
+      ["Critical", "Private repo absent", "No real `dhirajnyse/pursuitdesk-platform` repository has been created yet.", "red"],
+      ["Critical", "No real visibility proof", "The board needs an actual private repo screenshot or evidence note.", "red"],
+      ["Critical", "No secret scan transcript", "Execution cannot continue without proving no keys, workbooks, or customer files entered.", "red"],
+      ["High", "First PR not opened", "Scope, rollback, reviewers, commands, and evidence remain planned until PR exists.", "amber"],
+      ["High", "Workflow names unknown", "Branch protection cannot be configured from guessed names.", "amber"],
+      ["High", "Issue URLs missing", "Generated issues exist, but GitHub issue numbers are not real yet.", "blue"],
+      ["Medium", "Signoffs pending", "Owner lanes are designed but not accepted by named people yet.", "teal"],
+      ["Medium", "Closeout not written", "No passed/deferred/blocked summary exists until execution day completes.", "green"],
+    ];
+    const ownerReadiness = [
+      ["Founder / Product", "Decision pending", "Approve controlled repo opening and no-live-data boundary.", "green"],
+      ["Platform owner", "Execution pending", "Create repo, branch, taxonomy, workflow proof, branch protection evidence.", "teal"],
+      ["Backend lead", "PR pending", "Open backend shell PR with proof commands, route shells, scripts, and rollback note.", "blue"],
+      ["Security owner", "Safety pending", "Confirm no secrets, no customer data, tenant guard scope, and commercial redaction.", "red"],
+      ["Data owner", "Fixture pending", "Confirm generated fixtures only, source trace, migration rollback, and no workbook import.", "amber"],
+      ["QA / Release", "Evidence pending", "Validate proof folder, screenshots, check names, branch rules, blockers, and closeout.", "green"],
+    ];
+    const evidenceMeters = [
+      ["Private repo proof", "0/1", "Real private visibility proof is still missing.", "red"],
+      ["Proof files named", `${backendOpeningDayEvidencePack.artifactFiles.length}/10`, "Evidence file naming plan exists.", "green"],
+      ["Screenshots planned", `${backendOpeningDayEvidencePack.screenshotPlan.length}/8`, "Screenshot targets are mapped.", "blue"],
+      ["Commands mapped", `${privateRepoExecutionChecklist.commandRunOrder.length}/8`, "Command run order exists, but transcripts are pending.", "amber"],
+      ["Stop rules", `${stopRuleCount}/8`, "Immediate stop conditions are visible.", "red"],
+      ["Completion checks", `${privateRepoExecutionChecklist.completionChecklist.length}/8`, "Closeout rules are mapped.", "teal"],
+    ];
+    const prControlChecklist = [
+      ["PR title", "Pending", "Use a narrow backend shell title linked to the first issue.", "blue"],
+      ["Issue link", "Pending", "Attach generated issue URL once real issue exists.", "amber"],
+      ["Scope note", "Ready", "State shell setup only; no live SaaS, billing capture, or customer import.", "green"],
+      ["Risk reference", "Ready", "Reference backend alpha risk register and stop rules.", "red"],
+      ["Proof commands", "Planned", "Attach install, lint, typecheck, auth tenant, route envelope, and release gate notes.", "teal"],
+      ["Rollback", "Ready", "Explain branch/PR closeout and credential rotation if needed.", "red"],
+      ["Reviewers", "Pending", "Platform, backend, security, data, governance, and QA reviewers need real assignment.", "blue"],
+      ["Checks", "Waiting", "Exact check names arrive after first workflow run.", "amber"],
+    ];
+    const githubSignalMap = [
+      ["Repository", "Private visibility", "Source of truth for whether files can move.", "red"],
+      ["Issues", "URL and status", "Source of truth for backlog traceability.", "blue"],
+      ["Pull request", "Review and checks", "Source of truth for first backend PR status.", "green"],
+      ["Actions", "Workflow names", "Source of truth for required status check names.", "amber"],
+      ["Rulesets", "Branch protection", "Source of truth for main protection and review rules.", "red"],
+      ["Projects", "Execution board", "Source of truth for owner movement and blocked work.", "teal"],
+    ];
+    const decisionLog = [
+      ["Go", "Repo creation", "Allowed only after owner accepts private repo and no-live-data boundary.", "green"],
+      ["Hold", "File movement", "Hold until repo privacy proof and clean copy-set check are captured.", "red"],
+      ["Hold", "First PR review", "Hold if proof commands, rollback note, issue link, or risk reference is missing.", "amber"],
+      ["Hold", "Branch protection", "Hold until actual workflow check names are visible.", "blue"],
+      ["No-go", "Secrets or live data", "Stop, rotate, clean history, and restart if keys or customer workbooks appear.", "red"],
+      ["Go", "Closeout", "Allowed when blockers, placeholders, signoffs, and next owner are written.", "teal"],
+    ];
+    const nextActionQueue = [
+      ["1", "Confirm owner decision", "Accept controlled repo opening and no-live-data scope.", "green"],
+      ["2", "Create private repo", "Capture private visibility evidence before moving files.", "red"],
+      ["3", "Run clean copy-set scan", "Confirm no secrets, customer files, workbooks, certificates, or commercial leakage.", "red"],
+      ["4", "Copy starter shell", "Move approved root, API, package, workflow, script, env example, and evidence files.", "teal"],
+      ["5", "Open issue wave", "Create first milestone issues and record URLs.", "blue"],
+      ["6", "Open first PR", "Attach scope, risk reference, proof commands, rollback, and reviewers.", "green"],
+      ["7", "Capture check names", "Record exact Actions check labels after first workflow run.", "amber"],
+      ["8", "Protect main and close out", "Apply rules, capture proof, record signoffs, and hand off v130 script.", "red"],
+    ];
+    const acceptanceChecks = [
+      ["Board lanes ready", `${controlLanes.length} control lanes cover repo, branch, PR, issues, evidence, CI, protection, and signoff.`, "green"],
+      ["Swimlanes mapped", `${statusSwimlanes.length} cards separate ready, proof, waiting, blocked, and closeout work.`, "teal"],
+      ["Blockers visible", `${blockerQueue.length} blocker cards show what prevents real backend execution.`, "red"],
+      ["Owners visible", `${ownerReadiness.length} owner lanes identify signoff expectations.`, "blue"],
+      ["PR checklist ready", `${prControlChecklist.length} PR checks define reviewability.`, "amber"],
+      ["GitHub sources mapped", `${githubSignalMap.length} GitHub surfaces define source-of-truth signals.`, "green"],
+      ["Decision log ready", `${decisionLog.length} go/hold/no-go decisions are explicit.`, "red"],
+      ["Next handoff ready", "v130 can turn the control board into a command-by-command private repo day-one script.", "teal"],
+    ];
+    return {
+      controlReadinessScore,
+      downloadHref,
+      boardKpis,
+      controlLanes,
+      statusSwimlanes,
+      blockerQueue,
+      ownerReadiness,
+      evidenceMeters,
+      prControlChecklist,
+      githubSignalMap,
+      decisionLog,
+      nextActionQueue,
+      acceptanceChecks,
+      signalCards: [
+        ["Control readiness", `${controlReadinessScore}%`, "Board readiness for the future backend alpha session", controlReadinessScore >= 70 ? "green" : "amber"],
+        ["Open blockers", blockerQueue.filter(([severity]) => severity === "Critical" || severity === "High").length, "Critical and high items still waiting on real GitHub execution", "red"],
+        ["Owner lanes", ownerReadiness.length, "Signoff lanes for product, platform, backend, security, data, and QA", "teal"],
+        ["Next action", "Repo proof", "Private repo visibility remains the first real-world proof item", "blue"],
+      ],
+      handoff: [
+        "v129 turns execution planning into a live-looking backend alpha control board.",
+        "The board is intentionally honest: repo, PR, workflow names, issue URLs, branch protection, and signoffs stay pending until the real private GitHub repo exists.",
+        "The key management rhythm is now visible in one place: control lanes, blockers, evidence meters, PR checklist, GitHub signal map, decision log, and next action queue.",
+        "v130 can now become the exact day-one script that a person follows command by command when opening the private backend repo.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoDayOneScriptModel(commandModel, backendAlphaControlBoard, privateRepoExecutionChecklist, privateRepoSetupScriptDraft, githubLabelsMilestonesImportPack, firstBackendCommitQaChecklist, backendOpeningDayEvidencePack, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const labelCount = githubLabelsMilestonesImportPack.labelCatalog?.length || 0;
+    const milestoneCount = githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0;
+    const workflowCount = ciWorkflowFileBlueprint.workflowFiles?.length || 0;
+    const scriptReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendAlphaControlBoard.controlReadinessScore * 0.22 +
+            privateRepoExecutionChecklist.executionReadinessScore * 0.2 +
+            privateRepoSetupScriptDraft.setupScriptScore * 0.18 +
+            firstBackendCommitQaChecklist.qaScore * 0.14 +
+            backendOpeningDayEvidencePack.evidenceReadinessScore * 0.12 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.08 +
+            ciWorkflowFileBlueprint.ciBlueprintScore * 0.06 +
+            10,
+        ),
+      ),
+    );
+    const downloadHref = "data/private-repo-day-one-script.json?v=146";
+    const scriptKpis = [
+      ["Script readiness", `${scriptReadinessScore}%`, "How ready the private repo day is to run from one command script.", scriptReadinessScore >= 70 ? "green" : "amber"],
+      ["Command blocks", "10", "Preflight, repo, branch, files, taxonomy, issues, PR, checks, protection, closeout.", "blue"],
+      ["Manual proof points", backendOpeningDayEvidencePack.screenshotPlan.length, "Screenshots and evidence notes that must be captured by a person.", "teal"],
+      ["Stop authority", "Explicit", "Any secret, public repo, workbook, or commercial leak stops the day immediately.", "red"],
+    ];
+    const preflightChecklist = [
+      ["Identity", "Run before any repo command", "Confirm GitHub login, expected account, local folder, Node version, and package manager.", "blue"],
+      ["No live data", "Hard stop if failed", "No customer workbook, secret, certificate, invoice, payment key, or production data may enter the repo.", "red"],
+      ["Decision memo", "Owner confirms", "Controlled repo opening is approved; live SaaS, live billing, and live customer data stay out of scope.", "green"],
+      ["Evidence folder", "Create first", "Prepare local evidence path before running commands so proof does not get lost.", "teal"],
+      ["Repo name", "Confirm once", "Use `dhirajnyse/pursuitdesk-platform` unless the owner deliberately renames the production backend repo.", "amber"],
+      ["Rollback expectation", "Write before PR", "The first PR can be closed without merge; no database, billing, or customer action is irreversible.", "green"],
+    ];
+    const commandBlocks = [
+      ["01", "Preflight", "PowerShell", "gh auth status; git --version; node --version; npm --version", "Confirms local operator identity and basic tooling before any repo action.", "blue"],
+      ["02", "Create private repo", "GitHub CLI", "gh repo create dhirajnyse/pursuitdesk-platform --private --description PursuitDesk-production-backend --confirm", "Creates the private production backend repository; capture visibility proof immediately.", "red"],
+      ["03", "Clone and branch", "Git", "git clone git@github.com:dhirajnyse/pursuitdesk-platform.git; cd pursuitdesk-platform; git checkout -b codex/backend-alpha-shell", "Keeps main clean and starts all work on a reviewable branch.", "teal"],
+      ["04", "Create shell folders", "PowerShell", "New-Item -ItemType Directory -Force apps/api/src packages/domain packages/db infra docs/evidence .github/workflows scripts", "Creates the minimum repo skeleton for backend alpha work.", "green"],
+      ["05", "Copy starter files", "Manual controlled copy", "Copy only approved root, API, package, workflow, env-example, script, and evidence files from the v129/v130 packs.", "Moves generated shell files only; no Excel source files, secrets, or live credentials.", "amber"],
+      ["06", "Install and first proof", "Package manager", "npm install; npm run lint; npm run test -- --runInBand", "Runs available proof commands or records exact placeholders linked to issues if scripts are not ready.", "blue"],
+      ["07", "Import taxonomy", "GitHub CLI", `Create ${labelCount} labels and ${milestoneCount} milestones from the taxonomy pack, then capture the labels and milestones screens.`, "Makes issue routing visible before backlog import.", "teal"],
+      ["08", "Open issue wave", "GitHub CLI", `Open the first M0/M1 wave from ${issueCount} generated issue bodies and record each URL in evidence.`, "Creates traceability before the first PR is opened.", "green"],
+      ["09", "Open first PR", "GitHub CLI", "git add .; git commit -m \"Backend alpha shell\"; git push -u origin codex/backend-alpha-shell; gh pr create --draft --title \"Backend alpha shell\" --body-file docs/evidence/first-pr.md", "Creates a draft first PR with proof, rollback, risk reference, and reviewer lanes.", "amber"],
+      ["10", "Closeout and protect main", "GitHub settings", `Capture ${workflowCount} workflow check names after the first Actions run, then apply branch protection only with real check names.`, "Ends with branch protection proof, owner signoffs, blockers, and next owner.", "red"],
+    ];
+    const manualActions = [
+      ["Repo visibility screenshot", "After repo creation", "Capture private visibility before files or issues move.", "red"],
+      ["Clean copy-set note", "Before file copy", "Write that no source workbook, .env, certificate, customer file, or commercial export entered the repo.", "red"],
+      ["Folder tree capture", "After shell folders", "Save the starter tree showing apps, packages, infra, docs, workflows, scripts, and evidence.", "green"],
+      ["Issue URLs", "After issue wave", "Paste the first wave URLs into `docs/evidence/issue-wave.md`.", "blue"],
+      ["PR proof note", "Before review", "Add scope, commands, rollback, open blockers, risk reference, and reviewer lanes to the PR body.", "teal"],
+      ["Workflow names", "After Actions run", "Copy exact GitHub check names before creating branch protection rules.", "amber"],
+      ["Branch rule proof", "After protection", "Capture required checks, PR review rules, conversation resolution, and bypass decision.", "red"],
+      ["Closeout note", "End of day", "Record passed, deferred, blocked, next owner, and go/hold/no-go status.", "green"],
+    ];
+    const evidenceFiles = [
+      ["docs/evidence/00-preflight.md", "Tool versions, GitHub identity, local path, decision owner, and no-live-data boundary.", "blue"],
+      ["docs/evidence/01-repo-private.md", "Private visibility proof, repo URL, owner, and timestamp.", "red"],
+      ["docs/evidence/02-clean-copy-set.md", "No secrets, no workbooks, no certificates, no invoices, no commercial leak.", "red"],
+      ["docs/evidence/03-file-tree.md", "Folder tree and approved starter files copied.", "green"],
+      ["docs/evidence/04-issue-wave.md", "Issue URLs, labels, milestones, owners, and opening order.", "teal"],
+      ["docs/evidence/05-first-pr.md", "PR title, link, scope, commands, rollback, reviewers, risk note, and blockers.", "green"],
+      ["docs/evidence/06-workflow-check-names.md", "Exact workflow names, job names, required checks, and artifact links.", "amber"],
+      ["docs/evidence/07-branch-protection.md", "Main protection rules, required checks, review settings, and bypass note.", "red"],
+      ["docs/evidence/08-closeout.md", "Passed, deferred, blocked, owners, next action, and decision log.", "blue"],
+    ];
+    const issueWaveScript = [
+      ["Wave A", "Repo shell", "Open root docs, workspace, scripts, env examples, and evidence folder issues first.", "green"],
+      ["Wave B", "Security baseline", "Open tenant guard, commercial redaction, no-secret scan, and denied-audit issues.", "red"],
+      ["Wave C", "API skeleton", "Open health, auth, users, records, commercial vault, import, billing, feedback, and audit routes.", "blue"],
+      ["Wave D", "Data foundation", "Open migration order, fixture seed, source trace, duplicate quarantine, and rollback issues.", "amber"],
+      ["Wave E", "CI and release", "Open workflow, release-gate, artifact, check-name, and branch-protection issues.", "teal"],
+      ["Wave F", "Billing and membership", "Open USD plans, test checkout, seat reconciliation, access locks, and billing audit issues.", "green"],
+    ];
+    const prScript = [
+      ["Title", "Backend alpha shell", "Keep the PR narrow and clearly non-production.", "green"],
+      ["Scope", "Repo skeleton only", "Root docs, package shells, API route shells, workflows, env examples, scripts, evidence notes.", "blue"],
+      ["Out of scope", "No live SaaS", "No production deployment, no customer workbook, no live payment key, no real billing capture.", "red"],
+      ["Proof", "Attach command results", "Preflight, install, lint/test placeholders, issue URLs, clean-copy scan, and file tree.", "teal"],
+      ["Rollback", "Close draft PR", "No migration or customer data is applied; branch can be deleted and repo can be recreated if needed.", "amber"],
+      ["Reviewers", "Named lanes", "Founder/product, platform, backend, security, data, and QA/release.", "green"],
+    ];
+    const branchProtectionTiming = [
+      ["Before first Actions run", "Do not configure required checks", "GitHub check names do not exist yet, so guessing creates broken protection.", "red"],
+      ["After first run", "Capture exact names", "Copy workflow, job, and check labels exactly as GitHub displays them.", "blue"],
+      ["Before enabling rules", "Confirm reviewer lanes", "Make sure review policy matches product, platform, backend, security, data, and QA ownership.", "teal"],
+      ["Enable rules", "Protect main", "Require PR, required checks, review approval, and conversation resolution.", "green"],
+      ["After rules", "Try a small follow-up PR", "Confirm the protection blocks unsafe merge and produces expected status names.", "amber"],
+      ["Closeout", "Save proof", "Write branch protection evidence and unresolved exceptions into closeout notes.", "red"],
+    ];
+    const stopScript = [
+      ["Immediate stop", "Repo is public", "Stop before adding files, switch to private or recreate, then document the event.", "red"],
+      ["Immediate stop", "Secret appears", "Stop, remove, rotate, check history, and write an incident note.", "red"],
+      ["Immediate stop", "Workbook appears", "Stop and restart from generated fixtures only.", "red"],
+      ["Immediate stop", "Commercial leak appears", "Remove value, LOA, agreement, invoice, billing, and negotiation data from operational examples.", "red"],
+      ["Hold", "No owner decision", "Pause until the owner confirms go/hold/no-go.", "amber"],
+      ["Hold", "Workflow names unknown", "Do not apply branch protection until exact check names appear.", "blue"],
+      ["Hold", "PR body incomplete", "Add issue link, scope, proof, rollback, blockers, and reviewer lanes before review.", "teal"],
+      ["Hold", "Evidence not saved", "Write proof files before closing the day.", "green"],
+    ];
+    const ownerPrompts = [
+      ["Founder / Product", "Do you approve repo opening only, with no live data and no production launch?", "green"],
+      ["Platform owner", "Can you prove private visibility, branch discipline, workflow names, and main protection?", "teal"],
+      ["Backend lead", "Can you own starter files, scripts, route shells, and first PR quality proof?", "blue"],
+      ["Security owner", "Can you confirm no secrets, no live data, tenant guard scope, and commercial redaction?", "red"],
+      ["Data owner", "Can you confirm generated fixtures only, migration rollback, and no workbook import?", "amber"],
+      ["QA / Release", "Can you confirm evidence files, screenshots, branch rules, blockers, and closeout?", "green"],
+    ];
+    const closeoutChecks = [
+      ["Repo URL recorded", "Private repository URL and visibility proof are saved.", "red"],
+      ["Branch URL recorded", "Working branch and first PR link are saved.", "blue"],
+      ["Issue wave recorded", "First issue URLs, labels, milestones, and owner lanes are written.", "teal"],
+      ["Command output saved", "Tooling, install, quality, placeholder, and release-gate output are captured.", "green"],
+      ["No leak confirmed", "No secrets, no workbooks, no customer files, and no commercial fields are present.", "red"],
+      ["Workflow names saved", "Exact check names and any failed check reasons are recorded.", "amber"],
+      ["Main protected", "Branch protection proof exists or a dated defer reason is written.", "red"],
+      ["Next owner named", "The next implementation owner and first backlog move are explicit.", "green"],
+    ];
+    return {
+      scriptReadinessScore,
+      downloadHref,
+      scriptKpis,
+      preflightChecklist,
+      commandBlocks,
+      manualActions,
+      evidenceFiles,
+      issueWaveScript,
+      prScript,
+      branchProtectionTiming,
+      stopScript,
+      ownerPrompts,
+      closeoutChecks,
+      signalCards: [
+        ["Day-one script", `${scriptReadinessScore}%`, "Readiness to run the private repo session without improvising.", scriptReadinessScore >= 70 ? "green" : "amber"],
+        ["Command blocks", commandBlocks.length, "Exact sequence from preflight to closeout.", "blue"],
+        ["Evidence files", evidenceFiles.length, "Files that must exist before the first PR is trusted.", "teal"],
+        ["Stop rules", stopScript.filter(([status]) => status === "Immediate stop").length, "Immediate stop conditions before repo trust.", "red"],
+      ],
+      handoff: [
+        "v130 turns the control board into a practical private repo day-one script.",
+        "The script is deliberately staged: prove identity, private repo, clean copy set, folder shell, issues, first PR, workflow names, branch protection, and closeout.",
+        "It stays honest about what cannot be automated in this static demo: real GitHub repo creation, real Actions check names, real reviewer assignment, and real owner signoff.",
+        "v131 can convert this script into a proof exporter that generates the evidence folder, note templates, PR body, and closeout files for the private repo.",
+      ],
+    };
+  }
+
+  function buildBackendRepoProofExporterModel(commandModel, privateRepoDayOneScript, backendOpeningDayEvidencePack, firstBackendCommitQaChecklist, branchProtectionReleaseChecklist, backendIssueBodyExporter, ciWorkflowFileBlueprint) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const workflowCount = ciWorkflowFileBlueprint.workflowFiles?.length || 0;
+    const proofReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoDayOneScript.scriptReadinessScore * 0.26 +
+            backendOpeningDayEvidencePack.evidenceReadinessScore * 0.16 +
+            firstBackendCommitQaChecklist.qaScore * 0.16 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.12 +
+            Math.min(100, privateRepoDayOneScript.evidenceFiles.length * 10) * 0.12 +
+            Math.min(100, privateRepoDayOneScript.commandBlocks.length * 8) * 0.1 +
+            12,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-repo-proof-exporter.json?v=146";
+    const proofKpis = [
+      ["Proof readiness", `${proofReadinessScore}%`, "How ready the repo day is to produce copy-ready evidence.", proofReadinessScore >= 80 ? "green" : "amber"],
+      ["Evidence files", privateRepoDayOneScript.evidenceFiles.length, "Markdown files that turn screenshots and commands into review proof.", "teal"],
+      ["PR sections", 8, "Draft PR body blocks for scope, risk, proof, rollback, reviewers, blockers, and closeout.", "blue"],
+      ["Real blockers", "GitHub pending", "Repo URL, issue URLs, workflow names, and owner signoffs still require the real repo.", "red"],
+    ];
+    const evidenceTemplates = [
+      ["docs/evidence/00-preflight.md", "Preflight proof", "GitHub identity, local path, tool versions, repo decision owner, no-live-data boundary.", "blue"],
+      ["docs/evidence/01-repo-private.md", "Private repo proof", "Repo URL, private visibility screenshot, owner, timestamp, and public-demo repo note.", "red"],
+      ["docs/evidence/02-clean-copy-set.md", "Clean copy proof", "No secrets, no customer workbooks, no certificates, no invoices, no commercial exports, no live keys.", "red"],
+      ["docs/evidence/03-file-tree.md", "Starter tree proof", "Folder tree, copied starter files, approved omissions, and first branch name.", "green"],
+      ["docs/evidence/04-issue-wave.md", "Issue wave proof", `${issueCount} planned issue bodies, real URLs, labels, milestones, owners, and opening order.`, "teal"],
+      ["docs/evidence/05-first-pr.md", "First PR proof", "PR link, title, scope, commands, risk reference, rollback note, reviewers, and blockers.", "green"],
+      ["docs/evidence/06-workflow-check-names.md", "Workflow names proof", `${workflowCount} workflow files, exact check names, job names, artifacts, and failed check notes.`, "amber"],
+      ["docs/evidence/07-branch-protection.md", "Branch protection proof", "Required checks, review policy, conversation resolution, bypass decision, and screenshot reference.", "red"],
+      ["docs/evidence/08-closeout.md", "Closeout proof", "Passed, deferred, blocked, owner signoffs, next action, and v132 packet handoff.", "blue"],
+    ];
+    const prBodySections = [
+      ["Summary", "State that this is the backend alpha shell and proof packet, not a live production release.", "green"],
+      ["Scope", "List root docs, app shell, packages, workflows, scripts, env examples, evidence files, and fixture-only data.", "blue"],
+      ["Out of scope", "Confirm no live customer data, no production deployment, no real billing capture, and no workbook import.", "red"],
+      ["Proof commands", "Paste command transcripts or placeholder issue links for preflight, install, lint, tests, and release gate.", "teal"],
+      ["Evidence links", "Link each evidence markdown file and screenshot artifact from the PR body.", "green"],
+      ["Risk and stop rules", "Reference public repo, secret, workbook, commercial leak, missing owner, and workflow-name hold rules.", "red"],
+      ["Rollback", "Explain how to close the draft PR, delete the branch, rotate credentials, or recreate the repo if needed.", "amber"],
+      ["Reviewers and signoff", "Name product, platform, backend, security, data, and QA owner lanes before merge trust.", "blue"],
+    ];
+    const screenshotChecklist = [
+      ["Repo settings", "Private visibility", "Capture before adding files or issues.", "red"],
+      ["Code tree", "Starter shell", "Capture apps, packages, infra, docs, workflows, scripts, and evidence folders.", "green"],
+      ["Labels", "Taxonomy imported", "Capture labels after import and before issue wave.", "teal"],
+      ["Milestones", "Sprint-zero route", "Capture milestones before issues are opened.", "blue"],
+      ["Issues", "Opening wave", "Capture filtered M0/M1 issue wave with owners and milestones.", "green"],
+      ["Pull request", "Draft PR body", "Capture scope, proof commands, rollback, reviewers, checks, and evidence links.", "amber"],
+      ["Actions", "Workflow check names", "Capture exact check names from the first Actions run.", "blue"],
+      ["Rules", "Branch protection", "Capture required checks, review rules, conversation resolution, and bypass policy.", "red"],
+    ];
+    const commandTranscriptSlots = [
+      ["preflight-auth.txt", "gh auth status; git --version; node --version; npm --version", "Confirm operator identity and local toolchain.", "blue"],
+      ["repo-create.txt", "gh repo view dhirajnyse/pursuitdesk-platform --json name,visibility,url", "Prove the repo exists and is private.", "red"],
+      ["branch-start.txt", "git status --short; git branch --show-current", "Prove work is on the backend alpha branch.", "teal"],
+      ["tree-after-copy.txt", "Get-ChildItem -Recurse -Depth 3 | Select-Object FullName", "Prove starter shell files and evidence folders exist.", "green"],
+      ["secret-scan.txt", "Manual scan summary plus any available secret-scan command", "Prove no live secrets, workbooks, certificates, or commercial files.", "red"],
+      ["quality-proof.txt", "npm install; npm run lint; npm run test -- --runInBand", "Capture success or issue-linked placeholders for first proof commands.", "amber"],
+      ["issue-wave.txt", "gh issue list --limit 50 --state open", "Capture issue URLs, labels, milestones, and owner lanes.", "blue"],
+      ["workflow-names.txt", "gh run list --limit 10; gh run view <run-id>", "Capture exact workflow, job, check, artifact, and failure names.", "teal"],
+    ];
+    const ownerApprovalNotes = [
+      ["Founder / Product", "Approved controlled repo opening only; no live SaaS, no customer data, no production billing.", "green"],
+      ["Platform owner", "Private visibility, branch discipline, workflow names, and branch protection proof reviewed.", "teal"],
+      ["Backend lead", "Starter files, API shell, package scripts, and first PR scope reviewed.", "blue"],
+      ["Security owner", "No-secret scan, tenant guard scope, access rules, and commercial redaction reviewed.", "red"],
+      ["Data owner", "Generated fixtures, no workbook import, migration rollback, and source trace reviewed.", "amber"],
+      ["QA / Release", "Evidence files, screenshots, branch rules, open blockers, and closeout reviewed.", "green"],
+    ];
+    const closeoutPacket = [
+      ["Passed", "List commands, screenshots, issue URLs, PR link, and branch protection proof that completed.", "green"],
+      ["Deferred", "List checks or workflow names that require a later Actions run or owner decision.", "amber"],
+      ["Blocked", "List anything that prevents merge, protected main, or next implementation work.", "red"],
+      ["No-leak statement", "Confirm no secret, workbook, customer file, certificate, invoice, or commercial field entered the repo.", "red"],
+      ["Reviewer status", "Record go, hold, or no-go for each owner lane.", "blue"],
+      ["Next owner", "Name the owner of v132 GitHub Repo Opening Packet or first backend implementation PR.", "teal"],
+      ["Rollback path", "State branch close, PR close, repo recreate, or credential rotation path if needed.", "amber"],
+      ["Management line", "One sentence summary for the Command Center build tracker and weekly review.", "green"],
+    ];
+    const exportSequence = [
+      ["1", "Create empty evidence files", "Make all markdown evidence files before running the day-one command blocks.", "green"],
+      ["2", "Paste preflight template", "Add owner decision, no-live-data boundary, and local tool identity.", "blue"],
+      ["3", "Capture screenshots as links", "Use consistent names so the PR body can reference them without hunting.", "teal"],
+      ["4", "Paste command transcripts", "Add success output or issue-linked placeholders in the right transcript slot.", "amber"],
+      ["5", "Write PR body", "Assemble scope, out-of-scope, proof, rollback, risk, reviewers, and blockers.", "green"],
+      ["6", "Collect owner approvals", "Each owner lane records go, hold, no-go, or defer with reason.", "red"],
+      ["7", "Write closeout", "Summarize passed, deferred, blocked, no-leak proof, rollback, and next owner.", "blue"],
+      ["8", "Lock packet", "Do not alter proof after closeout unless a new dated note is added.", "red"],
+    ];
+    const qualityGates = [
+      ["Private before proof", "Evidence cannot pass if the repo visibility screenshot is missing.", "red"],
+      ["No live data", "Any workbook, secret, certificate, payment key, or production export fails the packet.", "red"],
+      ["Traceable PR", "PR must link issue URLs, evidence files, command transcripts, blockers, and reviewers.", "green"],
+      ["Real check names", "Branch protection cannot be marked complete with guessed workflow names.", "amber"],
+      ["Owner lanes named", "Product, platform, backend, security, data, and QA lanes must be visible.", "blue"],
+      ["Rollback stated", "The first PR must be safe to close or redo without customer impact.", "teal"],
+      ["Blocked work explicit", "Any placeholder command, failed check, missing URL, or deferred owner must be written.", "amber"],
+      ["Closeout complete", "Passed, deferred, blocked, no-leak proof, next owner, and management line must exist.", "green"],
+    ];
+    const copyReadySnippets = [
+      ["No-live-data statement", "docs/evidence/00-preflight.md", "This repo opening session is limited to backend alpha shell proof. No live customer data, production billing keys, source workbooks, certificates, or commercial exports are approved for this PR.", "red"],
+      ["PR scope line", "docs/evidence/05-first-pr.md", "This draft PR creates the backend alpha shell, evidence packet, and controlled repo proof only. It does not launch production SaaS or import live customer records.", "blue"],
+      ["Rollback line", "docs/evidence/05-first-pr.md", "Rollback is to close the draft PR, delete the alpha branch, and recreate the private repo if visibility, secret, or data-leak proof fails.", "amber"],
+      ["Closeout line", "docs/evidence/08-closeout.md", "Closeout status records what passed, what was deferred, what remains blocked, who owns the next step, and whether this repo day is go, hold, or no-go.", "green"],
+    ];
+    return {
+      proofReadinessScore,
+      downloadHref,
+      proofKpis,
+      evidenceTemplates,
+      prBodySections,
+      screenshotChecklist,
+      commandTranscriptSlots,
+      ownerApprovalNotes,
+      closeoutPacket,
+      exportSequence,
+      qualityGates,
+      copyReadySnippets,
+      signalCards: [
+        ["Proof exporter", `${proofReadinessScore}%`, "Readiness to produce repo proof files from the day-one script.", proofReadinessScore >= 80 ? "green" : "amber"],
+        ["Templates", evidenceTemplates.length, "Markdown evidence files for repo day proof.", "teal"],
+        ["PR sections", prBodySections.length, "Copy-ready review body sections.", "blue"],
+        ["Hard gates", qualityGates.filter(([label]) => label === "Private before proof" || label === "No live data").length, "Proof gates that fail the packet immediately.", "red"],
+      ],
+      handoff: [
+        "v131 turns the day-one script into a proof exporter for the private backend repo.",
+        "The exporter defines evidence markdown files, screenshot names, command transcript slots, PR body sections, owner approval notes, closeout packet, and quality gates.",
+        "The static demo still cannot create real screenshots, real GitHub URLs, real workflow names, or real signoffs; it now makes the empty proof packet ready for those facts.",
+        "v132 can bundle repo name, owner roles, issue wave, PR body, proof artifacts, and closeout notes into one GitHub Repo Opening Packet.",
+      ],
+    };
+  }
+
+  function buildGithubRepoOpeningPacketModel(commandModel, backendRepoProofExporter, privateRepoDayOneScript, backendIssueBodyExporter, githubLabelsMilestonesImportPack, branchProtectionReleaseChecklist, privateRepoSetupScriptDraft, privateRepoOpeningDayRunbook, productionBackendRepoDecisionMemo) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
+    const labelCount = githubLabelsMilestonesImportPack.labelCatalog?.length || 0;
+    const milestoneCount = githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0;
+    const proofFileCount = backendRepoProofExporter.evidenceTemplates?.length || 0;
+    const transcriptCount = backendRepoProofExporter.commandTranscriptSlots?.length || 0;
+    const openingReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendRepoProofExporter.proofReadinessScore * 0.24 +
+            privateRepoDayOneScript.scriptReadinessScore * 0.16 +
+            githubLabelsMilestonesImportPack.importPackScore * 0.16 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.14 +
+            Math.min(100, issueCount * 6) * 0.1 +
+            Math.min(100, proofFileCount * 9) * 0.1 +
+            Math.min(100, transcriptCount * 10) * 0.1,
+        ),
+      ),
+    );
+    const downloadHref = "data/github-repo-opening-packet.json?v=146";
+    const openingKpis = [
+      ["Opening readiness", `${openingReadinessScore}%`, "How ready the private GitHub repo opening packet is before the real repo exists.", openingReadinessScore >= 80 ? "green" : "amber"],
+      ["Issue wave", issueCount, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
+      ["Taxonomy", labelCount + milestoneCount, `${labelCount} labels and ${milestoneCount} milestones shape the first backlog.`, "blue"],
+      ["Repo facts pending", "Real GitHub", "URL, issue URLs, PR URL, Actions names, and approvals still need the private repository.", "red"],
+    ];
+    const repoIdentity = [
+      ["Repository name", "pursuitdesk-platform", "Suggested private production backend repo name for the first alpha build.", "green"],
+      ["Owner account", "dhirajnyse", "Current GitHub owner lane for the future private repository.", "teal"],
+      ["Visibility", "Private only", "Public demo remains in tendergrid; backend repo must stay private.", "red"],
+      ["Default branch", "main", "Protected after the first workflow run exposes exact required check names.", "blue"],
+      ["Working branch", "alpha/backend-day-one", "First implementation branch for repo shell and proof packet.", "green"],
+      ["Opening status", "Go with holds", "Open the repo only after no-live-data and private-visibility proof are captured.", "amber"],
+    ];
+    const ownerMatrix = [
+      ["Product owner", "Approve alpha scope", "Confirms repo opening does not launch production SaaS or accept live customer data.", "green"],
+      ["Platform owner", "Repo and branch rules", "Owns private visibility, branch naming, workflow names, and branch protection timing.", "teal"],
+      ["Backend lead", "Starter shell", "Owns root files, API shell, scripts, route boundaries, and first PR quality.", "blue"],
+      ["Security owner", "No leak proof", "Owns secret scan, tenant guardrail, commercial redaction, and denial proof.", "red"],
+      ["Data owner", "Fixture boundary", "Owns generated fixtures, migration rollback, no workbook import, and source trace.", "amber"],
+      ["QA owner", "Evidence closeout", "Owns screenshots, command transcripts, issue links, PR proof, and go/hold/no-go note.", "green"],
+    ];
+    const issueOpeningWave = [
+      ["Wave 1", "Repo shell", "Open PD-BE-001 first with repo shell, README, PR template, CODEOWNERS, env example, and proof commands.", "green"],
+      ["Wave 2", "API privacy core", "Open request id, safe errors, tenant scope, access decision, redaction, and audit writer issues together.", "red"],
+      ["Wave 3", "Data fixtures", "Open migration runner, seed runner, restore proof, and workbook dry-run boundaries after fixture names are stable.", "blue"],
+      ["Wave 4", "Billing and reports", "Open USD billing test-mode and redaction-safe reports after audit context exists.", "amber"],
+      ["Wave 5", "Workflow proof", "Open GitHub Actions workflow files and artifact-upload issue after package scripts are named.", "teal"],
+      ["Wave 6", "Release control", "Open branch protection and staging smoke issues after check names and proof artifacts are visible.", "green"],
+    ];
+    const firstPrStarter = [
+      ["Title", "chore: create backend alpha shell and proof packet", "Keep the first PR boring, reviewable, and evidence-led.", "green"],
+      ["Summary", "Creates the private backend alpha shell, proof packet, and opening evidence only.", "blue"],
+      ["Scope", "Root docs, env example, ownership files, workflow shells, evidence files, and fixture-only planning artifacts.", "teal"],
+      ["Out of scope", "No production launch, no live customer data, no real billing keys, no workbook import, no commercial values.", "red"],
+      ["Proof commands", "Paste install, lint, test, secret-scan, issue-wave, workflow-name, and release-gate transcripts.", "amber"],
+      ["Evidence links", `Link ${proofFileCount} evidence files, screenshots, command slots, issue URLs, and closeout note.`, "green"],
+      ["Rollback", "Close draft PR, delete alpha branch, rotate credentials, or recreate repo if visibility or leak proof fails.", "red"],
+      ["Reviewers", "Product, platform, backend, security, data, QA, and release lanes must be named before trust.", "blue"],
+    ];
+    const artifactManifest = [
+      ["repo-private.png", "Private visibility screenshot", "Capture immediately after repo creation and before files are added.", "red"],
+      ["tree-after-first-copy.png", "Starter file tree screenshot", "Capture root, apps, packages, docs, scripts, workflows, and evidence folders.", "green"],
+      ["labels-and-milestones.png", "Taxonomy screenshot", "Capture labels and milestones after import and before issue wave.", "teal"],
+      ["issue-wave.csv", "Issue opening ledger", "Record issue keys, URLs, labels, milestones, owners, and opening wave.", "blue"],
+      ["first-pr.md", "Draft PR body", "Store title, scope, out-of-scope, proof, rollback, blockers, and reviewers.", "green"],
+      ["command-transcripts.zip", "Command evidence archive", "Store preflight, repo, tree, secret scan, install, test, issue, workflow, and release output.", "amber"],
+      ["branch-protection.png", "Branch rule screenshot", "Capture only after exact required check names are known.", "red"],
+      ["owner-signoff.md", "Owner approval trail", "Record go, hold, no-go, or defer by owner lane.", "blue"],
+      ["closeout.md", "Repo day closeout", "State passed, deferred, blocked, no-leak proof, rollback path, and next owner.", "green"],
+    ];
+    const openingSequence = [
+      ["01", "Confirm go/no-go decision", "Use the decision memo and risk register before touching GitHub.", "red"],
+      ["02", "Create private repo shell", "Create pursuitdesk-platform as private and capture visibility proof.", "green"],
+      ["03", "Copy starter files", "Add root shell, API shell, package boundaries, workflows, env example, and docs.", "blue"],
+      ["04", "Create evidence folder", "Create evidence markdown files and transcript placeholders before commands run.", "teal"],
+      ["05", "Import taxonomy", "Create labels, milestones, and board columns before issues are opened.", "amber"],
+      ["06", "Open issue wave", "Open P0 issues first, then data, billing, reports, workflow, and release-control issues.", "green"],
+      ["07", "Open first draft PR", "Attach proof packet, issue links, commands, rollback, reviewers, blockers, and no-live-data statement.", "blue"],
+      ["08", "Close repo day", "Write closeout, owner approvals, remaining blockers, workflow names, and next implementation move.", "red"],
+    ];
+    const closeoutLedger = [
+      ["Repo URL", "Pending real repo", "Paste private repository URL and visibility proof reference.", "red"],
+      ["Issue URLs", `${issueCount} planned`, "Paste opened issue URLs and confirm label, milestone, and owner routing.", "teal"],
+      ["PR URL", "Pending first PR", "Paste draft PR URL and confirm evidence links are present.", "blue"],
+      ["Workflow names", "Pending Actions run", "Paste exact workflow and job names before branch protection is marked complete.", "amber"],
+      ["Branch rules", "Hold until checks exist", "Record protected main rules, required reviews, and conversation resolution.", "red"],
+      ["No-leak proof", "Required", "Confirm no secrets, workbooks, certificates, live keys, invoices, or commercial exports.", "red"],
+      ["Owner approvals", "Six lanes", "Record go, hold, no-go, or defer from each owner lane.", "green"],
+      ["Next move", "First backend PR", "Name the owner and first implementation issue after repo opening closes.", "blue"],
+    ];
+    const riskLocks = [
+      ["Public repo leakage", "Fail packet", "If backend files or proof land in the public demo repo, stop and recreate privately.", "red"],
+      ["Live data present", "Fail packet", "Any workbook, customer export, certificate, payment key, or live secret fails opening.", "red"],
+      ["Missing visibility proof", "Hold", "Do not open issue wave until private visibility screenshot exists.", "amber"],
+      ["Unknown check names", "Hold protection", "Do not guess branch protection required checks before GitHub Actions runs.", "blue"],
+      ["Unassigned owner", "Hold review", "No first PR review until product, platform, backend, security, data, and QA lanes are named.", "teal"],
+      ["Evidence not linked", "Hold PR", "A PR without evidence links, command proof, or rollback note should remain draft.", "amber"],
+      ["Commercial field drift", "Fail section", "Operational tracker files must not expose values, agreements, LOA, invoices, or negotiation notes.", "red"],
+      ["Closeout missing", "Hold next build", "Do not start implementation depth until closeout names passed, deferred, blocked, and next owner.", "green"],
+    ];
+    const launchFiles = [
+      ["docs/repo-opening/README.md", "One-page map of repo purpose, scope, owner lanes, and no-live-data boundary.", "green"],
+      ["docs/repo-opening/repo-facts.md", "Repo name, owner, visibility, branches, URLs, environment, and opening status.", "teal"],
+      ["docs/repo-opening/owner-matrix.md", "Product, platform, backend, security, data, QA, release roles and approvals.", "blue"],
+      ["docs/repo-opening/issue-wave.md", "Issue opening sequence, batch order, labels, milestones, owners, and URL placeholders.", "green"],
+      ["docs/repo-opening/first-pr.md", "Copy-ready PR body with scope, proof, rollback, reviewers, blockers, and checklist.", "amber"],
+      ["docs/repo-opening/artifacts.md", "Screenshot names, command transcript files, evidence docs, and retention notes.", "blue"],
+      ["docs/repo-opening/risk-locks.md", "Fail, hold, and defer rules for visibility, data, owners, checks, and closeout.", "red"],
+      ["docs/repo-opening/closeout.md", "Passed, deferred, blocked, no-leak statement, owner signoff, and next implementation move.", "green"],
+    ];
+    const copyReadyBlocks = [
+      ["Repo description", "GitHub About", "Private backend alpha repository for PursuitDesk. Contains generated fixtures, API shell, proof artifacts, and controlled implementation issues only. No live customer data or production billing keys are approved.", "blue"],
+      ["First PR summary", "docs/repo-opening/first-pr.md", "This draft PR creates the backend alpha shell and repo-opening proof packet only. It does not launch production SaaS, import live workbooks, or expose commercial tracker values.", "green"],
+      ["No-live-data proof", "docs/repo-opening/README.md", "Repo opening is approved only for generated fixtures, placeholder secrets, and evidence artifacts. Any live customer data, workbook, certificate, payment key, invoice, or commercial export blocks the packet.", "red"],
+      ["Closeout line", "docs/repo-opening/closeout.md", "Repo opening closes only when private visibility, issue wave, first PR, workflow names or holds, owner approvals, no-leak proof, and next owner are recorded.", "amber"],
+    ];
+    return {
+      openingReadinessScore,
+      downloadHref,
+      openingKpis,
+      repoIdentity,
+      ownerMatrix,
+      issueOpeningWave,
+      firstPrStarter,
+      artifactManifest,
+      openingSequence,
+      closeoutLedger,
+      riskLocks,
+      launchFiles,
+      copyReadyBlocks,
+      signalCards: [
+        ["Opening packet", `${openingReadinessScore}%`, "Readiness to open the future private repo with a controlled handoff.", openingReadinessScore >= 80 ? "green" : "amber"],
+        ["Repo files", launchFiles.length, "Opening docs for facts, owners, issues, PR, artifacts, risks, and closeout.", "teal"],
+        ["Artifacts", artifactManifest.length, "Screenshots, transcripts, PR body, issue ledger, approvals, and closeout.", "blue"],
+        ["Risk locks", riskLocks.filter(([label]) => label.includes("Live data") || label.includes("Public repo") || label.includes("Commercial")).length, "Rules that fail or hold the repo opening immediately.", "red"],
+      ],
+      handoff: [
+        "v132 turns the proof exporter into one GitHub Repo Opening Packet for the real private backend repo.",
+        "The packet now names repo identity, owner lanes, issue waves, first PR text, proof artifacts, launch files, risk locks, closeout ledger, and copy-ready starter blocks.",
+        "The static demo still cannot create the repo or URLs; it now defines exactly what must be captured when the real repo is opened.",
+        "v133 can turn the issue wave into a cleaner Backend Alpha Issue Import Kit with CSV-ready issue rows, label mapping, and import validation.",
+      ],
+    };
+  }
+
+  function buildBackendAlphaIssueImportKitModel(commandModel, githubRepoOpeningPacket, backendIssueBodyExporter, githubLabelsMilestonesImportPack, branchProtectionReleaseChecklist, privateRepoSetupScriptDraft) {
+    const issues = backendIssueBodyExporter.copyReadyIssues || [];
+    const labelCount = githubLabelsMilestonesImportPack.labelCatalog?.length || 0;
+    const milestoneCount = githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0;
+    const issueCount = issues.length;
+    const importReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          githubRepoOpeningPacket.openingReadinessScore * 0.22 +
+            backendIssueBodyExporter.issueExportScore * 0.22 +
+            githubLabelsMilestonesImportPack.importPackScore * 0.2 +
+            privateRepoSetupScriptDraft.setupScriptScore * 0.16 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.1 +
+            Math.min(100, issueCount * 7) * 0.1,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=146";
+    const issueRows = issues.map((issue, index) => [
+      issue.id,
+      issue.title,
+      issue.owner,
+      issue.milestone,
+      issue.labels.join(", "),
+      issue.commands[0] || "pnpm ci:release-gate",
+      `Wave ${Math.min(6, Math.floor(index / 2) + 1)}`,
+      issue.tone,
+    ]);
+    const importKpis = [
+      ["Import readiness", `${importReadinessScore}%`, "How ready the backend alpha issues are for controlled private-repo import.", importReadinessScore >= 80 ? "green" : "amber"],
+      ["Issue rows", issueRows.length, "CSV-style rows with title, owner, milestone, labels, proof command, and wave.", "teal"],
+      ["Taxonomy links", labelCount + milestoneCount, `${labelCount} labels and ${milestoneCount} milestones referenced by the import kit.`, "blue"],
+      ["Blocked facts", "URLs pending", "Real issue URLs, assignees, project board IDs, and PR links still need the private repo.", "red"],
+    ];
+    const csvColumns = [
+      ["id", "Stable issue key", "PD-BE key used in PR, proof files, board, and release notes.", "green"],
+      ["title", "Issue title", "Human-readable GitHub issue title copied from the backend issue exporter.", "teal"],
+      ["owner", "Owner lane", "Platform, backend, security, data, migration, billing, reports, repo, or QA owner.", "blue"],
+      ["milestone", "Alpha milestone", "M0 to M4 implementation stage that controls import order.", "green"],
+      ["labels", "Label list", "Comma-separated labels from the taxonomy import pack.", "amber"],
+      ["proof_command", "First proof", "The first command or evidence expectation required before review.", "red"],
+      ["import_wave", "Opening wave", "Batch order that prevents dependent work from opening too early.", "blue"],
+      ["body_file", "Body source", "Markdown source for paste-ready GitHub issue content.", "teal"],
+    ];
+    const ownerLanes = [
+      ["Platform Owner", issues.filter((issue) => issue.owner === "Platform Owner").length, "Repo shell, CI workflows, and command proof.", "green"],
+      ["Backend Lead", issues.filter((issue) => issue.owner === "Backend Lead").length, "API shell, route entry, controllers, and services.", "teal"],
+      ["Security Owner", issues.filter((issue) => issue.owner === "Security Owner").length, "Safe errors, tenant scope, access decisions, and redaction.", "red"],
+      ["Governance Owner", issues.filter((issue) => issue.owner === "Governance Owner").length, "Audit context, event writer, retention, and proof artifacts.", "blue"],
+      ["Database Owner", issues.filter((issue) => issue.owner === "Database Owner").length, "Migration runner, seeds, restore proof, and parity checks.", "blue"],
+      ["Migration Owner", issues.filter((issue) => issue.owner === "Migration Owner").length, "Workbook dry run, quarantine, duplicate decisions, and rollback id.", "amber"],
+      ["Billing Owner", issues.filter((issue) => issue.owner === "Billing Owner").length, "USD billing test mode, invoices, webhooks, seats, and access locks.", "amber"],
+      ["QA Owner", issues.filter((issue) => issue.owner === "QA Owner").length, "Staging smoke, rollback, screenshots, and go/no-go proof.", "green"],
+    ];
+    const labelMappings = [
+      ["priority:p0", "Open first", "Foundation, API boot, privacy, tenant, audit, and CI work that protects the repo.", "red"],
+      ["priority:p1", "Open after P0 proof", "Billing, reports, branch protection, and staging smoke once shell and scripts exist.", "amber"],
+      ["type:foundation", "M0 Repo shell", "Root files, docs, owners, env examples, and first proof commands.", "green"],
+      ["type:api", "M1 API core", "Server, route registry, controllers, services, and response envelopes.", "teal"],
+      ["type:security", "M1 Privacy core", "Tenant isolation, access decision, redaction, safe errors, and denial proof.", "red"],
+      ["type:data", "M2 Fixtures", "Migrations, seeds, restore, parity, and fixture proof.", "blue"],
+      ["type:import", "M2 Import", "Workbook staging, dry run, quarantine, duplicate decisions, and rollback.", "blue"],
+      ["type:ci", "M3-M4 Proof", "GitHub Actions, artifact uploads, branch rules, and release gates.", "red"],
+    ];
+    const importWaves = [
+      ["Wave 1", "PD-BE-001", "Repo shell must open first so all later issues have proof commands and ownership files.", "green"],
+      ["Wave 2", "PD-BE-002 to PD-BE-005", "API boot, safe errors, tenant access, redaction, and audit share request identity.", "red"],
+      ["Wave 3", "PD-BE-006 to PD-BE-007", "Migration runner and workbook dry run depend on stable fixtures and source trace.", "blue"],
+      ["Wave 4", "PD-BE-008 to PD-BE-009", "Billing and reports wait for env parsing, audit context, and redaction boundary.", "amber"],
+      ["Wave 5", "PD-BE-010", "Workflow files open after scripts and artifact names are stable.", "teal"],
+      ["Wave 6", "PD-BE-011 to PD-BE-012", "Branch protection and staging smoke open after check names and proof lanes exist.", "green"],
+    ];
+    const importValidation = [
+      ["Unique IDs", "No duplicate PD-BE keys before import.", "red"],
+      ["Known labels", "Every label exists in the taxonomy import pack before issue creation.", "amber"],
+      ["Known milestones", "Every milestone exists before issues are opened.", "blue"],
+      ["Owner visible", "Every issue has a named owner lane and no blank assignee note.", "green"],
+      ["Proof command present", "Every row has at least one proof command or evidence requirement.", "red"],
+      ["Commercial boundary", "Operational tracker issues do not include values, agreements, invoices, or negotiation notes.", "red"],
+      ["P0 order", "P0 issues are created before billing, reports, branch protection, and staging smoke.", "amber"],
+      ["URL capture", "After import, every generated issue URL is pasted into the opening ledger.", "green"],
+    ];
+    const bodyFilePlan = issues.map((issue) => [
+      `docs/issues/${issue.id.toLowerCase()}.md`,
+      issue.title,
+      `${issue.owner} / ${issue.milestone}`,
+      issue.tone,
+    ]);
+    const pasteChecks = [
+      ["Before paste", "Repo private, labels created, milestones created, board ready, and no-live-data statement accepted.", "red"],
+      ["During paste", "Create issues in wave order and paste full markdown bodies without changing owner or proof sections.", "amber"],
+      ["After paste", "Record issue URL, project column, label set, milestone, owner, and first proof command.", "green"],
+      ["Review", "Compare GitHub issue count to import kit count and lock changes behind admin review.", "blue"],
+    ];
+    const csvPreview = issueRows.slice(0, 6).map(([id, title, owner, milestone, labels, proofCommand, wave, tone]) => [
+      id,
+      `${title} | ${owner} | ${milestone}`,
+      `${wave} / ${labels} / ${proofCommand}`,
+      tone,
+    ]);
+    const importFiles = [
+      ["data/backend-alpha-issue-import-kit.json", "Structured import handoff for issue rows, owners, labels, milestones, validation, and paste checks.", "green"],
+      ["docs/issues/import.csv", "CSV-ready issue rows for manual review before GitHub creation.", "teal"],
+      ["docs/issues/import-ledger.md", "Table for real issue URLs, owner confirmation, labels, milestones, and project board status.", "blue"],
+      ["docs/issues/body-files/", "One markdown body per PD-BE issue for controlled paste into GitHub.", "green"],
+      ["docs/issues/validation-checklist.md", "Preflight, import, post-import, and admin freeze checks.", "red"],
+      ["docs/issues/owner-lanes.md", "Owner accountability map by issue key and wave.", "amber"],
+      ["docs/issues/label-map.md", "Label and milestone crosswalk with routing rules.", "blue"],
+      ["docs/issues/import-closeout.md", "Post-import closeout with issue count, exceptions, blockers, and next PR link.", "green"],
+    ];
+    const acceptanceChecks = [
+      ["Rows complete", `${issueRows.length} issue rows carry id, title, owner, milestone, labels, proof command, and wave.`, "green"],
+      ["Owner lanes complete", `${ownerLanes.length} owner lanes show accountability before import.`, "teal"],
+      ["Taxonomy linked", `${labelMappings.length} label mappings connect issue type, priority, milestone, and proof.`, "blue"],
+      ["Waves controlled", `${importWaves.length} waves prevent branch, CI, staging, and billing work from opening too early.`, "amber"],
+      ["Validation gates visible", `${importValidation.length} gates catch duplicate IDs, unknown labels, missing owners, and commercial leakage.`, "red"],
+      ["Body files named", `${bodyFilePlan.length} markdown body files are named before GitHub paste starts.`, "green"],
+      ["Paste checks ready", `${pasteChecks.length} paste checkpoints cover before, during, after, and review.`, "blue"],
+      ["Next handoff ready", "v134 can turn the first backend PR into a full PR body builder with evidence links and reviewer notes.", "teal"],
+    ];
+    return {
+      importReadinessScore,
+      downloadHref,
+      importKpis,
+      csvColumns,
+      ownerLanes,
+      labelMappings,
+      importWaves,
+      issueRows,
+      csvPreview,
+      bodyFilePlan,
+      importValidation,
+      pasteChecks,
+      importFiles,
+      acceptanceChecks,
+      signalCards: [
+        ["Import kit", `${importReadinessScore}%`, "Readiness to convert issue bodies into a controlled private-repo import.", importReadinessScore >= 80 ? "green" : "amber"],
+        ["Issue rows", issueRows.length, "Rows prepared from the backend issue body exporter.", "teal"],
+        ["Owner lanes", ownerLanes.length, "Accountability lanes before issues are opened.", "blue"],
+        ["Validation gates", importValidation.length, "Checks that stop duplicates, missing taxonomy, and leakage.", "red"],
+      ],
+      handoff: [
+        "v133 turns the opening packet issue wave into an import kit for the future private backend repo.",
+        "The kit creates CSV-style rows, owner lanes, label mappings, import waves, body-file names, validation gates, paste checks, and import closeout files.",
+        "The static demo still cannot create GitHub issues; it now defines exactly what each issue row must contain and what must be captured after paste.",
+        "v134 can now build the exact first backend PR body with issue links, evidence links, reviewer notes, rollback, and release checklist.",
+      ],
+    };
+  }
+
+  function buildFirstPrBodyBuilderModel(commandModel, backendAlphaIssueImportKit, githubRepoOpeningPacket, backendRepoProofExporter, branchProtectionReleaseChecklist, backendIssueBodyExporter) {
+    const issueRows = backendAlphaIssueImportKit.issueRows || [];
+    const evidenceTemplates = backendRepoProofExporter.evidenceTemplates || [];
+    const reviewerRows = githubRepoOpeningPacket.ownerMatrix || [];
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || issueRows.length;
+    const firstPrReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendAlphaIssueImportKit.importReadinessScore * 0.24 +
+            githubRepoOpeningPacket.openingReadinessScore * 0.18 +
+            backendRepoProofExporter.proofReadinessScore * 0.16 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.12 +
+            Math.min(100, issueRows.length * 6) * 0.1 +
+            Math.min(100, evidenceTemplates.length * 9) * 0.1 +
+            Math.min(100, reviewerRows.length * 12) * 0.1 +
+            8,
+        ),
+      ),
+    );
+    const downloadHref = "data/first-pr-body-builder.json?v=146";
+    const prKpis = [
+      ["PR readiness", `${firstPrReadinessScore}%`, "How ready the first backend PR body is before the private repo exists.", firstPrReadinessScore >= 80 ? "green" : "amber"],
+      ["Linked issues", issueRows.length, "Issue rows that can be referenced after real GitHub URLs exist.", "teal"],
+      ["Evidence links", evidenceTemplates.length, "Evidence markdown files and screenshots the PR body should point to.", "blue"],
+      ["Blocked facts", "URLs pending", "Real repo URL, issue URLs, PR URL, workflow names, and reviewers still need the private repo.", "red"],
+    ];
+    const prIdentity = [
+      ["PR title", "chore: create backend alpha shell and proof packet", "Narrow first PR title for the controlled private backend opening.", "green"],
+      ["Base branch", "main", "Protected only after the first Actions run exposes exact status check names.", "blue"],
+      ["Working branch", "alpha/backend-day-one", "First backend alpha branch for shell files, proof packet, and evidence.", "teal"],
+      ["Primary issue", issueRows[0]?.[0] || "PD-BE-001", "First issue should anchor repo shell, first proof docs, and no-live-data controls.", "green"],
+      ["Review mode", "Draft first", "Keep the first PR draft until proof, rollback, issue trace, and reviewers are present.", "amber"],
+      ["Merge posture", "Hold by default", "The PR is mergeable only after evidence, risk locks, and owner lanes are complete.", "red"],
+    ];
+    const summaryBlocks = [
+      ["Executive summary", "Backend alpha shell", "Creates the backend shell and proof packet only; it does not launch production SaaS.", "green"],
+      ["Why now", "Repo discipline", "Moves PursuitDesk from public static prototype into a controlled private backend runway.", "teal"],
+      ["Business boundary", "No live data", "No customer workbook, production secret, billing key, invoice, certificate, or commercial export enters this PR.", "red"],
+      ["Operational boundary", "Tracker privacy", "Operational tracker examples stay free of value, LOA, agreement, invoice, billing, and negotiation fields.", "red"],
+      ["Proof posture", "Evidence led", "Every change needs an issue, command result or placeholder, evidence file, and rollback note.", "blue"],
+      ["Review posture", "Named lanes", "Product, platform, backend, security, data, governance, and QA lanes are visible before trust.", "green"],
+      ["Release posture", "No direct main", "Main waits for draft PR evidence, exact workflow names, and branch protection proof.", "amber"],
+      ["Closeout posture", "Written handoff", "Passed, deferred, blocked, owner signoffs, and next implementation owner are recorded.", "teal"],
+    ];
+    const scopeChecklist = [
+      ["Root shell", "README, ownership, env example, PR template, CODEOWNERS, and release runbook.", "green"],
+      ["API shell", "Health route, request id, route registry, safe error boundary, tenant scope placeholder.", "blue"],
+      ["Package shell", "Domain, database, audit, importer, redaction, billing, and shared result boundaries.", "teal"],
+      ["Workflow shell", "CI, security, migration, billing, import, staging, release, and dependency workflow placeholders.", "amber"],
+      ["Evidence folder", "Preflight, private repo, clean copy, file tree, issue wave, first PR, checks, protection, and closeout files.", "green"],
+      ["Fixture-only data", "Generated tenants, users, records, commercial vault facts, import batches, and audit events only.", "blue"],
+      ["Backlog trace", `${issueRows.length} issue rows from the import kit become trace targets for the PR body.`, "teal"],
+      ["Review packet", "Scope, out-of-scope, proof commands, evidence links, rollback, blockers, reviewers, and closeout.", "green"],
+    ];
+    const outOfScopeLocks = [
+      ["Production launch", "Out of scope", "No customer-facing SaaS deployment is approved by the first backend PR.", "red"],
+      ["Live customer data", "Out of scope", "No source workbook, client export, certificate, invoice, or production file enters the repo.", "red"],
+      ["Live billing", "Out of scope", "No real payment keys, invoice sending, subscription capture, or customer charging.", "red"],
+      ["Commercial values", "Out of scope", "Operational tracker files do not expose value, LOA, agreement, billing, or negotiation data.", "red"],
+      ["Branch protection guess", "Hold", "Do not create required status checks until GitHub exposes real workflow names.", "amber"],
+      ["Unreviewed owners", "Hold", "Do not merge until reviewer lanes are named and acceptance notes are visible.", "blue"],
+      ["Missing evidence", "Hold", "Do not leave draft mode without evidence links, command output, blockers, and rollback.", "teal"],
+      ["Silent closeout", "Hold", "Do not move to implementation depth until closeout says passed, deferred, blocked, and next owner.", "green"],
+    ];
+    const issueLinkPlan = issueRows.slice(0, 10).map(([id, title, owner, milestone, labels, proofCommand, wave, tone]) => [
+      id,
+      title,
+      `${owner} / ${milestone} / ${wave} / ${proofCommand}`,
+      tone,
+    ]);
+    const evidenceLinkPlan = evidenceTemplates.map(([file, title, note, tone]) => [
+      file,
+      title,
+      `${note} Link this file from the first PR after the private repo evidence folder exists.`,
+      tone,
+    ]);
+    const reviewerMatrix = reviewerRows.map(([owner, value, note, tone]) => [
+      owner,
+      value,
+      `${note} Add GitHub reviewer or signoff placeholder in the PR body.`,
+      tone,
+    ]);
+    const rollbackPlan = [
+      ["Close draft PR", "Default rollback", "Close without merge if scope, evidence, issue trace, or owner review is incomplete.", "green"],
+      ["Delete alpha branch", "Clean branch rollback", "Delete the working branch if the first copy set or command proof is wrong.", "blue"],
+      ["Recreate private repo", "Visibility rollback", "Recreate if repo visibility, file copy, or early proof started in the wrong place.", "red"],
+      ["Rotate credentials", "Secret rollback", "Rotate immediately if any live secret, token, certificate, or payment key appears.", "red"],
+      ["Remove data and restart", "Data rollback", "Restart from generated fixtures only if source workbook or customer export appears.", "red"],
+      ["Reset branch rules", "Protection rollback", "Remove guessed required checks and reapply after real workflow names exist.", "amber"],
+      ["Reopen issue wave", "Backlog rollback", "Reopen with clean labels, milestone, owner, and evidence if issue import drifts.", "teal"],
+      ["Write incident note", "Closeout rollback", "Every rollback has owner, reason, affected files, credential status, and next action.", "green"],
+    ];
+    const releaseChecklist = [
+      ["PR remains draft", "Until proof complete", "Draft status stays until issue links, evidence, rollback, and reviewers are present.", "amber"],
+      ["No-leak statement", "Required", "PR body states no secrets, customer workbooks, certificates, invoices, or commercial exports.", "red"],
+      ["Issue trace", `${issueCount} planned`, "At least the primary issue URL is linked; remaining issue URLs can be ledger placeholders.", "blue"],
+      ["Evidence links", `${evidenceTemplates.length} files`, "Every evidence file has a named purpose and PR link target.", "green"],
+      ["Command proof", "Required or explained", "Install, lint, tests, secret scan, workflow names, and release gate are pasted or deferred with reason.", "teal"],
+      ["Reviewer lanes", `${reviewerRows.length} lanes`, "Product, platform, backend, security, data, and QA review lanes are named.", "green"],
+      ["Workflow names", "Hold until Actions", "Required status checks use exact names only after the first Actions run.", "red"],
+      ["Closeout note", "Required", "Passed, deferred, blocked, rollback, owner signoff, and next move are recorded.", "blue"],
+    ];
+    const acceptanceChecks = [
+      ["PR identity complete", `${prIdentity.length} identity facts make the title, branch, issue, mode, and merge posture explicit.`, "green"],
+      ["Summary complete", `${summaryBlocks.length} summary blocks explain why, scope, proof, risk, and closeout.`, "teal"],
+      ["Scope clear", `${scopeChecklist.length} scope checks keep the first PR narrow and reviewable.`, "blue"],
+      ["Out-of-scope locked", `${outOfScopeLocks.length} locks prevent launch, data, billing, commercial, workflow, and evidence drift.`, "red"],
+      ["Issues traceable", `${issueLinkPlan.length} issue links are ready for URL replacement after GitHub issue import.`, "green"],
+      ["Evidence traceable", `${evidenceLinkPlan.length} evidence links are named before screenshots and transcripts exist.`, "teal"],
+      ["Rollback clear", `${rollbackPlan.length} rollback paths cover PR, branch, repo, credentials, data, rules, issues, and incident note.`, "amber"],
+      ["Release checks clear", `${releaseChecklist.length} release checks stop an unsafe merge before the repo is ready.`, "red"],
+    ];
+    const copyReadySections = [
+      ["Title", "Pull request title", "chore: create backend alpha shell and proof packet", "green"],
+      ["Summary", "PR body", "This draft PR creates the PursuitDesk backend alpha shell and proof packet only. It prepares the private repo for API, tenant, audit, import, billing, and release work without launching production SaaS or importing live customer records.", "green"],
+      ["Scope", "PR body", "Scope: root docs, CODEOWNERS, PR template, env example, API shell, package boundaries, workflow placeholders, generated fixtures, issue trace, and evidence files. All commercial values and billing facts stay outside operational tracker examples.", "blue"],
+      ["Out of scope", "PR body", "Out of scope: production deployment, live customer workbooks, live billing keys, real invoice sending, production secrets, certificates, and any commercial value, LOA, agreement, invoice, or negotiation data in tracker payloads.", "red"],
+      ["Proof", "PR body", "Proof plan: attach preflight identity, private repo evidence, clean-copy scan, file tree, issue wave, command output or deferred placeholders, workflow check names after Actions, branch protection proof, and closeout note.", "teal"],
+      ["Rollback", "PR body", "Rollback: keep the PR draft, close without merge if proof fails, delete the alpha branch, rotate any exposed credential, remove any accidental data, and recreate the private repo if visibility or copy-set proof is compromised.", "amber"],
+      ["Reviewer request", "PR body", "Review requested from product, platform, backend, security, data, governance, and QA lanes. Please approve only if no-live-data, no-secret, issue trace, evidence links, rollback, and branch-protection timing are clear.", "blue"],
+      ["Closeout", "PR body", "Closeout must record passed, deferred, blocked, no-leak proof, owner signoffs, exact workflow names or hold reason, branch-protection status, rollback status, and the next implementation owner.", "green"],
+    ];
+    const prBodySkeleton = [
+      "## Summary",
+      copyReadySections[1][2],
+      "",
+      "## Scope",
+      copyReadySections[2][2],
+      "",
+      "## Out of scope",
+      copyReadySections[3][2],
+      "",
+      "## Proof plan",
+      copyReadySections[4][2],
+      "",
+      "## Rollback",
+      copyReadySections[5][2],
+      "",
+      "## Reviewers",
+      copyReadySections[6][2],
+      "",
+      "## Closeout",
+      copyReadySections[7][2],
+    ].join("\n");
+    return {
+      firstPrReadinessScore,
+      downloadHref,
+      prKpis,
+      prIdentity,
+      summaryBlocks,
+      scopeChecklist,
+      outOfScopeLocks,
+      issueLinkPlan,
+      evidenceLinkPlan,
+      reviewerMatrix,
+      rollbackPlan,
+      releaseChecklist,
+      acceptanceChecks,
+      copyReadySections,
+      prBodySkeleton,
+      signalCards: [
+        ["First PR builder", `${firstPrReadinessScore}%`, "Readiness to write the first backend PR from issue, evidence, reviewer, rollback, and release controls.", firstPrReadinessScore >= 80 ? "green" : "amber"],
+        ["Issue links", issueLinkPlan.length, "Issue rows ready for URL replacement after private repo import.", "teal"],
+        ["Evidence files", evidenceLinkPlan.length, "Evidence links the PR body should point to.", "blue"],
+        ["Hard locks", outOfScopeLocks.filter(([label]) => label.includes("Live") || label.includes("Production") || label.includes("Commercial")).length, "Out-of-scope rules that prevent unsafe merge trust.", "red"],
+      ],
+      handoff: [
+        "v134 turns the import kit, repo opening packet, proof exporter, and release checklist into a first backend PR body builder.",
+        "The builder now has title, identity, executive summary, scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback plan, release checklist, and copy-ready PR text.",
+        "The static demo still cannot create the real PR; it now defines exactly what must be pasted when the private repo, issue URLs, evidence files, and reviewer handles exist.",
+        "v135 can now write the evidence folder files that the first backend PR will link to.",
+      ],
+    };
+  }
+
+  function buildRepoEvidenceFolderWriterModel(commandModel, firstPrBodyBuilder, backendRepoProofExporter, githubRepoOpeningPacket, branchProtectionReleaseChecklist, backendAlphaIssueImportKit) {
+    const evidenceTemplates = backendRepoProofExporter.evidenceTemplates || [];
+    const transcriptSlots = backendRepoProofExporter.commandTranscriptSlots || [];
+    const artifactManifest = githubRepoOpeningPacket.artifactManifest || [];
+    const issueLinks = firstPrBodyBuilder.issueLinkPlan || [];
+    const reviewerRows = firstPrBodyBuilder.reviewerMatrix || [];
+    const releaseChecks = firstPrBodyBuilder.releaseChecklist || [];
+    const evidenceFolderScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          firstPrBodyBuilder.firstPrReadinessScore * 0.24 +
+            backendRepoProofExporter.proofReadinessScore * 0.18 +
+            githubRepoOpeningPacket.openingReadinessScore * 0.14 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.12 +
+            Math.min(100, evidenceTemplates.length * 10) * 0.1 +
+            Math.min(100, transcriptSlots.length * 10) * 0.08 +
+            Math.min(100, issueLinks.length * 8) * 0.08 +
+            Math.min(100, reviewerRows.length * 12) * 0.06 +
+            6,
+        ),
+      ),
+    );
+    const downloadHref = "data/repo-evidence-folder-writer.json?v=146";
+    const evidenceKpis = [
+      ["Evidence folder", `${evidenceFolderScore}%`, "How ready the first backend PR evidence folder is before the private repo exists.", evidenceFolderScore >= 80 ? "green" : "amber"],
+      ["Markdown files", evidenceTemplates.length, "Proof files that should exist under docs/evidence before review.", "teal"],
+      ["Transcript slots", transcriptSlots.length, "Command outputs or explicit placeholders the PR body can link to.", "blue"],
+      ["Real blockers", "URLs pending", "Repo URL, issue URLs, screenshot links, workflow names, and reviewer handles still need GitHub.", "red"],
+    ];
+    const folderManifest = [
+      ["docs/evidence/README.md", "Evidence index", "Table of proof files, screenshot names, transcript slots, issue links, owner signoffs, and closeout status.", "green"],
+      ...evidenceTemplates.map(([file, title, note, tone]) => [file, title, note, tone]),
+      ["docs/evidence/screenshots/", "Screenshot folder", "Private repo, file tree, labels, milestones, issues, PR, Actions, and branch protection screenshots.", "blue"],
+      ["docs/evidence/transcripts/", "Transcript folder", "Preflight, repo view, branch, file tree, secret scan, quality proof, issue wave, and workflow-name output.", "teal"],
+      ["docs/evidence/signoffs/", "Owner signoff folder", "Product, platform, backend, security, data, and QA owner go/hold/no-go notes.", "green"],
+    ];
+    const markdownTemplates = [
+      ["00-preflight.md", "Preflight proof", "## Preflight proof\n- GitHub account:\n- Local path:\n- Tool versions:\n- Decision owner:\n- No-live-data boundary:\n- Status: pending real repo", "blue"],
+      ["01-repo-private.md", "Private repo proof", "## Private repo proof\n- Repository URL:\n- Visibility screenshot:\n- Owner:\n- Timestamp:\n- Public demo repo remains separate:\n- Status: pending real repo", "red"],
+      ["02-clean-copy-set.md", "Clean copy proof", "## Clean copy proof\n- No secrets:\n- No workbooks:\n- No certificates:\n- No invoices:\n- No commercial exports:\n- Status: pending scan", "red"],
+      ["03-file-tree.md", "Starter tree proof", "## Starter tree proof\n- Branch:\n- Root files:\n- apps/api:\n- packages:\n- workflows:\n- evidence folder:\n- Status: pending copy", "green"],
+      ["04-issue-wave.md", "Issue wave proof", `## Issue wave proof\n- Planned issue rows: ${issueLinks.length}\n- First issue URL:\n- Labels and milestones:\n- Owner lanes:\n- Import exceptions:\n- Status: pending GitHub import`, "teal"],
+      ["05-first-pr.md", "First PR proof", `## First PR proof\n- PR title: chore: create backend alpha shell and proof packet\n- PR URL:\n- Issue links:\n- Evidence links:\n- Reviewers:\n- Rollback:\n- Status: draft pending`, "green"],
+      ["06-workflow-check-names.md", "Workflow names proof", "## Workflow names proof\n- Workflow run URL:\n- Job names:\n- Required status check names:\n- Failed checks:\n- Artifact links:\n- Status: hold until Actions run", "amber"],
+      ["07-branch-protection.md", "Branch protection proof", "## Branch protection proof\n- Required checks:\n- Review policy:\n- Conversation resolution:\n- Admin bypass decision:\n- Screenshot:\n- Status: hold until check names exist", "red"],
+      ["08-closeout.md", "Closeout proof", "## Closeout proof\n- Passed:\n- Deferred:\n- Blocked:\n- No-leak statement:\n- Owner signoffs:\n- Next owner:\n- Status: pending repo day", "blue"],
+    ];
+    const screenshotSlots = [
+      ["repo-private.png", "Private visibility", "Capture before any file, issue, or PR work begins.", "red"],
+      ["tree-after-first-copy.png", "Starter file tree", "Capture root, apps, packages, docs, scripts, workflows, and evidence folders.", "green"],
+      ["labels-and-milestones.png", "Taxonomy proof", "Capture labels and milestones after import and before issue creation.", "teal"],
+      ["issue-wave.png", "Issue wave", "Capture filtered first wave with labels, milestones, owners, and issue numbers.", "blue"],
+      ["first-pr-body.png", "Draft PR body", "Capture summary, scope, out-of-scope, proof, rollback, reviewers, and closeout sections.", "green"],
+      ["actions-check-names.png", "Actions names", "Capture exact workflow and job names after the first run.", "amber"],
+      ["branch-protection.png", "Main protection", "Capture required checks, review settings, conversation resolution, and bypass rules.", "red"],
+      ["closeout-board.png", "Repo day closeout", "Capture passed, deferred, blocked, no-leak proof, and next owner.", "blue"],
+    ];
+    const transcriptPlan = transcriptSlots.map(([file, command, note, tone]) => [
+      `docs/evidence/transcripts/${file}`,
+      command,
+      `${note} Save real output or a dated blocker note before linking the PR.`,
+      tone,
+    ]);
+    const issueTraceLedger = issueLinks.map(([id, title, note, tone]) => [
+      id,
+      title,
+      `${note}. Replace placeholder with real GitHub issue URL after import.`,
+      tone,
+    ]);
+    const ownerSignoffFiles = reviewerRows.map(([owner, value, note, tone]) => [
+      `docs/evidence/signoffs/${owner.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.md`,
+      value,
+      `${note} Capture go, hold, no-go, or defer with reason.`,
+      tone,
+    ]);
+    const branchProtectionProof = releaseChecks.map(([label, value, note, tone]) => [
+      label,
+      value,
+      `${note} Evidence folder should state pass, hold, defer, or not applicable.`,
+      tone,
+    ]);
+    const closeoutNotes = [
+      ["Passed", "Commands and evidence", "List proof files, screenshots, command transcripts, issue URLs, PR URL, and owner lanes that passed.", "green"],
+      ["Deferred", "Known follow-ups", "List workflow names, branch protection, reviewer handles, or issue URLs still waiting on GitHub.", "amber"],
+      ["Blocked", "Merge blockers", "List any missing proof, failed command, missing owner, data leak, or unsafe branch rule.", "red"],
+      ["No-leak statement", "Required", "State no secret, customer workbook, certificate, invoice, billing key, or commercial export entered the repo.", "red"],
+      ["Rollback status", "Required", "Record whether rollback path is close PR, delete branch, recreate repo, rotate credentials, or restart data.", "blue"],
+      ["Owner signoffs", `${reviewerRows.length} lanes`, "Capture go, hold, no-go, or defer for each owner lane.", "green"],
+      ["Next owner", "Required", "Name the person or lane that owns the next backend implementation PR.", "teal"],
+      ["Management line", "One sentence", "Summarize repo day result for Command Center and Weekly Review.", "green"],
+    ];
+    const folderTree = [
+      ["docs/evidence/README.md", "Index and status map", "green"],
+      ["docs/evidence/00-preflight.md", "Identity and no-live-data proof", "blue"],
+      ["docs/evidence/01-repo-private.md", "Private repo proof", "red"],
+      ["docs/evidence/02-clean-copy-set.md", "No secret and no workbook proof", "red"],
+      ["docs/evidence/03-file-tree.md", "Starter file tree proof", "green"],
+      ["docs/evidence/04-issue-wave.md", "Issue URL and label proof", "teal"],
+      ["docs/evidence/05-first-pr.md", "Draft PR body and link proof", "green"],
+      ["docs/evidence/06-workflow-check-names.md", "Actions names proof", "amber"],
+      ["docs/evidence/07-branch-protection.md", "Main protection proof", "red"],
+      ["docs/evidence/08-closeout.md", "Passed, deferred, blocked, and next owner", "blue"],
+      ["docs/evidence/screenshots/", `${screenshotSlots.length} screenshot slots`, "blue"],
+      ["docs/evidence/transcripts/", `${transcriptPlan.length} transcript slots`, "teal"],
+      ["docs/evidence/signoffs/", `${ownerSignoffFiles.length} owner signoff files`, "green"],
+    ];
+    const copyReadyMarkdown = [
+      ["Evidence index", "docs/evidence/README.md", `# PursuitDesk backend alpha evidence\n\nStatus: pending private repo execution\n\nFiles: ${evidenceTemplates.length} markdown proofs, ${screenshotSlots.length} screenshots, ${transcriptPlan.length} transcripts, ${ownerSignoffFiles.length} signoffs.\n\nRule: no live data, no secrets, no workbooks, no commercial exports.`, "green"],
+      ["No-leak statement", "docs/evidence/02-clean-copy-set.md", "No customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved for this PR. If any appears, stop, remove, rotate where needed, and write an incident note.", "red"],
+      ["Issue ledger note", "docs/evidence/04-issue-wave.md", `The first PR should link the primary issue and maintain a ledger for ${issueLinks.length} planned issue links. Placeholder IDs are allowed only until real GitHub URLs exist.`, "blue"],
+      ["Workflow hold note", "docs/evidence/06-workflow-check-names.md", "Branch protection remains on hold until the first Actions run exposes exact workflow, job, and required status check names. Do not guess names.", "amber"],
+      ["Owner signoff note", "docs/evidence/signoffs/README.md", "Each owner lane records go, hold, no-go, or defer. A hold must name the missing proof and next owner before the PR leaves draft.", "teal"],
+      ["Closeout note", "docs/evidence/08-closeout.md", "Closeout is complete only when passed, deferred, blocked, no-leak proof, rollback status, owner signoffs, and next owner are written.", "green"],
+    ];
+    const acceptanceChecks = [
+      ["Manifest complete", `${folderManifest.length} manifest entries define evidence files, screenshot folder, transcript folder, and signoffs.`, "green"],
+      ["Templates ready", `${markdownTemplates.length} markdown templates are copy-ready for the first private backend branch.`, "teal"],
+      ["Screenshots named", `${screenshotSlots.length} screenshot slots cover private repo, tree, taxonomy, issues, PR, Actions, branch rules, and closeout.`, "blue"],
+      ["Transcripts named", `${transcriptPlan.length} command transcript slots are ready for real output or dated blocker notes.`, "amber"],
+      ["Issues traceable", `${issueTraceLedger.length} issue rows can receive real GitHub URLs after import.`, "green"],
+      ["Signoffs visible", `${ownerSignoffFiles.length} owner signoff files keep review accountability out in the open.`, "teal"],
+      ["Branch proof gated", `${branchProtectionProof.length} branch and release checks require pass, hold, defer, or not-applicable notes.`, "red"],
+      ["Closeout complete", `${closeoutNotes.length} closeout notes prevent silent merge drift.`, "blue"],
+    ];
+    return {
+      evidenceFolderScore,
+      downloadHref,
+      evidenceKpis,
+      folderManifest,
+      markdownTemplates,
+      screenshotSlots,
+      transcriptPlan,
+      issueTraceLedger,
+      ownerSignoffFiles,
+      branchProtectionProof,
+      closeoutNotes,
+      folderTree,
+      copyReadyMarkdown,
+      acceptanceChecks,
+      signalCards: [
+        ["Evidence folder", `${evidenceFolderScore}%`, "Readiness to write the first backend PR evidence pack.", evidenceFolderScore >= 80 ? "green" : "amber"],
+        ["Markdown files", markdownTemplates.length, "Copy-ready proof files for docs/evidence.", "teal"],
+        ["Screenshots", screenshotSlots.length, "Visual proof slots for GitHub state.", "blue"],
+        ["Hold rules", branchProtectionProof.filter(([label]) => label.includes("Workflow") || label.includes("No-leak") || label.includes("PR remains")).length, "Rules that keep the PR draft until proof exists.", "red"],
+      ],
+      handoff: [
+        "v135 turns the first PR body into a concrete evidence folder writer.",
+        "The writer defines docs/evidence files, screenshot slots, transcript slots, issue ledger rows, owner signoff files, branch-protection proof, closeout notes, and copy-ready markdown.",
+        "The static demo still cannot capture real screenshots or command output; it now names exactly where those artifacts belong when the private repo exists.",
+        "v136 can now bundle the private repo command runner pack that fills these evidence files with real outputs.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoCommandRunnerPackModel(commandModel, repoEvidenceFolderWriter, privateRepoDayOneScript, privateRepoSetupScriptDraft, githubRepoOpeningPacket, branchProtectionReleaseChecklist) {
+    const commandBlocks = privateRepoDayOneScript.commandBlocks || [];
+    const transcriptPlan = repoEvidenceFolderWriter.transcriptPlan || [];
+    const screenshotSlots = repoEvidenceFolderWriter.screenshotSlots || [];
+    const ownerSignoffFiles = repoEvidenceFolderWriter.ownerSignoffFiles || [];
+    const folderTree = repoEvidenceFolderWriter.folderTree || [];
+    const artifactManifest = githubRepoOpeningPacket.artifactManifest || [];
+    const setupScore = privateRepoSetupScriptDraft.setupScriptScore || 0;
+    const openingScore = githubRepoOpeningPacket.openingReadinessScore || 0;
+    const releaseScore = branchProtectionReleaseChecklist.releaseChecklistScore || 0;
+    const commandRunnerScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          repoEvidenceFolderWriter.evidenceFolderScore * 0.24 +
+            privateRepoDayOneScript.scriptReadinessScore * 0.2 +
+            setupScore * 0.14 +
+            openingScore * 0.12 +
+            releaseScore * 0.1 +
+            Math.min(100, commandBlocks.length * 8) * 0.08 +
+            Math.min(100, transcriptPlan.length * 10) * 0.05 +
+            Math.min(100, screenshotSlots.length * 10) * 0.04 +
+            Math.min(100, ownerSignoffFiles.length * 12) * 0.03 +
+            6,
+        ),
+      ),
+    );
+    const downloadHref = "data/private-repo-command-runner-pack.json?v=146";
+    const runnerKpis = [
+      ["Runner readiness", `${commandRunnerScore}%`, "How ready the real private repo command session is to run without improvising.", commandRunnerScore >= 80 ? "green" : "amber"],
+      ["Command blocks", commandBlocks.length, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
+      ["Evidence writes", folderTree.length, "Evidence paths that must be created, updated, or intentionally deferred.", "teal"],
+      ["Hard stops", 4, "Public repo, secret, workbook, or commercial data leak stops execution immediately.", "red"],
+    ];
+    const preflightCommands = [
+      ["01", "Confirm operator", "gh auth status", "The output must show the expected GitHub identity before any repository action.", "blue"],
+      ["02", "Confirm tools", "git --version; node --version; npm --version", "Tool versions are written to the preflight transcript.", "blue"],
+      ["03", "Confirm workspace", "Get-Location", "The local folder is captured before copy or setup steps begin.", "teal"],
+      ["04", "Confirm no live data", "Review copy set manually", "No Excel workbook, secret, certificate, payment key, invoice, or customer file may enter the private repo.", "red"],
+      ["05", "Confirm decision", "Owner go/hold/no-go", "Repo opening approval must exist before creating the private repo.", "green"],
+      ["06", "Confirm evidence path", "Create docs/evidence first", "Screenshots and transcripts need a named destination before commands start.", "teal"],
+    ];
+    const commandRunbook = commandBlocks.map(([step, phase, shell, command, note, tone], index) => {
+      const transcript = transcriptPlan[index % Math.max(1, transcriptPlan.length)]?.[0] || "docs/evidence/transcripts/command-output.txt";
+      return [step, phase, `${shell}: ${command}`, `${note} Save output or blocker note to ${transcript}.`, tone];
+    });
+    const expectedOutputs = [
+      ["Preflight output", "docs/evidence/transcripts/00-preflight-auth.txt", "GitHub account, git version, node version, npm version, and local path are captured.", "blue"],
+      ["Private repo output", "docs/evidence/01-repo-private.md", "Private visibility, repo URL, owner, and timestamp are written before file copy.", "red"],
+      ["Clean copy output", "docs/evidence/02-clean-copy-set.md", "No source workbook, secret, certificate, invoice, billing key, or commercial export is present.", "red"],
+      ["File tree output", "docs/evidence/03-file-tree.md", "Root, apps, packages, infra, docs, workflows, scripts, and evidence folders are visible.", "green"],
+      ["Taxonomy output", "docs/evidence/04-issue-wave.md", "Labels, milestones, issue waves, owner lanes, and generated URLs are recorded.", "teal"],
+      ["Draft PR output", "docs/evidence/05-first-pr.md", "PR title, URL, scope, proof links, rollback text, reviewers, and blockers are captured.", "green"],
+      ["Actions output", "docs/evidence/06-workflow-check-names.md", "Exact workflow, job, required check names, failed check notes, and artifact links are captured.", "amber"],
+      ["Closeout output", "docs/evidence/08-closeout.md", "Passed, deferred, blocked, no-leak proof, owner signoffs, rollback status, and next owner are written.", "blue"],
+    ];
+    const failureHolds = [
+      ["Immediate stop", "Repo is public", "Stop before adding files. Switch to private or recreate, then document the event.", "red"],
+      ["Immediate stop", "Secret appears", "Stop, remove it, rotate if needed, check history, and write an incident note.", "red"],
+      ["Immediate stop", "Workbook appears", "Stop and restart from generated fixtures only.", "red"],
+      ["Immediate stop", "Commercial leak appears", "Remove value, LOA, agreement, invoice, billing, and negotiation data from operational examples.", "red"],
+      ["Hold", "Owner decision missing", "Pause until the owner confirms go, hold, or no-go.", "amber"],
+      ["Hold", "Workflow names unknown", "Do not apply branch protection until exact check names appear.", "blue"],
+      ["Hold", "PR proof incomplete", "Add issue links, scope, proof, rollback, blockers, and reviewer lanes before requesting review.", "teal"],
+      ["Hold", "Evidence not saved", "Write proof files and screenshot names before closing repo day.", "green"],
+    ];
+    const evidenceWriteMap = folderTree.map(([path, note, tone]) => [
+      path,
+      "Evidence path",
+      `${note} Create, update, or mark deferred before the first PR body links here.`,
+      tone,
+    ]);
+    const artifactSlots = [
+      ...screenshotSlots.map(([file, title, note, tone]) => [`docs/evidence/screenshots/${file}`, title, note, tone]),
+      ...artifactManifest.slice(0, 6).map(([file, title, note, tone]) => [file, title, note, tone]),
+      ["docs/evidence/private-repo-command-runner-pack.json", "Runner JSON", "Attach this v136 handoff as the command source-of-truth for repo day.", "teal"],
+    ];
+    const manualProofActions = privateRepoDayOneScript.manualActions || [];
+    const ownerPromptRun = privateRepoDayOneScript.ownerPrompts || [];
+    const branchTimingRun = privateRepoDayOneScript.branchProtectionTiming || [];
+    const closeoutRun = privateRepoDayOneScript.closeoutChecks || [];
+    const copyReadyCommands = [
+      ["Preflight", "PowerShell", "gh auth status\ngit --version\nnode --version\nnpm --version\nGet-Location", "blue"],
+      ["Create private repo", "GitHub CLI", "gh repo create dhirajnyse/pursuitdesk-platform --private --description PursuitDesk-production-backend --confirm", "red"],
+      ["Clone and branch", "Git", "git clone git@github.com:dhirajnyse/pursuitdesk-platform.git\ncd pursuitdesk-platform\ngit checkout -b codex/backend-alpha-shell", "teal"],
+      ["Create evidence shell", "PowerShell", "New-Item -ItemType Directory -Force docs/evidence/screenshots docs/evidence/transcripts docs/evidence/signoffs", "green"],
+      ["Create backend shell", "PowerShell", "New-Item -ItemType Directory -Force apps/api/src packages/domain packages/db infra .github/workflows scripts", "green"],
+      ["Quality proof", "Package manager", "npm install\nnpm run lint\nnpm run test -- --runInBand", "blue"],
+      ["First PR", "GitHub CLI", "git add .\ngit commit -m \"Backend alpha shell\"\ngit push -u origin codex/backend-alpha-shell\ngh pr create --draft --title \"Backend alpha shell\" --body-file docs/evidence/first-pr.md", "amber"],
+      ["Branch protection hold", "GitHub settings", "Capture exact workflow and job names from the first Actions run before creating required status checks.", "red"],
+    ];
+    const acceptanceChecks = [
+      ["Preflight captured", `${preflightCommands.length} preflight commands or manual checks are named before repo creation.`, "blue"],
+      ["Runbook complete", `${commandRunbook.length} command blocks cover create, clone, shell, proof, issues, PR, checks, protection, and closeout.`, "green"],
+      ["Outputs named", `${expectedOutputs.length} expected outputs map commands to evidence files.`, "teal"],
+      ["Failure holds clear", `${failureHolds.length} stop or hold rules prevent unsafe execution.`, "red"],
+      ["Evidence paths ready", `${evidenceWriteMap.length} evidence writes map to the repo folder.`, "green"],
+      ["Artifacts named", `${artifactSlots.length} screenshot, manifest, and JSON artifact slots are named.`, "blue"],
+      ["Owners prompted", `${ownerPromptRun.length} owner prompts define approval accountability.`, "teal"],
+      ["Closeout explicit", `${closeoutRun.length} closeout checks define what must be true before implementation depth.`, "amber"],
+    ];
+    return {
+      commandRunnerScore,
+      downloadHref,
+      runnerKpis,
+      preflightCommands,
+      commandRunbook,
+      expectedOutputs,
+      failureHolds,
+      evidenceWriteMap,
+      artifactSlots,
+      manualProofActions,
+      ownerPromptRun,
+      branchTimingRun,
+      closeoutRun,
+      copyReadyCommands,
+      acceptanceChecks,
+      signalCards: [
+        ["Command runner", `${commandRunnerScore}%`, "Readiness to run the private repo day from a controlled sequence.", commandRunnerScore >= 80 ? "green" : "amber"],
+        ["Commands", commandRunbook.length, "Executable or manually controlled steps with transcript destinations.", "blue"],
+        ["Evidence writes", evidenceWriteMap.length, "Proof files, folders, screenshots, transcripts, and signoffs to create.", "teal"],
+        ["Stop rules", failureHolds.filter(([status]) => status === "Immediate stop").length, "Conditions that stop the day before trust is compromised.", "red"],
+      ],
+      handoff: [
+        "v136 turns the evidence folder writer and day-one script into a private repo command runner pack.",
+        "The pack names preflight commands, command order, expected outputs, evidence write paths, screenshot slots, owner prompts, branch-protection timing, closeout checks, and copy-ready commands.",
+        "It deliberately does not execute against GitHub from the static demo; it prepares the exact run sheet for the real private backend repository session.",
+        "v137 can now define the backend PR review gate matrix so reviewers know what to approve, hold, or block after the command runner produces evidence.",
+      ],
+    };
+  }
+
+  function buildBackendPrReviewGateMatrixModel(commandModel, privateRepoCommandRunnerPack, firstPrBodyBuilder, repoEvidenceFolderWriter, backendAlphaIssueImportKit, branchProtectionReleaseChecklist) {
+    const reviewerRows = firstPrBodyBuilder.reviewerMatrix?.length
+      ? firstPrBodyBuilder.reviewerMatrix
+      : [
+          ["Founder / Product", "Scope owner", "Approves product scope, no-live-data boundary, and first PR intent.", "green"],
+          ["Platform owner", "Repo owner", "Approves private repo visibility, workflow names, and branch discipline.", "teal"],
+          ["Backend lead", "Code owner", "Approves folder shell, API starter files, package boundaries, and commands.", "blue"],
+          ["Security owner", "Control owner", "Approves no-secret, tenant guard, commercial privacy, and audit controls.", "red"],
+          ["Data owner", "Migration owner", "Approves generated fixtures, source trace, rollback, and no workbook import.", "amber"],
+          ["QA / Release", "Release owner", "Approves evidence files, screenshots, branch rules, and closeout readiness.", "green"],
+        ];
+    const evidenceLinks = firstPrBodyBuilder.evidenceLinkPlan || [];
+    const issueLinks = firstPrBodyBuilder.issueLinkPlan || [];
+    const releaseChecklist = firstPrBodyBuilder.releaseChecklist || [];
+    const runnerAcceptance = privateRepoCommandRunnerPack.acceptanceChecks || [];
+    const branchProof = repoEvidenceFolderWriter.branchProtectionProof || [];
+    const reviewGateScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          privateRepoCommandRunnerPack.commandRunnerScore * 0.2 +
+            firstPrBodyBuilder.firstPrReadinessScore * 0.2 +
+            repoEvidenceFolderWriter.evidenceFolderScore * 0.14 +
+            branchProtectionReleaseChecklist.releaseChecklistScore * 0.12 +
+            Math.min(100, reviewerRows.length * 14) * 0.1 +
+            Math.min(100, evidenceLinks.length * 10) * 0.08 +
+            Math.min(100, issueLinks.length * 8) * 0.06 +
+            Math.min(100, releaseChecklist.length * 10) * 0.05 +
+            Math.min(100, runnerAcceptance.length * 10) * 0.05 +
+            8,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=146";
+    const reviewKpis = [
+      ["Review readiness", `${reviewGateScore}%`, "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", reviewGateScore >= 80 ? "green" : "amber"],
+      ["Reviewer lanes", reviewerRows.length, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
+      ["Evidence links", evidenceLinks.length, "Evidence files the PR body should link before formal approval.", "blue"],
+      ["Hard blocks", 8, "Unsafe conditions that prevent review or merge.", "red"],
+    ];
+    const reviewerGateMatrix = reviewerRows.map(([owner, scope, note, tone], index) => {
+      const evidence = evidenceLinks[index % Math.max(1, evidenceLinks.length)]?.[1] || "docs/evidence/README.md";
+      const issue = issueLinks[index % Math.max(1, issueLinks.length)]?.[0] || "Primary backend shell issue";
+      return [
+        owner,
+        scope,
+        `Approve when ${note.toLowerCase()} Evidence: ${evidence}. Issue trace: ${issue}.`,
+        "Hold when the evidence file is missing, placeholder-only, or not tied to an opened issue URL.",
+        "Block if live data, secrets, public visibility, missing rollback, or commercial leakage appears.",
+        tone,
+      ];
+    });
+    const decisionGates = [
+      ["Draft only", "Evidence incomplete", "The PR stays draft while repo URL, issue URLs, command outputs, workflow names, or owner signoffs are missing.", "amber"],
+      ["Reviewable", "Evidence linked", "The PR can request review after scope, proof links, rollback, blockers, and reviewer lanes are visible.", "blue"],
+      ["Hold", "Proof waiting", "A reviewer can hold when a proof file, screenshot, transcript, check name, or owner answer is incomplete.", "amber"],
+      ["Block", "Trust failure", "A reviewer must block if public repo, secret, workbook, commercial leak, direct main push, or no rollback appears.", "red"],
+      ["Approve", "Lane clear", "A reviewer can approve only their lane after evidence and issue trace match the PR body.", "green"],
+      ["Merge ready", "All gates clear", "Merge only after approvals, exact checks, no-leak proof, branch rules, closeout, and next owner are recorded.", "teal"],
+    ];
+    const evidenceReviewMap = [
+      ...evidenceLinks.map(([label, file, note, tone]) => [label, file, `${note} Reviewer must confirm the file exists or is explicitly deferred.`, tone]),
+      ...privateRepoCommandRunnerPack.expectedOutputs.map(([label, file, note, tone]) => [label, file, `${note} Reviewer checks whether the output is real, deferred, or blocked.`, tone]),
+    ];
+    const holdQueue = [
+      ["Repo URL missing", "Hold review", "Private repo URL and visibility proof must be pasted before review starts.", "red"],
+      ["Issue URLs missing", "Hold review", "Generated issue links must replace placeholders in the first PR body.", "teal"],
+      ["Evidence placeholder only", "Hold review", "Placeholder evidence is allowed in draft, but must be explicit before review.", "amber"],
+      ["Workflow names pending", "Hold branch protection", "Required check names cannot be guessed before the first Actions run.", "blue"],
+      ["Owner signoff missing", "Hold approval", "Each lane needs go, hold, no-go, or defer with reason.", "green"],
+      ["Rollback not written", "Hold review", "Close PR, delete branch, recreate repo, rotate credential, or restart data path must be named.", "amber"],
+      ["Command output missing", "Hold proof", "Preflight, setup, quality, issue, PR, and closeout transcripts need output or blocker notes.", "blue"],
+      ["Closeout missing", "Hold merge", "Passed, deferred, blocked, no-leak, owners, and next owner must be written.", "green"],
+    ];
+    const blockRules = [
+      ["Public repository", "Block immediately", "No production backend work can proceed in a public repo.", "red"],
+      ["Secret or credential", "Block and rotate", "Any secret, token, certificate, or live key requires removal and rotation review.", "red"],
+      ["Customer workbook", "Block and restart", "Live Excel source data cannot enter the production backend repo.", "red"],
+      ["Commercial leakage", "Block and redact", "Value, LOA, agreement, invoice, billing, and negotiation facts stay out of frontline examples.", "red"],
+      ["No rollback path", "Block merge", "A first backend PR must be safely closable without production effects.", "amber"],
+      ["Direct main push", "Block release", "All production backend work must stay on reviewable branches.", "red"],
+      ["Missing required checks", "Block merge", "Workflow and job names must be exact before branch protection or merge trust.", "blue"],
+      ["No owner accountability", "Block review", "Reviewer lane, next owner, and closeout owner must be named.", "teal"],
+    ];
+    const mergeReadinessChecklist = [
+      ["PR remains draft until proof exists", "Required", "A draft PR can carry placeholders; a review-ready PR must link real proof or explicit holds.", "amber"],
+      ["Private visibility proven", "Required", "Visibility screenshot and repo URL are recorded.", "red"],
+      ["No-leak proof written", "Required", "No secrets, workbooks, certificates, live keys, invoices, or commercial exports are present.", "red"],
+      ["Issue trace complete", `${issueLinks.length} rows`, "Issue URLs replace placeholders and map to generated issue lanes.", "teal"],
+      ["Evidence links complete", `${evidenceLinks.length} links`, "Evidence links point to files, screenshots, transcripts, or deferred blockers.", "blue"],
+      ["Reviewers clear", `${reviewerRows.length} lanes`, "Each lane has approve, hold, block, and next action rules.", "green"],
+      ["Branch checks real", "Required", "Required check names come from an actual Actions run, not guesses.", "blue"],
+      ["Closeout ready", "Required", "Passed, deferred, blocked, no-leak, rollback, owners, and next owner are written.", "green"],
+    ];
+    const reviewerPackets = reviewerGateMatrix.map(([owner, scope, approve, hold, block, tone]) => [
+      owner,
+      scope,
+      `Review lane: ${owner}\nScope: ${scope}\nApprove: ${approve}\nHold: ${hold}\nBlock: ${block}`,
+      tone,
+    ]);
+    const prCommentTemplates = [
+      ["Approve", "Review comment", "Approved for my lane. Evidence is linked, issue trace is visible, rollback is clear, and no-live-data/no-secret boundaries are preserved.", "green"],
+      ["Hold", "Review comment", "Holding approval until the listed evidence file, command output, screenshot, owner response, workflow name, or issue URL is completed.", "amber"],
+      ["Block", "Review comment", "Requesting changes because the PR contains a trust blocker: public visibility, secret, workbook, commercial leak, no rollback, missing owner, or unsafe branch posture.", "red"],
+      ["Merge summary", "PR closeout", "Merge is allowed only after all reviewer lanes are green, required checks are exact, branch protection is documented, and closeout names the next owner.", "teal"],
+      ["No-leak signoff", "Security note", "I confirm no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.", "red"],
+      ["Deferred proof", "Review note", "Deferred proof is acceptable only if the blocker file names the missing proof, owner, date, and next command.", "blue"],
+    ];
+    const acceptanceChecks = [
+      ["Reviewer lanes complete", `${reviewerGateMatrix.length} lanes define approve, hold, and block language.`, "green"],
+      ["Decision gates clear", `${decisionGates.length} gates describe draft, reviewable, hold, block, approve, and merge-ready states.`, "teal"],
+      ["Evidence reviewable", `${evidenceReviewMap.length} evidence and command-output rows are mapped for reviewers.`, "blue"],
+      ["Holds actionable", `${holdQueue.length} hold reasons name the missing proof and owner action.`, "amber"],
+      ["Blocks explicit", `${blockRules.length} block rules stop unsafe repo trust.`, "red"],
+      ["Merge checklist ready", `${mergeReadinessChecklist.length} merge-readiness checks prevent accidental production trust.`, "green"],
+      ["Comment templates ready", `${prCommentTemplates.length} reusable review comments help keep review language consistent.`, "blue"],
+      ["Runner linked", `${runnerAcceptance.length} runner acceptance checks feed the review gate.`, "teal"],
+    ];
+    return {
+      reviewGateScore,
+      downloadHref,
+      reviewKpis,
+      reviewerGateMatrix,
+      decisionGates,
+      evidenceReviewMap,
+      holdQueue,
+      blockRules,
+      mergeReadinessChecklist,
+      reviewerPackets,
+      prCommentTemplates,
+      acceptanceChecks,
+      signalCards: [
+        ["Review gates", `${reviewGateScore}%`, "Readiness to control the first backend PR review by lane.", reviewGateScore >= 80 ? "green" : "amber"],
+        ["Reviewer lanes", reviewerGateMatrix.length, "Product, platform, backend, security, data, and release accountability.", "teal"],
+        ["Hold reasons", holdQueue.length, "Actionable holds before approval or merge.", "amber"],
+        ["Block rules", blockRules.length, "Hard trust failures that require changes.", "red"],
+      ],
+      handoff: [
+        "v137 turns the first backend PR body and command runner evidence into a review gate matrix.",
+        "Each reviewer lane now has approve, hold, block, and merge-readiness language tied to evidence files, issue trace, branch proof, and no-leak controls.",
+        "The static demo still cannot approve a real PR; it now defines how the real PR should be reviewed once GitHub evidence exists.",
+        "v138 can now turn screenshots, transcripts, signoffs, issue URLs, and branch proof into an evidence artifact status board.",
+      ],
+    };
+  }
+
+  function buildEvidenceArtifactStatusBoardModel(commandModel, backendPrReviewGateMatrix, privateRepoCommandRunnerPack, repoEvidenceFolderWriter, backendRepoProofExporter, backendOpeningDayEvidencePack, branchProtectionReleaseChecklist) {
+    const markdownTemplates = repoEvidenceFolderWriter.markdownTemplates || backendRepoProofExporter.evidenceTemplates || [];
+    const screenshotSlots = repoEvidenceFolderWriter.screenshotSlots || backendRepoProofExporter.screenshotChecklist || [];
+    const transcriptPlan = repoEvidenceFolderWriter.transcriptPlan || [];
+    const ownerSignoffFiles = repoEvidenceFolderWriter.ownerSignoffFiles || [];
+    const issueTraceLedger = repoEvidenceFolderWriter.issueTraceLedger || [];
+    const branchProtectionProof = repoEvidenceFolderWriter.branchProtectionProof || [];
+    const closeoutNotes = repoEvidenceFolderWriter.closeoutNotes || [];
+    const blockRules = backendPrReviewGateMatrix.blockRules || [];
+    const holdQueue = backendPrReviewGateMatrix.holdQueue || [];
+    const mergeChecks = backendPrReviewGateMatrix.mergeReadinessChecklist || [];
+    const commandOutputs = privateRepoCommandRunnerPack.expectedOutputs || [];
+    const openingArtifacts = backendOpeningDayEvidencePack.artifactFiles || [];
+    const makeArtifact = (group, title, file, note, owner, status, tone) => ({
+      group,
+      title,
+      file,
+      note,
+      owner,
+      status,
+      tone,
+    });
+    const artifactRows = [
+      ...markdownTemplates.map(([file, title, note, tone]) => makeArtifact("Markdown proof", title, file, note, "QA / Release", "Ready", tone)),
+      ...screenshotSlots.map(([file, title, note, tone]) => makeArtifact("Screenshot proof", title, `docs/evidence/screenshots/${file}`, note, "Platform owner", "Hold", tone)),
+      ...transcriptPlan.map(([file, command, note, tone]) => makeArtifact("Command transcript", command, file, note, "Backend lead", "Hold", tone)),
+      ...ownerSignoffFiles.map(([file, title, note, tone]) => makeArtifact("Owner signoff", title, file, note, "Owner lane", "Deferred", tone)),
+      ...issueTraceLedger.map(([id, title, note, tone]) => makeArtifact("Issue trace", title, `docs/issues/${id}.md`, note, "Platform owner", "Deferred", tone)),
+      ...branchProtectionProof.map(([label, value, note, tone]) => makeArtifact("Branch proof", label, "docs/evidence/07-branch-protection.md", `${value}. ${note}`, "Release owner", "Blocked", tone)),
+      ...closeoutNotes.map(([label, value, note, tone]) => makeArtifact("Closeout note", label, "docs/evidence/08-closeout.md", `${value}. ${note}`, "QA / Release", "Ready", tone)),
+      ...blockRules.map(([label, value, note, tone]) => makeArtifact("Block rule", label, "docs/evidence/08-closeout.md", `${value}. ${note}`, "Security / Platform", "Blocked", tone)),
+    ];
+    const countStatus = (status) => artifactRows.filter((item) => item.status === status).length;
+    const readyCount = countStatus("Ready");
+    const holdCount = countStatus("Hold");
+    const blockedCount = countStatus("Blocked");
+    const deferredCount = countStatus("Deferred");
+    const evidenceBoardScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendPrReviewGateMatrix.reviewGateScore * 0.22 +
+            repoEvidenceFolderWriter.evidenceFolderScore * 0.18 +
+            backendRepoProofExporter.proofReadinessScore * 0.16 +
+            privateRepoCommandRunnerPack.commandRunnerScore * 0.12 +
+            Math.min(100, readyCount * 6) * 0.1 +
+            Math.min(100, artifactRows.length * 2) * 0.08 +
+            Math.min(100, commandOutputs.length * 10) * 0.06 +
+            Math.min(100, openingArtifacts.length * 9) * 0.04 +
+            Math.min(100, mergeChecks.length * 10) * 0.04 +
+            8,
+        ),
+      ),
+    );
+    const downloadHref = "data/evidence-artifact-status-board.json?v=146";
+    const boardKpis = [
+      ["Artifact board", `${evidenceBoardScore}%`, "How ready the proof packet is to move from planned evidence into real captured artifacts.", evidenceBoardScore >= 80 ? "green" : "amber"],
+      ["Artifact rows", artifactRows.length, "Markdown, screenshots, transcripts, signoffs, issue traces, branch proof, closeout, and block rules.", "teal"],
+      ["Real holds", holdCount + deferredCount, "Items waiting on real GitHub screenshots, command output, issue URLs, or owner signoff.", "amber"],
+      ["Hard blocked", blockedCount, "Branch proof and trust failures that cannot be marked complete without real evidence.", "red"],
+    ];
+    const statusSummary = [
+      ["Ready templates", readyCount, "Files and closeout shells are prepared before the private repo exists.", "green"],
+      ["Hold for capture", holdCount, "Screenshots and command transcripts need real GitHub or terminal output.", "amber"],
+      ["Deferred to repo day", deferredCount, "Issue URLs and owner signoffs wait for the private repo session.", "blue"],
+      ["Blocked until proof", blockedCount, "Branch rules and trust failures require real check names and no-leak proof.", "red"],
+    ];
+    const evidenceLanes = [
+      ["Identity and privacy", "Preflight, private repo, clean-copy, no-live-data, and no-secret evidence.", "Security owner", "red"],
+      ["Repository structure", "Folder tree, starter files, branch, labels, milestones, and first copy-set proof.", "Platform owner", "teal"],
+      ["Command transcripts", "Preflight, repo view, branch, file tree, scan, quality proof, issue wave, and workflow output.", "Backend lead", "blue"],
+      ["Issue and PR trace", "Issue URLs, PR URL, evidence links, reviewer lanes, rollback, and closeout notes.", "Product / QA", "green"],
+      ["Branch protection", "Workflow names, required checks, review rules, protected branch proof, and bypass decision.", "Release owner", "amber"],
+      ["Owner signoff", "Product, platform, backend, security, data, and QA go, hold, no-go, or defer notes.", "Owner lanes", "green"],
+    ];
+    const sourceOfTruthMap = [
+      ["GitHub repo settings", "Private visibility screenshot", "Hard proof source for repo privacy and owner account.", "red"],
+      ["GitHub Issues", "Issue URLs and labels", "Traceability source for backend alpha scope and owner lanes.", "blue"],
+      ["GitHub Pull Request", "Draft PR URL and review comments", "Source for review status, proof links, rollback, and blockers.", "green"],
+      ["GitHub Actions", "Workflow and job names", "Source for required status checks and branch-protection setup.", "amber"],
+      ["docs/evidence", "Markdown proof packet", "Source for snapshots, transcripts, signoffs, closeout, and no-leak notes.", "teal"],
+      ["Command Center", "Management status", "Executive source for ready, hold, blocked, deferred, and next owner state.", "green"],
+    ];
+    const escalationQueue = [
+      ...holdQueue.map(([label, value, note, tone]) => [label, value, note, tone]),
+      ...blockRules.slice(0, 6).map(([label, value, note, tone]) => [label, value, note, tone]),
+    ];
+    const captureSequence = [
+      ["01", "Create evidence index", "Create docs/evidence/README.md and list every artifact row before commands run.", "green"],
+      ["02", "Capture private repo", "Save private visibility proof before moving files or creating issues.", "red"],
+      ["03", "Write clean copy note", "Confirm no workbooks, secrets, certificates, invoices, live keys, or commercial exports.", "red"],
+      ["04", "Save tree and taxonomy", "Capture file tree, labels, milestones, and issue wave before first PR review.", "teal"],
+      ["05", "Paste transcripts", "Save command output or blocker notes under transcript slots.", "blue"],
+      ["06", "Open draft PR", "Link issues, evidence files, proof commands, rollback, reviewers, and closeout.", "green"],
+      ["07", "Record check names", "Use exact GitHub Actions check names before branch protection is applied.", "amber"],
+      ["08", "Close out board", "Mark passed, held, blocked, deferred, no-leak proof, owner signoffs, and next owner.", "green"],
+    ];
+    const qualityRules = [
+      ["No guessed checks", "Blocked", "Branch protection stays blocked until real GitHub Actions check names exist.", "red"],
+      ["No silent placeholders", "Hold", "Any placeholder must name owner, blocker reason, and next command.", "amber"],
+      ["No live data", "Blocked", "Any workbook, source export, secret, certificate, payment key, or production file fails the board.", "red"],
+      ["No orphan artifact", "Hold", "Every screenshot, transcript, and signoff needs a PR link or issue trace.", "blue"],
+      ["One owner per gap", "Required", "Each hold, block, and deferred artifact has an owner lane.", "teal"],
+      ["Closeout always written", "Required", "Passed, deferred, blocked, no-leak statement, rollback, and next owner are recorded.", "green"],
+      ["Review lane aligned", "Required", "Product, platform, backend, security, data, and QA lanes use the v137 review matrix.", "green"],
+      ["Downloadable handoff", "Required", "The JSON handoff can be used as a checklist outside the static demo.", "blue"],
+    ];
+    const acceptanceChecks = [
+      ["Statuses separated", `${statusSummary.length} status groups split ready, hold, deferred, and blocked work.`, "green"],
+      ["Artifacts indexed", `${artifactRows.length} artifacts are normalized into one board.`, "teal"],
+      ["Evidence lanes clear", `${evidenceLanes.length} owner lanes explain who captures which proof.`, "blue"],
+      ["Escalations visible", `${escalationQueue.length} hold and block items are ready for management review.`, "amber"],
+      ["Capture rhythm clear", `${captureSequence.length} steps explain how proof moves from planned to captured.`, "green"],
+      ["Quality rules explicit", `${qualityRules.length} rules prevent guessed checks, silent placeholders, and data leakage.`, "red"],
+      ["Source map ready", `${sourceOfTruthMap.length} source systems define where each proof fact lives.`, "blue"],
+      ["Next handoff ready", "v139 can prepare the private repo handoff email and owner briefing pack.", "teal"],
+    ];
+    return {
+      evidenceBoardScore,
+      downloadHref,
+      boardKpis,
+      statusSummary,
+      evidenceLanes,
+      artifactRows,
+      sourceOfTruthMap,
+      escalationQueue,
+      captureSequence,
+      qualityRules,
+      acceptanceChecks,
+      signalCards: [
+        ["Artifact board", `${evidenceBoardScore}%`, "Readiness to track evidence capture instead of relying on memory.", evidenceBoardScore >= 80 ? "green" : "amber"],
+        ["Ready", readyCount, "Prepared templates and closeout shells.", "green"],
+        ["Hold or deferred", holdCount + deferredCount, "Real GitHub outputs, URLs, screenshots, or signoffs still needed.", "amber"],
+        ["Blocked", blockedCount, "Trust items that need real branch or no-leak proof.", "red"],
+      ],
+      handoff: [
+        "v138 turns the review gate matrix, evidence folder writer, proof exporter, and command runner into one artifact status board.",
+        "The board separates ready templates from real holds, deferred repo-day items, and hard blocks so proof gaps are visible before the private backend repo starts.",
+        "It remains honest: real screenshots, transcripts, issue URLs, workflow names, branch proof, and owner signoffs still require the real private GitHub repository.",
+        "v139 can now prepare the private repo handoff email, owner briefing, upload checklist, and meeting script for the execution day.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoHandoffEmailPackModel(commandModel, evidenceArtifactStatusBoard, backendPrReviewGateMatrix, privateRepoCommandRunnerPack, githubRepoOpeningPacket, firstPrBodyBuilder, productionBackendRepoDecisionMemo) {
+    const ownerMatrix = githubRepoOpeningPacket.ownerMatrix || [];
+    const artifactManifest = githubRepoOpeningPacket.artifactManifest || [];
+    const firstPrStarter = githubRepoOpeningPacket.firstPrStarter || [];
+    const closeoutLedger = githubRepoOpeningPacket.closeoutLedger || [];
+    const statusSummary = evidenceArtifactStatusBoard.statusSummary || [];
+    const sourceOfTruthMap = evidenceArtifactStatusBoard.sourceOfTruthMap || [];
+    const escalationQueue = evidenceArtifactStatusBoard.escalationQueue || [];
+    const captureSequence = evidenceArtifactStatusBoard.captureSequence || [];
+    const qualityRules = evidenceArtifactStatusBoard.qualityRules || [];
+    const reviewerPackets = backendPrReviewGateMatrix.reviewerPackets || [];
+    const prCommentTemplates = backendPrReviewGateMatrix.prCommentTemplates || [];
+    const commandRunbook = privateRepoCommandRunnerPack.commandRunbook || [];
+    const proofOutputs = privateRepoCommandRunnerPack.expectedOutputs || [];
+    const copyReadySections = firstPrBodyBuilder.copyReadySections || [];
+    const decisionOptions = productionBackendRepoDecisionMemo.decisionOptions || [
+      ["Go", "Open controlled private repo session with evidence capture.", "green"],
+      ["Hold", "Wait until owner, proof, or scope questions are closed.", "amber"],
+      ["No-go", "Stop if repo privacy, no-live-data, or no-secret controls are not accepted.", "red"],
+    ];
+    const audienceBriefs = ownerMatrix.length
+      ? ownerMatrix.map(([owner, lane, note, tone]) => [
+          owner,
+          lane,
+          `${note} Receives the repo-day brief, evidence status, approval language, and hold/block expectations.`,
+          tone,
+        ])
+      : [
+          ["Product owner", "Approve alpha scope", "Receives scope, no-live-data boundary, and final go/hold/no-go request.", "green"],
+          ["Platform owner", "Repo and branch rules", "Receives repo creation steps, branch timing, proof capture, and protection holds.", "teal"],
+          ["Backend lead", "Starter shell", "Receives command runbook, first PR body, and transcript expectations.", "blue"],
+          ["Security owner", "No leak proof", "Receives no-secret, no-workbook, commercial privacy, and block language.", "red"],
+          ["Data owner", "Fixture boundary", "Receives generated fixture boundary, no workbook import, and source trace notes.", "amber"],
+          ["QA owner", "Evidence closeout", "Receives artifact board, screenshot list, transcripts, signoffs, and closeout checks.", "green"],
+        ];
+    const emailSections = [
+      ["Subject", "Private repo opening day for PursuitDesk backend alpha", "Clear subject for owner review and action.", "green"],
+      ["Opening line", "We are ready to run a controlled private repo opening session for the PursuitDesk backend alpha.", "States the move without overselling production readiness.", "teal"],
+      ["Purpose", "Create the private backend shell, evidence packet, issue trace, draft PR, and proof rhythm.", "Explains why the session exists.", "blue"],
+      ["Boundary", "No production launch, no live customer workbook, no live billing, no secrets, and no commercial tracker export.", "Locks the safety posture before any approval.", "red"],
+      ["Evidence summary", `${statusSummary.length} artifact status groups and ${artifactManifest.length} opening artifacts are prepared for the session.`, "Connects v138 status board to the communication pack.", "green"],
+      ["Action request", "Please review your lane and reply Go, Hold, No-go, or Defer with reason.", "Turns the email into an explicit decision request.", "amber"],
+      ["Meeting ask", "Use the included agenda to run a 30-minute repo-day briefing before execution.", "Keeps owners aligned before commands run.", "blue"],
+      ["Closeout ask", "At the end, we record passed, deferred, blocked, no-leak proof, rollback status, and next owner.", "Keeps the day from ending with loose proof.", "green"],
+    ];
+    const evidenceAttachmentLinks = [
+      ...artifactManifest.slice(0, 9).map(([file, title, note, tone]) => [file, title, note, tone]),
+      ...sourceOfTruthMap.map(([source, proof, note, tone]) => [source, proof, note, tone]),
+    ];
+    const approvalLanguage = [
+      ["Go", "Owner reply", "Go for controlled private repo opening. Scope is backend alpha shell and evidence packet only; no production launch, live data, or billing capture is approved.", "green"],
+      ["Hold", "Owner reply", "Hold until the listed owner, evidence file, screenshot, command output, issue URL, workflow name, or rollback note is complete.", "amber"],
+      ["No-go", "Owner reply", "No-go if repository privacy, no-secret proof, no-workbook proof, rollback, or owner accountability is not accepted.", "red"],
+      ["Defer", "Owner reply", "Defer with reason, owner, date, and next proof command. Silent deferrals are not accepted.", "blue"],
+      ...prCommentTemplates.slice(0, 4),
+    ];
+    const meetingAgenda = [
+      ["00-05", "Confirm decision boundary", "Private repo only, backend alpha shell only, no live data, no live billing.", "red"],
+      ["05-10", "Review owner lanes", `${audienceBriefs.length} owner lanes confirm go, hold, no-go, or defer responsibilities.`, "green"],
+      ["10-15", "Walk artifact board", `${statusSummary.length} status groups explain ready, hold, deferred, and blocked evidence.`, "blue"],
+      ["15-20", "Review command run", `${commandRunbook.length} command blocks define execution order and transcript capture.`, "teal"],
+      ["20-24", "Review first PR", `${firstPrStarter.length} PR starter lines define scope, proof, rollback, and reviewers.`, "green"],
+      ["24-27", "Review hard stops", `${escalationQueue.length} holds and blocks are visible before execution.`, "red"],
+      ["27-29", "Assign closeout owner", `${closeoutLedger.length} closeout facts must be written before the session ends.`, "amber"],
+      ["29-30", "Confirm next move", "Decide whether to run repo day, hold for missing proof, or defer to another owner.", "blue"],
+    ];
+    const sendChecklist = [
+      ["Recipient lanes", `${audienceBriefs.length} owner lanes named before send.`, "green"],
+      ["Subject clear", "Private repo opening day subject line is explicit.", "teal"],
+      ["Scope locked", "No production launch, live data, live billing, secrets, or commercial tracker export.", "red"],
+      ["Evidence attached", `${evidenceAttachmentLinks.length} evidence links and source-of-truth items listed.`, "blue"],
+      ["Decision language", `${approvalLanguage.length} go, hold, no-go, defer, approve, and block phrases ready.`, "amber"],
+      ["Meeting agenda", `${meetingAgenda.length} agenda rows keep the briefing under control.`, "green"],
+      ["Follow-up rhythm", "Same day closeout, next-day cleanup, weekly management note.", "teal"],
+      ["JSON handoff", "Downloadable handoff can be shared outside the static demo.", "blue"],
+    ];
+    const followUpCadence = [
+      ["T-1 day", "Send briefing", "Owner lanes review scope, artifact board, evidence links, and decision language.", "green"],
+      ["T morning", "Run 30-minute briefing", "Confirm go, hold, no-go, or defer before repo commands begin.", "blue"],
+      ["During session", "Update artifact board", "Move proof from planned to captured, held, deferred, or blocked.", "teal"],
+      ["End of day", "Send closeout note", "Summarize passed, deferred, blocked, no-leak proof, rollback, and next owner.", "amber"],
+      ["T+1 day", "Clean unresolved holds", "Resolve missing URLs, screenshots, transcript output, and owner signoffs.", "red"],
+      ["Weekly review", "Report status", "Add management line to Command Center and Reports room.", "green"],
+    ];
+    const riskDisclaimers = [
+      ["Not production launch", "This session opens a private backend alpha shell only.", "red"],
+      ["No customer workbook", "Source Excel files and live customer exports are not approved for the repo.", "red"],
+      ["No live billing", "No live payment key, invoice sending, customer charging, or subscription capture is approved.", "red"],
+      ["No secret movement", "Any token, certificate, live key, or credential exposure stops the session.", "red"],
+      ["No guessed checks", "Branch protection waits for exact GitHub Actions names.", "amber"],
+      ["No silent placeholders", "Every placeholder names owner, blocker reason, and next proof action.", "blue"],
+      ["No commercial leakage", "Operational tracker examples stay free of value, LOA, agreement, invoice, billing, and negotiation facts.", "red"],
+      ["No unowned closeout", "Closeout must name passed, deferred, blocked, rollback, no-leak proof, and next owner.", "green"],
+    ];
+    const copyReadyEmail = [
+      "Subject: Private repo opening day for PursuitDesk backend alpha",
+      "",
+      "Hi team,",
+      "",
+      "We are ready to run a controlled private repo opening session for the PursuitDesk backend alpha.",
+      "",
+      "Purpose: create the private backend shell, evidence packet, issue trace, draft PR, and proof rhythm. This is not a production launch.",
+      "",
+      "Boundary: no live customer workbook, no production billing, no live secrets, no certificates, no invoices, and no commercial tracker export will enter the repo.",
+      "",
+      `Evidence status: ${evidenceArtifactStatusBoard.evidenceBoardScore}% artifact readiness, ${statusSummary.length} status groups, ${escalationQueue.length} holds or blocks to review before execution.`,
+      "",
+      "Please review your lane and reply with one of: Go, Hold, No-go, or Defer with reason.",
+      "",
+      "Meeting agenda: confirm scope, review owner lanes, walk evidence board, review command run, confirm first PR posture, call out hard stops, assign closeout owner, and confirm next move.",
+      "",
+      "Closeout will record passed, deferred, blocked, no-leak proof, rollback status, owner signoffs, and the next backend owner.",
+      "",
+      "Regards,",
+      "PursuitDesk control owner",
+    ].join("\n");
+    const handoffEmailScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          evidenceArtifactStatusBoard.evidenceBoardScore * 0.22 +
+            backendPrReviewGateMatrix.reviewGateScore * 0.18 +
+            privateRepoCommandRunnerPack.commandRunnerScore * 0.14 +
+            githubRepoOpeningPacket.openingReadinessScore * 0.14 +
+            firstPrBodyBuilder.firstPrReadinessScore * 0.12 +
+            Math.min(100, emailSections.length * 11) * 0.08 +
+            Math.min(100, audienceBriefs.length * 14) * 0.05 +
+            Math.min(100, evidenceAttachmentLinks.length * 7) * 0.04 +
+            Math.min(100, sendChecklist.length * 10) * 0.03 +
+            10,
+        ),
+      ),
+    );
+    const downloadHref = "data/private-repo-handoff-email-pack.json?v=146";
+    const handoffKpis = [
+      ["Email pack", `${handoffEmailScore}%`, "Readiness to send the private repo briefing without improvising.", handoffEmailScore >= 80 ? "green" : "amber"],
+      ["Owner lanes", audienceBriefs.length, "Recipients with clear decision and evidence expectations.", "teal"],
+      ["Evidence links", evidenceAttachmentLinks.length, "Artifacts, source-of-truth items, and proof references to include.", "blue"],
+      ["Escalations", escalationQueue.length, "Holds and blocks that should be visible before anyone says go.", "red"],
+    ];
+    return {
+      handoffEmailScore,
+      downloadHref,
+      handoffKpis,
+      audienceBriefs,
+      emailSections,
+      evidenceAttachmentLinks,
+      approvalLanguage,
+      meetingAgenda,
+      sendChecklist,
+      followUpCadence,
+      riskDisclaimers,
+      decisionOptions,
+      reviewerPackets,
+      proofOutputs,
+      copyReadySections,
+      copyReadyEmail,
+      signalCards: [
+        ["Handoff email", `${handoffEmailScore}%`, "Readiness to brief owners before private repo day.", handoffEmailScore >= 80 ? "green" : "amber"],
+        ["Recipients", audienceBriefs.length, "Owner lanes for product, platform, backend, security, data, and QA.", "teal"],
+        ["Agenda", meetingAgenda.length, "Timed briefing steps for repo-day control.", "blue"],
+        ["Safety locks", riskDisclaimers.length, "Scope and trust warnings before execution.", "red"],
+      ],
+      acceptanceChecks: [
+        ["Audience clear", `${audienceBriefs.length} recipients have lane-specific briefing notes.`, "green"],
+        ["Email sections clear", `${emailSections.length} sections form the briefing email structure.`, "teal"],
+        ["Evidence links ready", `${evidenceAttachmentLinks.length} evidence and source-of-truth links are listed.`, "blue"],
+        ["Decision language ready", `${approvalLanguage.length} go, hold, no-go, defer, approve, and block phrases are prepared.`, "amber"],
+        ["Meeting agenda ready", `${meetingAgenda.length} agenda rows control the briefing.`, "green"],
+        ["Send checklist ready", `${sendChecklist.length} checks prevent unsafe communication.`, "red"],
+        ["Follow-up rhythm ready", `${followUpCadence.length} follow-up moments keep the repo day from drifting.`, "blue"],
+        ["Next handoff ready", "v140 can turn the PR review language into copy-ready GitHub comments.", "teal"],
+      ],
+      handoff: [
+        "v139 turns the artifact status board and PR review matrix into a private repo handoff email pack.",
+        "The pack gives owners a copy-ready email, recipient lanes, evidence links, meeting agenda, approval language, send checklist, follow-up cadence, and safety disclaimers.",
+        "The static demo still cannot send the email or create the real private repo; it now makes the communication package ready for the actual execution day.",
+        "v140 can now prepare copy-ready GitHub PR review comments for approve, hold, request changes, no-leak signoff, and merge closeout.",
+      ],
+    };
+  }
+
+  function buildFirstBackendPrReviewCommentPackModel(commandModel, backendPrReviewGateMatrix, privateRepoHandoffEmailPack, evidenceArtifactStatusBoard, firstPrBodyBuilder, privateRepoCommandRunnerPack) {
+    const reviewerPackets = backendPrReviewGateMatrix.reviewerPackets || [];
+    const prCommentTemplates = backendPrReviewGateMatrix.prCommentTemplates || [];
+    const holdQueue = backendPrReviewGateMatrix.holdQueue || [];
+    const blockRules = backendPrReviewGateMatrix.blockRules || [];
+    const mergeChecks = backendPrReviewGateMatrix.mergeReadinessChecklist || [];
+    const evidenceReviewMap = backendPrReviewGateMatrix.evidenceReviewMap || [];
+    const decisionGates = backendPrReviewGateMatrix.decisionGates || [];
+    const copyReadySections = firstPrBodyBuilder.copyReadySections || [];
+    const runnerAcceptance = privateRepoCommandRunnerPack.acceptanceChecks || [];
+    const reviewCommentLibrary = [
+      [
+        "Opening review note",
+        "PR conversation",
+        "COMMENT",
+        "Starting controlled review. I am checking private repo visibility, no-live-data boundary, issue trace, evidence links, branch protection proof, no-secret proof, rollback, and closeout owner before any approval.",
+        "blue",
+      ],
+      [
+        "Approve lane",
+        "Formal review",
+        "APPROVE",
+        "Approved for my lane. Evidence is linked, issue trace is visible, rollback is clear, and no-live-data/no-secret/no-commercial-export boundaries are preserved.",
+        "green",
+      ],
+      [
+        "Evidence hold",
+        "PR conversation",
+        "COMMENT",
+        "Holding approval until the named evidence file, command output, screenshot, workflow name, issue URL, or owner response is complete and linked in the PR body.",
+        "amber",
+      ],
+      [
+        "Request changes",
+        "Formal review",
+        "REQUEST_CHANGES",
+        "Requesting changes because a trust blocker is present or unresolved: public visibility, secret, workbook, commercial leak, no rollback, unsafe branch posture, missing owner, or missing proof.",
+        "red",
+      ],
+      [
+        "No-leak signoff",
+        "Security note",
+        "COMMENT",
+        "No-leak signoff: no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.",
+        "red",
+      ],
+      [
+        "Deferred proof",
+        "PR conversation",
+        "COMMENT",
+        "Deferred proof is acceptable only when the blocker note names the missing proof, owner, reason, target date, and next command or screenshot needed to close it.",
+        "blue",
+      ],
+      [
+        "Branch protection hold",
+        "PR conversation",
+        "COMMENT",
+        "Holding branch-protection approval until the exact GitHub Actions check names are known from a real workflow run. Required checks must not be guessed.",
+        "amber",
+      ],
+      [
+        "Merge closeout",
+        "PR closeout",
+        "COMMENT",
+        "Merge can proceed only after all reviewer lanes are green, required checks are exact, branch protection is documented, no-leak proof is linked, rollback is written, and next owner is named.",
+        "teal",
+      ],
+    ];
+    const reviewerCommentPackets = reviewerPackets.map(([owner, scope, content, tone]) => [
+      owner,
+      scope,
+      `Reviewer lane: ${owner}\nScope: ${scope}\nDefault action: COMMENT until evidence is linked.\nApprove only for your lane after proof, issue trace, no-leak boundary, and rollback are visible.\nHold with a named owner and proof file when evidence is incomplete.\nRequest changes for trust blockers.\n\nSource packet:\n${content}`,
+      tone,
+    ]);
+    const inlineCommentSnippets = [
+      ["apps/api/src/middleware/tenantGuard.ts", "Tenant guard", "REQUEST_CHANGES", "Please link or implement tenant isolation proof before this route can be considered review-ready.", "red"],
+      ["apps/api/src/middleware/auditEnvelope.ts", "Audit envelope", "COMMENT", "Please confirm request id, actor, tenant id, action, resource id, and denial reason are captured without leaking sensitive payload data.", "blue"],
+      ["apps/api/src/routes/records.ts", "Operational records", "COMMENT", "Please confirm this endpoint only exposes tracker fields and does not return value, LOA, agreement, invoice, billing, or negotiation fields.", "amber"],
+      ["apps/api/src/routes/commercialVault.ts", "Commercial vault", "REQUEST_CHANGES", "Commercial vault access needs admin/commercial permission proof and denied-audit proof before approval.", "red"],
+      ["apps/api/src/routes/import.ts", "Import route", "COMMENT", "Please link import dry-run, quarantine, duplicate detection, and commit gate evidence before review leaves draft.", "blue"],
+      [".github/workflows/ci.yml", "Workflow checks", "COMMENT", "Required check names should come from the first real Actions run; branch protection should wait until those names are exact.", "amber"],
+      ["docs/evidence/no-secret-proof.md", "No-secret proof", "APPROVE", "No-secret proof is acceptable for my lane when it shows no tokens, certificates, keys, or live credentials were committed.", "green"],
+      ["docs/evidence/rollback-note.md", "Rollback note", "COMMENT", "Please confirm rollback names the branch, PR, repo recreation path, credential rotation path, and next owner.", "teal"],
+    ];
+    const reviewDecisionBoard = [
+      ["Draft comment", "COMMENT", "Use while proof files, issue URLs, workflow names, or owner replies are still pending.", "amber"],
+      ["Lane approval", "APPROVE", "Use only for the reviewer lane that has full proof and no unresolved blockers.", "green"],
+      ["Evidence hold", "COMMENT", "Use when the direction is acceptable but the evidence is not yet complete.", "blue"],
+      ["Trust blocker", "REQUEST_CHANGES", "Use when public visibility, secret movement, workbook leakage, commercial leakage, missing rollback, or unsafe branch posture appears.", "red"],
+      ["No-leak signoff", "COMMENT", "Use to document that sensitive data boundaries are preserved.", "teal"],
+      ["Merge closeout", "COMMENT", "Use immediately before merge readiness or before closing the PR as held.", "green"],
+    ];
+    const reviewSendChecklist = [
+      ["PR URL real", "Do not paste final review text until the real private PR URL exists.", "red"],
+      ["Reviewer lane chosen", `${reviewerCommentPackets.length} reviewer lanes are available for lane-specific comments.`, "green"],
+      ["Action type selected", "COMMENT, APPROVE, or REQUEST_CHANGES is chosen before pasting.", "teal"],
+      ["Evidence linked", `${evidenceReviewMap.length} evidence rows can be referenced by the review note.`, "blue"],
+      ["Holds named", `${holdQueue.length} hold reasons name what is missing before approval.`, "amber"],
+      ["Blocks named", `${blockRules.length} trust blockers have request-changes language.`, "red"],
+      ["Merge checklist checked", `${mergeChecks.length} merge checks keep the first backend PR controlled.`, "green"],
+      ["No leak repeated", "Every formal approval repeats no workbook, no secret, no billing, and no commercial export boundaries.", "red"],
+    ];
+    const replyHandlingCadence = [
+      ["Reviewer replies Go", "Mark lane green", "Confirm lane scope, proof link, and next owner before treating it as approval.", "green"],
+      ["Reviewer replies Hold", "Keep PR draft", "Add missing proof, owner, date, and next command to the hold queue.", "amber"],
+      ["Reviewer requests changes", "Stop merge path", "Resolve blocker and update no-leak, rollback, or branch proof before asking again.", "red"],
+      ["Reviewer defers", "Capture reason", "Record deferred owner, date, proof path, and next meeting or command.", "blue"],
+      ["All lanes green", "Run closeout", "Confirm exact checks, branch protection, issue trace, no-leak proof, rollback, and next owner.", "teal"],
+      ["Any lane red", "Do not merge", "Close or keep draft until blocker is removed and documented.", "red"],
+    ];
+    const firstBackendPrCommentScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          backendPrReviewGateMatrix.reviewGateScore * 0.2 +
+            privateRepoHandoffEmailPack.handoffEmailScore * 0.16 +
+            evidenceArtifactStatusBoard.evidenceBoardScore * 0.16 +
+            firstPrBodyBuilder.firstPrReadinessScore * 0.14 +
+            Math.min(100, reviewCommentLibrary.length * 11) * 0.1 +
+            Math.min(100, reviewerCommentPackets.length * 14) * 0.08 +
+            Math.min(100, inlineCommentSnippets.length * 12) * 0.06 +
+            Math.min(100, reviewSendChecklist.length * 10) * 0.05 +
+            Math.min(100, replyHandlingCadence.length * 14) * 0.05 +
+            9,
+        ),
+      ),
+    );
+    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=146";
+    const reviewCommentKpis = [
+      ["Comment pack", `${firstBackendPrCommentScore}%`, "Readiness to paste controlled GitHub review language into the first backend PR.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
+      ["Review actions", reviewCommentLibrary.length, "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.", "teal"],
+      ["Reviewer packets", reviewerCommentPackets.length, "Lane-specific reviewer instructions for product, platform, backend, security, data, and release.", "blue"],
+      ["Inline snippets", inlineCommentSnippets.length, "File-scoped review notes for middleware, routes, workflows, and evidence files.", "amber"],
+    ];
+    const copyReadyReviewText = [
+      "PursuitDesk first backend PR review pack",
+      "",
+      ...reviewCommentLibrary.flatMap(([label, surface, action, comment]) => [
+        `${label} / ${surface} / ${action}`,
+        comment,
+        "",
+      ]),
+    ].join("\n");
+    return {
+      firstBackendPrCommentScore,
+      downloadHref,
+      reviewCommentKpis,
+      reviewCommentLibrary,
+      reviewerCommentPackets,
+      inlineCommentSnippets,
+      reviewDecisionBoard,
+      reviewSendChecklist,
+      replyHandlingCadence,
+      prCommentTemplates,
+      decisionGates,
+      holdQueue,
+      blockRules,
+      mergeChecks,
+      evidenceReviewMap,
+      copyReadySections,
+      runnerAcceptance,
+      copyReadyReviewText,
+      signalCards: [
+        ["Review comments", `${firstBackendPrCommentScore}%`, "Readiness to turn the review gate matrix into GitHub PR comments.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
+        ["Formal actions", reviewCommentLibrary.filter(([, , action]) => action !== "COMMENT").length, "Approve and request-changes comments are separated from neutral comments.", "teal"],
+        ["Holds", holdQueue.length, "Known hold reasons remain visible before approval.", "amber"],
+        ["No-leak controls", blockRules.filter(([, , note]) => note.toLowerCase().includes("secret") || note.toLowerCase().includes("workbook") || note.toLowerCase().includes("commercial")).length, "Trust blockers get explicit request-changes language.", "red"],
+      ],
+      acceptanceChecks: [
+        ["Comment library ready", `${reviewCommentLibrary.length} copy-ready GitHub review comments are prepared.`, "green"],
+        ["Reviewer packets ready", `${reviewerCommentPackets.length} reviewer-specific packets can be pasted into PR threads.`, "teal"],
+        ["Inline snippets ready", `${inlineCommentSnippets.length} file-scoped snippets guide line comments.`, "blue"],
+        ["Decision board ready", `${reviewDecisionBoard.length} review actions separate comment, approval, hold, request changes, no-leak, and closeout.`, "amber"],
+        ["Send checklist ready", `${reviewSendChecklist.length} checks prevent unsafe review submission.`, "red"],
+        ["Reply handling ready", `${replyHandlingCadence.length} reviewer reply outcomes are mapped.`, "green"],
+        ["Review gate linked", `${decisionGates.length} decision gates feed the comment pack.`, "blue"],
+        ["Next handoff ready", "v141 can close the evidence packet after the real PR review session.", "teal"],
+      ],
+      handoff: [
+        "v140 turns the backend PR review gate matrix into copy-ready GitHub PR review comments.",
+        "The pack separates neutral comments, lane approvals, request-changes blockers, no-leak signoffs, evidence holds, branch-protection holds, and merge closeout language.",
+        "The static demo still cannot post to GitHub; it now gives the exact language to paste once the real private PR exists.",
+        "v141 can now prepare the private repo evidence closeout pack for passed, held, blocked, deferred, rollback, no-leak, and next-owner outcomes.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoEvidenceCloseoutPackModel(commandModel, firstBackendPrReviewCommentPack, evidenceArtifactStatusBoard, privateRepoHandoffEmailPack, backendPrReviewGateMatrix, privateRepoCommandRunnerPack) {
+    const reviewCommentLibrary = firstBackendPrReviewCommentPack.reviewCommentLibrary || [];
+    const reviewerCommentPackets = firstBackendPrReviewCommentPack.reviewerCommentPackets || [];
+    const inlineCommentSnippets = firstBackendPrReviewCommentPack.inlineCommentSnippets || [];
+    const replyHandlingCadence = firstBackendPrReviewCommentPack.replyHandlingCadence || [];
+    const holdQueue = backendPrReviewGateMatrix.holdQueue || [];
+    const blockRules = backendPrReviewGateMatrix.blockRules || [];
+    const mergeChecks = backendPrReviewGateMatrix.mergeReadinessChecklist || [];
+    const statusSummary = evidenceArtifactStatusBoard.statusSummary || [];
+    const artifactRows = evidenceArtifactStatusBoard.artifactRows || [];
+    const escalationQueue = evidenceArtifactStatusBoard.escalationQueue || [];
+    const captureSequence = evidenceArtifactStatusBoard.captureSequence || [];
+    const qualityRules = evidenceArtifactStatusBoard.qualityRules || [];
+    const commandOutputs = privateRepoCommandRunnerPack.expectedOutputs || [];
+    const closeoutOutcomeLanes = [
+      ["Passed proof", "Ready to close", "Evidence, comments, issue trace, command output, and owner lane are recorded.", "green"],
+      ["Held proof", "Waiting", "Evidence direction is acceptable but still needs proof file, screenshot, command output, URL, or owner reply.", "amber"],
+      ["Blocked proof", "Stop condition", "Trust blocker requires request changes, redaction, rollback, or owner decision before continuing.", "red"],
+      ["Deferred proof", "Owner dated", "Deferred proof names missing item, owner, target date, next command, and management visibility.", "blue"],
+      ["No-leak proof", "Required", "No workbook, secret, certificate, billing key, invoice, commercial export, or live customer payload is present.", "red"],
+      ["Rollback posture", "Required", "Branch, PR, repo recreation, credential rotation, and data path reset are named.", "amber"],
+      ["Next owner", "Required", "Every unresolved item has one owner lane and one next action.", "teal"],
+      ["Management note", "Required", "Closeout summary is ready for Command Center, Reports, and owner email follow-up.", "green"],
+    ];
+    const evidenceCloseoutRegister = [
+      ...statusSummary.map(([label, value, note, tone]) => [label, value, `${note} Closeout must mark final status after the real repo session.`, tone]),
+      ["Comment decisions", reviewCommentLibrary.length, "Review comments become passed, held, blocked, or deferred outcomes.", "blue"],
+      ["Reviewer lanes", reviewerCommentPackets.length, "Each reviewer lane receives a final go, hold, no-go, defer, or request-changes state.", "teal"],
+      ["Inline snippets", inlineCommentSnippets.length, "File-scoped comments feed exact evidence or code-review closeout.", "amber"],
+      ["Command outputs", commandOutputs.length, "Command outputs become proof links, blocker notes, or deferred rows.", "green"],
+    ];
+    const closeoutDecisionLog = [
+      ["PR opened", "Pending real repo", "Record private PR URL, branch name, author, issue wave, and draft status.", "blue"],
+      ["Review comments posted", "Pending real PR", "Record comment URLs, review action type, reviewer lane, and unresolved threads.", "teal"],
+      ["Approvals received", "Lane by lane", "Record who approved, what scope they approved, and what evidence they relied on.", "green"],
+      ["Holds recorded", `${holdQueue.length} possible holds`, "Record owner, missing proof, target date, and next command for every hold.", "amber"],
+      ["Blocks recorded", `${blockRules.length} possible blocks`, "Record request-changes reason, risk owner, redaction, rollback, and restart decision.", "red"],
+      ["No-leak statement", "Required", "Record explicit no workbook, no secret, no billing, no commercial export statement.", "red"],
+      ["Rollback status", "Required", "Record whether rollback is not needed, ready, used, or blocked.", "amber"],
+      ["Next move", "Required", "Record merge, keep draft, close PR, restart branch, or defer to owner.", "green"],
+    ];
+    const ownerCloseoutQueue = [
+      ["Product owner", "Scope and next value", "Confirm scope, accepted tradeoffs, deferred product questions, and next release decision.", "green"],
+      ["Platform owner", "Repo and branch proof", "Confirm private visibility, check names, branch rules, and protection timing.", "teal"],
+      ["Backend lead", "Code and command proof", "Confirm shell, route files, tests, transcripts, and unresolved implementation holds.", "blue"],
+      ["Security owner", "No-leak and guard proof", "Confirm no secrets, no workbooks, no commercial leakage, tenant guard, audit envelope, and denial proof.", "red"],
+      ["Data owner", "Fixture and import proof", "Confirm fixture boundary, source trace, import dry-run, quarantine, and rollback path.", "amber"],
+      ["QA / Release", "Closeout owner", "Confirm evidence packet, screenshots, comments, check results, rollback, and management note.", "green"],
+    ];
+    const noLeakRollbackChecks = [
+      ["No workbook", "Required", "Source Excel files and live customer exports are absent from the repo and evidence packet.", "red"],
+      ["No secret", "Required", "Tokens, certificates, live keys, credentials, and payment secrets are absent or rotated if exposed.", "red"],
+      ["No commercial export", "Required", "Value, LOA, agreement, invoice, billing, and negotiation facts are not in frontline examples.", "red"],
+      ["No public repo", "Required", "Private visibility proof is linked before any closeout is called passed.", "red"],
+      ["Rollback note", "Required", "Branch, PR, recreate repo, rotate credential, and restart data path instructions are written.", "amber"],
+      ["Check names exact", "Required", "Required checks match real GitHub Actions names, not guessed labels.", "blue"],
+      ["Owner signoff", "Required", "Each lane gives go, hold, no-go, or defer with reason.", "teal"],
+      ["Management record", "Required", "Command Center tracker records passed, held, blocked, deferred, no-leak, rollback, and next owner.", "green"],
+    ];
+    const closeoutTimeline = [
+      ["Before merge", "Freeze evidence state", "Record all comments, approvals, holds, blocks, and missing proof before merge decision.", "blue"],
+      ["At decision", "Write outcome", "Mark merge, keep draft, request changes, close PR, restart branch, or defer.", "green"],
+      ["Same day", "Send closeout", "Send management note with passed, held, blocked, deferred, no-leak, rollback, and next owner.", "teal"],
+      ["Next day", "Clean holds", "Resolve missing links, screenshots, transcript output, or owner replies.", "amber"],
+      ["Weekly review", "Report residual risk", "Bring open holds, blocks, and deferred proof into the operating review.", "red"],
+      ["Next build", "Prepare reply board", "v142 or v143 can capture meeting/reply decisions after the real private repo day.", "blue"],
+    ];
+    const managementSummaryLines = [
+      ["Opening line", "First backend PR review closeout is controlled, but real GitHub execution is still pending.", "green"],
+      ["Passed line", "Passed items require linked evidence, issue trace, reviewer lane, no-leak proof, and rollback visibility.", "teal"],
+      ["Hold line", "Held items remain acceptable only with owner, target date, missing proof, and next command.", "amber"],
+      ["Block line", "Blocked items stop merge until trust failure is removed and documented.", "red"],
+      ["No-leak line", "No workbook, secret, billing, invoice, or commercial export is approved in the first backend PR.", "red"],
+      ["Next-owner line", "Every unresolved item has one named owner and one next action.", "blue"],
+    ];
+    const copyReadyCloseoutNote = [
+      "Subject: PursuitDesk private repo evidence closeout",
+      "",
+      "Closeout status: first backend PR review evidence is ready to be recorded against passed, held, blocked, deferred, no-leak, rollback, and next-owner lanes.",
+      "",
+      `Review comments prepared: ${reviewCommentLibrary.length}. Reviewer lanes: ${reviewerCommentPackets.length}. Evidence status groups: ${statusSummary.length}.`,
+      "",
+      "Passed means evidence is linked, issue trace is visible, reviewer lane is clear, no-leak proof is present, rollback is written, and next owner is named.",
+      "",
+      "Held means the direction is acceptable, but the proof is incomplete and must name owner, missing item, target date, and next command.",
+      "",
+      "Blocked means a trust failure exists: public repo, secret, workbook, commercial leakage, missing rollback, direct main push, missing checks, or no owner accountability.",
+      "",
+      "Deferred means the proof is intentionally moved forward with owner, reason, date, and next evidence action.",
+      "",
+      "No-leak statement: no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.",
+      "",
+      "Rollback statement: close PR, delete branch, recreate repo, rotate credential, or restart data path is named before any merge decision.",
+      "",
+      "Next owner: QA / Release keeps the closeout ledger until all holds, blocks, and deferred proof are resolved.",
+    ].join("\n");
+    const evidenceCloseoutScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          firstBackendPrReviewCommentPack.firstBackendPrCommentScore * 0.2 +
+            evidenceArtifactStatusBoard.evidenceBoardScore * 0.18 +
+            privateRepoHandoffEmailPack.handoffEmailScore * 0.14 +
+            backendPrReviewGateMatrix.reviewGateScore * 0.12 +
+            privateRepoCommandRunnerPack.commandRunnerScore * 0.1 +
+            Math.min(100, closeoutOutcomeLanes.length * 11) * 0.08 +
+            Math.min(100, closeoutDecisionLog.length * 10) * 0.06 +
+            Math.min(100, ownerCloseoutQueue.length * 14) * 0.04 +
+            Math.min(100, noLeakRollbackChecks.length * 10) * 0.04 +
+            Math.min(100, managementSummaryLines.length * 14) * 0.04 +
+            8,
+        ),
+      ),
+    );
+    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=146";
+    const closeoutKpis = [
+      ["Closeout pack", `${evidenceCloseoutScore}%`, "Readiness to close the first private backend PR evidence session without losing proof state.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
+      ["Outcome lanes", closeoutOutcomeLanes.length, "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.", "teal"],
+      ["Owner queue", ownerCloseoutQueue.length, "Product, platform, backend, security, data, and QA closeout ownership.", "blue"],
+      ["Trust checks", noLeakRollbackChecks.length, "No-leak, rollback, exact checks, owner signoff, and management record locks.", "red"],
+    ];
+    return {
+      evidenceCloseoutScore,
+      downloadHref,
+      closeoutKpis,
+      closeoutOutcomeLanes,
+      evidenceCloseoutRegister,
+      closeoutDecisionLog,
+      ownerCloseoutQueue,
+      noLeakRollbackChecks,
+      closeoutTimeline,
+      managementSummaryLines,
+      copyReadyCloseoutNote,
+      reviewCommentLibrary,
+      reviewerCommentPackets,
+      replyHandlingCadence,
+      holdQueue,
+      blockRules,
+      mergeChecks,
+      escalationQueue,
+      captureSequence,
+      qualityRules,
+      signalCards: [
+        ["Evidence closeout", `${evidenceCloseoutScore}%`, "Readiness to convert the review session into a clear management record.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
+        ["Held or blocked", holdQueue.length + blockRules.length, "Known hold and block reasons that cannot disappear at closeout.", "red"],
+        ["Owner lanes", ownerCloseoutQueue.length, "Named lanes responsible for final proof state.", "teal"],
+        ["Management lines", managementSummaryLines.length, "Copy-ready lines for the weekly operating review.", "blue"],
+      ],
+      acceptanceChecks: [
+        ["Outcome lanes ready", `${closeoutOutcomeLanes.length} closeout lanes separate passed, held, blocked, deferred, no-leak, rollback, next owner, and management note.`, "green"],
+        ["Evidence register ready", `${evidenceCloseoutRegister.length} evidence rows can be closed or escalated.`, "teal"],
+        ["Decision log ready", `${closeoutDecisionLog.length} decision rows prevent vague closeout.`, "blue"],
+        ["Owner queue ready", `${ownerCloseoutQueue.length} owner lanes receive final closeout duties.`, "amber"],
+        ["No-leak and rollback ready", `${noLeakRollbackChecks.length} trust checks must pass before merge language is used.`, "red"],
+        ["Timeline ready", `${closeoutTimeline.length} closeout moments keep the repo day from fading away.`, "green"],
+        ["Management summary ready", `${managementSummaryLines.length} lines can move into Reports and Command Center.`, "blue"],
+        ["Next handoff ready", "v142 can prepare the backend repo day meeting pack and v143 can capture real reviewer replies.", "teal"],
+      ],
+      handoff: [
+        "v141 turns review comments, evidence status, handoff email, and PR review gates into a private repo evidence closeout pack.",
+        "The pack separates passed, held, blocked, deferred, no-leak, rollback, next-owner, and management-note outcomes.",
+        "The static demo still cannot read a real GitHub PR; it now defines exactly how the real evidence closeout should be recorded after the private repo session.",
+        "v142 can now prepare the backend repo day meeting pack, while v143 can track real reviewer replies and closeout decisions.",
+      ],
+    };
+  }
+
+  function buildBackendRepoDayMeetingPackModel(commandModel, privateRepoEvidenceCloseoutPack, privateRepoHandoffEmailPack, backendAlphaControlBoard, privateRepoDayOneScript, backendPrReviewGateMatrix, evidenceArtifactStatusBoard, productionBackendRepoDecisionMemo) {
+    const openRecords = commandModel.openRecords || [];
+    const reviewGates = backendPrReviewGateMatrix.decisionGates || [];
+    const holdQueue = backendPrReviewGateMatrix.holdQueue || [];
+    const blockRules = backendPrReviewGateMatrix.blockRules || [];
+    const artifactRows = evidenceArtifactStatusBoard.artifactRows || [];
+    const evidenceCloseoutScore = privateRepoEvidenceCloseoutPack.evidenceCloseoutScore || 0;
+    const handoffScore = privateRepoHandoffEmailPack.handoffEmailScore || 0;
+    const controlScore = backendAlphaControlBoard.controlReadinessScore || backendAlphaControlBoard.alphaControlScore || backendAlphaControlBoard.controlScore || 0;
+    const scriptScore = privateRepoDayOneScript.scriptReadinessScore || privateRepoDayOneScript.dayOneScriptScore || privateRepoDayOneScript.repoDayOneScore || 0;
+    const decisionMemoScore = productionBackendRepoDecisionMemo.approvalScore || productionBackendRepoDecisionMemo.decisionMemoScore || productionBackendRepoDecisionMemo.repoDecisionMemoScore || 0;
+    const meetingAgendaBlocks = [
+      ["Opening and scope", "10 min", "Confirm private repo objective, alpha boundary, non-goals, and stop rules before anyone starts commands.", "green"],
+      ["Repo visibility proof", "8 min", "Confirm private repository, owner access, branch posture, and no public exposure.", "red"],
+      ["Issue wave and first PR", "12 min", "Confirm issue wave, first PR scope, reviewer lanes, branch name, and draft status.", "blue"],
+      ["Evidence walkthrough", "15 min", `Walk through ${artifactRows.length} artifact slots and mark ready, hold, deferred, or blocked.`, "teal"],
+      ["Review gate decisions", "12 min", `Use ${reviewGates.length} review gates to decide approve, hold, request changes, or defer.`, "amber"],
+      ["No-leak and rollback", "10 min", "Repeat no workbook, no secret, no billing, no commercial export, and rollback path before any closeout language.", "red"],
+      ["Owner action capture", "10 min", `Assign every hold or blocker from ${holdQueue.length + blockRules.length} known risks to one owner and one date.`, "amber"],
+      ["Management closeout", "8 min", "Write the final passed, held, blocked, deferred, no-leak, rollback, and next-owner summary.", "green"],
+    ];
+    const attendeeRoles = [
+      ["Product sponsor", "Decision owner", "Approves alpha scope, business value, and go/no-go posture.", "green"],
+      ["Platform owner", "Repo owner", "Shows private repo visibility, branch protection timing, checks, and environment posture.", "teal"],
+      ["Backend lead", "Implementation owner", "Explains route shell, migrations, seed data, tests, and command outputs.", "blue"],
+      ["Security reviewer", "Trust owner", "Checks tenant isolation, no secrets, no workbook, no commercial leakage, and denial audit proof.", "red"],
+      ["Data owner", "Import owner", "Confirms fixture boundary, source trace, quarantine, dry-run, rollback, and reconciliation thinking.", "amber"],
+      ["QA / Release owner", "Evidence owner", "Captures screenshots, transcripts, PR notes, issue links, signoffs, and closeout ledger.", "green"],
+      ["Billing owner", "Commercial privacy", "Confirms billing is test-mode only and no invoice, payment, or commercial export is exposed.", "amber"],
+      ["Meeting scribe", "Record keeper", "Writes decisions, action owners, due dates, parked questions, and final management note.", "blue"],
+    ];
+    const decisionCaptureBoard = [
+      ["Create or keep repo", "Decision", "Confirm repo name, private visibility, owner, and whether the day proceeds.", "red"],
+      ["Open issue wave", "Decision", "Confirm which issues are opened now, deferred, or parked for later sprint work.", "blue"],
+      ["Open first PR", "Decision", "Confirm draft PR scope, reviewers, evidence links, rollback note, and no-leak statement.", "teal"],
+      ["Approve lane", "Decision", "Record each reviewer lane as go, hold, request changes, defer, or no-go.", "green"],
+      ["Resolve holds", "Action", "Assign each hold to owner, proof item, command, target date, and follow-up point.", "amber"],
+      ["Stop on blocker", "Action", "Record request-changes reason, redaction, rollback, owner, and restart path.", "red"],
+      ["Close meeting", "Record", "Capture passed, held, blocked, deferred, no-leak, rollback, and next owner.", "green"],
+      ["Next build input", "Queue", "Feed replies and real outcomes into the v143 reply capture board.", "blue"],
+    ];
+    const actionFollowupQueue = [
+      ["Repo proof", "Platform owner", "Attach private visibility screenshot, branch name, check names, and branch-protection timing.", "red"],
+      ["Issue URLs", "Product sponsor", "Paste real issue URLs into first PR body and closeout ledger.", "blue"],
+      ["Command transcript", "Backend lead", "Attach install, lint, test, migration, seed, smoke, and audit command outputs.", "teal"],
+      ["No-leak proof", "Security reviewer", "Confirm no workbook, secrets, billing export, invoice, or commercial tracker value moved.", "red"],
+      ["Fixture proof", "Data owner", "Attach fixture boundary, import dry-run, quarantine, duplicate, and rollback notes.", "amber"],
+      ["Review comments", "QA / Release owner", "Post comments or holds using the PR review comment pack and record thread URLs.", "green"],
+      ["Meeting minutes", "Meeting scribe", "Publish decision log, attendance, open holds, blockers, and management closeout summary.", "blue"],
+      ["Follow-up review", "Product sponsor", "Schedule the next checkpoint for held, blocked, or deferred evidence.", "amber"],
+    ];
+    const meetingEvidenceArtifacts = [
+      ["Attendance log", "Required", "Names, role, organization lane, attendance status, and decision authority.", "green"],
+      ["Decision log", "Required", "Every go, hold, request changes, defer, no-go, and closeout decision is recorded.", "blue"],
+      ["Action register", "Required", "Owner, action, due date, evidence file, risk level, and follow-up status.", "amber"],
+      ["PR review notes", "Required", "Real PR URL, review comments, line comments, requested changes, and approvals.", "teal"],
+      ["No-leak signoff", "Required", "No workbook, secret, billing, invoice, or commercial export statement.", "red"],
+      ["Rollback note", "Required", "Branch, PR, repo recreation, credential rotation, and data path reset.", "red"],
+      ["Evidence index", "Required", "Screenshots, transcripts, issue URLs, workflow names, branch proof, and signoff files.", "green"],
+      ["Management summary", "Required", "Short report line for passed, held, blocked, deferred, next owner, and next build.", "blue"],
+    ];
+    const riskParkingLot = [
+      ["Scope creep", "Park", "Anything beyond first backend PR alpha is moved into a later issue or decision memo.", "amber"],
+      ["Unknown check names", "Hold", "Branch protection waits until real GitHub Actions check names exist.", "blue"],
+      ["Commercial leakage", "Block", "Any value, invoice, LOA, agreement, billing, or negotiation leak stops the session.", "red"],
+      ["Credential exposure", "Block", "Any token, key, certificate, or live secret exposure triggers rotation and rollback.", "red"],
+      ["Unowned action", "Hold", "No action leaves the meeting without one named owner and one due date.", "amber"],
+      ["Unclear approval", "Park", "Any vague approval is converted into lane-specific go, hold, defer, or request changes.", "teal"],
+    ];
+    const meetingTimeline = [
+      ["Before meeting", "Send pack", "Send agenda, attendee roles, evidence links, decision scope, and stop rules.", "blue"],
+      ["First 15 min", "Confirm safety", "Confirm private visibility, no-leak boundary, and rollback posture before commands.", "red"],
+      ["Middle block", "Review evidence", "Walk issue wave, PR body, command outputs, artifact board, and review gates.", "teal"],
+      ["Decision block", "Capture outcomes", "Record go, hold, request changes, defer, no-go, and owner actions.", "green"],
+      ["Closeout", "Publish minutes", "Send management summary and action queue the same day.", "amber"],
+      ["Next day", "Chase proof", "Resolve holds, blockers, deferred evidence, and real reviewer replies.", "blue"],
+    ];
+    const managementBriefLines = [
+      ["Meeting purpose", "The private backend repo day is controlled around first PR evidence, not general development discussion.", "green"],
+      ["Decision standard", "No pass is accepted without evidence, issue trace, no-leak proof, rollback visibility, and owner.", "teal"],
+      ["Risk standard", "Public repo, secret movement, workbook leakage, commercial leakage, missing rollback, or missing owner blocks closeout.", "red"],
+      ["Action standard", "Every hold or deferred item has owner, proof item, next command, target date, and review path.", "amber"],
+      ["Output standard", "Meeting minutes produce attendance, decision log, action register, PR note links, and management summary.", "blue"],
+      ["Next build", "Real reviewer replies and outcomes feed the v143 reply capture board.", "green"],
+    ];
+    const copyReadyMeetingScript = [
+      "PursuitDesk backend repo day meeting script",
+      "",
+      "1. Open by confirming purpose: create controlled evidence for the first private backend PR, not to expand the product scope.",
+      "2. Confirm private repo visibility before discussing files, commands, screenshots, or issue URLs.",
+      "3. Restate the no-leak boundary: no workbook, no production secret, no payment key, no billing export, no invoice, and no commercial tracker values.",
+      "4. Walk the issue wave, first PR body, command runner pack, artifact board, and review gate matrix.",
+      "5. Ask each reviewer lane for go, hold, request changes, defer, or no-go. Do not accept vague approval.",
+      "6. For every hold, capture owner, missing proof, target date, next command, and evidence file name.",
+      "7. For every blocker, stop the merge path and record redaction, rollback, credential rotation, or restart decision.",
+      "8. Close with the management summary: passed, held, blocked, deferred, no-leak, rollback, next owner, and next meeting input.",
+    ].join("\n");
+    const backendRepoDayMeetingScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          evidenceCloseoutScore * 0.22 +
+            handoffScore * 0.14 +
+            controlScore * 0.12 +
+            scriptScore * 0.1 +
+            decisionMemoScore * 0.08 +
+            Math.min(100, meetingAgendaBlocks.length * 12) * 0.08 +
+            Math.min(100, attendeeRoles.length * 11) * 0.07 +
+            Math.min(100, decisionCaptureBoard.length * 12) * 0.07 +
+            Math.min(100, actionFollowupQueue.length * 12) * 0.05 +
+            Math.min(100, meetingEvidenceArtifacts.length * 12) * 0.04 +
+            6,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=146";
+    return {
+      backendRepoDayMeetingScore,
+      downloadHref,
+      meetingKpis: [
+        ["Meeting pack", `${backendRepoDayMeetingScore}%`, "Readiness to run the first private repo day as a controlled evidence meeting.", backendRepoDayMeetingScore >= 80 ? "green" : "amber"],
+        ["Agenda blocks", meetingAgendaBlocks.length, "Time-boxed blocks for scope, proof, review gates, actions, and closeout.", "teal"],
+        ["Attendee roles", attendeeRoles.length, "Decision, repo, backend, security, data, QA, billing, and scribe ownership.", "blue"],
+        ["Evidence outputs", meetingEvidenceArtifacts.length, "Attendance, decisions, actions, PR notes, no-leak, rollback, evidence index, and management summary.", "red"],
+      ],
+      meetingAgendaBlocks,
+      attendeeRoles,
+      decisionCaptureBoard,
+      actionFollowupQueue,
+      meetingEvidenceArtifacts,
+      riskParkingLot,
+      meetingTimeline,
+      managementBriefLines,
+      copyReadyMeetingScript,
+      sourceReadiness: [
+        ["Evidence closeout", `${evidenceCloseoutScore}%`, "v141 closeout lanes feed the meeting minutes.", "green"],
+        ["Handoff email", `${handoffScore}%`, "Recipient lanes and briefing agenda seed the meeting invite.", "teal"],
+        ["Control board", `${controlScore}%`, "Repo status, blockers, evidence health, and action queue orient the meeting.", "blue"],
+        ["Open work", openRecords.length, "Open pursuit and project records remain operational context, not meeting scope.", "amber"],
+      ],
+      signalCards: [
+        ["Meeting readiness", `${backendRepoDayMeetingScore}%`, "Readiness to run the private backend repo day without losing decisions.", backendRepoDayMeetingScore >= 80 ? "green" : "amber"],
+        ["Decisions", decisionCaptureBoard.length, "Decision rows for repo, issue wave, PR, review lanes, holds, blockers, closeout, and next build.", "teal"],
+        ["Actions", actionFollowupQueue.length, "Owner follow-ups that become the post-meeting work queue.", "blue"],
+        ["Parking lot", riskParkingLot.length, "Risks that must be parked, held, or blocked cleanly.", "red"],
+      ],
+      acceptanceChecks: [
+        ["Agenda ready", `${meetingAgendaBlocks.length} blocks cover opening, proof, review, action capture, and closeout.`, "green"],
+        ["Attendance ready", `${attendeeRoles.length} roles name who can decide, review, own evidence, and write minutes.`, "teal"],
+        ["Decision capture ready", `${decisionCaptureBoard.length} decision rows prevent vague meeting outcomes.`, "blue"],
+        ["Action queue ready", `${actionFollowupQueue.length} owner actions are ready for post-meeting follow-up.`, "amber"],
+        ["Evidence outputs ready", `${meetingEvidenceArtifacts.length} artifacts define what must exist after the meeting.`, "green"],
+        ["Risk parking ready", `${riskParkingLot.length} parking lot rows keep blockers from disappearing.`, "red"],
+        ["Meeting script ready", "Copy-ready facilitator script keeps the meeting focused on private repo proof.", "teal"],
+        ["Next handoff ready", "v143 can capture real reviewer replies, decisions, holds, and requested changes after the meeting.", "blue"],
+      ],
+      handoff: [
+        "v142 turns the private repo closeout pack into a meeting-ready operating packet.",
+        "The pack names the agenda, attendee roles, decision rows, owner actions, risk parking lot, evidence outputs, and management summary.",
+        "The static demo still cannot run the meeting or connect to GitHub; it now defines what the real repo day should produce.",
+        "v143 can now become the Private Repo Reply Capture Board for real reviewer replies, holds, requested changes, and approval outcomes.",
+      ],
+    };
+  }
+
+  function buildPrivateRepoReplyCaptureBoardModel(commandModel, backendRepoDayMeetingPack, privateRepoEvidenceCloseoutPack, firstBackendPrReviewCommentPack, backendPrReviewGateMatrix, evidenceArtifactStatusBoard, privateRepoHandoffEmailPack) {
+    const openRecords = commandModel.openRecords || [];
+    const meetingScore = backendRepoDayMeetingPack.backendRepoDayMeetingScore || 0;
+    const evidenceCloseoutScore = privateRepoEvidenceCloseoutPack.evidenceCloseoutScore || 0;
+    const commentScore = firstBackendPrReviewCommentPack.firstBackendPrCommentScore || 0;
+    const reviewGateScore = backendPrReviewGateMatrix.reviewGateScore || 0;
+    const evidenceBoardScore = evidenceArtifactStatusBoard.evidenceBoardScore || 0;
+    const handoffScore = privateRepoHandoffEmailPack.handoffEmailScore || 0;
+    const reviewerPackets = firstBackendPrReviewCommentPack.reviewerCommentPackets || [];
+    const replyCadence = firstBackendPrReviewCommentPack.replyHandlingCadence || [];
+    const holdQueue = backendPrReviewGateMatrix.holdQueue || [];
+    const blockRules = backendPrReviewGateMatrix.blockRules || [];
+    const ownerQueue = privateRepoEvidenceCloseoutPack.ownerCloseoutQueue || [];
+    const reviewerReplyLanes = [
+      ["Product sponsor", "Waiting reply", "Scope, non-goals, issue wave, and next release decision need go, hold, defer, or no-go.", "green"],
+      ["Platform owner", "Waiting reply", "Repo privacy, branch posture, check names, protected environment, and branch-protection timing need confirmation.", "teal"],
+      ["Backend lead", "Waiting reply", "Route shell, migrations, command output, seed path, and unresolved implementation holds need response.", "blue"],
+      ["Security reviewer", "Waiting reply", "Tenant guard, no-secret proof, no-workbook proof, no-commercial-leak proof, and denial audit evidence need signoff.", "red"],
+      ["Data owner", "Waiting reply", "Fixture boundary, import dry-run, quarantine, duplicate handling, rollback, and reconciliation need response.", "amber"],
+      ["QA / Release", "Waiting reply", "Evidence index, screenshots, transcripts, PR notes, issue links, and closeout ledger need review state.", "green"],
+      ["Billing owner", "Waiting reply", "Test-mode billing boundary, no invoice, no payment key, and no commercial export need confirmation.", "amber"],
+      ["Meeting scribe", "Waiting reply", "Attendance, decision log, action register, parked questions, and management summary need publishing status.", "blue"],
+    ];
+    const replyStateBoard = [
+      ["Approved", "Go", "Reviewer lane is approved with evidence, issue trace, no-leak proof, rollback note, and next owner.", "green"],
+      ["Commented", "Track", "Neutral comment exists but does not approve merge; record thread URL and follow-up status.", "blue"],
+      ["Held", "Owner needed", "Direction is acceptable but missing proof, owner, target date, or next command is still open.", "amber"],
+      ["Requested changes", "Stop merge", "Trust, privacy, test, tenant, audit, branch, or rollback evidence failed.", "red"],
+      ["Deferred proof", "Date needed", "Proof is intentionally moved forward with owner, reason, target date, and next evidence action.", "blue"],
+      ["Blocked", "No-go", "Public repo, secret, workbook, commercial leakage, missing rollback, or direct-main risk blocks closeout.", "red"],
+      ["No response", "Chase", "Reviewer lane has not replied; meeting scribe or owner must chase before closeout.", "amber"],
+      ["Merge-ready", "Final gate", "All lanes are green, required checks are exact, no-leak is repeated, rollback is visible, and next owner is named.", "teal"],
+    ];
+    const threadCaptureChecklist = [
+      ["PR URL", "Required", "Every reply row links to the real private pull request.", "red"],
+      ["Thread URL", "Required", "Every comment, hold, approval, or request-changes row links to a thread or review.", "blue"],
+      ["Reviewer handle", "Required", "GitHub handle and reviewer lane are recorded without guessing.", "teal"],
+      ["Action type", "Required", "COMMENT, APPROVE, REQUEST_CHANGES, hold, defer, or no-response is explicit.", "green"],
+      ["Evidence link", "Required", "Screenshot, transcript, issue, branch proof, signoff, or rollback note is linked.", "amber"],
+      ["Owner", "Required", "Every hold, blocker, or deferred proof row has one named owner.", "red"],
+      ["Due date", "Required", "Every unresolved reply has a due date or next meeting checkpoint.", "amber"],
+      ["Closeout state", "Required", "Each row ends as open, resolved, deferred, blocked, accepted, or merge-ready.", "green"],
+    ];
+    const requestedChangesResolver = [
+      ["Commercial leakage", "Security owner", "Remove value, invoice, LOA, agreement, billing, and negotiation content; record no-leak proof.", "red"],
+      ["Secret exposure", "Platform owner", "Rotate credential, remove secret, attach proof, and update rollback note.", "red"],
+      ["Tenant guard gap", "Backend lead", "Add or prove tenant isolation middleware and denied audit event.", "amber"],
+      ["Missing checks", "Platform owner", "Run workflow, capture exact check names, then update branch protection.", "blue"],
+      ["Missing transcript", "QA / Release", "Attach command output for install, lint, test, migration, seed, smoke, and audit.", "teal"],
+      ["Rollback unclear", "Data owner", "Write branch, PR, repo recreation, credential rotation, and data path reset instructions.", "amber"],
+    ];
+    const approvalReadinessBoard = [
+      ["Product lane", "Needs reply", "Scope approved and non-goals repeated.", "green"],
+      ["Platform lane", "Needs reply", "Repo privacy, branch rules, and check names confirmed.", "teal"],
+      ["Backend lane", "Needs reply", "Routes, migrations, tests, and command outputs linked.", "blue"],
+      ["Security lane", "Needs reply", "No secrets, no workbooks, no commercial leakage, tenant guard, and audit denial proof linked.", "red"],
+      ["Data lane", "Needs reply", "Fixture boundary, dry-run, quarantine, reconciliation, and rollback linked.", "amber"],
+      ["QA lane", "Needs reply", "Evidence folder, screenshots, transcripts, issue URLs, and closeout ledger complete.", "green"],
+      ["Billing lane", "Needs reply", "Test-mode only, no invoice, no payment key, no commercial export confirmed.", "amber"],
+      ["Release lane", "Needs reply", "Merge gate, rollback, next owner, and management summary confirmed.", "blue"],
+    ];
+    const mergeReadinessLanes = [
+      ["All reviewer lanes green", "Required", "No merge-ready state until every reviewer lane is go or intentionally deferred with owner.", "green"],
+      ["No request changes open", "Required", "Every requested-change thread is resolved, accepted, or blocked with no-go decision.", "red"],
+      ["No-leak repeated", "Required", "No workbook, no secret, no billing, no invoice, no commercial export statement is present.", "red"],
+      ["Required checks exact", "Required", "Required GitHub Actions names come from real workflow output, not guessed labels.", "blue"],
+      ["Rollback visible", "Required", "Rollback path is linked in PR body, evidence folder, and management closeout.", "amber"],
+      ["Evidence index complete", "Required", "Screenshots, transcripts, issue URLs, branch proof, signoffs, and closeout note are linked.", "teal"],
+      ["Owner queue closed", "Required", "Every hold or deferred proof has owner, due date, next command, and follow-up path.", "amber"],
+      ["Management note ready", "Required", "Passed, held, blocked, deferred, no-leak, rollback, next owner, and next build are summarized.", "green"],
+    ];
+    const replySlaCadence = [
+      ["Same day", "Capture replies", "Record any approve, comment, hold, request changes, defer, no-response, or blocker before the session ends.", "green"],
+      ["Next morning", "Chase no response", "Ping reviewer lane owners that have no response or vague approval.", "amber"],
+      ["48 hours", "Resolve holds", "Attach proof, update owner, or convert hold to request changes or defer.", "blue"],
+      ["Before merge", "Reconfirm no-leak", "Repeat no workbook, no secret, no billing, no invoice, and no commercial export.", "red"],
+      ["Weekly review", "Report open rows", "Bring unresolved reply rows into Command Center and Reports.", "teal"],
+      ["Next build", "Export minutes", "v144 or v145 can print closeout and minutes once real replies exist.", "green"],
+    ];
+    const managementReplyBrief = [
+      ["Reply status", "Reviewer replies are tracked by lane, action type, evidence link, owner, due date, and closeout state.", "green"],
+      ["Approval rule", "Approval is valid only with evidence, issue trace, no-leak proof, rollback note, and next owner.", "teal"],
+      ["Hold rule", "Hold remains acceptable only with missing proof, owner, date, and next command.", "amber"],
+      ["Request-changes rule", "Request changes stops merge until trust failure is removed and documented.", "red"],
+      ["No-response rule", "No response is a management action, not silence; owner must chase or defer.", "blue"],
+      ["Next build", "Reply capture becomes the evidence source for exportable closeout and meeting minutes.", "green"],
+    ];
+    const copyReadyReplyLog = [
+      "PursuitDesk private repo reply capture log",
+      "",
+      "PR URL:",
+      "Reviewer lane:",
+      "Reviewer handle:",
+      "Reply state: Approved / Commented / Held / Requested changes / Deferred proof / Blocked / No response / Merge-ready",
+      "Thread URL:",
+      "Evidence link:",
+      "Owner:",
+      "Due date:",
+      "Closeout state:",
+      "",
+      "No-leak reminder: no workbook, no production secret, no payment key, no billing export, no invoice, and no commercial tracker values are approved in this reply.",
+      "Rollback reminder: branch, PR, repo recreation, credential rotation, and data path reset stay visible until final merge or no-go.",
+    ].join("\n");
+    const replyCaptureScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          meetingScore * 0.18 +
+            evidenceCloseoutScore * 0.16 +
+            commentScore * 0.14 +
+            reviewGateScore * 0.12 +
+            evidenceBoardScore * 0.1 +
+            handoffScore * 0.08 +
+            Math.min(100, reviewerReplyLanes.length * 12) * 0.06 +
+            Math.min(100, replyStateBoard.length * 12) * 0.05 +
+            Math.min(100, threadCaptureChecklist.length * 12) * 0.04 +
+            Math.min(100, requestedChangesResolver.length * 14) * 0.03 +
+            Math.min(100, mergeReadinessLanes.length * 12) * 0.03 +
+            5,
+        ),
+      ),
+    );
+    const downloadHref = "data/private-repo-reply-capture-board.json?v=146";
+    return {
+      replyCaptureScore,
+      downloadHref,
+      replyKpis: [
+        ["Reply capture", `${replyCaptureScore}%`, "Readiness to turn real reviewer replies into controlled outcomes.", replyCaptureScore >= 80 ? "green" : "amber"],
+        ["Reviewer lanes", reviewerReplyLanes.length, "Product, platform, backend, security, data, QA, billing, and scribe reply lanes.", "teal"],
+        ["Reply states", replyStateBoard.length, "Approved, commented, held, requested changes, deferred, blocked, no response, and merge-ready states.", "blue"],
+        ["Merge gates", mergeReadinessLanes.length, "Required conditions before any merge-ready status is accepted.", "red"],
+      ],
+      reviewerReplyLanes,
+      replyStateBoard,
+      threadCaptureChecklist,
+      requestedChangesResolver,
+      approvalReadinessBoard,
+      mergeReadinessLanes,
+      replySlaCadence,
+      managementReplyBrief,
+      copyReadyReplyLog,
+      sourceReadiness: [
+        ["Meeting pack", `${meetingScore}%`, "v142 agenda and action queue create the reply capture rhythm.", "green"],
+        ["Evidence closeout", `${evidenceCloseoutScore}%`, "v141 closeout lanes become reply outcomes.", "teal"],
+        ["Review comments", `${commentScore}%`, "v140 comment templates become thread capture rows.", "blue"],
+        ["Open work", openRecords.length, "Operational context remains visible while reply capture stays repo-specific.", "amber"],
+      ],
+      signalCards: [
+        ["Reply capture", `${replyCaptureScore}%`, "Readiness to record real private repo replies after the meeting.", replyCaptureScore >= 80 ? "green" : "amber"],
+        ["Holds and blocks", holdQueue.length + blockRules.length, "Known hold and block reasons feed requested-change resolution.", "red"],
+        ["Reviewer packets", reviewerPackets.length, "Prepared reviewer packets become reply lanes.", "teal"],
+        ["Cadence", replyCadence.length + replySlaCadence.length, "Reply-handling and follow-up rhythms are mapped.", "blue"],
+      ],
+      acceptanceChecks: [
+        ["Reply lanes ready", `${reviewerReplyLanes.length} reviewer lanes can capture real replies.`, "green"],
+        ["Reply states ready", `${replyStateBoard.length} reply states keep approval, hold, defer, and block language precise.`, "teal"],
+        ["Thread capture ready", `${threadCaptureChecklist.length} fields prevent vague GitHub reply records.`, "blue"],
+        ["Request-changes resolver ready", `${requestedChangesResolver.length} resolver rows convert blockers into owner work.`, "red"],
+        ["Approval readiness ready", `${approvalReadinessBoard.length} lane checks define when approval can be trusted.`, "green"],
+        ["Merge readiness ready", `${mergeReadinessLanes.length} merge gates must pass before closeout.`, "amber"],
+        ["SLA cadence ready", `${replySlaCadence.length} follow-up moments prevent silence after the meeting.`, "blue"],
+        ["Next handoff ready", "v144 can turn captured replies into a printable closeout or v145 can generate minutes.", "teal"],
+      ],
+      handoff: [
+        "v143 turns the backend repo day meeting pack into a reply capture board.",
+        "The board separates approved, commented, held, requested-changes, deferred, blocked, no-response, and merge-ready states.",
+        "The static demo still cannot read GitHub replies; it now defines exactly how the real replies should be recorded after the private repo meeting.",
+        "v144 can now prepare an evidence closeout PDF/export plan, while v145 can generate backend meeting minutes from captured replies.",
+      ],
+    };
+  }
+
+  function buildEvidenceCloseoutPdfExportPlanModel(commandModel, privateRepoReplyCaptureBoard, privateRepoEvidenceCloseoutPack, backendRepoDayMeetingPack, evidenceArtifactStatusBoard, firstBackendPrReviewCommentPack, backendPrReviewGateMatrix) {
+    const openRecords = commandModel.openRecords || [];
+    const replyCaptureScore = privateRepoReplyCaptureBoard.replyCaptureScore || 0;
+    const evidenceCloseoutScore = privateRepoEvidenceCloseoutPack.evidenceCloseoutScore || 0;
+    const backendRepoDayMeetingScore = backendRepoDayMeetingPack.backendRepoDayMeetingScore || 0;
+    const evidenceBoardScore = evidenceArtifactStatusBoard.evidenceBoardScore || 0;
+    const firstBackendPrCommentScore = firstBackendPrReviewCommentPack.firstBackendPrCommentScore || 0;
+    const reviewGateScore = backendPrReviewGateMatrix.reviewGateScore || 0;
+    const pageBlueprint = [
+      ["Cover", "Export identity", "Version, private repo placeholder, PR placeholder, date, sponsor, and confidentiality note.", "green"],
+      ["Executive summary", "Management view", "Passed, held, blocked, deferred, no-leak, rollback, and next owner in one page.", "teal"],
+      ["Decision register", "Evidence decisions", "Approval, hold, request changes, defer, no-response, and merge-ready decisions are grouped.", "blue"],
+      ["Reviewer reply ledger", "Thread proof", "Reviewer lane, handle, reply state, thread URL, owner, due date, and closeout status.", "amber"],
+      ["Evidence index", "Artifact map", "Screenshots, transcripts, issue links, PR notes, branch proof, and signoff records.", "green"],
+      ["No-leak proof", "Privacy page", "No workbook, no secret, no billing, no invoice, and no commercial tracker values are repeated.", "red"],
+      ["Rollback page", "Recovery page", "Branch rollback, repo recreation, credential rotation, and seed/data reset path stay visible.", "amber"],
+      ["Owner action appendix", "Follow-up work", "Open holds, deferred proof, blockers, target dates, next commands, and meeting handoff.", "blue"],
+    ];
+    const printableSections = [
+      ["Scope and non-goals", "Defines what the first backend closeout proves and what remains intentionally outside scope.", "green"],
+      ["Passed/Held/Blocked/Deferred summary", "Separates clean approvals from owner work, hard stops, and dated deferrals.", "teal"],
+      ["Approval lanes", "Shows product, platform, backend, security, data, QA, billing, and release lane outcomes.", "green"],
+      ["Requested changes", "Records stop-merge items with owner, thread, evidence, due date, and resolver status.", "red"],
+      ["Evidence files", "Names the proof files that must exist before the packet is management-ready.", "blue"],
+      ["Owner queue", "Lists every unresolved owner action without mixing it into the operational tracker.", "amber"],
+      ["Management note", "Gives leadership a short narrative they can paste into review notes.", "teal"],
+      ["Next build handoff", "Links the PDF plan to the next minutes exporter and archive control board.", "blue"],
+    ];
+    const redactionChecks = [
+      ["No workbook", "Source Excel files are excluded from the management export.", "red"],
+      ["No secrets", "Environment variables, tokens, keys, and credentials are never printed.", "red"],
+      ["No payment keys", "Billing test mode can be described without publishing payment credentials.", "red"],
+      ["No invoices", "Invoices, tax documents, and customer billing exports stay outside the closeout packet.", "amber"],
+      ["No commercial values", "Operational closeout avoids tender values unless the authorized insight page exports them.", "amber"],
+      ["No live customer payload", "Demo and seed records are allowed; live customer data requires a separate approval.", "blue"],
+      ["Redacted URLs", "Private URLs are represented as placeholders unless the recipient has repo access.", "teal"],
+      ["Access classification", "Every page carries internal, sponsor, platform, or security review classification.", "green"],
+    ];
+    const exportQaChecklist = [
+      ["JSON source matched", "The downloadable JSON version matches the UI section and build tracker.", "green"],
+      ["Counts matched", "Page, section, redaction, distribution, and acceptance counts are validated.", "teal"],
+      ["No stale cache", "App, data, and asset links use the current version query.", "blue"],
+      ["Links checked", "Every referenced packet has a placeholder or planned evidence URL.", "amber"],
+      ["Print layout checked", "The eventual PDF route should be checked at desktop, tablet, and mobile widths.", "green"],
+      ["Mobile fallback", "The printable plan remains readable when cards stack into one column.", "blue"],
+      ["Owner reviewed", "Sponsor, platform, backend, security, data, and QA owners review distribution.", "amber"],
+      ["Archive name set", "Filename, date, version, PR placeholder, and owner are set before release.", "teal"],
+    ];
+    const distributionMatrix = [
+      ["Sponsor", "Receives executive summary, decision register, owner queue, and management note.", "green"],
+      ["Platform", "Receives branch, workflow, environment, required checks, and rollback proof.", "teal"],
+      ["Backend", "Receives route, migration, test, command transcript, and unresolved implementation holds.", "blue"],
+      ["Security", "Receives tenant guard, no-secret, no-workbook, no-commercial-leak, and audit denial proof.", "red"],
+      ["Data", "Receives seed boundary, dry-run, quarantine, reconciliation, duplicate, and rollback proof.", "amber"],
+      ["QA / Release", "Receives evidence index, screenshots, transcripts, signoffs, archive name, and release gate.", "green"],
+    ];
+    const archiveNamingRules = [
+      ["Filename", "pursuitdesk-closeout-v144-{repo}-{pr}.pdf", "green"],
+      ["Version", "Use the build number and closeout packet version together.", "teal"],
+      ["Date", "Use ISO date so exports sort correctly in a shared folder.", "blue"],
+      ["PR number placeholder", "Keep PR number blank until the real private PR exists.", "amber"],
+      ["Repo name placeholder", "Use private backend repo slug only after repo creation.", "amber"],
+      ["Owner", "One accountable owner signs the PDF export before archive.", "red"],
+    ];
+    const managementCloseoutLines = [
+      ["Opening line", "The first private backend closeout has a PDF-ready export plan tied to captured replies.", "green"],
+      ["Decision line", "Approvals, holds, blockers, deferrals, no responses, and merge readiness are separated.", "teal"],
+      ["Evidence line", "Screenshots, transcripts, issue URLs, PR notes, and signoffs must be attached before final export.", "blue"],
+      ["Privacy line", "The packet repeats no workbook, no secret, no billing, no invoice, and no commercial tracker values.", "red"],
+      ["Owner line", "Every unresolved item has owner, due date, next command, and closeout state.", "amber"],
+      ["Next line", "The next build can turn this plan into meeting minutes or an archive control board.", "green"],
+    ];
+    const copyReadyExportBrief = [
+      "PursuitDesk evidence closeout PDF export plan",
+      "",
+      "Export purpose: create a management-ready closeout packet from captured private repo replies.",
+      "Source packets: reply capture board, evidence closeout pack, repo-day meeting pack, evidence artifact board, PR review comments, and review gate matrix.",
+      "Required pages: cover, executive summary, decision register, reviewer reply ledger, evidence index, no-leak proof, rollback page, and owner action appendix.",
+      "Privacy statement: no workbook, no production secret, no payment key, no invoice, no billing export, and no commercial tracker values are included unless separately authorized.",
+      "Archive statement: filename, version, date, repo placeholder, PR placeholder, owner, distribution list, and acceptance checks must be complete before release.",
+    ].join("\n");
+    const pdfExportScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          replyCaptureScore * 0.2 +
+            evidenceCloseoutScore * 0.17 +
+            backendRepoDayMeetingScore * 0.12 +
+            evidenceBoardScore * 0.1 +
+            firstBackendPrCommentScore * 0.08 +
+            reviewGateScore * 0.07 +
+            Math.min(100, pageBlueprint.length * 12) * 0.07 +
+            Math.min(100, printableSections.length * 12) * 0.06 +
+            Math.min(100, redactionChecks.length * 12) * 0.05 +
+            Math.min(100, exportQaChecklist.length * 12) * 0.04 +
+            6,
+        ),
+      ),
+    );
+    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=146";
+    return {
+      pdfExportScore,
+      downloadHref,
+      pdfKpis: [
+        ["Export plan", `${pdfExportScore}%`, "Readiness to turn captured replies into a management-ready PDF closeout plan.", pdfExportScore >= 80 ? "green" : "amber"],
+        ["Page blueprint", pageBlueprint.length, "Cover, executive, decisions, reply ledger, evidence, no-leak, rollback, and actions.", "teal"],
+        ["Redaction checks", redactionChecks.length, "Privacy checks before any printable packet leaves the workspace.", "red"],
+        ["QA gates", exportQaChecklist.length, "Validation checks before the closeout packet is archived or distributed.", "blue"],
+      ],
+      sourceReadiness: [
+        ["Reply capture", `${replyCaptureScore}%`, "v143 captured reply states feed the PDF source ledger.", "green"],
+        ["Evidence closeout", `${evidenceCloseoutScore}%`, "v141 passed, held, blocked, deferred, no-leak, and rollback outcomes feed the packet.", "teal"],
+        ["Meeting pack", `${backendRepoDayMeetingScore}%`, "v142 agenda and action outputs become printable minutes source.", "blue"],
+        ["Evidence board", `${evidenceBoardScore}%`, "Artifact statuses become proof index and redaction checks.", "amber"],
+      ],
+      pageBlueprint,
+      printableSections,
+      redactionChecks,
+      exportQaChecklist,
+      distributionMatrix,
+      archiveNamingRules,
+      managementCloseoutLines,
+      copyReadyExportBrief,
+      signalCards: [
+        ["PDF export", `${pdfExportScore}%`, "The closeout packet has pages, privacy checks, owners, and QA gates mapped.", pdfExportScore >= 80 ? "green" : "amber"],
+        ["Open work", openRecords.length, "Open operational records remain outside the PDF except as approved summary signals.", "teal"],
+        ["Inputs", "6 packs", "Reply, closeout, meeting, evidence, comments, and review gates feed the plan.", "blue"],
+        ["Privacy", redactionChecks.length, "Redaction checks keep commercial and live-data exposure controlled.", "red"],
+      ],
+      acceptanceChecks: [
+        ["Page blueprint ready", `${pageBlueprint.length} pages define the printable closeout structure.`, "green"],
+        ["Printable sections ready", `${printableSections.length} management sections separate operations, evidence, and owners.`, "teal"],
+        ["Redaction ready", `${redactionChecks.length} redaction checks protect workbook, secret, billing, invoice, commercial, URL, and live-data exposure.`, "red"],
+        ["QA ready", `${exportQaChecklist.length} QA checks make the packet reviewable before archive.`, "blue"],
+        ["Distribution ready", `${distributionMatrix.length} recipient lanes define who receives which page family.`, "green"],
+        ["Archive ready", `${archiveNamingRules.length} naming rules prevent loose files after export.`, "amber"],
+        ["Brief ready", `${managementCloseoutLines.length} management lines can be pasted into review notes.`, "teal"],
+        ["Next handoff ready", "v145 can turn this export plan into meeting minutes, and v146 can prepare reviewer decision emails.", "blue"],
+      ],
+      handoff: [
+        "v144 turns captured replies and closeout outcomes into a PDF-ready export plan.",
+        "The plan defines pages, printable sections, redaction checks, distribution lanes, archive naming, and QA gates.",
+        "The static demo still does not render a real PDF; it now defines exactly what the production exporter must assemble.",
+        "v145 can now prepare backend meeting minutes from this closeout structure, while v146 can prepare reviewer decision emails.",
+      ],
+    };
+  }
+
+  function buildBackendMeetingMinutesExporterModel(commandModel, evidenceCloseoutPdfExportPlan, backendRepoDayMeetingPack, privateRepoReplyCaptureBoard, privateRepoEvidenceCloseoutPack, firstBackendPrReviewCommentPack) {
+    const openRecords = commandModel.openRecords || [];
+    const pdfExportScore = evidenceCloseoutPdfExportPlan.pdfExportScore || 0;
+    const meetingScore = backendRepoDayMeetingPack.backendRepoDayMeetingScore || 0;
+    const replyCaptureScore = privateRepoReplyCaptureBoard.replyCaptureScore || 0;
+    const evidenceCloseoutScore = privateRepoEvidenceCloseoutPack.evidenceCloseoutScore || 0;
+    const commentScore = firstBackendPrReviewCommentPack.firstBackendPrCommentScore || 0;
+    const attendanceLog = [
+      ["Product sponsor", "Required", "Confirms scope, non-goals, go/no-go posture, and management wording.", "green"],
+      ["Platform owner", "Required", "Confirms private repo, branch rules, protected environments, checks, and rollback posture.", "teal"],
+      ["Backend lead", "Required", "Confirms route shell, migrations, tests, commands, and unresolved implementation holds.", "blue"],
+      ["Security reviewer", "Required", "Confirms no-secret, no-workbook, tenant guard, commercial redaction, and denied audit proof.", "red"],
+      ["Data owner", "Required", "Confirms seed boundary, import dry-run, quarantine, duplicate handling, and reconciliation.", "amber"],
+      ["QA / Release", "Required", "Confirms evidence index, screenshots, transcripts, signoffs, and release gate language.", "green"],
+      ["Billing owner", "Optional", "Confirms test-mode billing, no invoice, no payment key, and commercial export boundary.", "amber"],
+      ["Meeting scribe", "Required", "Owns minutes, decision register, action queue, parking lot, and management email.", "blue"],
+    ];
+    const minutesSections = [
+      ["Meeting header", "Date, private repo placeholder, PR placeholder, facilitator, scribe, and distribution list.", "green"],
+      ["Purpose", "Run the first private backend repo evidence review without losing decisions or proof state.", "teal"],
+      ["Attendance", "Required, optional, absent, and action-owner roles are recorded by lane.", "blue"],
+      ["Decision summary", "Approved, held, blocked, deferred, no response, and merge-ready outcomes are separated.", "green"],
+      ["Evidence reviewed", "Screenshots, command transcripts, issue links, PR note, branch proof, and signoff files.", "blue"],
+      ["Risk parking lot", "Items that need a later owner decision without blocking the whole closeout.", "amber"],
+      ["Owner actions", "Action, owner, due date, evidence needed, status, and next command.", "red"],
+      ["Management note", "Short closeout narrative ready for sponsor email or weekly review.", "teal"],
+    ];
+    const decisionRegister = [
+      ["Scope accepted", "Pending real decision", "Sponsor confirms alpha scope and non-goals before implementation expands.", "green"],
+      ["Repo privacy", "Pending real decision", "Platform confirms private repo, protected branches, and environment posture.", "teal"],
+      ["Required checks", "Pending workflow output", "Exact GitHub Actions names must come from real CI output.", "blue"],
+      ["Commercial boundary", "Pending signoff", "Commercial values, invoices, billing exports, and workbooks remain outside operational minutes.", "red"],
+      ["Tenant guard", "Pending proof", "Security confirms tenant isolation and denied-audit evidence once backend exists.", "amber"],
+      ["Seed fixture", "Pending dry run", "Data owner confirms seed boundary, quarantine, rollback, and reconciliation.", "blue"],
+      ["Evidence archive", "Pending owner", "QA confirms screenshot, transcript, signoff, and archive naming rules.", "green"],
+      ["Merge posture", "Not ready", "Merge-ready requires replies, evidence, no-leak proof, rollback, and owner queue closure.", "red"],
+    ];
+    const actionQueue = [
+      ["Create private repo", "Platform owner", "Create real private repository and apply initial owner access.", "red"],
+      ["Open issue wave", "Backend lead", "Paste issue export into the private repo and capture issue URLs.", "amber"],
+      ["Run first proof commands", "Backend lead", "Install, lint, test, migration, seed, smoke, audit, and rollback proof commands.", "blue"],
+      ["Capture no-leak proof", "Security reviewer", "Attach no workbook, no secret, no payment key, no invoice, and no commercial export proof.", "red"],
+      ["Attach evidence index", "QA / Release", "Add screenshots, transcripts, issue URLs, PR URL, workflow names, and signoffs.", "green"],
+      ["Resolve review replies", "Meeting scribe", "Convert approvals, holds, requested changes, deferrals, and no responses into row states.", "teal"],
+      ["Prepare closeout PDF", "Scribe + sponsor", "Use v144 page blueprint, redaction checks, archive name, and distribution list.", "amber"],
+      ["Send management email", "Sponsor", "Send minutes, decisions, open owner actions, and next meeting checkpoint.", "green"],
+    ];
+    const managementEmailBlocks = [
+      ["Subject", "PursuitDesk backend repo-day minutes and closeout actions", "green"],
+      ["Opening", "The repo-day review is recorded with decisions, evidence, owner actions, and open blockers.", "teal"],
+      ["Decision summary", "Approvals, holds, requested changes, deferrals, no responses, and merge readiness are separated.", "blue"],
+      ["Privacy statement", "No workbook, production secret, payment key, invoice, billing export, or commercial tracker value is included.", "red"],
+      ["Owner actions", "Every open action has an owner, due date, evidence need, and next command.", "amber"],
+      ["Next checkpoint", "Next session closes unresolved replies, evidence gaps, archive naming, and distribution approvals.", "green"],
+    ];
+    const followUpCadence = [
+      ["Same day", "Publish draft minutes", "Scribe posts the first minutes draft while decisions are still fresh.", "green"],
+      ["Next morning", "Chase no response", "Owners chase missing replies and unclear approvals.", "amber"],
+      ["48 hours", "Resolve holds", "Holds become evidence, deferred proof, requested changes, or blocker decisions.", "blue"],
+      ["Before archive", "Run redaction check", "No workbook, no secret, no invoice, no payment key, and no commercial export are repeated.", "red"],
+      ["Weekly review", "Report owner queue", "Open actions move into Command Center and Reports.", "teal"],
+      ["Next build", "Prepare decision email pack", "v146 turns unresolved states into follow-up emails.", "green"],
+    ];
+    const privacyAndAuditChecks = [
+      ["Attendance classification", "Every attendee lane has required, optional, absent, or owner-only classification.", "green"],
+      ["Decision source", "Every decision row links to meeting, reply, evidence, or export-plan source.", "teal"],
+      ["No commercial leakage", "Operational minutes do not expose tender values, invoices, LOA, billing, or negotiation data.", "red"],
+      ["No secrets", "Minutes never print secrets, payment keys, env values, or credentials.", "red"],
+      ["No workbook", "Source Excel files are referenced as import history only, not attached.", "amber"],
+      ["Action trace", "Every open action has owner, due date, evidence needed, and status.", "blue"],
+      ["Audit note", "The real backend must write audit events for minutes export, send, archive, and reopen.", "teal"],
+      ["Archive proof", "Filename, version, date, owner, PR placeholder, and distribution list are repeated.", "green"],
+    ];
+    const copyReadyMinutes = [
+      "PursuitDesk backend repo-day meeting minutes",
+      "",
+      "Meeting:",
+      "Date:",
+      "Private repo:",
+      "Pull request:",
+      "Facilitator:",
+      "Scribe:",
+      "",
+      "Purpose:",
+      "Run the first private backend repo evidence review and record decisions, proof state, blockers, owner actions, redaction checks, rollback posture, and next checkpoint.",
+      "",
+      "Decision summary:",
+      "- Approved:",
+      "- Held:",
+      "- Requested changes:",
+      "- Deferred proof:",
+      "- Blocked:",
+      "- No response:",
+      "- Merge-ready:",
+      "",
+      "No-leak statement:",
+      "No workbook, production secret, payment key, invoice, billing export, or commercial tracker value is included in these minutes unless separately authorized.",
+      "",
+      "Owner actions:",
+      "Action | Owner | Due date | Evidence needed | Status | Next command",
+    ].join("\n");
+    const copyReadyManagementEmail = [
+      "Subject: PursuitDesk backend repo-day minutes and closeout actions",
+      "",
+      "Hi team,",
+      "",
+      "The backend repo-day review has been captured with attendance, decision summary, evidence reviewed, owner actions, risk parking lot, redaction checks, and next checkpoint.",
+      "",
+      "Key rule: no workbook, production secret, payment key, invoice, billing export, or commercial tracker value is included in this operating record unless separately authorized.",
+      "",
+      "Please review your owner actions and update reply status before the next checkpoint.",
+      "",
+      "Regards,",
+      "PursuitDesk Admin",
+    ].join("\n");
+    const meetingMinutesScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          pdfExportScore * 0.18 +
+            meetingScore * 0.18 +
+            replyCaptureScore * 0.16 +
+            evidenceCloseoutScore * 0.12 +
+            commentScore * 0.08 +
+            Math.min(100, attendanceLog.length * 12) * 0.06 +
+            Math.min(100, minutesSections.length * 12) * 0.06 +
+            Math.min(100, decisionRegister.length * 12) * 0.05 +
+            Math.min(100, actionQueue.length * 12) * 0.05 +
+            Math.min(100, privacyAndAuditChecks.length * 12) * 0.04 +
+            7,
+        ),
+      ),
+    );
+    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=146";
+    return {
+      meetingMinutesScore,
+      downloadHref,
+      minutesKpis: [
+        ["Minutes exporter", `${meetingMinutesScore}%`, "Readiness to turn repo-day outputs into copy-ready minutes.", meetingMinutesScore >= 80 ? "green" : "amber"],
+        ["Attendance lanes", attendanceLog.length, "Required and optional roles for the private backend repo review.", "teal"],
+        ["Decision rows", decisionRegister.length, "Decision register rows for scope, privacy, checks, security, data, evidence, and merge posture.", "blue"],
+        ["Action queue", actionQueue.length, "Owner actions with due date, evidence need, status, and next command.", "red"],
+      ],
+      sourceReadiness: [
+        ["PDF export plan", `${pdfExportScore}%`, "v144 page blueprint and archive rules become minutes packaging.", "green"],
+        ["Meeting pack", `${meetingScore}%`, "v142 agenda, attendees, decisions, actions, and timeline feed the minutes.", "teal"],
+        ["Reply capture", `${replyCaptureScore}%`, "v143 reply states become decisions and action rows.", "blue"],
+        ["Evidence closeout", `${evidenceCloseoutScore}%`, "v141 closeout outcomes become management lines.", "amber"],
+      ],
+      attendanceLog,
+      minutesSections,
+      decisionRegister,
+      actionQueue,
+      managementEmailBlocks,
+      followUpCadence,
+      privacyAndAuditChecks,
+      copyReadyMinutes,
+      copyReadyManagementEmail,
+      signalCards: [
+        ["Minutes", `${meetingMinutesScore}%`, "Meeting output can now be converted into a controlled operating record.", meetingMinutesScore >= 80 ? "green" : "amber"],
+        ["Attendance", attendanceLog.length, "Sponsor, platform, backend, security, data, QA, billing, and scribe lanes.", "teal"],
+        ["Decisions", decisionRegister.length, "Decision register keeps approvals, holds, and blockers separate.", "blue"],
+        ["Open work", openRecords.length, "Open operational items stay summarized without leaking commercial detail.", "red"],
+      ],
+      acceptanceChecks: [
+        ["Attendance ready", `${attendanceLog.length} attendee lanes define who must be present or represented.`, "green"],
+        ["Minutes structure ready", `${minutesSections.length} sections cover header, purpose, attendance, decisions, evidence, risk, actions, and management note.`, "teal"],
+        ["Decision register ready", `${decisionRegister.length} decision rows prevent vague meeting outcomes.`, "blue"],
+        ["Action queue ready", `${actionQueue.length} owner actions define who does what next.`, "red"],
+        ["Management email ready", `${managementEmailBlocks.length} email blocks can be sent after review.`, "green"],
+        ["Follow-up cadence ready", `${followUpCadence.length} follow-up moments keep unresolved replies moving.`, "amber"],
+        ["Privacy and audit ready", `${privacyAndAuditChecks.length} checks protect minutes from workbook, secret, commercial, and archive leakage.`, "teal"],
+        ["Next handoff ready", "v146 can turn unresolved decisions into reviewer follow-up emails.", "blue"],
+      ],
+      handoff: [
+        "v145 turns the repo-day meeting pack, captured replies, and PDF export plan into copy-ready minutes.",
+        "The exporter separates attendance, decision register, evidence reviewed, risk parking lot, owner actions, privacy checks, and management email.",
+        "The static demo still cannot send email or write a real audit event; it now defines what the production minutes exporter must generate.",
+        "v146 can now prepare reviewer decision emails from unresolved approvals, holds, requested changes, and no-response states.",
+      ],
+    };
+  }
+
+  function buildReviewerDecisionEmailPackModel(commandModel, backendMeetingMinutesExporter, privateRepoReplyCaptureBoard, evidenceCloseoutPdfExportPlan, backendPrReviewGateMatrix, firstBackendPrReviewCommentPack) {
+    const openRecords = commandModel.openRecords || [];
+    const meetingMinutesScore = backendMeetingMinutesExporter.meetingMinutesScore || 0;
+    const replyCaptureScore = privateRepoReplyCaptureBoard.replyCaptureScore || 0;
+    const pdfExportScore = evidenceCloseoutPdfExportPlan.pdfExportScore || 0;
+    const reviewGateScore = backendPrReviewGateMatrix.reviewGateScore || 0;
+    const commentScore = firstBackendPrReviewCommentPack.firstBackendPrCommentScore || 0;
+    const reviewerEmailLanes = [
+      ["Product sponsor", "Scope decision", "Approve, hold, defer, or reject alpha scope and management wording.", "green"],
+      ["Platform owner", "Repo controls", "Confirm private repo, branch protection, required checks, protected environments, and rollback.", "teal"],
+      ["Backend lead", "Implementation path", "Confirm route shell, migrations, tests, command proof, unresolved holds, and next commit path.", "blue"],
+      ["Security reviewer", "Trust proof", "Confirm tenant guard, no-secret, no-workbook, commercial redaction, and denied audit proof.", "red"],
+      ["Data owner", "Migration proof", "Confirm seed boundary, import dry-run, quarantine, duplicate handling, rollback, and reconciliation.", "amber"],
+      ["QA / Release", "Evidence package", "Confirm screenshots, transcripts, signoffs, issue URLs, PR notes, and archive naming.", "green"],
+      ["Billing owner", "Commercial boundary", "Confirm test-mode billing, no invoice, no payment key, and no billing export.", "amber"],
+      ["Meeting scribe", "Closeout record", "Confirm minutes, decision register, open actions, follow-up cadence, and management email.", "blue"],
+    ];
+    const decisionEmailTemplates = [
+      ["Approval request", "Please confirm this lane is approved with evidence linked, no-leak statement accepted, and next owner clear.", "green"],
+      ["Hold clarification", "Please confirm the missing proof, owner, target date, and next command required to clear the hold.", "amber"],
+      ["Requested changes", "Please confirm the blocker, trust failure, required fix, evidence needed, and no-merge condition.", "red"],
+      ["Deferred proof", "Please confirm the reason for deferral, owner, date, expected artifact, and review checkpoint.", "blue"],
+      ["No response chase", "Please reply with approve, comment, hold, request changes, defer, block, or no-go before closeout.", "amber"],
+      ["Merge-readiness confirmation", "Please confirm all lane gates, evidence, redaction, rollback, and owner actions are closed.", "teal"],
+      ["Management summary", "Please review the decision summary and owner queue before the sponsor note is sent.", "green"],
+      ["Archive approval", "Please confirm filename, distribution, redaction, PR placeholder, owner, and retention rules.", "blue"],
+    ];
+    const responseTriggers = [
+      ["Approval missing", "Send approval request", "Reviewer lane has no clear approve/comment/hold/request-changes state.", "amber"],
+      ["Hold open", "Send hold clarification", "A hold exists without owner, proof, due date, or next command.", "blue"],
+      ["Requested changes open", "Send blocker email", "A trust, privacy, tenant, branch, check, rollback, or evidence failure stops merge.", "red"],
+      ["Deferred proof aged", "Send deferred proof email", "Deferred proof is still open at the next checkpoint.", "amber"],
+      ["No response", "Send chase email", "Reviewer did not respond after the repo-day meeting or minutes draft.", "red"],
+      ["Merge candidate", "Send merge confirmation", "All required lanes look green and need final merge-ready confirmation.", "green"],
+      ["Archive candidate", "Send archive approval", "Closeout packet is ready but needs distribution and archive signoff.", "teal"],
+      ["Sponsor summary", "Send management summary", "Owner queue and decision register are ready for sponsor review.", "green"],
+    ];
+    const sendChecklist = [
+      ["Recipient lane selected", "Do not send a generic email without a reviewer lane and owner.", "green"],
+      ["Decision type selected", "Approval, hold, requested changes, deferred proof, no response, merge-ready, summary, or archive.", "teal"],
+      ["Evidence link present", "Include PR URL, issue URL, screenshot, transcript, signoff, or placeholder.", "blue"],
+      ["Owner and due date present", "Every open request needs one owner and one next checkpoint.", "amber"],
+      ["No-leak statement present", "Repeat no workbook, no secret, no payment key, no invoice, no billing export, no commercial value.", "red"],
+      ["Thread URL placeholder present", "Leave a clear thread placeholder until the real private PR exists.", "blue"],
+      ["Action requested", "Ask for a specific reply state, not a vague review.", "green"],
+      ["Audit note queued", "Production backend must log who sent, who received, what template, and what state changed.", "teal"],
+    ];
+    const escalationCadence = [
+      ["Same day", "Send lane email", "Send targeted email once minutes are published and open states are known.", "green"],
+      ["Next morning", "Chase no response", "Escalate missing responses to the lane owner and meeting scribe.", "amber"],
+      ["48 hours", "Convert stale holds", "Convert stale holds into deferred proof, requested changes, or management blocker.", "blue"],
+      ["Before merge", "Reconfirm no-leak", "Repeat redaction, rollback, evidence, owner, and archive proof before merge-ready.", "red"],
+      ["Weekly review", "Report open decisions", "Bring unresolved email replies into Command Center and Reports.", "teal"],
+      ["Archive day", "Send closeout note", "Send final archive and retention confirmation after all gates close.", "green"],
+    ];
+    const privacyGuardrails = [
+      ["No workbook attachment", "Emails never attach source Excel files or raw imports.", "red"],
+      ["No secrets", "Emails never include credentials, env values, tokens, keys, or payment secrets.", "red"],
+      ["No invoice data", "Invoices, billing exports, and customer payment details stay out of reviewer emails.", "amber"],
+      ["No commercial values", "Commercial values remain in authorized insight/vault context only.", "amber"],
+      ["Private URL placeholder", "Private repo links stay placeholders until recipients have access.", "blue"],
+      ["Recipient access check", "Only send emails to reviewer lanes that should see the referenced packet.", "teal"],
+      ["Audit event required", "Production send action must write template, recipient, source, state, and timestamp.", "green"],
+      ["Unsubscribe not relevant", "Internal operational emails use access controls, not marketing subscription mechanics.", "blue"],
+    ];
+    const managementSummaryBlocks = [
+      ["Opening", "Reviewer follow-up emails are prepared by lane and decision state.", "green"],
+      ["Decision posture", "Approvals, holds, requested changes, deferrals, no responses, merge readiness, and archive approvals are separated.", "teal"],
+      ["Privacy posture", "Every template repeats the no-workbook, no-secret, no-invoice, no-payment-key, and no-commercial-value guardrail.", "red"],
+      ["Owner posture", "Every unresolved email asks for owner, due date, evidence needed, and next command.", "amber"],
+      ["Audit posture", "Production must log every send, reply capture, decision state change, and reopen.", "blue"],
+      ["Next posture", "Open replies feed the closeout archive control board and meeting PDF renderer.", "green"],
+    ];
+    const copyReadyReviewerEmail = [
+      "Subject: PursuitDesk reviewer decision needed - {lane} / {decision_state}",
+      "",
+      "Hi {reviewer_name},",
+      "",
+      "Please confirm your decision for the {lane} lane on the private backend repo review.",
+      "",
+      "Requested reply state: Approve / Comment / Hold / Request changes / Defer proof / Block / No response / Merge-ready",
+      "Evidence link:",
+      "Thread link:",
+      "Owner:",
+      "Due date:",
+      "Next command:",
+      "",
+      "No-leak statement: no workbook, production secret, payment key, invoice, billing export, or commercial tracker value is included in this request unless separately authorized.",
+      "",
+      "Please reply with the exact state and any required evidence or blocker.",
+      "",
+      "Regards,",
+      "PursuitDesk Admin",
+    ].join("\n");
+    const copyReadyEscalationEmail = [
+      "Subject: PursuitDesk decision follow-up - open reviewer state",
+      "",
+      "Hi {owner_name},",
+      "",
+      "This reviewer lane still needs a decision before closeout can move forward.",
+      "",
+      "Open state:",
+      "Lane:",
+      "Blocker or hold:",
+      "Evidence needed:",
+      "Target date:",
+      "",
+      "Please update the reply capture board or confirm whether this should become deferred proof, requested changes, blocked, or approved.",
+      "",
+      "Regards,",
+      "PursuitDesk Admin",
+    ].join("\n");
+    const reviewerDecisionEmailScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          meetingMinutesScore * 0.18 +
+            replyCaptureScore * 0.18 +
+            pdfExportScore * 0.12 +
+            reviewGateScore * 0.12 +
+            commentScore * 0.1 +
+            Math.min(100, reviewerEmailLanes.length * 12) * 0.07 +
+            Math.min(100, decisionEmailTemplates.length * 12) * 0.06 +
+            Math.min(100, responseTriggers.length * 12) * 0.05 +
+            Math.min(100, sendChecklist.length * 12) * 0.05 +
+            Math.min(100, privacyGuardrails.length * 12) * 0.04 +
+            6,
+        ),
+      ),
+    );
+    const downloadHref = "data/reviewer-decision-email-pack.json?v=146";
+    return {
+      reviewerDecisionEmailScore,
+      downloadHref,
+      emailKpis: [
+        ["Decision email pack", `${reviewerDecisionEmailScore}%`, "Readiness to send targeted reviewer follow-up emails after minutes are published.", reviewerDecisionEmailScore >= 80 ? "green" : "amber"],
+        ["Reviewer lanes", reviewerEmailLanes.length, "Lane-specific recipients for sponsor, platform, backend, security, data, QA, billing, and scribe.", "teal"],
+        ["Email templates", decisionEmailTemplates.length, "Approval, hold, requested changes, deferred proof, no response, merge, management, and archive templates.", "blue"],
+        ["Privacy guardrails", privacyGuardrails.length, "Checks that keep reviewer emails from leaking workbook, secret, invoice, billing, or commercial data.", "red"],
+      ],
+      sourceReadiness: [
+        ["Meeting minutes", `${meetingMinutesScore}%`, "v145 minutes provide the owner actions and decision rows.", "green"],
+        ["Reply capture", `${replyCaptureScore}%`, "v143 reply states determine which email template is sent.", "teal"],
+        ["PDF export plan", `${pdfExportScore}%`, "v144 archive and redaction rules shape closeout language.", "blue"],
+        ["Review gates", `${reviewGateScore}%`, "Reviewer gates define approval, hold, block, and merge-ready conditions.", "amber"],
+      ],
+      reviewerEmailLanes,
+      decisionEmailTemplates,
+      responseTriggers,
+      sendChecklist,
+      escalationCadence,
+      privacyGuardrails,
+      managementSummaryBlocks,
+      copyReadyReviewerEmail,
+      copyReadyEscalationEmail,
+      signalCards: [
+        ["Email pack", `${reviewerDecisionEmailScore}%`, "Reviewer decision emails can now be generated from meeting and reply state.", reviewerDecisionEmailScore >= 80 ? "green" : "amber"],
+        ["Open work", openRecords.length, "Operational context stays summarized while emails remain lane-specific.", "teal"],
+        ["Templates", decisionEmailTemplates.length, "Every major decision state has a prepared email structure.", "blue"],
+        ["Guardrails", privacyGuardrails.length, "Privacy and audit rules protect every send path.", "red"],
+      ],
+      acceptanceChecks: [
+        ["Reviewer lanes ready", `${reviewerEmailLanes.length} lane emails cover sponsor, platform, backend, security, data, QA, billing, and scribe.`, "green"],
+        ["Templates ready", `${decisionEmailTemplates.length} email templates cover approval, hold, requested changes, deferral, no response, merge, summary, and archive.`, "teal"],
+        ["Triggers ready", `${responseTriggers.length} triggers decide which email is sent.`, "blue"],
+        ["Send checklist ready", `${sendChecklist.length} send checks prevent vague or unsafe emails.`, "amber"],
+        ["Escalation ready", `${escalationCadence.length} follow-up moments prevent silence after minutes.`, "red"],
+        ["Privacy ready", `${privacyGuardrails.length} guardrails prevent data leakage in reviewer emails.`, "teal"],
+        ["Management summary ready", `${managementSummaryBlocks.length} leadership blocks explain the email posture.`, "green"],
+        ["Next handoff ready", "v147 can track closeout archive state and unresolved reply evidence gaps.", "blue"],
+      ],
+      handoff: [
+        "v146 turns minutes, reply states, and review gates into targeted reviewer decision emails.",
+        "The pack separates approval requests, holds, requested changes, deferred proof, no-response chases, merge confirmation, management summary, and archive approval.",
+        "The static demo still cannot send email or capture replies automatically; it now defines the templates, triggers, privacy guardrails, and audit fields the backend must implement.",
+        "v147 can now track which closeout packets, archive names, replies, and evidence gaps remain open after emails are sent.",
       ],
     };
   }
 
   function buildProductBuildTracker() {
     return {
-      version: "v115 API Error and Audit Envelope Pack",
-      phase: "API error and audit envelope pack",
+      version: "v146 Reviewer Decision Email Pack",
+      phase: "Reviewer decision email pack",
       lane: "Static product prototype on GitHub Pages",
-      pace: "96 meaningful versions since rebrand",
-      summary: "The prototype now defines the backend safety envelope: standard error responses, request ids, audit event payloads, denial evidence, middleware files, route coverage, test commands, acceptance checks, downloadable JSON, and implementation handoff.",
+      pace: "127 meaningful versions since rebrand",
+      summary: "The prototype now turns reviewer outcomes into copy-ready follow-up emails for approvals, holds, requested changes, deferred proof, blockers, no responses, merge readiness, privacy guardrails, owner actions, and management closeout.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, and API error/audit envelope pack are live in demo form.", "teal"],
-        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, and safe response examples are mapped.", "blue"],
-        ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, and route-envelope tests are mapped, but the real private repo and real staging environment are not created yet.", "red"],
+        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, and reviewer decision email pack are live in demo form.", "teal"],
+        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, workflow job matrix, branch protection, cache policy, secret policy, release artifacts, first-commit file contents, issue bodies, issue labels, milestones, proof commands, opening order, protected environments, review ownership, artifact retention, release ritual, rollback playbook, issue-to-check map, root file contents, API starter contents, package starter contents, workflow starter contents, setup scripts, repository bootstrap commands, folder creation, secret placeholders, first PR proof, label catalog, milestone catalog, board columns, issue routing rules, taxonomy gates, first commit QA lanes, artifact expectations, role signoffs, go/no-go rules, opening-day command sequence, evidence packets, no-go stops, owner checkpoints, decision memo scope cutline, approval basis, decision options, blocker register, definitions of done, risk domains, risk triggers, mitigations, residual risks, owner actions, monitoring signals, evidence files, screenshots, PR note sections, workflow check names, branch-protection proof, signoff trail, execution gates, proof logs, command order, issue waves, branch timing, closeout checks, control lanes, blocker queue, owner readiness, decision log, alpha board action queue, day-one command blocks, manual proof points, PR script, owner prompts, closeout checks, evidence templates, command transcript slots, approval notes, proof snippets, proof quality gates, repo identity facts, owner matrix, issue wave ledger, launch files, risk locks, closeout ledger, copy-ready repo-opening text, CSV-style issue rows, owner lanes, label mapping, body-file names, validation gates, paste checks, import closeout files, PR identity, PR scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback text, release checklist, copy-ready PR body, evidence folder tree, markdown templates, screenshot slots, transcript slots, issue ledger, owner signoff files, branch-proof gates, closeout notes, command runner steps, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, copy-ready commands, runner closeout, reviewer gate matrix, decision gates, evidence review map, hold queue, block rules, merge checklist, reviewer packets, PR comment templates, GitHub review action text, lane comment packets, inline note snippets, no-leak signoffs, request-changes text, merge closeout text, review send checklist, evidence closeout lanes, decision logs, owner closeout queue, no-leak rollback checks, closeout timeline, management summary lines, meeting agenda, attendee map, decision capture board, action queue, risk parking lot, evidence outputs, facilitator script, reviewer reply lanes, reply states, thread capture fields, requested-change resolver, approval readiness, merge gates, reply SLA, management reply brief, PDF page blueprint, printable sections, redaction checks, export QA, distribution matrix, archive naming, export management brief, attendance log, minutes sections, decision register, action queue, management email blocks, follow-up cadence, privacy/audit checks, and copy-ready minutes are mapped.", "blue"],
+        ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, and reviewer decision email pack are mapped, but the real private repo and real staging environment are not created yet.", "red"],
         ["Billing model", 85, "USD pricing, seat logic, checkout flow, invoice lifecycle, webhooks, plan changes, access locks, audit events, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "amber"],
-        ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, and safe error/audit envelope proof.", "green"],
+        ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, and reviewer decision email pack.", "green"],
       ],
       phases: [
         ["0", "Positioning", "Done", "PursuitDesk direction is set."],
@@ -9106,16 +14519,74 @@
         ["38", "Backend test command pack", "Active", "Route, migration, auth, tenant, commercial, billing, audit, restore, and release gates now have executable command proof."],
         ["39", "Production backend repo file pack", "Active", "Route, migration, auth, test, workflow, env, docs, owner, and copy-order files now have a private repo creation pack."],
         ["40", "API error and audit envelope pack", "Active", "Every backend route now has consistent safe errors, request ids, audit envelopes, denial proof, middleware targets, and tests mapped."],
-        ["41", "CI workflow file blueprint", "Next", "Backend test commands need real GitHub Actions workflow files, artifacts, branch protection, and release gates."],
+        ["41", "CI workflow file blueprint", "Active", "Backend test commands now map to GitHub Actions workflow files, artifacts, branch protection, and release gates."],
+        ["42", "Private repo first commit builder", "Active", "The repo file pack, safety envelope, and CI blueprint now generate root files, API shell files, package files, workflow contents, env examples, and first proof order."],
+        ["43", "Backend issue body exporter", "Active", "The first commit builder now generates copy-ready GitHub issue bodies with owners, labels, milestones, file scope, acceptance checks, commands, and opening order."],
+        ["44", "Branch protection and release checklist", "Active", "The workflow blueprint and issue proof now become concrete GitHub settings, required checks, protected environments, owner reviews, artifacts, release ritual, and rollback playbook."],
+        ["45", "First backend file content export", "Active", "The protected repo plan now exports paste-ready root files, API shell files, packages, workflows, file previews, copy order, guardrails, and acceptance checks for the first private backend commit."],
+        ["46", "Private repo setup script draft", "Active", "The paste-ready file contents now become a guided command sequence for creating the repo, folders, labels, milestones, files, first proof run, first PR, and branch protection timing."],
+        ["47", "GitHub labels and milestones import pack", "Active", "The setup script now has a metadata import pack for labels, milestones, issue types, owners, proof labels, routing rules, and board columns."],
+        ["48", "First backend commit QA checklist", "Active", "The repo shell, starter files, scripts, labels, milestones, workflows, branch rules, evidence artifacts, role signoffs, and go/no-go rules now have one pre-coding QA checklist."],
+        ["49", "Private repo opening day runbook", "Active", "Setup, taxonomy import, issue opening, first PR, proof evidence, owner signoffs, and branch protection timing now have a one-day execution rhythm."],
+        ["50", "Production backend repo decision memo", "Active", "The executive approval note for creating the real private backend repository now has scope, evidence, blockers, options, and approval gates."],
+        ["51", "Backend alpha risk register", "Active", "Repo execution risks now have domains, severity, triggers, mitigations, owner lanes, decision rules, monitoring signals, and residual-risk transparency."],
+        ["52", "Backend opening day evidence pack", "Active", "The runbook and risk register now have proof files, screenshots, command logs, PR notes, workflow names, branch-protection evidence, and signoff lanes."],
+        ["53", "Private repo execution checklist", "Active", "The decision memo, risk register, runbook, and evidence pack now become gates, timeline, owner checks, proof logs, command order, issue waves, branch timing, stop rules, and closeout checks."],
+        ["54", "Backend alpha control board", "Active", "Execution status, repo status, first PR status, evidence health, blockers, owners, GitHub signals, decision log, and action queue now have one live-looking control board."],
+        ["55", "Private repo day-one script", "Active", "The control board now becomes an exact command-by-command script for the real private repo session, with proof files, owner prompts, stop rules, and closeout checks."],
+        ["56", "Backend repo proof exporter", "Done", "The day-one script now has paste-ready evidence templates, PR body sections, screenshot checklist, command transcript slots, owner approvals, closeout packet, and proof gates."],
+        ["57", "GitHub repo opening packet", "Done", "The proof exporter now becomes one bundled opening packet for repo name, owners, issues, PR text, artifacts, risk locks, launch files, and closeout notes."],
+        ["58", "Backend alpha issue import kit", "Done", "The opening packet issue wave now has CSV-ready issue rows, label mapping, owner lanes, body-file names, validation gates, and private-repo paste checks."],
+        ["59", "First PR body builder", "Done", "The import kit now has an exact first backend PR body with issue links, evidence links, reviewer notes, rollback text, release checklist, and copy-ready paste sections."],
+        ["60", "Repo evidence folder writer", "Done", "The PR body now has exact evidence markdown files, screenshot slots, command transcripts, issue URLs, owner signoffs, branch protection proof, and closeout notes."],
+        ["61", "Private repo command runner pack", "Done", "The evidence folder now has the exact command sequence, expected outputs, failure holds, artifact filenames, owner prompts, and closeout checks for private repo day."],
+        ["62", "Backend PR review gate matrix", "Done", "The first backend PR now has reviewer-specific approve, hold, block, evidence review, comment templates, and merge-readiness gates."],
+        ["63", "Evidence artifact status board", "Done", "Screenshots, transcripts, signoffs, issues, branch proof, closeout notes, holds, and blocks now have ready, hold, deferred, and blocked status cards."],
+        ["64", "Private repo handoff email pack", "Done", "The artifact board and review matrix now have a copy-ready owner email, recipient lanes, evidence links, agenda, approval language, send checklist, follow-up cadence, and safety disclaimers."],
+        ["65", "First backend PR review comment pack", "Done", "The review gate matrix now has copy-ready GitHub comments for opening notes, approvals, holds, request changes, no-leak signoff, branch-protection holds, inline snippets, and merge closeout."],
+        ["66", "Private repo evidence closeout pack", "Done", "Review comments, artifact statuses, handoff email, and review gates now have passed, held, blocked, deferred, no-leak, rollback, next-owner, and management summary closeout lanes."],
+        ["67", "Backend repo day meeting pack", "Done", "The private repo closeout pack now has a facilitator agenda, attendee roles, decision capture, action queue, evidence outputs, risk parking lot, meeting timeline, and management brief."],
+        ["68", "Private repo reply capture board", "Done", "Real reviewer replies can now be tracked as approved, commented, held, requested changes, deferred, blocked, no response, or merge-ready with thread links, owners, dates, and evidence."],
+        ["69", "Evidence closeout PDF export plan", "Done", "Captured replies can now be shaped into a PDF-ready management closeout packet with page blueprint, printable sections, redaction checks, distribution lanes, archive naming, and QA gates."],
+        ["70", "Backend meeting minutes exporter", "Done", "Repo-day meeting output can now become copy-ready minutes with attendance, decision register, evidence reviewed, risk parking lot, owner actions, privacy checks, follow-up cadence, and management email."],
+        ["71", "Reviewer decision email pack", "Active", "Minutes, reply states, and review gates now become targeted follow-up emails for approvals, holds, requested changes, deferrals, no responses, merge confirmation, management summary, and archive approval."],
       ],
       nextBuilds: [
-        ["v116", "CI Workflow File Blueprint", "Convert backend test commands into GitHub Actions workflow files, cache strategy, artifacts, and branch protection checks."],
-        ["v117", "Private Repo First Commit Builder", "Turn the v114 file pack and v115 envelope pack into first-commit file contents for the private production backend repo."],
-        ["v118", "Backend Issue Body Exporter", "Create copy-ready issue bodies for error middleware, audit writer, route wrappers, and CI gates."],
+        ["v147", "Closeout Archive Control Board", "Track exported closeout packs, archive names, owners, versions, retention status, and follow-up evidence gaps."],
+        ["v148", "Meeting Minutes PDF Renderer", "Turn the minutes exporter into a printable packet with cover, decisions, actions, no-leak statement, and archive footer."],
+        ["v149", "Reviewer Reply SLA Board", "Track sent emails, pending replies, overdue chases, escalation owners, and archive status after reviewer follow-up starts."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
         "Generated issues still need to be opened in the private repo",
+        "Branch protection and release checklist is mapped, but GitHub repository settings are not applied yet",
+        "First backend file content export is mapped, but files have not been pasted into the private repo yet",
+        "Private repo setup script draft is mapped, but it has not been executed against a real private repo yet",
+        "GitHub labels and milestones import pack is mapped, but labels, milestones, and board columns are not created in a real repo yet",
+        "First backend commit QA checklist is mapped, but the real first PR evidence has not been generated yet",
+        "Private repo opening-day runbook is mapped, but the real GitHub day-one sequence has not been executed yet",
+        "Production backend repo decision memo is mapped, but no owner has signed the real go/no-go decision yet",
+        "Backend alpha risk register is mapped, but no real owner has accepted or closed production risks yet",
+        "Backend opening day evidence pack is mapped, but no real proof files, screenshots, logs, PR notes, or branch-protection evidence exist yet",
+        "Private repo execution checklist is mapped, but no real repo day has been run against GitHub yet",
+        "Backend alpha control board is mapped, but real repo, issue, PR, workflow, and owner status signals do not exist yet",
+        "Private repo day-one script is mapped, but the commands have not been executed against a real private GitHub repository yet",
+        "Backend repo proof exporter is mapped, but real screenshots, transcripts, issue URLs, PR URL, workflow names, and owner approvals still need the private repo",
+        "GitHub repo opening packet is mapped, but the real private repo URL, issue wave, first PR, artifacts, and closeout ledger still need to be created",
+        "Backend alpha issue import kit is mapped, but real GitHub issue URLs, assignees, project board cards, and import closeout still need the private repo",
+        "First PR body builder is mapped, but real issue URLs, evidence file URLs, reviewer handles, workflow names, and PR URL still need the private repo",
+        "Repo evidence folder writer is mapped, but real screenshots, transcript outputs, issue URLs, signoff files, branch-protection proof, and closeout status still need the private repo",
+        "Private repo command runner pack is mapped, but the commands have not been executed and real outputs, screenshot files, workflow names, issue URLs, and owner confirmations still need the private repo",
+        "Backend PR review gate matrix is mapped, but real reviewer handles, PR comments, approvals, requested changes, and merge status still need the private repo",
+        "Evidence artifact status board is mapped, but real artifact statuses still need screenshots, transcripts, issue URLs, workflow names, branch proof, and owner signoffs from the private repo",
+        "Private repo handoff email pack is drafted, but real recipients, email send, replies, meeting attendance, and owner decisions still need the private repo execution day",
+        "First backend PR review comment pack is drafted, but real PR URL, review threads, line positions, reviewer handles, and GitHub submission still need the private repo",
+        "Private repo evidence closeout pack is mapped, but real passed, held, blocked, deferred, no-leak, rollback, and next-owner outcomes still need the private repo PR review session",
+        "Backend repo day meeting pack is mapped, but the real repo-day meeting, attendance, decisions, actions, and minutes still need to be run with the private repository team",
+        "Private repo reply capture board is mapped, but real GitHub replies, reviewer handles, thread URLs, requested changes, approvals, holds, and merge decisions still need the private repository PR",
+        "Evidence closeout PDF export plan is mapped, but a real printable PDF, signed archive, real PR links, and approved distribution list still need the private repo session",
+        "Backend meeting minutes exporter is mapped, but real attendance, decision approvals, action owners, email send, and audit events still need the private repo meeting",
+        "Reviewer decision email pack is mapped, but real recipient addresses, GitHub thread URLs, email send, reply receipts, and audit events still need the private repo meeting",
         "API contracts still need to be implemented in code",
         "Backend fixture export still needs to be copied into a real private backend repository",
         "Staging deployment checklist is mapped, but no real staging environment exists yet",
@@ -9126,6 +14597,9 @@
         "Backend test command pack is mapped, but commands are not executable until the private repo exists",
         "Production backend repo file pack is mapped, but files are not yet created in the private repo",
         "API error and audit envelope pack is mapped, but middleware and audit writer are not implemented in a real backend yet",
+        "CI workflow file blueprint is mapped, but GitHub Actions files and branch protection are not created in the private repo yet",
+        "Private repo first commit builder is mapped, but files have not been created in the private repository yet",
+        "Backend issue body exporter is mapped, but issues have not been opened in the private repository yet",
         "Staging smoke commands are planned but not executable until the backend repo exists",
         "Real workbook parser and migration runner are still modeled, not implemented",
         "Real company account isolation",
@@ -14219,7 +19693,7 @@
             <h3>Turn the prototype data into copy-ready backend fixtures.</h3>
             <p>The export separates frontline tracker records from commercial vault data, keeps source workbook lineage, defines seed files, creates validation scenarios, and gives the private repo a repeatable fixture contract.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-fixture-export-v115.json">Download fixture JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-fixture-export-v146.json">Download fixture JSON</a>
               <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -14442,7 +19916,7 @@
             <h3>Move from product plan to the first private-repo sprint.</h3>
             <p>This checklist turns the private repo guide, fixture export, API contracts, issue export, and staging smoke script into a sprint-zero operating rhythm for the first backend build.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-sprint-checklist-v115.json">Download sprint JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-sprint-checklist-v146.json">Download sprint JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -14665,7 +20139,7 @@
             <h3>Turn sprint-zero output into a controlled staging release.</h3>
             <p>This checklist defines the first private backend staging environment: environment lanes, secrets, database checks, monitoring, rollback, owners, and go/no-go gates before any pilot user touches live data.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-staging-deployment-checklist-v115.json">Download deployment JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-staging-deployment-checklist-v146.json">Download deployment JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -14926,7 +20400,7 @@
             <h3>Convert the API contract pack into files engineers can create.</h3>
             <p>This map takes the alpha API contract pack and turns it into route files, controllers, services, validators, middleware, tests, folders, and implementation slices for the private backend repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-route-skeleton-map-v115.json">Download route JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-route-skeleton-map-v146.json">Download route JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -15150,7 +20624,7 @@
             <h3>Turn the route skeleton into a production database path.</h3>
             <p>This blueprint defines migration files, table ownership, indexes, seed order, rollback rules, validation gates, commands, and data contracts for the first private backend database.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-database-migration-blueprint-v115.json">Download migration JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-database-migration-blueprint-v146.json">Download migration JSON</a>
               <button class="ghost-btn" type="button" data-view="Import">Open import</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -15408,7 +20882,7 @@
             <h3>Protect every company, user, room, and commercial field.</h3>
             <p>This guard map turns the access model into backend middleware for sessions, tenant isolation, section permissions, commercial vault access, membership admin, mutations, safe errors, and denied-access audit proof.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-auth-tenant-guard-blueprint-v115.json">Download auth guard JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-auth-tenant-guard-blueprint-v146.json">Download auth guard JSON</a>
               <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -15686,7 +21160,7 @@
             <h3>Make the future backend prove itself before pilot data enters.</h3>
             <p>This pack converts routes, migrations, auth guards, tenant isolation, commercial redaction, billing, import, audit, restore, and staging smoke checks into executable commands with CI artifacts and release gates.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-test-command-pack-v115.json">Download test command JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-test-command-pack-v146.json">Download test command JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -15942,7 +21416,7 @@
             <h3>Turn the private backend repo into a disciplined first commit.</h3>
             <p>This file pack defines the folder tree, first commit files, API route batches, migration files, auth guard files, test files, CI workflows, environment examples, copy order, owners, and acceptance checks for the real PursuitDesk backend repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-file-pack-v115.json">Download repo file JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-file-pack-v146.json">Download repo file JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -16292,7 +21766,7 @@
             <h3>Give every backend route one safe response and one evidence trail.</h3>
             <p>This pack standardizes request ids, safe error bodies, audit payloads, denial evidence, route coverage, middleware files, and test proof before the private backend repo starts real implementation.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-api-error-audit-envelope-pack-v115.json">Download envelope JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-api-error-audit-envelope-pack-v146.json">Download envelope JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -16607,6 +22081,7272 @@
             <div>
               <span class="metric-label">Envelope handoff</span>
               <h3>What v115 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderCiWorkflowFileBlueprint(model) {
+    return `
+      <section class="ci-workflow-file-blueprint">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">CI workflow file blueprint</span>
+            <h3>Turn backend quality rules into required GitHub proof.</h3>
+            <p>This blueprint maps GitHub Actions workflow files, CI jobs, cache strategy, branch protection, secrets, command bindings, release gates, and artifacts for the first private PursuitDesk backend repository.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-ci-workflow-file-blueprint-v146.json">Download CI blueprint JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Workflow readiness</span>
+            <strong>${model.ciBlueprintScore}%</strong>
+            <i style="--width: ${model.ciBlueprintScore}%"></i>
+            <small>${model.workflowFiles.length} workflows / ${model.jobMatrix.length} jobs / ${model.releaseGates.length} gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Workflow files</span>
+              <h3>The private repo should start with these GitHub Actions files</h3>
+            </div>
+            <span>${model.workflowFiles.length} files</span>
+          </div>
+          <div class="ci-workflow-grid">
+            ${model.workflowFiles
+              .map(
+                ([file, label, trigger, commandScope, artifact, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(trigger)}</span>
+                    <strong>${escapeHtml(file)}</strong>
+                    <p>${escapeHtml(label)}: ${escapeHtml(commandScope)}</p>
+                    <em>${escapeHtml(artifact)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Job matrix</span>
+              <h3>Each CI job has a command, runner, cache, and artifact</h3>
+            </div>
+            <span>${model.jobMatrix.length} jobs</span>
+          </div>
+          <div class="ci-job-table">
+            <div>
+              <span>Job</span>
+              <span>Runner</span>
+              <span>Command</span>
+              <span>Cache</span>
+              <span>Artifact</span>
+            </div>
+            ${model.jobMatrix
+              .map(
+                ([job, runner, command, artifact, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(job)}</strong>
+                    <span>${escapeHtml(runner)}</span>
+                    <code>${escapeHtml(command)}</code>
+                    <span>${escapeHtml(job.includes("install") ? "pnpm-store" : job.includes("migration") ? "migration-fixtures" : "node-build")}</span>
+                    <em>${escapeHtml(artifact)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Artifact plan</span>
+                <h3>Reviewers should see proof, not just green checks</h3>
+              </div>
+              <span>${model.artifactPlan.length} artifacts</span>
+            </div>
+            <div class="ci-artifact-grid">
+              ${model.artifactPlan
+                .map(
+                  ([artifact, label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(artifact)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Cache plan</span>
+                <h3>Speed up CI without hiding stale proof</h3>
+              </div>
+              <span>${model.cachePlan.length} caches</span>
+            </div>
+            <div class="ci-cache-grid">
+              ${model.cachePlan
+                .map(
+                  ([cache, key, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(key)}</span>
+                      <strong>${escapeHtml(cache)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Secret policy</span>
+                <h3>CI secrets stay test-only and staging-scoped</h3>
+              </div>
+              <span>${model.secretPolicy.length} secrets</span>
+            </div>
+            <div class="ci-secret-grid">
+              ${model.secretPolicy
+                .map(
+                  ([secret, scope, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(scope)}</span>
+                      <strong>${escapeHtml(secret)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Branch protection</span>
+                <h3>Main and release branches should reject unproven changes</h3>
+              </div>
+              <span>${model.branchProtection.length} rules</span>
+            </div>
+            <div class="ci-branch-grid">
+              ${model.branchProtection
+                .map(
+                  ([branch, rule, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(branch)}</span>
+                      <strong>${escapeHtml(rule)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Backend command bindings</span>
+              <h3>The v113/v115 safety commands become workflow jobs</h3>
+            </div>
+            <span>${model.commandBindings.length} commands</span>
+          </div>
+          <div class="ci-command-binding-table">
+            <div>
+              <span>Step</span>
+              <span>Command</span>
+              <span>Suite</span>
+              <span>Workflow</span>
+              <span>Artifact</span>
+            </div>
+            ${model.commandBindings
+              .map(
+                ([step, command, suite, artifact, workflow, proof, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(step)}</strong>
+                    <code>${escapeHtml(command)}</code>
+                    <span>${escapeHtml(suite)}</span>
+                    <p>${escapeHtml(workflow)}</p>
+                    <em>${escapeHtml(artifact)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Matrix strategy</span>
+                <h3>Test the important dimensions deliberately</h3>
+              </div>
+              <span>${model.matrixStrategy.length} dimensions</span>
+            </div>
+            <div class="ci-matrix-grid">
+              ${model.matrixStrategy
+                .map(
+                  ([label, values, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(values)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Release gates</span>
+                <h3>Go/no-go rules before staging or production movement</h3>
+              </div>
+              <span>${model.releaseGates.length} gates</span>
+            </div>
+            <div class="ci-release-gate-grid">
+              ${model.releaseGates
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Adoption order</span>
+                <h3>How to turn the blueprint into repo settings</h3>
+              </div>
+              <span>${model.adoptionOrder.length} moves</span>
+            </div>
+            <div class="ci-adoption-list">
+              ${model.adoptionOrder
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Workflow examples</span>
+                <h3>Small examples for the future first commit</h3>
+              </div>
+            </div>
+            <div class="ci-example-grid">
+              <div>
+                <span>CI job</span>
+                <pre>${escapeHtml(JSON.stringify(model.examples.ciJob, null, 2))}</pre>
+              </div>
+              <div>
+                <span>Release summary</span>
+                <pre>${escapeHtml(JSON.stringify(model.examples.releaseSummary, null, 2))}</pre>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What must be true before branch protection is enabled</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="ci-acceptance-grid">
+            ${model.acceptanceChecks
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">CI handoff</span>
+              <h3>What v116 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoFirstCommitBuilder(model) {
+    return `
+      <section class="private-repo-first-commit-builder">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo first commit builder</span>
+            <h3>Turn the backend plan into a disciplined first commit.</h3>
+            <p>This builder converts the repo file pack, safe error/audit envelope, CI workflow blueprint, route skeleton, migration blueprint, and guard plan into the first private PursuitDesk backend commit.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-first-commit-builder-v146.json">Download first commit JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>First commit readiness</span>
+            <strong>${model.firstCommitScore}%</strong>
+            <i style="--width: ${model.firstCommitScore}%"></i>
+            <small>${model.repoShellFiles.length} shell files / ${model.appApiFiles.length + model.packageFiles.length} starter code files / ${model.workflowFileContents.length} workflows.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Root shell</span>
+              <h3>The first commit should start with boring, safe repo files</h3>
+            </div>
+            <span>${model.repoShellFiles.length} files</span>
+          </div>
+          <div class="first-commit-shell-grid">
+            ${model.repoShellFiles
+              .map(
+                ([file, label, note, owner, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(owner)}</span>
+                    <strong>${escapeHtml(file)}</strong>
+                    <p>${escapeHtml(label)}: ${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">API starter files</span>
+              <h3>Privacy, tenant scope, and audit proof come before feature depth</h3>
+            </div>
+            <span>${model.appApiFiles.length} files</span>
+          </div>
+          <div class="first-commit-api-table">
+            <div>
+              <span>File</span>
+              <span>Purpose</span>
+              <span>First responsibility</span>
+              <span>Owner</span>
+            </div>
+            ${model.appApiFiles
+              .map(
+                ([file, purpose, responsibility, owner, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(file)}</strong>
+                    <span>${escapeHtml(purpose)}</span>
+                    <p>${escapeHtml(responsibility)}</p>
+                    <em>${escapeHtml(owner)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Package starters</span>
+                <h3>Shared code boundaries for database, audit, importer, billing, reports, and tests</h3>
+              </div>
+              <span>${model.packageFiles.length} files</span>
+            </div>
+            <div class="first-commit-package-grid">
+              ${model.packageFiles
+                .map(
+                  ([file, label, note, owner, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(owner)}</span>
+                      <strong>${escapeHtml(file)}</strong>
+                      <p>${escapeHtml(label)}: ${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Environment examples</span>
+                <h3>Commit names and examples, never secrets</h3>
+              </div>
+              <span>${model.envExampleBlocks.length} blocks</span>
+            </div>
+            <div class="first-commit-env-grid">
+              ${model.envExampleBlocks
+                .map(
+                  ([key, scope, note, example, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(scope)}</span>
+                      <strong>${escapeHtml(key)}</strong>
+                      <code>${escapeHtml(example)}</code>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Workflow file contents</span>
+              <h3>The v116 workflow blueprint becomes real files</h3>
+            </div>
+            <span>${model.workflowFileContents.length} workflows</span>
+          </div>
+          <div class="first-commit-workflow-table">
+            <div>
+              <span>File</span>
+              <span>Trigger</span>
+              <span>Command scope</span>
+              <span>Artifact</span>
+              <span>First content rule</span>
+            </div>
+            ${model.workflowFileContents
+              .map(
+                ([file, title, trigger, commandScope, artifact, contentRule, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(file)}</strong>
+                    <span>${escapeHtml(trigger)}</span>
+                    <p>${escapeHtml(title)}: ${escapeHtml(commandScope)}</p>
+                    <em>${escapeHtml(artifact)}</em>
+                    <small>${escapeHtml(contentRule)}</small>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Package scripts</span>
+              <h3>Every first command has a workflow and artifact target</h3>
+            </div>
+            <span>${model.scriptCommands.length} scripts</span>
+          </div>
+          <div class="first-commit-script-table">
+            <div>
+              <span>Step</span>
+              <span>Command</span>
+              <span>Suite</span>
+              <span>Workflow</span>
+              <span>Artifact</span>
+            </div>
+            ${model.scriptCommands
+              .map(
+                ([step, command, suite, workflow, artifact, proof, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(step)}</strong>
+                    <code>${escapeHtml(command)}</code>
+                    <span>${escapeHtml(suite)}</span>
+                    <p>${escapeHtml(workflow)}</p>
+                    <em>${escapeHtml(artifact)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Copy-paste order</span>
+                <h3>How the private repo should be assembled</h3>
+              </div>
+              <span>${model.copyPasteOrder.length} moves</span>
+            </div>
+            <div class="first-commit-order-list">
+              ${model.copyPasteOrder
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What must be true before feature coding starts</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="first-commit-acceptance-grid">
+              ${model.acceptanceChecks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">First commit examples</span>
+              <h3>Small paste-ready references for the future private repository</h3>
+            </div>
+          </div>
+          <div class="first-commit-example-grid">
+            <div>
+              <span>README</span>
+              <pre>${escapeHtml(model.examples.readme)}</pre>
+            </div>
+            <div>
+              <span>package.json</span>
+              <pre>${escapeHtml(model.examples.packageJson)}</pre>
+            </div>
+            <div>
+              <span>ci.yml</span>
+              <pre>${escapeHtml(model.examples.workflow)}</pre>
+            </div>
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">First commit handoff</span>
+              <h3>What v117 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendIssueBodyExporter(model) {
+    return `
+      <section class="backend-issue-body-exporter">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend issue body exporter</span>
+            <h3>Turn the private-repo plan into copy-ready engineering issues.</h3>
+            <p>This exporter converts first-commit files, safe error/audit rules, CI proof, route skeletons, migrations, and tenant guards into the first private-repo backlog with owners, labels, milestones, file scope, and proof commands.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-issue-body-exporter-v146.json">Download issue JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Issue export readiness</span>
+            <strong>${model.issueExportScore}%</strong>
+            <i style="--width: ${model.issueExportScore}%"></i>
+            <small>${model.copyReadyIssues.length} issues / ${model.labelPlan.length} labels / ${model.milestonePlan.length} milestones.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Issue batches</span>
+              <h3>Open the backend backlog in the right order</h3>
+            </div>
+            <span>${model.issueBatches.length} batches</span>
+          </div>
+          <div class="backend-issue-batch-grid">
+            ${model.issueBatches
+              .map(
+                ([batch, title, note, milestone, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(batch)}</span>
+                    <strong>${escapeHtml(title)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                    <em>${escapeHtml(milestone)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Copy-ready issues</span>
+              <h3>Each issue has scope, files, acceptance, proof commands, labels, and milestone</h3>
+            </div>
+            <span>${model.copyReadyIssues.length} issues</span>
+          </div>
+          <div class="backend-issue-card-grid">
+            ${model.copyReadyIssues
+              .map(
+                (issue) => `
+                  <div class="tone-${escapeHtml(issue.tone)}">
+                    <div>
+                      <span>${escapeHtml(issue.id)}</span>
+                      <em>${escapeHtml(issue.milestone)}</em>
+                    </div>
+                    <strong>${escapeHtml(issue.title)}</strong>
+                    <p>${escapeHtml(issue.scope)}</p>
+                    <small>${escapeHtml(issue.owner)} / ${issue.labels.map(escapeHtml).join(", ")}</small>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Label plan</span>
+                <h3>Labels make the first backlog searchable and calm</h3>
+              </div>
+              <span>${model.labelPlan.length} labels</span>
+            </div>
+            <div class="backend-issue-label-grid">
+              ${model.labelPlan
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Milestone plan</span>
+                <h3>Milestones mirror the backend alpha path</h3>
+              </div>
+              <span>${model.milestonePlan.length} milestones</span>
+            </div>
+            <div class="backend-issue-milestone-grid">
+              ${model.milestonePlan
+                .map(
+                  ([milestone, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(milestone)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Proof commands</span>
+              <h3>Every issue expects a command and an artifact before review</h3>
+            </div>
+            <span>${model.commandProofMap.length} commands</span>
+          </div>
+          <div class="backend-issue-command-table">
+            <div>
+              <span>Step</span>
+              <span>Command</span>
+              <span>Suite</span>
+              <span>Workflow</span>
+              <span>Artifact rule</span>
+            </div>
+            ${model.commandProofMap
+              .map(
+                ([step, command, suite, workflow, artifact, rule, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(step)}</strong>
+                    <code>${escapeHtml(command)}</code>
+                    <span>${escapeHtml(suite)}</span>
+                    <p>${escapeHtml(workflow)}</p>
+                    <em>${escapeHtml(rule)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Opening order</span>
+                <h3>Prevent dependency confusion before sprint zero starts</h3>
+              </div>
+              <span>${model.openingOrder.length} moves</span>
+            </div>
+            <div class="backend-issue-opening-list">
+              ${model.openingOrder
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue templates</span>
+                <h3>Reusable structure for future backend tickets</h3>
+              </div>
+              <span>${model.issueTemplates.length} templates</span>
+            </div>
+            <div class="backend-issue-template-grid">
+              ${model.issueTemplates
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Issue body previews</span>
+              <h3>Copy these into GitHub when the private repo is ready</h3>
+            </div>
+            <span>${model.copyReadyIssues.length} bodies</span>
+          </div>
+          <div class="backend-issue-body-preview">
+            ${model.copyReadyIssues
+              .map(
+                (issue) => `
+                  <details class="tone-${escapeHtml(issue.tone)}">
+                    <summary>
+                      <span>${escapeHtml(issue.id)}</span>
+                      <strong>${escapeHtml(issue.title)}</strong>
+                      <em>${escapeHtml(issue.owner)}</em>
+                    </summary>
+                    <pre>${escapeHtml(issue.body)}</pre>
+                  </details>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What must be true before issues are opened in the real repo</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="backend-issue-acceptance-grid">
+            ${model.acceptanceChecks
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Issue handoff</span>
+              <h3>What v118 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBranchProtectionReleaseChecklist(model) {
+    return `
+      <section class="branch-protection-release-checklist">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Branch protection and release checklist</span>
+            <h3>Make the future private backend repo hard to break.</h3>
+            <p>This checklist turns workflow files and backend issues into exact GitHub branch rules, required checks, protected environments, review owners, release artifacts, rollback moves, and acceptance gates before the first real backend commit.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-branch-protection-release-checklist-v146.json">Download release JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Release checklist score</span>
+            <strong>${model.releaseChecklistScore}%</strong>
+            <i style="--width: ${model.releaseChecklistScore}%"></i>
+            <small>${model.requiredStatusChecks.length} checks / ${model.protectedBranches.length} rules / ${model.environmentGates.length} environments.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Protected branch rules</span>
+              <h3>What GitHub should enforce before merge</h3>
+            </div>
+            <span>${model.protectedBranches.length} rules</span>
+          </div>
+          <div class="branch-protection-branch-grid">
+            ${model.protectedBranches
+              .map(
+                ([branch, rule, checks, decision, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(branch)}</span>
+                    <strong>${escapeHtml(rule)}</strong>
+                    <em>${escapeHtml(checks)}</em>
+                    <p>${escapeHtml(decision)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Required status checks</span>
+              <h3>The checks that should become non-optional</h3>
+            </div>
+            <span>${model.requiredStatusChecks.length} checks</span>
+          </div>
+          <div class="branch-protection-status-table">
+            <div class="table-heading">
+              <span>Check</span>
+              <span>Workflow</span>
+              <span>Command</span>
+              <span>Artifact</span>
+            </div>
+            ${model.requiredStatusChecks
+              .map(
+                ([check, workflow, command, artifact, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(check)}</strong>
+                    <span>${escapeHtml(workflow)}</span>
+                    <code>${escapeHtml(command)}</code>
+                    <em>${escapeHtml(artifact)}</em>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Protected environments</span>
+                <h3>Where deployment movement needs approval</h3>
+              </div>
+              <span>${model.environmentGates.length} gates</span>
+            </div>
+            <div class="branch-protection-env-grid">
+              ${model.environmentGates
+                .map(
+                  ([environment, approval, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(environment)}</span>
+                      <strong>${escapeHtml(approval)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Review ownership</span>
+                <h3>Who must understand the proof before merge</h3>
+              </div>
+              <span>${model.reviewOwnership.length} owners</span>
+            </div>
+            <div class="branch-protection-owner-grid">
+              ${model.reviewOwnership
+                .map(
+                  ([owner, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(owner)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Issue to check map</span>
+              <h3>Every copy-ready backend issue gets a release proof lane</h3>
+            </div>
+            <span>${model.issueToCheckMap.length} issues</span>
+          </div>
+          <div class="branch-protection-issue-table">
+            <div class="table-heading">
+              <span>ID</span>
+              <span>Issue</span>
+              <span>Milestone</span>
+              <span>Labels</span>
+              <span>Required proof</span>
+            </div>
+            ${model.issueToCheckMap
+              .map(
+                ([id, title, milestone, labels, proof, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(id)}</strong>
+                    <span>${escapeHtml(title)}</span>
+                    <em>${escapeHtml(milestone)}</em>
+                    <small>${escapeHtml(labels)}</small>
+                    <code>${escapeHtml(proof)}</code>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Artifact retention</span>
+              <h3>Release proof should survive review, not vanish after a run</h3>
+            </div>
+            <span>${model.artifactRetention.length} artifacts</span>
+          </div>
+          <div class="branch-protection-artifact-grid">
+            ${model.artifactRetention
+              .map(
+                ([artifact, area, retention, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(area)}</span>
+                    <strong>${escapeHtml(artifact)}</strong>
+                    <em>${escapeHtml(retention)}</em>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Release ritual</span>
+                <h3>The management-ready merge rhythm</h3>
+              </div>
+              <span>${model.releaseRitual.length} steps</span>
+            </div>
+            <div class="branch-protection-ritual-list">
+              ${model.releaseRitual
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Rollback playbook</span>
+                <h3>What to do before retrying a failed release</h3>
+              </div>
+              <span>${model.rollbackPlaybook.length} moves</span>
+            </div>
+            <div class="branch-protection-rollback-list">
+              ${model.rollbackPlaybook
+                .map(
+                  ([title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">GitHub setup checklist</span>
+                <h3>Apply these after the first workflow names are visible</h3>
+              </div>
+              <span>${model.setupChecklist.length} checks</span>
+            </div>
+            <div class="branch-protection-setup-grid">
+              ${model.setupChecklist
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What proves the private repo is release-controlled</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="branch-protection-acceptance-grid">
+              ${model.acceptanceChecks
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Release control handoff</span>
+              <h3>What v119 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderFirstBackendFileContentExport(model) {
+    const renderFileCard = (file) => `
+      <div class="tone-${escapeHtml(file.tone)}">
+        <span>${escapeHtml(file.owner)}</span>
+        <strong>${escapeHtml(file.path)}</strong>
+        <em>${escapeHtml(file.issue)} / ${escapeHtml(String(file.lines))} lines</em>
+        <p>${escapeHtml(file.purpose)}</p>
+      </div>
+    `;
+    return `
+      <section class="first-backend-file-content-export">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">First backend file content export</span>
+            <h3>Turn the private repo plan into paste-ready starter files.</h3>
+            <p>This export gives the future backend repository its first real shape: root files, API shell, safe middleware boundaries, package starters, workflow files, copy order, implementation guardrails, and acceptance checks.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-file-content-export-v146.json">Download file content JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>File content score</span>
+            <strong>${model.fileContentScore}%</strong>
+            <i style="--width: ${model.fileContentScore}%"></i>
+            <small>${model.allFiles.length} files / ${model.contentPreviews.length} previews / ${model.copyOrder.length} copy steps.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">File groups</span>
+              <h3>The first private repo commit stays intentionally small</h3>
+            </div>
+            <span>${model.allFiles.length} files</span>
+          </div>
+          <div class="backend-file-group-grid">
+            ${model.fileGroups
+              .map(
+                ([label, count, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(String(count))}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Root shell files</span>
+                <h3>Repository control files</h3>
+              </div>
+              <span>${model.rootFiles.length} files</span>
+            </div>
+            <div class="backend-file-card-grid">
+              ${model.rootFiles.map(renderFileCard).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">API starter files</span>
+                <h3>Request, tenant, access, and error boundary</h3>
+              </div>
+              <span>${model.apiStarterFiles.length} files</span>
+            </div>
+            <div class="backend-file-card-grid">
+              ${model.apiStarterFiles.map(renderFileCard).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Package starter files</span>
+                <h3>Shared, audit, redaction, database, fixture, and import boundaries</h3>
+              </div>
+              <span>${model.packageFiles.length} files</span>
+            </div>
+            <div class="backend-file-card-grid">
+              ${model.packageFiles.map(renderFileCard).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Workflow starter files</span>
+                <h3>GitHub Actions shells for required checks</h3>
+              </div>
+              <span>${model.workflowFiles.length} files</span>
+            </div>
+            <div class="backend-file-card-grid">
+              ${model.workflowFiles.map(renderFileCard).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Paste-ready content previews</span>
+              <h3>Open each file block when the private repo is ready</h3>
+            </div>
+            <span>${model.contentPreviews.length} previews</span>
+          </div>
+          <div class="backend-file-preview-list">
+            ${model.contentPreviews
+              .map(
+                (file) => `
+                  <details class="tone-${escapeHtml(file.tone)}">
+                    <summary>
+                      <span>${escapeHtml(file.issue)}</span>
+                      <strong>${escapeHtml(file.path)}</strong>
+                      <em>${escapeHtml(file.owner)}</em>
+                    </summary>
+                    <pre>${escapeHtml(file.content)}</pre>
+                  </details>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Full file inventory</span>
+              <h3>Every starter file has an owner, issue, purpose, and line count</h3>
+            </div>
+            <span>${model.allFiles.length} files</span>
+          </div>
+          <div class="backend-file-inventory-table">
+            <div class="table-heading">
+              <span>Path</span>
+              <span>Owner</span>
+              <span>Issue</span>
+              <span>Purpose</span>
+              <span>Lines</span>
+            </div>
+            ${model.allFiles
+              .map(
+                (file) => `
+                  <div class="tone-${escapeHtml(file.tone)}">
+                    <strong>${escapeHtml(file.path)}</strong>
+                    <span>${escapeHtml(file.owner)}</span>
+                    <em>${escapeHtml(file.issue)}</em>
+                    <p>${escapeHtml(file.purpose)}</p>
+                    <small>${escapeHtml(String(file.lines))}</small>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Copy order</span>
+                <h3>How to assemble the first commit</h3>
+              </div>
+              <span>${model.copyOrder.length} moves</span>
+            </div>
+            <div class="backend-file-copy-order">
+              ${model.copyOrder
+                .map(
+                  ([step, title, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(step)}</span>
+                      <strong>${escapeHtml(title)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Implementation guardrails</span>
+                <h3>What these starter files deliberately protect</h3>
+              </div>
+              <span>${model.implementationGuardrails.length} rules</span>
+            </div>
+            <div class="backend-file-guardrail-grid">
+              ${model.implementationGuardrails
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What proves the file-content export is useful</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="backend-file-acceptance-grid">
+            ${model.acceptanceChecks
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">File content handoff</span>
+              <h3>What v120 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoSetupScriptDraft(model) {
+    const renderCommandBlock = ([step, title, note, tone, commands]) => `
+      <details class="tone-${escapeHtml(tone)}">
+        <summary>
+          <span>${escapeHtml(step)}</span>
+          <strong>${escapeHtml(title)}</strong>
+          <em>${escapeHtml(note)}</em>
+        </summary>
+        <pre>${escapeHtml(commands.join("\n"))}</pre>
+      </details>
+    `;
+    const renderSignalTile = (item) => {
+      const [label, valueOrNote, noteOrTone, maybeTone] = item;
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="private-repo-setup-script-draft">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo setup script draft</span>
+            <h3>Turn the backend handoff into a guided private repo bootstrap.</h3>
+            <p>This draft gives the future production repository a careful opening sequence: preflight checks, private repo creation, folder skeleton, starter-file writing, labels, milestones, first proof run, first PR, and branch protection timing.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-setup-script-draft-v146.json">Download setup script JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Setup script score</span>
+            <strong>${model.setupScriptScore}%</strong>
+            <i style="--width: ${model.setupScriptScore}%"></i>
+            <small>${model.commandBlocks.length} command blocks / ${model.scriptFiles.length} setup files / ${model.safetyGates.length} safety gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Prerequisites</span>
+              <h3>What must be true before running setup</h3>
+            </div>
+            <span>${model.prerequisites.length} checks</span>
+          </div>
+          <div class="repo-setup-prereq-grid">
+            ${model.prerequisites.map(renderSignalTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Setup script files</span>
+                <h3>The private repo gets a setup pack, not loose notes</h3>
+              </div>
+              <span>${model.scriptFiles.length} files</span>
+            </div>
+            <div class="repo-setup-script-file-grid">
+              ${model.scriptFiles.map(renderSignalTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Repository metadata</span>
+                <h3>Identity, branches, labels, milestones, issues, and files</h3>
+              </div>
+              <span>${escapeHtml(model.targetRepository)}</span>
+            </div>
+            <div class="repo-setup-metadata-grid">
+              ${model.repoMetadata.map(renderSignalTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Command sequence</span>
+              <h3>Run in order when the private backend repo is ready</h3>
+            </div>
+            <span>${model.commandBlocks.length} blocks</span>
+          </div>
+          <div class="repo-setup-command-list">
+            ${model.commandBlocks.map(renderCommandBlock).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Folder skeleton</span>
+              <h3>Folders created before starter files are written</h3>
+            </div>
+            <span>${model.folderPlan.length} folders</span>
+          </div>
+          <div class="repo-setup-folder-grid">
+            ${model.folderPlan.map(renderSignalTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Secret placeholders</span>
+                <h3>Names only, never values</h3>
+              </div>
+              <span>${model.secretPlaceholders.length} slots</span>
+            </div>
+            <div class="repo-setup-secret-grid">
+              ${model.secretPlaceholders.map(renderSignalTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">First proof run</span>
+                <h3>Commands that prove the skeleton before feature coding</h3>
+              </div>
+              <span>${model.firstProofRun.length} checks</span>
+            </div>
+            <div class="repo-setup-proof-grid">
+              ${model.firstProofRun.map(renderSignalTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Manual safety gates</span>
+              <h3>What the setup script deliberately refuses to rush</h3>
+            </div>
+            <span>${model.safetyGates.length} gates</span>
+          </div>
+          <div class="repo-setup-gate-grid">
+            ${model.safetyGates.map(renderSignalTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the setup draft ready to execute later</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-setup-acceptance-grid">
+            ${model.acceptanceChecks.map(renderSignalTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Setup script handoff</span>
+              <h3>What v121 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderGithubLabelsMilestonesImportPack(model) {
+    const renderTile = (item) => {
+      const [label, valueOrNote, noteOrTone, maybeTone] = item;
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="github-labels-milestones-import-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">GitHub labels and milestones import pack</span>
+            <h3>Give the private repo a clean backlog taxonomy before issues arrive.</h3>
+            <p>This pack creates the metadata spine for the future backend repo: label catalog, milestone catalog, board columns, issue routing rules, import sequence, command preview, taxonomy files, quality gates, and acceptance checks.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-labels-milestones-import-pack-v146.json">Download taxonomy JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Import pack score</span>
+            <strong>${model.importPackScore}%</strong>
+            <i style="--width: ${model.importPackScore}%"></i>
+            <small>${model.labelCatalog.length} labels / ${model.milestoneCatalog.length} milestones / ${model.boardColumns.length} board columns.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Label groups</span>
+              <h3>One label language for type, priority, area, owner, proof, and status</h3>
+            </div>
+            <span>${model.labelCatalog.length} labels</span>
+          </div>
+          <div class="github-taxonomy-label-group-grid">
+            ${model.labelGroups.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Milestone roadmap</span>
+                <h3>Repo shell through first customer readiness</h3>
+              </div>
+              <span>${model.milestoneCatalog.length} milestones</span>
+            </div>
+            <div class="github-taxonomy-milestone-grid">
+              ${model.milestoneCatalog
+                .map(
+                  (milestone) => `
+                    <div class="tone-${escapeHtml(milestone.tone)}">
+                      <span>${escapeHtml(milestone.code)} / ${escapeHtml(milestone.dueWindow)}</span>
+                      <strong>${escapeHtml(milestone.title)}</strong>
+                      <p>${escapeHtml(milestone.description)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Board columns</span>
+                <h3>How imported work moves from backlog to release evidence</h3>
+              </div>
+              <span>${model.boardColumns.length} columns</span>
+            </div>
+            <div class="github-taxonomy-board-grid">
+              ${model.boardColumns.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Label catalog</span>
+              <h3>Each label carries group, color, description, and create command</h3>
+            </div>
+            <span>${model.labelCatalog.length} labels</span>
+          </div>
+          <div class="github-taxonomy-label-table">
+            <div class="table-heading">
+              <span>Label</span>
+              <span>Group</span>
+              <span>Color</span>
+              <span>Description</span>
+            </div>
+            ${model.labelCatalog
+              .map(
+                (label) => `
+                  <div class="tone-${escapeHtml(label.tone)}">
+                    <strong>${escapeHtml(label.name)}</strong>
+                    <span>${escapeHtml(label.group)}</span>
+                    <em>#${escapeHtml(label.color)}</em>
+                    <p>${escapeHtml(label.description)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue routing rules</span>
+                <h3>Prevent backend issues from landing in the wrong lane</h3>
+              </div>
+              <span>${model.issueRoutingRules.length} rules</span>
+            </div>
+            <div class="github-taxonomy-routing-grid">
+              ${model.issueRoutingRules.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Import sequence</span>
+                <h3>Metadata before backlog, proof before merge</h3>
+              </div>
+              <span>${model.importSteps.length} steps</span>
+            </div>
+            <div class="github-taxonomy-import-step-grid">
+              ${model.importSteps.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Command preview</span>
+              <h3>Sample GitHub CLI commands for labels and milestones</h3>
+            </div>
+            <span>${model.commandPreview.length} commands</span>
+          </div>
+          <div class="github-taxonomy-command-list">
+            ${model.commandPreview
+              .map(
+                ([type, name, command, tone]) => `
+                  <details class="tone-${escapeHtml(tone)}">
+                    <summary>
+                      <span>${escapeHtml(type)}</span>
+                      <strong>${escapeHtml(name)}</strong>
+                    </summary>
+                    <pre>${escapeHtml(command)}</pre>
+                  </details>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Import files</span>
+                <h3>What the private repo should receive for taxonomy setup</h3>
+              </div>
+              <span>${model.importFiles.length} files</span>
+            </div>
+            <div class="github-taxonomy-file-grid">
+              ${model.importFiles.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Quality gates</span>
+                <h3>What keeps the backlog clean after import</h3>
+              </div>
+              <span>${model.qualityGates.length} gates</span>
+            </div>
+            <div class="github-taxonomy-gate-grid">
+              ${model.qualityGates.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What proves the GitHub taxonomy is ready</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="github-taxonomy-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Taxonomy handoff</span>
+              <h3>What v122 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderFirstBackendCommitQaChecklist(model) {
+    const renderTile = (item) => {
+      const [label, valueOrNote, noteOrTone, maybeTone] = item;
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="first-backend-commit-qa-checklist">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">First backend commit QA checklist</span>
+            <h3>Review the first private backend PR before feature coding begins.</h3>
+            <p>This checklist turns the setup script, starter files, taxonomy, workflows, branch rules, and release evidence into a first-commit QA gate with clear go, hold, and no-go rules.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-commit-qa-checklist-v146.json">Download QA JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>First commit QA score</span>
+            <strong>${model.qaScore}%</strong>
+            <i style="--width: ${model.qaScore}%"></i>
+            <small>${model.qaLanes.length} lanes / ${model.fileQaMatrix.length} file checks / ${model.goNoGoRules.length} decision rules.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">QA lanes</span>
+              <h3>The first commit is judged across product, security, repo, and release control</h3>
+            </div>
+            <span>${model.qaLanes.length} lanes</span>
+          </div>
+          <div class="first-commit-qa-lane-grid">
+            ${model.qaLanes.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">File QA matrix</span>
+              <h3>Starter files must be present, scoped, and safe</h3>
+            </div>
+            <span>${model.fileQaMatrix.length} checks</span>
+          </div>
+          <div class="first-commit-qa-file-table">
+            <div class="table-heading">
+              <span>Area</span>
+              <span>State</span>
+              <span>Check</span>
+            </div>
+            ${model.fileQaMatrix
+              .map(
+                ([area, state, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <strong>${escapeHtml(area)}</strong>
+                    <span>${escapeHtml(state)}</span>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Proof commands</span>
+                <h3>What the first PR should prove or explicitly mark as placeholder</h3>
+              </div>
+              <span>${model.proofCommands.length} commands</span>
+            </div>
+            <div class="first-commit-qa-proof-grid">
+              ${model.proofCommands.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reviewer checks</span>
+                <h3>What reviewers inspect before approving the first backend PR</h3>
+              </div>
+              <span>${model.reviewChecklist.length} checks</span>
+            </div>
+            <div class="first-commit-qa-review-grid">
+              ${model.reviewChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence artifacts</span>
+              <h3>Name the proof files before the CI pipeline becomes deep</h3>
+            </div>
+            <span>${model.artifactExpectations.length} artifacts</span>
+          </div>
+          <div class="first-commit-qa-artifact-grid">
+            ${model.artifactExpectations.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Go / hold / no-go</span>
+                <h3>Decision rules for the first backend commit</h3>
+              </div>
+              <span>${model.goNoGoRules.length} rules</span>
+            </div>
+            <div class="first-commit-qa-decision-grid">
+              ${model.goNoGoRules.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Role signoffs</span>
+                <h3>Who should review what before merge</h3>
+              </div>
+              <span>${model.roleSignoffs.length} roles</span>
+            </div>
+            <div class="first-commit-qa-signoff-grid">
+              ${model.roleSignoffs.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">First PR template checks</span>
+                <h3>The PR body should already enforce engineering discipline</h3>
+              </div>
+              <span>${model.firstPrTemplateChecks.length} checks</span>
+            </div>
+            <div class="first-commit-qa-pr-grid">
+              ${model.firstPrTemplateChecks.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">QA files</span>
+                <h3>The private repo receives review docs and setup checks</h3>
+              </div>
+              <span>${model.qaFiles.length} files</span>
+            </div>
+            <div class="first-commit-qa-file-grid">
+              ${model.qaFiles.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What proves the first-commit QA gate is useful</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="first-commit-qa-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">First commit QA handoff</span>
+              <h3>What v123 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoOpeningDayRunbook(model) {
+    const renderTile = (item) => {
+      const [label, valueOrNote, noteOrTone, maybeTone] = item;
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="private-repo-opening-day-runbook">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo opening day runbook</span>
+            <h3>Turn the backend plan into a controlled first day.</h3>
+            <p>This runbook sequences repository creation, taxonomy import, issue opening, starter file copy, first proof run, first PR, review signoffs, and branch protection timing.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-opening-day-runbook-v146.json">Download runbook JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Opening-day readiness</span>
+            <strong>${model.runbookScore}%</strong>
+            <i style="--width: ${model.runbookScore}%"></i>
+            <small>${model.daySequence.length} timed steps / ${model.commandBlocks.length} commands / ${model.liveGates.length} gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Day sequence</span>
+              <h3>Opening day starts with control, then moves into proof</h3>
+            </div>
+            <span>${model.daySequence.length} steps</span>
+          </div>
+          <div class="opening-day-sequence-list">
+            ${model.daySequence
+              .map(
+                ([time, label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(time)}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Command blocks</span>
+                <h3>The practical terminal path for opening the repo</h3>
+              </div>
+              <span>${model.commandBlocks.length} commands</span>
+            </div>
+            <div class="opening-day-command-grid">
+              ${model.commandBlocks.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue import waves</span>
+                <h3>Backlog order before feature coding begins</h3>
+              </div>
+              <span>${model.issueWaves.length} waves</span>
+            </div>
+            <div class="opening-day-issue-wave-grid">
+              ${model.issueWaves.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence packets</span>
+              <h3>Save proof while the first repo day is happening</h3>
+            </div>
+            <span>${model.evidencePackets.length} packets</span>
+          </div>
+          <div class="opening-day-evidence-grid">
+            ${model.evidencePackets.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner checkpoints</span>
+                <h3>Who signs off before merge and protection</h3>
+              </div>
+              <span>${model.ownerCheckpoints.length} owners</span>
+            </div>
+            <div class="opening-day-owner-grid">
+              ${model.ownerCheckpoints.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Live gates</span>
+                <h3>What must be true before each irreversible move</h3>
+              </div>
+              <span>${model.liveGates.length} gates</span>
+            </div>
+            <div class="opening-day-gate-grid">
+              ${model.liveGates.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">No-go stops</span>
+                <h3>Pause immediately when one of these appears</h3>
+              </div>
+              <span>${model.noGoStops.length} stops</span>
+            </div>
+            <div class="opening-day-stop-grid">
+              ${model.noGoStops.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What proves the opening-day runbook is useful</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="opening-day-acceptance-grid">
+              ${model.acceptanceChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Opening-day handoff</span>
+              <h3>What v124 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderProductionBackendRepoDecisionMemo(model) {
+    const renderTile = (item) => {
+      const [label, valueOrNote, noteOrTone, maybeTone] = item;
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="production-backend-repo-decision-memo">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Production backend repository decision memo</span>
+            <h3>Approve the private backend repo move without accidentally approving live SaaS.</h3>
+            <p>The memo converts the repo runbook, first-commit QA, setup script, branch protection plan, issue export, and CI blueprint into one executive go, hold, or no-go decision.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-decision-memo-v146.json">Download memo JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Decision readiness</span>
+            <strong>${model.approvalScore}%</strong>
+            <i style="--width: ${model.approvalScore}%"></i>
+            <small>${escapeHtml(model.recommendedDecision)}</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Memo sections</span>
+              <h3>The decision is specific, bounded, and owner-ready</h3>
+            </div>
+            <span>${model.memoSections.length} sections</span>
+          </div>
+          <div class="decision-memo-section-grid">
+            ${model.memoSections.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Approval basis</span>
+                <h3>Why creating the private repo is now reasonable</h3>
+              </div>
+              <span>${model.approvalBasis.length} reasons</span>
+            </div>
+            <div class="decision-memo-basis-grid">
+              ${model.approvalBasis.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Scope cutline</span>
+                <h3>What is approved and what is deliberately excluded</h3>
+              </div>
+              <span>${model.scopeCutline.length} items</span>
+            </div>
+            <div class="decision-memo-scope-grid">
+              ${model.scopeCutline.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence readiness</span>
+              <h3>The previous backend packs now support one decision</h3>
+            </div>
+            <span>${model.evidenceReadiness.length} lanes</span>
+          </div>
+          <div class="decision-memo-evidence-grid">
+            ${model.evidenceReadiness.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Decision options</span>
+                <h3>Use the right level of commitment</h3>
+              </div>
+              <span>${model.decisionOptions.length} options</span>
+            </div>
+            <div class="decision-memo-option-grid">
+              ${model.decisionOptions.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Blocker register</span>
+                <h3>What still prevents full live SaaS</h3>
+              </div>
+              <span>${model.blockerRegister.length} blockers</span>
+            </div>
+            <div class="decision-memo-blocker-grid">
+              ${model.blockerRegister.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Approval checklist</span>
+                <h3>Owner signoff before repo execution</h3>
+              </div>
+              <span>${model.approvalChecklist.length} checks</span>
+            </div>
+            <div class="decision-memo-approval-grid">
+              ${model.approvalChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Next actions</span>
+                <h3>What happens after the memo is approved</h3>
+              </div>
+              <span>${model.nextActions.length} actions</span>
+            </div>
+            <div class="decision-memo-next-grid">
+              ${model.nextActions.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Risk controls</span>
+                <h3>The guardrails that make a controlled go possible</h3>
+              </div>
+              <span>${model.riskControls.length} controls</span>
+            </div>
+            <div class="decision-memo-risk-grid">
+              ${model.riskControls.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What proves the decision memo is useful</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="decision-memo-acceptance-grid">
+              ${model.acceptanceChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Decision memo handoff</span>
+              <h3>What v125 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendAlphaRiskRegister(model) {
+    const renderTile = (item) => {
+      const [label, valueOrNote, noteOrTone, maybeTone] = item;
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="backend-alpha-risk-register">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend alpha risk register</span>
+            <h3>Know what can break before the private backend repo opens.</h3>
+            <p>This register turns the decision memo, opening-day runbook, first-commit QA, branch protection plan, CI blueprint, and setup script into clear risk controls before execution begins.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-risk-register-v146.json">Download risk JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Risk readiness</span>
+            <strong>${model.riskReadinessScore}%</strong>
+            <i style="--width: ${model.riskReadinessScore}%"></i>
+            <small>${model.riskRegister.length} risks / ${model.triggerMatrix.length} triggers / ${model.ownerActions.length} owners.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Risk domains</span>
+              <h3>The areas that can stop the first backend alpha</h3>
+            </div>
+            <span>${model.riskDomains.length} domains</span>
+          </div>
+          <div class="backend-alpha-risk-domain-grid">
+            ${model.riskDomains.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Risk register</span>
+              <h3>Severity, trigger, and mitigation before repo execution</h3>
+            </div>
+            <span>${model.riskRegister.length} risks</span>
+          </div>
+          <div class="backend-alpha-risk-register-grid">
+            ${model.riskRegister.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Trigger matrix</span>
+                <h3>What stops, holds, or watches the repo day</h3>
+              </div>
+              <span>${model.triggerMatrix.length} triggers</span>
+            </div>
+            <div class="backend-alpha-trigger-grid">
+              ${model.triggerMatrix.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Mitigation plan</span>
+                <h3>Controls tied to the right moment</h3>
+              </div>
+              <span>${model.mitigationPlan.length} controls</span>
+            </div>
+            <div class="backend-alpha-mitigation-grid">
+              ${model.mitigationPlan.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner actions</span>
+                <h3>Every major risk has a human owner</h3>
+              </div>
+              <span>${model.ownerActions.length} owners</span>
+            </div>
+            <div class="backend-alpha-owner-grid">
+              ${model.ownerActions.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Decision rules</span>
+                <h3>Go, conditional go, hold, and no-go logic</h3>
+              </div>
+              <span>${model.decisionRules.length} rules</span>
+            </div>
+            <div class="backend-alpha-decision-grid">
+              ${model.decisionRules.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Monitoring signals</span>
+                <h3>What to keep visible during opening day</h3>
+              </div>
+              <span>${model.monitoringSignals.length} signals</span>
+            </div>
+            <div class="backend-alpha-monitoring-grid">
+              ${model.monitoringSignals.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Residual risks</span>
+                <h3>Known risks accepted or watched after the memo</h3>
+              </div>
+              <span>${model.residualRisks.length} risks</span>
+            </div>
+            <div class="backend-alpha-residual-grid">
+              ${model.residualRisks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What proves the risk register is useful</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="backend-alpha-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Risk register handoff</span>
+              <h3>What v126 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendOpeningDayEvidencePack(model) {
+    const renderTile = (item) => {
+      const [label, valueOrNote, noteOrTone, maybeTone] = item;
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="backend-opening-day-evidence-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend opening day evidence pack</span>
+            <h3>Make the private repo day auditable before the first file moves.</h3>
+            <p>The pack converts the runbook and risk register into proof files, screenshots, command transcripts, PR notes, workflow check names, branch-protection evidence, and owner signoffs.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-opening-day-evidence-pack-v146.json">Download evidence JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Evidence readiness</span>
+            <strong>${model.evidenceReadinessScore}%</strong>
+            <i style="--width: ${model.evidenceReadinessScore}%"></i>
+            <small>${model.artifactFiles.length} files / ${model.screenshotPlan.length} screenshots / ${model.proofCommands.length} commands.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence lanes</span>
+              <h3>What proof must exist before, during, and after repo opening</h3>
+            </div>
+            <span>${model.evidenceLanes.length} lanes</span>
+          </div>
+          <div class="backend-evidence-lane-grid">
+            ${model.evidenceLanes.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Capture checklist</span>
+              <h3>The day-one proof rhythm</h3>
+            </div>
+            <span>${model.captureChecklist.length} captures</span>
+          </div>
+          <div class="backend-evidence-capture-grid">
+            ${model.captureChecklist.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Artifact files</span>
+                <h3>Evidence folder naming plan</h3>
+              </div>
+              <span>${model.artifactFiles.length} files</span>
+            </div>
+            <div class="backend-evidence-artifact-grid">
+              ${model.artifactFiles.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Proof commands</span>
+                <h3>Transcript expectations for first backend proof</h3>
+              </div>
+              <span>${model.proofCommands.length} commands</span>
+            </div>
+            <div class="backend-evidence-command-grid">
+              ${model.proofCommands.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Screenshot plan</span>
+                <h3>Visual evidence to capture in GitHub</h3>
+              </div>
+              <span>${model.screenshotPlan.length} screenshots</span>
+            </div>
+            <div class="backend-evidence-screenshot-grid">
+              ${model.screenshotPlan.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">PR note sections</span>
+                <h3>The first backend PR stays bounded and reviewable</h3>
+              </div>
+              <span>${model.prNoteSections.length} sections</span>
+            </div>
+            <div class="backend-evidence-pr-grid">
+              ${model.prNoteSections.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Workflow names</span>
+                <h3>Capture exact checks before branch protection</h3>
+              </div>
+              <span>${model.workflowNameMap.length} lanes</span>
+            </div>
+            <div class="backend-evidence-workflow-grid">
+              ${model.workflowNameMap.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Branch protection evidence</span>
+                <h3>Proof that main is protected after check names are known</h3>
+              </div>
+              <span>${model.branchProtectionEvidence.length} proofs</span>
+            </div>
+            <div class="backend-evidence-protection-grid">
+              ${model.branchProtectionEvidence.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Signoff trail</span>
+                <h3>Human approval lanes for the first PR</h3>
+              </div>
+              <span>${model.signoffTrail.length} owners</span>
+            </div>
+            <div class="backend-evidence-signoff-grid">
+              ${model.signoffTrail.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What proves the evidence pack is useful</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="backend-evidence-acceptance-grid">
+              ${model.acceptanceChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence pack handoff</span>
+              <h3>What v127 gives engineering</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoExecutionChecklist(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="private-repo-execution-checklist">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo execution checklist</span>
+            <h3>Run the private backend repo day without improvising.</h3>
+            <p>The checklist converts the decision memo, risk register, runbook, and evidence pack into gates, owner actions, proof logs, command order, branch timing, stop rules, and completion checks.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-execution-checklist-v146.json">Download checklist JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Execution readiness</span>
+            <strong>${model.executionReadinessScore}%</strong>
+            <i style="--width: ${model.executionReadinessScore}%"></i>
+            <small>${model.executionGates.length} gates / ${model.operatorChecklist.length} checks / ${model.stopRules.length} stop or hold rules.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Execution gates</span>
+              <h3>Do not move to the next step until the gate is true</h3>
+            </div>
+            <span>${model.executionGates.length} gates</span>
+          </div>
+          <div class="repo-execution-gate-grid">
+            ${model.executionGates.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Opening-day timeline</span>
+              <h3>The practical sequence for the first private repo session</h3>
+            </div>
+            <span>${model.executionSequence.length} steps</span>
+          </div>
+          <div class="repo-execution-sequence-grid">
+            ${model.executionSequence.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Operator checklist</span>
+              <h3>Who does what before the first PR can be trusted</h3>
+            </div>
+            <span>${model.operatorChecklist.length} checks</span>
+          </div>
+          <div class="repo-execution-operator-grid">
+            ${model.operatorChecklist.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Stop and hold rules</span>
+                <h3>Safety conditions that prevent bad repo execution</h3>
+              </div>
+              <span>${model.stopRules.length} rules</span>
+            </div>
+            <div class="repo-execution-stop-grid">
+              ${model.stopRules.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Proof log</span>
+                <h3>The exact evidence files to fill during execution</h3>
+              </div>
+              <span>${model.proofLog.length} logs</span>
+            </div>
+            <div class="repo-execution-proof-grid">
+              ${model.proofLog.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">GitHub screenshots</span>
+                <h3>Visual evidence to capture as the repo opens</h3>
+              </div>
+              <span>${model.repoScreenPlan.length} screens</span>
+            </div>
+            <div class="repo-execution-screen-grid">
+              ${model.repoScreenPlan.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Command run order</span>
+                <h3>Commands and placeholder rules for first backend proof</h3>
+              </div>
+              <span>${model.commandRunOrder.length} commands</span>
+            </div>
+            <div class="repo-execution-command-grid">
+              ${model.commandRunOrder.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue wave</span>
+                <h3>First backlog movement after taxonomy is ready</h3>
+              </div>
+              <span>${model.issueWave.length} waves</span>
+            </div>
+            <div class="repo-execution-issue-grid">
+              ${model.issueWave.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner board</span>
+                <h3>Named accountability for opening day</h3>
+              </div>
+              <span>${model.ownerBoard.length} lanes</span>
+            </div>
+            <div class="repo-execution-owner-grid">
+              ${model.ownerBoard.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Branch timing</span>
+                <h3>Apply protection only when GitHub has shown the real names</h3>
+              </div>
+              <span>${model.branchTiming.length} steps</span>
+            </div>
+            <div class="repo-execution-branch-grid">
+              ${model.branchTiming.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Completion checks</span>
+                <h3>What must be true before opening day is considered complete</h3>
+              </div>
+              <span>${model.completionChecklist.length} checks</span>
+            </div>
+            <div class="repo-execution-completion-grid">
+              ${model.completionChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Execution handoff</span>
+              <h3>What v128 gives the private repo day</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendAlphaControlBoard(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    return `
+      <section class="backend-alpha-control-board">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend alpha control board</span>
+            <h3>See the repo day as a control board before it happens.</h3>
+            <p>The board turns execution planning into one operating surface for repo status, first PR, issue wave, evidence health, CI check names, branch protection timing, blockers, owners, and go/hold/no-go movement.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-control-board-v146.json">Download board JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Control readiness</span>
+            <strong>${model.controlReadinessScore}%</strong>
+            <i style="--width: ${model.controlReadinessScore}%"></i>
+            <small>${model.controlLanes.length} lanes / ${model.blockerQueue.length} blockers / ${model.ownerReadiness.length} owner lanes.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Board KPIs</span>
+              <h3>The top signals before repo execution starts</h3>
+            </div>
+            <span>${model.boardKpis.length} signals</span>
+          </div>
+          <div class="backend-alpha-board-kpi-grid">
+            ${model.boardKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Control lanes</span>
+              <h3>One glance status for the backend alpha day</h3>
+            </div>
+            <span>${model.controlLanes.length} lanes</span>
+          </div>
+          <div class="backend-alpha-board-lane-grid">
+            ${model.controlLanes.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Status swimlanes</span>
+              <h3>Ready, proof needed, waiting, blocked, and closeout work</h3>
+            </div>
+            <span>${model.statusSwimlanes.length} cards</span>
+          </div>
+          <div class="backend-alpha-board-swimlane-grid">
+            ${model.statusSwimlanes.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Blocker queue</span>
+                <h3>What still prevents real repo execution</h3>
+              </div>
+              <span>${model.blockerQueue.length} blockers</span>
+            </div>
+            <div class="backend-alpha-board-blocker-grid">
+              ${model.blockerQueue.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner readiness</span>
+                <h3>Signoff lanes before first PR trust</h3>
+              </div>
+              <span>${model.ownerReadiness.length} owners</span>
+            </div>
+            <div class="backend-alpha-board-owner-grid">
+              ${model.ownerReadiness.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence meters</span>
+                <h3>What proof exists and what is still only planned</h3>
+              </div>
+              <span>${model.evidenceMeters.length} meters</span>
+            </div>
+            <div class="backend-alpha-board-evidence-grid">
+              ${model.evidenceMeters.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">First PR control</span>
+                <h3>Reviewability checklist for the backend shell PR</h3>
+              </div>
+              <span>${model.prControlChecklist.length} checks</span>
+            </div>
+            <div class="backend-alpha-board-pr-grid">
+              ${model.prControlChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">GitHub signal map</span>
+                <h3>Where the board gets truth during repo day</h3>
+              </div>
+              <span>${model.githubSignalMap.length} sources</span>
+            </div>
+            <div class="backend-alpha-board-github-grid">
+              ${model.githubSignalMap.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Decision log</span>
+                <h3>Go, hold, and no-go decisions stay explicit</h3>
+              </div>
+              <span>${model.decisionLog.length} decisions</span>
+            </div>
+            <div class="backend-alpha-board-decision-grid">
+              ${model.decisionLog.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Next action queue</span>
+              <h3>The eight moves that turn planning into first repo proof</h3>
+            </div>
+            <span>${model.nextActionQueue.length} moves</span>
+          </div>
+          <div class="backend-alpha-board-action-grid">
+            ${model.nextActionQueue.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>How we know the board is useful before v130</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="backend-alpha-board-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Control board handoff</span>
+              <h3>What v129 gives the backend alpha move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoDayOneScript(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderCommand = ([step, label, tool, command, note, tone]) => `
+      <article class="repo-day-one-command-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(step)}</span>
+          <strong>${escapeHtml(label)}</strong>
+          <em>${escapeHtml(tool)}</em>
+        </div>
+        <code>${escapeHtml(command)}</code>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    return `
+      <section class="private-repo-day-one-script">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo day-one script</span>
+            <h3>Run the first backend repo day without improvising.</h3>
+            <p>This script turns the control board into a practical execution path: preflight, private repo, clean copy set, branch, starter shell, issue wave, first PR, workflow names, branch protection, and closeout proof.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-day-one-script-v146.json">Download script JSON</a>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Script readiness</span>
+            <strong>${model.scriptReadinessScore}%</strong>
+            <i style="--width: ${model.scriptReadinessScore}%"></i>
+            <small>${model.commandBlocks.length} command blocks / ${model.evidenceFiles.length} evidence files / ${model.stopScript.length} stop rules.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Script KPIs</span>
+              <h3>The execution posture before touching GitHub</h3>
+            </div>
+            <span>${model.scriptKpis.length} signals</span>
+          </div>
+          <div class="repo-day-one-kpi-grid">
+            ${model.scriptKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Preflight checklist</span>
+              <h3>Confirm these before any repo command runs</h3>
+            </div>
+            <span>${model.preflightChecklist.length} checks</span>
+          </div>
+          <div class="repo-day-one-preflight-grid">
+            ${model.preflightChecklist.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel repo-day-one-command-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Command script</span>
+              <h3>Ten blocks from repo creation to closeout</h3>
+            </div>
+            <span>${model.commandBlocks.length} blocks</span>
+          </div>
+          <div class="repo-day-one-command-grid">
+            ${model.commandBlocks.map(renderCommand).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Manual actions</span>
+                <h3>Human proof points the script cannot fake</h3>
+              </div>
+              <span>${model.manualActions.length} actions</span>
+            </div>
+            <div class="repo-day-one-manual-grid">
+              ${model.manualActions.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence files</span>
+                <h3>What must be saved into the private repo</h3>
+              </div>
+              <span>${model.evidenceFiles.length} files</span>
+            </div>
+            <div class="repo-day-one-evidence-grid">
+              ${model.evidenceFiles.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue wave script</span>
+                <h3>How backlog opens before the first PR</h3>
+              </div>
+              <span>${model.issueWaveScript.length} waves</span>
+            </div>
+            <div class="repo-day-one-issue-grid">
+              ${model.issueWaveScript.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">First PR script</span>
+                <h3>What the draft PR must say</h3>
+              </div>
+              <span>${model.prScript.length} parts</span>
+            </div>
+            <div class="repo-day-one-pr-grid">
+              ${model.prScript.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Branch protection timing</span>
+                <h3>Do not protect main with guessed check names</h3>
+              </div>
+              <span>${model.branchProtectionTiming.length} rules</span>
+            </div>
+            <div class="repo-day-one-branch-grid">
+              ${model.branchProtectionTiming.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Stop script</span>
+                <h3>When the repo day must stop or hold</h3>
+              </div>
+              <span>${model.stopScript.length} rules</span>
+            </div>
+            <div class="repo-day-one-stop-grid">
+              ${model.stopScript.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner prompts</span>
+                <h3>Questions to ask before the first PR is trusted</h3>
+              </div>
+              <span>${model.ownerPrompts.length} prompts</span>
+            </div>
+            <div class="repo-day-one-owner-grid">
+              ${model.ownerPrompts.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Closeout checks</span>
+                <h3>What must exist before the day is complete</h3>
+              </div>
+              <span>${model.closeoutChecks.length} checks</span>
+            </div>
+            <div class="repo-day-one-closeout-grid">
+              ${model.closeoutChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Day-one handoff</span>
+              <h3>What v130 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendRepoProofExporter(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderTemplate = ([file, title, note, tone]) => `
+      <article class="repo-proof-template-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(file)}</span>
+        <strong>${escapeHtml(title)}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderSnippet = ([label, file, content, tone]) => `
+      <article class="repo-proof-snippet-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(file)}</strong>
+        </div>
+        <code>${escapeHtml(content)}</code>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend repo proof exporter</span>
+            <h3>Turn repo day into a proof packet people can trust.</h3>
+            <p>The exporter converts the day-one script into markdown evidence files, screenshot checklist, command transcript slots, first PR sections, owner approval notes, closeout packet, and quality gates for the future private backend repo.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-proof-exporter-v146.json">Download proof JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Proof readiness</span>
+            <strong>${model.proofReadinessScore}%</strong>
+            <i style="--width: ${model.proofReadinessScore}%"></i>
+            <small>${model.evidenceTemplates.length} files / ${model.prBodySections.length} PR sections / ${model.closeoutPacket.length} closeout checks.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Proof KPIs</span>
+              <h3>The packet posture before evidence is captured</h3>
+            </div>
+            <span>${model.proofKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid">
+            ${model.proofKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence templates</span>
+              <h3>Markdown files to create before running the repo day</h3>
+            </div>
+            <span>${model.evidenceTemplates.length} files</span>
+          </div>
+          <div class="repo-proof-template-grid">
+            ${model.evidenceTemplates.map(renderTemplate).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">PR body sections</span>
+                <h3>What the first backend PR must explain</h3>
+              </div>
+              <span>${model.prBodySections.length} sections</span>
+            </div>
+            <div class="repo-proof-pr-grid">
+              ${model.prBodySections.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Screenshot checklist</span>
+                <h3>Proof images to capture in GitHub</h3>
+              </div>
+              <span>${model.screenshotChecklist.length} shots</span>
+            </div>
+            <div class="repo-proof-screenshot-grid">
+              ${model.screenshotChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Command transcripts</span>
+                <h3>Where command proof should be pasted</h3>
+              </div>
+              <span>${model.commandTranscriptSlots.length} slots</span>
+            </div>
+            <div class="repo-proof-command-grid">
+              ${model.commandTranscriptSlots.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner approvals</span>
+                <h3>Approval notes before repo trust</h3>
+              </div>
+              <span>${model.ownerApprovalNotes.length} owners</span>
+            </div>
+            <div class="repo-proof-owner-grid">
+              ${model.ownerApprovalNotes.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Closeout packet</span>
+                <h3>What must be written before the day closes</h3>
+              </div>
+              <span>${model.closeoutPacket.length} items</span>
+            </div>
+            <div class="repo-proof-closeout-grid">
+              ${model.closeoutPacket.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Export sequence</span>
+                <h3>How to assemble the proof packet</h3>
+              </div>
+              <span>${model.exportSequence.length} steps</span>
+            </div>
+            <div class="repo-proof-sequence-grid">
+              ${model.exportSequence.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Quality gates</span>
+              <h3>What makes the evidence trustworthy</h3>
+            </div>
+            <span>${model.qualityGates.length} gates</span>
+          </div>
+          <div class="repo-proof-gate-grid">
+            ${model.qualityGates.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Copy-ready snippets</span>
+              <h3>Starter text for evidence and PR notes</h3>
+            </div>
+            <span>${model.copyReadySnippets.length} snippets</span>
+          </div>
+          <div class="repo-proof-snippet-grid">
+            ${model.copyReadySnippets.map(renderSnippet).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Proof exporter handoff</span>
+              <h3>What v131 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderGithubRepoOpeningPacket(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderCard = ([label, value, note, tone], cardClass) => `
+      <article class="repo-proof-template-card ${escapeHtml(cardClass)} tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(value)}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderSnippet = ([label, file, content, tone]) => `
+      <article class="repo-proof-snippet-card repo-opening-copy-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(file)}</strong>
+        </div>
+        <code>${escapeHtml(content)}</code>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter github-repo-opening-packet">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">GitHub repo opening packet</span>
+            <h3>Open the private repo with facts, owners, proof, and no drift.</h3>
+            <p>This packet converts the proof exporter into one repo-opening bundle: repo identity, owner matrix, issue wave, first PR starter, artifact manifest, launch files, risk locks, closeout ledger, and copy-ready text for the future private backend repository.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-repo-opening-packet-v146.json">Download opening packet JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Opening readiness</span>
+            <strong>${model.openingReadinessScore}%</strong>
+            <i style="--width: ${model.openingReadinessScore}%"></i>
+            <small>${model.launchFiles.length} files / ${model.artifactManifest.length} artifacts / ${model.ownerMatrix.length} owner lanes.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Opening KPIs</span>
+              <h3>The repo-opening posture before GitHub is touched</h3>
+            </div>
+            <span>${model.openingKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid repo-opening-kpi-grid">
+            ${model.openingKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Repo identity</span>
+                <h3>Facts that must be true before files move</h3>
+              </div>
+              <span>${model.repoIdentity.length} facts</span>
+            </div>
+            <div class="repo-proof-pr-grid repo-opening-identity-grid">
+              ${model.repoIdentity.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner matrix</span>
+                <h3>Who must approve the opening packet</h3>
+              </div>
+              <span>${model.ownerMatrix.length} lanes</span>
+            </div>
+            <div class="repo-proof-owner-grid repo-opening-owner-grid">
+              ${model.ownerMatrix.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue wave</span>
+                <h3>Backlog order for the first private repo day</h3>
+              </div>
+              <span>${model.issueOpeningWave.length} waves</span>
+            </div>
+            <div class="repo-proof-command-grid repo-opening-issue-grid">
+              ${model.issueOpeningWave.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">First PR starter</span>
+                <h3>The first backend PR body structure</h3>
+              </div>
+              <span>${model.firstPrStarter.length} sections</span>
+            </div>
+            <div class="repo-proof-pr-grid repo-opening-pr-grid">
+              ${model.firstPrStarter.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Artifact manifest</span>
+              <h3>Proof files to capture during the repo opening</h3>
+            </div>
+            <span>${model.artifactManifest.length} artifacts</span>
+          </div>
+          <div class="repo-proof-template-grid repo-opening-artifact-grid">
+            ${model.artifactManifest.map((item) => renderCard(item, "repo-opening-artifact-card")).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Opening sequence</span>
+                <h3>How the real repo day should run</h3>
+              </div>
+              <span>${model.openingSequence.length} steps</span>
+            </div>
+            <div class="repo-proof-sequence-grid repo-opening-sequence-grid">
+              ${model.openingSequence.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Closeout ledger</span>
+                <h3>Facts to record before starting implementation depth</h3>
+              </div>
+              <span>${model.closeoutLedger.length} rows</span>
+            </div>
+            <div class="repo-proof-closeout-grid repo-opening-closeout-grid">
+              ${model.closeoutLedger.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Launch files</span>
+              <h3>Files the opening packet should create</h3>
+            </div>
+            <span>${model.launchFiles.length} files</span>
+          </div>
+          <div class="repo-proof-template-grid repo-opening-file-grid">
+            ${model.launchFiles.map((item) => renderCard(item, "repo-opening-file-card")).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Risk locks</span>
+              <h3>Fail and hold rules for the repo opening</h3>
+            </div>
+            <span>${model.riskLocks.length} locks</span>
+          </div>
+          <div class="repo-proof-gate-grid repo-opening-risk-grid">
+            ${model.riskLocks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Copy-ready opening text</span>
+              <h3>Starter lines for GitHub About, PR, and closeout notes</h3>
+            </div>
+            <span>${model.copyReadyBlocks.length} blocks</span>
+          </div>
+          <div class="repo-proof-snippet-grid repo-opening-copy-grid">
+            ${model.copyReadyBlocks.map(renderSnippet).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Opening packet handoff</span>
+              <h3>What v132 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendAlphaIssueImportKit(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderCard = ([label, value, note, tone], cardClass) => `
+      <article class="repo-proof-template-card ${escapeHtml(cardClass)} tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderIssueRow = ([id, title, owner, milestone, labels, proofCommand, wave, tone]) => `
+      <article class="issue-import-row-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(id)}</span>
+          <strong>${escapeHtml(title)}</strong>
+        </div>
+        <p>${escapeHtml(owner)} / ${escapeHtml(milestone)}</p>
+        <small>${escapeHtml(labels)}</small>
+        <em>${escapeHtml(wave)} / ${escapeHtml(proofCommand)}</em>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter backend-alpha-issue-import-kit">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend alpha issue import kit</span>
+            <h3>Turn the backlog into clean import rows before GitHub paste.</h3>
+            <p>The import kit reshapes the backend issue bodies into CSV-style rows, owner lanes, label and milestone mapping, import waves, body-file names, validation gates, paste checks, and closeout files for the future private repo.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-issue-import-kit-v146.json">Download issue import JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Import readiness</span>
+            <strong>${model.importReadinessScore}%</strong>
+            <i style="--width: ${model.importReadinessScore}%"></i>
+            <small>${model.issueRows.length} rows / ${model.ownerLanes.length} owner lanes / ${model.importValidation.length} gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Import KPIs</span>
+              <h3>Whether the issue import is clean enough to paste</h3>
+            </div>
+            <span>${model.importKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid issue-import-kpi-grid">
+            ${model.importKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">CSV columns</span>
+              <h3>The row contract for every imported GitHub issue</h3>
+            </div>
+            <span>${model.csvColumns.length} columns</span>
+          </div>
+          <div class="repo-proof-template-grid issue-import-column-grid">
+            ${model.csvColumns.map((item) => renderCard(item, "issue-import-column-card")).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner lanes</span>
+                <h3>Accountability before issue import</h3>
+              </div>
+              <span>${model.ownerLanes.length} lanes</span>
+            </div>
+            <div class="repo-proof-owner-grid issue-import-owner-grid">
+              ${model.ownerLanes.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Label mapping</span>
+                <h3>How taxonomy controls routing and proof</h3>
+              </div>
+              <span>${model.labelMappings.length} labels</span>
+            </div>
+            <div class="repo-proof-pr-grid issue-import-label-grid">
+              ${model.labelMappings.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Import waves</span>
+              <h3>The safe order for opening backend alpha issues</h3>
+            </div>
+            <span>${model.importWaves.length} waves</span>
+          </div>
+          <div class="repo-proof-sequence-grid issue-import-wave-grid">
+            ${model.importWaves.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Issue row preview</span>
+              <h3>First rows ready for CSV review</h3>
+            </div>
+            <span>${model.issueRows.length} rows</span>
+          </div>
+          <div class="issue-import-row-grid">
+            ${model.issueRows.map(renderIssueRow).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Body file plan</span>
+                <h3>Markdown files to paste into GitHub issues</h3>
+              </div>
+              <span>${model.bodyFilePlan.length} files</span>
+            </div>
+            <div class="repo-proof-template-grid issue-import-body-grid">
+              ${model.bodyFilePlan.map((item) => renderCard(item, "issue-import-body-card")).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Paste checks</span>
+                <h3>Before, during, after, and review controls</h3>
+              </div>
+              <span>${model.pasteChecks.length} checks</span>
+            </div>
+            <div class="repo-proof-closeout-grid issue-import-paste-grid">
+              ${model.pasteChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Validation gates</span>
+              <h3>What stops the import before it creates noisy backlog</h3>
+            </div>
+            <span>${model.importValidation.length} gates</span>
+          </div>
+          <div class="repo-proof-gate-grid issue-import-validation-grid">
+            ${model.importValidation.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Import files</span>
+                <h3>Files the import kit should create</h3>
+              </div>
+              <span>${model.importFiles.length} files</span>
+            </div>
+            <div class="repo-proof-template-grid issue-import-file-grid">
+              ${model.importFiles.map((item) => renderCard(item, "issue-import-file-card")).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What makes the import kit trustworthy</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="repo-proof-gate-grid issue-import-acceptance-grid">
+              ${model.acceptanceChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Issue import handoff</span>
+              <h3>What v133 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderFirstPrBodyBuilder(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderCard = ([label, value, note, tone], cardClass) => `
+      <article class="repo-proof-template-card ${escapeHtml(cardClass)} tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderSnippet = ([label, file, content, tone], extraClass = "") => `
+      <article class="repo-proof-snippet-card first-pr-copy-card ${escapeHtml(extraClass)} tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(file)}</strong>
+        </div>
+        <code>${escapeHtml(content)}</code>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter first-pr-body-builder">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">First PR body builder</span>
+            <h3>Write the first backend PR before the repo day starts.</h3>
+            <p>This builder turns the issue import kit, repo opening packet, proof exporter, reviewers, rollback rules, and release checklist into one copy-ready first backend PR body for the future private repository.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-pr-body-builder-v146.json">Download PR body JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>PR readiness</span>
+            <strong>${model.firstPrReadinessScore}%</strong>
+            <i style="--width: ${model.firstPrReadinessScore}%"></i>
+            <small>${model.issueLinkPlan.length} issue links / ${model.evidenceLinkPlan.length} evidence links / ${model.reviewerMatrix.length} reviewer lanes.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">PR KPIs</span>
+              <h3>Whether the first backend PR is ready to paste</h3>
+            </div>
+            <span>${model.prKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid first-pr-kpi-grid">
+            ${model.prKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">PR identity</span>
+                <h3>Title, branch, linked issue, and merge posture</h3>
+              </div>
+              <span>${model.prIdentity.length} facts</span>
+            </div>
+            <div class="repo-proof-pr-grid first-pr-identity-grid">
+              ${model.prIdentity.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Executive summary</span>
+                <h3>The management language inside the PR body</h3>
+              </div>
+              <span>${model.summaryBlocks.length} blocks</span>
+            </div>
+            <div class="repo-proof-command-grid first-pr-summary-grid">
+              ${model.summaryBlocks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Scope checklist</span>
+              <h3>What belongs in the first backend PR</h3>
+            </div>
+            <span>${model.scopeChecklist.length} checks</span>
+          </div>
+          <div class="repo-proof-screenshot-grid first-pr-scope-grid">
+            ${model.scopeChecklist.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Out-of-scope locks</span>
+              <h3>What must not leak into the first backend PR</h3>
+            </div>
+            <span>${model.outOfScopeLocks.length} locks</span>
+          </div>
+          <div class="repo-proof-gate-grid first-pr-lock-grid">
+            ${model.outOfScopeLocks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue link plan</span>
+                <h3>Issue rows the first PR should reference</h3>
+              </div>
+              <span>${model.issueLinkPlan.length} links</span>
+            </div>
+            <div class="repo-proof-template-grid first-pr-issue-grid">
+              ${model.issueLinkPlan.map((item) => renderCard(item, "first-pr-issue-card")).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence link plan</span>
+                <h3>Files the first PR should point to</h3>
+              </div>
+              <span>${model.evidenceLinkPlan.length} files</span>
+            </div>
+            <div class="repo-proof-template-grid first-pr-evidence-grid">
+              ${model.evidenceLinkPlan.map((item) => renderCard(item, "first-pr-evidence-card")).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reviewer matrix</span>
+                <h3>Owner lanes to name before review trust</h3>
+              </div>
+              <span>${model.reviewerMatrix.length} lanes</span>
+            </div>
+            <div class="repo-proof-owner-grid first-pr-reviewer-grid">
+              ${model.reviewerMatrix.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Rollback plan</span>
+                <h3>How to undo safely if proof fails</h3>
+              </div>
+              <span>${model.rollbackPlan.length} paths</span>
+            </div>
+            <div class="repo-proof-closeout-grid first-pr-rollback-grid">
+              ${model.rollbackPlan.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Release checklist</span>
+              <h3>The gates before the first backend PR can leave draft</h3>
+            </div>
+            <span>${model.releaseChecklist.length} checks</span>
+          </div>
+          <div class="repo-proof-sequence-grid first-pr-release-grid">
+            ${model.releaseChecklist.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Copy-ready PR sections</span>
+              <h3>Text to paste into the future private repo PR</h3>
+            </div>
+            <span>${model.copyReadySections.length} sections</span>
+          </div>
+          <div class="repo-proof-snippet-grid first-pr-copy-grid">
+            ${model.copyReadySections.map((item) => renderSnippet(item)).join("")}
+            ${renderSnippet(["Full body skeleton", "PR body preview", model.prBodySkeleton, "green"], "first-pr-body-skeleton")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the first PR body trustworthy</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid first-pr-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">First PR handoff</span>
+              <h3>What v134 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderRepoEvidenceFolderWriter(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderCard = ([label, value, note, tone], cardClass) => `
+      <article class="repo-proof-template-card ${escapeHtml(cardClass)} tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderTree = ([path, note, tone]) => `
+      <article class="repo-proof-template-card evidence-folder-tree-card tone-${escapeHtml(tone)}">
+        <span>Path</span>
+        <strong>${escapeHtml(path)}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderSnippet = ([label, file, content, tone], extraClass = "") => `
+      <article class="repo-proof-snippet-card evidence-folder-copy-card ${escapeHtml(extraClass)} tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(file)}</strong>
+        </div>
+        <code>${escapeHtml(content)}</code>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter repo-evidence-folder-writer">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Repo evidence folder writer</span>
+            <h3>Write the proof folder the first backend PR will link to.</h3>
+            <p>This writer converts the PR body builder into exact docs/evidence files, screenshot slots, transcript slots, issue ledger rows, owner signoff files, branch-protection proof, and closeout notes for the future private backend repo.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-repo-evidence-folder-writer-v146.json">Download evidence folder JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Evidence readiness</span>
+            <strong>${model.evidenceFolderScore}%</strong>
+            <i style="--width: ${model.evidenceFolderScore}%"></i>
+            <small>${model.markdownTemplates.length} markdown / ${model.screenshotSlots.length} screenshots / ${model.transcriptPlan.length} transcripts.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence KPIs</span>
+              <h3>Whether the proof folder is ready for the first PR</h3>
+            </div>
+            <span>${model.evidenceKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid evidence-folder-kpi-grid">
+            ${model.evidenceKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Folder tree</span>
+              <h3>The exact evidence paths to create in the private repo</h3>
+            </div>
+            <span>${model.folderTree.length} paths</span>
+          </div>
+          <div class="repo-proof-template-grid evidence-folder-tree-grid">
+            ${model.folderTree.map(renderTree).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Folder manifest</span>
+                <h3>Every proof file and evidence lane</h3>
+              </div>
+              <span>${model.folderManifest.length} entries</span>
+            </div>
+            <div class="repo-proof-template-grid evidence-folder-manifest-grid">
+              ${model.folderManifest.map((item) => renderCard(item, "evidence-folder-manifest-card")).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Markdown templates</span>
+                <h3>Copy-ready proof file starters</h3>
+              </div>
+              <span>${model.markdownTemplates.length} files</span>
+            </div>
+            <div class="repo-proof-snippet-grid evidence-folder-template-grid">
+              ${model.markdownTemplates.map((item) => renderSnippet(item, "evidence-folder-template-card")).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Screenshot slots</span>
+                <h3>GitHub screens that prove the repo state</h3>
+              </div>
+              <span>${model.screenshotSlots.length} slots</span>
+            </div>
+            <div class="repo-proof-screenshot-grid evidence-folder-screenshot-grid">
+              ${model.screenshotSlots.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Transcript slots</span>
+                <h3>Commands or blocker notes to save under transcripts</h3>
+              </div>
+              <span>${model.transcriptPlan.length} slots</span>
+            </div>
+            <div class="repo-proof-template-grid evidence-folder-transcript-grid">
+              ${model.transcriptPlan.map((item) => renderCard(item, "evidence-folder-transcript-card")).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Issue trace ledger</span>
+                <h3>Where real GitHub issue URLs will land</h3>
+              </div>
+              <span>${model.issueTraceLedger.length} rows</span>
+            </div>
+            <div class="repo-proof-template-grid evidence-folder-issue-grid">
+              ${model.issueTraceLedger.map((item) => renderCard(item, "evidence-folder-issue-card")).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner signoff files</span>
+                <h3>Go, hold, no-go, or defer by owner lane</h3>
+              </div>
+              <span>${model.ownerSignoffFiles.length} files</span>
+            </div>
+            <div class="repo-proof-owner-grid evidence-folder-signoff-grid">
+              ${model.ownerSignoffFiles.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Branch proof gates</span>
+                <h3>How the evidence folder controls branch protection</h3>
+              </div>
+              <span>${model.branchProtectionProof.length} gates</span>
+            </div>
+            <div class="repo-proof-gate-grid evidence-folder-branch-grid">
+              ${model.branchProtectionProof.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Closeout notes</span>
+                <h3>What must be written before implementation depth</h3>
+              </div>
+              <span>${model.closeoutNotes.length} notes</span>
+            </div>
+            <div class="repo-proof-closeout-grid evidence-folder-closeout-grid">
+              ${model.closeoutNotes.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Copy-ready markdown</span>
+              <h3>Starter text for the evidence folder</h3>
+            </div>
+            <span>${model.copyReadyMarkdown.length} snippets</span>
+          </div>
+          <div class="repo-proof-snippet-grid evidence-folder-copy-grid">
+            ${model.copyReadyMarkdown.map((item) => renderSnippet(item)).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the evidence folder trustworthy</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid evidence-folder-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence folder handoff</span>
+              <h3>What v135 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoCommandRunnerPack(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderCard = ([label, value, note, tone], cardClass) => `
+      <article class="repo-proof-template-card ${escapeHtml(cardClass)} tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderPreflight = ([step, label, command, note, tone]) => `
+      <div class="tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(step)} / ${escapeHtml(label)}</span>
+        <strong>${escapeHtml(command)}</strong>
+        <p>${escapeHtml(note)}</p>
+      </div>
+    `;
+    const renderCommand = ([step, phase, command, note, tone]) => `
+      <article class="repo-proof-snippet-card command-runner-runbook-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(step)} / ${escapeHtml(phase)}</span>
+          <strong>${escapeHtml(phase)}</strong>
+        </div>
+        <code>${escapeHtml(command)}</code>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderSnippet = ([label, shell, command, tone]) => `
+      <article class="repo-proof-snippet-card command-runner-copy-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(shell)}</strong>
+        </div>
+        <code>${escapeHtml(command)}</code>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter private-repo-command-runner-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo command runner pack</span>
+            <h3>Run repo day from a controlled command sheet.</h3>
+            <p>This pack turns the evidence folder writer and day-one script into a practical execution cockpit: command order, expected outputs, evidence writes, artifact filenames, stop rules, owner prompts, branch timing, and closeout checks.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-command-runner-pack-v146.json">Download command runner JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Runner readiness</span>
+            <strong>${model.commandRunnerScore}%</strong>
+            <i style="--width: ${model.commandRunnerScore}%"></i>
+            <small>${model.commandRunbook.length} commands / ${model.evidenceWriteMap.length} evidence writes / ${model.failureHolds.length} holds.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Runner KPIs</span>
+              <h3>The private repo session at a glance</h3>
+            </div>
+            <span>${model.runnerKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid command-runner-kpi-grid">
+            ${model.runnerKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Preflight commands</span>
+              <h3>What must be true before creating the private repo</h3>
+            </div>
+            <span>${model.preflightCommands.length} checks</span>
+          </div>
+          <div class="repo-proof-sequence-grid command-runner-preflight-grid">
+            ${model.preflightCommands.map(renderPreflight).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Command runbook</span>
+              <h3>The exact repo-day sequence and transcript destination</h3>
+            </div>
+            <span>${model.commandRunbook.length} blocks</span>
+          </div>
+          <div class="repo-proof-snippet-grid command-runner-runbook-grid">
+            ${model.commandRunbook.map(renderCommand).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Expected outputs</span>
+                <h3>Where each proof result should land</h3>
+              </div>
+              <span>${model.expectedOutputs.length} outputs</span>
+            </div>
+            <div class="repo-proof-template-grid command-runner-output-grid">
+              ${model.expectedOutputs.map((item) => renderCard(item, "command-runner-output-card")).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Failure holds</span>
+                <h3>Stop or pause before trust is compromised</h3>
+              </div>
+              <span>${model.failureHolds.length} rules</span>
+            </div>
+            <div class="repo-proof-gate-grid command-runner-hold-grid">
+              ${model.failureHolds.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence write map</span>
+                <h3>Every file or folder the command runner must touch</h3>
+              </div>
+              <span>${model.evidenceWriteMap.length} paths</span>
+            </div>
+            <div class="repo-proof-template-grid command-runner-evidence-grid">
+              ${model.evidenceWriteMap.map((item) => renderCard(item, "command-runner-evidence-card")).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Artifact slots</span>
+                <h3>Screenshots, manifests, and JSON proof files to attach</h3>
+              </div>
+              <span>${model.artifactSlots.length} slots</span>
+            </div>
+            <div class="repo-proof-template-grid command-runner-artifact-grid">
+              ${model.artifactSlots.map((item) => renderCard(item, "command-runner-artifact-card")).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Manual proof actions</span>
+                <h3>The human captures that commands cannot replace</h3>
+              </div>
+              <span>${model.manualProofActions.length} actions</span>
+            </div>
+            <div class="repo-proof-closeout-grid command-runner-manual-grid">
+              ${model.manualProofActions.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner prompts</span>
+                <h3>The approval questions to ask during repo day</h3>
+              </div>
+              <span>${model.ownerPromptRun.length} prompts</span>
+            </div>
+            <div class="repo-proof-owner-grid command-runner-owner-grid">
+              ${model.ownerPromptRun.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Branch timing</span>
+                <h3>When branch protection is safe to apply</h3>
+              </div>
+              <span>${model.branchTimingRun.length} steps</span>
+            </div>
+            <div class="repo-proof-sequence-grid command-runner-branch-grid">
+              ${model.branchTimingRun.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Closeout checks</span>
+                <h3>What must be written before the next implementation PR</h3>
+              </div>
+              <span>${model.closeoutRun.length} checks</span>
+            </div>
+            <div class="repo-proof-closeout-grid command-runner-closeout-grid">
+              ${model.closeoutRun.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Copy-ready commands</span>
+              <h3>Controlled snippets for the future private repo session</h3>
+            </div>
+            <span>${model.copyReadyCommands.length} snippets</span>
+          </div>
+          <div class="repo-proof-snippet-grid command-runner-copy-grid">
+            ${model.copyReadyCommands.map(renderSnippet).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the command runner trustworthy</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid command-runner-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Command runner handoff</span>
+              <h3>What v136 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendPrReviewGateMatrix(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderCard = ([label, value, note, tone], cardClass) => `
+      <article class="repo-proof-template-card ${escapeHtml(cardClass)} tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderReviewLane = ([owner, scope, approve, hold, block, tone]) => `
+      <article class="review-gate-lane-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(owner)}</span>
+          <strong>${escapeHtml(scope)}</strong>
+        </div>
+        <p><b>Approve</b> ${escapeHtml(approve)}</p>
+        <p><b>Hold</b> ${escapeHtml(hold)}</p>
+        <p><b>Block</b> ${escapeHtml(block)}</p>
+      </article>
+    `;
+    const renderPacket = ([owner, scope, content, tone]) => `
+      <article class="repo-proof-snippet-card review-gate-packet-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(owner)}</span>
+          <strong>${escapeHtml(scope)}</strong>
+        </div>
+        <code>${escapeHtml(content)}</code>
+      </article>
+    `;
+    const renderComment = ([label, surface, content, tone]) => `
+      <article class="repo-proof-snippet-card review-gate-comment-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(surface)}</strong>
+        </div>
+        <code>${escapeHtml(content)}</code>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter backend-pr-review-gate-matrix">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend PR review gate matrix</span>
+            <h3>Make the first backend PR reviewable, holdable, and blockable.</h3>
+            <p>This matrix turns the first PR body, evidence folder, and command runner into reviewer-specific gates: who approves what, what causes a hold, what blocks trust, and what must be true before merge readiness.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-pr-review-gate-matrix-v146.json">Download review gate JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Review readiness</span>
+            <strong>${model.reviewGateScore}%</strong>
+            <i style="--width: ${model.reviewGateScore}%"></i>
+            <small>${model.reviewerGateMatrix.length} lanes / ${model.holdQueue.length} holds / ${model.blockRules.length} blocks.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Review KPIs</span>
+              <h3>Whether the first backend PR is review-controlled</h3>
+            </div>
+            <span>${model.reviewKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid review-gate-kpi-grid">
+            ${model.reviewKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Reviewer gate matrix</span>
+              <h3>Approve, hold, and block language by reviewer lane</h3>
+            </div>
+            <span>${model.reviewerGateMatrix.length} lanes</span>
+          </div>
+          <div class="review-gate-lane-grid">
+            ${model.reviewerGateMatrix.map(renderReviewLane).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Decision gates</span>
+              <h3>How the PR moves from draft to merge-ready</h3>
+            </div>
+            <span>${model.decisionGates.length} gates</span>
+          </div>
+          <div class="repo-proof-sequence-grid review-gate-decision-grid">
+            ${model.decisionGates.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence review map</span>
+                <h3>What each reviewer must inspect before approval</h3>
+              </div>
+              <span>${model.evidenceReviewMap.length} rows</span>
+            </div>
+            <div class="repo-proof-template-grid review-gate-evidence-grid">
+              ${model.evidenceReviewMap.map((item) => renderCard(item, "review-gate-evidence-card")).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Hold queue</span>
+                <h3>Actionable holds that pause review without losing control</h3>
+              </div>
+              <span>${model.holdQueue.length} holds</span>
+            </div>
+            <div class="repo-proof-closeout-grid review-gate-hold-grid">
+              ${model.holdQueue.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Block rules</span>
+                <h3>Trust failures that require changes before review continues</h3>
+              </div>
+              <span>${model.blockRules.length} blocks</span>
+            </div>
+            <div class="repo-proof-gate-grid review-gate-block-grid">
+              ${model.blockRules.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Merge readiness</span>
+                <h3>The checklist before the first backend PR leaves draft</h3>
+              </div>
+              <span>${model.mergeReadinessChecklist.length} checks</span>
+            </div>
+            <div class="repo-proof-gate-grid review-gate-merge-grid">
+              ${model.mergeReadinessChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Reviewer packets</span>
+              <h3>Copy-ready lane instructions for the first PR reviewers</h3>
+            </div>
+            <span>${model.reviewerPackets.length} packets</span>
+          </div>
+          <div class="repo-proof-snippet-grid review-gate-packet-grid">
+            ${model.reviewerPackets.map(renderPacket).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">PR comment templates</span>
+              <h3>Reusable approve, hold, block, and closeout language</h3>
+            </div>
+            <span>${model.prCommentTemplates.length} comments</span>
+          </div>
+          <div class="repo-proof-snippet-grid review-gate-comment-grid">
+            ${model.prCommentTemplates.map(renderComment).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the review gate matrix trustworthy</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid review-gate-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Review gate handoff</span>
+              <h3>What v137 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderEvidenceArtifactStatusBoard(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderArtifact = (artifact) => `
+      <article class="artifact-status-card tone-${escapeHtml(artifact.tone)} status-${escapeHtml(artifact.status.toLowerCase())}">
+        <div>
+          <span>${escapeHtml(artifact.group)}</span>
+          <em>${escapeHtml(artifact.status)}</em>
+        </div>
+        <strong>${escapeHtml(artifact.title)}</strong>
+        <code>${escapeHtml(artifact.file)}</code>
+        <p>${escapeHtml(artifact.note)}</p>
+        <small>${escapeHtml(artifact.owner)}</small>
+      </article>
+    `;
+    const renderStatusColumn = ([label, value, note, tone]) => {
+      const status = label.includes("Ready") ? "Ready" : label.includes("Hold") ? "Hold" : label.includes("Deferred") ? "Deferred" : "Blocked";
+      const items = model.artifactRows.filter((artifact) => artifact.status === status).slice(0, 8);
+      return `
+        <article class="artifact-status-column tone-${escapeHtml(tone)}">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">${escapeHtml(label)}</span>
+              <h3>${escapeHtml(String(value))} items</h3>
+            </div>
+          </div>
+          <p>${escapeHtml(note)}</p>
+          <div class="artifact-status-column-list">
+            ${items.map(renderArtifact).join("")}
+          </div>
+        </article>
+      `;
+    };
+    return `
+      <section class="backend-repo-proof-exporter evidence-artifact-status-board">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Evidence artifact status board</span>
+            <h3>Know which proof is ready, held, deferred, or blocked.</h3>
+            <p>This board turns the review matrix, evidence folder, command runner, and proof exporter into one operating view for real private-repo artifacts: screenshots, transcripts, issue URLs, owner signoffs, branch proof, and closeout notes.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-artifact-status-board-v146.json">Download artifact board JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Artifact readiness</span>
+            <strong>${model.evidenceBoardScore}%</strong>
+            <i style="--width: ${model.evidenceBoardScore}%"></i>
+            <small>${model.artifactRows.length} artifacts / ${model.escalationQueue.length} holds and blocks.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Artifact KPIs</span>
+              <h3>Proof packet posture before the private repo exists</h3>
+            </div>
+            <span>${model.boardKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid artifact-board-kpi-grid">
+            ${model.boardKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Status board</span>
+              <h3>Ready, held, deferred, and blocked artifacts</h3>
+            </div>
+            <span>${model.artifactRows.length} rows</span>
+          </div>
+          <div class="artifact-status-column-grid">
+            ${model.statusSummary.map(renderStatusColumn).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence lanes</span>
+              <h3>Who owns each class of proof</h3>
+            </div>
+            <span>${model.evidenceLanes.length} lanes</span>
+          </div>
+          <div class="artifact-board-lane-grid">
+            ${model.evidenceLanes.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Escalation queue</span>
+                <h3>Holds and blocks to call out before review</h3>
+              </div>
+              <span>${model.escalationQueue.length} items</span>
+            </div>
+            <div class="artifact-board-escalation-grid">
+              ${model.escalationQueue.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Source of truth</span>
+                <h3>Where each proof fact must come from</h3>
+              </div>
+              <span>${model.sourceOfTruthMap.length} sources</span>
+            </div>
+            <div class="artifact-board-source-grid">
+              ${model.sourceOfTruthMap.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Capture sequence</span>
+                <h3>How artifacts move from planned to captured</h3>
+              </div>
+              <span>${model.captureSequence.length} steps</span>
+            </div>
+            <div class="artifact-board-capture-grid">
+              ${model.captureSequence.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Quality rules</span>
+                <h3>What prevents evidence drift</h3>
+              </div>
+              <span>${model.qualityRules.length} rules</span>
+            </div>
+            <div class="artifact-board-quality-grid">
+              ${model.qualityRules.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the artifact board useful</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid artifact-board-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Artifact board handoff</span>
+              <h3>What v138 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoHandoffEmailPack(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderAudience = ([owner, lane, note, tone]) => `
+      <article class="handoff-email-audience-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(owner)}</span>
+        <strong>${escapeHtml(lane)}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderLink = ([file, title, note, tone]) => `
+      <article class="handoff-email-link-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(title)}</span>
+        <strong>${escapeHtml(file)}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter private-repo-handoff-email-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo handoff email pack</span>
+            <h3>Brief every owner before the first private backend repo session.</h3>
+            <p>This pack converts the artifact board, PR review matrix, command runner, opening packet, and first PR body into a copy-ready owner email, agenda, evidence links, approval language, safety locks, and follow-up rhythm.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-handoff-email-pack-v146.json">Download handoff email JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Handoff readiness</span>
+            <strong>${model.handoffEmailScore}%</strong>
+            <i style="--width: ${model.handoffEmailScore}%"></i>
+            <small>${model.audienceBriefs.length} recipients / ${model.evidenceAttachmentLinks.length} evidence links.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Handoff KPIs</span>
+              <h3>Whether the briefing is ready to send</h3>
+            </div>
+            <span>${model.handoffKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid handoff-email-kpi-grid">
+            ${model.handoffKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Copy-ready email</span>
+                <h3>The message that starts the controlled repo day</h3>
+              </div>
+              <span>plain text</span>
+            </div>
+            <pre class="handoff-email-copy"><code>${escapeHtml(model.copyReadyEmail)}</code></pre>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Email sections</span>
+                <h3>What the message must cover</h3>
+              </div>
+              <span>${model.emailSections.length} sections</span>
+            </div>
+            <div class="handoff-email-section-grid">
+              ${model.emailSections.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Recipient lanes</span>
+              <h3>Who receives the briefing and what they approve</h3>
+            </div>
+            <span>${model.audienceBriefs.length} lanes</span>
+          </div>
+          <div class="handoff-email-audience-grid">
+            ${model.audienceBriefs.map(renderAudience).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence link bundle</span>
+                <h3>What gets attached or referenced</h3>
+              </div>
+              <span>${model.evidenceAttachmentLinks.length} links</span>
+            </div>
+            <div class="handoff-email-link-grid">
+              ${model.evidenceAttachmentLinks.map(renderLink).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Approval language</span>
+                <h3>Go, hold, no-go, defer, approve, and block text</h3>
+              </div>
+              <span>${model.approvalLanguage.length} phrases</span>
+            </div>
+            <div class="handoff-email-approval-grid">
+              ${model.approvalLanguage.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Briefing agenda</span>
+                <h3>30-minute owner meeting before commands run</h3>
+              </div>
+              <span>${model.meetingAgenda.length} rows</span>
+            </div>
+            <div class="handoff-email-agenda-grid">
+              ${model.meetingAgenda.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Send checklist</span>
+                <h3>What must be true before the email goes out</h3>
+              </div>
+              <span>${model.sendChecklist.length} checks</span>
+            </div>
+            <div class="handoff-email-send-grid">
+              ${model.sendChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Follow-up rhythm</span>
+                <h3>How the repo day stays visible after the email</h3>
+              </div>
+              <span>${model.followUpCadence.length} moments</span>
+            </div>
+            <div class="handoff-email-followup-grid">
+              ${model.followUpCadence.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Safety disclaimers</span>
+                <h3>What the email must not leave ambiguous</h3>
+              </div>
+              <span>${model.riskDisclaimers.length} locks</span>
+            </div>
+            <div class="handoff-email-risk-grid">
+              ${model.riskDisclaimers.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the email pack trustworthy</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid handoff-email-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Email pack handoff</span>
+              <h3>What v139 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderFirstBackendPrReviewCommentPack(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderComment = ([label, surface, action, comment, tone]) => `
+      <article class="pr-review-comment-library-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <em>${escapeHtml(action)}</em>
+        </div>
+        <strong>${escapeHtml(surface)}</strong>
+        <code>${escapeHtml(comment)}</code>
+      </article>
+    `;
+    const renderPacket = ([owner, scope, content, tone]) => `
+      <article class="pr-review-comment-packet-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(owner)}</span>
+          <strong>${escapeHtml(scope)}</strong>
+        </div>
+        <code>${escapeHtml(content)}</code>
+      </article>
+    `;
+    const renderInline = ([file, title, action, comment, tone]) => `
+      <article class="pr-review-inline-snippet-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(title)}</span>
+        <strong>${escapeHtml(file)}</strong>
+        <em>${escapeHtml(action)}</em>
+        <p>${escapeHtml(comment)}</p>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter first-backend-pr-review-comment-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">First backend PR review comment pack</span>
+            <h3>Turn review rules into paste-ready GitHub PR comments.</h3>
+            <p>This pack converts the review gate matrix and private repo handoff into GitHub-ready comments for opening review, lane approval, evidence holds, request changes, no-leak signoff, branch-protection holds, and merge closeout.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-pr-review-comment-pack-v146.json">Download review comments JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Comment readiness</span>
+            <strong>${model.firstBackendPrCommentScore}%</strong>
+            <i style="--width: ${model.firstBackendPrCommentScore}%"></i>
+            <small>${model.reviewCommentLibrary.length} comments / ${model.reviewerCommentPackets.length} packets / ${model.inlineCommentSnippets.length} inline snippets.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Review comment KPIs</span>
+              <h3>Whether the first PR review text is ready to paste</h3>
+            </div>
+            <span>${model.reviewCommentKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid pr-review-comment-kpi-grid">
+            ${model.reviewCommentKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Copy-ready review text</span>
+                <h3>The review language library in one plain-text block</h3>
+              </div>
+              <span>copy block</span>
+            </div>
+            <pre class="pr-review-comment-copy"><code>${escapeHtml(model.copyReadyReviewText)}</code></pre>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Review decision board</span>
+                <h3>Which GitHub action to use and when</h3>
+              </div>
+              <span>${model.reviewDecisionBoard.length} decisions</span>
+            </div>
+            <div class="pr-review-decision-grid">
+              ${model.reviewDecisionBoard.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Comment library</span>
+              <h3>Opening note, approval, hold, request changes, and closeout text</h3>
+            </div>
+            <span>${model.reviewCommentLibrary.length} comments</span>
+          </div>
+          <div class="pr-review-comment-library-grid">
+            ${model.reviewCommentLibrary.map(renderComment).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Reviewer packets</span>
+              <h3>Lane-specific review instructions ready for PR threads</h3>
+            </div>
+            <span>${model.reviewerCommentPackets.length} packets</span>
+          </div>
+          <div class="pr-review-comment-packet-grid">
+            ${model.reviewerCommentPackets.map(renderPacket).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Inline comment snippets</span>
+                <h3>File-scoped notes for middleware, routes, workflows, and evidence</h3>
+              </div>
+              <span>${model.inlineCommentSnippets.length} snippets</span>
+            </div>
+            <div class="pr-review-inline-snippet-grid">
+              ${model.inlineCommentSnippets.map(renderInline).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Send checklist</span>
+                <h3>What must be true before any review comment is submitted</h3>
+              </div>
+              <span>${model.reviewSendChecklist.length} checks</span>
+            </div>
+            <div class="pr-review-send-grid">
+              ${model.reviewSendChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reply handling</span>
+                <h3>How owner responses change the review posture</h3>
+              </div>
+              <span>${model.replyHandlingCadence.length} outcomes</span>
+            </div>
+            <div class="pr-review-reply-grid">
+              ${model.replyHandlingCadence.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Review source locks</span>
+                <h3>The upstream rules this comment pack must obey</h3>
+              </div>
+              <span>${model.holdQueue.length + model.blockRules.length} controls</span>
+            </div>
+            <div class="pr-review-source-grid">
+              ${[...model.holdQueue.slice(0, 4), ...model.blockRules.slice(0, 4)].map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the PR review comment pack trustworthy</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid pr-review-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Review comment handoff</span>
+              <h3>What v140 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoEvidenceCloseoutPack(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderOutcome = ([lane, status, note, tone]) => `
+      <article class="evidence-closeout-outcome-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(lane)}</span>
+        <strong>${escapeHtml(status)}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderOwner = ([owner, scope, note, tone]) => `
+      <article class="evidence-closeout-owner-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(owner)}</span>
+        <strong>${escapeHtml(scope)}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter private-repo-evidence-closeout-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo evidence closeout pack</span>
+            <h3>Close the private repo day with proof, not memory.</h3>
+            <p>This pack converts review comments, artifact status, owner handoff, and review gates into passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout records.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-evidence-closeout-pack-v146.json">Download closeout JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Closeout readiness</span>
+            <strong>${model.evidenceCloseoutScore}%</strong>
+            <i style="--width: ${model.evidenceCloseoutScore}%"></i>
+            <small>${model.closeoutOutcomeLanes.length} outcomes / ${model.ownerCloseoutQueue.length} owners / ${model.noLeakRollbackChecks.length} trust checks.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Closeout KPIs</span>
+              <h3>Whether the private repo evidence session can be closed cleanly</h3>
+            </div>
+            <span>${model.closeoutKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid evidence-closeout-kpi-grid">
+            ${model.closeoutKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Copy-ready closeout note</span>
+                <h3>The message that freezes the evidence state</h3>
+              </div>
+              <span>plain text</span>
+            </div>
+            <pre class="evidence-closeout-copy"><code>${escapeHtml(model.copyReadyCloseoutNote)}</code></pre>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Outcome lanes</span>
+                <h3>Passed, held, blocked, deferred, no-leak, rollback, and next owner</h3>
+              </div>
+              <span>${model.closeoutOutcomeLanes.length} lanes</span>
+            </div>
+            <div class="evidence-closeout-outcome-grid">
+              ${model.closeoutOutcomeLanes.map(renderOutcome).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence closeout register</span>
+                <h3>What gets marked passed, held, blocked, or deferred</h3>
+              </div>
+              <span>${model.evidenceCloseoutRegister.length} rows</span>
+            </div>
+            <div class="evidence-closeout-register-grid">
+              ${model.evidenceCloseoutRegister.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Decision log</span>
+                <h3>What must be written before the session can end</h3>
+              </div>
+              <span>${model.closeoutDecisionLog.length} rows</span>
+            </div>
+            <div class="evidence-closeout-decision-grid">
+              ${model.closeoutDecisionLog.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Owner closeout queue</span>
+              <h3>Who owns the final proof state after review</h3>
+            </div>
+            <span>${model.ownerCloseoutQueue.length} lanes</span>
+          </div>
+          <div class="evidence-closeout-owner-grid">
+            ${model.ownerCloseoutQueue.map(renderOwner).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">No-leak and rollback checks</span>
+                <h3>Trust controls that must survive the closeout</h3>
+              </div>
+              <span>${model.noLeakRollbackChecks.length} checks</span>
+            </div>
+            <div class="evidence-closeout-trust-grid">
+              ${model.noLeakRollbackChecks.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Closeout timeline</span>
+                <h3>When closeout facts get recorded and reviewed</h3>
+              </div>
+              <span>${model.closeoutTimeline.length} moments</span>
+            </div>
+            <div class="evidence-closeout-timeline-grid">
+              ${model.closeoutTimeline.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Management summary lines</span>
+              <h3>What leadership should see after the repo day</h3>
+            </div>
+            <span>${model.managementSummaryLines.length} lines</span>
+          </div>
+          <div class="evidence-closeout-summary-grid">
+            ${model.managementSummaryLines.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the closeout pack trustworthy</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid evidence-closeout-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Evidence closeout handoff</span>
+              <h3>What v141 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendRepoDayMeetingPack(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderMeetingCard = ([label, value, note, tone]) => `
+      <article class="backend-meeting-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderAgenda = ([label, duration, note, tone]) => `
+      <article class="backend-meeting-agenda-card tone-${escapeHtml(tone)}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <em>${escapeHtml(duration)}</em>
+        </div>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter backend-repo-day-meeting-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend repo day meeting pack</span>
+            <h3>Run the private repo day like a decision room.</h3>
+            <p>This pack turns the closeout model into an agenda, attendee map, decision capture board, owner action queue, risk parking lot, evidence outputs, and facilitator script for the first backend repo session.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-day-meeting-pack-v146.json">Download meeting JSON</a>
+              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Meeting readiness</span>
+            <strong>${model.backendRepoDayMeetingScore}%</strong>
+            <i style="--width: ${model.backendRepoDayMeetingScore}%"></i>
+            <small>${model.meetingAgendaBlocks.length} agenda blocks / ${model.attendeeRoles.length} roles / ${model.decisionCaptureBoard.length} decisions.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Meeting KPIs</span>
+              <h3>Whether repo day can run as a controlled evidence meeting</h3>
+            </div>
+            <span>${model.meetingKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid backend-meeting-kpi-grid">
+            ${model.meetingKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Facilitator script</span>
+                <h3>The meeting rhythm for the private repo day</h3>
+              </div>
+              <span>copy-ready</span>
+            </div>
+            <pre class="backend-meeting-copy"><code>${escapeHtml(model.copyReadyMeetingScript)}</code></pre>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Source readiness</span>
+                <h3>What previous packs feed into the meeting</h3>
+              </div>
+              <span>${model.sourceReadiness.length} inputs</span>
+            </div>
+            <div class="backend-meeting-source-grid">
+              ${model.sourceReadiness.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Agenda</span>
+              <h3>Time-boxed blocks for the first private backend repo meeting</h3>
+            </div>
+            <span>${model.meetingAgendaBlocks.length} blocks</span>
+          </div>
+          <div class="backend-meeting-agenda-grid">
+            ${model.meetingAgendaBlocks.map(renderAgenda).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Attendee roles</span>
+                <h3>Who needs to be in the room and why</h3>
+              </div>
+              <span>${model.attendeeRoles.length} roles</span>
+            </div>
+            <div class="backend-meeting-attendee-grid">
+              ${model.attendeeRoles.map(renderMeetingCard).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Decision capture board</span>
+                <h3>What must be recorded before the meeting ends</h3>
+              </div>
+              <span>${model.decisionCaptureBoard.length} rows</span>
+            </div>
+            <div class="backend-meeting-decision-grid">
+              ${model.decisionCaptureBoard.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Action follow-up queue</span>
+              <h3>Post-meeting work that must not disappear</h3>
+            </div>
+            <span>${model.actionFollowupQueue.length} actions</span>
+          </div>
+          <div class="backend-meeting-action-grid">
+            ${model.actionFollowupQueue.map(renderMeetingCard).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence outputs</span>
+                <h3>Files and records that should exist after the meeting</h3>
+              </div>
+              <span>${model.meetingEvidenceArtifacts.length} outputs</span>
+            </div>
+            <div class="backend-meeting-evidence-grid">
+              ${model.meetingEvidenceArtifacts.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Risk parking lot</span>
+                <h3>How to park, hold, or block unclear items</h3>
+              </div>
+              <span>${model.riskParkingLot.length} rows</span>
+            </div>
+            <div class="backend-meeting-risk-grid">
+              ${model.riskParkingLot.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Meeting timeline</span>
+                <h3>Before, during, and after the repo day</h3>
+              </div>
+              <span>${model.meetingTimeline.length} moments</span>
+            </div>
+            <div class="backend-meeting-timeline-grid">
+              ${model.meetingTimeline.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Management brief</span>
+                <h3>What leadership should hear after the session</h3>
+              </div>
+              <span>${model.managementBriefLines.length} lines</span>
+            </div>
+            <div class="backend-meeting-brief-grid">
+              ${model.managementBriefLines.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the meeting pack usable on repo day</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid backend-meeting-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Meeting handoff</span>
+              <h3>What v142 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoReplyCaptureBoard(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderReplyCard = ([label, value, note, tone]) => `
+      <article class="reply-capture-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter private-repo-reply-capture-board">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Private repo reply capture board</span>
+            <h3>Turn every reviewer reply into a clear next state.</h3>
+            <p>This board captures real GitHub replies, holds, requested changes, deferred proof, no-response lanes, owner actions, and merge-readiness outcomes after the backend repo day meeting.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-reply-capture-board-v146.json">Download reply board JSON</a>
+              <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Reply capture readiness</span>
+            <strong>${model.replyCaptureScore}%</strong>
+            <i style="--width: ${model.replyCaptureScore}%"></i>
+            <small>${model.reviewerReplyLanes.length} lanes / ${model.replyStateBoard.length} states / ${model.mergeReadinessLanes.length} merge gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Reply KPIs</span>
+              <h3>Whether real reviewer replies can become controlled outcomes</h3>
+            </div>
+            <span>${model.replyKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid reply-capture-kpi-grid">
+            ${model.replyKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reply log template</span>
+                <h3>Copy-ready structure for each GitHub reply</h3>
+              </div>
+              <span>copy-ready</span>
+            </div>
+            <pre class="reply-capture-copy"><code>${escapeHtml(model.copyReadyReplyLog)}</code></pre>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Source readiness</span>
+                <h3>What previous packs feed into reply capture</h3>
+              </div>
+              <span>${model.sourceReadiness.length} inputs</span>
+            </div>
+            <div class="reply-capture-source-grid">
+              ${model.sourceReadiness.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Reviewer reply lanes</span>
+              <h3>Every lane gets one clear response state</h3>
+            </div>
+            <span>${model.reviewerReplyLanes.length} lanes</span>
+          </div>
+          <div class="reply-capture-lane-grid">
+            ${model.reviewerReplyLanes.map(renderReplyCard).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reply states</span>
+                <h3>Approved, held, blocked, deferred, and merge-ready states</h3>
+              </div>
+              <span>${model.replyStateBoard.length} states</span>
+            </div>
+            <div class="reply-capture-state-grid">
+              ${model.replyStateBoard.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Thread capture checklist</span>
+                <h3>Fields required for every GitHub thread row</h3>
+              </div>
+              <span>${model.threadCaptureChecklist.length} fields</span>
+            </div>
+            <div class="reply-capture-thread-grid">
+              ${model.threadCaptureChecklist.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Requested changes resolver</span>
+              <h3>How blockers become owner work instead of noise</h3>
+            </div>
+            <span>${model.requestedChangesResolver.length} rows</span>
+          </div>
+          <div class="reply-capture-request-grid">
+            ${model.requestedChangesResolver.map(renderReplyCard).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Approval readiness</span>
+                <h3>When each lane can be treated as approved</h3>
+              </div>
+              <span>${model.approvalReadinessBoard.length} lanes</span>
+            </div>
+            <div class="reply-capture-approval-grid">
+              ${model.approvalReadinessBoard.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Merge readiness</span>
+                <h3>Final gates before any merge-ready state</h3>
+              </div>
+              <span>${model.mergeReadinessLanes.length} gates</span>
+            </div>
+            <div class="reply-capture-merge-grid">
+              ${model.mergeReadinessLanes.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reply SLA cadence</span>
+                <h3>How replies are chased and escalated</h3>
+              </div>
+              <span>${model.replySlaCadence.length} moments</span>
+            </div>
+            <div class="reply-capture-sla-grid">
+              ${model.replySlaCadence.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Management reply brief</span>
+                <h3>What leadership should know after replies arrive</h3>
+              </div>
+              <span>${model.managementReplyBrief.length} lines</span>
+            </div>
+            <div class="reply-capture-brief-grid">
+              ${model.managementReplyBrief.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the reply capture board usable</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid reply-capture-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Reply capture handoff</span>
+              <h3>What v143 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderEvidenceCloseoutPdfExportPlan(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderPage = ([label, value, note, tone]) => `
+      <article class="pdf-export-page-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    const renderPerson = ([label, note, tone]) => `
+      <article class="pdf-export-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter evidence-closeout-pdf-export-plan">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Evidence closeout PDF export plan</span>
+            <h3>Turn captured replies into a management-ready closeout pack.</h3>
+            <p>This plan defines the printable packet that will eventually convert reviewer replies, evidence status, redaction checks, distribution lanes, archive naming, and owner actions into a controlled closeout export.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-closeout-pdf-export-plan-v146.json">Download export plan JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>PDF export readiness</span>
+            <strong>${model.pdfExportScore}%</strong>
+            <i style="--width: ${model.pdfExportScore}%"></i>
+            <small>${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redactions / ${model.exportQaChecklist.length} QA gates.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Export KPIs</span>
+              <h3>Whether captured replies can become a controlled closeout packet</h3>
+            </div>
+            <span>${model.pdfKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid pdf-export-kpi-grid">
+            ${model.pdfKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Export brief</span>
+                <h3>Copy-ready closeout note for the future PDF route</h3>
+              </div>
+              <span>copy-ready</span>
+            </div>
+            <pre class="pdf-export-copy"><code>${escapeHtml(model.copyReadyExportBrief)}</code></pre>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Source readiness</span>
+                <h3>Which packs become the PDF evidence source</h3>
+              </div>
+              <span>${model.sourceReadiness.length} inputs</span>
+            </div>
+            <div class="pdf-export-source-grid">
+              ${model.sourceReadiness.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Page blueprint</span>
+              <h3>The future PDF page order</h3>
+            </div>
+            <span>${model.pageBlueprint.length} pages</span>
+          </div>
+          <div class="pdf-export-page-grid">
+            ${model.pageBlueprint.map(renderPage).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Printable sections</span>
+                <h3>Management content without operational clutter</h3>
+              </div>
+              <span>${model.printableSections.length} sections</span>
+            </div>
+            <div class="pdf-export-section-grid">
+              ${model.printableSections.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Redaction checks</span>
+                <h3>What cannot leak into the closeout export</h3>
+              </div>
+              <span>${model.redactionChecks.length} checks</span>
+            </div>
+            <div class="pdf-export-redaction-grid">
+              ${model.redactionChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Export QA</span>
+              <h3>Checks before a closeout packet is archived</h3>
+            </div>
+            <span>${model.exportQaChecklist.length} gates</span>
+          </div>
+          <div class="pdf-export-qa-grid">
+            ${model.exportQaChecklist.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Distribution matrix</span>
+                <h3>Who should receive which closeout family</h3>
+              </div>
+              <span>${model.distributionMatrix.length} lanes</span>
+            </div>
+            <div class="pdf-export-distribution-grid">
+              ${model.distributionMatrix.map(renderPerson).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Archive naming</span>
+                <h3>How the exported packet should be named</h3>
+              </div>
+              <span>${model.archiveNamingRules.length} rules</span>
+            </div>
+            <div class="pdf-export-archive-grid">
+              ${model.archiveNamingRules.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Management closeout</span>
+                <h3>Lines leadership can use in review</h3>
+              </div>
+              <span>${model.managementCloseoutLines.length} lines</span>
+            </div>
+            <div class="pdf-export-brief-grid">
+              ${model.managementCloseoutLines.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What makes the export plan usable</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="repo-proof-gate-grid pdf-export-acceptance-grid">
+              ${model.acceptanceChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Export handoff</span>
+              <h3>What v144 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderBackendMeetingMinutesExporter(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderMinutesCard = ([label, value, note, tone]) => `
+      <article class="minutes-export-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter backend-meeting-minutes-exporter">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Backend meeting minutes exporter</span>
+            <h3>Turn the repo-day review into clean minutes and owner actions.</h3>
+            <p>This exporter converts the meeting pack, captured replies, evidence closeout, and PDF export plan into copy-ready minutes, attendance, decision register, action queue, privacy checks, follow-up cadence, and a management email.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-meeting-minutes-exporter-v146.json">Download minutes JSON</a>
+              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Minutes readiness</span>
+            <strong>${model.meetingMinutesScore}%</strong>
+            <i style="--width: ${model.meetingMinutesScore}%"></i>
+            <small>${model.attendanceLog.length} attendees / ${model.decisionRegister.length} decisions / ${model.actionQueue.length} actions.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Minutes KPIs</span>
+              <h3>Whether the repo-day output can become a controlled operating record</h3>
+            </div>
+            <span>${model.minutesKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid minutes-export-kpi-grid">
+            ${model.minutesKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Copy-ready minutes</span>
+                <h3>Meeting minutes template</h3>
+              </div>
+              <span>copy-ready</span>
+            </div>
+            <pre class="minutes-export-copy"><code>${escapeHtml(model.copyReadyMinutes)}</code></pre>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Management email</span>
+                <h3>Email body after the repo-day review</h3>
+              </div>
+              <span>copy-ready</span>
+            </div>
+            <pre class="minutes-export-copy"><code>${escapeHtml(model.copyReadyManagementEmail)}</code></pre>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Source readiness</span>
+              <h3>Which previous packs feed the minutes</h3>
+            </div>
+            <span>${model.sourceReadiness.length} inputs</span>
+          </div>
+          <div class="minutes-export-source-grid">
+            ${model.sourceReadiness.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Attendance log</span>
+                <h3>Roles required for a useful repo-day record</h3>
+              </div>
+              <span>${model.attendanceLog.length} lanes</span>
+            </div>
+            <div class="minutes-export-attendance-grid">
+              ${model.attendanceLog.map(renderMinutesCard).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Minutes sections</span>
+                <h3>The structure of the final minutes</h3>
+              </div>
+              <span>${model.minutesSections.length} sections</span>
+            </div>
+            <div class="minutes-export-section-grid">
+              ${model.minutesSections.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Decision register</span>
+              <h3>Decision rows that stop vague meeting outcomes</h3>
+            </div>
+            <span>${model.decisionRegister.length} rows</span>
+          </div>
+          <div class="minutes-export-decision-grid">
+            ${model.decisionRegister.map(renderMinutesCard).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Owner action queue</span>
+              <h3>Actions that must survive after the meeting ends</h3>
+            </div>
+            <span>${model.actionQueue.length} actions</span>
+          </div>
+          <div class="minutes-export-action-grid">
+            ${model.actionQueue.map(renderMinutesCard).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Management email blocks</span>
+                <h3>What leadership receives after review</h3>
+              </div>
+              <span>${model.managementEmailBlocks.length} blocks</span>
+            </div>
+            <div class="minutes-export-email-grid">
+              ${model.managementEmailBlocks.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Follow-up cadence</span>
+                <h3>How unresolved meeting rows keep moving</h3>
+              </div>
+              <span>${model.followUpCadence.length} moments</span>
+            </div>
+            <div class="minutes-export-cadence-grid">
+              ${model.followUpCadence.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Privacy and audit checks</span>
+              <h3>Minutes stay clean before they are sent or archived</h3>
+            </div>
+            <span>${model.privacyAndAuditChecks.length} checks</span>
+          </div>
+          <div class="minutes-export-privacy-grid">
+            ${model.privacyAndAuditChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Acceptance checks</span>
+              <h3>What makes the minutes exporter usable</h3>
+            </div>
+            <span>${model.acceptanceChecks.length} checks</span>
+          </div>
+          <div class="repo-proof-gate-grid minutes-export-acceptance-grid">
+            ${model.acceptanceChecks.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Minutes handoff</span>
+              <h3>What v145 gives the private repo move</h3>
+            </div>
+          </div>
+          <div class="staging-handoff-list">
+            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderReviewerDecisionEmailPack(model) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderEmailCard = ([label, value, note, tone]) => `
+      <article class="reviewer-email-card tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(label)}</span>
+        <strong>${escapeHtml(String(value))}</strong>
+        <p>${escapeHtml(note)}</p>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter reviewer-decision-email-pack">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">Reviewer decision email pack</span>
+            <h3>Turn unresolved reviewer states into precise follow-up emails.</h3>
+            <p>This pack converts meeting minutes, reply capture states, review gates, and archive rules into targeted reviewer emails for approvals, holds, requested changes, deferrals, no responses, merge confirmation, and archive signoff.</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-reviewer-decision-email-pack-v146.json">Download email pack JSON</a>
+              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>Email readiness</span>
+            <strong>${model.reviewerDecisionEmailScore}%</strong>
+            <i style="--width: ${model.reviewerDecisionEmailScore}%"></i>
+            <small>${model.reviewerEmailLanes.length} lanes / ${model.decisionEmailTemplates.length} templates / ${model.privacyGuardrails.length} guardrails.</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${model.signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Email KPIs</span>
+              <h3>Whether reviewer states can become controlled follow-up</h3>
+            </div>
+            <span>${model.emailKpis.length} signals</span>
+          </div>
+          <div class="repo-proof-kpi-grid reviewer-email-kpi-grid">
+            ${model.emailKpis.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reviewer email</span>
+                <h3>Copy-ready lane decision request</h3>
+              </div>
+              <span>copy-ready</span>
+            </div>
+            <pre class="reviewer-email-copy"><code>${escapeHtml(model.copyReadyReviewerEmail)}</code></pre>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Escalation email</span>
+                <h3>Copy-ready open state follow-up</h3>
+              </div>
+              <span>copy-ready</span>
+            </div>
+            <pre class="reviewer-email-copy"><code>${escapeHtml(model.copyReadyEscalationEmail)}</code></pre>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Source readiness</span>
+              <h3>Which packs decide what email should be sent</h3>
+            </div>
+            <span>${model.sourceReadiness.length} inputs</span>
+          </div>
+          <div class="reviewer-email-source-grid">
+            ${model.sourceReadiness.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Reviewer lanes</span>
+                <h3>Each reviewer gets a specific decision request</h3>
+              </div>
+              <span>${model.reviewerEmailLanes.length} lanes</span>
+            </div>
+            <div class="reviewer-email-lane-grid">
+              ${model.reviewerEmailLanes.map(renderEmailCard).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Decision templates</span>
+                <h3>Prepared language by decision state</h3>
+              </div>
+              <span>${model.decisionEmailTemplates.length} templates</span>
+            </div>
+            <div class="reviewer-email-template-grid">
+              ${model.decisionEmailTemplates.map(renderEmailCard).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Response triggers</span>
+              <h3>Which condition sends which reviewer email</h3>
+            </div>
+            <span>${model.responseTriggers.length} triggers</span>
+          </div>
+          <div class="reviewer-email-trigger-grid">
+            ${model.responseTriggers.map(renderEmailCard).join("")}
+          </div>
+        </article>
+
+        <article class="staging-smoke-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Send checklist</span>
+              <h3>Every email must be specific, safe, and auditable</h3>
+            </div>
+            <span>${model.sendChecklist.length} checks</span>
+          </div>
+          <div class="reviewer-email-checklist-grid">
+            ${model.sendChecklist.map(renderTile).join("")}
+          </div>
+        </article>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Escalation cadence</span>
+                <h3>How unanswered reviewer states move forward</h3>
+              </div>
+              <span>${model.escalationCadence.length} moments</span>
+            </div>
+            <div class="reviewer-email-cadence-grid">
+              ${model.escalationCadence.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Privacy guardrails</span>
+                <h3>What every reviewer email must protect</h3>
+              </div>
+              <span>${model.privacyGuardrails.length} guardrails</span>
+            </div>
+            <div class="reviewer-email-privacy-grid">
+              ${model.privacyGuardrails.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Management summary</span>
+                <h3>What leadership should know about follow-up emails</h3>
+              </div>
+              <span>${model.managementSummaryBlocks.length} blocks</span>
+            </div>
+            <div class="reviewer-email-summary-grid">
+              ${model.managementSummaryBlocks.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Acceptance checks</span>
+                <h3>What makes the email pack usable</h3>
+              </div>
+              <span>${model.acceptanceChecks.length} checks</span>
+            </div>
+            <div class="repo-proof-gate-grid reviewer-email-acceptance-grid">
+              ${model.acceptanceChecks.map(renderTile).join("")}
+            </div>
+          </article>
+        </div>
+
+        <article class="staging-smoke-panel staging-smoke-handoff-panel">
+          <div class="info-head compact">
+            <div>
+              <span class="metric-label">Email handoff</span>
+              <h3>What v146 gives the private repo move</h3>
             </div>
           </div>
           <div class="staging-handoff-list">
@@ -25051,3 +37791,20 @@
 
   render();
 })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,516 @@
+{
+  "schemaVersion": "pursuitdesk.privateRepoHandoffEmailPack.v139",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "build": {
+    "version": "v139",
+    "name": "Private Repo Handoff Email Pack",
+    "date": "2026-05-14",
+    "status": "Static GitHub Pages prototype",
+    "handoffEmailScore": 92
+  },
+  "generatedFor": "Controlled private backend repo opening session",
+  "handoffKpis": [
+    {
+      "label": "Email pack",
+      "value": "92%",
+      "note": "Readiness to send the private repo briefing without improvising.",
+      "tone": "green"
+    },
+    {
+      "label": "Owner lanes",
+      "value": 6,
+      "note": "Recipients with clear decision and evidence expectations.",
+      "tone": "teal"
+    },
+    {
+      "label": "Evidence links",
+      "value": 15,
+      "note": "Artifacts, source-of-truth items, and proof references to include.",
+      "tone": "blue"
+    },
+    {
+      "label": "Escalations",
+      "value": 8,
+      "note": "Holds and blocks that should be visible before anyone says go.",
+      "tone": "red"
+    }
+  ],
+  "audienceBriefs": [
+    {
+      "owner": "Product owner",
+      "lane": "Approve alpha scope",
+      "note": "Receives scope, no-live-data boundary, and final go/hold/no-go request.",
+      "tone": "green"
+    },
+    {
+      "owner": "Platform owner",
+      "lane": "Repo and branch rules",
+      "note": "Receives repo creation steps, branch timing, proof capture, and protection holds.",
+      "tone": "teal"
+    },
+    {
+      "owner": "Backend lead",
+      "lane": "Starter shell",
+      "note": "Receives command runbook, first PR body, and transcript expectations.",
+      "tone": "blue"
+    },
+    {
+      "owner": "Security owner",
+      "lane": "No leak proof",
+      "note": "Receives no-secret, no-workbook, commercial privacy, and block language.",
+      "tone": "red"
+    },
+    {
+      "owner": "Data owner",
+      "lane": "Fixture boundary",
+      "note": "Receives generated fixture boundary, no workbook import, and source trace notes.",
+      "tone": "amber"
+    },
+    {
+      "owner": "QA owner",
+      "lane": "Evidence closeout",
+      "note": "Receives artifact board, screenshot list, transcripts, signoffs, and closeout checks.",
+      "tone": "green"
+    }
+  ],
+  "emailSections": [
+    {
+      "label": "Subject",
+      "value": "Private repo opening day for PursuitDesk backend alpha",
+      "note": "Clear subject for owner review and action.",
+      "tone": "green"
+    },
+    {
+      "label": "Opening line",
+      "value": "We are ready to run a controlled private repo opening session for the PursuitDesk backend alpha.",
+      "note": "States the move without overselling production readiness.",
+      "tone": "teal"
+    },
+    {
+      "label": "Purpose",
+      "value": "Create the private backend shell, evidence packet, issue trace, draft PR, and proof rhythm.",
+      "note": "Explains why the session exists.",
+      "tone": "blue"
+    },
+    {
+      "label": "Boundary",
+      "value": "No production launch, no live customer workbook, no live billing, no secrets, and no commercial tracker export.",
+      "note": "Locks the safety posture before any approval.",
+      "tone": "red"
+    },
+    {
+      "label": "Evidence summary",
+      "value": "4 artifact status groups and 9 opening artifacts are prepared for the session.",
+      "note": "Connects v138 status board to the communication pack.",
+      "tone": "green"
+    },
+    {
+      "label": "Action request",
+      "value": "Please review your lane and reply Go, Hold, No-go, or Defer with reason.",
+      "note": "Turns the email into an explicit decision request.",
+      "tone": "amber"
+    },
+    {
+      "label": "Meeting ask",
+      "value": "Use the included agenda to run a 30-minute repo-day briefing before execution.",
+      "note": "Keeps owners aligned before commands run.",
+      "tone": "blue"
+    },
+    {
+      "label": "Closeout ask",
+      "value": "At the end, we record passed, deferred, blocked, no-leak proof, rollback status, and next owner.",
+      "note": "Keeps the day from ending with loose proof.",
+      "tone": "green"
+    }
+  ],
+  "evidenceAttachmentLinks": [
+    {
+      "file": "docs/evidence/repo-opening-checklist.md",
+      "title": "Repo opening checklist",
+      "note": "Main checklist for the controlled opening session.",
+      "tone": "green"
+    },
+    {
+      "file": "docs/evidence/command-transcript-install.md",
+      "title": "Install transcript",
+      "note": "Expected command proof slot for install and dependency capture.",
+      "tone": "blue"
+    },
+    {
+      "file": "docs/evidence/command-transcript-tests.md",
+      "title": "Test transcript",
+      "note": "Expected command proof slot for backend test evidence.",
+      "tone": "blue"
+    },
+    {
+      "file": "docs/evidence/no-secret-proof.md",
+      "title": "No-secret proof",
+      "note": "Security proof that no live credentials moved into the repo.",
+      "tone": "red"
+    },
+    {
+      "file": "docs/evidence/no-workbook-proof.md",
+      "title": "No-workbook proof",
+      "note": "Data proof that source Excel files are not committed.",
+      "tone": "red"
+    },
+    {
+      "file": "docs/evidence/branch-protection-proof.md",
+      "title": "Branch protection proof",
+      "note": "Branch protection evidence after workflow check names are known.",
+      "tone": "amber"
+    },
+    {
+      "file": "docs/evidence/owner-signoffs.md",
+      "title": "Owner signoffs",
+      "note": "Owner lane replies and go/hold/no-go decision trail.",
+      "tone": "green"
+    },
+    {
+      "file": "docs/evidence/first-pr-closeout.md",
+      "title": "First PR closeout",
+      "note": "Final PR state, reviewer decisions, and merge or hold outcome.",
+      "tone": "teal"
+    },
+    {
+      "file": "docs/evidence/rollback-note.md",
+      "title": "Rollback note",
+      "note": "Rollback posture and no-production-launch reminder.",
+      "tone": "amber"
+    },
+    {
+      "file": "GitHub repo opening packet",
+      "title": "Private repo facts",
+      "note": "Source for repo name, owner matrix, issue wave, PR starter, and closeout ledger.",
+      "tone": "green"
+    },
+    {
+      "file": "First PR body builder",
+      "title": "PR message",
+      "note": "Source for copy-ready PR scope, evidence links, reviewers, rollback text, and release checklist.",
+      "tone": "teal"
+    },
+    {
+      "file": "Repo evidence folder writer",
+      "title": "Evidence folder",
+      "note": "Source for markdown templates, screenshot slots, transcript slots, issue ledger, and branch proof.",
+      "tone": "blue"
+    },
+    {
+      "file": "Private repo command runner pack",
+      "title": "Command runner",
+      "note": "Source for execution commands, expected outputs, failure holds, and closeout checks.",
+      "tone": "amber"
+    },
+    {
+      "file": "Backend PR review gate matrix",
+      "title": "Review gates",
+      "note": "Source for reviewer packets, decision gates, hold queue, block rules, and comment templates.",
+      "tone": "red"
+    },
+    {
+      "file": "Evidence artifact status board",
+      "title": "Artifact status",
+      "note": "Source for ready, hold, deferred, and blocked evidence status before the session.",
+      "tone": "green"
+    }
+  ],
+  "approvalLanguage": [
+    {
+      "label": "Go",
+      "value": "Owner reply",
+      "note": "Go for controlled private repo opening. Scope is backend alpha shell and evidence packet only; no production launch, live data, or billing capture is approved.",
+      "tone": "green"
+    },
+    {
+      "label": "Hold",
+      "value": "Owner reply",
+      "note": "Hold until the listed owner, evidence file, screenshot, command output, issue URL, workflow name, or rollback note is complete.",
+      "tone": "amber"
+    },
+    {
+      "label": "No-go",
+      "value": "Owner reply",
+      "note": "No-go if repository privacy, no-secret proof, no-workbook proof, rollback, or owner accountability is not accepted.",
+      "tone": "red"
+    },
+    {
+      "label": "Defer",
+      "value": "Owner reply",
+      "note": "Defer with reason, owner, date, and next proof command. Silent deferrals are not accepted.",
+      "tone": "blue"
+    },
+    {
+      "label": "Approve",
+      "value": "PR review",
+      "note": "Approve only after required checks, no-secret proof, no-workbook proof, owner signoffs, and rollback note are present.",
+      "tone": "green"
+    },
+    {
+      "label": "Request changes",
+      "value": "PR review",
+      "note": "Request changes when commercial data, live credentials, missing tenant guard, or failed proof appears.",
+      "tone": "red"
+    },
+    {
+      "label": "Comment",
+      "value": "PR review",
+      "note": "Leave a neutral hold comment when evidence is incomplete but the code direction is acceptable.",
+      "tone": "amber"
+    },
+    {
+      "label": "Merge closeout",
+      "value": "PR review",
+      "note": "Before merge, confirm passed checks, artifact links, issue trace, owner approvals, and rollback readiness.",
+      "tone": "teal"
+    }
+  ],
+  "meetingAgenda": [
+    {
+      "timebox": "00-05",
+      "topic": "Confirm decision boundary",
+      "note": "Private repo only, backend alpha shell only, no live data, no live billing.",
+      "tone": "red"
+    },
+    {
+      "timebox": "05-10",
+      "topic": "Review owner lanes",
+      "note": "Six owner lanes confirm go, hold, no-go, or defer responsibilities.",
+      "tone": "green"
+    },
+    {
+      "timebox": "10-15",
+      "topic": "Walk artifact board",
+      "note": "Status groups explain ready, hold, deferred, and blocked evidence.",
+      "tone": "blue"
+    },
+    {
+      "timebox": "15-20",
+      "topic": "Review command run",
+      "note": "Command blocks define execution order and transcript capture.",
+      "tone": "teal"
+    },
+    {
+      "timebox": "20-24",
+      "topic": "Review first PR",
+      "note": "PR starter lines define scope, proof, rollback, and reviewers.",
+      "tone": "green"
+    },
+    {
+      "timebox": "24-27",
+      "topic": "Review hard stops",
+      "note": "Holds and blocks are visible before execution.",
+      "tone": "red"
+    },
+    {
+      "timebox": "27-29",
+      "topic": "Assign closeout owner",
+      "note": "Closeout facts must be written before the session ends.",
+      "tone": "amber"
+    },
+    {
+      "timebox": "29-30",
+      "topic": "Confirm next move",
+      "note": "Decide whether to run repo day, hold for missing proof, or defer to another owner.",
+      "tone": "blue"
+    }
+  ],
+  "sendChecklist": [
+    {
+      "label": "Recipient lanes",
+      "note": "Six owner lanes named before send.",
+      "tone": "green"
+    },
+    {
+      "label": "Subject clear",
+      "note": "Private repo opening day subject line is explicit.",
+      "tone": "teal"
+    },
+    {
+      "label": "Scope locked",
+      "note": "No production launch, live data, live billing, secrets, or commercial tracker export.",
+      "tone": "red"
+    },
+    {
+      "label": "Evidence attached",
+      "note": "Fifteen evidence links and source-of-truth items listed.",
+      "tone": "blue"
+    },
+    {
+      "label": "Decision language",
+      "note": "Go, hold, no-go, defer, approve, and block phrases ready.",
+      "tone": "amber"
+    },
+    {
+      "label": "Meeting agenda",
+      "note": "Eight agenda rows keep the briefing under control.",
+      "tone": "green"
+    },
+    {
+      "label": "Follow-up rhythm",
+      "note": "Same day closeout, next-day cleanup, weekly management note.",
+      "tone": "teal"
+    },
+    {
+      "label": "JSON handoff",
+      "note": "Downloadable handoff can be shared outside the static demo.",
+      "tone": "blue"
+    }
+  ],
+  "followUpCadence": [
+    {
+      "moment": "T-1 day",
+      "action": "Send briefing",
+      "note": "Owner lanes review scope, artifact board, evidence links, and decision language.",
+      "tone": "green"
+    },
+    {
+      "moment": "T morning",
+      "action": "Run 30-minute briefing",
+      "note": "Confirm go, hold, no-go, or defer before repo commands begin.",
+      "tone": "blue"
+    },
+    {
+      "moment": "During session",
+      "action": "Update artifact board",
+      "note": "Move proof from planned to captured, held, deferred, or blocked.",
+      "tone": "teal"
+    },
+    {
+      "moment": "End of day",
+      "action": "Send closeout note",
+      "note": "Summarize passed, deferred, blocked, no-leak proof, rollback, and next owner.",
+      "tone": "amber"
+    },
+    {
+      "moment": "T+1 day",
+      "action": "Clean unresolved holds",
+      "note": "Resolve missing URLs, screenshots, transcript output, and owner signoffs.",
+      "tone": "red"
+    },
+    {
+      "moment": "Weekly review",
+      "action": "Report status",
+      "note": "Add management line to Command Center and Reports room.",
+      "tone": "green"
+    }
+  ],
+  "riskDisclaimers": [
+    {
+      "label": "Not production launch",
+      "note": "This session opens a private backend alpha shell only.",
+      "tone": "red"
+    },
+    {
+      "label": "No customer workbook",
+      "note": "Source Excel files and live customer exports are not approved for the repo.",
+      "tone": "red"
+    },
+    {
+      "label": "No live billing",
+      "note": "No live payment key, invoice sending, customer charging, or subscription capture is approved.",
+      "tone": "red"
+    },
+    {
+      "label": "No secret movement",
+      "note": "Any token, certificate, live key, or credential exposure stops the session.",
+      "tone": "red"
+    },
+    {
+      "label": "No guessed checks",
+      "note": "Branch protection waits for exact GitHub Actions names.",
+      "tone": "amber"
+    },
+    {
+      "label": "No silent placeholders",
+      "note": "Every placeholder names owner, blocker reason, and next proof action.",
+      "tone": "blue"
+    },
+    {
+      "label": "No commercial leakage",
+      "note": "Operational tracker examples stay free of value, LOA, agreement, invoice, billing, and negotiation facts.",
+      "tone": "red"
+    },
+    {
+      "label": "No unowned closeout",
+      "note": "Closeout must name passed, deferred, blocked, rollback, no-leak proof, and next owner.",
+      "tone": "green"
+    }
+  ],
+  "signalCards": [
+    {
+      "label": "Handoff email",
+      "value": "92%",
+      "note": "Readiness to brief owners before private repo day.",
+      "tone": "green"
+    },
+    {
+      "label": "Recipients",
+      "value": 6,
+      "note": "Owner lanes for product, platform, backend, security, data, and QA.",
+      "tone": "teal"
+    },
+    {
+      "label": "Agenda",
+      "value": 8,
+      "note": "Timed briefing steps for repo-day control.",
+      "tone": "blue"
+    },
+    {
+      "label": "Safety locks",
+      "value": 8,
+      "note": "Scope and trust warnings before execution.",
+      "tone": "red"
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "label": "Audience clear",
+      "note": "Six recipients have lane-specific briefing notes.",
+      "tone": "green"
+    },
+    {
+      "label": "Email sections clear",
+      "note": "Eight sections form the briefing email structure.",
+      "tone": "teal"
+    },
+    {
+      "label": "Evidence links ready",
+      "note": "Fifteen evidence and source-of-truth links are listed.",
+      "tone": "blue"
+    },
+    {
+      "label": "Decision language ready",
+      "note": "Go, hold, no-go, defer, approve, and block phrases are prepared.",
+      "tone": "amber"
+    },
+    {
+      "label": "Meeting agenda ready",
+      "note": "Eight agenda rows control the briefing.",
+      "tone": "green"
+    },
+    {
+      "label": "Send checklist ready",
+      "note": "Eight checks prevent unsafe communication.",
+      "tone": "red"
+    },
+    {
+      "label": "Follow-up rhythm ready",
+      "note": "Six follow-up moments keep the repo day from drifting.",
+      "tone": "blue"
+    },
+    {
+      "label": "Next handoff ready",
+      "note": "v140 can turn the PR review language into copy-ready GitHub comments.",
+      "tone": "teal"
+    }
+  ],
+  "copyReadyEmail": "Subject: Private repo opening day for PursuitDesk backend alpha\n\nHi team,\n\nWe are ready to run a controlled private repo opening session for the PursuitDesk backend alpha.\n\nPurpose: create the private backend shell, evidence packet, issue trace, draft PR, and proof rhythm. This is not a production launch.\n\nBoundary: no live customer workbook, no production billing, no live secrets, no certificates, no invoices, and no commercial tracker export will enter the repo.\n\nEvidence status: 92% handoff readiness, 4 status groups, and 8 holds or blocks to review before execution.\n\nPlease review your lane and reply with one of: Go, Hold, No-go, or Defer with reason.\n\nMeeting agenda: confirm scope, review owner lanes, walk evidence board, review command run, confirm first PR posture, call out hard stops, assign closeout owner, and confirm next move.\n\nCloseout will record passed, deferred, blocked, no-leak proof, rollback status, owner signoffs, and the next backend owner.\n\nRegards,\nPursuitDesk control owner",
+  "handoff": [
+    "v139 turns the artifact status board and PR review matrix into a private repo handoff email pack.",
+    "The pack gives owners a copy-ready email, recipient lanes, evidence links, meeting agenda, approval language, send checklist, follow-up cadence, and safety disclaimers.",
+    "The static demo still cannot send the email or create the real private repo; it now makes the communication package ready for the actual execution day.",
+    "v140 can now prepare copy-ready GitHub PR review comments for approve, hold, request changes, no-leak signoff, and merge closeout."
+  ]
+}

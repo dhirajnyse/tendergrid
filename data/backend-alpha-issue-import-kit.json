@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "pursuitdesk.backendAlphaIssueImportKit.v133",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "build": "v133 Backend Alpha Issue Import Kit",
+  "importReadinessScore": 62,
+  "generatedFor": "Future private backend repository",
+  "importKpis": [
+    ["Import readiness", "62%", "How ready the backend alpha issues are for controlled private-repo import.", "amber"],
+    ["Issue rows", 12, "CSV-style rows with title, owner, milestone, labels, proof command, and wave.", "teal"],
+    ["Taxonomy links", 39, "34 labels and 5 milestones referenced by the import kit.", "blue"],
+    ["Blocked facts", "URLs pending", "Real issue URLs, assignees, project board IDs, and PR links still need the private repo.", "red"]
+  ],
+  "csvColumns": [
+    ["id", "Stable issue key", "PD-BE key used in PR, proof files, board, and release notes.", "green"],
+    ["title", "Issue title", "Human-readable GitHub issue title copied from the backend issue exporter.", "teal"],
+    ["owner", "Owner lane", "Platform, backend, security, data, migration, billing, reports, repo, or QA owner.", "blue"],
+    ["milestone", "Alpha milestone", "M0 to M4 implementation stage that controls import order.", "green"],
+    ["labels", "Label list", "Comma-separated labels from the taxonomy import pack.", "amber"],
+    ["proof_command", "First proof", "The first command or evidence expectation required before review.", "red"],
+    ["import_wave", "Opening wave", "Batch order that prevents dependent work from opening too early.", "blue"],
+    ["body_file", "Body source", "Markdown source for paste-ready GitHub issue content.", "teal"]
+  ],
+  "ownerLanes": [
+    ["Platform Owner", 2, "Repo shell, CI workflows, and command proof.", "green"],
+    ["Backend Lead", 1, "API shell, route entry, controllers, and services.", "teal"],
+    ["Security Owner", 2, "Safe errors, tenant scope, access decisions, and redaction.", "red"],
+    ["Governance Owner", 1, "Audit context, event writer, retention, and proof artifacts.", "blue"],
+    ["Database Owner", 1, "Migration runner, seeds, restore proof, and parity checks.", "blue"],
+    ["Migration Owner", 1, "Workbook dry run, quarantine, duplicate decisions, and rollback id.", "amber"],
+    ["Billing Owner", 1, "USD billing test mode, invoices, webhooks, seats, and access locks.", "amber"],
+    ["QA Owner", 1, "Staging smoke, rollback, screenshots, and go/no-go proof.", "green"]
+  ],
+  "labelMappings": [
+    ["priority:p0", "Open first", "Foundation, API boot, privacy, tenant, audit, and CI work that protects the repo.", "red"],
+    ["priority:p1", "Open after P0 proof", "Billing, reports, branch protection, and staging smoke once shell and scripts exist.", "amber"],
+    ["type:foundation", "M0 Repo shell", "Root files, docs, owners, env examples, and first proof commands.", "green"],
+    ["type:api", "M1 API core", "Server, route registry, controllers, services, and response envelopes.", "teal"],
+    ["type:security", "M1 Privacy core", "Tenant isolation, access decision, redaction, safe errors, and denial proof.", "red"],
+    ["type:data", "M2 Fixtures", "Migrations, seeds, restore, parity, and fixture proof.", "blue"],
+    ["type:import", "M2 Import", "Workbook staging, dry run, quarantine, duplicate decisions, and rollback.", "blue"],
+    ["type:ci", "M3-M4 Proof", "GitHub Actions, artifact uploads, branch rules, and release gates.", "red"]
+  ],
+  "importWaves": [
+    ["Wave 1", "PD-BE-001", "Repo shell must open first so all later issues have proof commands and ownership files.", "green"],
+    ["Wave 2", "PD-BE-002 to PD-BE-005", "API boot, safe errors, tenant access, redaction, and audit share request identity.", "red"],
+    ["Wave 3", "PD-BE-006 to PD-BE-007", "Migration runner and workbook dry run depend on stable fixtures and source trace.", "blue"],
+    ["Wave 4", "PD-BE-008 to PD-BE-009", "Billing and reports wait for env parsing, audit context, and redaction boundary.", "amber"],
+    ["Wave 5", "PD-BE-010", "Workflow files open after scripts and artifact names are stable.", "teal"],
+    ["Wave 6", "PD-BE-011 to PD-BE-012", "Branch protection and staging smoke open after check names and proof lanes exist.", "green"]
+  ],
+  "issueRows": [
+    ["PD-BE-001", "Create private repo shell and first proof docs", "Platform Owner", "M0 Repo shell", "type:foundation, priority:p0", "pnpm install", "Wave 1", "green"],
+    ["PD-BE-002", "Boot API shell with request id and health route", "Backend Lead", "M1 API and privacy core", "type:api, priority:p0", "pnpm dev:api", "Wave 1", "teal"],
+    ["PD-BE-003", "Implement safe error envelope middleware", "Security Owner", "M1 API and privacy core", "type:security, priority:p0", "pnpm test:route-envelopes", "Wave 2", "red"],
+    ["PD-BE-004", "Create tenant scope and section access decision middleware", "Security Owner", "M1 API and privacy core", "type:security, priority:p0", "pnpm test:auth-tenant", "Wave 2", "red"],
+    ["PD-BE-005", "Create audit context and audit writer", "Governance Owner", "M1 API and privacy core", "type:audit, priority:p0", "pnpm test:audit", "Wave 3", "teal"],
+    ["PD-BE-006", "Create migration runner, seed runner, and restore proof", "Database Owner", "M2 Data and fixtures", "type:data, priority:p0", "pnpm db:migrate:test && pnpm db:seed:test", "Wave 3", "blue"],
+    ["PD-BE-007", "Create workbook import dry-run package", "Migration Owner", "M2 Data and fixtures", "type:import, priority:p1", "pnpm test:import-dryrun", "Wave 4", "blue"],
+    ["PD-BE-008", "Create billing test-mode package", "Billing Owner", "M2 Data and fixtures", "type:billing, priority:p1", "pnpm test:billing-testmode", "Wave 4", "amber"],
+    ["PD-BE-009", "Create report pack and redaction-safe export boundary", "Reports Owner", "M3 Workflow proof", "type:api, type:audit, priority:p1", "pnpm test:redaction", "Wave 5", "green"],
+    ["PD-BE-010", "Create GitHub Actions workflow files and artifact uploads", "Platform Owner", "M3 Workflow proof", "type:ci, priority:p0", "pnpm lint", "Wave 5", "red"],
+    ["PD-BE-011", "Create branch protection and release gate checklist", "Repo Owner", "M4 Staging alpha gate", "type:ci, priority:p1", "pnpm ci:release-gate", "Wave 6", "amber"],
+    ["PD-BE-012", "Create first staging smoke and alpha handoff proof", "QA Owner", "M4 Staging alpha gate", "type:ci, type:security, priority:p1", "pnpm smoke:staging", "Wave 6", "teal"]
+  ],
+  "bodyFilePlan": [
+    ["docs/issues/pd-be-001.md", "Create private repo shell and first proof docs", "Platform Owner / M0 Repo shell", "green"],
+    ["docs/issues/pd-be-002.md", "Boot API shell with request id and health route", "Backend Lead / M1 API and privacy core", "teal"],
+    ["docs/issues/pd-be-003.md", "Implement safe error envelope middleware", "Security Owner / M1 API and privacy core", "red"],
+    ["docs/issues/pd-be-004.md", "Create tenant scope and section access decision middleware", "Security Owner / M1 API and privacy core", "red"],
+    ["docs/issues/pd-be-005.md", "Create audit context and audit writer", "Governance Owner / M1 API and privacy core", "teal"],
+    ["docs/issues/pd-be-006.md", "Create migration runner, seed runner, and restore proof", "Database Owner / M2 Data and fixtures", "blue"],
+    ["docs/issues/pd-be-007.md", "Create workbook import dry-run package", "Migration Owner / M2 Data and fixtures", "blue"],
+    ["docs/issues/pd-be-008.md", "Create billing test-mode package", "Billing Owner / M2 Data and fixtures", "amber"],
+    ["docs/issues/pd-be-009.md", "Create report pack and redaction-safe export boundary", "Reports Owner / M3 Workflow proof", "green"],
+    ["docs/issues/pd-be-010.md", "Create GitHub Actions workflow files and artifact uploads", "Platform Owner / M3 Workflow proof", "red"],
+    ["docs/issues/pd-be-011.md", "Create branch protection and release gate checklist", "Repo Owner / M4 Staging alpha gate", "amber"],
+    ["docs/issues/pd-be-012.md", "Create first staging smoke and alpha handoff proof", "QA Owner / M4 Staging alpha gate", "teal"]
+  ],
+  "importValidation": [
+    ["Unique IDs", "No duplicate PD-BE keys before import.", "red"],
+    ["Known labels", "Every label exists in the taxonomy import pack before issue creation.", "amber"],
+    ["Known milestones", "Every milestone exists before issues are opened.", "blue"],
+    ["Owner visible", "Every issue has a named owner lane and no blank assignee note.", "green"],
+    ["Proof command present", "Every row has at least one proof command or evidence requirement.", "red"],
+    ["Commercial boundary", "Operational tracker issues do not include values, agreements, invoices, or negotiation notes.", "red"],
+    ["P0 order", "P0 issues are created before billing, reports, branch protection, and staging smoke.", "amber"],
+    ["URL capture", "After import, every generated issue URL is pasted into the opening ledger.", "green"]
+  ],
+  "pasteChecks": [
+    ["Before paste", "Repo private, labels created, milestones created, board ready, and no-live-data statement accepted.", "red"],
+    ["During paste", "Create issues in wave order and paste full markdown bodies without changing owner or proof sections.", "amber"],
+    ["After paste", "Record issue URL, project column, label set, milestone, owner, and first proof command.", "green"],
+    ["Review", "Compare GitHub issue count to import kit count and lock changes behind admin review.", "blue"]
+  ],
+  "importFiles": [
+    ["data/backend-alpha-issue-import-kit.json", "Structured import handoff for issue rows, owners, labels, milestones, validation, and paste checks.", "green"],
+    ["docs/issues/import.csv", "CSV-ready issue rows for manual review before GitHub creation.", "teal"],
+    ["docs/issues/import-ledger.md", "Table for real issue URLs, owner confirmation, labels, milestones, and project board status.", "blue"],
+    ["docs/issues/body-files/", "One markdown body per PD-BE issue for controlled paste into GitHub.", "green"],
+    ["docs/issues/validation-checklist.md", "Preflight, import, post-import, and admin freeze checks.", "red"],
+    ["docs/issues/owner-lanes.md", "Owner accountability map by issue key and wave.", "amber"],
+    ["docs/issues/label-map.md", "Label and milestone crosswalk with routing rules.", "blue"],
+    ["docs/issues/import-closeout.md", "Post-import closeout with issue count, exceptions, blockers, and next PR link.", "green"]
+  ],
+  "acceptanceChecks": [
+    ["Rows complete", "12 issue rows carry id, title, owner, milestone, labels, proof command, and wave.", "green"],
+    ["Owner lanes complete", "8 owner lanes show accountability before import.", "teal"],
+    ["Taxonomy linked", "8 label mappings connect issue type, priority, milestone, and proof.", "blue"],
+    ["Waves controlled", "6 waves prevent branch, CI, staging, and billing work from opening too early.", "amber"],
+    ["Validation gates visible", "8 gates catch duplicate IDs, unknown labels, missing owners, and commercial leakage.", "red"],
+    ["Body files named", "12 markdown body files are named before GitHub paste starts.", "green"],
+    ["Paste checks ready", "4 paste checkpoints cover before, during, after, and review.", "blue"],
+    ["Next handoff ready", "v134 can turn the first backend PR into a full PR body builder with evidence links and reviewer notes.", "teal"]
+  ],
+  "signalCards": [
+    ["Import kit", "62%", "Readiness to convert issue bodies into a controlled private-repo import.", "amber"],
+    ["Issue rows", 12, "Rows prepared from the backend issue body exporter.", "teal"],
+    ["Owner lanes", 8, "Accountability lanes before issues are opened.", "blue"],
+    ["Validation gates", 8, "Checks that stop duplicates, missing taxonomy, and leakage.", "red"]
+  ],
+  "handoff": [
+    "v133 turns the opening packet issue wave into an import kit for the future private backend repo.",
+    "The kit creates CSV-style rows, owner lanes, label mappings, import waves, body-file names, validation gates, paste checks, and import closeout files.",
+    "The static demo still cannot create GitHub issues; it now defines exactly what each issue row must contain and what must be captured after paste.",
+    "v134 can now build the exact first backend PR body with issue links, evidence links, reviewer notes, rollback, and release checklist."
+  ]
+}

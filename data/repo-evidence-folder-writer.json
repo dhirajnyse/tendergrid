@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "pursuitdesk.repoEvidenceFolderWriter.v135",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "build": "v135 Repo Evidence Folder Writer",
+  "evidenceFolderScore": 80,
+  "generatedFor": "Future private backend repository",
+  "evidenceKpis": [
+    ["Evidence folder", "80%", "How ready the first backend PR evidence folder is before the private repo exists.", "green"],
+    ["Markdown files", 9, "Proof files that should exist under docs/evidence before review.", "teal"],
+    ["Transcript slots", 8, "Command outputs or explicit placeholders the PR body can link to.", "blue"],
+    ["Real blockers", "URLs pending", "Repo URL, issue URLs, screenshot links, workflow names, and reviewer handles still need GitHub.", "red"]
+  ],
+  "folderManifest": [
+    ["docs/evidence/README.md", "Evidence index", "Table of proof files, screenshot names, transcript slots, issue links, owner signoffs, and closeout status.", "green"],
+    ["docs/evidence/00-preflight.md", "Preflight proof", "GitHub identity, local path, tool versions, repo decision owner, no-live-data boundary.", "blue"],
+    ["docs/evidence/01-repo-private.md", "Private repo proof", "Repo URL, private visibility screenshot, owner, timestamp, and public-demo repo note.", "red"],
+    ["docs/evidence/02-clean-copy-set.md", "Clean copy proof", "No secrets, no customer workbooks, no certificates, no invoices, no commercial exports, no live keys.", "red"],
+    ["docs/evidence/03-file-tree.md", "Starter tree proof", "Folder tree, copied starter files, approved omissions, and first branch name.", "green"],
+    ["docs/evidence/04-issue-wave.md", "Issue wave proof", "Planned issue bodies, real URLs, labels, milestones, owners, and opening order.", "teal"],
+    ["docs/evidence/05-first-pr.md", "First PR proof", "PR link, title, scope, commands, risk reference, rollback note, reviewers, and blockers.", "green"],
+    ["docs/evidence/06-workflow-check-names.md", "Workflow names proof", "Workflow files, exact check names, job names, artifacts, and failed check notes.", "amber"],
+    ["docs/evidence/07-branch-protection.md", "Branch protection proof", "Required checks, review policy, conversation resolution, bypass decision, and screenshot reference.", "red"],
+    ["docs/evidence/08-closeout.md", "Closeout proof", "Passed, deferred, blocked, owner signoffs, next action, and packet handoff.", "blue"],
+    ["docs/evidence/screenshots/", "Screenshot folder", "Private repo, file tree, labels, milestones, issues, PR, Actions, and branch protection screenshots.", "blue"],
+    ["docs/evidence/transcripts/", "Transcript folder", "Preflight, repo view, branch, file tree, secret scan, quality proof, issue wave, and workflow-name output.", "teal"],
+    ["docs/evidence/signoffs/", "Owner signoff folder", "Product, platform, backend, security, data, and QA owner go/hold/no-go notes.", "green"]
+  ],
+  "markdownTemplates": [
+    ["00-preflight.md", "Preflight proof", "## Preflight proof\n- GitHub account:\n- Local path:\n- Tool versions:\n- Decision owner:\n- No-live-data boundary:\n- Status: pending real repo", "blue"],
+    ["01-repo-private.md", "Private repo proof", "## Private repo proof\n- Repository URL:\n- Visibility screenshot:\n- Owner:\n- Timestamp:\n- Public demo repo remains separate:\n- Status: pending real repo", "red"],
+    ["02-clean-copy-set.md", "Clean copy proof", "## Clean copy proof\n- No secrets:\n- No workbooks:\n- No certificates:\n- No invoices:\n- No commercial exports:\n- Status: pending scan", "red"],
+    ["03-file-tree.md", "Starter tree proof", "## Starter tree proof\n- Branch:\n- Root files:\n- apps/api:\n- packages:\n- workflows:\n- evidence folder:\n- Status: pending copy", "green"],
+    ["04-issue-wave.md", "Issue wave proof", "## Issue wave proof\n- Planned issue rows: 10\n- First issue URL:\n- Labels and milestones:\n- Owner lanes:\n- Import exceptions:\n- Status: pending GitHub import", "teal"],
+    ["05-first-pr.md", "First PR proof", "## First PR proof\n- PR title: chore: create backend alpha shell and proof packet\n- PR URL:\n- Issue links:\n- Evidence links:\n- Reviewers:\n- Rollback:\n- Status: draft pending", "green"],
+    ["06-workflow-check-names.md", "Workflow names proof", "## Workflow names proof\n- Workflow run URL:\n- Job names:\n- Required status check names:\n- Failed checks:\n- Artifact links:\n- Status: hold until Actions run", "amber"],
+    ["07-branch-protection.md", "Branch protection proof", "## Branch protection proof\n- Required checks:\n- Review policy:\n- Conversation resolution:\n- Admin bypass decision:\n- Screenshot:\n- Status: hold until check names exist", "red"],
+    ["08-closeout.md", "Closeout proof", "## Closeout proof\n- Passed:\n- Deferred:\n- Blocked:\n- No-leak statement:\n- Owner signoffs:\n- Next owner:\n- Status: pending repo day", "blue"]
+  ],
+  "screenshotSlots": [
+    ["repo-private.png", "Private visibility", "Capture before any file, issue, or PR work begins.", "red"],
+    ["tree-after-first-copy.png", "Starter file tree", "Capture root, apps, packages, docs, scripts, workflows, and evidence folders.", "green"],
+    ["labels-and-milestones.png", "Taxonomy proof", "Capture labels and milestones after import and before issue creation.", "teal"],
+    ["issue-wave.png", "Issue wave", "Capture filtered first wave with labels, milestones, owners, and issue numbers.", "blue"],
+    ["first-pr-body.png", "Draft PR body", "Capture summary, scope, out-of-scope, proof, rollback, reviewers, and closeout sections.", "green"],
+    ["actions-check-names.png", "Actions names", "Capture exact workflow and job names after the first run.", "amber"],
+    ["branch-protection.png", "Main protection", "Capture required checks, review settings, conversation resolution, and bypass rules.", "red"],
+    ["closeout-board.png", "Repo day closeout", "Capture passed, deferred, blocked, no-leak proof, and next owner.", "blue"]
+  ],
+  "transcriptPlan": [
+    ["docs/evidence/transcripts/preflight-auth.txt", "gh auth status; git --version; node --version; npm --version", "Confirm operator identity and local toolchain. Save real output or a dated blocker note before linking the PR.", "blue"],
+    ["docs/evidence/transcripts/repo-create.txt", "gh repo view dhirajnyse/pursuitdesk-platform --json name,visibility,url", "Prove the repo exists and is private. Save real output or a dated blocker note before linking the PR.", "red"],
+    ["docs/evidence/transcripts/branch-start.txt", "git status --short; git branch --show-current", "Prove work is on the backend alpha branch. Save real output or a dated blocker note before linking the PR.", "teal"],
+    ["docs/evidence/transcripts/tree-after-copy.txt", "Get-ChildItem -Recurse -Depth 3 | Select-Object FullName", "Prove starter shell files and evidence folders exist. Save real output or a dated blocker note before linking the PR.", "green"],
+    ["docs/evidence/transcripts/secret-scan.txt", "Manual scan summary plus any available secret-scan command", "Prove no live secrets, workbooks, certificates, or commercial files. Save real output or a dated blocker note before linking the PR.", "red"],
+    ["docs/evidence/transcripts/quality-proof.txt", "npm install; npm run lint; npm run test -- --runInBand", "Capture success or issue-linked placeholders for first proof commands. Save real output or a dated blocker note before linking the PR.", "amber"],
+    ["docs/evidence/transcripts/issue-wave.txt", "gh issue list --limit 50 --state open", "Capture issue URLs, labels, milestones, and owner lanes. Save real output or a dated blocker note before linking the PR.", "blue"],
+    ["docs/evidence/transcripts/workflow-names.txt", "gh run list --limit 10; gh run view <run-id>", "Capture exact workflow, job, check, artifact, and failure names. Save real output or a dated blocker note before linking the PR.", "teal"]
+  ],
+  "issueTraceLedger": [
+    ["PD-BE-001", "Create private repo shell and first proof docs", "Platform Owner / M0 Repo shell / Wave 1 / pnpm install. Replace placeholder with real GitHub issue URL after import.", "green"],
+    ["PD-BE-002", "Boot API shell with request id and health route", "Backend Lead / M1 API and privacy core / Wave 1 / pnpm dev:api. Replace placeholder with real GitHub issue URL after import.", "teal"],
+    ["PD-BE-003", "Implement safe error envelope middleware", "Security Owner / M1 API and privacy core / Wave 2 / pnpm test:route-envelopes. Replace placeholder with real GitHub issue URL after import.", "red"],
+    ["PD-BE-004", "Create tenant scope and section access decision middleware", "Security Owner / M1 API and privacy core / Wave 2 / pnpm test:auth-tenant. Replace placeholder with real GitHub issue URL after import.", "red"],
+    ["PD-BE-005", "Create audit context and audit writer", "Governance Owner / M1 API and privacy core / Wave 3 / pnpm test:audit. Replace placeholder with real GitHub issue URL after import.", "teal"],
+    ["PD-BE-006", "Create migration runner, seed runner, and restore proof", "Database Owner / M2 Data and fixtures / Wave 3 / pnpm db:migrate:test && pnpm db:seed:test. Replace placeholder with real GitHub issue URL after import.", "blue"],
+    ["PD-BE-007", "Create workbook import dry-run package", "Migration Owner / M2 Data and fixtures / Wave 4 / pnpm test:import-dryrun. Replace placeholder with real GitHub issue URL after import.", "blue"],
+    ["PD-BE-008", "Create billing test-mode package", "Billing Owner / M2 Data and fixtures / Wave 4 / pnpm test:billing-testmode. Replace placeholder with real GitHub issue URL after import.", "amber"],
+    ["PD-BE-009", "Create report pack and redaction-safe export boundary", "Reports Owner / M3 Workflow proof / Wave 5 / pnpm test:redaction. Replace placeholder with real GitHub issue URL after import.", "green"],
+    ["PD-BE-010", "Create GitHub Actions workflow files and artifact uploads", "Platform Owner / M3 Workflow proof / Wave 5 / pnpm lint. Replace placeholder with real GitHub issue URL after import.", "red"]
+  ],
+  "ownerSignoffFiles": [
+    ["docs/evidence/signoffs/product-owner.md", "Approve alpha scope", "Confirms repo opening does not launch production SaaS or accept live customer data. Add GitHub reviewer or signoff placeholder in the PR body. Capture go, hold, no-go, or defer with reason.", "green"],
+    ["docs/evidence/signoffs/platform-owner.md", "Repo and branch rules", "Owns private visibility, branch naming, workflow names, and branch protection timing. Add GitHub reviewer or signoff placeholder in the PR body. Capture go, hold, no-go, or defer with reason.", "teal"],
+    ["docs/evidence/signoffs/backend-lead.md", "Starter shell", "Owns root files, API shell, scripts, route boundaries, and first PR quality. Add GitHub reviewer or signoff placeholder in the PR body. Capture go, hold, no-go, or defer with reason.", "blue"],
+    ["docs/evidence/signoffs/security-owner.md", "No leak proof", "Owns secret scan, tenant guardrail, commercial redaction, and denial proof. Add GitHub reviewer or signoff placeholder in the PR body. Capture go, hold, no-go, or defer with reason.", "red"],
+    ["docs/evidence/signoffs/data-owner.md", "Fixture boundary", "Owns generated fixtures, migration rollback, no workbook import, and source trace. Add GitHub reviewer or signoff placeholder in the PR body. Capture go, hold, no-go, or defer with reason.", "amber"],
+    ["docs/evidence/signoffs/qa-owner.md", "Evidence closeout", "Owns screenshots, command transcripts, issue links, PR proof, and go/hold/no-go note. Add GitHub reviewer or signoff placeholder in the PR body. Capture go, hold, no-go, or defer with reason.", "green"]
+  ],
+  "branchProtectionProof": [
+    ["PR remains draft", "Until proof complete", "Draft status stays until issue links, evidence, rollback, and reviewers are present. Evidence folder should state pass, hold, defer, or not applicable.", "amber"],
+    ["No-leak statement", "Required", "PR body states no secrets, customer workbooks, certificates, invoices, or commercial exports. Evidence folder should state pass, hold, defer, or not applicable.", "red"],
+    ["Issue trace", "12 planned", "At least the primary issue URL is linked; remaining issue URLs can be ledger placeholders. Evidence folder should state pass, hold, defer, or not applicable.", "blue"],
+    ["Evidence links", "9 files", "Every evidence file has a named purpose and PR link target. Evidence folder should state pass, hold, defer, or not applicable.", "green"],
+    ["Command proof", "Required or explained", "Install, lint, tests, secret scan, workflow names, and release gate are pasted or deferred with reason. Evidence folder should state pass, hold, defer, or not applicable.", "teal"],
+    ["Reviewer lanes", "6 lanes", "Product, platform, backend, security, data, and QA review lanes are named. Evidence folder should state pass, hold, defer, or not applicable.", "green"],
+    ["Workflow names", "Hold until Actions", "Required status checks use exact names only after the first Actions run. Evidence folder should state pass, hold, defer, or not applicable.", "red"],
+    ["Closeout note", "Required", "Passed, deferred, blocked, rollback, owner signoff, and next move are recorded. Evidence folder should state pass, hold, defer, or not applicable.", "blue"]
+  ],
+  "closeoutNotes": [
+    ["Passed", "Commands and evidence", "List proof files, screenshots, command transcripts, issue URLs, PR URL, and owner lanes that passed.", "green"],
+    ["Deferred", "Known follow-ups", "List workflow names, branch protection, reviewer handles, or issue URLs still waiting on GitHub.", "amber"],
+    ["Blocked", "Merge blockers", "List any missing proof, failed command, missing owner, data leak, or unsafe branch rule.", "red"],
+    ["No-leak statement", "Required", "State no secret, customer workbook, certificate, invoice, billing key, or commercial export entered the repo.", "red"],
+    ["Rollback status", "Required", "Record whether rollback path is close PR, delete branch, recreate repo, rotate credentials, or restart data.", "blue"],
+    ["Owner signoffs", "6 lanes", "Capture go, hold, no-go, or defer for each owner lane.", "green"],
+    ["Next owner", "Required", "Name the person or lane that owns the next backend implementation PR.", "teal"],
+    ["Management line", "One sentence", "Summarize repo day result for Command Center and Weekly Review.", "green"]
+  ],
+  "folderTree": [
+    ["docs/evidence/README.md", "Index and status map", "green"],
+    ["docs/evidence/00-preflight.md", "Identity and no-live-data proof", "blue"],
+    ["docs/evidence/01-repo-private.md", "Private repo proof", "red"],
+    ["docs/evidence/02-clean-copy-set.md", "No secret and no workbook proof", "red"],
+    ["docs/evidence/03-file-tree.md", "Starter file tree proof", "green"],
+    ["docs/evidence/04-issue-wave.md", "Issue URL and label proof", "teal"],
+    ["docs/evidence/05-first-pr.md", "Draft PR body and link proof", "green"],
+    ["docs/evidence/06-workflow-check-names.md", "Actions names proof", "amber"],
+    ["docs/evidence/07-branch-protection.md", "Main protection proof", "red"],
+    ["docs/evidence/08-closeout.md", "Passed, deferred, blocked, and next owner", "blue"],
+    ["docs/evidence/screenshots/", "8 screenshot slots", "blue"],
+    ["docs/evidence/transcripts/", "8 transcript slots", "teal"],
+    ["docs/evidence/signoffs/", "6 owner signoff files", "green"]
+  ],
+  "copyReadyMarkdown": [
+    ["Evidence index", "docs/evidence/README.md", "# PursuitDesk backend alpha evidence\n\nStatus: pending private repo execution\n\nFiles: 9 markdown proofs, 8 screenshots, 8 transcripts, 6 signoffs.\n\nRule: no live data, no secrets, no workbooks, no commercial exports.", "green"],
+    ["No-leak statement", "docs/evidence/02-clean-copy-set.md", "No customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved for this PR. If any appears, stop, remove, rotate where needed, and write an incident note.", "red"],
+    ["Issue ledger note", "docs/evidence/04-issue-wave.md", "The first PR should link the primary issue and maintain a ledger for 10 planned issue links. Placeholder IDs are allowed only until real GitHub URLs exist.", "blue"],
+    ["Workflow hold note", "docs/evidence/06-workflow-check-names.md", "Branch protection remains on hold until the first Actions run exposes exact workflow, job, and required status check names. Do not guess names.", "amber"],
+    ["Owner signoff note", "docs/evidence/signoffs/README.md", "Each owner lane records go, hold, no-go, or defer. A hold must name the missing proof and next owner before the PR leaves draft.", "teal"],
+    ["Closeout note", "docs/evidence/08-closeout.md", "Closeout is complete only when passed, deferred, blocked, no-leak proof, rollback status, owner signoffs, and next owner are written.", "green"]
+  ],
+  "acceptanceChecks": [
+    ["Manifest complete", "13 manifest entries define evidence files, screenshot folder, transcript folder, and signoffs.", "green"],
+    ["Templates ready", "9 markdown templates are copy-ready for the first private backend branch.", "teal"],
+    ["Screenshots named", "8 screenshot slots cover private repo, tree, taxonomy, issues, PR, Actions, branch rules, and closeout.", "blue"],
+    ["Transcripts named", "8 command transcript slots are ready for real output or dated blocker notes.", "amber"],
+    ["Issues traceable", "10 issue rows can receive real GitHub URLs after import.", "green"],
+    ["Signoffs visible", "6 owner signoff files keep review accountability out in the open.", "teal"],
+    ["Branch proof gated", "8 branch and release checks require pass, hold, defer, or not-applicable notes.", "red"],
+    ["Closeout complete", "8 closeout notes prevent silent merge drift.", "blue"]
+  ],
+  "handoff": [
+    "v135 turns the first PR body into a concrete evidence folder writer.",
+    "The writer defines docs/evidence files, screenshot slots, transcript slots, issue ledger rows, owner signoff files, branch-protection proof, closeout notes, and copy-ready markdown.",
+    "The static demo still cannot capture real screenshots or command output; it now names exactly where those artifacts belong when the private repo exists.",
+    "v136 can now bundle the private repo command runner pack that fills these evidence files with real outputs."
+  ]
+}

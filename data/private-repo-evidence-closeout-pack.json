@@ -1,0 +1,415 @@
+{
+  "schemaVersion": "pursuitdesk.privateRepoEvidenceCloseoutPack.v141",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "generatedOn": "2026-05-15",
+  "build": {
+    "version": "v141",
+    "name": "Private Repo Evidence Closeout Pack",
+    "evidenceCloseoutScore": 96,
+    "purpose": "Convert first backend PR review comments, evidence status, handoff email, and review gates into a controlled closeout record.",
+    "scope": "Static prototype handoff for the future private production repository session.",
+    "sourcePacks": [
+      "First Backend PR Review Comment Pack",
+      "Evidence Artifact Status Board",
+      "Private Repo Handoff Email Pack",
+      "Backend PR Review Gate Matrix",
+      "Private Repo Command Runner Pack"
+    ]
+  },
+  "closeoutKpis": [
+    {
+      "label": "Closeout pack",
+      "value": "96%",
+      "note": "Readiness to close the first private backend PR evidence session without losing proof state.",
+      "tone": "green"
+    },
+    {
+      "label": "Outcome lanes",
+      "value": 8,
+      "note": "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Owner queue",
+      "value": 6,
+      "note": "Product, platform, backend, security, data, and QA closeout ownership.",
+      "tone": "blue"
+    },
+    {
+      "label": "Trust checks",
+      "value": 8,
+      "note": "No-leak, rollback, exact checks, owner signoff, and management record locks.",
+      "tone": "red"
+    }
+  ],
+  "closeoutOutcomeLanes": [
+    {
+      "lane": "Passed",
+      "status": "Ready to record",
+      "note": "Evidence is linked, issue trace is visible, reviewer lane is clear, no-leak proof exists, rollback is written, and next owner is named.",
+      "tone": "green"
+    },
+    {
+      "lane": "Held",
+      "status": "Acceptable with owner",
+      "note": "Direction is acceptable but proof is incomplete; keep owner, missing item, target date, and next command visible.",
+      "tone": "amber"
+    },
+    {
+      "lane": "Blocked",
+      "status": "Stop merge",
+      "note": "Public repo, secret exposure, workbook leakage, missing rollback, direct main push, missing checks, or no owner accountability blocks closeout.",
+      "tone": "red"
+    },
+    {
+      "lane": "Deferred",
+      "status": "Move forward deliberately",
+      "note": "Deferred proof remains valid only with reason, owner, date, and next evidence action.",
+      "tone": "blue"
+    },
+    {
+      "lane": "No-leak",
+      "status": "Commercial privacy protected",
+      "note": "No workbook, secret, billing export, invoice, certificate, or commercial tracker value is allowed into the first backend PR.",
+      "tone": "red"
+    },
+    {
+      "lane": "Rollback",
+      "status": "Recovery path written",
+      "note": "Close PR, delete branch, recreate repo, rotate credential, or restart data path is named before merge language is used.",
+      "tone": "amber"
+    },
+    {
+      "lane": "Next owner",
+      "status": "Accountability assigned",
+      "note": "Every unresolved item names one accountable owner and one next action.",
+      "tone": "teal"
+    },
+    {
+      "lane": "Management note",
+      "status": "Review-ready summary",
+      "note": "The closeout record is short enough to move into Command Center, Reports, and weekly management review.",
+      "tone": "blue"
+    }
+  ],
+  "evidenceCloseoutRegister": [
+    {
+      "label": "Ready artifacts",
+      "value": "Ready",
+      "note": "Screenshots, transcripts, issue links, signoffs, branch proof, and closeout notes must be linked before pass.",
+      "tone": "green"
+    },
+    {
+      "label": "Held artifacts",
+      "value": "Hold",
+      "note": "Any missing proof needs owner, missing evidence, target date, and next command.",
+      "tone": "amber"
+    },
+    {
+      "label": "Blocked artifacts",
+      "value": "Block",
+      "note": "Any commercial leakage, secret, public visibility, or rollback gap blocks merge.",
+      "tone": "red"
+    },
+    {
+      "label": "Deferred artifacts",
+      "value": "Defer",
+      "note": "Deferred proof must carry owner, reason, date, and report visibility.",
+      "tone": "blue"
+    },
+    {
+      "label": "Comment decisions",
+      "value": "Record",
+      "note": "Opening notes, lane approvals, evidence holds, request changes, no-leak signoff, and merge closeout are captured.",
+      "tone": "teal"
+    },
+    {
+      "label": "Reviewer lanes",
+      "value": "Map",
+      "note": "Product, platform, backend, security, data, QA, billing, and release review lanes receive closeout status.",
+      "tone": "green"
+    },
+    {
+      "label": "Inline snippets",
+      "value": "Reuse",
+      "note": "Line-level notes are available for route, migration, guard, test, CI, and documentation proof.",
+      "tone": "blue"
+    },
+    {
+      "label": "Command outputs",
+      "value": "Attach",
+      "note": "Install, lint, test, migration, seed, smoke, audit, and evidence commands should point to transcript files.",
+      "tone": "amber"
+    }
+  ],
+  "closeoutDecisionLog": [
+    {
+      "label": "Merge approved",
+      "value": "Pass",
+      "note": "Use only when evidence, issue trace, review lane, no-leak proof, rollback text, and owner are all present.",
+      "tone": "green"
+    },
+    {
+      "label": "Keep draft",
+      "value": "Hold",
+      "note": "Keep PR open when direction is correct but proof is incomplete.",
+      "tone": "amber"
+    },
+    {
+      "label": "Request changes",
+      "value": "Block",
+      "note": "Use when trust, privacy, test, tenant, audit, or rollback evidence fails.",
+      "tone": "red"
+    },
+    {
+      "label": "Close PR",
+      "value": "Stop",
+      "note": "Close if public visibility, secret exposure, workbook leakage, or wrong branch state is found.",
+      "tone": "red"
+    },
+    {
+      "label": "Restart branch",
+      "value": "Recover",
+      "note": "Start clean if branch history or artifact trust is unclear.",
+      "tone": "amber"
+    },
+    {
+      "label": "Defer evidence",
+      "value": "Schedule",
+      "note": "Move non-blocking proof with owner, reason, due date, and next evidence action.",
+      "tone": "blue"
+    },
+    {
+      "label": "Management brief",
+      "value": "Summarize",
+      "note": "Publish passed, held, blocked, deferred, no-leak, rollback, and next-owner status.",
+      "tone": "teal"
+    },
+    {
+      "label": "Next build",
+      "value": "Queue",
+      "note": "Feed real replies and decisions into the next reply capture board.",
+      "tone": "green"
+    }
+  ],
+  "ownerCloseoutQueue": [
+    {
+      "owner": "Product owner",
+      "scope": "Scope and non-goals",
+      "note": "Confirm first backend PR remains inside the alpha boundary.",
+      "tone": "green"
+    },
+    {
+      "owner": "Platform owner",
+      "scope": "Repo and branch proof",
+      "note": "Confirm private visibility, branch protection, required checks, and environment proof.",
+      "tone": "teal"
+    },
+    {
+      "owner": "Backend owner",
+      "scope": "Routes and migrations",
+      "note": "Confirm route skeleton, migration files, seed path, and test command evidence.",
+      "tone": "blue"
+    },
+    {
+      "owner": "Security owner",
+      "scope": "No-leak and tenant trust",
+      "note": "Confirm no workbook, secret, payment key, certificate, or commercial value is exposed.",
+      "tone": "red"
+    },
+    {
+      "owner": "Data owner",
+      "scope": "Fixture and import proof",
+      "note": "Confirm fixtures, dry-run rules, source trace, quarantine, and rollback notes.",
+      "tone": "amber"
+    },
+    {
+      "owner": "QA / Release owner",
+      "scope": "Closeout ledger",
+      "note": "Keep all holds, blocks, deferred proof, and management summary lines visible until resolved.",
+      "tone": "green"
+    }
+  ],
+  "noLeakRollbackChecks": [
+    {
+      "label": "No workbook export",
+      "value": "Required",
+      "note": "Source Excel files stay out of the private repo and public demo upload.",
+      "tone": "red"
+    },
+    {
+      "label": "No secrets",
+      "value": "Required",
+      "note": "Tokens, certificates, passwords, payment keys, and production env values are not committed.",
+      "tone": "red"
+    },
+    {
+      "label": "No commercial export",
+      "value": "Required",
+      "note": "Value, LOA, agreement, invoice, billing, and negotiation facts stay out of frontline examples.",
+      "tone": "red"
+    },
+    {
+      "label": "No public repo",
+      "value": "Required",
+      "note": "Private visibility proof is linked before any closeout is called passed.",
+      "tone": "red"
+    },
+    {
+      "label": "Rollback note",
+      "value": "Required",
+      "note": "Branch, PR, recreate repo, rotate credential, and restart data path instructions are written.",
+      "tone": "amber"
+    },
+    {
+      "label": "Check names exact",
+      "value": "Required",
+      "note": "Required checks match real GitHub Actions names, not guessed labels.",
+      "tone": "blue"
+    },
+    {
+      "label": "Owner signoff",
+      "value": "Required",
+      "note": "Each lane gives go, hold, no-go, or defer with reason.",
+      "tone": "teal"
+    },
+    {
+      "label": "Management record",
+      "value": "Required",
+      "note": "Command Center tracker records passed, held, blocked, deferred, no-leak, rollback, and next owner.",
+      "tone": "green"
+    }
+  ],
+  "closeoutTimeline": [
+    {
+      "moment": "Before merge",
+      "action": "Freeze evidence state",
+      "note": "Record comments, approvals, holds, blocks, and missing proof before merge decision.",
+      "tone": "blue"
+    },
+    {
+      "moment": "At decision",
+      "action": "Write outcome",
+      "note": "Mark merge, keep draft, request changes, close PR, restart branch, or defer.",
+      "tone": "green"
+    },
+    {
+      "moment": "Same day",
+      "action": "Send closeout",
+      "note": "Send management note with passed, held, blocked, deferred, no-leak, rollback, and next owner.",
+      "tone": "teal"
+    },
+    {
+      "moment": "Next day",
+      "action": "Clean holds",
+      "note": "Resolve missing links, screenshots, transcript output, or owner replies.",
+      "tone": "amber"
+    },
+    {
+      "moment": "Weekly review",
+      "action": "Report residual risk",
+      "note": "Bring open holds, blocks, and deferred proof into the operating review.",
+      "tone": "red"
+    },
+    {
+      "moment": "Next build",
+      "action": "Prepare reply board",
+      "note": "v142 or v143 can capture meeting and reply decisions after the real private repo day.",
+      "tone": "blue"
+    }
+  ],
+  "managementSummaryLines": [
+    {
+      "label": "Opening line",
+      "text": "First backend PR review closeout is controlled, but real GitHub execution is still pending.",
+      "tone": "green"
+    },
+    {
+      "label": "Passed line",
+      "text": "Passed items require linked evidence, issue trace, reviewer lane, no-leak proof, and rollback visibility.",
+      "tone": "teal"
+    },
+    {
+      "label": "Hold line",
+      "text": "Held items remain acceptable only with owner, target date, missing proof, and next command.",
+      "tone": "amber"
+    },
+    {
+      "label": "Block line",
+      "text": "Blocked items stop merge until trust failure is removed and documented.",
+      "tone": "red"
+    },
+    {
+      "label": "No-leak line",
+      "text": "No workbook, secret, billing, invoice, or commercial export is approved in the first backend PR.",
+      "tone": "red"
+    },
+    {
+      "label": "Next-owner line",
+      "text": "Every unresolved item has one named owner and one next action.",
+      "tone": "blue"
+    }
+  ],
+  "copyReadyCloseoutNote": "Subject: PursuitDesk private repo evidence closeout\n\nCloseout status: first backend PR review evidence is ready to be recorded against passed, held, blocked, deferred, no-leak, rollback, and next-owner lanes.\n\nReview comments prepared: 8. Reviewer lanes: 8. Evidence status groups: 4.\n\nPassed means evidence is linked, issue trace is visible, reviewer lane is clear, no-leak proof is present, rollback is written, and next owner is named.\n\nHeld means the direction is acceptable, but the proof is incomplete and must name owner, missing item, target date, and next command.\n\nBlocked means a trust failure exists: public repo, secret, workbook, commercial leakage, missing rollback, direct main push, missing checks, or no owner accountability.\n\nDeferred means the proof is intentionally moved forward with owner, reason, date, and next evidence action.\n\nNo-leak statement: no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.\n\nRollback statement: close PR, delete branch, recreate repo, rotate credential, or restart data path is named before any merge decision.\n\nNext owner: QA / Release keeps the closeout ledger until all holds, blocks, and deferred proof are resolved.",
+  "acceptanceChecks": [
+    {
+      "label": "Outcome lanes ready",
+      "note": "Eight closeout lanes separate passed, held, blocked, deferred, no-leak, rollback, next owner, and management note.",
+      "tone": "green"
+    },
+    {
+      "label": "Evidence register ready",
+      "note": "Eight evidence rows can be closed or escalated.",
+      "tone": "teal"
+    },
+    {
+      "label": "Decision log ready",
+      "note": "Eight decision rows prevent vague closeout.",
+      "tone": "blue"
+    },
+    {
+      "label": "Owner queue ready",
+      "note": "Six owner lanes receive final closeout duties.",
+      "tone": "amber"
+    },
+    {
+      "label": "No-leak and rollback ready",
+      "note": "Eight trust checks must pass before merge language is used.",
+      "tone": "red"
+    },
+    {
+      "label": "Timeline ready",
+      "note": "Six closeout moments keep the repo day from fading away.",
+      "tone": "green"
+    },
+    {
+      "label": "Management summary ready",
+      "note": "Six lines can move into Reports and Command Center.",
+      "tone": "blue"
+    },
+    {
+      "label": "Next handoff ready",
+      "note": "v142 can prepare the backend repo day meeting pack and v143 can capture real reviewer replies.",
+      "tone": "teal"
+    }
+  ],
+  "handoff": [
+    "v141 turns review comments, evidence status, handoff email, and PR review gates into a private repo evidence closeout pack.",
+    "The pack separates passed, held, blocked, deferred, no-leak, rollback, next-owner, and management-note outcomes.",
+    "The static demo still cannot read a real GitHub PR; it now defines exactly how the real evidence closeout should be recorded after the private repo session.",
+    "v142 can now prepare the backend repo day meeting pack, while v143 can track real reviewer replies and closeout decisions."
+  ],
+  "counts": {
+    "closeoutKpis": 4,
+    "closeoutOutcomeLanes": 8,
+    "evidenceCloseoutRegister": 8,
+    "closeoutDecisionLog": 8,
+    "ownerCloseoutQueue": 6,
+    "noLeakRollbackChecks": 8,
+    "closeoutTimeline": 6,
+    "managementSummaryLines": 6,
+    "acceptanceChecks": 8,
+    "signalCards": 4
+  }
+}

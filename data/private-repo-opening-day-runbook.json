@@ -1,0 +1,365 @@
+{
+  "schemaVersion": "pursuitdesk.privateRepoOpeningDayRunbook.v124",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "purpose": "Execute the first private backend repository day in a controlled order.",
+  "runbookScore": 98,
+  "daySequence": [
+    {
+      "time": "08:30",
+      "label": "Preflight",
+      "tone": "green",
+      "action": "Confirm GitHub access, repo name, owners, no live secrets, and local folder location."
+    },
+    {
+      "time": "09:00",
+      "label": "Create private repo",
+      "tone": "red",
+      "action": "Create dhirajnyse/pursuitdesk-platform as private, with main protected later after first checks appear."
+    },
+    {
+      "time": "09:20",
+      "label": "Clone and branch",
+      "tone": "teal",
+      "action": "Clone locally, create develop, and keep main clean until first PR evidence is ready."
+    },
+    {
+      "time": "09:45",
+      "label": "Copy starter files",
+      "tone": "blue",
+      "action": "Move starter files from the file-content export into the private repo shell."
+    },
+    {
+      "time": "10:30",
+      "label": "Import taxonomy",
+      "tone": "amber",
+      "action": "Create labels and milestones before issues are opened."
+    },
+    {
+      "time": "11:15",
+      "label": "Open first issue wave",
+      "tone": "green",
+      "action": "Import generated issue bodies in M0/M1 order, with P0 shell and guard work first."
+    },
+    {
+      "time": "12:30",
+      "label": "First proof run",
+      "tone": "blue",
+      "action": "Run install, lint, typecheck, route envelope, auth tenant, redaction, audit, and release gate placeholders."
+    },
+    {
+      "time": "14:00",
+      "label": "Open first PR",
+      "tone": "teal",
+      "action": "Push develop, open the first PR to main, attach proof output, release note, rollback note, and signoffs."
+    },
+    {
+      "time": "15:00",
+      "label": "Review and evidence",
+      "tone": "green",
+      "action": "Platform, backend, security, database, governance, and QA owners review their lanes."
+    },
+    {
+      "time": "16:15",
+      "label": "Protect main",
+      "tone": "red",
+      "action": "Capture workflow names from the first run before branch rules become strict."
+    }
+  ],
+  "commandBlocks": [
+    {
+      "label": "Preflight",
+      "command": "gh auth status",
+      "tone": "green",
+      "proof": "Confirms GitHub CLI identity before creating anything."
+    },
+    {
+      "label": "Create repo",
+      "command": "gh repo create dhirajnyse/pursuitdesk-platform --private --description \"Production SaaS backend for PursuitDesk\" --confirm",
+      "tone": "red",
+      "proof": "Creates the private target repo."
+    },
+    {
+      "label": "Clone",
+      "command": "gh repo clone dhirajnyse/pursuitdesk-platform",
+      "tone": "teal",
+      "proof": "Pulls the clean private repo locally."
+    },
+    {
+      "label": "Develop branch",
+      "command": "git checkout -b develop",
+      "tone": "green",
+      "proof": "Starts work away from main."
+    },
+    {
+      "label": "Taxonomy",
+      "command": "gh label create ... / gh api repos/:owner/:repo/milestones",
+      "tone": "amber",
+      "proof": "Applies the label and milestone catalog."
+    },
+    {
+      "label": "Issue import",
+      "command": "gh issue create --title ... --body-file ... --label ... --milestone ...",
+      "tone": "blue",
+      "proof": "Opens generated issue bodies in the planned order."
+    },
+    {
+      "label": "Install proof",
+      "command": "pnpm install",
+      "tone": "green",
+      "proof": "Creates the first dependency proof or a clear placeholder note."
+    },
+    {
+      "label": "Quality proof",
+      "command": "pnpm lint && pnpm typecheck",
+      "tone": "blue",
+      "proof": "Captures first static quality evidence."
+    },
+    {
+      "label": "Release proof",
+      "command": "pnpm ci:release-gate",
+      "tone": "teal",
+      "proof": "Produces the first release-gate summary."
+    },
+    {
+      "label": "First PR",
+      "command": "gh pr create --base main --head develop --draft --title \"Initialize PursuitDesk backend shell\"",
+      "tone": "red",
+      "proof": "Keeps the first merge reviewable and evidence-led."
+    }
+  ],
+  "issueWaves": [
+    {
+      "label": "Wave 1",
+      "name": "Repo shell",
+      "tone": "green",
+      "scope": "Open root shell, README, CODEOWNERS, PR template, env example, and release runbook issues first."
+    },
+    {
+      "label": "Wave 2",
+      "name": "API boot",
+      "tone": "red",
+      "scope": "Open server, app, route registry, safe error, request id, tenant scope, and access decision issues."
+    },
+    {
+      "label": "Wave 3",
+      "name": "Data foundation",
+      "tone": "blue",
+      "scope": "Open schema, migration, seed, fixture, import dry-run, and restore gate issues."
+    },
+    {
+      "label": "Wave 4",
+      "name": "Security proof",
+      "tone": "red",
+      "scope": "Open tenant isolation, section access, commercial redaction, denial audit, and secrets checks."
+    },
+    {
+      "label": "Wave 5",
+      "name": "CI and release",
+      "tone": "amber",
+      "scope": "Open workflow files, artifact retention, release gate, branch protection, and rollback issues."
+    },
+    {
+      "label": "Wave 6",
+      "name": "Later alpha",
+      "tone": "teal",
+      "scope": "Hold billing, feedback, reports, customer success, and production hosting depth until shell proof is merged."
+    }
+  ],
+  "evidencePackets": [
+    {
+      "file": "repo-created.md",
+      "tone": "green",
+      "contents": "Repo URL, visibility, owners, created branch, and local path."
+    },
+    {
+      "file": "taxonomy-import-summary.md",
+      "tone": "amber",
+      "contents": "Labels, milestones, board columns, and issue routing rules applied."
+    },
+    {
+      "file": "issue-import-log.md",
+      "tone": "blue",
+      "contents": "Issue wave order, issue URLs, labels, milestones, and owner mapping."
+    },
+    {
+      "file": "starter-file-inventory.md",
+      "tone": "green",
+      "contents": "Files copied from the export and any intentional deviation."
+    },
+    {
+      "file": "first-proof-output.md",
+      "tone": "teal",
+      "contents": "Install, lint, typecheck, test placeholders, and release gate outputs."
+    },
+    {
+      "file": "first-pr-review-note.md",
+      "tone": "red",
+      "contents": "Linked issue, PR URL, reviewers, proof status, release note, and rollback note."
+    },
+    {
+      "file": "workflow-check-name-map.md",
+      "tone": "blue",
+      "contents": "Exact GitHub Actions check names after the first run completes."
+    },
+    {
+      "file": "branch-protection-applied.md",
+      "tone": "red",
+      "contents": "Required checks, reviews, environments, and bypass decisions after workflow names are known."
+    }
+  ],
+  "ownerCheckpoints": [
+    {
+      "owner": "Founder / Product",
+      "tone": "green",
+      "scope": "Approves repo identity, alpha scope, issue priority, and no-go rules."
+    },
+    {
+      "owner": "Platform owner",
+      "tone": "teal",
+      "scope": "Owns repo creation, file copy, workflow names, branch rules, and PR evidence."
+    },
+    {
+      "owner": "Backend lead",
+      "tone": "blue",
+      "scope": "Owns API boot shell, route registry, package boundaries, and first proof commands."
+    },
+    {
+      "owner": "Security owner",
+      "tone": "red",
+      "scope": "Owns no-secret check, tenant/access guard, safe errors, redaction, and denial audit."
+    },
+    {
+      "owner": "Data owner",
+      "tone": "amber",
+      "scope": "Owns schema placeholders, seed fixture location, migration order, and no-live-data rule."
+    },
+    {
+      "owner": "QA / Release",
+      "tone": "green",
+      "scope": "Owns evidence packet, release-gate summary, branch protection timing, and go/no-go note."
+    }
+  ],
+  "liveGates": [
+    {
+      "label": "Before repo create",
+      "tone": "green",
+      "gate": "Repo name, privacy, owner, local folder, GitHub login, and no live data confirmed."
+    },
+    {
+      "label": "Before taxonomy import",
+      "tone": "amber",
+      "gate": "Label catalog, milestone catalog, owner lanes, and proof labels checked."
+    },
+    {
+      "label": "Before issue import",
+      "tone": "blue",
+      "gate": "M0/M1 opening order and issue body templates reviewed."
+    },
+    {
+      "label": "Before first PR",
+      "tone": "red",
+      "gate": "Starter file inventory, no-secret scan, proof placeholders, and release note prepared."
+    },
+    {
+      "label": "Before branch protection",
+      "tone": "red",
+      "gate": "First workflow run has produced exact status check names."
+    },
+    {
+      "label": "Before merge",
+      "tone": "green",
+      "gate": "Role signoffs, proof outputs, linked issue, rollback note, and no-go scan complete."
+    },
+    {
+      "label": "Before staging work",
+      "tone": "teal",
+      "gate": "Shell PR merged cleanly and release-gate summary has no hard blockers."
+    },
+    {
+      "label": "Before live data",
+      "tone": "red",
+      "gate": "Tenant, access, redaction, audit, import rollback, backups, and billing test mode are real."
+    }
+  ],
+  "noGoStops": [
+    {
+      "label": "Live secret appears",
+      "tone": "red",
+      "response": "Stop, rotate the secret, purge history, and restart with a clean branch."
+    },
+    {
+      "label": "Repo is public",
+      "tone": "red",
+      "response": "Stop before uploading starter files; recreate or change visibility to private."
+    },
+    {
+      "label": "Main receives direct commit",
+      "tone": "amber",
+      "response": "Stop and restore PR discipline before any protection rule is applied."
+    },
+    {
+      "label": "Workflow checks unknown",
+      "tone": "amber",
+      "response": "Hold branch protection until exact GitHub check names are visible."
+    },
+    {
+      "label": "Commercial data leaks",
+      "tone": "red",
+      "response": "Stop, remove value, agreement, billing, and negotiation data from operational examples."
+    },
+    {
+      "label": "Issue trace missing",
+      "tone": "blue",
+      "response": "Hold the PR until it links to generated issue, labels, milestone, and proof lane."
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "label": "Sequence is executable",
+      "tone": "green",
+      "check": "Ten timed steps cover preflight through branch protection."
+    },
+    {
+      "label": "Commands are named",
+      "tone": "blue",
+      "check": "Ten command blocks define the opening-day path."
+    },
+    {
+      "label": "Issues are sequenced",
+      "tone": "teal",
+      "check": "Six import waves keep foundation and security work first."
+    },
+    {
+      "label": "Evidence is named",
+      "tone": "green",
+      "check": "Eight proof packets tell the team what to save."
+    },
+    {
+      "label": "Owners are assigned",
+      "tone": "amber",
+      "check": "Six owner lanes show who signs off."
+    },
+    {
+      "label": "Gates are clear",
+      "tone": "red",
+      "check": "Eight decision gates prevent premature merge, protection, staging, or live data."
+    },
+    {
+      "label": "Stops are explicit",
+      "tone": "red",
+      "check": "Six no-go stops tell the team when to pause."
+    },
+    {
+      "label": "Next handoff ready",
+      "tone": "green",
+      "check": "v125 can turn this into an executive decision memo for creating the real repo."
+    }
+  ],
+  "handoff": [
+    "v124 converts the backend preparation stack into a day-one private repo operating rhythm.",
+    "The runbook keeps repo creation, taxonomy import, starter files, first issues, proof commands, first PR, owner signoffs, and branch protection in the correct order.",
+    "Branch protection remains deliberately late: the team first lets GitHub Actions reveal exact required status check names, then protects main.",
+    "v125 can produce the executive decision memo for opening the real private backend repo with known scope, evidence, blockers, and approval gates."
+  ]
+}

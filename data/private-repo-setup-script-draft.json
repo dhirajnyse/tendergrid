@@ -1,0 +1,380 @@
+{
+  "schemaVersion": "pursuitdesk.privateRepoSetupScriptDraft.v121",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "purpose": "Draft the cautious setup script and command sequence for opening the future private PursuitDesk backend repository.",
+  "setupScriptScore": 97,
+  "principles": [
+    "Keep the public tendergrid GitHub Pages repository as the demo and feedback surface.",
+    "Create production backend code only in a new private repository.",
+    "Write starter files from the v120 file-content export before feature coding starts.",
+    "Create labels and milestones before opening generated backend issues.",
+    "Run the first workflow once before applying branch protection so required check names are exact.",
+    "Never store live secrets in JSON, source control, or setup script output."
+  ],
+  "prerequisites": [
+    {
+      "label": "GitHub access",
+      "note": "Admin rights for dhirajnyse and permission to create a private repository.",
+      "tone": "red"
+    },
+    {
+      "label": "GitHub CLI",
+      "note": "gh auth status should show the account that will own pursuitdesk-platform.",
+      "tone": "blue"
+    },
+    {
+      "label": "Node 22",
+      "note": "Runtime target for the first API shell and workflow files.",
+      "tone": "green"
+    },
+    {
+      "label": "pnpm via corepack",
+      "note": "Use corepack enable before installing workspace dependencies.",
+      "tone": "teal"
+    },
+    {
+      "label": "No live secrets",
+      "note": "Only placeholder secret names are scripted; real values stay manual.",
+      "tone": "red"
+    },
+    {
+      "label": "v120 file export",
+      "note": "32 starter files are the source for the first commit.",
+      "tone": "green"
+    },
+    {
+      "label": "v118 issue bodies",
+      "note": "Generated backend issues can be opened after labels and milestones exist.",
+      "tone": "blue"
+    },
+    {
+      "label": "v119 protection plan",
+      "note": "Required checks guide branch rules after the first CI run.",
+      "tone": "red"
+    }
+  ],
+  "scriptFiles": [
+    {
+      "path": "scripts/setup/check-prereqs.ps1",
+      "title": "Local preflight",
+      "note": "Confirms gh, git, node, pnpm, and authenticated account before repo work.",
+      "tone": "green"
+    },
+    {
+      "path": "scripts/setup/create-private-repo.ps1",
+      "title": "Repository bootstrap",
+      "note": "Creates the private GitHub repo, clone folder, develop branch, and remote check.",
+      "tone": "red"
+    },
+    {
+      "path": "scripts/setup/write-starter-files.ps1",
+      "title": "Starter file writer",
+      "note": "Creates folders and writes the v120 starter file contents.",
+      "tone": "blue"
+    },
+    {
+      "path": "scripts/setup/create-labels-milestones.ps1",
+      "title": "Backlog metadata",
+      "note": "Creates labels and milestones before importing issues.",
+      "tone": "amber"
+    },
+    {
+      "path": "scripts/setup/open-backend-issues.md",
+      "title": "Issue opening guide",
+      "note": "Manual or gh-based opening order for generated backend issues.",
+      "tone": "teal"
+    },
+    {
+      "path": "scripts/setup/first-proof-run.ps1",
+      "title": "First local proof",
+      "note": "Runs install, lint, typecheck, contract, auth, redaction, audit, and release-gate checks.",
+      "tone": "green"
+    },
+    {
+      "path": "scripts/setup/apply-branch-protection.md",
+      "title": "Protection guide",
+      "note": "Apply branch protection only after GitHub Actions exposes exact check names.",
+      "tone": "red"
+    },
+    {
+      "path": "docs/setup-handoff.md",
+      "title": "Setup handoff",
+      "note": "Records what was created, what remains manual, and what blocks first backend coding.",
+      "tone": "blue"
+    }
+  ],
+  "folderPlan": [
+    {
+      "path": ".github/workflows",
+      "note": "Workflow shells and required check names from v116/v119.",
+      "tone": "red"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE",
+      "note": "Backend task templates and PR evidence rules.",
+      "tone": "blue"
+    },
+    {
+      "path": "apps/api/src/middleware",
+      "note": "Request id, tenant scope, access decision, and safe error middleware.",
+      "tone": "red"
+    },
+    {
+      "path": "apps/api/src/routes",
+      "note": "Health, auth, records, commercial, import, billing, and audit route boundaries.",
+      "tone": "green"
+    },
+    {
+      "path": "packages/shared",
+      "note": "Result and environment helper contracts.",
+      "tone": "teal"
+    },
+    {
+      "path": "packages/audit",
+      "note": "Append-only audit writer boundary.",
+      "tone": "blue"
+    },
+    {
+      "path": "packages/domain",
+      "note": "Commercial redaction helpers for operational routes.",
+      "tone": "red"
+    },
+    {
+      "path": "packages/db/seeds",
+      "note": "Tenant, users, records, commercial facts, billing, and audit fixtures.",
+      "tone": "green"
+    },
+    {
+      "path": "packages/importer",
+      "note": "Workbook dry-run and validation staging boundary.",
+      "tone": "amber"
+    },
+    {
+      "path": "packages/testing/fixtures",
+      "note": "Contract, migration, redaction, and smoke fixture manifest.",
+      "tone": "blue"
+    },
+    {
+      "path": "docs",
+      "note": "Release runbook, setup handoff, alpha scope, and migration notes.",
+      "tone": "teal"
+    },
+    {
+      "path": "scripts/setup",
+      "note": "Private repo setup scripts and manual safety guides.",
+      "tone": "green"
+    }
+  ],
+  "commandBlocks": [
+    {
+      "step": "01",
+      "title": "Local preflight",
+      "note": "Run this before creating anything. It should only read tool versions and GitHub auth state.",
+      "tone": "green",
+      "commands": [
+        "gh auth status",
+        "git --version",
+        "node --version",
+        "corepack --version",
+        "pnpm --version"
+      ]
+    },
+    {
+      "step": "02",
+      "title": "Create private repository",
+      "note": "Creates the future production backend repo while keeping the public tendergrid demo untouched.",
+      "tone": "red",
+      "commands": [
+        "gh repo create dhirajnyse/pursuitdesk-platform --private --description \"Private SaaS backend for PursuitDesk\"",
+        "gh repo clone dhirajnyse/pursuitdesk-platform",
+        "cd pursuitdesk-platform",
+        "git checkout -b develop"
+      ]
+    },
+    {
+      "step": "03",
+      "title": "Create folder skeleton",
+      "note": "Creates only the folders needed by the v120 file-content export and setup handoff.",
+      "tone": "teal",
+      "commands": [
+        "New-Item -ItemType Directory -Force .github/workflows,.github/ISSUE_TEMPLATE,apps/api/src/middleware,apps/api/src/routes",
+        "New-Item -ItemType Directory -Force packages/shared,packages/audit,packages/domain,packages/db/seeds,packages/importer,packages/testing/fixtures",
+        "New-Item -ItemType Directory -Force docs,scripts/setup"
+      ]
+    },
+    {
+      "step": "04",
+      "title": "Write starter files",
+      "note": "Use the v120 export to create root, API, package, and workflow starter files.",
+      "tone": "blue",
+      "commands": [
+        "Use data/first-backend-file-content-export.json as the source of truth",
+        "Write each allFiles[].path with allFiles[].content",
+        "Do not write .env or any live secret file",
+        "Review generated files before first commit"
+      ]
+    },
+    {
+      "step": "05",
+      "title": "Create labels and milestones",
+      "note": "Backlog metadata should exist before issues are opened.",
+      "tone": "amber",
+      "commands": [
+        "gh label create area:backend --color 315f93 --description \"Backend platform work\"",
+        "gh label create area:security --color bf3f35 --description \"Auth, tenant, access, privacy, audit\"",
+        "gh label create priority:p0 --color bf3f35 --description \"Blocks alpha safety\"",
+        "gh api repos/dhirajnyse/pursuitdesk-platform/milestones -f title=\"M0 Repo opens\" -f state=open"
+      ]
+    },
+    {
+      "step": "06",
+      "title": "Install and first proof",
+      "note": "The first proof run should show script names and file boundaries before full backend depth exists.",
+      "tone": "green",
+      "commands": [
+        "corepack enable",
+        "pnpm install",
+        "pnpm lint",
+        "pnpm typecheck",
+        "pnpm test:contracts",
+        "pnpm test:route-envelopes",
+        "pnpm test:auth-tenant",
+        "pnpm ci:release-gate"
+      ]
+    },
+    {
+      "step": "07",
+      "title": "First commit and PR",
+      "note": "Commit the skeleton on develop and open the first PR to main with proof output attached.",
+      "tone": "blue",
+      "commands": [
+        "git add .",
+        "git commit -m \"Initialize PursuitDesk backend alpha shell\"",
+        "git push -u origin develop",
+        "gh pr create --base main --head develop --title \"Initialize backend alpha shell\" --body-file .github/pull_request_template.md"
+      ]
+    },
+    {
+      "step": "08",
+      "title": "Apply branch protection after CI names are visible",
+      "note": "Required checks should use exact GitHub Actions check names from the first workflow run.",
+      "tone": "red",
+      "commands": [
+        "Open repository Settings > Branches",
+        "Protect main and require pull request reviews",
+        "Require the successful checks mapped in v119",
+        "Block force pushes and deletions",
+        "Require staging environment approval before deployment workflows"
+      ]
+    }
+  ],
+  "firstProofRun": [
+    {
+      "label": "Install",
+      "command": "pnpm install",
+      "note": "Workspace installs from a clean clone.",
+      "tone": "green"
+    },
+    {
+      "label": "Static checks",
+      "command": "pnpm lint && pnpm typecheck",
+      "note": "Syntax, lint, and type contracts are visible early.",
+      "tone": "blue"
+    },
+    {
+      "label": "Route envelope",
+      "command": "pnpm test:route-envelopes",
+      "note": "Safe response shape, request id, and failure body are tested.",
+      "tone": "red"
+    },
+    {
+      "label": "Tenant access",
+      "command": "pnpm test:auth-tenant",
+      "note": "Company scope and role gates are tested before features deepen.",
+      "tone": "red"
+    },
+    {
+      "label": "Commercial privacy",
+      "command": "pnpm test:redaction",
+      "note": "Operational payloads do not leak commercial facts.",
+      "tone": "amber"
+    },
+    {
+      "label": "Audit boundary",
+      "command": "pnpm test:audit",
+      "note": "Allowed and denied actions can emit audit events.",
+      "tone": "teal"
+    },
+    {
+      "label": "Release gate",
+      "command": "pnpm ci:release-gate",
+      "note": "Branch protection proof has a single gate command.",
+      "tone": "green"
+    },
+    {
+      "label": "Smoke placeholder",
+      "command": "pnpm smoke:local",
+      "note": "Later staging smoke can attach to the same proof chain.",
+      "tone": "blue"
+    }
+  ],
+  "safetyGates": [
+    {
+      "label": "Do not create live production secrets",
+      "note": "Use test or staging placeholder names until hosting and billing providers are chosen.",
+      "tone": "red"
+    },
+    {
+      "label": "Do not protect main too early",
+      "note": "Run the first workflow once, capture exact check names, then apply protection.",
+      "tone": "amber"
+    },
+    {
+      "label": "Do not open issues before labels",
+      "note": "Create labels and milestones first so imported issues are searchable from day one.",
+      "tone": "blue"
+    },
+    {
+      "label": "Do not mix demo and backend repos",
+      "note": "The public tendergrid repo remains static; production backend code belongs in pursuitdesk-platform.",
+      "tone": "red"
+    },
+    {
+      "label": "Do not start feature depth first",
+      "note": "First commit proves repo shell, tenant, request id, safe errors, audit, redaction, and CI names.",
+      "tone": "green"
+    },
+    {
+      "label": "Do not paste private keys into JSON",
+      "note": "The downloadable handoff names secret slots but never contains real values.",
+      "tone": "red"
+    },
+    {
+      "label": "Do not skip the PR template",
+      "note": "The first PR should already ask for issue links, proof, release notes, and rollback notes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Do not force branch rules manually blind",
+      "note": "Branch protection follows the v119 checklist and exact status checks after CI exists.",
+      "tone": "blue"
+    }
+  ],
+  "acceptanceChecks": [
+    "Script inventory ready: 8 setup script or guide files define the private repo bootstrap pack.",
+    "Command order ready: 8 command blocks cover preflight through branch protection.",
+    "Folder skeleton ready: 12 folders map directly to v120 starter file paths.",
+    "Metadata ready: labels and milestones are available from the repo creation guide.",
+    "Issue path ready: generated backend issue bodies can be opened after metadata exists.",
+    "Secrets stay manual: secret names are documented without storing values.",
+    "Proof path ready: first-run commands define early engineering proof.",
+    "Protection timing clear: branch rules wait until workflow check names are visible."
+  ],
+  "handoff": [
+    "v121 turns the file-content export into a practical private repo setup script draft.",
+    "The setup remains deliberately cautious: create the private repo, create folders, write starter files, create labels and milestones, run proof commands, open the first PR, and only then apply branch protection.",
+    "Real secret values stay outside the export. The script only names secret slots so deployment setup remains controlled.",
+    "v122 can now generate a richer GitHub labels and milestones import pack so backlog setup becomes even more automatic."
+  ]
+}

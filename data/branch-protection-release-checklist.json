@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "pursuitdesk.branchProtectionReleaseChecklist.v119",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "purpose": "Translate the CI workflow blueprint and backend issue backlog into GitHub branch protection, required checks, protected environments, release proof, and rollback rules for the future private backend repository.",
+  "releaseChecklistScore": 95,
+  "protectedBranches": [
+    {
+      "branch": "main",
+      "rule": "Require pull request review",
+      "requiredChecks": ["ci.yml", "security-audit.yml", "migration-restore.yml", "billing-testmode.yml", "release-gate.yml"],
+      "decision": "No direct push, no force push, owner approval before production release.",
+      "tone": "red"
+    },
+    {
+      "branch": "develop",
+      "rule": "Require primary CI",
+      "requiredChecks": ["ci.yml", "security-audit.yml"],
+      "decision": "Feature integration only after lint, typecheck, route envelopes, auth tenant, and redaction proof.",
+      "tone": "blue"
+    },
+    {
+      "branch": "release/*",
+      "rule": "Require staging smoke",
+      "requiredChecks": ["staging-smoke.yml", "release-gate.yml"],
+      "decision": "Release branches need staging rehearsal, artifacts, and owner go/no-go decision.",
+      "tone": "teal"
+    },
+    {
+      "branch": "hotfix/*",
+      "rule": "Require security audit",
+      "requiredChecks": ["ci.yml", "security-audit.yml", "release-gate.yml"],
+      "decision": "Emergency fixes still need tenant, access, commercial redaction, and audit proof.",
+      "tone": "red"
+    },
+    {
+      "branch": "all protected",
+      "rule": "Block force pushes",
+      "requiredChecks": ["branch history"],
+      "decision": "Preserve audit traceability, release evidence, and rollback confidence.",
+      "tone": "green"
+    },
+    {
+      "branch": "all protected",
+      "rule": "Dismiss stale reviews",
+      "requiredChecks": ["changed files"],
+      "decision": "Require fresh review after new commits change protected files.",
+      "tone": "amber"
+    },
+    {
+      "branch": "all protected",
+      "rule": "Require conversation resolution",
+      "requiredChecks": ["review threads"],
+      "decision": "No merge while release blockers or security questions are unresolved.",
+      "tone": "blue"
+    },
+    {
+      "branch": "all protected",
+      "rule": "Prefer signed commits",
+      "requiredChecks": ["commit provenance"],
+      "decision": "Use verified history when production backend work begins.",
+      "tone": "green"
+    }
+  ],
+  "requiredStatusChecks": [
+    { "check": "install", "workflow": "ci.yml", "command": "pnpm install --frozen-lockfile", "artifact": "node_modules cache", "tone": "green" },
+    { "check": "lint", "workflow": "ci.yml", "command": "pnpm lint", "artifact": "lint-report.txt", "tone": "blue" },
+    { "check": "typecheck", "workflow": "ci.yml", "command": "pnpm typecheck", "artifact": "typecheck-report.txt", "tone": "blue" },
+    { "check": "contracts", "workflow": "ci.yml", "command": "pnpm test:contracts", "artifact": "junit-contracts.xml", "tone": "teal" },
+    { "check": "route-envelopes", "workflow": "ci.yml", "command": "pnpm test:route-envelopes", "artifact": "route-envelope-coverage.json", "tone": "red" },
+    { "check": "auth-tenant", "workflow": "security-audit.yml", "command": "pnpm test:auth-tenant", "artifact": "tenant-isolation-proof.json", "tone": "red" },
+    { "check": "redaction", "workflow": "security-audit.yml", "command": "pnpm test:redaction", "artifact": "redaction-proof.json", "tone": "amber" },
+    { "check": "audit", "workflow": "security-audit.yml", "command": "pnpm test:audit", "artifact": "audit-event-proof.json", "tone": "teal" },
+    { "check": "migration-restore", "workflow": "migration-restore.yml", "command": "pnpm db:migrate:test && pnpm db:seed:test", "artifact": "migration-restore-proof.json", "tone": "blue" },
+    { "check": "billing-testmode", "workflow": "billing-testmode.yml", "command": "pnpm test:billing-testmode", "artifact": "billing-proof.json", "tone": "amber" },
+    { "check": "import-dryrun", "workflow": "import-dryrun.yml", "command": "pnpm test:import-dryrun", "artifact": "import-dryrun-proof.json", "tone": "blue" },
+    { "check": "release-gate", "workflow": "release-gate.yml", "command": "pnpm ci:release-gate", "artifact": "release-gate-summary.md", "tone": "green" }
+  ],
+  "environmentGates": [
+    { "environment": "Preview branch", "approval": "Automatic", "note": "Safe UI and API preview for feature branches, no customer data.", "tone": "green" },
+    { "environment": "Staging alpha", "approval": "Manual approval", "note": "Protected test tenant, scoped secrets, smoke report, and owner go/no-go.", "tone": "red" },
+    { "environment": "Staging data", "approval": "Manual approval", "note": "Migration fixtures only after import dry run, restore proof, and redaction checks.", "tone": "blue" },
+    { "environment": "Billing test mode", "approval": "Manual approval", "note": "Checkout, invoices, webhooks, and seat sync run with test keys only.", "tone": "amber" },
+    { "environment": "Audit export", "approval": "Manual approval", "note": "Restricted evidence export requires governance owner signoff.", "tone": "teal" },
+    { "environment": "Production lock", "approval": "Admin approval", "note": "No production deploy until release summary, rollback plan, and sponsor decision exist.", "tone": "red" }
+  ],
+  "reviewOwnership": [
+    { "owner": "Platform Owner", "scope": "Repo shell, workflow files, protected branch setup, environment rules.", "tone": "green" },
+    { "owner": "Backend Lead", "scope": "API shell, routes, services, validators, command bindings.", "tone": "teal" },
+    { "owner": "Security Owner", "scope": "Tenant isolation, access denial, commercial redaction, safe errors.", "tone": "red" },
+    { "owner": "Database Owner", "scope": "Migrations, seeds, rollback, restore, count parity.", "tone": "blue" },
+    { "owner": "Migration Owner", "scope": "Import dry run, quarantine, source trace, reconciliation.", "tone": "blue" },
+    { "owner": "Billing Owner", "scope": "USD plan, test checkout, invoice lifecycle, webhook proof.", "tone": "amber" },
+    { "owner": "QA Owner", "scope": "Staging smoke, acceptance proof, release artifact review.", "tone": "green" },
+    { "owner": "Product Owner", "scope": "Scope, non-goals, go/no-go, pilot handoff, release note.", "tone": "teal" }
+  ],
+  "artifactRetention": [
+    { "artifact": "ci-summary.json", "area": "Primary CI", "retention": "7 days", "note": "Status, duration, commit, PR, branch, and required-check list.", "tone": "green" },
+    { "artifact": "junit-contracts.xml", "area": "API contracts", "retention": "7 days", "note": "Route groups and contract behavior.", "tone": "teal" },
+    { "artifact": "route-envelope-coverage.json", "area": "Error and audit routes", "retention": "7 days", "note": "Route envelope bindings.", "tone": "red" },
+    { "artifact": "audit-event-proof.json", "area": "Audit proof", "retention": "14 days", "note": "Allowed, denied, and system events.", "tone": "teal" },
+    { "artifact": "denial-proof.json", "area": "Denied access", "retention": "14 days", "note": "Denial cases protect tenant and commercial privacy.", "tone": "red" },
+    { "artifact": "redaction-proof.json", "area": "Commercial privacy", "retention": "7 days", "note": "Tracker list, detail, CSV, and search endpoints exclude restricted fields.", "tone": "amber" },
+    { "artifact": "migration-restore-proof.json", "area": "Data safety", "retention": "7 days", "note": "Migration files, rollback, restore, and count parity.", "tone": "blue" },
+    { "artifact": "billing-testmode-proof.json", "area": "Billing safety", "retention": "7 days", "note": "Webhook idempotency, invoice state, subscription sync, and seat locks.", "tone": "amber" },
+    { "artifact": "staging-smoke-report.json", "area": "Staging rehearsal", "retention": "30 days", "note": "Critical user paths, role checks, rollback proof, and report export.", "tone": "teal" },
+    { "artifact": "release-gate-summary.md", "area": "Management release note", "retention": "30 days", "note": "Required checks, blockers, owners, artifacts, and go/no-go decision.", "tone": "green" }
+  ],
+  "issueToCheckMap": [
+    { "id": "PD-BE-001", "title": "Create private repo shell and first proof docs", "requiredProof": "install, lint, typecheck", "milestone": "M0 Repo shell" },
+    { "id": "PD-BE-002", "title": "Boot API shell with request id and health route", "requiredProof": "contracts, route-envelopes", "milestone": "M1 API and privacy core" },
+    { "id": "PD-BE-003", "title": "Implement safe error envelope middleware", "requiredProof": "route-envelopes, audit", "milestone": "M1 API and privacy core" },
+    { "id": "PD-BE-004", "title": "Implement tenant scope and section access guard", "requiredProof": "auth-tenant, redaction", "milestone": "M1 API and privacy core" },
+    { "id": "PD-BE-005", "title": "Create audit context and append-only audit writer", "requiredProof": "audit, auth-tenant", "milestone": "M1 API and privacy core" },
+    { "id": "PD-BE-006", "title": "Create database migrations and seed runner", "requiredProof": "migration-restore", "milestone": "M2 Data and fixtures" },
+    { "id": "PD-BE-007", "title": "Create workbook import dry-run and quarantine flow", "requiredProof": "import-dryrun, migration-restore", "milestone": "M2 Data and fixtures" },
+    { "id": "PD-BE-008", "title": "Create billing test-mode shell", "requiredProof": "billing-testmode, audit", "milestone": "M2 Data and fixtures" },
+    { "id": "PD-BE-009", "title": "Create report and weekly pack service boundary", "requiredProof": "contracts, audit", "milestone": "M2-M3" },
+    { "id": "PD-BE-010", "title": "Create GitHub Actions workflow files and command bindings", "requiredProof": "all primary CI checks", "milestone": "M3 Workflow proof" },
+    { "id": "PD-BE-011", "title": "Document branch protection and release ritual", "requiredProof": "branch rules, release-gate", "milestone": "M4 Staging alpha gate" },
+    { "id": "PD-BE-012", "title": "Create first staging smoke and alpha handoff proof", "requiredProof": "staging-smoke, release-gate", "milestone": "M4 Staging alpha gate" }
+  ],
+  "releaseRitual": [
+    { "step": "01", "title": "Open PR from feature branch", "note": "PR template links issue, scope, proof commands, migrations, rollback, and affected rooms.", "tone": "green" },
+    { "step": "02", "title": "Run required checks", "note": "Primary CI, security audit, migration restore, billing test mode, import dry run, and release gate must pass.", "tone": "red" },
+    { "step": "03", "title": "Attach artifacts", "note": "Route envelope, tenant proof, redaction proof, migration proof, billing proof, and release summary are visible.", "tone": "blue" },
+    { "step": "04", "title": "Review protected data", "note": "Security owner confirms tracker payloads stay commercial-safe and denied routes audit correctly.", "tone": "red" },
+    { "step": "05", "title": "Approve staging", "note": "Staging alpha environment needs manual approval and scoped test secrets.", "tone": "amber" },
+    { "step": "06", "title": "Run smoke rehearsal", "note": "Login, records, redaction, import, billing, feedback, audit, reports, and rollback proof run on seed data.", "tone": "teal" },
+    { "step": "07", "title": "Record go/no-go", "note": "Product owner and platform owner sign the release summary before merge.", "tone": "green" },
+    { "step": "08", "title": "Tag handoff", "note": "Release note, rollback point, issue links, artifacts, and next defects are stored before the next sprint.", "tone": "blue" }
+  ],
+  "rollbackPlaybook": [
+    { "title": "Identify bad commit", "note": "Use release-gate-summary.md, PR id, and workflow run id to identify the exact deploy candidate.", "tone": "red" },
+    { "title": "Freeze new merges", "note": "Pause merge queue and block production environment while impact is assessed.", "tone": "amber" },
+    { "title": "Restore previous artifact", "note": "Redeploy the last passing build or revert the exact PR after owner approval.", "tone": "blue" },
+    { "title": "Run smoke subset", "note": "Health, login, records, commercial denial, audit write, and report export must pass after rollback.", "tone": "red" },
+    { "title": "Check migration state", "note": "If schema changed, run rollback or forward-fix with restore proof and count parity.", "tone": "blue" },
+    { "title": "Confirm billing mode", "note": "Make sure no live billing event replayed during rollback or staging rehearsal.", "tone": "amber" },
+    { "title": "Write incident note", "note": "Audit the decision, actor, reason, affected rooms, and next corrective issue.", "tone": "teal" },
+    { "title": "Reopen release gate", "note": "Only retry after failed check has a linked issue and fresh artifact proof.", "tone": "green" }
+  ],
+  "setupChecklist": [
+    { "label": "Create protected branches", "note": "main, develop, release/*, and hotfix/* branch rules are defined.", "tone": "red" },
+    { "label": "Add required checks", "note": "12 checks are selected exactly as workflow job names appear.", "tone": "red" },
+    { "label": "Disable force pushes", "note": "Protected branch history remains auditable.", "tone": "green" },
+    { "label": "Require PR review", "note": "At least one owner review before merge to main or release branch.", "tone": "teal" },
+    { "label": "Require conversation resolution", "note": "Unresolved review threads block merge.", "tone": "blue" },
+    { "label": "Configure environments", "note": "6 protected environments have approvers and scoped secrets.", "tone": "amber" },
+    { "label": "Add CODEOWNERS", "note": "8 owner lanes are named before coding starts.", "tone": "green" },
+    { "label": "Set artifact retention", "note": "10 critical artifacts have retention expectations.", "tone": "blue" },
+    { "label": "Document release ritual", "note": "8 release steps are written into docs/release-runbook.md.", "tone": "teal" },
+    { "label": "Document rollback", "note": "8 rollback moves are ready before staging alpha.", "tone": "red" }
+  ],
+  "acceptanceChecks": [
+    { "label": "Branch rules complete", "note": "8 branch rules cover main, develop, release, hotfix, and all protected branch behavior.", "tone": "red" },
+    { "label": "Status checks complete", "note": "12 required checks cover install, lint, contracts, privacy, data, billing, import, and release.", "tone": "green" },
+    { "label": "Environment gates complete", "note": "6 environment gates separate preview, staging, billing, audit, and production movement.", "tone": "amber" },
+    { "label": "Owners complete", "note": "8 review owners make the merge path visible before backend coding starts.", "tone": "teal" },
+    { "label": "Artifacts complete", "note": "10 artifacts define the proof expected from CI and staging.", "tone": "blue" },
+    { "label": "Issues linked", "note": "12 copy-ready backend issues are mapped to required checks.", "tone": "green" },
+    { "label": "Rollback ready", "note": "8 rollback steps are documented before real data enters staging.", "tone": "red" },
+    { "label": "Next handoff ready", "note": "v120 can generate paste-ready file contents after the repo protection contract is understood.", "tone": "blue" }
+  ]
+}

@@ -1,0 +1,410 @@
+{
+  "schemaVersion": "pursuitdesk.firstBackendPrReviewCommentPack.v140",
+  "product": "PursuitDesk",
+  "company": "Capsa Engineering & Contracting LLC",
+  "build": {
+    "version": "v140",
+    "name": "First Backend PR Review Comment Pack",
+    "date": "2026-05-15",
+    "status": "Static GitHub Pages prototype",
+    "firstBackendPrCommentScore": 95
+  },
+  "generatedFor": "Controlled first private backend PR review",
+  "reviewCommentKpis": [
+    {
+      "label": "Comment pack",
+      "value": "95%",
+      "note": "Readiness to paste controlled GitHub review language into the first backend PR.",
+      "tone": "green"
+    },
+    {
+      "label": "Review actions",
+      "value": 8,
+      "note": "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Reviewer packets",
+      "value": 6,
+      "note": "Lane-specific reviewer instructions for product, platform, backend, security, data, and release.",
+      "tone": "blue"
+    },
+    {
+      "label": "Inline snippets",
+      "value": 8,
+      "note": "File-scoped review notes for middleware, routes, workflows, and evidence files.",
+      "tone": "amber"
+    }
+  ],
+  "reviewCommentLibrary": [
+    {
+      "label": "Opening review note",
+      "surface": "PR conversation",
+      "action": "COMMENT",
+      "comment": "Starting controlled review. I am checking private repo visibility, no-live-data boundary, issue trace, evidence links, branch protection proof, no-secret proof, rollback, and closeout owner before any approval.",
+      "tone": "blue"
+    },
+    {
+      "label": "Approve lane",
+      "surface": "Formal review",
+      "action": "APPROVE",
+      "comment": "Approved for my lane. Evidence is linked, issue trace is visible, rollback is clear, and no-live-data/no-secret/no-commercial-export boundaries are preserved.",
+      "tone": "green"
+    },
+    {
+      "label": "Evidence hold",
+      "surface": "PR conversation",
+      "action": "COMMENT",
+      "comment": "Holding approval until the named evidence file, command output, screenshot, workflow name, issue URL, or owner response is complete and linked in the PR body.",
+      "tone": "amber"
+    },
+    {
+      "label": "Request changes",
+      "surface": "Formal review",
+      "action": "REQUEST_CHANGES",
+      "comment": "Requesting changes because a trust blocker is present or unresolved: public visibility, secret, workbook, commercial leak, no rollback, unsafe branch posture, missing owner, or missing proof.",
+      "tone": "red"
+    },
+    {
+      "label": "No-leak signoff",
+      "surface": "Security note",
+      "action": "COMMENT",
+      "comment": "No-leak signoff: no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.",
+      "tone": "red"
+    },
+    {
+      "label": "Deferred proof",
+      "surface": "PR conversation",
+      "action": "COMMENT",
+      "comment": "Deferred proof is acceptable only when the blocker note names the missing proof, owner, reason, target date, and next command or screenshot needed to close it.",
+      "tone": "blue"
+    },
+    {
+      "label": "Branch protection hold",
+      "surface": "PR conversation",
+      "action": "COMMENT",
+      "comment": "Holding branch-protection approval until the exact GitHub Actions check names are known from a real workflow run. Required checks must not be guessed.",
+      "tone": "amber"
+    },
+    {
+      "label": "Merge closeout",
+      "surface": "PR closeout",
+      "action": "COMMENT",
+      "comment": "Merge can proceed only after all reviewer lanes are green, required checks are exact, branch protection is documented, no-leak proof is linked, rollback is written, and next owner is named.",
+      "tone": "teal"
+    }
+  ],
+  "reviewerCommentPackets": [
+    {
+      "owner": "Founder / Product",
+      "scope": "Scope owner",
+      "comment": "Reviewer lane: Founder / Product\nScope: Scope owner\nDefault action: COMMENT until evidence is linked.\nApprove only for product scope, no-live-data boundary, first PR intent, issue trace, rollback, and next owner visibility.\nHold with a named owner and proof file when evidence is incomplete.\nRequest changes for trust blockers.",
+      "tone": "green"
+    },
+    {
+      "owner": "Platform owner",
+      "scope": "Repo owner",
+      "comment": "Reviewer lane: Platform owner\nScope: Repo owner\nDefault action: COMMENT until evidence is linked.\nApprove only after private visibility, workflow names, branch discipline, branch protection timing, and rollback are visible.\nHold if check names are guessed or repo proof is missing.\nRequest changes for public visibility or direct main push.",
+      "tone": "teal"
+    },
+    {
+      "owner": "Backend lead",
+      "scope": "Code owner",
+      "comment": "Reviewer lane: Backend lead\nScope: Code owner\nDefault action: COMMENT until evidence is linked.\nApprove only after folder shell, API starter files, package boundaries, commands, tests, and transcript proof are visible.\nHold if implementation proof is placeholder-only.\nRequest changes for unsafe route or missing guard structure.",
+      "tone": "blue"
+    },
+    {
+      "owner": "Security owner",
+      "scope": "Control owner",
+      "comment": "Reviewer lane: Security owner\nScope: Control owner\nDefault action: COMMENT until evidence is linked.\nApprove only after no-secret proof, tenant guard, commercial privacy, denied-audit proof, and no-workbook boundary are visible.\nRequest changes for any credential, workbook, public repo, or commercial leakage.",
+      "tone": "red"
+    },
+    {
+      "owner": "Data owner",
+      "scope": "Migration owner",
+      "comment": "Reviewer lane: Data owner\nScope: Migration owner\nDefault action: COMMENT until evidence is linked.\nApprove only after generated fixtures, source trace, rollback, import dry-run, quarantine, and no workbook import are visible.\nHold if fixture or migration evidence is incomplete.",
+      "tone": "amber"
+    },
+    {
+      "owner": "QA / Release",
+      "scope": "Release owner",
+      "comment": "Reviewer lane: QA / Release\nScope: Release owner\nDefault action: COMMENT until evidence is linked.\nApprove only after evidence files, screenshots, workflow proof, branch rules, closeout readiness, and next owner are visible.\nHold if closeout is missing or checks are not exact.",
+      "tone": "green"
+    }
+  ],
+  "inlineCommentSnippets": [
+    {
+      "file": "apps/api/src/middleware/tenantGuard.ts",
+      "title": "Tenant guard",
+      "action": "REQUEST_CHANGES",
+      "comment": "Please link or implement tenant isolation proof before this route can be considered review-ready.",
+      "tone": "red"
+    },
+    {
+      "file": "apps/api/src/middleware/auditEnvelope.ts",
+      "title": "Audit envelope",
+      "action": "COMMENT",
+      "comment": "Please confirm request id, actor, tenant id, action, resource id, and denial reason are captured without leaking sensitive payload data.",
+      "tone": "blue"
+    },
+    {
+      "file": "apps/api/src/routes/records.ts",
+      "title": "Operational records",
+      "action": "COMMENT",
+      "comment": "Please confirm this endpoint only exposes tracker fields and does not return value, LOA, agreement, invoice, billing, or negotiation fields.",
+      "tone": "amber"
+    },
+    {
+      "file": "apps/api/src/routes/commercialVault.ts",
+      "title": "Commercial vault",
+      "action": "REQUEST_CHANGES",
+      "comment": "Commercial vault access needs admin/commercial permission proof and denied-audit proof before approval.",
+      "tone": "red"
+    },
+    {
+      "file": "apps/api/src/routes/import.ts",
+      "title": "Import route",
+      "action": "COMMENT",
+      "comment": "Please link import dry-run, quarantine, duplicate detection, and commit gate evidence before review leaves draft.",
+      "tone": "blue"
+    },
+    {
+      "file": ".github/workflows/ci.yml",
+      "title": "Workflow checks",
+      "action": "COMMENT",
+      "comment": "Required check names should come from the first real Actions run; branch protection should wait until those names are exact.",
+      "tone": "amber"
+    },
+    {
+      "file": "docs/evidence/no-secret-proof.md",
+      "title": "No-secret proof",
+      "action": "APPROVE",
+      "comment": "No-secret proof is acceptable for my lane when it shows no tokens, certificates, keys, or live credentials were committed.",
+      "tone": "green"
+    },
+    {
+      "file": "docs/evidence/rollback-note.md",
+      "title": "Rollback note",
+      "action": "COMMENT",
+      "comment": "Please confirm rollback names the branch, PR, repo recreation path, credential rotation path, and next owner.",
+      "tone": "teal"
+    }
+  ],
+  "reviewDecisionBoard": [
+    {
+      "label": "Draft comment",
+      "action": "COMMENT",
+      "note": "Use while proof files, issue URLs, workflow names, or owner replies are still pending.",
+      "tone": "amber"
+    },
+    {
+      "label": "Lane approval",
+      "action": "APPROVE",
+      "note": "Use only for the reviewer lane that has full proof and no unresolved blockers.",
+      "tone": "green"
+    },
+    {
+      "label": "Evidence hold",
+      "action": "COMMENT",
+      "note": "Use when the direction is acceptable but the evidence is not yet complete.",
+      "tone": "blue"
+    },
+    {
+      "label": "Trust blocker",
+      "action": "REQUEST_CHANGES",
+      "note": "Use when public visibility, secret movement, workbook leakage, commercial leakage, missing rollback, or unsafe branch posture appears.",
+      "tone": "red"
+    },
+    {
+      "label": "No-leak signoff",
+      "action": "COMMENT",
+      "note": "Use to document that sensitive data boundaries are preserved.",
+      "tone": "teal"
+    },
+    {
+      "label": "Merge closeout",
+      "action": "COMMENT",
+      "note": "Use immediately before merge readiness or before closing the PR as held.",
+      "tone": "green"
+    }
+  ],
+  "reviewSendChecklist": [
+    {
+      "label": "PR URL real",
+      "note": "Do not paste final review text until the real private PR URL exists.",
+      "tone": "red"
+    },
+    {
+      "label": "Reviewer lane chosen",
+      "note": "Six reviewer lanes are available for lane-specific comments.",
+      "tone": "green"
+    },
+    {
+      "label": "Action type selected",
+      "note": "COMMENT, APPROVE, or REQUEST_CHANGES is chosen before pasting.",
+      "tone": "teal"
+    },
+    {
+      "label": "Evidence linked",
+      "note": "Evidence rows can be referenced by the review note.",
+      "tone": "blue"
+    },
+    {
+      "label": "Holds named",
+      "note": "Hold reasons name what is missing before approval.",
+      "tone": "amber"
+    },
+    {
+      "label": "Blocks named",
+      "note": "Trust blockers have request-changes language.",
+      "tone": "red"
+    },
+    {
+      "label": "Merge checklist checked",
+      "note": "Merge checks keep the first backend PR controlled.",
+      "tone": "green"
+    },
+    {
+      "label": "No leak repeated",
+      "note": "Every formal approval repeats no workbook, no secret, no billing, and no commercial export boundaries.",
+      "tone": "red"
+    }
+  ],
+  "replyHandlingCadence": [
+    {
+      "reply": "Reviewer replies Go",
+      "action": "Mark lane green",
+      "note": "Confirm lane scope, proof link, and next owner before treating it as approval.",
+      "tone": "green"
+    },
+    {
+      "reply": "Reviewer replies Hold",
+      "action": "Keep PR draft",
+      "note": "Add missing proof, owner, date, and next command to the hold queue.",
+      "tone": "amber"
+    },
+    {
+      "reply": "Reviewer requests changes",
+      "action": "Stop merge path",
+      "note": "Resolve blocker and update no-leak, rollback, or branch proof before asking again.",
+      "tone": "red"
+    },
+    {
+      "reply": "Reviewer defers",
+      "action": "Capture reason",
+      "note": "Record deferred owner, date, proof path, and next meeting or command.",
+      "tone": "blue"
+    },
+    {
+      "reply": "All lanes green",
+      "action": "Run closeout",
+      "note": "Confirm exact checks, branch protection, issue trace, no-leak proof, rollback, and next owner.",
+      "tone": "teal"
+    },
+    {
+      "reply": "Any lane red",
+      "action": "Do not merge",
+      "note": "Close or keep draft until blocker is removed and documented.",
+      "tone": "red"
+    }
+  ],
+  "sourceLocks": [
+    {
+      "label": "Repo URL missing",
+      "action": "Hold review",
+      "note": "Private repo URL and visibility proof must be pasted before review starts.",
+      "tone": "red"
+    },
+    {
+      "label": "Issue URLs missing",
+      "action": "Hold review",
+      "note": "Generated issue links must replace placeholders in the first PR body.",
+      "tone": "teal"
+    },
+    {
+      "label": "Evidence placeholder only",
+      "action": "Hold review",
+      "note": "Placeholder evidence is allowed in draft, but must be explicit before review.",
+      "tone": "amber"
+    },
+    {
+      "label": "Workflow names pending",
+      "action": "Hold branch protection",
+      "note": "Required check names cannot be guessed before the first Actions run.",
+      "tone": "blue"
+    },
+    {
+      "label": "Public repository",
+      "action": "Block immediately",
+      "note": "No production backend work can proceed in a public repo.",
+      "tone": "red"
+    },
+    {
+      "label": "Secret or credential",
+      "action": "Block and rotate",
+      "note": "Any secret, token, certificate, or live key requires removal and rotation review.",
+      "tone": "red"
+    },
+    {
+      "label": "Customer workbook",
+      "action": "Block and restart",
+      "note": "Live Excel source data cannot enter the production backend repo.",
+      "tone": "red"
+    },
+    {
+      "label": "No owner accountability",
+      "action": "Block review",
+      "note": "Reviewer lane, next owner, and closeout owner must be named.",
+      "tone": "teal"
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "label": "Comment library ready",
+      "note": "Eight copy-ready GitHub review comments are prepared.",
+      "tone": "green"
+    },
+    {
+      "label": "Reviewer packets ready",
+      "note": "Six reviewer-specific packets can be pasted into PR threads.",
+      "tone": "teal"
+    },
+    {
+      "label": "Inline snippets ready",
+      "note": "Eight file-scoped snippets guide line comments.",
+      "tone": "blue"
+    },
+    {
+      "label": "Decision board ready",
+      "note": "Six review actions separate comment, approval, hold, request changes, no-leak, and closeout.",
+      "tone": "amber"
+    },
+    {
+      "label": "Send checklist ready",
+      "note": "Eight checks prevent unsafe review submission.",
+      "tone": "red"
+    },
+    {
+      "label": "Reply handling ready",
+      "note": "Six reviewer reply outcomes are mapped.",
+      "tone": "green"
+    },
+    {
+      "label": "Review gate linked",
+      "note": "Decision gates feed the comment pack.",
+      "tone": "blue"
+    },
+    {
+      "label": "Next handoff ready",
+      "note": "v141 can close the evidence packet after the real PR review session.",
+      "tone": "teal"
+    }
+  ],
+  "copyReadyReviewText": "PursuitDesk first backend PR review pack\n\nOpening review note / PR conversation / COMMENT\nStarting controlled review. I am checking private repo visibility, no-live-data boundary, issue trace, evidence links, branch protection proof, no-secret proof, rollback, and closeout owner before any approval.\n\nApprove lane / Formal review / APPROVE\nApproved for my lane. Evidence is linked, issue trace is visible, rollback is clear, and no-live-data/no-secret/no-commercial-export boundaries are preserved.\n\nEvidence hold / PR conversation / COMMENT\nHolding approval until the named evidence file, command output, screenshot, workflow name, issue URL, or owner response is complete and linked in the PR body.\n\nRequest changes / Formal review / REQUEST_CHANGES\nRequesting changes because a trust blocker is present or unresolved: public visibility, secret, workbook, commercial leak, no rollback, unsafe branch posture, missing owner, or missing proof.\n\nNo-leak signoff / Security note / COMMENT\nNo-leak signoff: no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.\n\nDeferred proof / PR conversation / COMMENT\nDeferred proof is acceptable only when the blocker note names the missing proof, owner, reason, target date, and next command or screenshot needed to close it.\n\nBranch protection hold / PR conversation / COMMENT\nHolding branch-protection approval until the exact GitHub Actions check names are known from a real workflow run. Required checks must not be guessed.\n\nMerge closeout / PR closeout / COMMENT\nMerge can proceed only after all reviewer lanes are green, required checks are exact, branch protection is documented, no-leak proof is linked, rollback is written, and next owner is named.",
+  "handoff": [
+    "v140 turns the backend PR review gate matrix into copy-ready GitHub PR review comments.",
+    "The pack separates neutral comments, lane approvals, request-changes blockers, no-leak signoffs, evidence holds, branch-protection holds, and merge closeout language.",
+    "The static demo still cannot post to GitHub; it now gives the exact language to paste once the real private PR exists.",
+    "v141 can now prepare the private repo evidence closeout pack for passed, held, blocked, deferred, rollback, no-leak, and next-owner outcomes."
+  ]
+}

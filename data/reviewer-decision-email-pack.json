@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "pursuitdesk.reviewerDecisionEmailPack.v146",
+  "version": "v146",
+  "title": "Reviewer Decision Email Pack",
+  "reviewerDecisionEmailScore": 98,
+  "downloadHref": "data/reviewer-decision-email-pack.json?v=146",
+  "purpose": "Turn meeting minutes, reply states, review gates, and archive rules into targeted reviewer follow-up emails before the private backend repo closeout.",
+  "counts": {
+    "reviewerLanes": 8,
+    "decisionEmailTemplates": 8,
+    "responseTriggers": 8,
+    "sendChecklist": 8,
+    "escalationCadence": 6,
+    "privacyGuardrails": 8,
+    "managementSummaryBlocks": 6,
+    "acceptanceChecks": 8
+  },
+  "sourceReadiness": [
+    {
+      "source": "Backend Meeting Minutes Exporter",
+      "version": "v145",
+      "readiness": "Owner actions and decision rows feed reviewer emails."
+    },
+    {
+      "source": "Private Repo Reply Capture Board",
+      "version": "v143",
+      "readiness": "Reply states decide the email template."
+    },
+    {
+      "source": "Evidence Closeout PDF Export Plan",
+      "version": "v144",
+      "readiness": "Archive and redaction rules shape closeout language."
+    },
+    {
+      "source": "Backend PR Review Gate Matrix",
+      "version": "v137",
+      "readiness": "Reviewer gates define approval, hold, block, and merge-ready conditions."
+    }
+  ],
+  "reviewerLanes": [
+    {
+      "lane": "Product sponsor",
+      "decisionFocus": "Scope decision",
+      "emailIntent": "Approve, hold, defer, or reject alpha scope and management wording."
+    },
+    {
+      "lane": "Platform owner",
+      "decisionFocus": "Repo controls",
+      "emailIntent": "Confirm private repo, branch protection, required checks, protected environments, and rollback."
+    },
+    {
+      "lane": "Backend lead",
+      "decisionFocus": "Implementation path",
+      "emailIntent": "Confirm route shell, migrations, tests, command proof, unresolved holds, and next commit path."
+    },
+    {
+      "lane": "Security reviewer",
+      "decisionFocus": "Trust proof",
+      "emailIntent": "Confirm tenant guard, no-secret, no-workbook, commercial redaction, and denied audit proof."
+    },
+    {
+      "lane": "Data owner",
+      "decisionFocus": "Migration proof",
+      "emailIntent": "Confirm seed boundary, import dry-run, quarantine, duplicate handling, rollback, and reconciliation."
+    },
+    {
+      "lane": "QA / Release",
+      "decisionFocus": "Evidence package",
+      "emailIntent": "Confirm screenshots, transcripts, signoffs, issue URLs, PR notes, and archive naming."
+    },
+    {
+      "lane": "Billing owner",
+      "decisionFocus": "Commercial boundary",
+      "emailIntent": "Confirm test-mode billing, no invoice, no payment key, and no billing export."
+    },
+    {
+      "lane": "Meeting scribe",
+      "decisionFocus": "Closeout record",
+      "emailIntent": "Confirm minutes, decision register, open actions, follow-up cadence, and management email."
+    }
+  ],
+  "decisionEmailTemplates": [
+    {
+      "template": "Approval request",
+      "useWhen": "Reviewer lane needs a clear approve/comment/hold/request-changes state.",
+      "coreAsk": "Confirm evidence linked, no-leak statement accepted, and next owner clear."
+    },
+    {
+      "template": "Hold clarification",
+      "useWhen": "A hold exists without enough proof.",
+      "coreAsk": "Confirm missing proof, owner, target date, and next command."
+    },
+    {
+      "template": "Requested changes",
+      "useWhen": "A blocker stops merge or closeout.",
+      "coreAsk": "Confirm blocker, trust failure, required fix, evidence needed, and no-merge condition."
+    },
+    {
+      "template": "Deferred proof",
+      "useWhen": "Evidence can arrive later but needs formal ownership.",
+      "coreAsk": "Confirm reason for deferral, owner, date, expected artifact, and review checkpoint."
+    },
+    {
+      "template": "No response chase",
+      "useWhen": "Reviewer did not reply after minutes are published.",
+      "coreAsk": "Reply with approve, comment, hold, request changes, defer proof, block, or no-go."
+    },
+    {
+      "template": "Merge-readiness confirmation",
+      "useWhen": "All lane gates appear green.",
+      "coreAsk": "Confirm gates, evidence, redaction, rollback, and owner actions are closed."
+    },
+    {
+      "template": "Management summary",
+      "useWhen": "Sponsor needs a clean decision note.",
+      "coreAsk": "Review decision summary and owner queue before the sponsor note is sent."
+    },
+    {
+      "template": "Archive approval",
+      "useWhen": "Closeout packet needs distribution and retention signoff.",
+      "coreAsk": "Confirm filename, distribution, redaction, PR placeholder, owner, and retention rules."
+    }
+  ],
+  "responseTriggers": [
+    "Approval missing",
+    "Hold open",
+    "Requested changes open",
+    "Deferred proof aged",
+    "No response",
+    "Merge candidate",
+    "Archive candidate",
+    "Sponsor summary"
+  ],
+  "sendChecklist": [
+    "Recipient lane selected",
+    "Decision type selected",
+    "Evidence link present",
+    "Owner and due date present",
+    "No-leak statement present",
+    "Thread URL placeholder present",
+    "Action requested",
+    "Audit note queued"
+  ],
+  "privacyGuardrails": [
+    "No workbook attachment",
+    "No secrets",
+    "No invoice data",
+    "No commercial values",
+    "Private URL placeholder",
+    "Recipient access check",
+    "Audit event required",
+    "Internal operational email classification"
+  ],
+  "copyReadyReviewerEmailLines": [
+    "Subject: PursuitDesk reviewer decision needed - {lane} / {decision_state}",
+    "Hi {reviewer_name},",
+    "Please confirm your decision for the {lane} lane on the private backend repo review.",
+    "Requested reply state: Approve / Comment / Hold / Request changes / Defer proof / Block / No response / Merge-ready",
+    "Evidence link:",
+    "Thread link:",
+    "Owner:",
+    "Due date:",
+    "Next command:",
+    "No-leak statement: no workbook, production secret, payment key, invoice, billing export, or commercial tracker value is included in this request unless separately authorized.",
+    "Please reply with the exact state and any required evidence or blocker.",
+    "Regards,",
+    "PursuitDesk Admin"
+  ],
+  "copyReadyEscalationEmailLines": [
+    "Subject: PursuitDesk decision follow-up - open reviewer state",
+    "Hi {owner_name},",
+    "This reviewer lane still needs a decision before closeout can move forward.",
+    "Open state:",
+    "Lane:",
+    "Blocker or hold:",
+    "Evidence needed:",
+    "Target date:",
+    "Please update the reply capture board or confirm whether this should become deferred proof, requested changes, blocked, or approved.",
+    "Regards,",
+    "PursuitDesk Admin"
+  ],
+  "acceptanceChecks": [
+    "Reviewer lanes cover sponsor, platform, backend, security, data, QA, billing, and scribe.",
+    "Templates cover approval, hold, requested changes, deferral, no response, merge, summary, and archive.",
+    "Triggers decide which email is sent.",
+    "Send checklist prevents vague or unsafe emails.",
+    "Escalation cadence prevents silence after minutes.",
+    "Privacy guardrails prevent data leakage in reviewer emails.",
+    "Management summary explains the email posture.",
+    "Next handoff can track archive state and unresolved reply evidence gaps."
+  ],
+  "handoff": [
+    "v146 turns minutes, reply states, and review gates into targeted reviewer decision emails.",
+    "The pack separates approval requests, holds, requested changes, deferred proof, no-response chases, merge confirmation, management summary, and archive approval.",
+    "The static demo cannot send email or capture replies automatically; it defines the templates, triggers, privacy guardrails, and audit fields the backend must implement.",
+    "v147 can track which closeout packets, archive names, replies, and evidence gaps remain open after emails are sent."
+  ]
+}

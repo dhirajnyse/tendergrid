@@ -1,0 +1,358 @@
+{
+  "schemaVersion": "pursuitdesk.productionBackendRepoDecisionMemo.v125",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "purpose": "Approve the private production backend repository move without approving live SaaS launch.",
+  "approvalScore": 98,
+  "recommendedDecision": "Go for private repo creation, not live SaaS launch",
+  "memoSections": [
+    {
+      "label": "Decision requested",
+      "tone": "green",
+      "summary": "Approve creation of dhirajnyse/pursuitdesk-platform as the private production backend repo."
+    },
+    {
+      "label": "Why now",
+      "tone": "teal",
+      "summary": "Prototype has reached a stable SaaS blueprint with repo files, issues, QA gates, taxonomy, and opening-day sequence."
+    },
+    {
+      "label": "Decision type",
+      "tone": "red",
+      "summary": "Proceed with repo creation and first PR only; do not approve live customer data or paid billing yet."
+    },
+    {
+      "label": "Primary owner",
+      "tone": "blue",
+      "summary": "Founder or product owner signs the decision; platform owner executes repository opening day."
+    },
+    {
+      "label": "Decision window",
+      "tone": "amber",
+      "summary": "Approve when repo privacy, issue order, proof packet, no-secret rule, and branch protection timing are accepted."
+    },
+    {
+      "label": "Next milestone",
+      "tone": "green",
+      "summary": "First backend shell PR merged with evidence, not full SaaS launch."
+    }
+  ],
+  "approvalBasis": [
+    {
+      "label": "Product scope",
+      "tone": "green",
+      "basis": "PursuitDesk product direction, operational tracker split, commercial privacy rule, and module growth path are stable."
+    },
+    {
+      "label": "Backend plan",
+      "tone": "teal",
+      "basis": "API groups, route skeleton, migrations, auth guards, tenant boundaries, audit envelope, and CI jobs are mapped."
+    },
+    {
+      "label": "Repository pack",
+      "tone": "blue",
+      "basis": "Starter files, setup script, taxonomy import, first commit checklist, and opening-day runbook exist."
+    },
+    {
+      "label": "Governance",
+      "tone": "red",
+      "basis": "Branch protection timing, review owners, release ritual, rollback playbook, evidence artifacts, and no-go stops are mapped."
+    },
+    {
+      "label": "Backlog",
+      "tone": "amber",
+      "basis": "Copy-ready issues can seed M0/M1 work without inventing scope during the first repo day."
+    },
+    {
+      "label": "CI readiness",
+      "tone": "blue",
+      "basis": "Workflow shells are planned; exact required status check names wait for first GitHub Actions run."
+    }
+  ],
+  "scopeCutline": [
+    {
+      "status": "Approved",
+      "tone": "green",
+      "scope": "Create private repo, copy starter files, import labels/milestones, open foundation issues, run first proof, open first PR."
+    },
+    {
+      "status": "Approved",
+      "tone": "teal",
+      "scope": "Protect main after first workflow names are visible, not before."
+    },
+    {
+      "status": "Approved",
+      "tone": "blue",
+      "scope": "Use generated seed fixtures and demo tenant only for early backend proof."
+    },
+    {
+      "status": "Not approved",
+      "tone": "red",
+      "scope": "No live customer workbooks, secrets, production billing keys, or customer documents in the repo."
+    },
+    {
+      "status": "Not approved",
+      "tone": "red",
+      "scope": "No public repo, direct commits to main, or branch protection before required check names exist."
+    },
+    {
+      "status": "Not approved",
+      "tone": "amber",
+      "scope": "No live SaaS pilot until tenant access, redaction, audit, import rollback, backups, and billing test-mode checks are real."
+    }
+  ],
+  "evidenceReadiness": [
+    {
+      "label": "Opening day runbook",
+      "tone": "green",
+      "evidence": "Timed steps, commands, issue waves, evidence packets, owner checkpoints, gates, and no-go stops are mapped."
+    },
+    {
+      "label": "First commit QA",
+      "tone": "teal",
+      "evidence": "QA lanes, proof commands, reviewer checks, artifacts, role signoffs, and decision rules are mapped."
+    },
+    {
+      "label": "Setup script",
+      "tone": "blue",
+      "evidence": "Preflight, private repo creation, folder skeleton, first proof, first PR, and branch protection timing are mapped."
+    },
+    {
+      "label": "Branch protection",
+      "tone": "red",
+      "evidence": "Required checks, protected environments, owner reviews, artifacts, release ritual, and rollback playbook are mapped."
+    },
+    {
+      "label": "Issue import",
+      "tone": "amber",
+      "evidence": "Issue bodies include labels, milestones, acceptance checks, proof commands, and opening order."
+    },
+    {
+      "label": "CI blueprint",
+      "tone": "blue",
+      "evidence": "Workflow files map to quality, security, migration, billing, import, staging, release, and dependency checks."
+    }
+  ],
+  "decisionOptions": [
+    {
+      "option": "Go",
+      "decision": "Create repo and run v124 opening-day sequence",
+      "tone": "green",
+      "whenToUse": "Recommended if the owner accepts no-live-data and PR-first controls."
+    },
+    {
+      "option": "Conditional go",
+      "decision": "Create repo but pause issue import",
+      "tone": "amber",
+      "whenToUse": "Use if GitHub access or taxonomy ownership still needs confirmation."
+    },
+    {
+      "option": "Hold",
+      "decision": "Do not create repo yet",
+      "tone": "red",
+      "whenToUse": "Use if privacy, ownership, or proof expectations are not accepted."
+    },
+    {
+      "option": "No-go",
+      "decision": "Stop production backend move",
+      "tone": "red",
+      "whenToUse": "Use if live secrets/data, public repo risk, or owner ambiguity cannot be removed."
+    }
+  ],
+  "blockerRegister": [
+    {
+      "label": "Repo absent",
+      "tone": "red",
+      "blocker": "Private production repository has not been created yet."
+    },
+    {
+      "label": "No first PR evidence",
+      "tone": "amber",
+      "blocker": "The first proof outputs and release-gate summary do not exist until the repo is opened."
+    },
+    {
+      "label": "Branch rules pending",
+      "tone": "blue",
+      "blocker": "Protected branch rules wait for exact workflow check names after the first CI run."
+    },
+    {
+      "label": "No live staging",
+      "tone": "red",
+      "blocker": "Staging environment, secrets, database, monitoring, and backups are still planned, not real."
+    },
+    {
+      "label": "Billing not live",
+      "tone": "amber",
+      "blocker": "USD pricing and billing tests are mapped, but payment processor checkout is not implemented."
+    },
+    {
+      "label": "Data import not real",
+      "tone": "blue",
+      "blocker": "Workbook migration and importer rollback remain modeled until backend code exists."
+    },
+    {
+      "label": "Customer success not persistent",
+      "tone": "teal",
+      "blocker": "Pilot feedback, onboarding, and support workflows still need backend persistence."
+    },
+    {
+      "label": "Decision not signed",
+      "tone": "red",
+      "blocker": "Owner approval, execution owner, and no-go authority must be explicitly accepted."
+    }
+  ],
+  "approvalChecklist": [
+    {
+      "label": "Repo identity",
+      "tone": "green",
+      "check": "Name, owner, visibility, local path, and private status confirmed."
+    },
+    {
+      "label": "Scope cutline",
+      "tone": "red",
+      "check": "Approved and not-approved items accepted before any repo action."
+    },
+    {
+      "label": "No-secret rule",
+      "tone": "red",
+      "check": "No .env, live keys, customer files, or unrestricted commercial values are committed."
+    },
+    {
+      "label": "Issue order",
+      "tone": "amber",
+      "check": "M0/M1 opening waves keep repo shell, API boot, security, data, and CI first."
+    },
+    {
+      "label": "Proof packet",
+      "tone": "blue",
+      "check": "Evidence files are named before first PR is opened."
+    },
+    {
+      "label": "Reviewers",
+      "tone": "teal",
+      "check": "Platform, backend, security, data, governance, and QA signoff lanes are accepted."
+    },
+    {
+      "label": "Branch timing",
+      "tone": "red",
+      "check": "Main protection waits until GitHub check names are visible."
+    },
+    {
+      "label": "Exit rule",
+      "tone": "green",
+      "check": "Live customer data remains blocked until tenant, access, redaction, audit, rollback, backup, and billing checks are real."
+    }
+  ],
+  "nextActions": [
+    {
+      "label": "Approve memo",
+      "tone": "green",
+      "action": "Founder or product owner confirms decision option and scope cutline."
+    },
+    {
+      "label": "Prepare repo day",
+      "tone": "teal",
+      "action": "Platform owner prepares local folder, GitHub CLI, starter file export, taxonomy JSON, and issue bodies."
+    },
+    {
+      "label": "Create repo",
+      "tone": "red",
+      "action": "Execute opening-day runbook with repo-created and taxonomy-import evidence packets."
+    },
+    {
+      "label": "Open first PR",
+      "tone": "blue",
+      "action": "Attach install, lint, typecheck, proof placeholders, release note, rollback note, and signoffs."
+    },
+    {
+      "label": "Protect main",
+      "tone": "amber",
+      "action": "Apply required status checks only after the first workflow run reveals exact names."
+    },
+    {
+      "label": "Write evidence pack",
+      "tone": "green",
+      "action": "Capture issue import log, workflow name map, branch protection evidence, and first PR review note."
+    }
+  ],
+  "riskControls": [
+    {
+      "label": "Privacy",
+      "tone": "red",
+      "control": "Repository must be private before starter files are copied."
+    },
+    {
+      "label": "Data",
+      "tone": "green",
+      "control": "Only generated fixtures and demo tenant data are allowed."
+    },
+    {
+      "label": "Commercial",
+      "tone": "red",
+      "control": "Operational examples stay free of value, agreement, LOA, billing, and negotiation fields."
+    },
+    {
+      "label": "Security",
+      "tone": "red",
+      "control": "No live secrets; any accidental key triggers immediate stop, rotation, and history cleanup."
+    },
+    {
+      "label": "Governance",
+      "tone": "teal",
+      "control": "Every first-day change links to an issue, proof lane, owner, release note, and rollback note."
+    },
+    {
+      "label": "Release",
+      "tone": "amber",
+      "control": "Main branch protection is applied after the first workflow check names are known."
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "label": "Decision clear",
+      "tone": "green",
+      "check": "Six memo sections state what is being approved and what is not."
+    },
+    {
+      "label": "Basis complete",
+      "tone": "blue",
+      "check": "Six approval reasons connect product, backend, repo, governance, backlog, and CI."
+    },
+    {
+      "label": "Scope bounded",
+      "tone": "red",
+      "check": "Six cutline items prevent accidental live SaaS launch."
+    },
+    {
+      "label": "Evidence ready",
+      "tone": "teal",
+      "check": "Six evidence lanes connect the previous backend packs."
+    },
+    {
+      "label": "Options visible",
+      "tone": "amber",
+      "check": "Four decision options support go, conditional go, hold, and no-go."
+    },
+    {
+      "label": "Blockers explicit",
+      "tone": "red",
+      "check": "Eight blockers remain visible before execution."
+    },
+    {
+      "label": "Approval checklist ready",
+      "tone": "green",
+      "check": "Eight owner checks define signoff expectations."
+    },
+    {
+      "label": "Next handoff ready",
+      "tone": "blue",
+      "check": "v126 can turn remaining backend risks into a formal alpha risk register."
+    }
+  ],
+  "handoff": [
+    "v125 turns the preparation stack into an executive decision memo.",
+    "The memo deliberately approves only private repo creation and first PR evidence, while keeping live customer data, paid billing, and production hosting out of scope.",
+    "The best decision is a controlled go: create the private repo, run the opening-day runbook, open the first PR, collect proof, then protect main after workflow names are known.",
+    "v126 can convert the remaining risks into a formal backend alpha risk register before real implementation begins."
+  ]
+}

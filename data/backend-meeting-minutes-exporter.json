@@ -1,0 +1,447 @@
+﻿{
+  "schemaVersion": "pursuitdesk.backendMeetingMinutesExporter.v145",
+  "version": "v145",
+  "title": "Backend Meeting Minutes Exporter",
+  "meetingMinutesScore": 99,
+  "downloadHref": "data/backend-meeting-minutes-exporter.json?v=146",
+  "minutesKpis": [
+    {
+      "label": "Minutes exporter",
+      "value": "99%",
+      "note": "Readiness to turn repo-day outputs into copy-ready minutes.",
+      "tone": "green"
+    },
+    {
+      "label": "Attendance lanes",
+      "value": 8,
+      "note": "Required and optional roles for the private backend repo review.",
+      "tone": "teal"
+    },
+    {
+      "label": "Decision rows",
+      "value": 8,
+      "note": "Decision register rows for scope, privacy, checks, security, data, evidence, and merge posture.",
+      "tone": "blue"
+    },
+    {
+      "label": "Action queue",
+      "value": 8,
+      "note": "Owner actions with due date, evidence need, status, and next command.",
+      "tone": "red"
+    }
+  ],
+  "sourceReadiness": [
+    {
+      "label": "PDF export plan",
+      "value": "96%",
+      "note": "v144 page blueprint and archive rules become minutes packaging.",
+      "tone": "green"
+    },
+    {
+      "label": "Meeting pack",
+      "value": "96%",
+      "note": "v142 agenda, attendees, decisions, actions, and timeline feed the minutes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Reply capture",
+      "value": "96%",
+      "note": "v143 reply states become decisions and action rows.",
+      "tone": "blue"
+    },
+    {
+      "label": "Evidence closeout",
+      "value": "96%",
+      "note": "v141 closeout outcomes become management lines.",
+      "tone": "amber"
+    }
+  ],
+  "attendanceLog": [
+    {
+      "role": "Product sponsor",
+      "status": "Required",
+      "responsibility": "Confirms scope, non-goals, go/no-go posture, and management wording.",
+      "tone": "green"
+    },
+    {
+      "role": "Platform owner",
+      "status": "Required",
+      "responsibility": "Confirms private repo, branch rules, protected environments, checks, and rollback posture.",
+      "tone": "teal"
+    },
+    {
+      "role": "Backend lead",
+      "status": "Required",
+      "responsibility": "Confirms route shell, migrations, tests, commands, and unresolved implementation holds.",
+      "tone": "blue"
+    },
+    {
+      "role": "Security reviewer",
+      "status": "Required",
+      "responsibility": "Confirms no-secret, no-workbook, tenant guard, commercial redaction, and denied audit proof.",
+      "tone": "red"
+    },
+    {
+      "role": "Data owner",
+      "status": "Required",
+      "responsibility": "Confirms seed boundary, import dry-run, quarantine, duplicate handling, and reconciliation.",
+      "tone": "amber"
+    },
+    {
+      "role": "QA / Release",
+      "status": "Required",
+      "responsibility": "Confirms evidence index, screenshots, transcripts, signoffs, and release gate language.",
+      "tone": "green"
+    },
+    {
+      "role": "Billing owner",
+      "status": "Optional",
+      "responsibility": "Confirms test-mode billing, no invoice, no payment key, and commercial export boundary.",
+      "tone": "amber"
+    },
+    {
+      "role": "Meeting scribe",
+      "status": "Required",
+      "responsibility": "Owns minutes, decision register, action queue, parking lot, and management email.",
+      "tone": "blue"
+    }
+  ],
+  "minutesSections": [
+    {
+      "label": "Meeting header",
+      "note": "Date, private repo placeholder, PR placeholder, facilitator, scribe, and distribution list.",
+      "tone": "green"
+    },
+    {
+      "label": "Purpose",
+      "note": "Run the first private backend repo evidence review without losing decisions or proof state.",
+      "tone": "teal"
+    },
+    {
+      "label": "Attendance",
+      "note": "Required, optional, absent, and action-owner roles are recorded by lane.",
+      "tone": "blue"
+    },
+    {
+      "label": "Decision summary",
+      "note": "Approved, held, blocked, deferred, no response, and merge-ready outcomes are separated.",
+      "tone": "green"
+    },
+    {
+      "label": "Evidence reviewed",
+      "note": "Screenshots, command transcripts, issue links, PR note, branch proof, and signoff files.",
+      "tone": "blue"
+    },
+    {
+      "label": "Risk parking lot",
+      "note": "Items that need a later owner decision without blocking the whole closeout.",
+      "tone": "amber"
+    },
+    {
+      "label": "Owner actions",
+      "note": "Action, owner, due date, evidence needed, status, and next command.",
+      "tone": "red"
+    },
+    {
+      "label": "Management note",
+      "note": "Short closeout narrative ready for sponsor email or weekly review.",
+      "tone": "teal"
+    }
+  ],
+  "decisionRegister": [
+    {
+      "decision": "Scope accepted",
+      "state": "Pending real decision",
+      "note": "Sponsor confirms alpha scope and non-goals before implementation expands.",
+      "tone": "green"
+    },
+    {
+      "decision": "Repo privacy",
+      "state": "Pending real decision",
+      "note": "Platform confirms private repo, protected branches, and environment posture.",
+      "tone": "teal"
+    },
+    {
+      "decision": "Required checks",
+      "state": "Pending workflow output",
+      "note": "Exact GitHub Actions names must come from real CI output.",
+      "tone": "blue"
+    },
+    {
+      "decision": "Commercial boundary",
+      "state": "Pending signoff",
+      "note": "Commercial values, invoices, billing exports, and workbooks remain outside operational minutes.",
+      "tone": "red"
+    },
+    {
+      "decision": "Tenant guard",
+      "state": "Pending proof",
+      "note": "Security confirms tenant isolation and denied-audit evidence once backend exists.",
+      "tone": "amber"
+    },
+    {
+      "decision": "Seed fixture",
+      "state": "Pending dry run",
+      "note": "Data owner confirms seed boundary, quarantine, rollback, and reconciliation.",
+      "tone": "blue"
+    },
+    {
+      "decision": "Evidence archive",
+      "state": "Pending owner",
+      "note": "QA confirms screenshot, transcript, signoff, and archive naming rules.",
+      "tone": "green"
+    },
+    {
+      "decision": "Merge posture",
+      "state": "Not ready",
+      "note": "Merge-ready requires replies, evidence, no-leak proof, rollback, and owner queue closure.",
+      "tone": "red"
+    }
+  ],
+  "actionQueue": [
+    {
+      "action": "Create private repo",
+      "owner": "Platform owner",
+      "nextStep": "Create real private repository and apply initial owner access.",
+      "tone": "red"
+    },
+    {
+      "action": "Open issue wave",
+      "owner": "Backend lead",
+      "nextStep": "Paste issue export into the private repo and capture issue URLs.",
+      "tone": "amber"
+    },
+    {
+      "action": "Run first proof commands",
+      "owner": "Backend lead",
+      "nextStep": "Install, lint, test, migration, seed, smoke, audit, and rollback proof commands.",
+      "tone": "blue"
+    },
+    {
+      "action": "Capture no-leak proof",
+      "owner": "Security reviewer",
+      "nextStep": "Attach no workbook, no secret, no payment key, no invoice, and no commercial export proof.",
+      "tone": "red"
+    },
+    {
+      "action": "Attach evidence index",
+      "owner": "QA / Release",
+      "nextStep": "Add screenshots, transcripts, issue URLs, PR URL, workflow names, and signoffs.",
+      "tone": "green"
+    },
+    {
+      "action": "Resolve review replies",
+      "owner": "Meeting scribe",
+      "nextStep": "Convert approvals, holds, requested changes, deferrals, and no responses into row states.",
+      "tone": "teal"
+    },
+    {
+      "action": "Prepare closeout PDF",
+      "owner": "Scribe + sponsor",
+      "nextStep": "Use v144 page blueprint, redaction checks, archive name, and distribution list.",
+      "tone": "amber"
+    },
+    {
+      "action": "Send management email",
+      "owner": "Sponsor",
+      "nextStep": "Send minutes, decisions, open owner actions, and next meeting checkpoint.",
+      "tone": "green"
+    }
+  ],
+  "managementEmailBlocks": [
+    {
+      "label": "Subject",
+      "note": "PursuitDesk backend repo-day minutes and closeout actions",
+      "tone": "green"
+    },
+    {
+      "label": "Opening",
+      "note": "The repo-day review is recorded with decisions, evidence, owner actions, and open blockers.",
+      "tone": "teal"
+    },
+    {
+      "label": "Decision summary",
+      "note": "Approvals, holds, requested changes, deferrals, no responses, and merge readiness are separated.",
+      "tone": "blue"
+    },
+    {
+      "label": "Privacy statement",
+      "note": "No workbook, production secret, payment key, invoice, billing export, or commercial tracker value is included.",
+      "tone": "red"
+    },
+    {
+      "label": "Owner actions",
+      "note": "Every open action has an owner, due date, evidence need, and next command.",
+      "tone": "amber"
+    },
+    {
+      "label": "Next checkpoint",
+      "note": "Next session closes unresolved replies, evidence gaps, archive naming, and distribution approvals.",
+      "tone": "green"
+    }
+  ],
+  "followUpCadence": [
+    {
+      "label": "Same day",
+      "note": "Scribe posts the first minutes draft while decisions are still fresh.",
+      "tone": "green"
+    },
+    {
+      "label": "Next morning",
+      "note": "Owners chase missing replies and unclear approvals.",
+      "tone": "amber"
+    },
+    {
+      "label": "48 hours",
+      "note": "Holds become evidence, deferred proof, requested changes, or blocker decisions.",
+      "tone": "blue"
+    },
+    {
+      "label": "Before archive",
+      "note": "No workbook, no secret, no invoice, no payment key, and no commercial export are repeated.",
+      "tone": "red"
+    },
+    {
+      "label": "Weekly review",
+      "note": "Open actions move into Command Center and Reports.",
+      "tone": "teal"
+    },
+    {
+      "label": "Next build",
+      "note": "v146 turns unresolved states into follow-up emails.",
+      "tone": "green"
+    }
+  ],
+  "privacyAndAuditChecks": [
+    {
+      "label": "Attendance classification",
+      "note": "Every attendee lane has required, optional, absent, or owner-only classification.",
+      "tone": "green"
+    },
+    {
+      "label": "Decision source",
+      "note": "Every decision row links to meeting, reply, evidence, or export-plan source.",
+      "tone": "teal"
+    },
+    {
+      "label": "No commercial leakage",
+      "note": "Operational minutes do not expose tender values, invoices, LOA, billing, or negotiation data.",
+      "tone": "red"
+    },
+    {
+      "label": "No secrets",
+      "note": "Minutes never print secrets, payment keys, env values, or credentials.",
+      "tone": "red"
+    },
+    {
+      "label": "No workbook",
+      "note": "Source Excel files are referenced as import history only, not attached.",
+      "tone": "amber"
+    },
+    {
+      "label": "Action trace",
+      "note": "Every open action has owner, due date, evidence needed, and status.",
+      "tone": "blue"
+    },
+    {
+      "label": "Audit note",
+      "note": "The real backend must write audit events for minutes export, send, archive, and reopen.",
+      "tone": "teal"
+    },
+    {
+      "label": "Archive proof",
+      "note": "Filename, version, date, owner, PR placeholder, and distribution list are repeated.",
+      "tone": "green"
+    }
+  ],
+  "copyReadyMinutes": "PursuitDesk backend repo-day meeting minutes\n\nMeeting:\nDate:\nPrivate repo:\nPull request:\nFacilitator:\nScribe:\n\nPurpose:\nRun the first private backend repo evidence review and record decisions, proof state, blockers, owner actions, redaction checks, rollback posture, and next checkpoint.\n\nDecision summary:\n- Approved:\n- Held:\n- Requested changes:\n- Deferred proof:\n- Blocked:\n- No response:\n- Merge-ready:\n\nNo-leak statement:\nNo workbook, production secret, payment key, invoice, billing export, or commercial tracker value is included in these minutes unless separately authorized.\n\nOwner actions:\nAction | Owner | Due date | Evidence needed | Status | Next command",
+  "copyReadyManagementEmail": "Subject: PursuitDesk backend repo-day minutes and closeout actions\n\nHi team,\n\nThe backend repo-day review has been captured with attendance, decision summary, evidence reviewed, owner actions, risk parking lot, redaction checks, and next checkpoint.\n\nKey rule: no workbook, production secret, payment key, invoice, billing export, or commercial tracker value is included in this operating record unless separately authorized.\n\nPlease review your owner actions and update reply status before the next checkpoint.\n\nRegards,\nPursuitDesk Admin",
+  "signalCards": [
+    {
+      "label": "Minutes",
+      "value": "99%",
+      "note": "Meeting output can now be converted into a controlled operating record.",
+      "tone": "green"
+    },
+    {
+      "label": "Attendance",
+      "value": 8,
+      "note": "Sponsor, platform, backend, security, data, QA, billing, and scribe lanes.",
+      "tone": "teal"
+    },
+    {
+      "label": "Decisions",
+      "value": 8,
+      "note": "Decision register keeps approvals, holds, and blockers separate.",
+      "tone": "blue"
+    },
+    {
+      "label": "Open work",
+      "value": 95,
+      "note": "Open operational items stay summarized without leaking commercial detail.",
+      "tone": "red"
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "label": "Attendance ready",
+      "note": "8 attendee lanes define who must be present or represented.",
+      "tone": "green"
+    },
+    {
+      "label": "Minutes structure ready",
+      "note": "8 sections cover header, purpose, attendance, decisions, evidence, risk, actions, and management note.",
+      "tone": "teal"
+    },
+    {
+      "label": "Decision register ready",
+      "note": "8 decision rows prevent vague meeting outcomes.",
+      "tone": "blue"
+    },
+    {
+      "label": "Action queue ready",
+      "note": "8 owner actions define who does what next.",
+      "tone": "red"
+    },
+    {
+      "label": "Management email ready",
+      "note": "6 email blocks can be sent after review.",
+      "tone": "green"
+    },
+    {
+      "label": "Follow-up cadence ready",
+      "note": "6 follow-up moments keep unresolved replies moving.",
+      "tone": "amber"
+    },
+    {
+      "label": "Privacy and audit ready",
+      "note": "8 checks protect minutes from workbook, secret, commercial, and archive leakage.",
+      "tone": "teal"
+    },
+    {
+      "label": "Next handoff ready",
+      "note": "v146 can turn unresolved decisions into reviewer follow-up emails.",
+      "tone": "blue"
+    }
+  ],
+  "handoff": [
+    "v145 turns the repo-day meeting pack, captured replies, and PDF export plan into copy-ready minutes.",
+    "The exporter separates attendance, decision register, evidence reviewed, risk parking lot, owner actions, privacy checks, and management email.",
+    "The static demo still cannot send email or write a real audit event; it now defines what the production minutes exporter must generate.",
+    "v146 can now prepare reviewer decision emails from unresolved approvals, holds, requested changes, and no-response states."
+  ],
+  "counts": {
+    "minutesKpis": 4,
+    "sourceReadiness": 4,
+    "attendanceLog": 8,
+    "minutesSections": 8,
+    "decisionRegister": 8,
+    "actionQueue": 8,
+    "managementEmailBlocks": 6,
+    "followUpCadence": 6,
+    "privacyAndAuditChecks": 8,
+    "signalCards": 4,
+    "acceptanceChecks": 8
+  }
+}
+

@@ -1,0 +1,448 @@
+{
+  "schemaVersion": "pursuitdesk.backendAlphaRiskRegister.v126",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "build": "v126 Backend Alpha Risk Register",
+  "riskReadinessScore": 56,
+  "downloadPurpose": "Private backend repo alpha risk handoff before real repo execution.",
+  "riskDomains": [
+    {
+      "label": "Repository control",
+      "severity": "Critical",
+      "note": "Private visibility, PR-first branch discipline, and no direct main commits.",
+      "tone": "red"
+    },
+    {
+      "label": "Secret handling",
+      "severity": "Critical",
+      "note": "No live keys, .env files, billing secrets, tokens, or private certificates in the first repo.",
+      "tone": "red"
+    },
+    {
+      "label": "Commercial privacy",
+      "severity": "Critical",
+      "note": "Operational tracker examples must not expose values, agreements, LOA, invoices, or negotiation detail.",
+      "tone": "red"
+    },
+    {
+      "label": "Tenant security",
+      "severity": "Critical",
+      "note": "Company isolation, section access, denial audit, and commercial vault guards must exist before live data.",
+      "tone": "red"
+    },
+    {
+      "label": "Data migration",
+      "severity": "High",
+      "note": "Demo fixtures are allowed; real workbook import needs rollback, duplicate checks, and source trace.",
+      "tone": "amber"
+    },
+    {
+      "label": "CI and release",
+      "severity": "High",
+      "note": "Workflow shells exist, but exact status check names appear only after the first run.",
+      "tone": "blue"
+    },
+    {
+      "label": "Scope control",
+      "severity": "High",
+      "note": "Repo opening day approves shell and proof, not billing, production hosting, or live customer pilot.",
+      "tone": "amber"
+    },
+    {
+      "label": "Owner signoff",
+      "severity": "Medium",
+      "note": "Founder, platform, backend, security, data, governance, and QA lanes must be explicit.",
+      "tone": "teal"
+    }
+  ],
+  "riskRegister": [
+    {
+      "id": "R-01",
+      "risk": "Public repo exposure",
+      "severity": "Critical",
+      "trigger": "Repo created public or starter files uploaded before privacy is confirmed.",
+      "tone": "red"
+    },
+    {
+      "id": "R-02",
+      "risk": "Secret committed",
+      "severity": "Critical",
+      "trigger": "Any live token, .env file, key, or billing credential appears in the private repo.",
+      "tone": "red"
+    },
+    {
+      "id": "R-03",
+      "risk": "Direct main commit",
+      "severity": "High",
+      "trigger": "Main receives direct files before develop branch, PR proof, and review discipline exist.",
+      "tone": "amber"
+    },
+    {
+      "id": "R-04",
+      "risk": "Early branch protection",
+      "severity": "Medium",
+      "trigger": "Required checks are configured before GitHub exposes the exact workflow status names.",
+      "tone": "blue"
+    },
+    {
+      "id": "R-05",
+      "risk": "Commercial data leakage",
+      "severity": "Critical",
+      "trigger": "Operational examples include value, agreement, LOA, invoice, billing, or negotiation fields.",
+      "tone": "red"
+    },
+    {
+      "id": "R-06",
+      "risk": "Tenant isolation gap",
+      "severity": "Critical",
+      "trigger": "Route shells skip company scope, section access, denied audit, or commercial vault guard.",
+      "tone": "red"
+    },
+    {
+      "id": "R-07",
+      "risk": "Migration rollback gap",
+      "severity": "High",
+      "trigger": "Importer or seed work proceeds without dry-run, rollback, duplicate quarantine, or source trace.",
+      "tone": "amber"
+    },
+    {
+      "id": "R-08",
+      "risk": "CI proof ambiguity",
+      "severity": "Medium",
+      "trigger": "First PR says checks pass but proof artifacts or placeholder notes are missing.",
+      "tone": "blue"
+    },
+    {
+      "id": "R-09",
+      "risk": "Billing too early",
+      "severity": "High",
+      "trigger": "Payment keys, invoice workflow, or subscription logic moves before test-mode guardrails exist.",
+      "tone": "red"
+    },
+    {
+      "id": "R-10",
+      "risk": "Staging assumption",
+      "severity": "High",
+      "trigger": "Team treats GitHub Pages prototype as production staging before real hosting, backups, and monitoring.",
+      "tone": "amber"
+    },
+    {
+      "id": "R-11",
+      "risk": "Scope creep",
+      "severity": "Medium",
+      "trigger": "Reports, customer success, billing depth, or live import work enters the first backend shell PR.",
+      "tone": "blue"
+    },
+    {
+      "id": "R-12",
+      "risk": "Signoff ambiguity",
+      "severity": "Medium",
+      "trigger": "No clear owner has authority to pause, approve, or reject the first backend PR.",
+      "tone": "teal"
+    }
+  ],
+  "triggerMatrix": [
+    {
+      "type": "Immediate stop",
+      "trigger": "Secret or live data",
+      "response": "Rotate, purge history, restart clean, and record the incident before continuing.",
+      "tone": "red"
+    },
+    {
+      "type": "Immediate stop",
+      "trigger": "Public repo",
+      "response": "Stop file upload until the repository is private and visibility evidence is saved.",
+      "tone": "red"
+    },
+    {
+      "type": "Immediate stop",
+      "trigger": "Commercial leak",
+      "response": "Remove restricted fields from examples and review redaction rules before PR continues.",
+      "tone": "red"
+    },
+    {
+      "type": "Hold",
+      "trigger": "Workflow names unknown",
+      "response": "Wait for the first GitHub Actions run before applying branch protection.",
+      "tone": "amber"
+    },
+    {
+      "type": "Hold",
+      "trigger": "No issue link",
+      "response": "Do not review PR until issue, labels, milestone, proof lane, and owner are attached.",
+      "tone": "blue"
+    },
+    {
+      "type": "Hold",
+      "trigger": "No rollback note",
+      "response": "Add rollback thinking even for shell initialization work.",
+      "tone": "amber"
+    },
+    {
+      "type": "Watch",
+      "trigger": "Placeholder proof",
+      "response": "Accept only when the PR clearly names why command output is placeholder and what will replace it.",
+      "tone": "teal"
+    },
+    {
+      "type": "Watch",
+      "trigger": "Scope expansion",
+      "response": "Move non-shell work into later M1/M2 issues before first PR approval.",
+      "tone": "blue"
+    }
+  ],
+  "mitigationPlan": [
+    {
+      "control": "Privacy gate",
+      "timing": "Before repo create",
+      "action": "Owner confirms private visibility before any starter file, issue, or evidence packet moves.",
+      "tone": "red"
+    },
+    {
+      "control": "Secret scan",
+      "timing": "Before first PR",
+      "action": "Run manual scan for .env, tokens, keys, billing credentials, certificates, and customer files.",
+      "tone": "red"
+    },
+    {
+      "control": "Commercial redaction",
+      "timing": "Before API examples",
+      "action": "Keep operational payloads free of restricted commercial fields.",
+      "tone": "red"
+    },
+    {
+      "control": "Issue trace",
+      "timing": "Before review",
+      "action": "Generated issues provide labels, milestones, owners, and proof lanes for traceability.",
+      "tone": "green"
+    },
+    {
+      "control": "Workflow timing",
+      "timing": "Before protection",
+      "action": "Capture exact status check names from the first workflow run, then protect main.",
+      "tone": "blue"
+    },
+    {
+      "control": "Rollback packet",
+      "timing": "Before merge",
+      "action": "First PR includes release note, rollback note, evidence files, and owner signoffs.",
+      "tone": "amber"
+    },
+    {
+      "control": "Fixture-only rule",
+      "timing": "Before seed/import",
+      "action": "Use generated demo fixtures only until import rollback and tenant guards are implemented.",
+      "tone": "teal"
+    },
+    {
+      "control": "Live-data lock",
+      "timing": "Before pilot",
+      "action": "Block customer data until tenant access, audit, redaction, backup, billing test mode, and restore checks pass.",
+      "tone": "red"
+    }
+  ],
+  "ownerActions": [
+    {
+      "owner": "Founder / Product",
+      "role": "Decision owner",
+      "action": "Confirms scope cutline, no-live-data rule, and go/hold/no-go decision.",
+      "tone": "green"
+    },
+    {
+      "owner": "Platform owner",
+      "role": "Execution owner",
+      "action": "Creates repo, opens branch, copies files, imports taxonomy, and captures workflow names.",
+      "tone": "teal"
+    },
+    {
+      "owner": "Backend lead",
+      "role": "Shell owner",
+      "action": "Owns API boot, route registry, middleware order, proof commands, and PR scope.",
+      "tone": "blue"
+    },
+    {
+      "owner": "Security owner",
+      "role": "Control owner",
+      "action": "Owns secrets, tenant isolation, access decisions, commercial redaction, and denial audit.",
+      "tone": "red"
+    },
+    {
+      "owner": "Data owner",
+      "role": "Migration owner",
+      "action": "Owns fixtures, seed order, migration rollback, duplicate quarantine, and source trace.",
+      "tone": "amber"
+    },
+    {
+      "owner": "QA / Release",
+      "role": "Evidence owner",
+      "action": "Owns proof packet, release gate, branch protection evidence, and signoff checklist.",
+      "tone": "green"
+    }
+  ],
+  "decisionRules": [
+    {
+      "status": "Go",
+      "rule": "Private repo, no secrets, issue trace, proof packet, rollback note, and owner signoffs are ready.",
+      "tone": "green"
+    },
+    {
+      "status": "Go",
+      "rule": "Branch protection is delayed until check names are visible, and this is documented.",
+      "tone": "teal"
+    },
+    {
+      "status": "Conditional go",
+      "rule": "Repo can be created, but issue import waits for taxonomy or owner confirmation.",
+      "tone": "amber"
+    },
+    {
+      "status": "Hold",
+      "rule": "First PR lacks proof outputs, placeholder explanation, or release-gate summary.",
+      "tone": "blue"
+    },
+    {
+      "status": "Hold",
+      "rule": "Branch protection settings are guessed before first workflow run.",
+      "tone": "amber"
+    },
+    {
+      "status": "No-go",
+      "rule": "Repository is public, live secrets are committed, or customer data enters the repo.",
+      "tone": "red"
+    },
+    {
+      "status": "No-go",
+      "rule": "Commercial fields leak into operational examples or tracker payloads.",
+      "tone": "red"
+    },
+    {
+      "status": "No-go",
+      "rule": "Tenant, access, redaction, or audit guardrails are removed from starter scope.",
+      "tone": "red"
+    }
+  ],
+  "monitoringSignals": [
+    {
+      "signal": "Repo visibility",
+      "target": "Private",
+      "note": "Visibility proof must be captured before files move.",
+      "tone": "red"
+    },
+    {
+      "signal": "Branch discipline",
+      "target": "PR first",
+      "note": "Develop branch opens first PR to main; no direct main commits.",
+      "tone": "green"
+    },
+    {
+      "signal": "Secret posture",
+      "target": "Zero live keys",
+      "note": "Any secret-like material triggers stop, rotation, and cleanup.",
+      "tone": "red"
+    },
+    {
+      "signal": "Proof posture",
+      "target": "Evidence packet",
+      "note": "Install, quality, route, auth, redaction, audit, and release proof are addressed.",
+      "tone": "blue"
+    },
+    {
+      "signal": "CI posture",
+      "target": "Planned workflows",
+      "note": "Check names are mapped after first run, then branch rules are applied.",
+      "tone": "teal"
+    },
+    {
+      "signal": "Backlog posture",
+      "target": "Issue bodies",
+      "note": "M0/M1 opening order keeps foundation and security first.",
+      "tone": "amber"
+    }
+  ],
+  "residualRisks": [
+    {
+      "risk": "Staging not real",
+      "status": "Accepted for now",
+      "note": "No live staging exists until hosting, database, secrets, monitoring, and backups are implemented.",
+      "tone": "amber"
+    },
+    {
+      "risk": "Billing not real",
+      "status": "Accepted for now",
+      "note": "Membership is modeled; checkout and invoices remain future backend work.",
+      "tone": "amber"
+    },
+    {
+      "risk": "Importer not real",
+      "status": "Accepted for now",
+      "note": "Workbook parser and rollback runner are not implemented until backend routes exist.",
+      "tone": "blue"
+    },
+    {
+      "risk": "Customer success not persistent",
+      "status": "Accepted for now",
+      "note": "Feedback, training, and support workflows still need database persistence.",
+      "tone": "teal"
+    },
+    {
+      "risk": "Performance unknown",
+      "status": "Watch",
+      "note": "No scale testing exists until API and database are real.",
+      "tone": "blue"
+    },
+    {
+      "risk": "Compliance depth unknown",
+      "status": "Watch",
+      "note": "Formal legal/security review waits until production stack and data residency are chosen.",
+      "tone": "red"
+    }
+  ],
+  "acceptanceChecks": [
+    {
+      "check": "Domains mapped",
+      "note": "Eight domains cover repo, secret, commercial, tenant, data, CI, scope, and owner risk.",
+      "tone": "green"
+    },
+    {
+      "check": "Register complete",
+      "note": "Twelve alpha risks have severity, trigger, and mitigation language.",
+      "tone": "red"
+    },
+    {
+      "check": "Triggers clear",
+      "note": "Eight triggers define stop, hold, and watch behavior.",
+      "tone": "amber"
+    },
+    {
+      "check": "Mitigations ready",
+      "note": "Eight mitigations connect timing to exact controls.",
+      "tone": "teal"
+    },
+    {
+      "check": "Owners assigned",
+      "note": "Six owner lanes define accountability.",
+      "tone": "green"
+    },
+    {
+      "check": "Decision rules ready",
+      "note": "Eight rules define go, conditional go, hold, and no-go.",
+      "tone": "blue"
+    },
+    {
+      "check": "Residual risk visible",
+      "note": "Six accepted or watched risks remain transparent.",
+      "tone": "amber"
+    },
+    {
+      "check": "Next handoff ready",
+      "note": "v127 can turn the runbook into evidence files, proof screenshots, logs, and PR notes.",
+      "tone": "green"
+    }
+  ],
+  "handoff": [
+    "v126 turns the repo decision into an alpha risk register before real backend execution begins.",
+    "The register makes the controlled-go decision safer by naming hard stops, hold points, owner lanes, mitigations, residual risks, and monitoring signals.",
+    "The biggest risks remain repo visibility, secrets, commercial leakage, tenant isolation, branch discipline, and treating prototype planning as live SaaS readiness.",
+    "v127 can now produce the opening-day evidence pack: proof files, screenshots, logs, PR notes, workflow check names, and branch-protection evidence."
+  ]
+}

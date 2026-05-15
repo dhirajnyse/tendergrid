@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "pursuitdesk.privateRepoExecutionChecklist.v128",
+  "product": "PursuitDesk",
+  "targetRepository": "dhirajnyse/pursuitdesk-platform",
+  "build": "v128 Private Repo Execution Checklist",
+  "executionReadinessScore": 56,
+  "purpose": "Convert the decision memo, risk register, runbook, and evidence pack into a practical private GitHub repository execution checklist.",
+  "scope": {
+    "approved": [
+      "Create a private backend repository",
+      "Copy approved starter files and generated fixtures",
+      "Import labels, milestones, owner lanes, and first issue wave",
+      "Open the first PR with proof, rollback notes, and reviewer lanes",
+      "Capture exact GitHub Actions check names before branch protection"
+    ],
+    "notApproved": [
+      "No live customer workbooks",
+      "No live payment keys or billing capture",
+      "No production hosting claim",
+      "No customer data import",
+      "No guessed branch-protection check names"
+    ]
+  },
+  "executionGates": [
+    ["Gate 0", "Owner go/no-go", "Product owner confirms the controlled go is for repo creation and first PR evidence only.", "green"],
+    ["Gate 1", "Private visibility", "Repo is private before files, labels, issues, or screenshots are added.", "red"],
+    ["Gate 2", "No-secret preflight", "No .env, live token, billing key, certificate, workbook, or customer file is in the copy set.", "red"],
+    ["Gate 3", "Taxonomy ready", "Labels, milestones, issue waves, and board columns are either imported or explicitly deferred.", "blue"],
+    ["Gate 4", "First branch ready", "Work starts on a branch with PR discipline; main is not used as a working branch.", "teal"],
+    ["Gate 5", "Proof packet open", "Evidence folder exists before commands run so transcripts, screenshots, and notes have a home.", "green"],
+    ["Gate 6", "Workflow names captured", "Branch protection waits until actual GitHub Actions check names appear.", "amber"],
+    ["Gate 7", "Closeout signed", "Open blockers, placeholders, rollback note, and next owner are documented before merge.", "green"]
+  ],
+  "executionSequence": [
+    ["00:00", "Confirm decision", "Open the decision memo, state go/hold/no-go, and record the owner who can stop the session.", "green"],
+    ["00:10", "Create private repo", "Create `dhirajnyse/pursuitdesk-platform` as private and capture visibility proof.", "red"],
+    ["00:20", "Clone and branch", "Clone locally, create the working branch, and keep main untouched.", "teal"],
+    ["00:35", "Copy starter files", "Copy root docs, API shell, packages, workflow shells, env examples, scripts, and evidence folder.", "blue"],
+    ["00:55", "Run preflight commands", "Capture auth, install, quality, route, auth tenant, and release-gate proof or placeholder notes.", "amber"],
+    ["01:20", "Import taxonomy", "Create labels, milestones, owner lanes, and project board columns.", "blue"],
+    ["01:40", "Open issue wave", "Open the first M0/M1 issues with proof commands and acceptance criteria.", "teal"],
+    ["02:10", "Open first PR", "Link issue, scope, risk register, evidence pack, rollback note, reviewers, and placeholders.", "green"],
+    ["02:40", "Capture workflow names", "Workflow files need exact job and check names from the first Actions run.", "amber"],
+    ["03:10", "Apply branch protection", "Only after check names exist, configure required PR review and status checks.", "red"],
+    ["03:35", "Complete evidence pack", "Save screenshots, command transcripts, PR note, branch rules, and owner signoffs.", "green"],
+    ["04:00", "Closeout review", "Record what passed, what was deferred, what blocks live SaaS, and who owns v129.", "teal"]
+  ],
+  "operatorChecklist": [
+    ["Decision memo open", "Founder / Product", "Controlled repo opening approved; live SaaS, live data, billing capture, and production hosting stay out of scope.", "green"],
+    ["Repo private", "Platform", "Visibility proof captured before adding files or issues.", "red"],
+    ["Clean copy set", "Platform", "No secrets, customer files, commercial values, invoices, certificates, or live keys in source folder.", "red"],
+    ["Starter files copied", "Backend", "Root docs, API shell, packages, scripts, workflow files, env examples, and evidence folder copied.", "blue"],
+    ["Taxonomy prepared", "Governance", "Labels, milestones, issue routing, proof labels, owner lanes, and project columns created.", "teal"],
+    ["Issue wave opened", "Backend", "Foundation, security, data, CI, billing, and release issues opened in the planned order.", "amber"],
+    ["First PR opened", "Backend", "Scope, linked issue, risk note, command proof, rollback note, and reviewer list included.", "green"],
+    ["Security scan noted", "Security", "Secret and live-data scan documented before review.", "red"],
+    ["CI names recorded", "Platform", "Actual workflow check names copied into the evidence pack.", "blue"],
+    ["Branch rules applied", "QA / Release", "Required checks use actual names; conversation resolution and review rules are captured.", "red"],
+    ["Open blockers listed", "QA / Release", "Placeholder commands, failed checks, missing secrets, and deferred work are explicit.", "amber"],
+    ["Closeout signed", "All owners", "Go/hold/no-go status recorded for product, platform, backend, security, data, and QA.", "green"]
+  ],
+  "stopRules": [
+    ["Stop now", "Repo is public", "Do not upload files. Change visibility or recreate the repo privately, then capture evidence.", "red"],
+    ["Stop now", "Secret found", "Remove it, rotate the credential, clean history if needed, and record the incident.", "red"],
+    ["Stop now", "Customer workbook present", "Remove workbook, restart from generated fixture-only data, and update proof notes.", "red"],
+    ["Stop now", "Commercial fields leak", "Remove value, LOA, agreement, invoice, billing, and negotiation fields from operational examples.", "red"],
+    ["Hold", "No owner decision", "Pause until the person with stop authority confirms go/hold/no-go.", "amber"],
+    ["Hold", "Workflow names unknown", "Do not configure required status checks until the first Actions run exposes actual names.", "amber"],
+    ["Hold", "First PR lacks rollback", "Add rollback note, release impact, and evidence path before review.", "blue"],
+    ["Hold", "Issue trace missing", "Every first PR change must link to issue, owner, milestone, acceptance checks, and proof command.", "teal"]
+  ],
+  "proofLog": [
+    ["repo-private.png", "Before files", "Repo settings or visibility area proving private status.", "red"],
+    ["preflight-auth.txt", "Before copy", "`gh auth status`, git version, node version, package manager, and local path notes.", "blue"],
+    ["copy-tree.txt", "After copy", "Folder tree showing apps, packages, infra, docs, workflows, scripts, env examples, and evidence.", "green"],
+    ["secret-scan.md", "Before PR", "Manual scan results for secrets, workbooks, certificates, billing keys, and commercial fields.", "red"],
+    ["issue-wave.md", "After issues", "Issue URLs, labels, milestones, owners, proof commands, and opening order.", "teal"],
+    ["first-pr.md", "After PR", "PR link, title, scope, risk reference, command proof, rollback, and reviewer lanes.", "green"],
+    ["workflow-check-names.md", "After Actions", "Exact workflow names, job labels, check names, artifacts, and failure policy.", "amber"],
+    ["branch-protection.md", "After protection", "Required checks, review policy, admin bypass decision, conversation resolution, and release gate.", "red"]
+  ],
+  "repoScreenPlan": [
+    ["Settings", "Private visibility", "Capture before first file upload or issue import.", "red"],
+    ["Code tree", "Starter files", "Capture first branch file tree and evidence folder.", "green"],
+    ["Labels", "Taxonomy", "Capture labels grouped by scope, priority, security, proof, and release.", "blue"],
+    ["Issues", "Opening wave", "Capture filtered M0/M1 issue wave with owners and milestones.", "teal"],
+    ["Pull request", "First PR", "Capture PR body, linked issue, reviewers, checks, and evidence references.", "green"],
+    ["Actions", "Check names", "Capture workflow run summary and exact check names before branch protection.", "amber"],
+    ["Rules", "Branch protection", "Capture required status checks, review settings, and conversation resolution.", "red"],
+    ["Project board", "Execution board", "Capture opening columns, blocked items, and owner movement.", "blue"]
+  ],
+  "commandRunOrder": [
+    ["1", "gh auth status", "Confirm the GitHub account before repo execution.", "blue"],
+    ["2", "git clone git@github.com:dhirajnyse/pursuitdesk-platform.git", "Clone the private repo after visibility proof.", "green"],
+    ["3", "git checkout -b codex/backend-alpha-shell", "Create the working branch; main stays clean.", "teal"],
+    ["4", "pnpm install", "Install dependencies or record exact blocker if package shell is not yet executable.", "amber"],
+    ["5", "pnpm lint", "Run quality proof once scripts exist; otherwise create issue-linked placeholder.", "green"],
+    ["6", "pnpm typecheck", "Run type proof once TS shell exists; otherwise attach placeholder and owner.", "blue"],
+    ["7", "pnpm test:auth-tenant", "Run tenant/access proof when middleware is present.", "red"],
+    ["8", "pnpm ci:release-gate", "Summarize proof, blockers, rollback, and owner decision.", "amber"]
+  ],
+  "issueWave": [
+    ["M0", "Repository shell", "Root docs, workspace, scripts, environment examples, and evidence folder.", "green"],
+    ["M0", "Security baseline", "No secrets, tenant guard placeholder, commercial redaction, and denial audit expectations.", "red"],
+    ["M0", "API skeleton", "Health, auth, users, records, commercial vault, import, billing, feedback, and audit route shells.", "blue"],
+    ["M1", "Data foundation", "Tenant seed, migration order, source trace, rollback, duplicate quarantine, and fixture assertions.", "amber"],
+    ["M1", "CI and release", "Workflow shells, artifact policy, release gate, exact check names, and branch protection.", "teal"],
+    ["M1", "Billing and membership", "USD plans, test-mode checkout, seat reconciliation, access locks, and billing audit events.", "green"]
+  ],
+  "ownerBoard": [
+    ["Founder / Product", "Decision owner", "Approves controlled repo day and confirms what is not approved.", "green"],
+    ["Platform owner", "Execution lead", "Creates repo, branch, taxonomy, workflow proof, and branch protection evidence.", "teal"],
+    ["Backend lead", "Implementation owner", "Owns starter files, package scripts, route shells, and first PR quality proof.", "blue"],
+    ["Security owner", "Safety owner", "Owns no-secret rule, tenant guards, access checks, commercial redaction, and denial audit.", "red"],
+    ["Data owner", "Fixture owner", "Owns generated data, migration sequence, source trace, rollback, and no-workbook rule.", "amber"],
+    ["QA / Release", "Gate owner", "Owns proof folder, screenshots, check names, branch rules, signoffs, and closeout.", "green"]
+  ],
+  "branchTiming": [
+    ["Before Actions", "Do not guess checks", "Keep branch protection note in draft until first workflow run exists.", "amber"],
+    ["After first run", "Copy exact names", "Capture workflow, job, and required status check names exactly as GitHub shows them.", "blue"],
+    ["Before protection", "Confirm reviewers", "CODEOWNERS or reviewer policy must match platform, backend, security, data, and QA lanes.", "teal"],
+    ["Apply protection", "Main guard", "Require PR, required checks, conversation resolution, and review approval.", "red"],
+    ["After protection", "Test bypass policy", "Document admin bypass policy and emergency merge owner.", "red"],
+    ["Before merge", "Release packet", "Evidence folder, rollback note, open blockers, and owner signoffs are complete.", "green"]
+  ],
+  "completionChecklist": [
+    ["Repo opened safely", "Private repo evidence exists before any files moved.", "red"],
+    ["Starter files staged", "File tree and first branch show only approved shell files and generated fixtures.", "green"],
+    ["Issues trace work", "Generated issue bodies are ready; first wave URLs are recorded or explicitly deferred.", "blue"],
+    ["Commands recorded", "Proof command output or issue-linked placeholders are stored in evidence files.", "amber"],
+    ["No restricted data", "Secret, customer file, workbook, and commercial-field scan is complete.", "red"],
+    ["First PR reviewable", "Scope, risk, proof, rollback, reviewers, and blocker notes are clear.", "teal"],
+    ["Branch protection correct", "Required status checks use actual GitHub names, not guessed file names.", "red"],
+    ["Closeout complete", "Passed, deferred, blocked, next owner, and v129 control board handoff are written.", "green"]
+  ],
+  "handoff": [
+    "v128 turns the decision memo, risk register, runbook, and evidence pack into a concrete private repo execution checklist.",
+    "The checklist is intentionally practical: gates, timeline, owners, proof logs, command order, issue wave, branch timing, stop rules, and completion checks.",
+    "The safest next real-world move is to run this checklist only when the private GitHub repo is ready, then capture proof before branch protection and first merge.",
+    "v129 can now turn execution into a live Backend Alpha Control Board for repo status, PR status, evidence, blockers, and owner signoff movement."
+  ]
+}

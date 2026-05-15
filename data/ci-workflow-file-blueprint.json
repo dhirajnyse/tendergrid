@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "pursuitdesk.ciWorkflowFileBlueprint.v116",
+  "generatedOn": "2026-05-14",
+  "product": "PursuitDesk",
+  "version": "v116 CI Workflow File Blueprint",
+  "purpose": "Convert backend test commands, route safety envelopes, audit proof, migration safety, billing test mode, staging smoke, and release rules into GitHub Actions workflow files and branch-protection evidence.",
+  "downloadFile": "pursuitdesk-ci-workflow-file-blueprint-v116.json",
+  "targetRepository": {
+    "owner": "dhirajnyse",
+    "repository": "pursuitdesk-platform",
+    "visibility": "private",
+    "publicDemoRepository": "tendergrid"
+  },
+  "workflowFiles": [
+    {"file": ".github/workflows/ci.yml", "label": "Primary PR gate", "trigger": "Pull request", "artifact": "ci-summary.json", "tone": "red"},
+    {"file": ".github/workflows/security-audit.yml", "label": "Security and tenant proof", "trigger": "Pull request + nightly", "artifact": "security-audit-proof.json", "tone": "red"},
+    {"file": ".github/workflows/migration-restore.yml", "label": "Migration and restore proof", "trigger": "Pull request + nightly", "artifact": "migration-restore-proof.json", "tone": "blue"},
+    {"file": ".github/workflows/billing-testmode.yml", "label": "Billing test mode proof", "trigger": "Pull request", "artifact": "billing-testmode-proof.json", "tone": "amber"},
+    {"file": ".github/workflows/import-dryrun.yml", "label": "Import dry-run proof", "trigger": "Pull request", "artifact": "import-dryrun-proof.json", "tone": "blue"},
+    {"file": ".github/workflows/staging-smoke.yml", "label": "Staging smoke proof", "trigger": "Deploy to staging", "artifact": "staging-smoke-report.json", "tone": "teal"},
+    {"file": ".github/workflows/release-gate.yml", "label": "Release gate summary", "trigger": "Manual dispatch + protected branch", "artifact": "release-gate-summary.md", "tone": "green"},
+    {"file": ".github/workflows/dependency-review.yml", "label": "Dependency and secret scan", "trigger": "Pull request", "artifact": "dependency-review.json", "tone": "amber"}
+  ],
+  "jobMatrix": [
+    {"job": "install", "runner": "ubuntu-latest", "command": "pnpm install --frozen-lockfile", "artifact": "node_modules cache", "tone": "green"},
+    {"job": "lint", "runner": "ubuntu-latest", "command": "pnpm lint", "artifact": "lint-report.txt", "tone": "blue"},
+    {"job": "typecheck", "runner": "ubuntu-latest", "command": "pnpm typecheck", "artifact": "typecheck-report.txt", "tone": "blue"},
+    {"job": "unit", "runner": "ubuntu-latest", "command": "pnpm test:unit", "artifact": "junit-unit.xml", "tone": "green"},
+    {"job": "contracts", "runner": "ubuntu-latest", "command": "pnpm test:contracts", "artifact": "junit-contracts.xml", "tone": "teal"},
+    {"job": "route-envelopes", "runner": "ubuntu-latest", "command": "pnpm test:route-envelopes", "artifact": "route-envelope-coverage.json", "tone": "red"},
+    {"job": "auth-tenant", "runner": "ubuntu-latest", "command": "pnpm test:auth-tenant", "artifact": "tenant-isolation-proof.json", "tone": "red"},
+    {"job": "redaction", "runner": "ubuntu-latest", "command": "pnpm test:redaction", "artifact": "redaction-proof.json", "tone": "amber"},
+    {"job": "audit", "runner": "ubuntu-latest", "command": "pnpm test:audit", "artifact": "audit-event-proof.json", "tone": "teal"},
+    {"job": "migration", "runner": "ubuntu-latest", "command": "pnpm db:migrate:test && pnpm db:seed:test", "artifact": "migration-proof.json", "tone": "blue"},
+    {"job": "billing", "runner": "ubuntu-latest", "command": "pnpm test:billing-testmode", "artifact": "billing-proof.json", "tone": "amber"},
+    {"job": "release-summary", "runner": "ubuntu-latest", "command": "pnpm ci:release-gate", "artifact": "release-gate-summary.md", "tone": "green"}
+  ],
+  "artifactPlan": [
+    {"artifact": "ci-summary.json", "label": "Primary CI", "note": "Status, duration, commit, PR, branch, and required-check list.", "tone": "green"},
+    {"artifact": "junit-contracts.xml", "label": "API contracts", "note": "Route groups and contract behavior.", "tone": "teal"},
+    {"artifact": "route-envelope-coverage.json", "label": "Error/audit routes", "note": "Route envelope bindings.", "tone": "red"},
+    {"artifact": "audit-event-proof.json", "label": "Audit proof", "note": "Allowed, denied, and system events.", "tone": "teal"},
+    {"artifact": "denial-proof.json", "label": "Denied access", "note": "Denial cases protect tenant and commercial privacy.", "tone": "red"},
+    {"artifact": "redaction-proof.json", "label": "Commercial privacy", "note": "Tracker list, detail, CSV, and search endpoints exclude restricted fields.", "tone": "amber"},
+    {"artifact": "migration-restore-proof.json", "label": "Data safety", "note": "Migration files, rollback, restore, and count parity.", "tone": "blue"},
+    {"artifact": "billing-testmode-proof.json", "label": "Billing safety", "note": "Webhook idempotency, invoice state, subscription sync, and seat locks.", "tone": "amber"},
+    {"artifact": "staging-smoke-report.json", "label": "Staging rehearsal", "note": "Critical user paths, role checks, rollback proof, and report export.", "tone": "teal"},
+    {"artifact": "release-gate-summary.md", "label": "Management release note", "note": "Required checks, blockers, owners, artifacts, and go/no-go decision.", "tone": "green"}
+  ],
+  "cachePlan": [
+    {"cache": "pnpm-store", "key": "pnpm-lock.yaml", "note": "Reuse package store while lockfile stays unchanged.", "tone": "green"},
+    {"cache": "node-build", "key": "package.json + tsconfig", "note": "Cache build/typecheck output only for PR speed, not correctness.", "tone": "blue"},
+    {"cache": "playwright-browsers", "key": "playwright version", "note": "Cache browser binaries for smoke tests when enabled.", "tone": "teal"},
+    {"cache": "migration-fixtures", "key": "fixture manifest hash", "note": "Reuse seed fixtures only when fixture JSON does not change.", "tone": "amber"},
+    {"cache": "coverage", "key": "commit sha", "note": "Upload coverage as artifact; do not restore stale coverage into checks.", "tone": "red"},
+    {"cache": "reports", "key": "workflow run id", "note": "Keep release reports tied to exact run id and commit.", "tone": "green"}
+  ],
+  "secretPolicy": [
+    {"secret": "DATABASE_URL_TEST", "scope": "Repository secret", "note": "Disposable test database only; no production data.", "tone": "red"},
+    {"secret": "DATABASE_URL_STAGING", "scope": "Environment secret", "note": "Staging environment protected by manual approval.", "tone": "red"},
+    {"secret": "SESSION_SECRET_TEST", "scope": "Repository secret", "note": "Deterministic test secret for CI only.", "tone": "blue"},
+    {"secret": "BILLING_SECRET_KEY_TEST", "scope": "Environment secret", "note": "Test-mode provider key, never live card capture.", "tone": "amber"},
+    {"secret": "BILLING_WEBHOOK_SECRET_TEST", "scope": "Environment secret", "note": "Webhook signature tests and replay checks.", "tone": "amber"},
+    {"secret": "OBJECT_STORAGE_TEST_KEY", "scope": "Repository secret", "note": "Temporary evidence/artifact storage for smoke tests.", "tone": "teal"},
+    {"secret": "EMAIL_TEST_KEY", "scope": "Repository secret", "note": "Mail sink or sandbox provider only.", "tone": "green"},
+    {"secret": "AUDIT_EXPORT_TEST_KEY", "scope": "Environment secret", "note": "Restricted export proof for audit reports in staging.", "tone": "red"}
+  ],
+  "branchProtection": [
+    {"branch": "main", "rule": "Require pull request review", "note": "No direct pushes; owner review required before production release.", "tone": "red"},
+    {"branch": "main", "rule": "Require ci.yml", "note": "Install, lint, typecheck, unit, contracts, envelope, audit, and release summary pass.", "tone": "red"},
+    {"branch": "main", "rule": "Require security-audit.yml", "note": "Tenant, access, commercial, redaction, and denied audit checks pass.", "tone": "red"},
+    {"branch": "main", "rule": "Require migration-restore.yml", "note": "Migration, seed, rollback, restore, and count parity pass.", "tone": "blue"},
+    {"branch": "main", "rule": "Require billing-testmode.yml", "note": "Billing workflows prove test mode, idempotency, and seat sync.", "tone": "amber"},
+    {"branch": "develop", "rule": "Require primary CI", "note": "Integration branch accepts feature PRs only after base checks pass.", "tone": "blue"},
+    {"branch": "release/*", "rule": "Require staging-smoke.yml", "note": "Release branch needs staging rehearsal before merge.", "tone": "teal"},
+    {"branch": "all protected", "rule": "Block force push", "note": "Preserve audit history, branch evidence, and release traceability.", "tone": "green"}
+  ],
+  "commandBindings": [
+    {"step": "01", "command": "pnpm test:unit", "suite": "Unit and domain tests", "workflow": ".github/workflows/ci.yml", "artifact": "junit-unit.xml", "tone": "green"},
+    {"step": "02", "command": "pnpm test:contracts", "suite": "API contract tests", "workflow": ".github/workflows/ci.yml", "artifact": "junit-contracts.xml", "tone": "blue"},
+    {"step": "03", "command": "pnpm test:routes", "suite": "Route behavior tests", "workflow": ".github/workflows/ci.yml", "artifact": "junit-routes.xml", "tone": "teal"},
+    {"step": "04", "command": "pnpm test:auth-tenant", "suite": "Auth and tenant tests", "workflow": ".github/workflows/security-audit.yml", "artifact": "tenant-isolation-proof.json", "tone": "red"},
+    {"step": "05", "command": "pnpm test:redaction", "suite": "Commercial redaction tests", "workflow": ".github/workflows/security-audit.yml", "artifact": "redaction-proof.json", "tone": "amber"},
+    {"step": "06", "command": "pnpm db:migrate:test", "suite": "Migration apply tests", "workflow": ".github/workflows/migration-restore.yml", "artifact": "migration-proof.json", "tone": "blue"},
+    {"step": "07", "command": "pnpm db:restore:test", "suite": "Restore and rollback tests", "workflow": ".github/workflows/migration-restore.yml", "artifact": "restore-proof.json", "tone": "red"},
+    {"step": "08", "command": "pnpm test:billing-testmode", "suite": "Billing test mode", "workflow": ".github/workflows/billing-testmode.yml", "artifact": "billing-proof.json", "tone": "amber"},
+    {"step": "09", "command": "pnpm test:audit", "suite": "Audit writer tests", "workflow": ".github/workflows/security-audit.yml", "artifact": "audit-event-proof.json", "tone": "teal"},
+    {"step": "10", "command": "pnpm test:route-envelopes", "suite": "Error/audit envelope tests", "workflow": ".github/workflows/ci.yml", "artifact": "route-envelope-coverage.json", "tone": "red"},
+    {"step": "11", "command": "pnpm smoke:staging", "suite": "Staging smoke test", "workflow": ".github/workflows/staging-smoke.yml", "artifact": "staging-smoke-report.json", "tone": "green"},
+    {"step": "12", "command": "pnpm ci:release-gate", "suite": "Release gate summary", "workflow": ".github/workflows/release-gate.yml", "artifact": "release-gate-summary.md", "tone": "green"}
+  ],
+  "matrixStrategy": [
+    {"label": "Node version", "values": "20.x, 22.x", "note": "Keep first backend alpha on modern LTS compatibility.", "tone": "blue"},
+    {"label": "Database mode", "values": "sqlite test, postgres test", "note": "Unit speed plus realistic tenant/migration behavior.", "tone": "teal"},
+    {"label": "Role fixture", "values": "admin, operations, manager, viewer, inactive", "note": "Route permissions are proved for every access profile.", "tone": "red"},
+    {"label": "Route group", "values": "auth, users, records, commercial, import, billing, feedback, audit", "note": "Contract tests stay scoped and readable.", "tone": "green"},
+    {"label": "Import source", "values": "Telecom workbook, Negotiation workbook, manual rows", "note": "Importer dry-run covers current source reality.", "tone": "amber"},
+    {"label": "Artifact retention", "values": "7, 14, 30 days", "note": "Short for PR, longer for staging and release decisions.", "tone": "blue"}
+  ],
+  "releaseGates": [
+    {"gate": "Required checks green", "note": "All protected workflows pass on the exact commit.", "tone": "red"},
+    {"gate": "Artifacts uploaded", "note": "CI summary, route coverage, audit proof, denial proof, migration proof, and smoke report exist.", "tone": "blue"},
+    {"gate": "No secret leakage", "note": "Secret scan and env example review pass before merge.", "tone": "red"},
+    {"gate": "Tenant proof current", "note": "Cross-tenant and membership denial tests pass with request ids.", "tone": "red"},
+    {"gate": "Commercial redaction current", "note": "Operations routes and exports contain no restricted commercial fields.", "tone": "amber"},
+    {"gate": "Migration restore passes", "note": "Rollback and restore proof exist for the same schema version.", "tone": "blue"},
+    {"gate": "Billing remains test mode", "note": "No live billing key can run in CI or staging alpha.", "tone": "amber"},
+    {"gate": "Owner decision recorded", "note": "Release gate summary has owner signoff and next action.", "tone": "green"}
+  ],
+  "adoptionOrder": [
+    {"step": "01", "title": "Commit workflow skeletons", "note": "Add ci, security, migration, billing, import, staging smoke, release gate, and dependency workflows.", "tone": "green"},
+    {"step": "02", "title": "Add scripts to package.json", "note": "Bind every workflow job to a local command that developers can run before pushing.", "tone": "blue"},
+    {"step": "03", "title": "Add artifact upload", "note": "Upload reports even on failure so review is not blind.", "tone": "teal"},
+    {"step": "04", "title": "Add branch rules", "note": "Protect main and release branches after first workflow run succeeds.", "tone": "red"},
+    {"step": "05", "title": "Add staging environment", "note": "Require manual approval and scoped secrets before smoke checks.", "tone": "amber"},
+    {"step": "06", "title": "Add required status checks", "note": "Make primary CI, security, migration, billing, and release gates non-optional.", "tone": "red"},
+    {"step": "07", "title": "Run first proof", "note": "Open a test PR and prove artifacts, failures, cache, and denial reports are visible.", "tone": "green"},
+    {"step": "08", "title": "Document release ritual", "note": "README and docs explain local proof, PR proof, staging proof, and go/no-go evidence.", "tone": "teal"}
+  ],
+  "acceptanceChecks": [
+    {"check": "Workflow files listed", "note": "Eight GitHub workflow files have trigger, jobs, command scope, and artifact.", "tone": "green"},
+    {"check": "Jobs mapped", "note": "Twelve CI jobs map to commands, runner, cache, and proof artifact.", "tone": "blue"},
+    {"check": "Safety commands bound", "note": "Twelve backend test commands are tied to workflow files and artifacts.", "tone": "red"},
+    {"check": "Branch protection ready", "note": "Eight branch rules define required checks and push restrictions.", "tone": "red"},
+    {"check": "Secrets scoped", "note": "Eight secrets are test or staging scoped with no live customer data.", "tone": "amber"},
+    {"check": "Artifacts named", "note": "Ten artifacts support engineering, security, migration, billing, and management review.", "tone": "teal"},
+    {"check": "Release gates explicit", "note": "Eight go/no-go rules prevent blind merges.", "tone": "green"},
+    {"check": "Next repo handoff clear", "note": "v117 can turn this blueprint into first-commit workflow file contents.", "tone": "blue"}
+  ],
+  "examples": {
+    "ciJob": {
+      "name": "route-envelopes",
+      "runsOn": "ubuntu-latest",
+      "command": "pnpm test:route-envelopes",
+      "uploads": ["route-envelope-coverage.json", "junit-route-envelopes.xml"],
+      "requiredFor": ["main", "develop", "release/*"]
+    },
+    "releaseSummary": {
+      "commit": "HEAD",
+      "requiredChecks": ["ci", "security-audit", "migration-restore", "billing-testmode", "release-gate"],
+      "decision": "blocked until all artifacts exist",
+      "owner": "Platform Owner"
+    }
+  },
+  "handoff": [
+    "v116 turns backend intent into enforcement: route contracts, error envelopes, audit evidence, migration safety, billing test mode, and staging smoke all become required workflow proof.",
+    "The future private repo should not rely on memory or manual checking. Every sensitive rule should produce an artifact that a reviewer can open.",
+    "Branch protection should only be enabled after the first workflow run proves the checks exist; after that, main and release branches should reject unproven changes.",
+    "The next build can create first-commit file contents for these workflow files, package scripts, README proof instructions, and branch-protection setup notes."
+  ]
+}
