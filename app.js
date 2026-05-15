@@ -1,8 +1,8 @@
-﻿(function () {
+(function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=146";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=146";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=153";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=153";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -31,10 +31,10 @@
   const BILLING_PRICE_PER_USER = 5;
   const BUSINESS_PLUS_BASE = 49;
   const ANNUAL_BILLABLE_MONTHS = 10;
-  const ACCESS_MODEL_VERSION = 55;
+  const ACCESS_MODEL_VERSION = 57;
   const BILLING_TERMS = ["Monthly", "Annual"];
   const IMPORT_COLUMNS = ["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "sourceSheet"];
-  const ADMIN_ONLY_SECTION_KEYS = ["membership"];
+  const ADMIN_ONLY_SECTION_KEYS = ["membership", "buildPhase"];
   const PRIMARY_NAV_KEYS = ["command", "advisor", "review", "tenders", "projects", "reports"];
   const ACCESS_SECTIONS = [
     { key: "command", label: "Command", view: "Command" },
@@ -55,7 +55,9 @@
     { key: "contracts", label: "Contracts", view: "Contracts" },
     { key: "documents", label: "Documents", view: "Documents" },
     { key: "reminders", label: "Reminders", view: "Reminders" },
+    { key: "closeout", label: "Closeout", view: "Closeout" },
     { key: "reports", label: "Reports", view: "Reports" },
+    { key: "buildPhase", label: "Build Phase", view: "Build Phase" },
     { key: "membership", label: "Membership Model", view: "Membership" },
   ];
   const DEFAULT_OPERATION_ACCESS_KEYS = ["tenders", "projects"];
@@ -767,6 +769,14 @@
     return view === "Reports";
   }
 
+  function isCloseoutSection(view = state.view) {
+    return view === "Closeout";
+  }
+
+  function isBuildPhaseSection(view = state.view) {
+    return view === "Build Phase";
+  }
+
   function isInsightSection(view = state.view) {
     return view === "Tender Insights" || view === "Tenders Insights" || view === "Project Insights";
   }
@@ -790,7 +800,9 @@
     if (view === "Contracts") return "contracts";
     if (view === "Documents") return "documents";
     if (view === "Reminders") return "reminders";
+    if (view === "Closeout") return "closeout";
     if (view === "Reports") return "reports";
+    if (view === "Build Phase") return "buildPhase";
     if (view === "Membership") return "membership";
     return "tenders";
   }
@@ -1133,6 +1145,11 @@
             `
             : ""
         }
+        ${
+          canAdmin()
+            ? `<button class="mode-btn admin-build-phase-btn ${state.view === "Build Phase" ? "active" : ""}" type="button" data-view="Build Phase">Build Phase</button>`
+            : ""
+        }
       </div>
     `;
   }
@@ -1152,6 +1169,7 @@
       Contracts: "amber",
       Documents: "blue",
       Reminders: "red",
+      Closeout: "green",
     }[view] || "teal";
   }
 
@@ -1170,6 +1188,7 @@
       Contracts: "Commercial proof",
       Documents: "Evidence packs",
       Reminders: "Follow-up queue",
+      Closeout: "Archive control",
     }[view] || "Operating room";
   }
 
@@ -1201,6 +1220,19 @@
 
   function renderHeaderSummaryForView(view, metrics) {
     if (isInsightSection(view) || view === "Membership") return "";
+    if (isBuildPhaseSection(view)) {
+      const tracker = buildProductBuildTracker();
+      const boxes = [
+        ["Version", tracker.version.split(" ")[0]],
+        ["Active", tracker.phases.filter(([, , status]) => status === "Active").length],
+        ["Next", tracker.nextBuilds.length],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}
+        </div>
+      `;
+    }
     if (isCommandSection(view)) {
       const command = buildCommandCenterModel();
       const boxes = [
@@ -1383,6 +1415,19 @@
         </div>
       `;
     }
+    if (isCloseoutSection(view)) {
+      const closeout = buildCloseoutArchiveModel();
+      const boxes = [
+        ["Closed", closeout.closedRecords.length],
+        ["Ready", closeout.readyRecords.length],
+        ["Gaps", closeout.gapCount],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${value}</strong></div>`).join("")}
+        </div>
+      `;
+    }
     if (isReportSection(view)) {
       const report = buildReportModel();
       const boxes = [
@@ -1415,7 +1460,7 @@
   }
 
   function renderMetricsForView(view, metrics) {
-    if (isInsightSection(view) || view === "Membership" || isCommandSection(view) || isAdvisorSection(view) || isWeeklyReviewSection(view) || isIntakeSection(view) || isImportSection(view) || isGovernanceSection(view) || isBidDeskSection(view) || isCalendarSection(view) || isRiskSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isReportSection(view)) return "";
+    if (isInsightSection(view) || view === "Membership" || isBuildPhaseSection(view) || isCommandSection(view) || isAdvisorSection(view) || isWeeklyReviewSection(view) || isIntakeSection(view) || isImportSection(view) || isGovernanceSection(view) || isBidDeskSection(view) || isCalendarSection(view) || isRiskSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isCloseoutSection(view) || isReportSection(view)) return "";
     const cards = isProjectSection(view)
       ? [
           ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`, "teal"],
@@ -1486,8 +1531,12 @@
           ? "Documents room"
         : state.view === "Reminders"
           ? "Follow-up desk"
+        : state.view === "Closeout"
+          ? "Closeout room"
         : state.view === "Reports"
           ? "Reports room"
+        : state.view === "Build Phase"
+          ? "Build phase"
         : state.view === "Membership"
           ? "Membership model"
           : state.view;
@@ -1524,8 +1573,12 @@
           ? "Evidence control for source workbooks, sheet coverage, agreement and LOA proof, tender packs, project files, and missing document signals."
         : state.view === "Reminders"
           ? "Generated follow-up priorities for overdue records, near dates, missing information, high-value work, and negotiation movement."
+        : state.view === "Closeout"
+          ? "Archive completed, awarded, cancelled, and regret records with evidence status, handoff readiness, owner notes, and clean learning loops."
         : state.view === "Reports"
           ? "A printable management pack for weekly reviews, executive updates, tender/project status, client concentration, and action follow-through."
+        : state.view === "Build Phase"
+          ? "Admin-only roadmap, phase map, next-version queue, production blockers, and SaaS-readiness tracker separated from the daily Command Center."
         : state.view === "Membership"
           ? "Manage launch pricing, seats, subscription packaging, and the upgrade path from demo workspace to paid company plan."
         : `${records.length} records in view. Track references, clients, owners, dates, categories, and status without losing the spreadsheet speed.`;
@@ -1565,6 +1618,8 @@
           ${
             state.view === "Command"
               ? renderCommandCenterPage()
+            : state.view === "Build Phase"
+              ? renderBuildPhasePage()
             : state.view === "Advisor"
               ? renderPursuitAdvisorPage()
             : state.view === "Weekly Review"
@@ -1593,6 +1648,8 @@
                 ? renderDocumentsPage()
               : state.view === "Reminders"
                 ? renderRemindersPage()
+              : state.view === "Closeout"
+                ? renderCloseoutArchivePage()
               : state.view === "Reports"
                 ? renderReportsPage()
               : state.view === "Membership"
@@ -4294,9 +4351,7 @@
     };
   }
 
-  function renderCommandCenterPage() {
-    const model = buildCommandCenterModel();
-    const buildTracker = buildProductBuildTracker();
+  function renderBuildPhaseArtifactSections(model) {
     const pilotReadiness = buildPilotReadinessModel(model);
     const saasConversion = buildSaasConversionSprintModel(model, pilotReadiness);
     const securityModel = buildProductionSecurityModel(model, pilotReadiness, saasConversion);
@@ -4360,6 +4415,76 @@
     const evidenceCloseoutPdfExportPlan = buildEvidenceCloseoutPdfExportPlanModel(model, privateRepoReplyCaptureBoard, privateRepoEvidenceCloseoutPack, backendRepoDayMeetingPack, evidenceArtifactStatusBoard, firstBackendPrReviewCommentPack, backendPrReviewGateMatrix);
     const backendMeetingMinutesExporter = buildBackendMeetingMinutesExporterModel(model, evidenceCloseoutPdfExportPlan, backendRepoDayMeetingPack, privateRepoReplyCaptureBoard, privateRepoEvidenceCloseoutPack, firstBackendPrReviewCommentPack);
     const reviewerDecisionEmailPack = buildReviewerDecisionEmailPackModel(model, backendMeetingMinutesExporter, privateRepoReplyCaptureBoard, evidenceCloseoutPdfExportPlan, backendPrReviewGateMatrix, firstBackendPrReviewCommentPack);
+
+    return `
+      ${renderProductionMvpAlphaPlan(alphaPlan)}
+      ${renderPrivateBackendRepoKickoff(repoKickoff)}
+      ${renderImplementationIssueExport(issueExport)}
+      ${renderAlphaApiContractPack(apiContractPack)}
+      ${renderSeedDataMigrationFixturePack(seedFixturePack)}
+      ${renderPrivateRepoCreationGuide(privateRepoGuide)}
+      ${renderStagingSmokeTestScript(stagingSmokeScript)}
+      ${renderBackendFixtureExport(backendFixtureExport)}
+      ${renderFirstBackendSprintChecklist(firstBackendSprint)}
+      ${renderStagingDeploymentChecklist(stagingDeployment)}
+      ${renderBackendRouteSkeletonMap(backendRouteSkeleton)}
+      ${renderDatabaseMigrationBlueprint(databaseMigrationBlueprint)}
+      ${renderAuthTenantGuardBlueprint(authTenantGuardBlueprint)}
+      ${renderBackendTestCommandPack(backendTestCommandPack)}
+      ${renderProductionBackendRepoFilePack(productionBackendRepoFilePack)}
+      ${renderApiErrorAuditEnvelopePack(apiErrorAuditEnvelopePack)}
+      ${renderCiWorkflowFileBlueprint(ciWorkflowFileBlueprint)}
+      ${renderPrivateRepoFirstCommitBuilder(privateRepoFirstCommitBuilder)}
+      ${renderBackendIssueBodyExporter(backendIssueBodyExporter)}
+      ${renderBranchProtectionReleaseChecklist(branchProtectionReleaseChecklist)}
+      ${renderFirstBackendFileContentExport(firstBackendFileContentExport)}
+      ${renderPrivateRepoSetupScriptDraft(privateRepoSetupScriptDraft)}
+      ${renderGithubLabelsMilestonesImportPack(githubLabelsMilestonesImportPack)}
+      ${renderFirstBackendCommitQaChecklist(firstBackendCommitQaChecklist)}
+      ${renderPrivateRepoOpeningDayRunbook(privateRepoOpeningDayRunbook)}
+      ${renderProductionBackendRepoDecisionMemo(productionBackendRepoDecisionMemo)}
+      ${renderBackendAlphaRiskRegister(backendAlphaRiskRegister)}
+      ${renderBackendOpeningDayEvidencePack(backendOpeningDayEvidencePack)}
+      ${renderPrivateRepoExecutionChecklist(privateRepoExecutionChecklist)}
+      ${renderBackendAlphaControlBoard(backendAlphaControlBoard)}
+      ${renderPrivateRepoDayOneScript(privateRepoDayOneScript)}
+      ${renderBackendRepoProofExporter(backendRepoProofExporter)}
+      ${renderGithubRepoOpeningPacket(githubRepoOpeningPacket)}
+      ${renderBackendAlphaIssueImportKit(backendAlphaIssueImportKit)}
+      ${renderFirstPrBodyBuilder(firstPrBodyBuilder)}
+      ${renderRepoEvidenceFolderWriter(repoEvidenceFolderWriter)}
+      ${renderPrivateRepoCommandRunnerPack(privateRepoCommandRunnerPack)}
+      ${renderBackendPrReviewGateMatrix(backendPrReviewGateMatrix)}
+      ${renderEvidenceArtifactStatusBoard(evidenceArtifactStatusBoard)}
+      ${renderPrivateRepoHandoffEmailPack(privateRepoHandoffEmailPack)}
+      ${renderFirstBackendPrReviewCommentPack(firstBackendPrReviewCommentPack)}
+      ${renderPrivateRepoEvidenceCloseoutPack(privateRepoEvidenceCloseoutPack)}
+      ${renderBackendRepoDayMeetingPack(backendRepoDayMeetingPack)}
+      ${renderPrivateRepoReplyCaptureBoard(privateRepoReplyCaptureBoard)}
+      ${renderEvidenceCloseoutPdfExportPlan(evidenceCloseoutPdfExportPlan)}
+      ${renderBackendMeetingMinutesExporter(backendMeetingMinutesExporter)}
+      ${renderReviewerDecisionEmailPack(reviewerDecisionEmailPack)}
+      ${renderPilotReadinessChecklist(pilotReadiness)}
+      ${renderSaasConversionSprint(saasConversion)}
+      ${renderProductionSecurityModel(securityModel)}
+      ${renderBillingCheckoutBlueprint(billingBlueprint)}
+      ${renderDataMigrationPack(migrationPack)}
+      ${renderPilotFeedbackRoom(pilotFeedback)}
+      ${renderBackendRepositoryScaffold(backendScaffold)}
+      ${renderSecurityTestPack(securityTestPack)}
+      ${renderBillingTestPack(billingTestPack)}
+      ${renderMigrationTestPack(migrationTestPack)}
+      ${renderPilotFeedbackPersistence(feedbackPersistence)}
+      ${renderBackendMvpTicketBoard(backendTicketBoard)}
+      ${renderProductionHostingRunbook(hostingRunbook)}
+      ${renderCustomerSuccessDesk(customerSuccess)}
+      ${renderBackendRepoStarterPack(backendRepoStarter)}
+      ${renderLaunchControlCenter(launchControl)}
+    `;
+  }
+
+  function renderCommandCenterPage() {
+    const model = buildCommandCenterModel();
     return `
       <section class="command-center">
         <section class="command-console">
@@ -4387,134 +4512,6 @@
           ${renderInsightKpi("Priority actions", `${model.reminders.tasks.length}`, `${model.reminders.overdue} overdue follow-ups`)}
           ${renderInsightKpi("Evidence health", `${model.evidenceScore}%`, `${model.documents.sourceCoverage}% source coverage after gap penalty`)}
         </div>
-
-        ${canAdmin() ? renderProductBuildTracker(buildTracker) : ""}
-
-        ${canAdmin() ? renderProductionMvpAlphaPlan(alphaPlan) : ""}
-
-        ${canAdmin() ? renderPrivateBackendRepoKickoff(repoKickoff) : ""}
-
-        ${canAdmin() ? renderImplementationIssueExport(issueExport) : ""}
-
-        ${canAdmin() ? renderAlphaApiContractPack(apiContractPack) : ""}
-
-        ${canAdmin() ? renderSeedDataMigrationFixturePack(seedFixturePack) : ""}
-
-        ${canAdmin() ? renderPrivateRepoCreationGuide(privateRepoGuide) : ""}
-
-        ${canAdmin() ? renderStagingSmokeTestScript(stagingSmokeScript) : ""}
-
-        ${canAdmin() ? renderBackendFixtureExport(backendFixtureExport) : ""}
-
-        ${canAdmin() ? renderFirstBackendSprintChecklist(firstBackendSprint) : ""}
-
-        ${canAdmin() ? renderStagingDeploymentChecklist(stagingDeployment) : ""}
-
-        ${canAdmin() ? renderBackendRouteSkeletonMap(backendRouteSkeleton) : ""}
-
-        ${canAdmin() ? renderDatabaseMigrationBlueprint(databaseMigrationBlueprint) : ""}
-
-        ${canAdmin() ? renderAuthTenantGuardBlueprint(authTenantGuardBlueprint) : ""}
-
-        ${canAdmin() ? renderBackendTestCommandPack(backendTestCommandPack) : ""}
-
-        ${canAdmin() ? renderProductionBackendRepoFilePack(productionBackendRepoFilePack) : ""}
-
-        ${canAdmin() ? renderApiErrorAuditEnvelopePack(apiErrorAuditEnvelopePack) : ""}
-
-        ${canAdmin() ? renderCiWorkflowFileBlueprint(ciWorkflowFileBlueprint) : ""}
-
-        ${canAdmin() ? renderPrivateRepoFirstCommitBuilder(privateRepoFirstCommitBuilder) : ""}
-
-        ${canAdmin() ? renderBackendIssueBodyExporter(backendIssueBodyExporter) : ""}
-
-        ${canAdmin() ? renderBranchProtectionReleaseChecklist(branchProtectionReleaseChecklist) : ""}
-
-        ${canAdmin() ? renderFirstBackendFileContentExport(firstBackendFileContentExport) : ""}
-
-        ${canAdmin() ? renderPrivateRepoSetupScriptDraft(privateRepoSetupScriptDraft) : ""}
-
-        ${canAdmin() ? renderGithubLabelsMilestonesImportPack(githubLabelsMilestonesImportPack) : ""}
-
-        ${canAdmin() ? renderFirstBackendCommitQaChecklist(firstBackendCommitQaChecklist) : ""}
-
-        ${canAdmin() ? renderPrivateRepoOpeningDayRunbook(privateRepoOpeningDayRunbook) : ""}
-
-        ${canAdmin() ? renderProductionBackendRepoDecisionMemo(productionBackendRepoDecisionMemo) : ""}
-
-        ${canAdmin() ? renderBackendAlphaRiskRegister(backendAlphaRiskRegister) : ""}
-
-        ${canAdmin() ? renderBackendOpeningDayEvidencePack(backendOpeningDayEvidencePack) : ""}
-
-        ${canAdmin() ? renderPrivateRepoExecutionChecklist(privateRepoExecutionChecklist) : ""}
-
-        ${canAdmin() ? renderBackendAlphaControlBoard(backendAlphaControlBoard) : ""}
-
-        ${canAdmin() ? renderPrivateRepoDayOneScript(privateRepoDayOneScript) : ""}
-
-        ${canAdmin() ? renderBackendRepoProofExporter(backendRepoProofExporter) : ""}
-
-        ${canAdmin() ? renderGithubRepoOpeningPacket(githubRepoOpeningPacket) : ""}
-
-        ${canAdmin() ? renderBackendAlphaIssueImportKit(backendAlphaIssueImportKit) : ""}
-
-        ${canAdmin() ? renderFirstPrBodyBuilder(firstPrBodyBuilder) : ""}
-
-        ${canAdmin() ? renderRepoEvidenceFolderWriter(repoEvidenceFolderWriter) : ""}
-
-        ${canAdmin() ? renderPrivateRepoCommandRunnerPack(privateRepoCommandRunnerPack) : ""}
-
-        ${canAdmin() ? renderBackendPrReviewGateMatrix(backendPrReviewGateMatrix) : ""}
-
-        ${canAdmin() ? renderEvidenceArtifactStatusBoard(evidenceArtifactStatusBoard) : ""}
-
-        ${canAdmin() ? renderPrivateRepoHandoffEmailPack(privateRepoHandoffEmailPack) : ""}
-
-        ${canAdmin() ? renderFirstBackendPrReviewCommentPack(firstBackendPrReviewCommentPack) : ""}
-
-        ${canAdmin() ? renderPrivateRepoEvidenceCloseoutPack(privateRepoEvidenceCloseoutPack) : ""}
-
-        ${canAdmin() ? renderBackendRepoDayMeetingPack(backendRepoDayMeetingPack) : ""}
-
-        ${canAdmin() ? renderPrivateRepoReplyCaptureBoard(privateRepoReplyCaptureBoard) : ""}
-
-        ${canAdmin() ? renderEvidenceCloseoutPdfExportPlan(evidenceCloseoutPdfExportPlan) : ""}
-
-        ${canAdmin() ? renderBackendMeetingMinutesExporter(backendMeetingMinutesExporter) : ""}
-
-        ${canAdmin() ? renderReviewerDecisionEmailPack(reviewerDecisionEmailPack) : ""}
-
-        ${canAdmin() ? renderPilotReadinessChecklist(pilotReadiness) : ""}
-
-        ${canAdmin() ? renderSaasConversionSprint(saasConversion) : ""}
-
-        ${canAdmin() ? renderProductionSecurityModel(securityModel) : ""}
-
-        ${canAdmin() ? renderBillingCheckoutBlueprint(billingBlueprint) : ""}
-
-        ${canAdmin() ? renderDataMigrationPack(migrationPack) : ""}
-
-        ${canAdmin() ? renderPilotFeedbackRoom(pilotFeedback) : ""}
-
-        ${canAdmin() ? renderBackendRepositoryScaffold(backendScaffold) : ""}
-
-        ${canAdmin() ? renderSecurityTestPack(securityTestPack) : ""}
-
-        ${canAdmin() ? renderBillingTestPack(billingTestPack) : ""}
-
-        ${canAdmin() ? renderMigrationTestPack(migrationTestPack) : ""}
-
-        ${canAdmin() ? renderPilotFeedbackPersistence(feedbackPersistence) : ""}
-
-        ${canAdmin() ? renderBackendMvpTicketBoard(backendTicketBoard) : ""}
-
-        ${canAdmin() ? renderProductionHostingRunbook(hostingRunbook) : ""}
-
-        ${canAdmin() ? renderCustomerSuccessDesk(customerSuccess) : ""}
-
-        ${canAdmin() ? renderBackendRepoStarterPack(backendRepoStarter) : ""}
-
-        ${canAdmin() ? renderLaunchControlCenter(launchControl) : ""}
 
         <div class="command-layout">
           <section class="command-main">
@@ -7912,7 +7909,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-fixture-export.json?v=146";
+    const downloadHref = "data/backend-fixture-export.json?v=153";
     const exportTables = [
       ["tenants.json", 1, "Company, workspace defaults, billing currency, plan state, and retention settings.", "green"],
       ["users.json", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and role-access fixture users.", "blue"],
@@ -8005,7 +8002,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-sprint-checklist.json?v=146";
+    const downloadHref = "data/backend-sprint-checklist.json?v=153";
     const sprintDays = [
       ["Day 0", "Repo creation and protection", "Private repo, develop branch, labels, milestones, board, first issues, secrets list.", "Repo is private and branch rules are visible.", "Control Admin"],
       ["Day 1", "Workspace skeleton", "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.", "Fresh clone can install and run the empty shell.", "Backend Lead"],
@@ -8119,7 +8116,7 @@
         ),
       ),
     );
-    const downloadHref = "data/staging-deployment-checklist.json?v=146";
+    const downloadHref = "data/staging-deployment-checklist.json?v=153";
     const environmentLanes = [
       ["Staging URL", `staging.${BRAND_DOMAIN}`, "Private pilot preview with test data, HTTPS, cache headers, and admin-only deployment notes.", "green"],
       ["API service", "api-staging", "Backend API deploys from develop or release candidate with health, version, and smoke endpoints.", "blue"],
@@ -8250,7 +8247,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-route-skeleton-map.json?v=146";
+    const downloadHref = "data/backend-route-skeleton-map.json?v=153";
     const routeFiles = [
       ["apps/api/src/server.ts", "Bootstrap", "Health route, request id, middleware chain, error shape, and route registration.", "Platform Owner", "green"],
       ["apps/api/src/middleware/request-context.ts", "Context", "Request id, actor shell, tenant shell, logger scope, and response timing.", "Backend Lead", "blue"],
@@ -8368,7 +8365,7 @@
         ),
       ),
     );
-    const downloadHref = "data/database-migration-blueprint.json?v=146";
+    const downloadHref = "data/database-migration-blueprint.json?v=153";
     const migrationFiles = [
       ["0001_tenant_identity.sql", "Tenant identity", "companies, users, access_profiles, sessions, invitations", "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data.", "Security Owner", "red"],
       ["0002_operational_records.sql", "Operational records", "records, record_notes, record_status_events, client_memory", `Load ${records.length} tracker-safe tender and project records without commercial values.`, "Records Owner", "teal"],
@@ -8507,7 +8504,7 @@
         ),
       ),
     );
-    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=146";
+    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=153";
     const guardFiles = [
       ["apps/api/src/auth/session.ts", "Session guard", "Verify signed session, expiry, inactive user, password reset freshness, and actor context.", "auth.session.test.ts", "Identity Owner", "red"],
       ["apps/api/src/auth/password.ts", "Password policy", "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.", "auth.password.test.ts", "Identity Owner", "red"],
@@ -8620,7 +8617,7 @@
         ["Operations users", operationsUsers, "Users who can open Tenders or Projects", "teal"],
         ["Commercial users", commercialUsers, "Users who can reach insight or management rooms", "amber"],
         ["Governance users", governanceUsers, "Users who can reach governance, import, or documents", "blue"],
-        ["Admin-only rooms", ADMIN_ONLY_SECTION_KEYS.length, "Membership remains company-admin only", "red"],
+        ["Admin-only rooms", ADMIN_ONLY_SECTION_KEYS.length, "Membership and Build Phase remain company-admin only", "red"],
       ],
       signalCards: [
         ["Guard readiness", `${guardScore}%`, "How ready the route, database, access, and security plans are to become real guards", guardScore >= 85 ? "green" : "amber"],
@@ -8663,7 +8660,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-test-command-pack.json?v=146";
+    const downloadHref = "data/backend-test-command-pack.json?v=153";
     const testCommands = [
       ["01", "pnpm test:unit", "Domain unit tests", "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.", "junit-unit.xml", "green"],
       ["02", "pnpm test:contracts", "API contract tests", `${apiContractPack.endpointContracts.length} endpoint contracts for auth, users, records, commercial, import, billing, feedback, and audit.`, "junit-contracts.xml", "blue"],
@@ -8794,7 +8791,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-file-pack.json?v=146";
+    const downloadHref = "data/production-backend-repo-file-pack.json?v=153";
     const repositoryFolders = [
       ["apps/web", "Frontend app", "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.", "Frontend Owner", "green"],
       ["apps/api", "Backend API", "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.", "Backend Lead", "teal"],
@@ -8954,7 +8951,7 @@
         ),
       ),
     );
-    const downloadHref = "data/api-error-audit-envelope-pack.json?v=146";
+    const downloadHref = "data/api-error-audit-envelope-pack.json?v=153";
     const errorEnvelopeFields = [
       ["ok", "boolean", "Always false for errors and true for success responses.", "green"],
       ["requestId", "string", "Public-safe trace id returned to the UI, logs, and audit rows.", "blue"],
@@ -9158,7 +9155,7 @@
         ),
       ),
     );
-    const downloadHref = "data/ci-workflow-file-blueprint.json?v=146";
+    const downloadHref = "data/ci-workflow-file-blueprint.json?v=153";
     const workflowFiles = [
       [".github/workflows/ci.yml", "Primary PR gate", "Pull request", "install, lint, typecheck, unit, contracts, route envelopes, audit envelopes", "ci-summary.json", "red"],
       [".github/workflows/security-audit.yml", "Security and tenant proof", "Pull request + nightly", "auth tenant guards, section denials, commercial vault denial, redaction, request id", "security-audit-proof.json", "red"],
@@ -9329,7 +9326,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-first-commit-builder.json?v=146";
+    const downloadHref = "data/private-repo-first-commit-builder.json?v=153";
     const repoShellFiles = [
       ["README.md", "Repository orientation", "Explains alpha scope, local setup, proof commands, privacy rules, and release ritual.", "Repo Owner", "green"],
       ["package.json", "Root command map", "Defines install, dev, lint, typecheck, test, migrate, seed, smoke, and release-gate scripts.", "Platform Owner", "blue"],
@@ -9461,7 +9458,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-issue-body-exporter.json?v=146";
+    const downloadHref = "data/backend-issue-body-exporter.json?v=153";
     const labelPlan = [
       ["type:foundation", "Repository shell, docs, env examples, and workspace wiring.", "green"],
       ["type:api", "Server, routes, controllers, services, validators, and contracts.", "teal"],
@@ -9738,7 +9735,7 @@
         ),
       ),
     );
-    const downloadHref = "data/branch-protection-release-checklist.json?v=146";
+    const downloadHref = "data/branch-protection-release-checklist.json?v=153";
     const protectedBranches = [
       ["main", "Require pull request review", "ci.yml, security-audit.yml, migration-restore.yml, billing-testmode.yml, release-gate.yml", "No direct push, no force push, owner approval before production release.", "red"],
       ["develop", "Require primary CI", "ci.yml, security-audit.yml", "Feature integration only after lint, typecheck, route envelopes, auth tenant, and redaction proof.", "blue"],
@@ -9894,7 +9891,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-file-content-export.json?v=146";
+    const downloadHref = "data/first-backend-file-content-export.json?v=153";
     const makeFile = (path, owner, issue, purpose, tone, contentLines) => {
       const content = contentLines.join("\n");
       return {
@@ -10319,7 +10316,7 @@
       ),
     );
     const targetRepository = "dhirajnyse/pursuitdesk-platform";
-    const downloadHref = "data/private-repo-setup-script-draft.json?v=146";
+    const downloadHref = "data/private-repo-setup-script-draft.json?v=153";
     const prerequisites = [
       ["GitHub access", "Admin rights for dhirajnyse and permission to create a private repository.", "red"],
       ["GitHub CLI", "gh auth status should show the account that will own pursuitdesk-platform.", "blue"],
@@ -10702,7 +10699,7 @@
     );
     return {
       importPackScore,
-      downloadHref: "data/github-labels-milestones-import-pack.json?v=146",
+      downloadHref: "data/github-labels-milestones-import-pack.json?v=153",
       labelCatalog,
       labelGroups,
       milestoneCatalog,
@@ -10747,7 +10744,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=146";
+    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=153";
     const qaLanes = [
       ["Repository shell", "Root files, workspace, README, env example, CODEOWNERS, PR template, and release runbook exist.", "green"],
       ["API shell", "Server, app, route registry, health route, request id, safe error, tenant scope, and access decision exist.", "teal"],
@@ -10899,7 +10896,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-opening-day-runbook.json?v=146";
+    const downloadHref = "data/private-repo-opening-day-runbook.json?v=153";
     const daySequence = [
       ["08:30", "Preflight", "Confirm GitHub access, repo name, owners, no live secrets, and local folder location.", "green"],
       ["09:00", "Create private repo", "Create dhirajnyse/pursuitdesk-platform as private, with main protected later after first checks appear.", "red"],
@@ -11020,7 +11017,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-decision-memo.json?v=146";
+    const downloadHref = "data/production-backend-repo-decision-memo.json?v=153";
     const memoSections = [
       ["Decision requested", "Approve creation of dhirajnyse/pursuitdesk-platform as the private production backend repo.", "green"],
       ["Why now", "Prototype has reached a stable SaaS blueprint with repo files, issues, QA gates, taxonomy, and opening-day sequence.", "teal"],
@@ -11151,7 +11148,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-risk-register.json?v=146";
+    const downloadHref = "data/backend-alpha-risk-register.json?v=153";
     const riskDomains = [
       ["Repository control", "Critical", "Private visibility, PR-first branch discipline, and no direct main commits.", "red"],
       ["Secret handling", "Critical", "No live keys, .env files, billing secrets, tokens, or private certificates in the first repo.", "red"],
@@ -11285,7 +11282,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=146";
+    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=153";
     const evidenceLanes = [
       ["Repo privacy proof", "Hard gate", "Screenshot or note proving the production backend repo is private before files move.", "red"],
       ["Setup command proof", "Execution", "Capture preflight, folder creation, starter file copy, install, and first quality command output.", "green"],
@@ -11433,7 +11430,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-execution-checklist.json?v=146";
+    const downloadHref = "data/private-repo-execution-checklist.json?v=153";
     const executionGates = [
       ["Gate 0", "Owner go/no-go", "Product owner confirms the controlled go is for repo creation and first PR evidence only.", "green"],
       ["Gate 1", "Private visibility", "Repo is private before files, labels, issues, or screenshots are added.", "red"],
@@ -11594,7 +11591,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-control-board.json?v=146";
+    const downloadHref = "data/backend-alpha-control-board.json?v=153";
     const boardKpis = [
       ["Control readiness", `${controlReadinessScore}%`, "How ready the private repo day is to be managed from one board", controlReadinessScore >= 70 ? "green" : "amber"],
       ["Repo status", "Not opened", "The private production backend repo still needs real GitHub creation.", "red"],
@@ -11745,7 +11742,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-day-one-script.json?v=146";
+    const downloadHref = "data/private-repo-day-one-script.json?v=153";
     const scriptKpis = [
       ["Script readiness", `${scriptReadinessScore}%`, "How ready the private repo day is to run from one command script.", scriptReadinessScore >= 70 ? "green" : "amber"],
       ["Command blocks", "10", "Preflight, repo, branch, files, taxonomy, issues, PR, checks, protection, closeout.", "blue"],
@@ -11892,7 +11889,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-proof-exporter.json?v=146";
+    const downloadHref = "data/backend-repo-proof-exporter.json?v=153";
     const proofKpis = [
       ["Proof readiness", `${proofReadinessScore}%`, "How ready the repo day is to produce copy-ready evidence.", proofReadinessScore >= 80 ? "green" : "amber"],
       ["Evidence files", privateRepoDayOneScript.evidenceFiles.length, "Markdown files that turn screenshots and commands into review proof.", "teal"],
@@ -12033,7 +12030,7 @@
         ),
       ),
     );
-    const downloadHref = "data/github-repo-opening-packet.json?v=146";
+    const downloadHref = "data/github-repo-opening-packet.json?v=153";
     const openingKpis = [
       ["Opening readiness", `${openingReadinessScore}%`, "How ready the private GitHub repo opening packet is before the real repo exists.", openingReadinessScore >= 80 ? "green" : "amber"],
       ["Issue wave", issueCount, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
@@ -12179,7 +12176,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=146";
+    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=153";
     const issueRows = issues.map((issue, index) => [
       issue.id,
       issue.title,
@@ -12333,7 +12330,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-pr-body-builder.json?v=146";
+    const downloadHref = "data/first-pr-body-builder.json?v=153";
     const prKpis = [
       ["PR readiness", `${firstPrReadinessScore}%`, "How ready the first backend PR body is before the private repo exists.", firstPrReadinessScore >= 80 ? "green" : "amber"],
       ["Linked issues", issueRows.length, "Issue rows that can be referenced after real GitHub URLs exist.", "teal"],
@@ -12513,7 +12510,7 @@
         ),
       ),
     );
-    const downloadHref = "data/repo-evidence-folder-writer.json?v=146";
+    const downloadHref = "data/repo-evidence-folder-writer.json?v=153";
     const evidenceKpis = [
       ["Evidence folder", `${evidenceFolderScore}%`, "How ready the first backend PR evidence folder is before the private repo exists.", evidenceFolderScore >= 80 ? "green" : "amber"],
       ["Markdown files", evidenceTemplates.length, "Proof files that should exist under docs/evidence before review.", "teal"],
@@ -12673,7 +12670,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-command-runner-pack.json?v=146";
+    const downloadHref = "data/private-repo-command-runner-pack.json?v=153";
     const runnerKpis = [
       ["Runner readiness", `${commandRunnerScore}%`, "How ready the real private repo command session is to run without improvising.", commandRunnerScore >= 80 ? "green" : "amber"],
       ["Command blocks", commandBlocks.length, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
@@ -12812,7 +12809,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=146";
+    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=153";
     const reviewKpis = [
       ["Review readiness", `${reviewGateScore}%`, "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", reviewGateScore >= 80 ? "green" : "amber"],
       ["Reviewer lanes", reviewerRows.length, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
@@ -12980,7 +12977,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-artifact-status-board.json?v=146";
+    const downloadHref = "data/evidence-artifact-status-board.json?v=153";
     const boardKpis = [
       ["Artifact board", `${evidenceBoardScore}%`, "How ready the proof packet is to move from planned evidence into real captured artifacts.", evidenceBoardScore >= 80 ? "green" : "amber"],
       ["Artifact rows", artifactRows.length, "Markdown, screenshots, transcripts, signoffs, issue traces, branch proof, closeout, and block rules.", "teal"],
@@ -13204,7 +13201,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-handoff-email-pack.json?v=146";
+    const downloadHref = "data/private-repo-handoff-email-pack.json?v=153";
     const handoffKpis = [
       ["Email pack", `${handoffEmailScore}%`, "Readiness to send the private repo briefing without improvising.", handoffEmailScore >= 80 ? "green" : "amber"],
       ["Owner lanes", audienceBriefs.length, "Recipients with clear decision and evidence expectations.", "teal"],
@@ -13381,7 +13378,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=146";
+    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=153";
     const reviewCommentKpis = [
       ["Comment pack", `${firstBackendPrCommentScore}%`, "Readiness to paste controlled GitHub review language into the first backend PR.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
       ["Review actions", reviewCommentLibrary.length, "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.", "teal"],
@@ -13556,7 +13553,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=146";
+    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=153";
     const closeoutKpis = [
       ["Closeout pack", `${evidenceCloseoutScore}%`, "Readiness to close the first private backend PR evidence session without losing proof state.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
       ["Outcome lanes", closeoutOutcomeLanes.length, "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.", "teal"],
@@ -13725,7 +13722,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=146";
+    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=153";
     return {
       backendRepoDayMeetingScore,
       downloadHref,
@@ -13898,7 +13895,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-reply-capture-board.json?v=146";
+    const downloadHref = "data/private-repo-reply-capture-board.json?v=153";
     return {
       replyCaptureScore,
       downloadHref,
@@ -14048,7 +14045,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=146";
+    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=153";
     return {
       pdfExportScore,
       downloadHref,
@@ -14231,7 +14228,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=146";
+    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=153";
     return {
       meetingMinutesScore,
       downloadHref,
@@ -14412,7 +14409,7 @@
         ),
       ),
     );
-    const downloadHref = "data/reviewer-decision-email-pack.json?v=146";
+    const downloadHref = "data/reviewer-decision-email-pack.json?v=153";
     return {
       reviewerDecisionEmailScore,
       downloadHref,
@@ -14451,28 +14448,28 @@
         ["Escalation ready", `${escalationCadence.length} follow-up moments prevent silence after minutes.`, "red"],
         ["Privacy ready", `${privacyGuardrails.length} guardrails prevent data leakage in reviewer emails.`, "teal"],
         ["Management summary ready", `${managementSummaryBlocks.length} leadership blocks explain the email posture.`, "green"],
-        ["Next handoff ready", "v147 can track closeout archive state and unresolved reply evidence gaps.", "blue"],
+        ["Next handoff ready", "v153 records who approved closeout decisions and which rules become standard.", "blue"],
       ],
       handoff: [
         "v146 turns minutes, reply states, and review gates into targeted reviewer decision emails.",
         "The pack separates approval requests, holds, requested changes, deferred proof, no-response chases, merge confirmation, management summary, and archive approval.",
         "The static demo still cannot send email or capture replies automatically; it now defines the templates, triggers, privacy guardrails, and audit fields the backend must implement.",
-        "v147 can now track which closeout packets, archive names, replies, and evidence gaps remain open after emails are sent.",
+        "v153 now turns closeout approvals into reusable decision memory, standard rules, approver coverage, and audit chains.",
       ],
     };
   }
 
   function buildProductBuildTracker() {
     return {
-      version: "v146 Reviewer Decision Email Pack",
-      phase: "Reviewer decision email pack",
+      version: "v153 Closeout Approval Memory",
+      phase: "Closeout approval memory",
       lane: "Static product prototype on GitHub Pages",
-      pace: "127 meaningful versions since rebrand",
-      summary: "The prototype now turns reviewer outcomes into copy-ready follow-up emails for approvals, holds, requested changes, deferred proof, blockers, no responses, merge readiness, privacy guardrails, owner actions, and management closeout.",
+      pace: "134 meaningful versions since rebrand",
+      summary: "Closeout now captures who approved each closeout decision, what changed, which rule became standard, which owner carries the next action, and which audit event proves the decision later.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, and reviewer decision email pack are live in demo form.", "teal"],
-        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, workflow job matrix, branch protection, cache policy, secret policy, release artifacts, first-commit file contents, issue bodies, issue labels, milestones, proof commands, opening order, protected environments, review ownership, artifact retention, release ritual, rollback playbook, issue-to-check map, root file contents, API starter contents, package starter contents, workflow starter contents, setup scripts, repository bootstrap commands, folder creation, secret placeholders, first PR proof, label catalog, milestone catalog, board columns, issue routing rules, taxonomy gates, first commit QA lanes, artifact expectations, role signoffs, go/no-go rules, opening-day command sequence, evidence packets, no-go stops, owner checkpoints, decision memo scope cutline, approval basis, decision options, blocker register, definitions of done, risk domains, risk triggers, mitigations, residual risks, owner actions, monitoring signals, evidence files, screenshots, PR note sections, workflow check names, branch-protection proof, signoff trail, execution gates, proof logs, command order, issue waves, branch timing, closeout checks, control lanes, blocker queue, owner readiness, decision log, alpha board action queue, day-one command blocks, manual proof points, PR script, owner prompts, closeout checks, evidence templates, command transcript slots, approval notes, proof snippets, proof quality gates, repo identity facts, owner matrix, issue wave ledger, launch files, risk locks, closeout ledger, copy-ready repo-opening text, CSV-style issue rows, owner lanes, label mapping, body-file names, validation gates, paste checks, import closeout files, PR identity, PR scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback text, release checklist, copy-ready PR body, evidence folder tree, markdown templates, screenshot slots, transcript slots, issue ledger, owner signoff files, branch-proof gates, closeout notes, command runner steps, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, copy-ready commands, runner closeout, reviewer gate matrix, decision gates, evidence review map, hold queue, block rules, merge checklist, reviewer packets, PR comment templates, GitHub review action text, lane comment packets, inline note snippets, no-leak signoffs, request-changes text, merge closeout text, review send checklist, evidence closeout lanes, decision logs, owner closeout queue, no-leak rollback checks, closeout timeline, management summary lines, meeting agenda, attendee map, decision capture board, action queue, risk parking lot, evidence outputs, facilitator script, reviewer reply lanes, reply states, thread capture fields, requested-change resolver, approval readiness, merge gates, reply SLA, management reply brief, PDF page blueprint, printable sections, redaction checks, export QA, distribution matrix, archive naming, export management brief, attendance log, minutes sections, decision register, action queue, management email blocks, follow-up cadence, privacy/audit checks, and copy-ready minutes are mapped.", "blue"],
+        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, and Closeout Approval Memory are live in demo form.", "teal"],
+        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, workflow job matrix, branch protection, cache policy, secret policy, release artifacts, first-commit file contents, issue bodies, issue labels, milestones, proof commands, opening order, protected environments, review ownership, artifact retention, release ritual, rollback playbook, issue-to-check map, root file contents, API starter contents, package starter contents, workflow starter contents, setup scripts, repository bootstrap commands, folder creation, secret placeholders, first PR proof, label catalog, milestone catalog, board columns, issue routing rules, taxonomy gates, first commit QA lanes, artifact expectations, role signoffs, go/no-go rules, opening-day command sequence, evidence packets, no-go stops, owner checkpoints, decision memo scope cutline, approval basis, decision options, blocker register, definitions of done, risk domains, risk triggers, mitigations, residual risks, owner actions, monitoring signals, evidence files, screenshots, PR note sections, workflow check names, branch-protection proof, signoff trail, execution gates, proof logs, command order, issue waves, branch timing, closeout checks, control lanes, blocker queue, owner readiness, decision log, alpha board action queue, day-one command blocks, manual proof points, PR script, owner prompts, closeout checks, evidence templates, command transcript slots, approval notes, proof snippets, proof quality gates, repo identity facts, owner matrix, issue wave ledger, launch files, risk locks, closeout ledger, copy-ready repo-opening text, CSV-style issue rows, owner lanes, label mapping, body-file names, validation gates, paste checks, import closeout files, PR identity, PR scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback text, release checklist, copy-ready PR body, evidence folder tree, markdown templates, screenshot slots, transcript slots, issue ledger, owner signoff files, branch-proof gates, closeout notes, command runner steps, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, copy-ready commands, runner closeout, reviewer gate matrix, decision gates, evidence review map, hold queue, block rules, merge checklist, reviewer packets, PR comment templates, GitHub review action text, lane comment packets, inline note snippets, no-leak signoffs, request-changes text, merge closeout text, review send checklist, evidence closeout lanes, decision logs, owner closeout queue, no-leak rollback checks, closeout timeline, management summary lines, meeting agenda, attendee map, decision capture board, action queue, risk parking lot, evidence outputs, facilitator script, reviewer reply lanes, reply states, thread capture fields, requested-change resolver, approval readiness, merge gates, reply SLA, management reply brief, PDF page blueprint, printable sections, redaction checks, export QA, distribution matrix, archive naming, export management brief, attendance log, minutes sections, decision register, action queue, management email blocks, follow-up cadence, privacy/audit checks, copy-ready minutes, closeout reopen reasons, approver handoff, route guards, audit fields, approval memory rows, standard rules, approver coverage, and decision audit chains are mapped.", "blue"],
         ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, and reviewer decision email pack are mapped, but the real private repo and real staging environment are not created yet.", "red"],
         ["Billing model", 85, "USD pricing, seat logic, checkout flow, invoice lifecycle, webhooks, plan changes, access locks, audit events, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "amber"],
         ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, and reviewer decision email pack.", "green"],
@@ -14549,12 +14546,19 @@
         ["68", "Private repo reply capture board", "Done", "Real reviewer replies can now be tracked as approved, commented, held, requested changes, deferred, blocked, no response, or merge-ready with thread links, owners, dates, and evidence."],
         ["69", "Evidence closeout PDF export plan", "Done", "Captured replies can now be shaped into a PDF-ready management closeout packet with page blueprint, printable sections, redaction checks, distribution lanes, archive naming, and QA gates."],
         ["70", "Backend meeting minutes exporter", "Done", "Repo-day meeting output can now become copy-ready minutes with attendance, decision register, evidence reviewed, risk parking lot, owner actions, privacy checks, follow-up cadence, and management email."],
-        ["71", "Reviewer decision email pack", "Active", "Minutes, reply states, and review gates now become targeted follow-up emails for approvals, holds, requested changes, deferrals, no responses, merge confirmation, management summary, and archive approval."],
+        ["71", "Reviewer decision email pack", "Done", "Minutes, reply states, and review gates now become targeted follow-up emails for approvals, holds, requested changes, deferrals, no responses, merge confirmation, management summary, and archive approval."],
+        ["72", "Build phase workspace", "Done", "Build tracker, phase map, next builds, blockers, readiness percentages, and backend artifact packs now live in a separate admin-only tab after Rooms."],
+        ["73", "Closeout archive control", "Done", "Closed tender and project records now move into Ready archive, Needs evidence, Needs owner/date, and Learning loop lanes."],
+        ["74", "Closeout export packet", "Done", "Closeout now creates packet ID, archive folder, release gate, retention marker, ready sample, evidence queue, and JSON handoff."],
+        ["75", "Lessons learned intelligence", "Done", "Closed outcomes now produce repeat client memory, category patterns, evidence controls, owner/date gaps, stopped-work lessons, next-cycle rules, and JSON handoff."],
+        ["76", "Archive permission gate", "Done", "Closeout now maps close, prepare, approve, reopen, export, commercial context, route guard, denied-state, and audit-event permissions."],
+        ["77", "Closeout reopen workflow", "Done", "Archive exceptions now become reasoned reopen requests with approver decision, owner handoff, next action, route guard, audit event, and commercial redaction."],
+        ["78", "Closeout approval memory", "Active", "Closeout decisions now capture approver, decision type, standard rule, owner handoff, commercial redaction, and audit event for future review."],
       ],
       nextBuilds: [
-        ["v147", "Closeout Archive Control Board", "Track exported closeout packs, archive names, owners, versions, retention status, and follow-up evidence gaps."],
-        ["v148", "Meeting Minutes PDF Renderer", "Turn the minutes exporter into a printable packet with cover, decisions, actions, no-leak statement, and archive footer."],
-        ["v149", "Reviewer Reply SLA Board", "Track sent emails, pending replies, overdue chases, escalation owners, and archive status after reviewer follow-up starts."],
+        ["v154", "Archive Retention Calendar", "Add retention dates, review reminders, archive expiry posture, and evidence-review schedules for closed records."],
+        ["v155", "Closeout SLA and Escalation Clock", "Add reopen and archive SLA timers, overdue escalation lanes, reviewer nudges, and closeout ageing signals."],
+        ["v156", "Closeout Evidence Search", "Add searchable archive evidence index, source proof lookup, record cross-links, and management-safe search filters."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -14707,6 +14711,37 @@
             </div>
           </article>
         </div>
+      </section>
+    `;
+  }
+
+  function renderBuildPhasePage() {
+    const commandModel = buildCommandCenterModel();
+    const tracker = buildProductBuildTracker();
+    const doneCount = tracker.phases.filter(([, , status]) => status === "Done").length;
+    const activeCount = tracker.phases.filter(([, , status]) => status === "Active").length;
+    const mostlyDoneCount = tracker.phases.filter(([, , status]) => status === "Mostly done").length;
+    return `
+      <section class="build-phase-workspace">
+        <section class="build-phase-console">
+          <div>
+            <span class="panel-label">Admin build room</span>
+            <h2>Keep the roadmap out of the operating screen.</h2>
+            <p>Command Center stays focused on daily work. Build Phase keeps the product roadmap, current milestone, next versions, production blockers, backend artifact packs, and SaaS-readiness percentages in one admin-only place.</p>
+            <div class="command-actions">
+              <button class="secondary-btn" type="button" data-view="Command">Open command center</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+            </div>
+          </div>
+          <div class="build-phase-console-card">
+            <span>Current version</span>
+            <strong>${escapeHtml(tracker.version.split(" ")[0])}</strong>
+            <small>${doneCount} done / ${activeCount} active / ${mostlyDoneCount} mostly done</small>
+          </div>
+        </section>
+        ${renderProductBuildTracker(tracker)}
+        ${renderBuildPhaseArtifactSections(commandModel)}
       </section>
     `;
   }
@@ -19693,7 +19728,7 @@
             <h3>Turn the prototype data into copy-ready backend fixtures.</h3>
             <p>The export separates frontline tracker records from commercial vault data, keeps source workbook lineage, defines seed files, creates validation scenarios, and gives the private repo a repeatable fixture contract.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-fixture-export-v146.json">Download fixture JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-fixture-export-v153.json">Download fixture JSON</a>
               <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -19916,7 +19951,7 @@
             <h3>Move from product plan to the first private-repo sprint.</h3>
             <p>This checklist turns the private repo guide, fixture export, API contracts, issue export, and staging smoke script into a sprint-zero operating rhythm for the first backend build.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-sprint-checklist-v146.json">Download sprint JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-sprint-checklist-v153.json">Download sprint JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -20139,7 +20174,7 @@
             <h3>Turn sprint-zero output into a controlled staging release.</h3>
             <p>This checklist defines the first private backend staging environment: environment lanes, secrets, database checks, monitoring, rollback, owners, and go/no-go gates before any pilot user touches live data.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-staging-deployment-checklist-v146.json">Download deployment JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-staging-deployment-checklist-v153.json">Download deployment JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -20400,7 +20435,7 @@
             <h3>Convert the API contract pack into files engineers can create.</h3>
             <p>This map takes the alpha API contract pack and turns it into route files, controllers, services, validators, middleware, tests, folders, and implementation slices for the private backend repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-route-skeleton-map-v146.json">Download route JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-route-skeleton-map-v153.json">Download route JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -20624,7 +20659,7 @@
             <h3>Turn the route skeleton into a production database path.</h3>
             <p>This blueprint defines migration files, table ownership, indexes, seed order, rollback rules, validation gates, commands, and data contracts for the first private backend database.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-database-migration-blueprint-v146.json">Download migration JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-database-migration-blueprint-v153.json">Download migration JSON</a>
               <button class="ghost-btn" type="button" data-view="Import">Open import</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -20882,7 +20917,7 @@
             <h3>Protect every company, user, room, and commercial field.</h3>
             <p>This guard map turns the access model into backend middleware for sessions, tenant isolation, section permissions, commercial vault access, membership admin, mutations, safe errors, and denied-access audit proof.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-auth-tenant-guard-blueprint-v146.json">Download auth guard JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-auth-tenant-guard-blueprint-v153.json">Download auth guard JSON</a>
               <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -21160,7 +21195,7 @@
             <h3>Make the future backend prove itself before pilot data enters.</h3>
             <p>This pack converts routes, migrations, auth guards, tenant isolation, commercial redaction, billing, import, audit, restore, and staging smoke checks into executable commands with CI artifacts and release gates.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-test-command-pack-v146.json">Download test command JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-test-command-pack-v153.json">Download test command JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -21416,7 +21451,7 @@
             <h3>Turn the private backend repo into a disciplined first commit.</h3>
             <p>This file pack defines the folder tree, first commit files, API route batches, migration files, auth guard files, test files, CI workflows, environment examples, copy order, owners, and acceptance checks for the real PursuitDesk backend repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-file-pack-v146.json">Download repo file JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-file-pack-v153.json">Download repo file JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -21766,7 +21801,7 @@
             <h3>Give every backend route one safe response and one evidence trail.</h3>
             <p>This pack standardizes request ids, safe error bodies, audit payloads, denial evidence, route coverage, middleware files, and test proof before the private backend repo starts real implementation.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-api-error-audit-envelope-pack-v146.json">Download envelope JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-api-error-audit-envelope-pack-v153.json">Download envelope JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -22100,7 +22135,7 @@
             <h3>Turn backend quality rules into required GitHub proof.</h3>
             <p>This blueprint maps GitHub Actions workflow files, CI jobs, cache strategy, branch protection, secrets, command bindings, release gates, and artifacts for the first private PursuitDesk backend repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-ci-workflow-file-blueprint-v146.json">Download CI blueprint JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-ci-workflow-file-blueprint-v153.json">Download CI blueprint JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -22448,7 +22483,7 @@
             <h3>Turn the backend plan into a disciplined first commit.</h3>
             <p>This builder converts the repo file pack, safe error/audit envelope, CI workflow blueprint, route skeleton, migration blueprint, and guard plan into the first private PursuitDesk backend commit.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-first-commit-builder-v146.json">Download first commit JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-first-commit-builder-v153.json">Download first commit JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -22735,7 +22770,7 @@
             <h3>Turn the private-repo plan into copy-ready engineering issues.</h3>
             <p>This exporter converts first-commit files, safe error/audit rules, CI proof, route skeletons, migrations, and tenant guards into the first private-repo backlog with owners, labels, milestones, file scope, and proof commands.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-issue-body-exporter-v146.json">Download issue JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-issue-body-exporter-v153.json">Download issue JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -23010,7 +23045,7 @@
             <h3>Make the future private backend repo hard to break.</h3>
             <p>This checklist turns workflow files and backend issues into exact GitHub branch rules, required checks, protected environments, review owners, release artifacts, rollback moves, and acceptance gates before the first real backend commit.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-branch-protection-release-checklist-v146.json">Download release JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-branch-protection-release-checklist-v153.json">Download release JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -23319,7 +23354,7 @@
             <h3>Turn the private repo plan into paste-ready starter files.</h3>
             <p>This export gives the future backend repository its first real shape: root files, API shell, safe middleware boundaries, package starters, workflow files, copy order, implementation guardrails, and acceptance checks.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-file-content-export-v146.json">Download file content JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-file-content-export-v153.json">Download file content JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -23600,7 +23635,7 @@
             <h3>Turn the backend handoff into a guided private repo bootstrap.</h3>
             <p>This draft gives the future production repository a careful opening sequence: preflight checks, private repo creation, folder skeleton, starter-file writing, labels, milestones, first proof run, first PR, and branch protection timing.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-setup-script-draft-v146.json">Download setup script JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-setup-script-draft-v153.json">Download setup script JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -23786,7 +23821,7 @@
             <h3>Give the private repo a clean backlog taxonomy before issues arrive.</h3>
             <p>This pack creates the metadata spine for the future backend repo: label catalog, milestone catalog, board columns, issue routing rules, import sequence, command preview, taxonomy files, quality gates, and acceptance checks.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-labels-milestones-import-pack-v146.json">Download taxonomy JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-labels-milestones-import-pack-v153.json">Download taxonomy JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24026,7 +24061,7 @@
             <h3>Review the first private backend PR before feature coding begins.</h3>
             <p>This checklist turns the setup script, starter files, taxonomy, workflows, branch rules, and release evidence into a first-commit QA gate with clear go, hold, and no-go rules.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-commit-qa-checklist-v146.json">Download QA JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-commit-qa-checklist-v153.json">Download QA JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24242,7 +24277,7 @@
             <h3>Turn the backend plan into a controlled first day.</h3>
             <p>This runbook sequences repository creation, taxonomy import, issue opening, starter file copy, first proof run, first PR, review signoffs, and branch protection timing.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-opening-day-runbook-v146.json">Download runbook JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-opening-day-runbook-v153.json">Download runbook JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24427,7 +24462,7 @@
             <h3>Approve the private backend repo move without accidentally approving live SaaS.</h3>
             <p>The memo converts the repo runbook, first-commit QA, setup script, branch protection plan, issue export, and CI blueprint into one executive go, hold, or no-go decision.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-decision-memo-v146.json">Download memo JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-decision-memo-v153.json">Download memo JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24630,7 +24665,7 @@
             <h3>Know what can break before the private backend repo opens.</h3>
             <p>This register turns the decision memo, opening-day runbook, first-commit QA, branch protection plan, CI blueprint, and setup script into clear risk controls before execution begins.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-risk-register-v146.json">Download risk JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-risk-register-v153.json">Download risk JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24818,7 +24853,7 @@
             <h3>Make the private repo day auditable before the first file moves.</h3>
             <p>The pack converts the runbook and risk register into proof files, screenshots, command transcripts, PR notes, workflow check names, branch-protection evidence, and owner signoffs.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-opening-day-evidence-pack-v146.json">Download evidence JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-opening-day-evidence-pack-v153.json">Download evidence JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -25020,7 +25055,7 @@
             <h3>Run the private backend repo day without improvising.</h3>
             <p>The checklist converts the decision memo, risk register, runbook, and evidence pack into gates, owner actions, proof logs, command order, branch timing, stop rules, and completion checks.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-execution-checklist-v146.json">Download checklist JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-execution-checklist-v153.json">Download checklist JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -25235,7 +25270,7 @@
             <h3>See the repo day as a control board before it happens.</h3>
             <p>The board turns execution planning into one operating surface for repo status, first PR, issue wave, evidence health, CI check names, branch protection timing, blockers, owners, and go/hold/no-go movement.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-control-board-v146.json">Download board JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-control-board-v153.json">Download board JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -25459,7 +25494,7 @@
             <h3>Run the first backend repo day without improvising.</h3>
             <p>This script turns the control board into a practical execution path: preflight, private repo, clean copy set, branch, starter shell, issue wave, first PR, workflow names, branch protection, and closeout proof.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-day-one-script-v146.json">Download script JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-day-one-script-v153.json">Download script JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -25690,7 +25725,7 @@
             <h3>Turn repo day into a proof packet people can trust.</h3>
             <p>The exporter converts the day-one script into markdown evidence files, screenshot checklist, command transcript slots, first PR sections, owner approval notes, closeout packet, and quality gates for the future private backend repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-proof-exporter-v146.json">Download proof JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-proof-exporter-v153.json">Download proof JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -25906,7 +25941,7 @@
             <h3>Open the private repo with facts, owners, proof, and no drift.</h3>
             <p>This packet converts the proof exporter into one repo-opening bundle: repo identity, owner matrix, issue wave, first PR starter, artifact manifest, launch files, risk locks, closeout ledger, and copy-ready text for the future private backend repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-repo-opening-packet-v146.json">Download opening packet JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-repo-opening-packet-v153.json">Download opening packet JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -26137,7 +26172,7 @@
             <h3>Turn the backlog into clean import rows before GitHub paste.</h3>
             <p>The import kit reshapes the backend issue bodies into CSV-style rows, owner lanes, label and milestone mapping, import waves, body-file names, validation gates, paste checks, and closeout files for the future private repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-issue-import-kit-v146.json">Download issue import JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-issue-import-kit-v153.json">Download issue import JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -26366,7 +26401,7 @@
             <h3>Write the first backend PR before the repo day starts.</h3>
             <p>This builder turns the issue import kit, repo opening packet, proof exporter, reviewers, rollback rules, and release checklist into one copy-ready first backend PR body for the future private repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-pr-body-builder-v146.json">Download PR body JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-pr-body-builder-v153.json">Download PR body JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -26616,7 +26651,7 @@
             <h3>Write the proof folder the first backend PR will link to.</h3>
             <p>This writer converts the PR body builder into exact docs/evidence files, screenshot slots, transcript slots, issue ledger rows, owner signoff files, branch-protection proof, and closeout notes for the future private backend repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-repo-evidence-folder-writer-v146.json">Download evidence folder JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-repo-evidence-folder-writer-v153.json">Download evidence folder JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -26877,7 +26912,7 @@
             <h3>Run repo day from a controlled command sheet.</h3>
             <p>This pack turns the evidence folder writer and day-one script into a practical execution cockpit: command order, expected outputs, evidence writes, artifact filenames, stop rules, owner prompts, branch timing, and closeout checks.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-command-runner-pack-v146.json">Download command runner JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-command-runner-pack-v153.json">Download command runner JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -27154,7 +27189,7 @@
             <h3>Make the first backend PR reviewable, holdable, and blockable.</h3>
             <p>This matrix turns the first PR body, evidence folder, and command runner into reviewer-specific gates: who approves what, what causes a hold, what blocks trust, and what must be true before merge readiness.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-pr-review-gate-matrix-v146.json">Download review gate JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-pr-review-gate-matrix-v153.json">Download review gate JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -27382,7 +27417,7 @@
             <h3>Know which proof is ready, held, deferred, or blocked.</h3>
             <p>This board turns the review matrix, evidence folder, command runner, and proof exporter into one operating view for real private-repo artifacts: screenshots, transcripts, issue URLs, owner signoffs, branch proof, and closeout notes.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-artifact-status-board-v146.json">Download artifact board JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-artifact-status-board-v153.json">Download artifact board JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -27568,7 +27603,7 @@
             <h3>Brief every owner before the first private backend repo session.</h3>
             <p>This pack converts the artifact board, PR review matrix, command runner, opening packet, and first PR body into a copy-ready owner email, agenda, evidence links, approval language, safety locks, and follow-up rhythm.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-handoff-email-pack-v146.json">Download handoff email JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-handoff-email-pack-v153.json">Download handoff email JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -27808,7 +27843,7 @@
             <h3>Turn review rules into paste-ready GitHub PR comments.</h3>
             <p>This pack converts the review gate matrix and private repo handoff into GitHub-ready comments for opening review, lane approval, evidence holds, request changes, no-leak signoff, branch-protection holds, and merge closeout.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-pr-review-comment-pack-v146.json">Download review comments JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-pr-review-comment-pack-v153.json">Download review comments JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -28020,7 +28055,7 @@
             <h3>Close the private repo day with proof, not memory.</h3>
             <p>This pack converts review comments, artifact status, owner handoff, and review gates into passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout records.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-evidence-closeout-pack-v146.json">Download closeout JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-evidence-closeout-pack-v153.json">Download closeout JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -28234,7 +28269,7 @@
             <h3>Run the private repo day like a decision room.</h3>
             <p>This pack turns the closeout model into an agenda, attendee map, decision capture board, owner action queue, risk parking lot, evidence outputs, and facilitator script for the first backend repo session.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-day-meeting-pack-v146.json">Download meeting JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-day-meeting-pack-v153.json">Download meeting JSON</a>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -28467,7 +28502,7 @@
             <h3>Turn every reviewer reply into a clear next state.</h3>
             <p>This board captures real GitHub replies, holds, requested changes, deferred proof, no-response lanes, owner actions, and merge-readiness outcomes after the backend repo day meeting.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-reply-capture-board-v146.json">Download reply board JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-reply-capture-board-v153.json">Download reply board JSON</a>
               <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -28706,7 +28741,7 @@
             <h3>Turn captured replies into a management-ready closeout pack.</h3>
             <p>This plan defines the printable packet that will eventually convert reviewer replies, evidence status, redaction checks, distribution lanes, archive naming, and owner actions into a controlled closeout export.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-closeout-pdf-export-plan-v146.json">Download export plan JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-closeout-pdf-export-plan-v153.json">Download export plan JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
             </div>
@@ -28926,7 +28961,7 @@
             <h3>Turn the repo-day review into clean minutes and owner actions.</h3>
             <p>This exporter converts the meeting pack, captured replies, evidence closeout, and PDF export plan into copy-ready minutes, attendance, decision register, action queue, privacy checks, follow-up cadence, and a management email.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-meeting-minutes-exporter-v146.json">Download minutes JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-meeting-minutes-exporter-v153.json">Download minutes JSON</a>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -29155,7 +29190,7 @@
             <h3>Turn unresolved reviewer states into precise follow-up emails.</h3>
             <p>This pack converts meeting minutes, reply capture states, review gates, and archive rules into targeted reviewer emails for approvals, holds, requested changes, deferrals, no responses, merge confirmation, and archive signoff.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-reviewer-decision-email-pack-v146.json">Download email pack JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-reviewer-decision-email-pack-v153.json">Download email pack JSON</a>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -34244,6 +34279,1725 @@
     `;
   }
 
+  function closeoutEvidenceGaps(record) {
+    const gaps = [];
+    if (!record.reference) gaps.push("Reference");
+    if (!record.client) gaps.push("Client");
+    if (!record.title) gaps.push("Title");
+    if (!record.owner) gaps.push("Owner");
+    if (!record.endDate) gaps.push("Close date");
+    if (!record.category) gaps.push("Category");
+    if (!record.sourceWorkbook || !record.sourceSheet) gaps.push("Source proof");
+    if ((record.status === "Awarded" || record.type === "Project") && !record.agreementNo) gaps.push("Agreement no");
+    if (record.status === "Awarded" && !isYes(record.loaReceived)) gaps.push("LOA proof");
+    if (record.status === "Completed" && !isYes(record.agreementReceived) && !record.agreementNo) gaps.push("Completion proof");
+    if (["Cancelled", "Regret"].includes(record.status) && !(record.notes || (record.rounds || []).length)) gaps.push("Reason note");
+    return gaps;
+  }
+
+  function closeoutArchiveName(record) {
+    const date = formatDate(record.endDate) || "No date";
+    const parts = [
+      record.type || "Record",
+      record.status || "Closed",
+      record.reference || record.agreementNo || "No reference",
+      record.client || "No client",
+      date,
+    ];
+    return parts.join(" / ");
+  }
+
+  function closeoutLaneForItem(item) {
+    if (!item.gaps.length) return "Ready archive";
+    if (item.gaps.some((gap) => ["Owner", "Close date"].includes(gap))) return "Needs owner/date";
+    if (item.record.status === "Cancelled" || item.record.status === "Regret") return "Learning loop";
+    return "Needs evidence";
+  }
+
+  function closeoutToneForItem(item) {
+    if (!item.gaps.length) return "green";
+    if (item.gaps.some((gap) => ["Owner", "Close date", "Reason note"].includes(gap))) return "red";
+    if (item.gaps.length >= 3) return "amber";
+    return "blue";
+  }
+
+  function jsonDataUri(value) {
+    return `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(value, null, 2))}`;
+  }
+
+  function buildCloseoutArchiveModel() {
+    const records = companyRecords();
+    const closedRecords = records.filter(isClosedRecord);
+    const closedGood = closedRecords.filter((record) => ["Awarded", "Completed"].includes(record.status));
+    const stopped = closedRecords.filter((record) => ["Cancelled", "Regret"].includes(record.status));
+    const items = closedRecords
+      .map((record) => {
+        const gaps = closeoutEvidenceGaps(record);
+        const qualityScore = Math.max(0, Math.min(100, 100 - gaps.length * 14));
+        const item = {
+          record,
+          gaps,
+          qualityScore,
+          archiveName: closeoutArchiveName(record),
+          outcome: ["Awarded", "Completed"].includes(record.status) ? "Positive close" : "Stopped close",
+        };
+        return {
+          ...item,
+          lane: closeoutLaneForItem(item),
+          tone: closeoutToneForItem(item),
+        };
+      })
+      .sort((a, b) => a.gaps.length - b.gaps.length || b.qualityScore - a.qualityScore || (b.record.endDate || "").localeCompare(a.record.endDate || ""));
+    const readyRecords = items.filter((item) => !item.gaps.length);
+    const gapItems = items.filter((item) => item.gaps.length);
+    const gapCount = gapItems.reduce((sum, item) => sum + item.gaps.length, 0);
+    const laneOrder = ["Ready archive", "Needs evidence", "Needs owner/date", "Learning loop"];
+    const lanes = laneOrder.map((name) => ({
+      name,
+      tone: name === "Ready archive" ? "green" : name === "Needs evidence" ? "blue" : name === "Needs owner/date" ? "red" : "amber",
+      items: items.filter((item) => item.lane === name).slice(0, 8),
+    }));
+    const archiveScore = closedRecords.length ? Math.round((readyRecords.length / closedRecords.length) * 100) : 100;
+    const outcomeRows = ["Awarded", "Completed", "Cancelled", "Regret"]
+      .map((status) => ({
+        label: status,
+        value: closedRecords.filter((record) => record.status === status).length,
+      }))
+      .filter((row) => row.value);
+    const ownerRows = topBreakdown(closedRecords, "owner", 6, "Unassigned");
+    const sourceRows = topBreakdown(closedRecords, "sourceSheet", 6, "Manual entry");
+    const focusStrip = [
+      {
+        label: "Archive readiness",
+        value: `${archiveScore}%`,
+        note: `${readyRecords.length}/${closedRecords.length || 0} closed records ready to file.`,
+        tone: archiveScore >= 70 ? "green" : archiveScore >= 40 ? "amber" : "red",
+      },
+      {
+        label: "Evidence gaps",
+        value: gapCount,
+        note: `${gapItems.length} records still need proof or handoff cleanup.`,
+        tone: gapCount ? "blue" : "green",
+      },
+      {
+        label: "Positive closes",
+        value: closedGood.length,
+        note: "Awarded tenders and completed delivery records.",
+        tone: "green",
+      },
+      {
+        label: "Learning closes",
+        value: stopped.length,
+        note: "Cancelled or regret records requiring reason capture.",
+        tone: stopped.length ? "amber" : "green",
+      },
+    ];
+    const checklist = [
+      ["Outcome", "Status is final and the record is no longer mixed into active operating work."],
+      ["Owner", "A closeout owner is visible for accountability and future questions."],
+      ["Date", "Close date, award date, completion date, or final regret date is captured."],
+      ["Evidence", "Source workbook, source sheet, agreement number, LOA, or reason note is attached."],
+      ["Learning", "Lost, cancelled, or regret records include a reason note or negotiation context."],
+    ];
+    return {
+      records,
+      closedRecords,
+      readyRecords,
+      gapItems,
+      gapCount,
+      closedGood,
+      stopped,
+      archiveScore,
+      lanes,
+      outcomeRows,
+      ownerRows,
+      sourceRows,
+      focusStrip,
+      checklist,
+      latest: items.slice(0, 10),
+    };
+  }
+
+  function buildCloseoutExportPacket(model) {
+    const now = new Date();
+    const stamp = now.toISOString().slice(0, 10);
+    const dateKey = stamp.replace(/-/g, "");
+    const companyName = state.data.company?.name || "Tenant";
+    const tenant = companyName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "tenant";
+    const packetId = `PD-CLOSEOUT-${dateKey}`;
+    const archiveFolder = `archive/closeout/${stamp}/${tenant}/v153`;
+    const readySample = model.readyRecords.slice(0, 8).map((item) => ({
+      archiveName: item.archiveName,
+      reference: item.record.reference || item.record.agreementNo || "",
+      client: item.record.client || accountLabelForRecord(item.record),
+      owner: item.record.owner || "Unassigned",
+      status: item.record.status || "",
+      closeDate: item.record.endDate || "",
+      source: [item.record.sourceWorkbook, item.record.sourceSheet].filter(Boolean).join(" / ") || "Manual entry",
+      qualityScore: item.qualityScore,
+    }));
+    const gapQueue = model.gapItems.slice(0, 12).map((item) => ({
+      archiveName: item.archiveName,
+      reference: item.record.reference || item.record.agreementNo || "",
+      owner: item.record.owner || "Unassigned",
+      status: item.record.status || "",
+      missing: item.gaps,
+      qualityScore: item.qualityScore,
+    }));
+    const releaseGate = model.gapCount === 0 ? "Ready to release" : model.archiveScore >= 70 ? "Release with evidence exceptions" : "Hold archive release";
+    const retentionMarker = model.closedRecords.length ? "Retain source proof, closeout packet, and owner signoff for 7 years or client policy, whichever is longer." : "No closed records available yet.";
+    const checklist = [
+      ["Privacy boundary", "No commercial value fields are exported from frontline tracker pages.", model.closedRecords.length ? "Pass" : "Waiting"],
+      ["Archive names", "Each record receives a stable archive name using type, outcome, reference, client, and close date.", model.closedRecords.length ? "Pass" : "Waiting"],
+      ["Evidence queue", model.gapCount ? `${model.gapCount} missing evidence items remain.` : "No missing evidence detected.", model.gapCount ? "Action" : "Pass"],
+      ["Owner signoff", model.gapItems.some((item) => item.gaps.includes("Owner")) ? "Some records need owner assignment before release." : "Closed records have visible owner coverage.", model.gapItems.some((item) => item.gaps.includes("Owner")) ? "Action" : "Pass"],
+      ["Retention", retentionMarker, "Pass"],
+    ];
+    const managementLines = [
+      `${model.closedRecords.length} closed records are in archive control, with ${model.readyRecords.length} ready and ${model.gapItems.length} needing cleanup.`,
+      `${model.archiveScore}% of closed records are ready for archive based on owner, date, source proof, and outcome evidence.`,
+      model.stopped.length
+        ? `${model.stopped.length} cancelled or regret records should feed lessons learned before management review.`
+        : "No cancelled or regret records are currently driving the learning loop.",
+      `${releaseGate}: use this packet as the closeout handoff for governance, reports, and future backend archive storage.`,
+    ];
+    const packet = {
+      schemaVersion: "pursuitdesk.closeoutExportPacket.v153",
+      packetId,
+      generatedOn: now.toISOString(),
+      company: companyName,
+      archiveFolder,
+      releaseGate,
+      retentionMarker,
+      summary: {
+        closedRecords: model.closedRecords.length,
+        archiveReady: model.readyRecords.length,
+        evidenceGapItems: model.gapItems.length,
+        evidenceGapCount: model.gapCount,
+        archiveScore: model.archiveScore,
+        positiveCloses: model.closedGood.length,
+        learningCloses: model.stopped.length,
+      },
+      checklist,
+      readySample,
+      gapQueue,
+      managementLines,
+      nextBackendFields: [
+        "tenant_id",
+        "record_id",
+        "archive_packet_id",
+        "archive_name",
+        "archive_folder",
+        "outcome_status",
+        "closeout_owner_id",
+        "closeout_date",
+        "evidence_gap_json",
+        "retention_policy",
+        "reopen_reason",
+        "approved_by",
+        "approved_at",
+      ],
+    };
+    return {
+      packet,
+      packetId,
+      archiveFolder,
+      releaseGate,
+      retentionMarker,
+      readySample,
+      gapQueue,
+      checklist,
+      managementLines,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function buildCloseoutLessonsModel(model, exportPacket) {
+    const countBy = (items, getter, fallback = "Unassigned") => {
+      const counts = new Map();
+      items.forEach((item) => {
+        const raw = getter(item);
+        const label = String(raw || fallback).trim() || fallback;
+        counts.set(label, (counts.get(label) || 0) + 1);
+      });
+      return Array.from(counts, ([label, value]) => ({ label, value }))
+        .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label));
+    };
+    const gapRows = countBy(
+      model.gapItems.flatMap((item) => item.gaps.map((gap) => ({ gap }))),
+      (item) => item.gap,
+      "No gap",
+    ).slice(0, 6);
+    const repeatClientRows = countBy(model.closedRecords, (record) => accountLabelForRecord(record), "Unassigned client")
+      .filter((row) => row.value > 1)
+      .slice(0, 6);
+    const categoryRows = countBy(model.closedRecords, (record) => record.category, "Unassigned category").slice(0, 6);
+    const ownerRows = countBy(model.closedRecords, (record) => record.owner, "Unassigned owner").slice(0, 6);
+    const sourceRows = countBy(model.closedRecords, (record) => record.sourceSheet, "Manual entry").slice(0, 6);
+    const noDateCount = model.gapItems.filter((item) => item.gaps.includes("Close date")).length;
+    const noOwnerCount = model.gapItems.filter((item) => item.gaps.includes("Owner")).length;
+    const reasonGapCount = model.gapItems.filter((item) => item.gaps.includes("Reason note")).length;
+    const sourceGapCount = model.gapItems.filter((item) => item.gaps.includes("Source proof")).length;
+    const positiveShare = model.closedRecords.length ? Math.round((model.closedGood.length / model.closedRecords.length) * 100) : 0;
+    const gapPressure = model.closedRecords.length ? Math.round((model.gapItems.length / model.closedRecords.length) * 100) : 0;
+    const learningScore = Math.max(0, Math.min(100, Math.round(model.archiveScore * 0.4 + positiveShare * 0.25 + (100 - gapPressure) * 0.35)));
+    const topClient = repeatClientRows[0] || countBy(model.closedRecords, (record) => accountLabelForRecord(record), "Unassigned client")[0] || { label: "No client cluster", value: 0 };
+    const topCategory = categoryRows[0] || { label: "No category cluster", value: 0 };
+    const topGap = gapRows[0] || { label: "No evidence gap", value: 0 };
+    const patterns = [
+      {
+        label: "Repeat relationship",
+        value: topClient.value,
+        title: topClient.label,
+        note: topClient.value > 1 ? "Multiple closed records in the same account should become a client memory note." : "Client learning will sharpen as more records close.",
+        tone: topClient.value > 1 ? "green" : "blue",
+      },
+      {
+        label: "Category pattern",
+        value: topCategory.value,
+        title: topCategory.label,
+        note: "Use the strongest closed category to improve templates, owner routing, and checklist defaults.",
+        tone: "teal",
+      },
+      {
+        label: "Evidence pattern",
+        value: topGap.value,
+        title: topGap.label,
+        note: topGap.value ? "This missing proof type should become a closeout gate before the next review." : "Evidence discipline is clean in the current archive sample.",
+        tone: topGap.value ? "amber" : "green",
+      },
+      {
+        label: "Outcome posture",
+        value: `${positiveShare}%`,
+        title: "Positive close ratio",
+        note: `${model.closedGood.length} awarded/completed versus ${model.stopped.length} cancelled/regret records.`,
+        tone: positiveShare >= 70 ? "green" : positiveShare >= 45 ? "amber" : "red",
+      },
+    ];
+    const rules = [
+      ["Protect repeat clients", topClient.value > 1 ? `Create a client-memory note for ${topClient.label} before the next bid or delivery review.` : "Start client-memory notes once a relationship has more than one closed record.", "green"],
+      ["Make evidence non-negotiable", topGap.value ? `Add ${topGap.label} to the pre-close checklist because it is the top archive gap.` : "Keep the current evidence gate because no dominant missing-proof pattern is visible.", topGap.value ? "amber" : "green"],
+      ["Close stopped work with a reason", reasonGapCount ? `${reasonGapCount} stopped records need a reason note before they become useful learning.` : "Stopped records have enough context for learning review.", reasonGapCount ? "red" : "green"],
+      ["Keep dates and owners visible", noDateCount || noOwnerCount ? `${noDateCount} date gaps and ${noOwnerCount} owner gaps weaken archive accountability.` : "Owner and close-date coverage is strong enough for review.", noDateCount || noOwnerCount ? "blue" : "green"],
+      ["Turn category memory into templates", topCategory.value ? `Use ${topCategory.label} closeout history to improve pack templates and owner checklists.` : "Category learning will appear once more records close.", "teal"],
+    ];
+    const managementLines = [
+      `Closeout intelligence score is ${learningScore}/100 across ${model.closedRecords.length} closed records.`,
+      repeatClientRows.length
+        ? `${repeatClientRows[0].label} is the strongest repeat closeout relationship with ${repeatClientRows[0].value} closed records.`
+        : "No repeat closeout relationship has enough history yet; keep collecting client memory.",
+      gapRows.length
+        ? `${gapRows[0].label} is the most common archive gap and should be treated as a next-cycle control.`
+        : "No dominant archive evidence gap is visible in the current closeout set.",
+      `${positiveShare}% of closed records are awarded or completed; use stopped records for lessons and positive records for repeatable playbooks.`,
+    ];
+    const packet = {
+      schemaVersion: "pursuitdesk.closeoutLessons.v153",
+      generatedOn: new Date().toISOString(),
+      company: state.data.company?.name || "Tenant",
+      sourcePacketId: exportPacket.packetId,
+      learningScore,
+      summary: {
+        closedRecords: model.closedRecords.length,
+        positiveCloseRatio: positiveShare,
+        gapPressure,
+        noDateCount,
+        noOwnerCount,
+        reasonGapCount,
+        sourceGapCount,
+      },
+      patterns,
+      rules,
+      repeatClientRows,
+      categoryRows,
+      ownerRows,
+      sourceRows,
+      gapRows,
+      managementLines,
+      nextBackendFields: [
+        "lesson_id",
+        "tenant_id",
+        "archive_packet_id",
+        "pattern_type",
+        "pattern_label",
+        "record_count",
+        "lesson_text",
+        "next_cycle_rule",
+        "owner_id",
+        "reviewed_at",
+      ],
+    };
+    return {
+      packet,
+      learningScore,
+      patterns,
+      rules,
+      repeatClientRows,
+      categoryRows,
+      ownerRows,
+      sourceRows,
+      gapRows,
+      managementLines,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function buildCloseoutPermissionGate(model, exportPacket, lessons) {
+    const users = state.data.users.filter((user) => user.companyId === state.user.companyId);
+    const userRows = users.map((user) => {
+      const access = normalizeUserAccess(user);
+      const isAdminUser = user.role === "Admin";
+      const canUseTracker = isAdminUser || accessHasAny(access, ["tenders", "projects"]);
+      const canUseCloseout = isAdminUser || access.includes("closeout");
+      const canUseEvidence = isAdminUser || accessHasAny(access, ["documents", "governance"]);
+      const canUseReports = isAdminUser || accessHasAny(access, ["reports", "advisor", "review"]);
+      const canUseCommercial = isAdminUser || userHasCommercialAccess(user);
+      const canClose = user.role !== "Viewer" && canUseTracker && canUseCloseout;
+      const canPreparePacket = user.role !== "Viewer" && canUseCloseout && canUseEvidence;
+      const canApprove = isAdminUser || (canUseCloseout && access.includes("governance"));
+      const canReopen = isAdminUser || (canUseCloseout && access.includes("governance") && user.role !== "Viewer");
+      const canDownload = isAdminUser || (canUseCloseout && canUseReports);
+      return {
+        id: user.id,
+        name: user.name,
+        role: user.role,
+        accessLabels: accessLabelForKeys(access) || "No sections",
+        canClose,
+        canPreparePacket,
+        canApprove,
+        canReopen,
+        canDownload,
+        canUseCommercial,
+      };
+    });
+    const countAllowed = (key) => userRows.filter((row) => row[key]).length;
+    const permissionActions = [
+      {
+        label: "Close record",
+        route: "PATCH /records/:id/closeout",
+        allowed: countAllowed("canClose"),
+        rule: "Editor or admin with tracker and Closeout access can move final records into archive control.",
+        audit: "closeout.record.closed",
+        tone: "green",
+      },
+      {
+        label: "Prepare packet",
+        route: "POST /closeout/packets",
+        allowed: countAllowed("canPreparePacket"),
+        rule: "Closeout plus Documents or Governance access can assemble evidence and archive packet rows.",
+        audit: "closeout.packet.prepared",
+        tone: "teal",
+      },
+      {
+        label: "Approve release",
+        route: "POST /closeout/packets/:id/approve",
+        allowed: countAllowed("canApprove"),
+        rule: "Admin or Governance-controlled Closeout users approve release, retention, and exception notes.",
+        audit: "closeout.packet.approved",
+        tone: "blue",
+      },
+      {
+        label: "Reopen archive",
+        route: "POST /closeout/records/:id/reopen",
+        allowed: countAllowed("canReopen"),
+        rule: "Only admin or governance Closeout users can reopen a record and must give a reason.",
+        audit: "closeout.record.reopened",
+        tone: "amber",
+      },
+      {
+        label: "Download archive",
+        route: "GET /closeout/packets/:id/export",
+        allowed: countAllowed("canDownload"),
+        rule: "Admin or Closeout users with management reporting access can export JSON handoff files.",
+        audit: "closeout.packet.exported",
+        tone: "green",
+      },
+      {
+        label: "Commercial context",
+        route: "GET /commercial/records/:id/closeout",
+        allowed: countAllowed("canUseCommercial"),
+        rule: "Only commercial-authorized users can connect values, agreements, LOA, or negotiation context.",
+        audit: "commercial.closeout.viewed",
+        tone: "red",
+      },
+    ];
+    const deniedScenarios = [
+      ["Viewer close attempt", "Viewer role can read granted rooms but cannot close, approve, reopen, or export closeout packets.", "red"],
+      ["No Closeout grant", "Users without Closeout section access cannot see archive controls, packet downloads, or lessons export.", "amber"],
+      ["Commercial redaction", "Operational users can close tracker-safe records without receiving value, agreement, LOA, or negotiation facts.", "red"],
+      ["Reopen control", "Reopen requires governance/admin approval plus a reason note before the record returns to active work.", "blue"],
+    ];
+    const approvalGates = [
+      ["Gate 1", "Outcome is final", model.closedRecords.length ? "Ready" : "Waiting", "green"],
+      ["Gate 2", "Owner and close date visible", model.gapItems.some((item) => item.gaps.includes("Owner") || item.gaps.includes("Close date")) ? "Action" : "Ready", "amber"],
+      ["Gate 3", "Evidence queue reviewed", model.gapCount ? `${model.gapCount} gaps` : "Ready", model.gapCount ? "blue" : "green"],
+      ["Gate 4", "Approver has governance rights", countAllowed("canApprove") ? `${countAllowed("canApprove")} approvers` : "No approver", countAllowed("canApprove") ? "green" : "red"],
+      ["Gate 5", "Commercial context remains restricted", countAllowed("canUseCommercial") ? `${countAllowed("canUseCommercial")} controlled users` : "Locked", "red"],
+    ];
+    const routeGuards = permissionActions.map((action) => ({
+      route: action.route,
+      guard: action.label === "Commercial context" ? "requireCommercialCloseoutAccess" : action.label === "Approve release" || action.label === "Reopen archive" ? "requireCloseoutApprover" : "requireCloseoutAccess",
+      audit: action.audit,
+      allowedUsers: action.allowed,
+    }));
+    const totalDecisions = permissionActions.length * Math.max(users.length, 1);
+    const allowedDecisions = permissionActions.reduce((sum, action) => sum + action.allowed, 0);
+    const permissionScore = Math.max(0, Math.min(100, Math.round((allowedDecisions / Math.max(totalDecisions, 1)) * 70 + (countAllowed("canApprove") ? 15 : 0) + (countAllowed("canUseCommercial") ? 15 : 0))));
+    const packet = {
+      schemaVersion: "pursuitdesk.closeoutPermissionGate.v153",
+      generatedOn: new Date().toISOString(),
+      company: state.data.company?.name || "Tenant",
+      sourcePacketId: exportPacket.packetId,
+      sourceLessonsVersion: lessons.packet.schemaVersion,
+      permissionScore,
+      summary: {
+        users: users.length,
+        closeoutUsers: countAllowed("canClose"),
+        packetPreparers: countAllowed("canPreparePacket"),
+        approvers: countAllowed("canApprove"),
+        reopenUsers: countAllowed("canReopen"),
+        exporters: countAllowed("canDownload"),
+        commercialCloseoutUsers: countAllowed("canUseCommercial"),
+      },
+      permissionActions,
+      userRows,
+      approvalGates,
+      deniedScenarios,
+      routeGuards,
+      nextBackendFields: [
+        "tenant_id",
+        "user_id",
+        "record_id",
+        "archive_packet_id",
+        "closeout_permission",
+        "can_close",
+        "can_prepare_packet",
+        "can_approve",
+        "can_reopen",
+        "can_export",
+        "requires_reason",
+        "commercial_context_allowed",
+        "audit_event",
+      ],
+    };
+    return {
+      packet,
+      permissionScore,
+      permissionActions,
+      userRows,
+      approvalGates,
+      deniedScenarios,
+      routeGuards,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function buildCloseoutReopenWorkflow(model, exportPacket, lessons, permissionGate) {
+    const reopenReasons = [
+      {
+        key: "customer",
+        label: "Customer request",
+        tone: "green",
+        note: "Client asks to continue, renew, clarify, or re-quote after closeout.",
+      },
+      {
+        key: "evidence",
+        label: "Evidence correction",
+        tone: "blue",
+        note: "Source, agreement, LOA, owner, date, or closeout proof needs correction.",
+      },
+      {
+        key: "commercial",
+        label: "Commercial correction",
+        tone: "red",
+        note: "Commercial context requires controlled insight review before operational reopen.",
+      },
+      {
+        key: "delivery",
+        label: "Delivery continuation",
+        tone: "teal",
+        note: "Completed or stopped work has follow-on delivery or renewal movement.",
+      },
+      {
+        key: "wrong",
+        label: "Wrong closure",
+        tone: "amber",
+        note: "Record was closed by mistake and must return with a correction trail.",
+      },
+      {
+        key: "audit",
+        label: "Audit challenge",
+        tone: "blue",
+        note: "Governance asks for archive evidence, owner note, or retention correction.",
+      },
+    ];
+    const reasonByKey = Object.fromEntries(reopenReasons.map((reason) => [reason.key, reason]));
+    const reasonForItem = (item) => {
+      if (item.gaps.some((gap) => ["Source proof", "Agreement no", "LOA proof", "Close date"].includes(gap))) return reasonByKey.evidence;
+      if (item.gaps.some((gap) => ["Reason note", "Owner"].includes(gap))) return reasonByKey.wrong;
+      if (item.record.status === "Regret" || item.record.status === "Cancelled") return reasonByKey.customer;
+      if (item.record.type === "Project" || item.record.status === "Completed") return reasonByKey.delivery;
+      if (item.record.valueText || item.record.agreementNo) return reasonByKey.commercial;
+      return reasonByKey.audit;
+    };
+    const adminApprover = permissionGate.userRows.find((row) => row.canApprove) || { name: "Admin approver" };
+    const reopenUser = permissionGate.userRows.find((row) => row.canReopen) || adminApprover;
+    const candidateSource = (model.gapItems.length ? model.gapItems : model.latest).slice(0, 8);
+    const candidates = candidateSource.map((item, index) => {
+      const reason = reasonForItem(item);
+      const nextOwner = item.record.owner || reopenUser.name || "Unassigned owner";
+      return {
+        id: item.record.id || `closeout-${index + 1}`,
+        reference: item.record.reference || item.record.agreementNo || "No reference",
+        title: item.record.title || "Untitled record",
+        client: item.record.client || accountLabelForRecord(item.record),
+        status: item.record.status || "Closed",
+        reason: reason.label,
+        tone: reason.tone,
+        reasonNote: reason.note,
+        missing: item.gaps,
+        approver: adminApprover.name,
+        nextOwner,
+        nextAction:
+          reason.key === "commercial"
+            ? "Send to controlled insight review before operational reopen."
+            : reason.key === "evidence"
+              ? "Correct evidence, then return record to archive or active tracker."
+              : "Approve reopen and assign next action date.",
+        auditEvent: "closeout.record.reopen_requested",
+      };
+    });
+    const reasonRows = reopenReasons.map((reason) => ({
+      ...reason,
+      count: candidates.filter((item) => item.reason === reason.label).length,
+    }));
+    const gates = [
+      ["Reason captured", candidates.length ? `${candidates.length} candidate prompts` : "No candidates", "Every reopen request needs a structured reason.", candidates.length ? "amber" : "green"],
+      ["Approver selected", `${permissionGate.userRows.filter((row) => row.canApprove).length} approvers`, "Only admin or governance approvers can release reopen requests.", permissionGate.userRows.some((row) => row.canApprove) ? "green" : "red"],
+      ["Owner handoff", `${candidates.filter((item) => item.nextOwner !== "Unassigned owner").length} assigned`, "Reopened records require a new accountable owner.", candidates.some((item) => item.nextOwner === "Unassigned owner") ? "amber" : "green"],
+      ["Commercial redaction", `${permissionGate.userRows.filter((row) => row.canUseCommercial).length} controlled users`, "Commercial facts stay out of the operational reopen flow.", "red"],
+      ["Audit write", "Required", "Every reopen request writes before and after state plus approver decision.", "blue"],
+    ];
+    const routeSteps = [
+      ["POST", "/closeout/records/:id/reopen-request", "Create request with reason, owner, and evidence context.", "closeout.reopen.requested"],
+      ["POST", "/closeout/reopen-requests/:id/approve", "Approver moves record back to active tracker.", "closeout.reopen.approved"],
+      ["POST", "/closeout/reopen-requests/:id/reject", "Approver keeps record archived with rejection note.", "closeout.reopen.rejected"],
+      ["PATCH", "/records/:id/owner", "Assign new owner and next action after reopen.", "record.owner.reassigned"],
+      ["GET", "/commercial/records/:id/reopen-context", "Controlled users review commercial-only context.", "commercial.reopen.viewed"],
+    ];
+    const managementLines = [
+      `${candidates.length} closed records currently look like reopen candidates because they still need evidence, owner/date correction, or stopped-work learning.`,
+      `${permissionGate.userRows.filter((row) => row.canApprove).length} users can approve reopen requests; viewer and non-Closeout users remain locked out.`,
+      "A reopened record should return with reason, approver, owner, next action date, and audit trail before it appears in daily work again.",
+      "Commercial facts stay out of the operational reopen flow and route only through controlled insight permissions.",
+    ];
+    const ownerCoverage = candidates.length ? candidates.filter((item) => item.nextOwner !== "Unassigned owner").length / candidates.length : 1;
+    const reopenScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          (permissionGate.userRows.some((row) => row.canApprove) ? 35 : 0) +
+            (permissionGate.userRows.some((row) => row.canReopen) ? 25 : 0) +
+            ownerCoverage * 25 +
+            (permissionGate.userRows.some((row) => row.canUseCommercial) ? 15 : 0),
+        ),
+      ),
+    );
+    const packet = {
+      schemaVersion: "pursuitdesk.closeoutReopenWorkflow.v153",
+      generatedOn: new Date().toISOString(),
+      company: state.data.company?.name || "Tenant",
+      sourcePacketId: exportPacket.packetId,
+      sourceLessonsVersion: lessons.packet.schemaVersion,
+      sourcePermissionVersion: permissionGate.packet.schemaVersion,
+      reopenScore,
+      summary: {
+        candidates: candidates.length,
+        approvers: permissionGate.userRows.filter((row) => row.canApprove).length,
+        reopenUsers: permissionGate.userRows.filter((row) => row.canReopen).length,
+        commercialContextUsers: permissionGate.userRows.filter((row) => row.canUseCommercial).length,
+      },
+      reasonRows,
+      gates,
+      routeSteps,
+      candidates,
+      managementLines,
+      nextBackendFields: [
+        "reopen_request_id",
+        "tenant_id",
+        "record_id",
+        "archive_packet_id",
+        "reason_code",
+        "reason_note",
+        "requested_by",
+        "approved_by",
+        "next_owner_id",
+        "next_action_date",
+        "before_status",
+        "after_status",
+        "commercial_context_required",
+        "audit_event_id",
+      ],
+    };
+    return {
+      packet,
+      reopenScore,
+      reasonRows,
+      gates,
+      routeSteps,
+      candidates,
+      managementLines,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function buildCloseoutApprovalMemory(model, exportPacket, lessons, permissionGate, reopenWorkflow) {
+    const approvers = permissionGate.userRows.filter((row) => row.canApprove);
+    const preparers = permissionGate.userRows.filter((row) => row.canPreparePacket);
+    const exporters = permissionGate.userRows.filter((row) => row.canDownload);
+    const primaryApprover = approvers[0] || { name: "PursuitDesk Admin", role: "Admin", accessLabels: "Admin" };
+    const gapExceptionCount = model.gapItems.length;
+    const standardRules = [
+      ["No silent reopen", "Every archived record that returns to active work needs reason, approver, owner, next action, and audit event.", "green"],
+      ["Lessons become controls", lessons.rules[0]?.[1] || "The strongest lesson from closed work becomes the next-cycle control rule.", "teal"],
+      ["Evidence exceptions are named", gapExceptionCount ? `${gapExceptionCount} records require explicit evidence exception memory before release.` : "No evidence exception is currently blocking archive release.", gapExceptionCount ? "amber" : "green"],
+      ["Commercial context stays controlled", "Values, agreements, LOA, and negotiation context remain in management rooms and controlled commercial routes.", "red"],
+      ["Retention owner is visible", "Archive packets need an owner, retention marker, and next review date before production storage.", "blue"],
+    ];
+    const decisionLanes = [
+      {
+        label: "Packet release",
+        value: exportPacket.releaseGate.includes("Hold") ? "Hold" : "Ready",
+        note: exportPacket.releaseGate,
+        approver: primaryApprover.name,
+        audit: "closeout.packet.release_decided",
+        tone: exportPacket.releaseGate.includes("Hold") ? "red" : exportPacket.releaseGate.includes("exceptions") ? "amber" : "green",
+      },
+      {
+        label: "Lesson accepted",
+        value: `${lessons.learningScore}%`,
+        note: "Closed work can now become repeatable next-cycle rules.",
+        approver: primaryApprover.name,
+        audit: "closeout.lesson.accepted",
+        tone: lessons.learningScore >= 75 ? "green" : "amber",
+      },
+      {
+        label: "Reopen posture",
+        value: `${reopenWorkflow.candidates.length} queued`,
+        note: "Reopen candidates stay pending until reason, owner, and approver are captured.",
+        approver: primaryApprover.name,
+        audit: "closeout.reopen.posture_recorded",
+        tone: reopenWorkflow.candidates.length ? "amber" : "green",
+      },
+      {
+        label: "Commercial lock",
+        value: `${permissionGate.userRows.filter((row) => row.canUseCommercial).length} users`,
+        note: "Commercial closeout context remains limited to authorized users.",
+        approver: primaryApprover.name,
+        audit: "commercial.closeout.redaction_confirmed",
+        tone: "red",
+      },
+    ];
+    const decisionRows = reopenWorkflow.candidates.slice(0, 6).map((candidate, index) => ({
+      id: `MEM-${String(index + 1).padStart(2, "0")}`,
+      title: candidate.title,
+      reference: candidate.reference,
+      client: candidate.client,
+      decision: candidate.reason === "Commercial correction" ? "Route to controlled insight review" : candidate.reason === "Evidence correction" ? "Approve evidence correction path" : "Hold until reopen reason is complete",
+      approvedBy: candidate.approver || primaryApprover.name,
+      owner: candidate.nextOwner,
+      standardRule: candidate.reason === "Commercial correction" ? standardRules[3][0] : candidate.reason === "Evidence correction" ? standardRules[2][0] : standardRules[0][0],
+      auditEvent: candidate.auditEvent.replace("requested", "memory_recorded"),
+      tone: candidate.tone,
+    }));
+    const approverRows = permissionGate.userRows
+      .filter((row) => row.canApprove || row.canPreparePacket || row.canDownload || row.canUseCommercial)
+      .map((row) => ({
+        name: row.name,
+        role: row.role,
+        accessLabels: row.accessLabels,
+        approvals: [
+          row.canApprove ? "Approve" : "",
+          row.canPreparePacket ? "Prepare" : "",
+          row.canDownload ? "Export" : "",
+          row.canUseCommercial ? "Commercial" : "",
+        ].filter(Boolean),
+      }));
+    const auditChain = [
+      ["Prepared", "closeout.packet.prepared", `${preparers.length} users can prepare archive evidence.`, "teal"],
+      ["Release decision", "closeout.packet.release_decided", `${approvers.length} approvers can accept, hold, or reject packet release.`, "blue"],
+      ["Lesson accepted", "closeout.lesson.accepted", `${standardRules.length} standard rules can be written into future workflows.`, "green"],
+      ["Reopen memory", "closeout.reopen.memory_recorded", `${reopenWorkflow.candidates.length} reopen candidates receive reason and owner context.`, "amber"],
+      ["Commercial proof", "commercial.closeout.redaction_confirmed", "Commercial facts stay out of operational tracker memory.", "red"],
+      ["Exported", "closeout.memory.exported", `${exporters.length} users can export the approval memory packet.`, "green"],
+    ];
+    const managementLines = [
+      `${approvers.length || 1} approval owner is available to turn closeout decisions into permanent audit memory.`,
+      `${standardRules.length} standard rules now define how closed records, lessons, evidence exceptions, commercial context, and reopen requests are handled next time.`,
+      `${decisionRows.length} sample decision memories connect archive records to approver, owner, standard rule, and audit event.`,
+      "Approval Memory makes Closeout less dependent on screenshots or verbal confirmation because the decision, rule, and route are captured together.",
+    ];
+    const approvalScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          permissionGate.permissionScore * 0.28 +
+            reopenWorkflow.reopenScore * 0.22 +
+            lessons.learningScore * 0.24 +
+            (approvers.length ? 16 : 0) +
+            (standardRules.length >= 5 ? 10 : 0),
+        ),
+      ),
+    );
+    const packet = {
+      schemaVersion: "pursuitdesk.closeoutApprovalMemory.v153",
+      generatedOn: new Date().toISOString(),
+      company: state.data.company?.name || "Tenant",
+      sourcePacketId: exportPacket.packetId,
+      sourceLessonsVersion: lessons.packet.schemaVersion,
+      sourcePermissionVersion: permissionGate.packet.schemaVersion,
+      sourceReopenVersion: reopenWorkflow.packet.schemaVersion,
+      approvalScore,
+      summary: {
+        approvers: approvers.length,
+        preparers: preparers.length,
+        exporters: exporters.length,
+        decisionMemories: decisionRows.length,
+        standardRules: standardRules.length,
+        evidenceExceptions: gapExceptionCount,
+      },
+      decisionLanes,
+      decisionRows,
+      approverRows,
+      standardRules,
+      auditChain,
+      managementLines,
+      nextBackendFields: [
+        "approval_memory_id",
+        "tenant_id",
+        "record_id",
+        "archive_packet_id",
+        "decision_type",
+        "decision_status",
+        "approved_by",
+        "approved_at",
+        "standard_rule_key",
+        "standard_rule_text",
+        "owner_id",
+        "commercial_redaction_confirmed",
+        "reopen_request_id",
+        "audit_event_id",
+      ],
+    };
+    return {
+      packet,
+      approvalScore,
+      decisionLanes,
+      decisionRows,
+      approverRows,
+      standardRules,
+      auditChain,
+      managementLines,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function renderCloseoutArchivePage() {
+    const model = buildCloseoutArchiveModel();
+    const exportPacket = buildCloseoutExportPacket(model);
+    const lessons = buildCloseoutLessonsModel(model, exportPacket);
+    const permissionGate = buildCloseoutPermissionGate(model, exportPacket, lessons);
+    const reopenWorkflow = buildCloseoutReopenWorkflow(model, exportPacket, lessons, permissionGate);
+    const approvalMemory = buildCloseoutApprovalMemory(model, exportPacket, lessons, permissionGate, reopenWorkflow);
+    return `
+      <section class="closeout-room">
+        <section class="closeout-console">
+          <div>
+            <span class="panel-label">Closeout control</span>
+            <h2>Close the record without losing the lesson.</h2>
+            <p>Completed, awarded, cancelled, and regret items leave the daily tracker here. The room checks owner, close date, source proof, agreement handoff, and learning notes before the record is treated as cleanly archived.</p>
+          </div>
+          <div class="closeout-actions">
+            <button class="secondary-btn" type="button" data-view="Reports">Open reports</button>
+            <button class="ghost-btn" type="button" data-view="Documents">Open evidence</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open audit</button>
+          </div>
+        </section>
+
+        <div class="closeout-kpis">
+          ${renderInsightKpi("Closed records", `${model.closedRecords.length}`, "Awarded, completed, cancelled, and regret records")}
+          ${renderInsightKpi("Archive ready", `${model.readyRecords.length}`, `${model.archiveScore}% closeout readiness`)}
+          ${renderInsightKpi("Evidence gaps", `${model.gapCount}`, `${model.gapItems.length} records need cleanup`)}
+          ${renderInsightKpi("Learning loop", `${model.stopped.length}`, "Cancelled or regret outcomes")}
+        </div>
+
+        ${renderRoomFocusStrip(model.focusStrip, "closeout-focus-strip", "Closeout focus strip")}
+
+        ${renderCloseoutExportPacket(exportPacket)}
+
+        ${renderCloseoutLessonsIntelligence(lessons)}
+
+        ${renderCloseoutPermissionGate(permissionGate)}
+
+        ${renderCloseoutReopenWorkflow(reopenWorkflow)}
+
+        ${renderCloseoutApprovalMemory(approvalMemory)}
+
+        <div class="closeout-layout">
+          <section class="closeout-board">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Archive lanes</span>
+                <h3>Closeout board</h3>
+              </div>
+              <span>${model.closedRecords.length} closed</span>
+            </div>
+            <div class="closeout-lanes">
+              ${model.lanes.map(renderCloseoutLane).join("")}
+            </div>
+          </section>
+
+          <aside class="closeout-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Outcome mix</span>
+                  <h3>Closed status split</h3>
+                </div>
+              </div>
+              ${renderRankBars(model.outcomeRows, "green")}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Closeout checklist</span>
+                  <h3>Archive gate</h3>
+                </div>
+              </div>
+              ${renderCloseoutChecklist(model.checklist)}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Owner memory</span>
+                  <h3>Closed by owner</h3>
+                </div>
+              </div>
+              ${renderRankBars(model.ownerRows, "blue")}
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Source memory</span>
+                  <h3>Archive source sheets</h3>
+                </div>
+              </div>
+              ${renderRankBars(model.sourceRows, "amber")}
+            </article>
+          </aside>
+        </div>
+
+        <article class="info-panel closeout-ledger-panel">
+          <div class="info-head">
+            <div>
+              <span class="metric-label">Archive ledger</span>
+              <h3>Latest closeout records</h3>
+            </div>
+            <span>${model.latest.length} shown</span>
+          </div>
+          ${renderCloseoutLedger(model.latest)}
+        </article>
+      </section>
+    `;
+  }
+
+  function renderCloseoutLessonsIntelligence(lessons) {
+    return `
+      <section class="closeout-lessons">
+        <div class="closeout-lessons-hero">
+          <div>
+            <span class="panel-label">Lessons learned intelligence</span>
+            <h3>Turn closed work into next-cycle intelligence.</h3>
+            <p>Lessons Learned reads the closed archive for repeat relationships, category patterns, evidence habits, owner/date gaps, and stopped-work reasons. It gives management a clean operating memory without bringing commercial figures back into the frontline tracker.</p>
+          </div>
+          <div class="closeout-lessons-score">
+            <span>Learning score</span>
+            <strong>${lessons.learningScore}</strong>
+            <small>archive intelligence</small>
+          </div>
+        </div>
+        <div class="closeout-lessons-actions">
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(lessons.downloadHref)}" download="pursuitdesk-lessons-learned-intelligence-v153.json">Download lessons JSON</a>
+          <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+          <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
+        </div>
+        <div class="closeout-pattern-grid">
+          ${lessons.patterns
+            .map(
+              (pattern) => `
+                <article class="closeout-pattern-card tone-${escapeHtml(pattern.tone)}">
+                  <span>${escapeHtml(pattern.label)}</span>
+                  <strong>${escapeHtml(String(pattern.value))}</strong>
+                  <h4>${escapeHtml(pattern.title)}</h4>
+                  <p>${escapeHtml(pattern.note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="closeout-lessons-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Next-cycle rules</span>
+                <h3>What should change next time</h3>
+              </div>
+            </div>
+            ${renderCloseoutLessonRules(lessons.rules)}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Management memory</span>
+                <h3>Copy-ready lesson brief</h3>
+              </div>
+            </div>
+            <div class="closeout-lesson-lines">
+              ${lessons.managementLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+            </div>
+          </article>
+        </div>
+        <div class="closeout-lessons-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Pattern radar</span>
+                <h3>Relationships and categories</h3>
+              </div>
+            </div>
+            ${renderCloseoutLessonRows("Repeat clients", lessons.repeatClientRows, "No repeat client cluster yet.")}
+            ${renderCloseoutLessonRows("Categories", lessons.categoryRows, "No category pattern yet.")}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Control radar</span>
+                <h3>Evidence, owner, and source patterns</h3>
+              </div>
+            </div>
+            ${renderCloseoutLessonRows("Evidence gaps", lessons.gapRows, "No evidence gaps found.")}
+            ${renderCloseoutLessonRows("Archive sources", lessons.sourceRows, "No source pattern yet.")}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCloseoutLessonRules(rules) {
+    return `
+      <div class="closeout-rule-list">
+        ${rules
+          .map(
+            ([label, note, tone]) => `
+              <div class="tone-${escapeHtml(tone)}">
+                <strong>${escapeHtml(label)}</strong>
+                <p>${escapeHtml(note)}</p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutLessonRows(label, rows, emptyText) {
+    return `
+      <div class="closeout-lesson-row-group">
+        <span>${escapeHtml(label)}</span>
+        ${
+          rows.length
+            ? rows
+                .slice(0, 5)
+                .map(
+                  (row) => `
+                    <div>
+                      <strong>${escapeHtml(row.label)}</strong>
+                      <em>${row.value}</em>
+                    </div>
+                  `,
+                )
+                .join("")
+            : `<p>${escapeHtml(emptyText)}</p>`
+        }
+      </div>
+    `;
+  }
+
+  function renderCloseoutPermissionGate(gate) {
+    return `
+      <section class="closeout-permission-gate">
+        <div class="closeout-permission-hero">
+          <div>
+            <span class="panel-label">Archive permission gate</span>
+            <h3>Decide who can close, approve, reopen, and export archive work.</h3>
+            <p>This gate turns admin access thinking into backend-ready rules. It separates daily closeout work, evidence preparation, governance approval, reopen authority, export rights, and commercial context so frontline trackers stay clean while management actions remain controlled.</p>
+          </div>
+          <div class="closeout-permission-score">
+            <span>Permission score</span>
+            <strong>${gate.permissionScore}%</strong>
+            <small>role and section coverage</small>
+          </div>
+        </div>
+        <div class="closeout-permission-actions">
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(gate.downloadHref)}" download="pursuitdesk-closeout-permission-gate-v153.json">Download permission JSON</a>
+          <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+          <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+        </div>
+        <div class="closeout-permission-grid">
+          ${gate.permissionActions
+            .map(
+              (action) => `
+                <article class="closeout-permission-card tone-${escapeHtml(action.tone)}">
+                  <span>${escapeHtml(action.label)}</span>
+                  <strong>${escapeHtml(String(action.allowed))}</strong>
+                  <p>${escapeHtml(action.rule)}</p>
+                  <em>${escapeHtml(action.audit)}</em>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="closeout-permission-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Access matrix</span>
+                <h3>Users and archive rights</h3>
+              </div>
+              <span>${gate.userRows.length} users</span>
+            </div>
+            ${renderCloseoutPermissionUsers(gate.userRows)}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Approval gates</span>
+                <h3>Before release or reopen</h3>
+              </div>
+            </div>
+            ${renderCloseoutPermissionGates(gate.approvalGates)}
+          </article>
+        </div>
+        <div class="closeout-permission-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Route guards</span>
+                <h3>Backend guard map</h3>
+              </div>
+            </div>
+            ${renderCloseoutRouteGuards(gate.routeGuards)}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Denied states</span>
+                <h3>What must stay locked</h3>
+              </div>
+            </div>
+            ${renderCloseoutDeniedScenarios(gate.deniedScenarios)}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCloseoutPermissionUsers(rows) {
+    return `
+      <div class="closeout-permission-users">
+        ${rows
+          .map(
+            (row) => `
+              <div>
+                <strong>${escapeHtml(row.name)}</strong>
+                <span>${escapeHtml(row.role)} / ${escapeHtml(row.accessLabels)}</span>
+                <p>
+                  <b class="${row.canClose ? "is-on" : ""}">Close</b>
+                  <b class="${row.canPreparePacket ? "is-on" : ""}">Prepare</b>
+                  <b class="${row.canApprove ? "is-on" : ""}">Approve</b>
+                  <b class="${row.canReopen ? "is-on" : ""}">Reopen</b>
+                  <b class="${row.canDownload ? "is-on" : ""}">Export</b>
+                  <b class="${row.canUseCommercial ? "is-on" : ""}">Commercial</b>
+                </p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutPermissionGates(rows) {
+    return `
+      <div class="closeout-approval-gates">
+        ${rows
+          .map(
+            ([label, note, status, tone]) => `
+              <div class="tone-${escapeHtml(tone)}">
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(status)}</strong>
+                <p>${escapeHtml(note)}</p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutRouteGuards(rows) {
+    return `
+      <div class="closeout-route-guards">
+        ${rows
+          .map(
+            (row) => `
+              <div>
+                <strong>${escapeHtml(row.route)}</strong>
+                <span>${escapeHtml(row.guard)} / ${escapeHtml(row.audit)}</span>
+                <em>${row.allowedUsers} allowed users</em>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutDeniedScenarios(rows) {
+    return `
+      <div class="closeout-denied-list">
+        ${rows
+          .map(
+            ([label, note, tone]) => `
+              <div class="tone-${escapeHtml(tone)}">
+                <strong>${escapeHtml(label)}</strong>
+                <p>${escapeHtml(note)}</p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutReopenWorkflow(workflow) {
+    return `
+      <section class="closeout-reopen-workflow">
+        <div class="closeout-reopen-hero">
+          <div>
+            <span class="panel-label">Closeout reopen workflow</span>
+            <h3>Bring archived work back only through a governed reopen path.</h3>
+            <p>Reopen Workflow turns archive exceptions into a controlled sequence: reason capture, approver decision, owner handoff, next action, route guard, audit event, and commercial redaction. Records can come back to active work, but only with context and accountability.</p>
+          </div>
+          <div class="closeout-reopen-score">
+            <span>Reopen readiness</span>
+            <strong>${workflow.reopenScore}%</strong>
+            <small>${workflow.candidates.length} candidate prompts</small>
+          </div>
+        </div>
+        <div class="closeout-reopen-actions">
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(workflow.downloadHref)}" download="pursuitdesk-closeout-reopen-workflow-v153.json">Download reopen JSON</a>
+          <button class="ghost-btn" type="button" data-view="Tenders">Open tenders</button>
+          <button class="ghost-btn" type="button" data-view="Projects">Open projects</button>
+          <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+        </div>
+        <div class="closeout-reopen-reason-grid">
+          ${renderCloseoutReopenReasons(workflow.reasonRows)}
+        </div>
+        <div class="closeout-reopen-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Reopen candidates</span>
+                <h3>Records needing a controlled return path</h3>
+              </div>
+              <span>${workflow.candidates.length} shown</span>
+            </div>
+            ${renderCloseoutReopenCandidates(workflow.candidates)}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Approval and audit gates</span>
+                <h3>Before the archive opens</h3>
+              </div>
+            </div>
+            ${renderCloseoutReopenGates(workflow.gates)}
+          </article>
+        </div>
+        <div class="closeout-reopen-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Route and audit map</span>
+                <h3>Backend reopen endpoints</h3>
+              </div>
+            </div>
+            ${renderCloseoutReopenRoutes(workflow.routeSteps)}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Management reopen brief</span>
+                <h3>Copy-ready control notes</h3>
+              </div>
+            </div>
+            <div class="closeout-reopen-lines">
+              ${workflow.managementLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCloseoutReopenReasons(rows) {
+    return rows
+      .map(
+        (row) => `
+          <article class="closeout-reopen-reason-card tone-${escapeHtml(row.tone)}">
+            <span>${escapeHtml(row.label)}</span>
+            <strong>${escapeHtml(String(row.count))}</strong>
+            <p>${escapeHtml(row.note)}</p>
+          </article>
+        `,
+      )
+      .join("");
+  }
+
+  function renderCloseoutReopenCandidates(candidates) {
+    return `
+      <div class="closeout-reopen-candidates">
+        ${
+          candidates.length
+            ? candidates
+                .map(
+                  (item) => `
+                    <div class="tone-${escapeHtml(item.tone)}">
+                      <span>${escapeHtml(item.reason)}</span>
+                      <strong>${escapeHtml(item.title)}</strong>
+                      <em>${escapeHtml(item.reference)} / ${escapeHtml(item.client)} / ${escapeHtml(item.status)}</em>
+                      <p>${escapeHtml(item.nextAction)}</p>
+                      <small>Owner: ${escapeHtml(item.nextOwner)} / Approver: ${escapeHtml(item.approver)} / Missing: ${escapeHtml(item.missing.join(", ") || "Reason captured")}</small>
+                    </div>
+                  `,
+                )
+                .join("")
+            : `<p>No reopen candidates are visible in the current closeout set.</p>`
+        }
+      </div>
+    `;
+  }
+
+  function renderCloseoutReopenGates(rows) {
+    return `
+      <div class="closeout-reopen-gates">
+        ${rows
+          .map(
+            ([label, status, note, tone]) => `
+              <div class="tone-${escapeHtml(tone)}">
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(status)}</strong>
+                <p>${escapeHtml(note)}</p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutReopenRoutes(rows) {
+    return `
+      <div class="closeout-reopen-routes">
+        ${rows
+          .map(
+            ([method, route, note, audit]) => `
+              <div>
+                <span>${escapeHtml(method)}</span>
+                <strong>${escapeHtml(route)}</strong>
+                <p>${escapeHtml(note)}</p>
+                <em>${escapeHtml(audit)}</em>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutApprovalMemory(memory) {
+    return `
+      <section class="closeout-approval-memory">
+        <div class="closeout-approval-hero">
+          <div>
+            <span class="panel-label">v153 closeout approval memory</span>
+            <h3>Turn every closeout decision into reusable operating memory.</h3>
+            <p>Approval Memory captures who approved the packet, what changed, which rule became standard, which owner carries the next action, and which audit event proves the decision later. It makes Closeout a controlled knowledge system, not just an archive board.</p>
+          </div>
+          <div class="closeout-approval-score">
+            <span>Memory score</span>
+            <strong>${memory.approvalScore}%</strong>
+            <small>${memory.decisionRows.length} decision memories</small>
+          </div>
+        </div>
+        <div class="closeout-approval-actions">
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(memory.downloadHref)}" download="pursuitdesk-closeout-approval-memory-v153.json">Download memory JSON</a>
+          <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+          <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+          <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+        </div>
+        <div class="closeout-approval-lanes">
+          ${memory.decisionLanes
+            .map(
+              (lane) => `
+                <article class="closeout-approval-lane tone-${escapeHtml(lane.tone)}">
+                  <span>${escapeHtml(lane.label)}</span>
+                  <strong>${escapeHtml(String(lane.value))}</strong>
+                  <p>${escapeHtml(lane.note)}</p>
+                  <em>${escapeHtml(lane.approver)} / ${escapeHtml(lane.audit)}</em>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="closeout-approval-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Decision memory</span>
+                <h3>What was approved and why</h3>
+              </div>
+              <span>${memory.decisionRows.length} rows</span>
+            </div>
+            ${renderCloseoutApprovalDecisionRows(memory.decisionRows)}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Standard rules</span>
+                <h3>What becomes normal next time</h3>
+              </div>
+            </div>
+            ${renderCloseoutApprovalRules(memory.standardRules)}
+          </article>
+        </div>
+        <div class="closeout-approval-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Approver coverage</span>
+                <h3>Who can carry the decision memory</h3>
+              </div>
+              <span>${memory.approverRows.length} users</span>
+            </div>
+            ${renderCloseoutApprovalUsers(memory.approverRows)}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Audit chain</span>
+                <h3>Events that prove the decision later</h3>
+              </div>
+            </div>
+            ${renderCloseoutApprovalAudit(memory.auditChain)}
+          </article>
+        </div>
+        <article class="info-panel">
+          <div class="info-head">
+            <div>
+              <span class="metric-label">Management closeout memory</span>
+              <h3>What to say in review</h3>
+            </div>
+          </div>
+          <div class="closeout-approval-lines">
+            ${memory.managementLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderCloseoutApprovalDecisionRows(rows) {
+    return `
+      <div class="closeout-approval-decisions">
+        ${
+          rows.length
+            ? rows
+                .map(
+                  (row) => `
+                    <div class="tone-${escapeHtml(row.tone)}">
+                      <span>${escapeHtml(row.id)} / ${escapeHtml(row.decision)}</span>
+                      <strong>${escapeHtml(row.title)}</strong>
+                      <em>${escapeHtml(row.reference)} / ${escapeHtml(row.client)}</em>
+                      <p>${escapeHtml(row.standardRule)}</p>
+                      <small>${escapeHtml(row.approvedBy)} to ${escapeHtml(row.owner)} / ${escapeHtml(row.auditEvent)}</small>
+                    </div>
+                  `,
+                )
+                .join("")
+            : `<p>No approval memory rows are required yet.</p>`
+        }
+      </div>
+    `;
+  }
+
+  function renderCloseoutApprovalRules(rows) {
+    return `
+      <div class="closeout-approval-rules">
+        ${rows
+          .map(
+            ([label, note, tone]) => `
+              <div class="tone-${escapeHtml(tone)}">
+                <span>${escapeHtml(label)}</span>
+                <p>${escapeHtml(note)}</p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutApprovalUsers(rows) {
+    return `
+      <div class="closeout-approval-users">
+        ${rows
+          .map(
+            (row) => `
+              <div>
+                <strong>${escapeHtml(row.name)}</strong>
+                <span>${escapeHtml(row.role)} / ${escapeHtml(row.accessLabels)}</span>
+                <p>${row.approvals.map((approval) => `<b>${escapeHtml(approval)}</b>`).join("")}</p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutApprovalAudit(rows) {
+    return `
+      <div class="closeout-approval-audit">
+        ${rows
+          .map(
+            ([label, event, note, tone]) => `
+              <div class="tone-${escapeHtml(tone)}">
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(event)}</strong>
+                <p>${escapeHtml(note)}</p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutExportPacket(exportPacket) {
+    return `
+      <section class="closeout-export-pack">
+        <div class="closeout-export-hero">
+          <div>
+            <span class="panel-label">Archive export packet</span>
+            <h3>Management archive packet</h3>
+            <p>Closeout now produces a file-ready handoff for governance, reports, and future backend storage. It names the packet, archive folder, release gate, retention marker, ready records, and missing evidence queue.</p>
+          </div>
+          <div class="closeout-export-actions">
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(exportPacket.downloadHref)}" download="pursuitdesk-closeout-export-packet-v153.json">Download packet JSON</a>
+            <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+          </div>
+        </div>
+        <div class="closeout-export-grid">
+          <article class="soft-signal-card tone-teal">
+            <span>Packet ID</span>
+            <strong>${escapeHtml(exportPacket.packetId)}</strong>
+            <p>Stable closeout export reference.</p>
+          </article>
+          <article class="soft-signal-card tone-green">
+            <span>Release gate</span>
+            <strong>${escapeHtml(exportPacket.releaseGate)}</strong>
+            <p>Archive decision based on evidence coverage.</p>
+          </article>
+          <article class="soft-signal-card tone-blue">
+            <span>Archive folder</span>
+            <strong>${escapeHtml(exportPacket.archiveFolder)}</strong>
+            <p>Suggested future storage path.</p>
+          </article>
+          <article class="soft-signal-card tone-amber">
+            <span>Retention marker</span>
+            <strong>7 year rule</strong>
+            <p>${escapeHtml(exportPacket.retentionMarker)}</p>
+          </article>
+        </div>
+        <div class="closeout-export-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Release checklist</span>
+                <h3>What must be true before filing</h3>
+              </div>
+            </div>
+            ${renderCloseoutExportChecklist(exportPacket.checklist)}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Management note</span>
+                <h3>Copy-ready closeout brief</h3>
+              </div>
+            </div>
+            <div class="closeout-brief-lines">
+              ${exportPacket.managementLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+            </div>
+          </article>
+        </div>
+        <div class="closeout-export-body">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Ready sample</span>
+                <h3>Records clean enough to archive</h3>
+              </div>
+              <span>${exportPacket.readySample.length} shown</span>
+            </div>
+            ${renderCloseoutExportRows(exportPacket.readySample, "Ready archive")}
+          </article>
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Evidence queue</span>
+                <h3>Records to fix before release</h3>
+              </div>
+              <span>${exportPacket.gapQueue.length} shown</span>
+            </div>
+            ${renderCloseoutExportRows(exportPacket.gapQueue, "Evidence gap")}
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCloseoutExportChecklist(rows) {
+    return `
+      <div class="closeout-export-checklist">
+        ${rows
+          .map(
+            ([label, note, status]) => `
+              <div class="tone-${status === "Action" ? "amber" : status === "Waiting" ? "blue" : "green"}">
+                <span>${escapeHtml(status)}</span>
+                <strong>${escapeHtml(label)}</strong>
+                <p>${escapeHtml(note)}</p>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutExportRows(rows, emptyLabel) {
+    if (!rows.length) return `<div class="empty-state compact">No ${escapeHtml(emptyLabel.toLowerCase())} rows for this packet.</div>`;
+    return `
+      <div class="closeout-export-rows">
+        ${rows
+          .map(
+            (row) => `
+              <div>
+                <strong>${escapeHtml(row.archiveName)}</strong>
+                <span>${escapeHtml([row.owner, row.status, row.closeDate, row.source].filter(Boolean).join(" / "))}</span>
+                <em>${escapeHtml(row.missing ? row.missing.join(" / ") : `${row.qualityScore}% quality`)}</em>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutLane(lane) {
+    return `
+      <article class="closeout-lane tone-${escapeHtml(lane.tone)}">
+        <div class="closeout-lane-head">
+          <strong>${escapeHtml(lane.name)}</strong>
+          <span>${lane.items.length}</span>
+        </div>
+        <div class="closeout-card-list">
+          ${lane.items.length ? lane.items.map(renderCloseoutCard).join("") : `<div class="empty-state compact">No closeout records in this lane.</div>`}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderCloseoutCard(item) {
+    const record = item.record;
+    const date = formatDate(record.endDate) || "No close date";
+    const gapText = item.gaps.length ? item.gaps.slice(0, 4).join(" / ") : "Archive packet is clean.";
+    return `
+      <button class="closeout-card tone-${escapeHtml(item.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">
+        <span>${escapeHtml(item.outcome)}</span>
+        <strong>${escapeHtml(record.title || "Untitled closeout")}</strong>
+        <em>${escapeHtml([record.reference, record.client || accountLabelForRecord(record), record.type, record.status, date].filter(Boolean).join(" / "))}</em>
+        <small>${escapeHtml(gapText)}</small>
+        <b>${item.qualityScore}%</b>
+      </button>
+    `;
+  }
+
+  function renderCloseoutChecklist(rows) {
+    return `
+      <div class="closeout-checklist">
+        ${rows
+          .map(
+            ([label, note]) => `
+              <div>
+                <strong>${escapeHtml(label)}</strong>
+                <span>${escapeHtml(note)}</span>
+              </div>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCloseoutLedger(items) {
+    if (!items.length) return `<div class="empty-state compact">No closed records are ready for archive control yet.</div>`;
+    return `
+      <div class="closeout-ledger">
+        ${items
+          .map(
+            (item) => `
+              <button class="closeout-ledger-row tone-${escapeHtml(item.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+                <span>
+                  <strong>${escapeHtml(item.archiveName)}</strong>
+                  <em>${escapeHtml(item.gaps.length ? item.gaps.join(" / ") : "Ready for archive")}</em>
+                </span>
+                <b>${item.qualityScore}%</b>
+              </button>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
   function buildReportModel() {
     const records = companyRecords();
     const tenderRecords = sectionRecords("Tenders");
@@ -37791,6 +39545,7 @@
 
   render();
 })();
+
 
 
 

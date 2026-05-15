@@ -1,4 +1,4 @@
-PursuitDesk v146 reviewer decision email pack upload steps
+PursuitDesk v153 closeout approval memory upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v146 reviewer decision email pack upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v146 reviewer decision email pack
+   PursuitDesk v153 closeout approval memory
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and adds a Reviewer Decision Email Pack inside Command Center with reviewer lanes, decision-state templates, response triggers, send checklist, escalation cadence, privacy guardrails, management summary blocks, copy-ready reviewer emails, and downloadable v146 JSON handoff.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades the Closeout room with v153 Closeout Approval Memory. Closeout now captures who approved the packet, what changed, which standard rule became normal, owner handoff, commercial redaction, audit chain, management memory lines, and downloadable approval-memory JSON.
 
 Demo login:
 admin@pursuitdesk.app

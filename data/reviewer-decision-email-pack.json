@@ -3,7 +3,7 @@
   "version": "v146",
   "title": "Reviewer Decision Email Pack",
   "reviewerDecisionEmailScore": 98,
-  "downloadHref": "data/reviewer-decision-email-pack.json?v=146",
+  "downloadHref": "data/reviewer-decision-email-pack.json?v=153",
   "purpose": "Turn meeting minutes, reply states, review gates, and archive rules into targeted reviewer follow-up emails before the private backend repo closeout.",
   "counts": {
     "reviewerLanes": 8,
@@ -196,3 +196,4 @@
     "v147 can track which closeout packets, archive names, replies, and evidence gaps remain open after emails are sent."
   ]
 }
+

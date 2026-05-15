@@ -1,9 +1,9 @@
-﻿{
+{
   "schemaVersion": "pursuitdesk.backendMeetingMinutesExporter.v145",
   "version": "v145",
   "title": "Backend Meeting Minutes Exporter",
   "meetingMinutesScore": 99,
-  "downloadHref": "data/backend-meeting-minutes-exporter.json?v=146",
+  "downloadHref": "data/backend-meeting-minutes-exporter.json?v=153",
   "minutesKpis": [
     {
       "label": "Minutes exporter",
@@ -444,4 +444,5 @@
     "acceptanceChecks": 8
   }
 }
+
 
