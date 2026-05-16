@@ -1,4 +1,4 @@
-PursuitDesk v172 payment provider webhook blueprint upload steps
+PursuitDesk v177 attachment download audit evidence pack upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v172 payment provider webhook blueprint upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v172 payment provider webhook blueprint
+   PursuitDesk v177 attachment download audit evidence pack
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Membership Model with v172 Payment Provider Webhook Blueprint. Membership now maps checkout and invoice events, signature verification, idempotency, tenant mapping, retry behavior, subscription transitions, access effects, backend endpoints, proof artifacts, and downloadable webhook JSON.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Closeout with v177 Attachment Download Audit Evidence Pack. Closeout now proves archive downloads with actor, reason, checksum verification, retention release, access decision, denied-download rows, management evidence, and downloadable audit JSON.
 
 Demo login:
 admin@pursuitdesk.app
