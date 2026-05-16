@@ -1,4 +1,4 @@
-PursuitDesk v162 closeout exception approval queue upload steps
+PursuitDesk v172 payment provider webhook blueprint upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v162 closeout exception approval queue upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v162 closeout exception approval queue
+   PursuitDesk v172 payment provider webhook blueprint
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Closeout with v162 Closeout Exception Approval Queue. Closeout now turns SLA escalations into approve, hold, defer, reopen, and reject decisions with approver roles, owner actions, retention posture, management script, and downloadable exception JSON.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Membership Model with v172 Payment Provider Webhook Blueprint. Membership now maps checkout and invoice events, signature verification, idempotency, tenant mapping, retry behavior, subscription transitions, access effects, backend endpoints, proof artifacts, and downloadable webhook JSON.
 
 Demo login:
 admin@pursuitdesk.app
