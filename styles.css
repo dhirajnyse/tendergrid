@@ -29349,6 +29349,190 @@ tr.selected-row td:first-child {
   overflow-wrap: anywhere;
 }
 
+.webhook-runner-checklist {
+  border-left: 4px solid var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 237, 248, 0.72));
+}
+
+.webhook-runner-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.webhook-runner-hero > div,
+.webhook-runner-card-grid > div,
+.webhook-runner-commands > div,
+.webhook-runner-fixtures > div,
+.webhook-runner-screens > div,
+.webhook-runner-gates > div,
+.webhook-runner-lines p {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: var(--blue-soft);
+}
+
+.webhook-runner-hero > div:first-child {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.webhook-runner-hero > div:last-child {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.webhook-runner-card-grid,
+.webhook-runner-layout,
+.webhook-runner-proof-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.webhook-runner-card-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 12px;
+}
+
+.webhook-runner-layout {
+  grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr);
+  align-items: start;
+}
+
+.webhook-runner-proof-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.webhook-runner-commands,
+.webhook-runner-fixtures,
+.webhook-runner-screens,
+.webhook-runner-gates,
+.webhook-runner-lines {
+  display: grid;
+  gap: 8px;
+}
+
+.webhook-runner-card-grid .tone-green,
+.webhook-runner-commands .tone-green,
+.webhook-runner-fixtures .tone-green,
+.webhook-runner-screens .tone-green,
+.webhook-runner-gates .tone-green {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.webhook-runner-card-grid .tone-teal,
+.webhook-runner-commands .tone-teal,
+.webhook-runner-fixtures .tone-teal,
+.webhook-runner-screens .tone-teal,
+.webhook-runner-gates .tone-teal {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.webhook-runner-card-grid .tone-blue,
+.webhook-runner-commands .tone-blue,
+.webhook-runner-fixtures .tone-blue,
+.webhook-runner-screens .tone-blue,
+.webhook-runner-gates .tone-blue {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.webhook-runner-card-grid .tone-amber,
+.webhook-runner-commands .tone-amber,
+.webhook-runner-fixtures .tone-amber,
+.webhook-runner-screens .tone-amber,
+.webhook-runner-gates .tone-amber {
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.webhook-runner-card-grid .tone-red,
+.webhook-runner-commands .tone-red,
+.webhook-runner-fixtures .tone-red,
+.webhook-runner-screens .tone-red,
+.webhook-runner-gates .tone-red {
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.webhook-runner-checklist h4 {
+  margin: 4px 0 10px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.webhook-runner-hero span,
+.webhook-runner-card-grid span,
+.webhook-runner-commands span,
+.webhook-runner-fixtures span,
+.webhook-runner-proof-grid > section > span {
+  display: block;
+  color: var(--label);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.webhook-runner-hero strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 28px;
+  line-height: 1.05;
+  overflow-wrap: anywhere;
+}
+
+.webhook-runner-card-grid strong,
+.webhook-runner-commands strong,
+.webhook-runner-fixtures strong,
+.webhook-runner-screens strong,
+.webhook-runner-gates strong {
+  display: block;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.webhook-runner-card-grid strong {
+  margin-top: 5px;
+  font-size: 22px;
+}
+
+.webhook-runner-hero p,
+.webhook-runner-card-grid p,
+.webhook-runner-commands p,
+.webhook-runner-fixtures p,
+.webhook-runner-screens p,
+.webhook-runner-gates p,
+.webhook-runner-lines p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.webhook-runner-commands small,
+.webhook-runner-fixtures small,
+.webhook-runner-screens small,
+.webhook-runner-gates small {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
 .pilot-sales-package {
   border-left: 4px solid var(--blue);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 237, 248, 0.72));
@@ -33331,6 +33515,10 @@ tr.selected-row td:first-child {
   .webhook-evidence-proof-grid,
   .webhook-evidence-handoff,
   .webhook-evidence-payloads,
+  .webhook-runner-hero,
+  .webhook-runner-card-grid,
+  .webhook-runner-layout,
+  .webhook-runner-proof-grid,
   .membership-checkout-grid,
   .membership-checkout-steps,
   .insight-management-grid,
@@ -33521,6 +33709,10 @@ tr.selected-row td:first-child {
   .webhook-evidence-proof-grid,
   .webhook-evidence-handoff,
   .webhook-evidence-payloads,
+  .webhook-runner-hero,
+  .webhook-runner-card-grid,
+  .webhook-runner-layout,
+  .webhook-runner-proof-grid,
   .pilot-sales-hero,
   .pilot-offer-grid,
   .pilot-proof-grid,
