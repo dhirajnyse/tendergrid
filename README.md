@@ -85,7 +85,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Compact daily-use tracker grid with type/category/owner metadata moved into the title cell to reduce horizontal scrolling.
 - Search, status/category/type filters, smarter action lanes, details panel, notes, CSV export.
 - Bottom-right floating search and scroll controls with a quick search overlay for jumping directly to records.
-- Cleaner product navigation keeps Command, Advisor, Weekly Review, Tenders, Projects, and Reports visible while specialist modules sit inside a compact Rooms launcher.
+- Cleaner product navigation keeps Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, and Reports visible while specialist modules sit inside a compact Rooms launcher.
 - Top navigation now separates daily work into Tenders, Tenders Insights, Projects, and Project Insights, with no All tab and no combined records pill.
 - Each main section is scoped to its own content so tender records, tender analytics, project records, and project analytics do not mix.
 - Quick search follows the current section, so tender pages search tender/EOI records and project pages search project records.
@@ -118,6 +118,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Pilot Pitch now includes a v176 Pilot Expansion Quote Builder that turns renewal proof into expansion seat plans, module add-ons, setup scope, sponsor approvals, next invoice options, and downloadable quote JSON.
 - Pilot Pitch now includes a v182 Expansion Approval Memory that captures sponsor approvals, finance holds, quote revisions, invoice choices, rollout authorization, approval closeout email, audit fields, and downloadable approval JSON.
 - Pilot Pitch now includes a v185 Expansion Invoice Acceptance Pack that turns approved expansion memory into invoice acceptance, paid-state proof, rollout locks, renewal handoff, copy-ready invoice acceptance email, and downloadable acceptance JSON.
+- Pilot Pitch now includes a v200 Famous Founder Demo Mode with a guided buyer route, talk track, objection rescue, 18-minute close plan, room launch buttons, and downloadable founder demo JSON.
 - PursuitDesk now includes a v186 Pursuit Autopilot Brain as a top-level room beside Command, turning live tender/project records into mission lanes, privacy-safe owner actions, meeting script, and downloadable brain JSON.
 - PursuitDesk now includes a v187 Pursuit Time Machine as a top-level management room that simulates do-nothing, owner-push, management-intervention, and Autopilot futures with control ROI, preventable late records, protected value, record futures, and downloadable simulation JSON.
 - PursuitDesk now includes a v188 Pursuit Win Lab as a top-level strategy room that turns live pursuit records into win confidence, attack/protect/clarify/no-bid lanes, differentiators, relationship proof, bid-room memo, and downloadable strategy JSON.
@@ -128,6 +129,13 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - PursuitDesk now includes a v193 Twin Decision Inbox layer that routes replay outcomes into owner packets with due dates, evidence requests, reply states, closeout notes, inbox score, and downloadable inbox JSON.
 - PursuitDesk now includes a v194 Dispatch Evidence Closeout layer that turns Win Lab dispatch packets into proof packs, outcome states, release gates, reusable response memory, closeout notes, file manifests, and downloadable closeout JSON.
 - PursuitDesk now includes a v195 Replay Learning Memory layer that turns Decision Twin replay outcomes into reusable management rules with triggers, anti-patterns, scripts, confidence, evidence gates, source replay IDs, and downloadable learning JSON.
+- PursuitDesk now includes a v196 Header Navigation Guardrail that filters blank navigation labels, keeps core rooms in the main strip, moves advanced rooms into Rooms, and prevents clipped empty pills when sections are hidden or access-controlled.
+- PursuitDesk now includes a v197 Decision SLA Autopilot layer that gives Decision Twin inbox packets SLA clocks, breach states, escalation owners, owner nudges, weekly review lines, next-run dates, and downloadable autopilot JSON.
+- PursuitDesk now includes a v198 Proof-to-Response Library layer that converts Win Lab evidence closeouts into approved response snippets, reusable Q&A prompts, source closeout IDs, redaction rules, approval memory, and downloadable response-library JSON.
+- PursuitDesk now includes a v199 Learning Rule Approvals layer that lets management approve, test, freeze, or retire learned replay rules before they influence Advisor, Weekly Review, Reports, or future simulations.
+- PursuitDesk now includes a v200 Famous Founder Demo Mode inside Pilot Pitch, turning the product into a buyer-ready founder walkthrough across pressure, privacy, control, intelligence, and a 30-day pilot close.
+- PursuitDesk now includes a v201 Proof Library Search layer inside Win Lab, finding reusable response snippets by buyer, category, proof source, approval state, reuse rule, match score, and redaction guardrail.
+- PursuitDesk now includes a v202 Rule Impact Simulator inside Decision Twin, testing approved, test-only, frozen, and retired learning rules before they influence guidance, scores, reports, or management rooms.
 - Closeout now includes a v159 SLA and Escalation Clock with archive ageing, overdue lanes, due-now warnings, reviewer nudges, owner actions, management closeout lines, and downloadable SLA JSON.
 - Closeout now includes a v162 Closeout Exception Approval Queue that turns SLA pressure into approve, hold, defer, reopen, or reject decisions with approver roles, owner actions, management notes, and downloadable exception JSON.
 - Closeout now includes a v165 Closeout Exception Evidence Bundle that turns exception decisions into proof requests, named evidence files, owner reminders, release notes, management lines, and downloadable evidence JSON.
@@ -272,6 +280,13 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v193 adds Twin Decision Inbox, routing replay outcomes into accountable owner packets with due dates, evidence requests, reply states, closeout notes, and audit-ready messages.
 - v194 adds Dispatch Evidence Closeout, converting Win Lab owner packets into proof packs, outcome states, release gates, reusable memory, closeout notes, and file manifests.
 - v195 adds Replay Learning Memory, converting replay outcomes into reusable rules, anti-patterns, confidence scores, evidence gates, source replay IDs, and management scripts.
+- v196 adds a Header Navigation Guardrail, keeping core daily rooms visible, moving advanced rooms into Rooms, filtering blank labels, and preventing clipped empty pills in the top bar.
+- v197 adds Decision SLA Autopilot, turning stale Decision Twin inbox packets into escalation nudges, owner follow-ups, weekly review lines, SLA breach states, next-run dates, and audit-ready autopilot events.
+- v198 adds Proof-to-Response Library, turning Win Lab evidence closeouts into approved snippets, reusable Q&A prompts, source closeout IDs, redaction rules, approval memory, and response-library JSON.
+- v199 adds Learning Rule Approvals, gating replay learning memory through approved, test-only, frozen, and retired states before those rules can influence product guidance.
+- v200 adds Famous Founder Demo Mode inside Pilot Pitch, giving the founder a guided buyer story, room route, talk track, objection rescue, close plan, and downloadable demo JSON.
+- v201 adds Proof Library Search inside Win Lab, turning approved response memory into searchable proof by buyer, category, source proof, approval state, reuse rule, match score, and redaction rule.
+- v202 adds Rule Impact Simulator inside Decision Twin, projecting lift, pressure reduction, affected surfaces, promotion gates, rollback triggers, reviewers, evidence gates, and audit events before a learning rule becomes active guidance.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.

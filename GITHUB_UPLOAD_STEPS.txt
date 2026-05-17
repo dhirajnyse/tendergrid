@@ -1,4 +1,4 @@
-PursuitDesk v195 replay learning memory upload steps
+PursuitDesk v202 rule impact simulator upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v195 replay learning memory upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v195 replay learning memory
+   PursuitDesk v202 rule impact simulator
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Decision Twin with Replay Learning Memory. Decision Twin now turns replay outcomes into reusable management rules with triggers, anti-patterns, scripts, confidence, evidence gates, source replay IDs, and downloadable learning JSON.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Decision Twin with v202 Rule Impact Simulator. Open Decision Twin to test whether approved, test-only, frozen, or retired learning rules should be promoted, retested, frozen, or blocked before they influence guidance.
 
 Demo login:
 admin@pursuitdesk.app
