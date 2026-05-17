@@ -1,4 +1,4 @@
-PursuitDesk v191 win lab task dispatch upload steps
+PursuitDesk v195 replay learning memory upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v191 win lab task dispatch upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v191 win lab task dispatch
+   PursuitDesk v195 replay learning memory
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Win Lab with Task Dispatch. Win Lab now turns attack, protect, clarify, and no-bid lanes into owner-ready task packets with lock state, SLA, evidence request, review gate, copy-ready message, and downloadable dispatch JSON.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Decision Twin with Replay Learning Memory. Decision Twin now turns replay outcomes into reusable management rules with triggers, anti-patterns, scripts, confidence, evidence gates, source replay IDs, and downloadable learning JSON.
 
 Demo login:
 admin@pursuitdesk.app

@@ -124,6 +124,10 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - PursuitDesk now includes a v189 Pursuit Decision Twin as a top-level what-if room that simulates management decisions before live tracker changes, showing projected health lift, decision moves, protected value, board memo, and downloadable twin JSON.
 - PursuitDesk now includes a v190 Decision Twin Approval Ledger that converts simulated moves into approved, held, deferred, and actual-review decisions with owner, evidence, expected lift, guardrails, and downloadable twin JSON.
 - PursuitDesk now includes a v191 Win Lab Task Dispatch layer that converts win posture into owner-ready task packets with lock state, SLA, evidence request, review gate, copy-ready message, and downloadable dispatch JSON.
+- PursuitDesk now includes a v192 Pursuit Twin Outcome Replay layer that compares predicted lift against actual movement with replay score, proof state, lift variance, next action, learning lanes, and downloadable replay JSON.
+- PursuitDesk now includes a v193 Twin Decision Inbox layer that routes replay outcomes into owner packets with due dates, evidence requests, reply states, closeout notes, inbox score, and downloadable inbox JSON.
+- PursuitDesk now includes a v194 Dispatch Evidence Closeout layer that turns Win Lab dispatch packets into proof packs, outcome states, release gates, reusable response memory, closeout notes, file manifests, and downloadable closeout JSON.
+- PursuitDesk now includes a v195 Replay Learning Memory layer that turns Decision Twin replay outcomes into reusable management rules with triggers, anti-patterns, scripts, confidence, evidence gates, source replay IDs, and downloadable learning JSON.
 - Closeout now includes a v159 SLA and Escalation Clock with archive ageing, overdue lanes, due-now warnings, reviewer nudges, owner actions, management closeout lines, and downloadable SLA JSON.
 - Closeout now includes a v162 Closeout Exception Approval Queue that turns SLA pressure into approve, hold, defer, reopen, or reject decisions with approver roles, owner actions, management notes, and downloadable exception JSON.
 - Closeout now includes a v165 Closeout Exception Evidence Bundle that turns exception decisions into proof requests, named evidence files, owner reminders, release notes, management lines, and downloadable evidence JSON.
@@ -264,6 +268,10 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v189 adds Pursuit Decision Twin, a what-if room that simulates date rescue, owner reset, attack winners, no-bid discipline, and evidence sprint decisions before changing live records.
 - v190 adds Decision Twin Approval Ledger, turning simulated scenarios into signed management decisions with owner lanes, proof requirements, expected results, actual-review windows, and control guardrails.
 - v191 adds Win Lab Task Dispatch, turning attack/protect/clarify/no-bid lanes into assigned owner packets with proof requests, SLA, lock state, and review gates.
+- v192 adds Pursuit Twin Outcome Replay, closing the loop between predicted management lift and actual record movement with proof state, variance, replay score, and learning lanes.
+- v193 adds Twin Decision Inbox, routing replay outcomes into accountable owner packets with due dates, evidence requests, reply states, closeout notes, and audit-ready messages.
+- v194 adds Dispatch Evidence Closeout, converting Win Lab owner packets into proof packs, outcome states, release gates, reusable memory, closeout notes, and file manifests.
+- v195 adds Replay Learning Memory, converting replay outcomes into reusable rules, anti-patterns, confidence scores, evidence gates, source replay IDs, and management scripts.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
