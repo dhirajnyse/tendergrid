@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=178";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=178";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=191";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=191";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -94,9 +94,13 @@
   const BILLING_TERMS = ["Monthly", "Annual"];
   const IMPORT_COLUMNS = ["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "sourceSheet"];
   const ADMIN_ONLY_SECTION_KEYS = ["membership", "pitch", "buildPhase"];
-  const PRIMARY_NAV_KEYS = ["command", "advisor", "review", "tenders", "projects", "reports"];
+  const PRIMARY_NAV_KEYS = ["command", "autopilot", "timeMachine", "winLab", "decisionTwin", "advisor", "review", "tenders", "projects", "reports"];
   const ACCESS_SECTIONS = [
     { key: "command", label: "Command", view: "Command" },
+    { key: "autopilot", label: "Autopilot", view: "Autopilot" },
+    { key: "timeMachine", label: "Time Machine", view: "Time Machine" },
+    { key: "winLab", label: "Win Lab", view: "Win Lab" },
+    { key: "decisionTwin", label: "Decision Twin", view: "Decision Twin" },
     { key: "advisor", label: "Advisor", view: "Advisor" },
     { key: "review", label: "Weekly Review", view: "Weekly Review" },
     { key: "intake", label: "Intake", view: "Intake" },
@@ -121,7 +125,7 @@
     { key: "membership", label: "Membership Model", view: "Membership" },
   ];
   const DEFAULT_OPERATION_ACCESS_KEYS = ["tenders", "projects"];
-  const COMMERCIAL_ACCESS_KEYS = ["tenderInsights", "projectInsights", "forecast", "clients", "contracts", "reports", "advisor", "command"];
+  const COMMERCIAL_ACCESS_KEYS = ["tenderInsights", "projectInsights", "forecast", "clients", "contracts", "reports", "advisor", "autopilot", "timeMachine", "winLab", "decisionTwin", "command"];
   const GRANTABLE_ACCESS_SECTIONS = ACCESS_SECTIONS.filter((section) => !ADMIN_ONLY_SECTION_KEYS.includes(section.key));
   const GOVERNANCE_ACCESS_KEYS = ["governance", "import", "documents"];
   const DATA_ARCHITECTURE_LAYERS = [
@@ -817,6 +821,22 @@
     return view === "Command";
   }
 
+  function isAutopilotSection(view = state.view) {
+    return view === "Autopilot";
+  }
+
+  function isTimeMachineSection(view = state.view) {
+    return view === "Time Machine";
+  }
+
+  function isWinLabSection(view = state.view) {
+    return view === "Win Lab";
+  }
+
+  function isDecisionTwinSection(view = state.view) {
+    return view === "Decision Twin";
+  }
+
   function isAdvisorSection(view = state.view) {
     return view === "Advisor";
   }
@@ -895,6 +915,10 @@
 
   function sectionForView(view) {
     if (view === "Command") return "command";
+    if (view === "Autopilot") return "autopilot";
+    if (view === "Time Machine") return "timeMachine";
+    if (view === "Win Lab") return "winLab";
+    if (view === "Decision Twin") return "decisionTwin";
     if (view === "Advisor") return "advisor";
     if (view === "Weekly Review") return "review";
     if (view === "Intake") return "intake";
@@ -1358,6 +1382,58 @@
         </div>
       `;
     }
+    if (isAutopilotSection(view)) {
+      const autopilot = buildPursuitAutopilotModel();
+      const boxes = [
+        ["Pilot", `${autopilot.autopilotScore}%`],
+        ["Now", autopilot.nowCount],
+        ["Mission", autopilot.missionCode],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isTimeMachineSection(view)) {
+      const future = buildPursuitTimeMachineModel();
+      const boxes = [
+        ["Future", `${future.futureScore}%`],
+        ["Saved", future.preventedOverdue],
+        ["ROI", `${future.interventionRoi}x`],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isWinLabSection(view)) {
+      const win = buildPursuitWinLabModel();
+      const boxes = [
+        ["Win", `${win.winConfidence}%`],
+        ["Dispatch", `${win.dispatchScore}%`],
+        ["Locked", win.lockedTasks],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}
+        </div>
+      `;
+    }
+    if (isDecisionTwinSection(view)) {
+      const twin = buildPursuitDecisionTwinModel();
+      const boxes = [
+        ["Lift", `+${twin.bestLift}`],
+        ["Approve", `${twin.approvalScore}%`],
+        ["Moves", twin.decisionMoves],
+      ];
+      return `
+        <div class="header-summary">
+          ${boxes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}
+        </div>
+      `;
+    }
     if (isAdvisorSection(view)) {
       const advisor = buildPursuitAdvisorModel();
       const boxes = [
@@ -1585,7 +1661,7 @@
   }
 
   function renderMetricsForView(view, metrics) {
-    if (isInsightSection(view) || view === "Membership" || isBuildPhaseSection(view) || isPilotPitchSection(view) || isCommandSection(view) || isAdvisorSection(view) || isWeeklyReviewSection(view) || isIntakeSection(view) || isImportSection(view) || isGovernanceSection(view) || isBidDeskSection(view) || isCalendarSection(view) || isRiskSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isCloseoutSection(view) || isReportSection(view)) return "";
+    if (isInsightSection(view) || view === "Membership" || isBuildPhaseSection(view) || isPilotPitchSection(view) || isCommandSection(view) || isAutopilotSection(view) || isTimeMachineSection(view) || isWinLabSection(view) || isDecisionTwinSection(view) || isAdvisorSection(view) || isWeeklyReviewSection(view) || isIntakeSection(view) || isImportSection(view) || isGovernanceSection(view) || isBidDeskSection(view) || isCalendarSection(view) || isRiskSection(view) || isForecastSection(view) || isClientSection(view) || isContractSection(view) || isDocumentSection(view) || isReminderSection(view) || isCloseoutSection(view) || isReportSection(view)) return "";
     const cards = isProjectSection(view)
       ? [
           ["Ongoing projects", metrics.ongoing, `${metrics.total} project records`, "teal"],
@@ -1622,6 +1698,14 @@
     const viewTitle =
       state.view === "Command"
         ? "Command center"
+        : state.view === "Autopilot"
+        ? "Pursuit autopilot"
+        : state.view === "Time Machine"
+        ? "Pursuit time machine"
+        : state.view === "Win Lab"
+        ? "Pursuit win lab"
+        : state.view === "Decision Twin"
+        ? "Pursuit decision twin"
         : state.view === "Advisor"
         ? "Pursuit advisor"
         : state.view === "Weekly Review"
@@ -1670,6 +1754,14 @@
     const viewCopy =
       state.view === "Command"
         ? "One morning screen for operating priorities, pursuit health, evidence gaps, client heat, contract movement, and management-ready actions."
+        : state.view === "Autopilot"
+        ? "A decision engine that reads live tenders and projects, chooses the morning mission, and writes the next moves before the meeting starts."
+        : state.view === "Time Machine"
+        ? "A future-simulation room that shows what happens if the team does nothing, pushes owners, or makes a management intervention."
+        : state.view === "Win Lab"
+        ? "A strategy lab that turns pursuit records into win confidence, bid posture, differentiators, blockers, and a buyer-ready bid-room memo."
+        : state.view === "Decision Twin"
+        ? "A what-if command room that simulates management decisions before changing live records, effort, owners, dates, or bid posture."
         : state.view === "Advisor"
         ? "Recommended next actions, decision prompts, and management talking points generated from the live PursuitDesk rooms."
         : state.view === "Weekly Review"
@@ -1747,6 +1839,14 @@
           ${
             state.view === "Command"
               ? renderCommandCenterPage()
+            : state.view === "Autopilot"
+              ? renderPursuitAutopilotPage()
+            : state.view === "Time Machine"
+              ? renderPursuitTimeMachinePage()
+            : state.view === "Win Lab"
+              ? renderPursuitWinLabPage()
+            : state.view === "Decision Twin"
+              ? renderPursuitDecisionTwinPage()
             : state.view === "Build Phase"
               ? renderBuildPhasePage()
             : state.view === "Advisor"
@@ -4483,6 +4583,237 @@
     };
   }
 
+  function buildPursuitAutopilotModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const command = buildCommandCenterModel();
+    const advisor = buildPursuitAdvisorModel();
+    const weeklyReview = buildWeeklyReviewModel();
+    const valueFloor = highValueThreshold(records);
+    const generatedAt = new Date();
+    const runId = `PD-AUTO-${generatedAt.toISOString().slice(0, 10).replaceAll("-", "")}-${String(openRecords.length).padStart(3, "0")}`;
+    const signals = openRecords
+      .map((record) => {
+        const days = recordDueDays(record);
+        const amount = Number(record.valueAmount) || 0;
+        const highValue = amount > 0 && amount >= valueFloor;
+        const missing = [
+          !record.owner ? "owner" : "",
+          !record.endDate ? "date" : "",
+          !record.category ? "category" : "",
+          !record.sourceSheet ? "source" : "",
+        ].filter(Boolean);
+        const duePressure = days === null ? 18 : days < 0 ? 48 : days <= 7 ? 34 : days <= 30 ? 22 : 6;
+        const valuePressure = highValue ? 24 : amount > 0 ? 10 : 0;
+        const dataPressure = missing.length * 11;
+        const decisionPressure = ["Tender", "EOI"].includes(record.type) && ["Active", "Pending", "Submitted"].includes(record.status) ? 13 : 5;
+        const score = Math.max(8, Math.min(99, Math.round(28 + duePressure + valuePressure + dataPressure + decisionPressure)));
+        const lane =
+          days !== null && days < 0
+            ? "Do now"
+            : missing.length
+              ? "Delegate"
+              : ["Tender", "EOI"].includes(record.type) && ["Active", "Pending", "Submitted"].includes(record.status)
+                ? "Decide"
+                : highValue
+                  ? "Protect"
+                  : "Watch";
+        const tone =
+          lane === "Do now"
+            ? "red"
+            : lane === "Delegate"
+              ? "amber"
+              : lane === "Decide"
+                ? "blue"
+                : lane === "Protect"
+                  ? "green"
+                  : "teal";
+        const action =
+          lane === "Do now"
+            ? "Recover the date, owner, and next action before the next management update."
+            : lane === "Delegate"
+              ? `Assign ${missing.join(", ")} cleanup and keep commercial facts out of frontline tracker edits.`
+              : lane === "Decide"
+                ? "Confirm bid/no-bid posture, submission path, and owner before effort expands."
+                : lane === "Protect"
+                  ? "Keep this value under management watch with evidence, dates, and relationship memory."
+                  : "Keep in rhythm and refresh status during the next weekly review.";
+        return {
+          record,
+          days,
+          amount,
+          highValue,
+          missing,
+          score,
+          lane,
+          tone,
+          action,
+          dueText: dueLabel(days),
+        };
+      })
+      .sort((a, b) => b.score - a.score || (a.days ?? 9999) - (b.days ?? 9999));
+    const laneDefs = [
+      ["Do now", "red", "Past-due and control-critical work"],
+      ["Delegate", "amber", "Owner, date, category, or source cleanup"],
+      ["Decide", "blue", "Bid, no-bid, hold, or submission posture"],
+      ["Protect", "green", "High-value work requiring management memory"],
+      ["Watch", "teal", "Healthy work that needs rhythm"],
+    ];
+    const lanes = laneDefs.map(([name, tone, note]) => {
+      const items = signals.filter((item) => item.lane === name).slice(0, 5);
+      return {
+        name,
+        tone,
+        note,
+        count: signals.filter((item) => item.lane === name).length,
+        items,
+      };
+    });
+    const missionCode = lanes.find((lane) => lane.count)?.name === "Do now"
+      ? "RESCUE"
+      : lanes.find((lane) => lane.name === "Delegate")?.count
+        ? "CLEAN"
+        : lanes.find((lane) => lane.name === "Decide")?.count
+          ? "DECIDE"
+          : "PUSH";
+    const missionTitle =
+      missionCode === "RESCUE"
+        ? "Recover the red work first"
+        : missionCode === "CLEAN"
+          ? "Clean the operating layer"
+          : missionCode === "DECIDE"
+            ? "Turn watch items into decisions"
+            : "Push the controlled pipeline";
+    const nowCount = lanes.find((lane) => lane.name === "Do now")?.count || 0;
+    const delegateCount = lanes.find((lane) => lane.name === "Delegate")?.count || 0;
+    const decideCount = lanes.find((lane) => lane.name === "Decide")?.count || 0;
+    const protectedValue = sumAmounts(signals.filter((item) => item.highValue).map((item) => item.record));
+    const autopilotScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          command.healthScore * 0.3 +
+            advisor.advisorScore * 0.26 +
+            weeklyReview.reviewScore * 0.18 +
+            command.evidenceScore * 0.14 +
+            Math.max(0, 100 - nowCount * 5 - delegateCount * 2) * 0.12,
+        ),
+      ),
+    );
+    const commandScriptLines = [
+      `Autopilot run ${runId}`,
+      `Mission: ${missionTitle}`,
+      "",
+      `1. Open with the current posture: ${openRecords.length} open records, ${nowCount} red moves, ${delegateCount} delegated cleanups, and ${decideCount} decisions.`,
+      `2. First move: ${signals[0]?.record.title || "No urgent record"} - ${signals[0]?.action || "Keep the weekly rhythm."}`,
+      `3. Protect value: ${formatCompactMoney(protectedValue)} is tied to high-signal work and must stay in management rooms.`,
+      `4. Ask every owner for one next action, one date, and one proof item. No loose promises.`,
+      `5. Close the meeting by opening Weekly Review and locking the next review script.`,
+    ];
+    const focusStrip = [
+      {
+        tone: nowCount ? "red" : "green",
+        label: "Autopilot mission",
+        value: missionTitle,
+        note: `${nowCount} do-now moves decide the morning order.`,
+      },
+      {
+        tone: "amber",
+        label: "Delegation load",
+        value: `${delegateCount} cleanups`,
+        note: "Missing owner, date, category, or source proof becomes an assigned job.",
+      },
+      {
+        tone: "blue",
+        label: "Decision engine",
+        value: `${decideCount} decisions`,
+        note: "Bid, no-bid, hold, or submission moves are separated from general tracking.",
+      },
+      {
+        tone: "green",
+        label: "Value shield",
+        value: formatCompactMoney(protectedValue),
+        note: "Commercial context stays in management rooms while operations receive only actions.",
+      },
+    ];
+    const brainCards = [
+      ["Pursuit twin", "Awake", `${signals.length} live records converted into ranked operating moves.`, "teal"],
+      ["Privacy guard", "On", "Autopilot can tell frontline users what to do without exposing commercial values.", "green"],
+      ["Meeting script", "Ready", `${commandScriptLines.length} lines convert raw records into management language.`, "blue"],
+      ["Shock factor", "Different", "This feels less like a sheet and more like a pursuit operating brain.", "amber"],
+    ];
+    const boardRows = [
+      ["Room to open first", missionCode === "RESCUE" ? "Reminders" : missionCode === "DECIDE" ? "Bid Desk" : "Weekly Review", "Follow the mission before opening any broad report.", nowCount ? "red" : "blue"],
+      ["Owner promise", "One action / one date / one proof", "The operating discipline that makes the product feel expensive.", "green"],
+      ["Commercial boundary", "Values stay guarded", "Autopilot gives movement instructions without leaking money to lower-level teams.", "teal"],
+      ["Next release thought", "AI Copilot later", "A future backend can generate these missions from real user actions and stored history.", "amber"],
+    ];
+    const packet = {
+      schemaVersion: "pursuitdesk.pursuitAutopilotBrain.v186",
+      generatedOn: generatedAt.toISOString(),
+      runId,
+      company: state.data.company.name,
+      missionCode,
+      missionTitle,
+      autopilotScore,
+      counts: {
+        records: records.length,
+        openRecords: openRecords.length,
+        nowCount,
+        delegateCount,
+        decideCount,
+        protectedValue,
+      },
+      lanes: lanes.map((lane) => ({
+        name: lane.name,
+        count: lane.count,
+        note: lane.note,
+        items: lane.items.map((item) => ({
+          recordId: item.record.id,
+          reference: item.record.reference,
+          client: item.record.client,
+          title: item.record.title,
+          dueText: item.dueText,
+          score: item.score,
+          action: item.action,
+        })),
+      })),
+      commandScript: commandScriptLines,
+      nextBackendFields: [
+        "autopilot_run_id",
+        "company_id",
+        "generated_by_user_id",
+        "mission_code",
+        "mission_score",
+        "record_signal_json",
+        "assigned_action_json",
+        "privacy_guard_state",
+        "meeting_script_body",
+        "audit_event_id",
+      ],
+    };
+    return {
+      runId,
+      autopilotScore,
+      missionCode,
+      missionTitle,
+      records,
+      openRecords,
+      signals,
+      lanes,
+      focusStrip,
+      brainCards,
+      boardRows,
+      commandScript: commandScriptLines.join("\n"),
+      protectedValue,
+      nowCount,
+      delegateCount,
+      decideCount,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
   function renderBuildPhaseArtifactSections(model) {
     const pilotReadiness = buildPilotReadinessModel(model);
     const saasConversion = buildSaasConversionSprintModel(model, pilotReadiness);
@@ -4757,6 +5088,1580 @@
           </aside>
         </div>
       </section>
+    `;
+  }
+
+  function renderPursuitAutopilotPage() {
+    const model = buildPursuitAutopilotModel();
+    return `
+      <section class="autopilot-room">
+        <section class="autopilot-console">
+          <div>
+            <span class="panel-label">v186 Pursuit Autopilot Brain</span>
+            <h2>The morning mission writes itself.</h2>
+            <p>Autopilot reads the live workspace, separates operational movement from commercial privacy, and converts records into a ranked mission board for the next meeting.</p>
+            <div class="autopilot-actions">
+              <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
+              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              <a class="ghost-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-autopilot-brain-v186.json">Download brain JSON</a>
+            </div>
+          </div>
+          <div class="autopilot-orb" aria-label="Autopilot score ${model.autopilotScore} percent">
+            <span>${escapeHtml(model.missionCode)}</span>
+            <strong>${model.autopilotScore}%</strong>
+            <small>${escapeHtml(model.runId)}</small>
+          </div>
+        </section>
+
+        <div class="autopilot-kpis">
+          ${renderInsightKpi("Mission", model.missionTitle, `${model.nowCount} do-now moves / ${model.delegateCount} delegated cleanups`)}
+          ${renderInsightKpi("Open work", `${model.openRecords.length}`, `${model.records.length} total records scanned`)}
+          ${renderInsightKpi("Decision queue", `${model.decideCount}`, "Bid, no-bid, hold, or submission posture")}
+          ${renderInsightKpi("Value shield", formatCompactMoney(model.protectedValue), "Commercial signal stays controlled")}
+        </div>
+
+        ${renderRoomFocusStrip(model.focusStrip, "autopilot-focus-strip", "Autopilot focus strip")}
+
+        <div class="autopilot-brain-grid">
+          ${model.brainCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="autopilot-brain-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="autopilot-layout">
+          <section class="autopilot-main">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Autopilot board</span>
+                  <h3>Mission lanes</h3>
+                </div>
+                <span>${model.signals.length} signals</span>
+              </div>
+              <div class="autopilot-lane-grid">
+                ${model.lanes.map(renderAutopilotLane).join("")}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Operating doctrine</span>
+                  <h3>What makes it different</h3>
+                </div>
+              </div>
+              <div class="autopilot-doctrine-grid">
+                ${model.boardRows
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <div class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(label)}</span>
+                        <strong>${escapeHtml(value)}</strong>
+                        <p>${escapeHtml(note)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </section>
+
+          <aside class="autopilot-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Meeting script</span>
+                  <h3>What to say now</h3>
+                </div>
+              </div>
+              <textarea readonly aria-label="Autopilot meeting script">${escapeHtml(model.commandScript)}</textarea>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Privacy promise</span>
+                  <h3>Frontline safe, management smart</h3>
+                </div>
+              </div>
+              <div class="autopilot-privacy-card">
+                <strong>No commercial leakage</strong>
+                <p>Autopilot can tell operations what to update while keeping values, invoice context, negotiations, and management signals inside protected rooms.</p>
+                <button class="ghost-btn" type="button" data-view="Membership">Review access</button>
+              </div>
+            </article>
+          </aside>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderAutopilotLane(lane) {
+    return `
+      <article class="autopilot-lane tone-${escapeHtml(lane.tone)}">
+        <div class="autopilot-lane-head">
+          <div>
+            <strong>${escapeHtml(lane.name)}</strong>
+            <span>${escapeHtml(lane.note)}</span>
+          </div>
+          <b>${lane.count}</b>
+        </div>
+        <div class="autopilot-card-list">
+          ${lane.items.length ? lane.items.map(renderAutopilotCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} signals.</div>`}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderAutopilotCard(item) {
+    return `
+      <button class="autopilot-card tone-${escapeHtml(item.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+        <span>${escapeHtml(item.lane)} / ${item.score}</span>
+        <strong>${escapeHtml(item.record.title || "Untitled record")}</strong>
+        <em>${escapeHtml([item.record.reference, item.record.client, item.record.type, item.dueText].filter(Boolean).join(" / "))}</em>
+        <p>${escapeHtml(item.action)}</p>
+      </button>
+    `;
+  }
+
+  function buildPursuitTimeMachineModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const command = buildCommandCenterModel();
+    const autopilot = buildPursuitAutopilotModel();
+    const valueFloor = highValueThreshold(records);
+    const generatedAt = new Date();
+    const runId = `PD-TIME-${generatedAt.toISOString().slice(0, 10).replaceAll("-", "")}-${String(openRecords.length).padStart(3, "0")}`;
+    const recordFutures = openRecords
+      .map((record) => {
+        const days = recordDueDays(record);
+        const amount = Number(record.valueAmount) || 0;
+        const highValue = amount > 0 && amount >= valueFloor;
+        const missing = [
+          !record.owner ? "owner" : "",
+          !record.endDate ? "date" : "",
+          !record.status ? "status" : "",
+          !record.category ? "category" : "",
+        ].filter(Boolean);
+        const overdue = days !== null && days < 0;
+        const dueSoon = days !== null && days >= 0 && days <= 30;
+        const noDate = days === null;
+        const pressure = Math.min(
+          99,
+          Math.round(
+            (overdue ? 46 : dueSoon ? 28 : noDate ? 22 : 8) +
+              missing.length * 12 +
+              (highValue ? 24 : amount > 0 ? 10 : 0) +
+              (["Tender", "EOI"].includes(record.type) ? 8 : 4),
+          ),
+        );
+        const tone = overdue ? "red" : dueSoon ? "amber" : noDate ? "blue" : highValue ? "green" : "teal";
+        const futureState = overdue
+          ? `${Math.abs(days) + 30} days late if nobody moves`
+          : dueSoon
+            ? `due pressure enters review in ${Math.max(days, 0)} days`
+            : noDate
+              ? "invisible to calendar until a control date exists"
+              : highValue
+                ? "stays protected if evidence and owner remain current"
+                : "stays in rhythm with weekly review";
+        const intervention = overdue
+          ? "Recover date, owner, and proof today."
+          : dueSoon
+            ? "Confirm next action before the date enters red pressure."
+            : noDate
+              ? "Add next review date and owner promise."
+              : highValue
+                ? "Keep management memory and evidence attached."
+                : "Keep status fresh in weekly review.";
+        return {
+          record,
+          days,
+          amount,
+          highValue,
+          missing,
+          pressure,
+          tone,
+          futureState,
+          intervention,
+        };
+      })
+      .sort((a, b) => b.pressure - a.pressure || (a.days ?? 9999) - (b.days ?? 9999));
+    const overdueNow = recordFutures.filter((item) => item.days !== null && item.days < 0).length;
+    const dueSoon = recordFutures.filter((item) => item.days !== null && item.days >= 0 && item.days <= 30).length;
+    const noDate = recordFutures.filter((item) => item.days === null).length;
+    const missingOwner = recordFutures.filter((item) => item.missing.includes("owner")).length;
+    const highValue = recordFutures.filter((item) => item.highValue).length;
+    const protectedValue = sumAmounts(recordFutures.filter((item) => item.highValue).map((item) => item.record));
+    const doNothingLate = overdueNow + dueSoon + Math.ceil(noDate * 0.45);
+    const ownerSaved = Math.min(doNothingLate, Math.ceil(overdueNow * 0.42 + dueSoon * 0.34 + missingOwner * 0.3));
+    const managementSaved = Math.min(doNothingLate, Math.ceil(overdueNow * 0.62 + dueSoon * 0.52 + noDate * 0.5 + highValue * 0.25));
+    const autopilotSaved = Math.min(doNothingLate, Math.ceil(overdueNow * 0.76 + dueSoon * 0.65 + noDate * 0.62 + highValue * 0.35));
+    const simulatedCost = Math.max(1, openRecords.length * 475);
+    const protectedImpact = Math.max(openRecords.length * 9500, protectedValue * 0.02);
+    const interventionRoi = Math.max(1.4, Math.min(39.9, Number((protectedImpact / simulatedCost).toFixed(1))));
+    const futureScore = Math.max(1, Math.min(100, Math.round(command.healthScore + autopilotSaved * 1.7 + autopilot.autopilotScore * 0.12 - noDate * 0.3)));
+    const scenarios = [
+      {
+        name: "Do nothing",
+        tone: "red",
+        score: Math.max(1, command.healthScore - 18),
+        late: doNothingLate,
+        saved: 0,
+        value: formatCompactMoney(Math.round(protectedValue * 0.18)),
+        line: "Red work compounds, no-date records stay invisible, and management enters the meeting reacting.",
+      },
+      {
+        name: "Owner push",
+        tone: "amber",
+        score: Math.min(100, command.healthScore + 8),
+        late: Math.max(0, doNothingLate - ownerSaved),
+        saved: ownerSaved,
+        value: formatCompactMoney(Math.round(protectedValue * 0.34)),
+        line: "Owners update dates, status, and proof. The tracker becomes clean enough for weekly control.",
+      },
+      {
+        name: "Management intervention",
+        tone: "blue",
+        score: Math.min(100, command.healthScore + 18),
+        late: Math.max(0, doNothingLate - managementSaved),
+        saved: managementSaved,
+        value: formatCompactMoney(Math.round(protectedValue * 0.58)),
+        line: "Managers decide bid posture, protect high-value work, and force evidence where silence is expensive.",
+      },
+      {
+        name: "Autopilot mode",
+        tone: "green",
+        score: futureScore,
+        late: Math.max(0, doNothingLate - autopilotSaved),
+        saved: autopilotSaved,
+        value: formatCompactMoney(protectedValue),
+        line: "PursuitDesk writes the mission, ranks records, separates commercial data, and hands owners exact actions.",
+      },
+    ];
+    const timeline = [
+      ["Today", "Control reset", `${autopilot.nowCount} do-now moves, ${missingOwner} missing owners, and ${noDate} no-date records become visible.`, "teal"],
+      ["48 hours", "Owner proof", `${ownerSaved} future late records can be prevented by simple owner/date/proof discipline.`, ownerSaved ? "green" : "blue"],
+      ["7 days", "Management lane", `${managementSaved} records need decision posture, evidence, or commercial protection before review.`, "blue"],
+      ["30 days", "Future delta", `${autopilotSaved} late records can be avoided versus the do-nothing path.`, autopilotSaved ? "green" : "amber"],
+    ];
+    const focusStrip = [
+      {
+        tone: "red",
+        label: "Do-nothing future",
+        value: `${doNothingLate} late`,
+        note: "Projected late or invisible records if the team keeps the current rhythm.",
+      },
+      {
+        tone: "green",
+        label: "Preventable",
+        value: `${autopilotSaved} saved`,
+        note: "Late records the operating discipline can prevent before they become management noise.",
+      },
+      {
+        tone: "blue",
+        label: "Protected value",
+        value: formatCompactMoney(protectedValue),
+        note: "Value remains in management rooms while frontline users receive action language only.",
+      },
+      {
+        tone: "amber",
+        label: "Buyer proof",
+        value: `${interventionRoi}x ROI`,
+        note: "A sales-friendly simulation showing why the tool pays back fast.",
+      },
+    ];
+    const commandScript = [
+      `Time Machine run ${runId}`,
+      `Current health: ${command.healthScore}%. Simulated Autopilot health: ${futureScore}%.`,
+      "",
+      `Do-nothing path creates ${doNothingLate} late or invisible records.`,
+      `Owner push prevents ${ownerSaved}; management intervention prevents ${managementSaved}; Autopilot mode prevents ${autopilotSaved}.`,
+      `Protected value under this simulation is ${formatCompactMoney(protectedValue)} with an estimated ${interventionRoi}x control ROI.`,
+      "",
+      "Meeting line: We are not buying a tracker. We are buying a future view of the work before it becomes a problem.",
+    ].join("\n");
+    const packet = {
+      schemaVersion: "pursuitdesk.pursuitTimeMachine.v187",
+      generatedOn: generatedAt.toISOString(),
+      runId,
+      company: state.data.company.name,
+      currentHealth: command.healthScore,
+      futureScore,
+      interventionRoi,
+      counts: {
+        records: records.length,
+        openRecords: openRecords.length,
+        overdueNow,
+        dueSoon,
+        noDate,
+        missingOwner,
+        highValue,
+        doNothingLate,
+        preventedOverdue: autopilotSaved,
+        protectedValue,
+      },
+      scenarios: scenarios.map(({ name, score, late, saved, value, line }) => ({ name, score, projectedLate: late, preventedLate: saved, valueProtected: value, line })),
+      recordFutures: recordFutures.slice(0, 12).map((item) => ({
+        recordId: item.record.id,
+        reference: item.record.reference,
+        client: item.record.client,
+        title: item.record.title,
+        pressure: item.pressure,
+        futureState: item.futureState,
+        intervention: item.intervention,
+      })),
+      nextBackendFields: [
+        "time_machine_run_id",
+        "scenario_code",
+        "current_health_score",
+        "future_health_score",
+        "projected_late_count",
+        "prevented_late_count",
+        "record_future_json",
+        "intervention_roi",
+        "simulation_audit_event_id",
+      ],
+    };
+    return {
+      runId,
+      records,
+      openRecords,
+      futureScore,
+      interventionRoi,
+      protectedValue,
+      preventedOverdue: autopilotSaved,
+      doNothingLate,
+      ownerSaved,
+      managementSaved,
+      scenarios,
+      timeline,
+      focusStrip,
+      recordFutures,
+      commandScript,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function renderPursuitTimeMachinePage() {
+    const model = buildPursuitTimeMachineModel();
+    return `
+      <section class="time-machine-room">
+        <section class="time-machine-console">
+          <div>
+            <span class="panel-label">v187 Pursuit Time Machine</span>
+            <h2>Show the future before the meeting starts.</h2>
+            <p>This room simulates what happens if nobody moves, if owners push, or if management intervenes. It turns today&apos;s messy records into a buyer-ready proof of control.</p>
+            <div class="time-machine-actions">
+              <button class="secondary-btn" type="button" data-view="Autopilot">Open Autopilot</button>
+              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              <a class="ghost-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-time-machine-v187.json">Download future JSON</a>
+            </div>
+          </div>
+          <div class="time-machine-horizon" aria-label="Future score ${model.futureScore} percent">
+            <span>Future score</span>
+            <strong>${model.futureScore}%</strong>
+            <small>${model.preventedOverdue} preventable late records</small>
+          </div>
+        </section>
+
+        <div class="time-machine-kpis">
+          ${renderInsightKpi("Do-nothing path", `${model.doNothingLate} late`, "Projected late or invisible records")}
+          ${renderInsightKpi("Autopilot save", `${model.preventedOverdue}`, "Preventable before next review")}
+          ${renderInsightKpi("Control ROI", `${model.interventionRoi}x`, "Buyer-facing payback signal")}
+          ${renderInsightKpi("Protected value", formatCompactMoney(model.protectedValue), "Commercial signal remains guarded")}
+        </div>
+
+        ${renderRoomFocusStrip(model.focusStrip, "time-machine-focus-strip", "Future proof strip")}
+
+        <div class="time-machine-scenario-grid">
+          ${model.scenarios.map(renderTimeMachineScenario).join("")}
+        </div>
+
+        <div class="time-machine-layout">
+          <section class="time-machine-main">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">30-day reel</span>
+                  <h3>What changes when the team moves</h3>
+                </div>
+                <span>${escapeHtml(model.runId)}</span>
+              </div>
+              <div class="time-machine-reel">
+                ${model.timeline
+                  .map(
+                    ([step, title, note, tone]) => `
+                      <div class="time-machine-step tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(step)}</span>
+                        <strong>${escapeHtml(title)}</strong>
+                        <p>${escapeHtml(note)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Record futures</span>
+                  <h3>Highest-pressure records</h3>
+                </div>
+                <span>${model.recordFutures.length} simulated</span>
+              </div>
+              <div class="time-machine-record-grid">
+                ${model.recordFutures.slice(0, 8).map(renderTimeMachineRecordFuture).join("")}
+              </div>
+            </article>
+          </section>
+
+          <aside class="time-machine-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Founder line</span>
+                  <h3>What makes buyers remember it</h3>
+                </div>
+              </div>
+              <textarea readonly aria-label="Time Machine management script">${escapeHtml(model.commandScript)}</textarea>
+            </article>
+
+            <article class="time-machine-proof-card">
+              <span>Shock proof</span>
+              <strong>Not a spreadsheet. A future-control system.</strong>
+              <p>For buyers, this is the story: PursuitDesk does not only store records. It shows the cost of delay and the value of acting before the delay happens.</p>
+            </article>
+          </aside>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderTimeMachineScenario(scenario) {
+    return `
+      <article class="time-machine-scenario tone-${escapeHtml(scenario.tone)}">
+        <span>${escapeHtml(scenario.name)}</span>
+        <strong>${scenario.score}%</strong>
+        <div class="time-machine-scenario-meta">
+          <div><b>${scenario.late}</b><small>future late</small></div>
+          <div><b>${scenario.saved}</b><small>saved</small></div>
+          <div><b>${escapeHtml(scenario.value)}</b><small>value</small></div>
+        </div>
+        <p>${escapeHtml(scenario.line)}</p>
+      </article>
+    `;
+  }
+
+  function renderTimeMachineRecordFuture(item) {
+    return `
+      <button class="time-machine-record tone-${escapeHtml(item.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+        <span>${item.pressure} pressure</span>
+        <strong>${escapeHtml(item.record.title || "Untitled record")}</strong>
+        <em>${escapeHtml([item.record.reference, item.record.client, dueLabel(item.days)].filter(Boolean).join(" / "))}</em>
+        <p>${escapeHtml(item.futureState)}</p>
+        <b>${escapeHtml(item.intervention)}</b>
+      </button>
+    `;
+  }
+
+  function buildPursuitWinLabModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const pursuits = openRecords.filter((record) => ["Tender", "EOI"].includes(record.type));
+    const source = pursuits.length ? pursuits : openRecords;
+    const command = buildCommandCenterModel();
+    const future = buildPursuitTimeMachineModel();
+    const valueFloor = highValueThreshold(records);
+    const generatedAt = new Date();
+    const runId = `PD-WIN-${generatedAt.toISOString().slice(0, 10).replaceAll("-", "")}-${String(source.length).padStart(3, "0")}`;
+    const clientCounts = records.reduce((acc, record) => {
+      const key = record.client || "Unknown client";
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    }, {});
+    const categoryCounts = records.reduce((acc, record) => {
+      const key = record.category || "Unclassified";
+      acc[key] = (acc[key] || 0) + 1;
+      return acc;
+    }, {});
+    const strongestClient = Object.entries(clientCounts).sort((a, b) => b[1] - a[1])[0] || ["Unknown client", 0];
+    const strongestCategory = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1])[0] || ["Unclassified", 0];
+    const candidates = source
+      .map((record) => {
+        const days = recordDueDays(record);
+        const amount = Number(record.valueAmount) || 0;
+        const highValue = amount > 0 && amount >= valueFloor;
+        const missing = [
+          !record.owner ? "owner" : "",
+          !record.endDate ? "date" : "",
+          !record.category ? "category" : "",
+          !record.sourceSheet ? "source" : "",
+        ].filter(Boolean);
+        const relationship = Math.min(24, (clientCounts[record.client || "Unknown client"] || 0) * 4);
+        const categoryEdge = Math.min(14, (categoryCounts[record.category || "Unclassified"] || 0) * 2);
+        const timing =
+          days === null
+            ? -12
+            : days < 0
+              ? -18
+              : days <= 14
+                ? 8
+                : days <= 45
+                  ? 12
+                  : 6;
+        const hygiene = Math.max(-24, 18 - missing.length * 9);
+        const valueSignal = highValue ? 16 : amount > 0 ? 8 : 0;
+        const statusSignal = record.status === "Submitted" ? 8 : record.status === "Awarded" ? 12 : record.status === "Pending" ? 2 : 5;
+        const winScore = Math.max(8, Math.min(98, Math.round(28 + relationship + categoryEdge + timing + hygiene + valueSignal + statusSignal)));
+        const noBidRisk = Math.max(0, Math.min(100, Math.round((days !== null && days < 0 ? 34 : 0) + missing.length * 16 + (relationship < 8 ? 14 : 0) + (amount ? 0 : 8))));
+        const lane =
+          noBidRisk >= 58
+            ? "No-bid watch"
+            : winScore >= 76
+              ? "Attack"
+              : highValue
+                ? "Protect"
+                : missing.length
+                  ? "Clarify"
+                  : "Differentiate";
+        const tone =
+          lane === "No-bid watch"
+            ? "red"
+            : lane === "Clarify"
+              ? "amber"
+              : lane === "Differentiate"
+                ? "blue"
+                : lane === "Protect"
+                  ? "green"
+                  : "teal";
+        const thesis =
+          lane === "Attack"
+            ? "Lead with relationship proof, category familiarity, and a clean submission rhythm."
+            : lane === "Protect"
+              ? "Keep management close to value, evidence, and client memory before the next move."
+              : lane === "Clarify"
+                ? `Fix ${missing.join(", ")} before calling this a real pursuit.`
+                : lane === "No-bid watch"
+                  ? "Do not let effort expand until timing, owner, and proof become credible."
+                  : "Shape a sharper differentiator before the bid becomes another generic response.";
+        const differentiator =
+          relationship >= 16
+            ? "Known account gravity"
+            : categoryEdge >= 10
+              ? "Category repetition"
+              : highValue
+                ? "Value-led executive attention"
+                : "Speed and control discipline";
+        return {
+          record,
+          days,
+          amount,
+          highValue,
+          missing,
+          relationship,
+          categoryEdge,
+          winScore,
+          noBidRisk,
+          lane,
+          tone,
+          thesis,
+          differentiator,
+        };
+      })
+      .sort((a, b) => b.winScore - a.winScore || b.amount - a.amount);
+    const laneDefs = [
+      ["Attack", "teal", "Best immediate win posture"],
+      ["Differentiate", "blue", "Needs sharper reason to choose us"],
+      ["Protect", "green", "Value and relationship need management memory"],
+      ["Clarify", "amber", "Missing facts before effort expands"],
+      ["No-bid watch", "red", "Stop, hold, or demand proof"],
+    ];
+    const lanes = laneDefs.map(([name, tone, note]) => {
+      const items = candidates.filter((item) => item.lane === name).slice(0, 5);
+      return {
+        name,
+        tone,
+        note,
+        count: candidates.filter((item) => item.lane === name).length,
+        items,
+      };
+    });
+    const attackCount = lanes.find((lane) => lane.name === "Attack")?.count || 0;
+    const noBidWatch = lanes.find((lane) => lane.name === "No-bid watch")?.count || 0;
+    const protectedValue = sumAmounts(candidates.filter((item) => item.highValue).map((item) => item.record));
+    const averageWin = candidates.length ? Math.round(candidates.reduce((sum, item) => sum + item.winScore, 0) / candidates.length) : 0;
+    const winConfidence = Math.max(1, Math.min(100, Math.round(averageWin * 0.54 + command.healthScore * 0.2 + future.futureScore * 0.16 + Math.max(0, 100 - noBidWatch * 5) * 0.1)));
+    const topCandidate = candidates[0];
+    const focusStrip = [
+      {
+        tone: "teal",
+        label: "Win confidence",
+        value: `${winConfidence}%`,
+        note: `${attackCount} attack candidates and ${noBidWatch} no-bid watch items.`,
+      },
+      {
+        tone: "green",
+        label: "Account gravity",
+        value: strongestClient[0],
+        note: `${strongestClient[1]} records create relationship memory.`,
+      },
+      {
+        tone: "blue",
+        label: "Category thesis",
+        value: strongestCategory[0],
+        note: `${strongestCategory[1]} similar records can become reusable proof.`,
+      },
+      {
+        tone: noBidWatch ? "red" : "green",
+        label: "No-bid discipline",
+        value: `${noBidWatch} watch`,
+        note: "Weak pursuits need proof before effort expands.",
+      },
+    ];
+    const thesisCards = [
+      ["Winning thesis", topCandidate?.record.title || "No active pursuit", topCandidate?.thesis || "Keep the pipeline in weekly rhythm.", topCandidate?.tone || "teal"],
+      ["Differentiator", topCandidate?.differentiator || "Operating control", "Make the answer memorable before the price discussion starts.", "blue"],
+      ["Commercial guard", formatCompactMoney(protectedValue), "Strategy can discuss value without leaking commercial data into frontline trackers.", "green"],
+      ["Fame angle", "Future of tender control", "A buyer sees PursuitDesk as a decision cockpit, not a prettier spreadsheet.", "amber"],
+    ];
+    const dispatchTasks = candidates.slice(0, 14).map((item, index) => {
+      const ownerRole =
+        item.lane === "Attack"
+          ? "Bid lead"
+          : item.lane === "Protect"
+            ? "Pursuit manager"
+            : item.lane === "Clarify"
+              ? "Record owner"
+              : item.lane === "No-bid watch"
+                ? "Control admin"
+                : "Response writer";
+      const lockState =
+        item.lane === "No-bid watch"
+          ? "Effort locked"
+          : item.lane === "Clarify"
+            ? "Proof locked"
+            : item.lane === "Protect"
+              ? "Manager review"
+              : item.lane === "Attack"
+                ? "Dispatch now"
+                : "Shape response";
+      const sla =
+        item.days === null
+          ? "Set date today"
+          : item.days < 0
+            ? "Overdue now"
+            : item.days <= 7
+              ? "24h"
+              : item.days <= 30
+                ? "72h"
+                : "Weekly";
+      const evidence =
+        item.lane === "Attack"
+          ? "Client proof, differentiator, bid thesis"
+          : item.lane === "Protect"
+            ? "Value note, relationship memory, manager signoff"
+            : item.lane === "Clarify"
+              ? `Fix ${item.missing.join(", ") || "missing field"}`
+              : item.lane === "No-bid watch"
+                ? "Stop reason, owner decision, re-open condition"
+                : "Reusable proof and response angle";
+      const message =
+        item.lane === "No-bid watch"
+          ? `Hold ${item.record.reference || "this record"} until proof improves. Do not expand effort without owner approval.`
+          : item.lane === "Attack"
+            ? `Move ${item.record.reference || "this pursuit"} into the bid-room sprint and write the win thesis today.`
+            : item.lane === "Protect"
+              ? `Keep ${item.record.reference || "this pursuit"} in management review until value and relationship proof are protected.`
+              : item.lane === "Clarify"
+                ? `Clean ${item.record.reference || "this record"} before the team treats it as a real pursuit.`
+                : `Sharpen ${item.record.reference || "this pursuit"} with a clearer differentiator before submission effort expands.`;
+      return {
+        id: `WL-DSP-${String(index + 1).padStart(2, "0")}`,
+        item,
+        ownerRole,
+        assignee: item.record.owner || ownerRole,
+        lockState,
+        sla,
+        evidence,
+        message,
+      };
+    });
+    const dispatchedNow = dispatchTasks.filter((task) => task.lockState === "Dispatch now").length;
+    const lockedTasks = dispatchTasks.filter((task) => task.lockState.includes("locked") || task.lockState === "Effort locked").length;
+    const managerReviews = dispatchTasks.filter((task) => task.lockState === "Manager review").length;
+    const dispatchScore = Math.min(100, Math.round(winConfidence * 0.42 + Math.min(100, dispatchTasks.length * 6) * 0.28 + Math.max(0, 100 - lockedTasks * 5) * 0.18 + Math.min(100, attackCount * 10) * 0.12));
+    const dispatchCards = [
+      ["Dispatch score", `${dispatchScore}%`, `${dispatchTasks.length} owner-ready work packets generated.`, "green"],
+      ["Send today", dispatchedNow, "Attack pursuits ready for immediate bid-room movement.", "teal"],
+      ["Locked work", lockedTasks, "Proof or effort is blocked until owner decision.", lockedTasks ? "red" : "green"],
+      ["Manager review", managerReviews, "Protected value and relationship memory need senior attention.", "amber"],
+    ];
+    const dispatchBoard = [
+      {
+        name: "Dispatch now",
+        tone: "teal",
+        note: "Win thesis can become live owner work",
+        tasks: dispatchTasks.filter((task) => task.lockState === "Dispatch now"),
+      },
+      {
+        name: "Shape response",
+        tone: "blue",
+        note: "Needs stronger differentiation before effort scales",
+        tasks: dispatchTasks.filter((task) => task.lockState === "Shape response"),
+      },
+      {
+        name: "Manager review",
+        tone: "green",
+        note: "Protect value, relationship, and commercial posture",
+        tasks: dispatchTasks.filter((task) => task.lockState === "Manager review"),
+      },
+      {
+        name: "Proof locked",
+        tone: "amber",
+        note: "Missing facts must be fixed first",
+        tasks: dispatchTasks.filter((task) => task.lockState === "Proof locked"),
+      },
+      {
+        name: "Effort locked",
+        tone: "red",
+        note: "Stop or hold until management approves effort",
+        tasks: dispatchTasks.filter((task) => task.lockState === "Effort locked"),
+      },
+    ];
+    const dispatchRunbook = [
+      ["1", "Dispatch", `Send ${dispatchedNow} attack packets to bid lead with win thesis and proof request.`, "teal"],
+      ["2", "Lock", `Freeze ${lockedTasks} weak or incomplete tasks until proof is attached.`, lockedTasks ? "red" : "green"],
+      ["3", "Review", `Route ${managerReviews} protected-value tasks to management review.`, "green"],
+      ["4", "Audit", "Every task carries dispatch id, owner, SLA, evidence request, and review gate.", "blue"],
+    ];
+    const memoLines = [
+      `Win Lab run ${runId}`,
+      `Win confidence: ${winConfidence}%. ${attackCount} attack candidates, ${noBidWatch} no-bid watch items.`,
+      `Dispatch score: ${dispatchScore}%. ${dispatchedNow} send-today tasks, ${lockedTasks} locked tasks, ${managerReviews} manager-review tasks.`,
+      "",
+      `Lead account: ${strongestClient[0]} with ${strongestClient[1]} related records.`,
+      `Lead category: ${strongestCategory[0]} with ${strongestCategory[1]} proof points.`,
+      `Best pursuit: ${topCandidate?.record.title || "No active pursuit"} (${topCandidate?.winScore || 0}% confidence).`,
+      "",
+      "Bid-room line: We will not chase every record. We will attack the pursuits where relationship memory, evidence, timing, and owner discipline can produce a visible win story.",
+      "Dispatch rule: a Win Lab task goes live only when owner, SLA, evidence request, and review lock are visible.",
+      "Commercial guard: values, pricing, negotiation notes, and management posture stay in protected rooms.",
+    ];
+    const packet = {
+      schemaVersion: "pursuitdesk.pursuitWinLab.v191",
+      generatedOn: generatedAt.toISOString(),
+      runId,
+      company: state.data.company.name,
+      winConfidence,
+      dispatchScore,
+      attackCount,
+      noBidWatch,
+      dispatchedNow,
+      lockedTasks,
+      managerReviews,
+      protectedValue,
+      strongestClient: { name: strongestClient[0], records: strongestClient[1] },
+      strongestCategory: { name: strongestCategory[0], records: strongestCategory[1] },
+      lanes: lanes.map((lane) => ({
+        name: lane.name,
+        count: lane.count,
+        note: lane.note,
+        items: lane.items.map((item) => ({
+          recordId: item.record.id,
+          reference: item.record.reference,
+          client: item.record.client,
+          title: item.record.title,
+          winScore: item.winScore,
+          noBidRisk: item.noBidRisk,
+          differentiator: item.differentiator,
+          thesis: item.thesis,
+        })),
+      })),
+      dispatchTasks: dispatchTasks.map((task) => ({
+        id: task.id,
+        recordId: task.item.record.id,
+        reference: task.item.record.reference,
+        title: task.item.record.title,
+        lane: task.item.lane,
+        ownerRole: task.ownerRole,
+        assignee: task.assignee,
+        lockState: task.lockState,
+        sla: task.sla,
+        evidence: task.evidence,
+        message: task.message,
+        winScore: task.item.winScore,
+        noBidRisk: task.item.noBidRisk,
+      })),
+      dispatchRunbook: dispatchRunbook.map(([step, title, detail, tone]) => ({ step, title, detail, tone })),
+      memo: memoLines,
+      nextBackendFields: [
+        "win_lab_run_id",
+        "record_id",
+        "win_score",
+        "no_bid_risk",
+        "differentiator_text",
+        "bid_thesis_text",
+        "commercial_guard_state",
+        "strategy_memo_body",
+        "dispatch_task_id",
+        "dispatch_owner_role",
+        "dispatch_lock_state",
+        "dispatch_sla",
+        "dispatch_evidence_request",
+        "dispatch_message_body",
+        "win_lab_audit_event_id",
+      ],
+    };
+    return {
+      runId,
+      records,
+      source,
+      candidates,
+      lanes,
+      focusStrip,
+      thesisCards,
+      dispatchCards,
+      dispatchBoard,
+      dispatchRunbook,
+      dispatchTasks,
+      memo: memoLines.join("\n"),
+      winConfidence,
+      dispatchScore,
+      attackCount,
+      noBidWatch,
+      dispatchedNow,
+      lockedTasks,
+      managerReviews,
+      protectedValue,
+      strongestClient,
+      strongestCategory,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function renderPursuitWinLabPage() {
+    const model = buildPursuitWinLabModel();
+    return `
+      <section class="win-lab-room">
+        <section class="win-lab-console">
+          <div>
+            <span class="panel-label">v191 Win Lab Task Dispatch</span>
+            <h2>Turn every pursuit into a win thesis.</h2>
+            <p>Win Lab reads relationship memory, timing, evidence hygiene, category repetition, and no-bid risk, then turns the live tracker into owner-ready work packets with lock state, SLA, proof request, and review gate.</p>
+            <div class="win-lab-actions">
+              <button class="secondary-btn" type="button" data-view="Time Machine">Open Time Machine</button>
+              <button class="ghost-btn" type="button" data-view="Bid Desk">Open Bid Desk</button>
+              <a class="ghost-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-win-lab-v191.json">Download dispatch JSON</a>
+            </div>
+          </div>
+          <div class="win-lab-score" aria-label="Win confidence ${model.winConfidence} percent">
+            <span>Win confidence</span>
+            <strong>${model.winConfidence}%</strong>
+            <small>${model.dispatchScore}% dispatch / ${model.lockedTasks} locked</small>
+          </div>
+        </section>
+
+        <div class="win-lab-kpis">
+          ${renderInsightKpi("Active pursuits", model.source.length, "Tender and EOI records in strategy view")}
+          ${renderInsightKpi("Attack candidates", model.attackCount, "Best immediate win posture")}
+          ${renderInsightKpi("Dispatch score", `${model.dispatchScore}%`, "Owner, SLA, proof, and review gate readiness")}
+          ${renderInsightKpi("Protected value", formatCompactMoney(model.protectedValue), "Commercial signal stays controlled")}
+        </div>
+
+        ${renderRoomFocusStrip(model.focusStrip, "win-lab-focus-strip", "Win Lab strategy strip")}
+
+        <div class="win-lab-thesis-grid">
+          ${model.thesisCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="win-lab-thesis-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="win-lab-thesis-grid">
+          ${model.dispatchCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="win-lab-thesis-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="win-lab-layout">
+          <section class="win-lab-main">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Strategy lanes</span>
+                  <h3>Bid posture board</h3>
+                </div>
+                <span>${model.candidates.length} candidates</span>
+              </div>
+              <div class="win-lab-lane-grid">
+                ${model.lanes.map(renderWinLabLane).join("")}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Relationship map</span>
+                  <h3>Why the room should believe us</h3>
+                </div>
+              </div>
+              <div class="win-lab-map-grid">
+                <div class="tone-green">
+                  <span>Lead account</span>
+                  <strong>${escapeHtml(model.strongestClient[0])}</strong>
+                  <p>${model.strongestClient[1]} related records create account memory.</p>
+                </div>
+                <div class="tone-blue">
+                  <span>Lead category</span>
+                  <strong>${escapeHtml(model.strongestCategory[0])}</strong>
+                  <p>${model.strongestCategory[1]} proof points can become a reusable response library.</p>
+                </div>
+                <div class="tone-amber">
+                  <span>Weakness filter</span>
+                  <strong>${model.noBidWatch} watch items</strong>
+                  <p>Win Lab protects the team from chasing work without timing, owner, or evidence discipline.</p>
+                </div>
+                <div class="tone-teal">
+                  <span>Board line</span>
+                  <strong>Attack fewer, win cleaner</strong>
+                  <p>Use the lab to make the next review about decisions, not a long list of records.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Task dispatch</span>
+                  <h3>Owner-ready work packets</h3>
+                </div>
+                <span>${model.dispatchTasks.length} packets</span>
+              </div>
+              <div class="win-lab-dispatch-grid">
+                ${model.dispatchBoard.map(renderWinLabDispatchLane).join("")}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Dispatch runbook</span>
+                  <h3>How the bid room moves today</h3>
+                </div>
+              </div>
+              <div class="win-lab-runbook-grid">
+                ${model.dispatchRunbook.map(renderWinLabRunbookStep).join("")}
+              </div>
+            </article>
+          </section>
+
+          <aside class="win-lab-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Bid-room memo</span>
+                  <h3>What to say</h3>
+                </div>
+              </div>
+              <textarea readonly aria-label="Win Lab bid room memo">${escapeHtml(model.memo)}</textarea>
+            </article>
+
+            <article class="win-lab-proof-card">
+              <span>Signature feature</span>
+              <strong>A tracker that writes the next owner packet.</strong>
+              <p>The strongest market signal may be execution discipline: PursuitDesk can move from win thesis to owner, proof, SLA, and lock state without exposing commercial data to the frontline tracker.</p>
+            </article>
+          </aside>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderWinLabLane(lane) {
+    return `
+      <article class="win-lab-lane tone-${escapeHtml(lane.tone)}">
+        <div class="win-lab-lane-head">
+          <div>
+            <strong>${escapeHtml(lane.name)}</strong>
+            <span>${escapeHtml(lane.note)}</span>
+          </div>
+          <b>${lane.count}</b>
+        </div>
+        <div class="win-lab-card-list">
+          ${lane.items.length ? lane.items.map(renderWinLabCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} candidates.</div>`}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderWinLabCard(item) {
+    return `
+      <button class="win-lab-card tone-${escapeHtml(item.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+        <span>${item.winScore}% win / ${item.noBidRisk}% risk</span>
+        <strong>${escapeHtml(item.record.title || "Untitled record")}</strong>
+        <em>${escapeHtml([item.record.reference, item.record.client, item.differentiator].filter(Boolean).join(" / "))}</em>
+        <p>${escapeHtml(item.thesis)}</p>
+      </button>
+    `;
+  }
+
+  function renderWinLabDispatchLane(lane) {
+    return `
+      <article class="win-lab-dispatch-lane tone-${escapeHtml(lane.tone)}">
+        <div class="win-lab-lane-head">
+          <div>
+            <strong>${escapeHtml(lane.name)}</strong>
+            <span>${escapeHtml(lane.note)}</span>
+          </div>
+          <b>${lane.tasks.length}</b>
+        </div>
+        <div class="win-lab-card-list">
+          ${lane.tasks.length ? lane.tasks.map(renderWinLabDispatchTask).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} packets.</div>`}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderWinLabDispatchTask(task) {
+    return `
+      <button class="win-lab-dispatch-task tone-${escapeHtml(task.item.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(task.item.record.id)}">
+        <span>${escapeHtml(task.id)} / ${escapeHtml(task.lockState)}</span>
+        <strong>${escapeHtml(task.item.record.title || "Untitled record")}</strong>
+        <em>${escapeHtml([task.item.record.reference, task.assignee, task.sla].filter(Boolean).join(" / "))}</em>
+        <p>${escapeHtml(task.evidence)}</p>
+        <b>${escapeHtml(task.message)}</b>
+      </button>
+    `;
+  }
+
+  function renderWinLabRunbookStep([step, title, detail, tone]) {
+    return `
+      <article class="win-lab-runbook-step tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(step)}</span>
+        <strong>${escapeHtml(title)}</strong>
+        <p>${escapeHtml(detail)}</p>
+      </article>
+    `;
+  }
+
+  function buildPursuitDecisionTwinModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const command = buildCommandCenterModel();
+    const future = buildPursuitTimeMachineModel();
+    const win = buildPursuitWinLabModel();
+    const valueFloor = highValueThreshold(records);
+    const generatedAt = new Date();
+    const baselineHealth = command.healthScore;
+    const missingDates = openRecords.filter((record) => !record.endDate);
+    const missingOwners = openRecords.filter((record) => !record.owner);
+    const overdue = openRecords.filter((record) => {
+      const days = recordDueDays(record);
+      return days !== null && days < 0;
+    });
+    const dueSoon = openRecords.filter((record) => {
+      const days = recordDueDays(record);
+      return days !== null && days >= 0 && days <= 30;
+    });
+    const highValueOpen = openRecords.filter((record) => {
+      const amount = Number(record.valueAmount) || 0;
+      return amount > 0 && amount >= valueFloor;
+    });
+    const attackItems = win.candidates.filter((item) => item.lane === "Attack");
+    const noBidItems = win.candidates.filter((item) => item.lane === "No-bid watch");
+    const clarityItems = win.candidates.filter((item) => item.lane === "Clarify");
+    const decisionMoves = overdue.length + missingDates.length + missingOwners.length + noBidItems.length + attackItems.length;
+    const bestLift = Math.min(34, Math.max(8, Math.round(overdue.length * 0.22 + missingDates.length * 0.45 + noBidItems.length * 1.1 + attackItems.length * 0.8)));
+    const projectedHealth = Math.min(100, baselineHealth + bestLift);
+    const twinCode = `DT-${String(projectedHealth).padStart(2, "0")}`;
+    const protectedValue = sumAmounts(highValueOpen);
+    const scenarios = [
+      {
+        name: "Date rescue",
+        tone: "blue",
+        before: `${overdue.length + missingDates.length} date risks`,
+        after: `${Math.max(0, overdue.length + missingDates.length - Math.min(18, overdue.length + missingDates.length))} after sprint`,
+        lift: Math.min(15, Math.max(4, Math.round((overdue.length + missingDates.length) * 0.34))),
+        saved: Math.min(18, overdue.length + missingDates.length),
+        value: formatCompactMoney(sumAmounts(overdue.concat(missingDates))),
+        action: "Add control dates, next-review dates, and escalation notes before weekly review.",
+        records: overdue.concat(missingDates).slice(0, 5),
+      },
+      {
+        name: "Owner reset",
+        tone: "green",
+        before: `${missingOwners.length} owner gaps`,
+        after: `${Math.max(0, missingOwners.length - Math.min(10, missingOwners.length))} unresolved`,
+        lift: Math.min(10, Math.max(3, Math.round(missingOwners.length * 0.55))),
+        saved: Math.min(10, missingOwners.length),
+        value: formatCompactMoney(sumAmounts(missingOwners)),
+        action: "Assign named owners and convert vague accountability into a reviewable trail.",
+        records: missingOwners.slice(0, 5),
+      },
+      {
+        name: "Attack winners",
+        tone: "teal",
+        before: `${attackItems.length} attack candidates`,
+        after: `${Math.min(attackItems.length, 8)} in bid-room focus`,
+        lift: Math.min(14, Math.max(5, Math.round(attackItems.length * 1.4))),
+        saved: Math.min(8, attackItems.length),
+        value: formatCompactMoney(sumAmounts(attackItems.map((item) => item.record))),
+        action: "Move the strongest pursuits into a focused win thesis with relationship proof.",
+        records: attackItems.map((item) => item.record).slice(0, 5),
+      },
+      {
+        name: "No-bid discipline",
+        tone: "red",
+        before: `${noBidItems.length} weak pursuits`,
+        after: `${Math.max(0, noBidItems.length - Math.min(6, noBidItems.length))} still watched`,
+        lift: Math.min(12, Math.max(3, Math.round(noBidItems.length * 1.7))),
+        saved: Math.min(6, noBidItems.length),
+        value: formatCompactMoney(sumAmounts(noBidItems.map((item) => item.record))),
+        action: "Hold weak pursuits until timing, owner, proof, and relationship memory improve.",
+        records: noBidItems.map((item) => item.record).slice(0, 5),
+      },
+      {
+        name: "Evidence sprint",
+        tone: "amber",
+        before: `${command.documents.totalGaps} evidence gaps`,
+        after: `${Math.max(0, command.documents.totalGaps - 12)} after proof sprint`,
+        lift: Math.min(9, Math.max(3, Math.round(command.documents.totalGaps * 0.18))),
+        saved: Math.min(12, command.documents.totalGaps),
+        value: formatCompactMoney(protectedValue),
+        action: "Close source, agreement, LOA, and handoff proof before senior review.",
+        records: clarityItems.map((item) => item.record).slice(0, 5),
+      },
+    ];
+    const rankedScenarios = scenarios.sort((a, b) => b.lift - a.lift || b.saved - a.saved);
+    const topScenario = rankedScenarios[0];
+    const focusStrip = [
+      {
+        tone: "teal",
+        label: "Projected health",
+        value: `${projectedHealth}%`,
+        note: `Baseline ${baselineHealth}% if no decision is taken.`,
+      },
+      {
+        tone: "blue",
+        label: "Best decision",
+        value: topScenario.name,
+        note: `+${topScenario.lift} lift and ${topScenario.saved} records moved.`,
+      },
+      {
+        tone: "green",
+        label: "Value protected",
+        value: formatCompactMoney(protectedValue),
+        note: `${highValueOpen.length} high-value records need management memory.`,
+      },
+      {
+        tone: noBidItems.length ? "red" : "green",
+        label: "Stop-loss lane",
+        value: `${noBidItems.length} no-bid watch`,
+        note: "The twin protects expensive attention before the team over-works weak pursuits.",
+      },
+    ];
+    const twinCards = [
+      ["Baseline", `${baselineHealth}%`, "Current command health before intervention.", "blue"],
+      ["Projected", `${projectedHealth}%`, `If ${topScenario.name.toLowerCase()} is executed first.`, "green"],
+      ["Decision moves", decisionMoves, "Actions the twin sees across dates, owners, bids, and proof.", "teal"],
+      ["Future pressure", `${future.preventedOverdue} saved`, "Uses Time Machine signals as the forward risk layer.", "amber"],
+    ];
+    const moveQueue = rankedScenarios.flatMap((scenario) =>
+      scenario.records.map((record) => ({
+        scenario: scenario.name,
+        tone: scenario.tone,
+        record,
+        decision:
+          scenario.name === "No-bid discipline"
+            ? "Hold, prove, or no-bid"
+            : scenario.name === "Attack winners"
+              ? "Write the win thesis"
+              : scenario.name === "Owner reset"
+                ? "Assign accountable owner"
+                : scenario.name === "Evidence sprint"
+                  ? "Attach missing proof"
+                  : "Fix date and escalation",
+      })),
+    ).slice(0, 12);
+    const approvalRows = rankedScenarios.map((scenario, index) => {
+      const state =
+        scenario.name === "No-bid discipline"
+          ? "Hold"
+          : scenario.name === "Evidence sprint"
+            ? "Defer"
+            : scenario.lift >= 8
+              ? "Approve"
+              : "Review";
+      const owner =
+        scenario.name === "Attack winners"
+          ? "Bid lead"
+          : scenario.name === "No-bid discipline"
+            ? "Control admin"
+            : scenario.name === "Evidence sprint"
+              ? "Governance owner"
+              : scenario.name === "Owner reset"
+                ? "Pursuit manager"
+                : "Review chair";
+      const evidence =
+        scenario.name === "Attack winners"
+          ? "Win thesis and client proof"
+          : scenario.name === "No-bid discipline"
+            ? "Stop reason and effort lock"
+            : scenario.name === "Evidence sprint"
+              ? "Source, LOA, agreement, or handoff proof"
+              : scenario.name === "Owner reset"
+                ? "Named owner and next review date"
+                : "Due date, escalation note, and owner";
+      return {
+        auditId: `DT-APP-${String(index + 1).padStart(2, "0")}`,
+        scenario: scenario.name,
+        state,
+        owner,
+        evidence,
+        lift: scenario.lift,
+        saved: scenario.saved,
+        tone: scenario.tone,
+        resultCheck: index === 0 ? "48h" : index === 1 ? "7d" : index === 2 ? "14d" : "30d",
+        expectedResult: `${scenario.after}; +${scenario.lift} health lift`,
+      };
+    });
+    const approvedMoves = approvalRows.filter((row) => row.state === "Approve").length;
+    const heldMoves = approvalRows.filter((row) => row.state === "Hold").length;
+    const deferredMoves = approvalRows.filter((row) => row.state === "Defer").length;
+    const approvalScore = Math.min(100, Math.round(62 + approvedMoves * 7 + heldMoves * 5 + deferredMoves * 3));
+    const approvalCards = [
+      ["Approval score", `${approvalScore}%`, `${approvalRows.length} scenarios have a named decision path.`, "green"],
+      ["Approved moves", approvedMoves, "Simulations ready to become management actions.", "teal"],
+      ["Held moves", heldMoves, "Weak work kept away from uncontrolled effort.", "red"],
+      ["Deferred proof", deferredMoves, "Moves that wait for evidence before approval.", "amber"],
+    ];
+    const guardrails = [
+      ["No silent change", "A simulated move must be approved before live rows change.", "green"],
+      ["No commercial leak", "Decision evidence is kept in management rooms, not frontline trackers.", "teal"],
+      ["No weak chase", "No-bid watch requires stop reason, owner, and review date.", "red"],
+      ["No forgotten result", "Every approved move gets an actual-after review window.", "blue"],
+    ];
+    const timeline = [
+      ["Now", "Freeze weak moves", `Mark ${noBidItems.length} no-bid watch items before effort expands.`, noBidItems.length ? "red" : "green"],
+      ["48h", "Date and owner rescue", `Move ${Math.min(18, overdue.length + missingDates.length + missingOwners.length)} records into reviewable control.`, "blue"],
+      ["7d", "Attack room", `Put ${Math.min(8, attackItems.length)} strongest pursuits into bid-room thesis and proof review.`, "teal"],
+      ["14d", "Evidence sprint", `Close ${Math.min(12, command.documents.totalGaps)} proof gaps before management report.`, "amber"],
+      ["30d", "Decision review", `Compare ${projectedHealth}% projected health against actual movement.`, "green"],
+    ];
+    const memoLines = [
+      `Decision Twin ${twinCode}`,
+      `Baseline health: ${baselineHealth}%. Projected health after first intervention: ${projectedHealth}%.`,
+      "",
+      `Best move: ${topScenario.name}. Expected lift +${topScenario.lift}; ${topScenario.saved} records moved.`,
+      `Protected value in management memory: ${formatCompactMoney(protectedValue)}.`,
+      `No-bid watch: ${noBidItems.length}. Attack candidates: ${attackItems.length}.`,
+      `Approval posture: ${approvedMoves} approved, ${heldMoves} held, ${deferredMoves} deferred. Approval score ${approvalScore}%.`,
+      "",
+      "Management line: We will test the decision before changing the live tracker. If the simulation does not improve health, reduce pressure, or protect value, we do not add work to the team.",
+      "Approval rule: A twin decision becomes live only after owner, evidence, expected result, and actual-after review are recorded.",
+      "Operating rule: Frontline users see tracker fields; management rooms simulate commercial, strategy, and control decisions.",
+    ];
+    const packet = {
+      schemaVersion: "pursuitdesk.pursuitDecisionTwin.v190",
+      generatedOn: generatedAt.toISOString(),
+      twinCode,
+      company: state.data.company.name,
+      baselineHealth,
+      projectedHealth,
+      bestLift,
+      decisionMoves,
+      approvalScore,
+      approvedMoves,
+      heldMoves,
+      deferredMoves,
+      protectedValue,
+      scenarios: rankedScenarios.map((scenario) => ({
+        name: scenario.name,
+        lift: scenario.lift,
+        saved: scenario.saved,
+        before: scenario.before,
+        after: scenario.after,
+        value: scenario.value,
+        action: scenario.action,
+        recordIds: scenario.records.map((record) => record.id),
+      })),
+      approvalLedger: approvalRows,
+      guardrails: guardrails.map(([rule, detail, tone]) => ({ rule, detail, tone })),
+      timeline: timeline.map(([window, title, detail, tone]) => ({ window, title, detail, tone })),
+      memo: memoLines,
+      nextBackendFields: [
+        "decision_twin_run_id",
+        "scenario_name",
+        "baseline_health_score",
+        "projected_health_score",
+        "simulated_record_ids",
+        "decision_recommendation",
+        "approved_decision_state",
+        "approval_owner_role",
+        "approval_evidence_requirement",
+        "expected_result_text",
+        "actual_review_window",
+        "actual_after_score",
+        "actual_after_note",
+        "decision_twin_audit_event_id",
+      ],
+    };
+    return {
+      twinCode,
+      baselineHealth,
+      projectedHealth,
+      bestLift,
+      decisionMoves,
+      approvalScore,
+      approvedMoves,
+      heldMoves,
+      deferredMoves,
+      protectedValue,
+      rankedScenarios,
+      focusStrip,
+      twinCards,
+      approvalCards,
+      approvalRows,
+      guardrails,
+      moveQueue,
+      timeline,
+      memo: memoLines.join("\n"),
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function renderPursuitDecisionTwinPage() {
+    const model = buildPursuitDecisionTwinModel();
+    return `
+      <section class="decision-twin-room">
+        <section class="decision-twin-console">
+          <div>
+            <span class="panel-label">v190 Decision Approval Ledger</span>
+            <h2>Simulate the decision before the team spends the effort.</h2>
+            <p>Decision Twin builds a safe copy of the operating room, tests management moves against live signals, then converts the best simulations into approved, held, deferred, and actual-review decisions before anyone changes the tracker.</p>
+            <div class="decision-twin-actions">
+              <button class="secondary-btn" type="button" data-view="Win Lab">Open Win Lab</button>
+              <button class="ghost-btn" type="button" data-view="Command">Open Command</button>
+              <a class="ghost-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-decision-twin-v190.json">Download twin JSON</a>
+            </div>
+          </div>
+          <div class="decision-twin-score" aria-label="Decision Twin projected health ${model.projectedHealth} percent">
+            <span>${escapeHtml(model.twinCode)}</span>
+            <strong>${model.projectedHealth}%</strong>
+            <small>projected health / ${model.approvalScore}% approval</small>
+          </div>
+        </section>
+
+        <div class="decision-twin-kpis">
+          ${renderInsightKpi("Baseline health", `${model.baselineHealth}%`, "Current state before intervention")}
+          ${renderInsightKpi("Projected health", `${model.projectedHealth}%`, "Best simulated management move")}
+          ${renderInsightKpi("Approval score", `${model.approvalScore}%`, "Decision path has owner, proof, and after-review")}
+          ${renderInsightKpi("Protected value", formatCompactMoney(model.protectedValue), "High-value work held in management memory")}
+        </div>
+
+        ${renderRoomFocusStrip(model.focusStrip, "decision-twin-focus-strip", "Decision Twin focus strip")}
+
+        <div class="decision-twin-card-grid">
+          ${model.twinCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="decision-twin-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="decision-twin-card-grid">
+          ${model.approvalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="decision-twin-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        <div class="decision-twin-layout">
+          <section class="decision-twin-main">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">What-if scenarios</span>
+                  <h3>Management decision simulator</h3>
+                </div>
+                <span>${model.rankedScenarios.length} scenarios</span>
+              </div>
+              <div class="decision-twin-scenario-grid">
+                ${model.rankedScenarios.map(renderDecisionTwinScenario).join("")}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Twin move queue</span>
+                  <h3>Records the simulation would touch first</h3>
+                </div>
+                <span>${model.moveQueue.length} moves</span>
+              </div>
+              <div class="decision-twin-move-grid">
+                ${model.moveQueue.length ? model.moveQueue.map(renderDecisionTwinMove).join("") : `<div class="empty-state">No simulated moves are needed right now.</div>`}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Approval ledger</span>
+                  <h3>Simulated decision to signed control</h3>
+                </div>
+                <span>${model.approvalRows.length} decisions</span>
+              </div>
+              <div class="decision-twin-approval-grid">
+                ${model.approvalRows.map(renderDecisionTwinApprovalRow).join("")}
+              </div>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">30-day play</span>
+                  <h3>Decision timeline</h3>
+                </div>
+              </div>
+              <div class="decision-twin-timeline">
+                ${model.timeline.map(renderDecisionTwinTimelineStep).join("")}
+              </div>
+            </article>
+          </section>
+
+          <aside class="decision-twin-side">
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Board memo</span>
+                  <h3>What to say</h3>
+                </div>
+              </div>
+              <textarea readonly aria-label="Decision Twin board memo">${escapeHtml(model.memo)}</textarea>
+            </article>
+
+            <article class="decision-twin-proof-card">
+              <span>Radical product edge</span>
+              <strong>The product does not just report work. It tests and approves decisions.</strong>
+              <p>This is the market story: PursuitDesk becomes the operating twin of tender and project teams, showing which move improves control before the company spends attention.</p>
+            </article>
+
+            <article class="info-panel">
+              <div class="info-head">
+                <div>
+                  <span class="metric-label">Control rules</span>
+                  <h3>Before a twin move goes live</h3>
+                </div>
+              </div>
+              <div class="decision-twin-guardrail-grid">
+                ${model.guardrails
+                  .map(
+                    ([rule, detail, tone]) => `
+                      <div class="decision-twin-step tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(rule)}</span>
+                        <p>${escapeHtml(detail)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </aside>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderDecisionTwinScenario(scenario) {
+    return `
+      <article class="decision-twin-scenario tone-${escapeHtml(scenario.tone)}">
+        <span>${escapeHtml(scenario.name)}</span>
+        <strong>+${scenario.lift} lift</strong>
+        <div class="decision-twin-scenario-meta">
+          <div><b>${escapeHtml(scenario.before)}</b><small>before</small></div>
+          <div><b>${escapeHtml(scenario.after)}</b><small>after</small></div>
+          <div><b>${escapeHtml(scenario.value)}</b><small>value</small></div>
+        </div>
+        <p>${escapeHtml(scenario.action)}</p>
+      </article>
+    `;
+  }
+
+  function renderDecisionTwinMove(item) {
+    return `
+      <button class="decision-twin-move tone-${escapeHtml(item.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
+        <span>${escapeHtml(item.scenario)}</span>
+        <strong>${escapeHtml(item.record.title || "Untitled record")}</strong>
+        <em>${escapeHtml([item.record.reference, item.record.client, dueLabel(recordDueDays(item.record))].filter(Boolean).join(" / "))}</em>
+        <p>${escapeHtml(item.decision)}</p>
+      </button>
+    `;
+  }
+
+  function renderDecisionTwinApprovalRow(row) {
+    return `
+      <article class="decision-twin-approval-row tone-${escapeHtml(row.tone)}">
+        <div>
+          <span>${escapeHtml(row.auditId)} / ${escapeHtml(row.state)}</span>
+          <strong>${escapeHtml(row.scenario)}</strong>
+          <p>${escapeHtml(row.evidence)}</p>
+        </div>
+        <div class="decision-twin-approval-cells">
+          <div><b>${escapeHtml(row.owner)}</b><small>approver</small></div>
+          <div><b>+${row.lift}</b><small>expected lift</small></div>
+          <div><b>${row.resultCheck}</b><small>actual check</small></div>
+        </div>
+        <em>${escapeHtml(row.expectedResult)}</em>
+      </article>
+    `;
+  }
+
+  function renderDecisionTwinTimelineStep([window, title, detail, tone]) {
+    return `
+      <article class="decision-twin-step tone-${escapeHtml(tone)}">
+        <span>${escapeHtml(window)}</span>
+        <strong>${escapeHtml(title)}</strong>
+        <p>${escapeHtml(detail)}</p>
+      </article>
     `;
   }
 
@@ -8042,7 +9947,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-fixture-export.json?v=178";
+    const downloadHref = "data/backend-fixture-export.json?v=191";
     const exportTables = [
       ["tenants.json", 1, "Company, workspace defaults, billing currency, plan state, and retention settings.", "green"],
       ["users.json", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and role-access fixture users.", "blue"],
@@ -8135,7 +10040,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-sprint-checklist.json?v=178";
+    const downloadHref = "data/backend-sprint-checklist.json?v=191";
     const sprintDays = [
       ["Day 0", "Repo creation and protection", "Private repo, develop branch, labels, milestones, board, first issues, secrets list.", "Repo is private and branch rules are visible.", "Control Admin"],
       ["Day 1", "Workspace skeleton", "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.", "Fresh clone can install and run the empty shell.", "Backend Lead"],
@@ -8249,7 +10154,7 @@
         ),
       ),
     );
-    const downloadHref = "data/staging-deployment-checklist.json?v=178";
+    const downloadHref = "data/staging-deployment-checklist.json?v=191";
     const environmentLanes = [
       ["Staging URL", `staging.${BRAND_DOMAIN}`, "Private pilot preview with test data, HTTPS, cache headers, and admin-only deployment notes.", "green"],
       ["API service", "api-staging", "Backend API deploys from develop or release candidate with health, version, and smoke endpoints.", "blue"],
@@ -8380,7 +10285,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-route-skeleton-map.json?v=178";
+    const downloadHref = "data/backend-route-skeleton-map.json?v=191";
     const routeFiles = [
       ["apps/api/src/server.ts", "Bootstrap", "Health route, request id, middleware chain, error shape, and route registration.", "Platform Owner", "green"],
       ["apps/api/src/middleware/request-context.ts", "Context", "Request id, actor shell, tenant shell, logger scope, and response timing.", "Backend Lead", "blue"],
@@ -8498,7 +10403,7 @@
         ),
       ),
     );
-    const downloadHref = "data/database-migration-blueprint.json?v=178";
+    const downloadHref = "data/database-migration-blueprint.json?v=191";
     const migrationFiles = [
       ["0001_tenant_identity.sql", "Tenant identity", "companies, users, access_profiles, sessions, invitations", "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data.", "Security Owner", "red"],
       ["0002_operational_records.sql", "Operational records", "records, record_notes, record_status_events, client_memory", `Load ${records.length} tracker-safe tender and project records without commercial values.`, "Records Owner", "teal"],
@@ -8637,7 +10542,7 @@
         ),
       ),
     );
-    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=178";
+    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=191";
     const guardFiles = [
       ["apps/api/src/auth/session.ts", "Session guard", "Verify signed session, expiry, inactive user, password reset freshness, and actor context.", "auth.session.test.ts", "Identity Owner", "red"],
       ["apps/api/src/auth/password.ts", "Password policy", "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.", "auth.password.test.ts", "Identity Owner", "red"],
@@ -8793,7 +10698,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-test-command-pack.json?v=178";
+    const downloadHref = "data/backend-test-command-pack.json?v=191";
     const testCommands = [
       ["01", "pnpm test:unit", "Domain unit tests", "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.", "junit-unit.xml", "green"],
       ["02", "pnpm test:contracts", "API contract tests", `${apiContractPack.endpointContracts.length} endpoint contracts for auth, users, records, commercial, import, billing, feedback, and audit.`, "junit-contracts.xml", "blue"],
@@ -8924,7 +10829,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-file-pack.json?v=178";
+    const downloadHref = "data/production-backend-repo-file-pack.json?v=191";
     const repositoryFolders = [
       ["apps/web", "Frontend app", "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.", "Frontend Owner", "green"],
       ["apps/api", "Backend API", "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.", "Backend Lead", "teal"],
@@ -9084,7 +10989,7 @@
         ),
       ),
     );
-    const downloadHref = "data/api-error-audit-envelope-pack.json?v=178";
+    const downloadHref = "data/api-error-audit-envelope-pack.json?v=191";
     const errorEnvelopeFields = [
       ["ok", "boolean", "Always false for errors and true for success responses.", "green"],
       ["requestId", "string", "Public-safe trace id returned to the UI, logs, and audit rows.", "blue"],
@@ -9288,7 +11193,7 @@
         ),
       ),
     );
-    const downloadHref = "data/ci-workflow-file-blueprint.json?v=178";
+    const downloadHref = "data/ci-workflow-file-blueprint.json?v=191";
     const workflowFiles = [
       [".github/workflows/ci.yml", "Primary PR gate", "Pull request", "install, lint, typecheck, unit, contracts, route envelopes, audit envelopes", "ci-summary.json", "red"],
       [".github/workflows/security-audit.yml", "Security and tenant proof", "Pull request + nightly", "auth tenant guards, section denials, commercial vault denial, redaction, request id", "security-audit-proof.json", "red"],
@@ -9459,7 +11364,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-first-commit-builder.json?v=178";
+    const downloadHref = "data/private-repo-first-commit-builder.json?v=191";
     const repoShellFiles = [
       ["README.md", "Repository orientation", "Explains alpha scope, local setup, proof commands, privacy rules, and release ritual.", "Repo Owner", "green"],
       ["package.json", "Root command map", "Defines install, dev, lint, typecheck, test, migrate, seed, smoke, and release-gate scripts.", "Platform Owner", "blue"],
@@ -9591,7 +11496,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-issue-body-exporter.json?v=178";
+    const downloadHref = "data/backend-issue-body-exporter.json?v=191";
     const labelPlan = [
       ["type:foundation", "Repository shell, docs, env examples, and workspace wiring.", "green"],
       ["type:api", "Server, routes, controllers, services, validators, and contracts.", "teal"],
@@ -9868,7 +11773,7 @@
         ),
       ),
     );
-    const downloadHref = "data/branch-protection-release-checklist.json?v=178";
+    const downloadHref = "data/branch-protection-release-checklist.json?v=191";
     const protectedBranches = [
       ["main", "Require pull request review", "ci.yml, security-audit.yml, migration-restore.yml, billing-testmode.yml, release-gate.yml", "No direct push, no force push, owner approval before production release.", "red"],
       ["develop", "Require primary CI", "ci.yml, security-audit.yml", "Feature integration only after lint, typecheck, route envelopes, auth tenant, and redaction proof.", "blue"],
@@ -10024,7 +11929,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-file-content-export.json?v=178";
+    const downloadHref = "data/first-backend-file-content-export.json?v=191";
     const makeFile = (path, owner, issue, purpose, tone, contentLines) => {
       const content = contentLines.join("\n");
       return {
@@ -10449,7 +12354,7 @@
       ),
     );
     const targetRepository = "dhirajnyse/pursuitdesk-platform";
-    const downloadHref = "data/private-repo-setup-script-draft.json?v=178";
+    const downloadHref = "data/private-repo-setup-script-draft.json?v=191";
     const prerequisites = [
       ["GitHub access", "Admin rights for dhirajnyse and permission to create a private repository.", "red"],
       ["GitHub CLI", "gh auth status should show the account that will own pursuitdesk-platform.", "blue"],
@@ -10832,7 +12737,7 @@
     );
     return {
       importPackScore,
-      downloadHref: "data/github-labels-milestones-import-pack.json?v=178",
+      downloadHref: "data/github-labels-milestones-import-pack.json?v=191",
       labelCatalog,
       labelGroups,
       milestoneCatalog,
@@ -10877,7 +12782,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=178";
+    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=191";
     const qaLanes = [
       ["Repository shell", "Root files, workspace, README, env example, CODEOWNERS, PR template, and release runbook exist.", "green"],
       ["API shell", "Server, app, route registry, health route, request id, safe error, tenant scope, and access decision exist.", "teal"],
@@ -11029,7 +12934,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-opening-day-runbook.json?v=178";
+    const downloadHref = "data/private-repo-opening-day-runbook.json?v=191";
     const daySequence = [
       ["08:30", "Preflight", "Confirm GitHub access, repo name, owners, no live secrets, and local folder location.", "green"],
       ["09:00", "Create private repo", "Create dhirajnyse/pursuitdesk-platform as private, with main protected later after first checks appear.", "red"],
@@ -11150,7 +13055,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-decision-memo.json?v=178";
+    const downloadHref = "data/production-backend-repo-decision-memo.json?v=191";
     const memoSections = [
       ["Decision requested", "Approve creation of dhirajnyse/pursuitdesk-platform as the private production backend repo.", "green"],
       ["Why now", "Prototype has reached a stable SaaS blueprint with repo files, issues, QA gates, taxonomy, and opening-day sequence.", "teal"],
@@ -11281,7 +13186,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-risk-register.json?v=178";
+    const downloadHref = "data/backend-alpha-risk-register.json?v=191";
     const riskDomains = [
       ["Repository control", "Critical", "Private visibility, PR-first branch discipline, and no direct main commits.", "red"],
       ["Secret handling", "Critical", "No live keys, .env files, billing secrets, tokens, or private certificates in the first repo.", "red"],
@@ -11415,7 +13320,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=178";
+    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=191";
     const evidenceLanes = [
       ["Repo privacy proof", "Hard gate", "Screenshot or note proving the production backend repo is private before files move.", "red"],
       ["Setup command proof", "Execution", "Capture preflight, folder creation, starter file copy, install, and first quality command output.", "green"],
@@ -11563,7 +13468,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-execution-checklist.json?v=178";
+    const downloadHref = "data/private-repo-execution-checklist.json?v=191";
     const executionGates = [
       ["Gate 0", "Owner go/no-go", "Product owner confirms the controlled go is for repo creation and first PR evidence only.", "green"],
       ["Gate 1", "Private visibility", "Repo is private before files, labels, issues, or screenshots are added.", "red"],
@@ -11724,7 +13629,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-control-board.json?v=178";
+    const downloadHref = "data/backend-alpha-control-board.json?v=191";
     const boardKpis = [
       ["Control readiness", `${controlReadinessScore}%`, "How ready the private repo day is to be managed from one board", controlReadinessScore >= 70 ? "green" : "amber"],
       ["Repo status", "Not opened", "The private production backend repo still needs real GitHub creation.", "red"],
@@ -11875,7 +13780,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-day-one-script.json?v=178";
+    const downloadHref = "data/private-repo-day-one-script.json?v=191";
     const scriptKpis = [
       ["Script readiness", `${scriptReadinessScore}%`, "How ready the private repo day is to run from one command script.", scriptReadinessScore >= 70 ? "green" : "amber"],
       ["Command blocks", "10", "Preflight, repo, branch, files, taxonomy, issues, PR, checks, protection, closeout.", "blue"],
@@ -12022,7 +13927,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-proof-exporter.json?v=178";
+    const downloadHref = "data/backend-repo-proof-exporter.json?v=191";
     const proofKpis = [
       ["Proof readiness", `${proofReadinessScore}%`, "How ready the repo day is to produce copy-ready evidence.", proofReadinessScore >= 80 ? "green" : "amber"],
       ["Evidence files", privateRepoDayOneScript.evidenceFiles.length, "Markdown files that turn screenshots and commands into review proof.", "teal"],
@@ -12163,7 +14068,7 @@
         ),
       ),
     );
-    const downloadHref = "data/github-repo-opening-packet.json?v=178";
+    const downloadHref = "data/github-repo-opening-packet.json?v=191";
     const openingKpis = [
       ["Opening readiness", `${openingReadinessScore}%`, "How ready the private GitHub repo opening packet is before the real repo exists.", openingReadinessScore >= 80 ? "green" : "amber"],
       ["Issue wave", issueCount, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
@@ -12309,7 +14214,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=178";
+    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=191";
     const issueRows = issues.map((issue, index) => [
       issue.id,
       issue.title,
@@ -12463,7 +14368,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-pr-body-builder.json?v=178";
+    const downloadHref = "data/first-pr-body-builder.json?v=191";
     const prKpis = [
       ["PR readiness", `${firstPrReadinessScore}%`, "How ready the first backend PR body is before the private repo exists.", firstPrReadinessScore >= 80 ? "green" : "amber"],
       ["Linked issues", issueRows.length, "Issue rows that can be referenced after real GitHub URLs exist.", "teal"],
@@ -12643,7 +14548,7 @@
         ),
       ),
     );
-    const downloadHref = "data/repo-evidence-folder-writer.json?v=178";
+    const downloadHref = "data/repo-evidence-folder-writer.json?v=191";
     const evidenceKpis = [
       ["Evidence folder", `${evidenceFolderScore}%`, "How ready the first backend PR evidence folder is before the private repo exists.", evidenceFolderScore >= 80 ? "green" : "amber"],
       ["Markdown files", evidenceTemplates.length, "Proof files that should exist under docs/evidence before review.", "teal"],
@@ -12803,7 +14708,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-command-runner-pack.json?v=178";
+    const downloadHref = "data/private-repo-command-runner-pack.json?v=191";
     const runnerKpis = [
       ["Runner readiness", `${commandRunnerScore}%`, "How ready the real private repo command session is to run without improvising.", commandRunnerScore >= 80 ? "green" : "amber"],
       ["Command blocks", commandBlocks.length, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
@@ -12942,7 +14847,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=178";
+    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=191";
     const reviewKpis = [
       ["Review readiness", `${reviewGateScore}%`, "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", reviewGateScore >= 80 ? "green" : "amber"],
       ["Reviewer lanes", reviewerRows.length, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
@@ -13110,7 +15015,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-artifact-status-board.json?v=178";
+    const downloadHref = "data/evidence-artifact-status-board.json?v=191";
     const boardKpis = [
       ["Artifact board", `${evidenceBoardScore}%`, "How ready the proof packet is to move from planned evidence into real captured artifacts.", evidenceBoardScore >= 80 ? "green" : "amber"],
       ["Artifact rows", artifactRows.length, "Markdown, screenshots, transcripts, signoffs, issue traces, branch proof, closeout, and block rules.", "teal"],
@@ -13334,7 +15239,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-handoff-email-pack.json?v=178";
+    const downloadHref = "data/private-repo-handoff-email-pack.json?v=191";
     const handoffKpis = [
       ["Email pack", `${handoffEmailScore}%`, "Readiness to send the private repo briefing without improvising.", handoffEmailScore >= 80 ? "green" : "amber"],
       ["Owner lanes", audienceBriefs.length, "Recipients with clear decision and evidence expectations.", "teal"],
@@ -13511,7 +15416,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=178";
+    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=191";
     const reviewCommentKpis = [
       ["Comment pack", `${firstBackendPrCommentScore}%`, "Readiness to paste controlled GitHub review language into the first backend PR.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
       ["Review actions", reviewCommentLibrary.length, "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.", "teal"],
@@ -13686,7 +15591,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=178";
+    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=191";
     const closeoutKpis = [
       ["Closeout pack", `${evidenceCloseoutScore}%`, "Readiness to close the first private backend PR evidence session without losing proof state.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
       ["Outcome lanes", closeoutOutcomeLanes.length, "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.", "teal"],
@@ -13855,7 +15760,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=178";
+    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=191";
     return {
       backendRepoDayMeetingScore,
       downloadHref,
@@ -14028,7 +15933,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-reply-capture-board.json?v=178";
+    const downloadHref = "data/private-repo-reply-capture-board.json?v=191";
     return {
       replyCaptureScore,
       downloadHref,
@@ -14178,7 +16083,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=178";
+    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=191";
     return {
       pdfExportScore,
       downloadHref,
@@ -14361,7 +16266,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=178";
+    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=191";
     return {
       meetingMinutesScore,
       downloadHref,
@@ -14542,7 +16447,7 @@
         ),
       ),
     );
-    const downloadHref = "data/reviewer-decision-email-pack.json?v=178";
+    const downloadHref = "data/reviewer-decision-email-pack.json?v=191";
     return {
       reviewerDecisionEmailScore,
       downloadHref,
@@ -14594,18 +16499,18 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v178 Webhook Evidence Runner Checklist",
-      phase: "Webhook evidence runner checklist",
+      version: "v191 Win Lab Task Dispatch",
+      phase: "Win Lab task dispatch",
       lane: "Static product prototype on GitHub Pages",
-      pace: "159 meaningful versions since rebrand",
-      summary: "Membership now turns webhook evidence into executable runner commands, fixtures, screenshots, audit proof, and release gates.",
+      pace: "172 meaningful versions since rebrand",
+      summary: "Win Lab now turns bid posture into owner-ready task packets with dispatch score, lock state, SLA, evidence request, review gate, and downloadable v191 dispatch JSON.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist are live in demo form.", "teal"],
-        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, workflow job matrix, branch protection, cache policy, secret policy, release artifacts, first-commit file contents, issue bodies, issue labels, milestones, proof commands, opening order, protected environments, review ownership, artifact retention, release ritual, rollback playbook, issue-to-check map, root file contents, API starter contents, package starter contents, workflow starter contents, setup scripts, repository bootstrap commands, folder creation, secret placeholders, first PR proof, label catalog, milestone catalog, board columns, issue routing rules, taxonomy gates, first commit QA lanes, artifact expectations, role signoffs, go/no-go rules, opening-day command sequence, evidence packets, no-go stops, owner checkpoints, decision memo scope cutline, approval basis, decision options, blocker register, definitions of done, risk domains, risk triggers, mitigations, residual risks, owner actions, monitoring signals, evidence files, screenshots, PR note sections, workflow check names, branch-protection proof, signoff trail, execution gates, proof logs, command order, issue waves, branch timing, closeout checks, control lanes, blocker queue, owner readiness, decision log, alpha board action queue, day-one command blocks, manual proof points, PR script, owner prompts, closeout checks, evidence templates, command transcript slots, approval notes, proof snippets, proof quality gates, repo identity facts, owner matrix, issue wave ledger, launch files, risk locks, closeout ledger, copy-ready repo-opening text, CSV-style issue rows, owner lanes, label mapping, body-file names, validation gates, paste checks, import closeout files, PR identity, PR scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback text, release checklist, copy-ready PR body, evidence folder tree, markdown templates, screenshot slots, transcript slots, issue ledger, owner signoff files, branch-proof gates, closeout notes, command runner steps, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, copy-ready commands, runner closeout, reviewer gate matrix, decision gates, evidence review map, hold queue, block rules, merge checklist, reviewer packets, PR comment templates, GitHub review action text, lane comment packets, inline note snippets, no-leak signoffs, request-changes text, merge closeout text, review send checklist, evidence closeout lanes, decision logs, owner closeout queue, no-leak rollback checks, closeout timeline, management summary lines, meeting agenda, attendee map, decision capture board, action queue, risk parking lot, evidence outputs, facilitator script, reviewer reply lanes, reply states, thread capture fields, requested-change resolver, approval readiness, merge gates, reply SLA, management reply brief, PDF page blueprint, printable sections, redaction checks, export QA, distribution matrix, archive naming, export management brief, attendance log, minutes sections, decision register, action queue, management email blocks, follow-up cadence, privacy/audit checks, copy-ready minutes, closeout reopen reasons, approver handoff, route guards, audit fields, approval memory rows, standard rules, approver coverage, decision audit chains, retention calendar rows, evidence review dates, annual review dates, retention-until dates, exception lanes, retention audit fields, closeout SLA ids, due lanes, days late, escalation levels, reviewer nudges, owner action clocks, exception queue ids, decision states, approval owner roles, rejection reasons, closeout exception audit events, proposal acceptance rows, buyer reply states, accepted scope JSON, requested-change ledger, renewal gates, closeout actions, proposal email bodies, buyer decision ids, decision-readiness score, source-version map, decision matrix, action owners, decision email bodies, evidence bundle ids, proof statuses, required file lists, owner reminder text, release notes, document folder ids, evidence audit events, pilot invoice request ids, payment simulator ids, provider events, manual approval expiry, grace windows, access lock reasons, payment states, due dates, provider invoice ids, payment URLs, workspace activation states, pilot kickoff ids, kickoff dates, admin setup states, workbook handoff tasks, invite batches, adoption checkpoints, launch locks, renewal gates, pdf render workflow ids, render statuses, pdf storage urls, print audit fields, signature completion, archive attachment states, provider event ids, webhook signature status, idempotency ledger rows, tenant payment mapping, retry counts, access effect JSON, billing audit envelopes, renewal decision ids, renewal scores, recommended paths, proof rows, sponsor actions, expansion handoff fields, archive attachment register ids, storage object keys, checksum proof, retention release state, download audit events, webhook test pack ids, raw body hashes, signature headers, expected HTTP status, actual HTTP status, replay counts, verified-by fields, expansion quote ids, quoted seats, quoted manager seats, monthly quotes, setup quotes, first invoice amounts, sponsor approval states, next invoice options, attachment download audit ids, requested-by roles, download reasons, request IP hashes, checksum verification states, access decisions, denied reasons, retention release checks, webhook runner checklist ids, test commands, fixture files, screenshot paths, release gate states, and failed gate reasons are mapped.", "blue"],
-        ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist are mapped, but the real private repo and real staging environment are not created yet.", "red"],
-        ["Billing model", 100, "USD Starter, Team, Business, extra operator seats, manager/commercial seats, setup service pricing, checkout flow, invoice lifecycle, payment state simulator, adoption health monitor, provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, pilot expansion quote builder, renewal decision pack, idempotency, signature verification, tenant mapping, retry rules, plan changes, access locks, audit events, pilot pitch packaging, customer feedback buying signals, ROI payback story, proposal export handoff, objection playbook proof paths, proposal acceptance tracking, buyer decision closeout, invoice request handoff, kickoff activation handoff, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "green"],
-        ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker, buyer decision room, pilot invoice request pack, pilot payment state simulator, pilot kickoff control pack, pilot adoption health monitor, closeout PDF render workflow, payment provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, pilot expansion quote builder, attachment download audit evidence pack, pilot renewal decision pack, and closeout archive attachment register.", "green"],
+        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, and Win Lab Task Dispatch are live in demo form.", "teal"],
+        ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, workflow job matrix, branch protection, cache policy, secret policy, release artifacts, first-commit file contents, issue bodies, issue labels, milestones, proof commands, opening order, protected environments, review ownership, artifact retention, release ritual, rollback playbook, issue-to-check map, root file contents, API starter contents, package starter contents, workflow starter contents, setup scripts, repository bootstrap commands, folder creation, secret placeholders, first PR proof, label catalog, milestone catalog, board columns, issue routing rules, taxonomy gates, first commit QA lanes, artifact expectations, role signoffs, go/no-go rules, opening-day command sequence, evidence packets, no-go stops, owner checkpoints, decision memo scope cutline, approval basis, decision options, blocker register, definitions of done, risk domains, risk triggers, mitigations, residual risks, owner actions, monitoring signals, evidence files, screenshots, PR note sections, workflow check names, branch-protection proof, signoff trail, execution gates, proof logs, command order, issue waves, branch timing, closeout checks, control lanes, blocker queue, owner readiness, decision log, alpha board action queue, day-one command blocks, manual proof points, PR script, owner prompts, closeout checks, evidence templates, command transcript slots, approval notes, proof snippets, proof quality gates, repo identity facts, owner matrix, issue wave ledger, launch files, risk locks, closeout ledger, copy-ready repo-opening text, CSV-style issue rows, owner lanes, label mapping, body-file names, validation gates, paste checks, import closeout files, PR identity, PR scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback text, release checklist, copy-ready PR body, evidence folder tree, markdown templates, screenshot slots, transcript slots, issue ledger, owner signoff files, branch-proof gates, closeout notes, command runner steps, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, copy-ready commands, runner closeout, reviewer gate matrix, decision gates, evidence review map, hold queue, block rules, merge checklist, reviewer packets, PR comment templates, GitHub review action text, lane comment packets, inline note snippets, no-leak signoffs, request-changes text, merge closeout text, review send checklist, evidence closeout lanes, decision logs, owner closeout queue, no-leak rollback checks, closeout timeline, management summary lines, meeting agenda, attendee map, decision capture board, action queue, risk parking lot, evidence outputs, facilitator script, reviewer reply lanes, reply states, thread capture fields, requested-change resolver, approval readiness, merge gates, reply SLA, management reply brief, PDF page blueprint, printable sections, redaction checks, export QA, distribution matrix, archive naming, export management brief, attendance log, minutes sections, decision register, action queue, management email blocks, follow-up cadence, privacy/audit checks, copy-ready minutes, closeout reopen reasons, approver handoff, route guards, audit fields, approval memory rows, standard rules, approver coverage, decision audit chains, retention calendar rows, evidence review dates, annual review dates, retention-until dates, exception lanes, retention audit fields, closeout SLA ids, due lanes, days late, escalation levels, reviewer nudges, owner action clocks, exception queue ids, decision states, approval owner roles, rejection reasons, closeout exception audit events, proposal acceptance rows, buyer reply states, accepted scope JSON, requested-change ledger, renewal gates, closeout actions, proposal email bodies, buyer decision ids, decision-readiness score, source-version map, decision matrix, action owners, decision email bodies, evidence bundle ids, proof statuses, required file lists, owner reminder text, release notes, document folder ids, evidence audit events, pilot invoice request ids, payment simulator ids, provider events, manual approval expiry, grace windows, access lock reasons, payment states, due dates, provider invoice ids, payment URLs, workspace activation states, pilot kickoff ids, kickoff dates, admin setup states, workbook handoff tasks, invite batches, adoption checkpoints, launch locks, renewal gates, pdf render workflow ids, render statuses, pdf storage urls, print audit fields, signature completion, archive attachment states, provider event ids, webhook signature status, idempotency ledger rows, tenant payment mapping, retry counts, access effect JSON, billing audit envelopes, renewal decision ids, renewal scores, recommended paths, proof rows, sponsor actions, expansion handoff fields, archive attachment register ids, storage object keys, checksum proof, retention release state, download audit events, webhook test pack ids, raw body hashes, signature headers, expected HTTP status, actual HTTP status, replay counts, verified-by fields, expansion quote ids, quoted seats, quoted manager seats, monthly quotes, setup quotes, first invoice amounts, sponsor approval states, next invoice options, attachment download audit ids, requested-by roles, download reasons, request IP hashes, checksum verification states, access decisions, denied reasons, retention release checks, webhook runner checklist ids, test commands, fixture files, screenshot paths, release gate states, failed gate reasons, runner owner roles, runner timeboxes, operator readiness states, command proof cells, download permission matrix ids, role scopes, room grants, redaction profiles, signed URL expiry, expected HTTP decisions, download audit gates, webhook incident ids, incident lanes, severity levels, replay decisions, customer message states, root cause summaries, incident release gates, expansion approval memory ids, finance hold reasons, quote revisions, invoice decisions, rollout authorization, approval audit fields, download approval board ids, approver decisions, redaction release states, expiry review, escalation reasons, webhook notice pack ids, audience templates, privacy-safe message bodies, notice approvals, sent timestamps, customer impact states, expansion invoice acceptance ids, paid-state proof, rollout locks, access snapshots, renewal handoff dates, autopilot run ids, mission codes, record signal JSON, assigned action JSON, privacy guard states, meeting script bodies, time-machine run ids, scenario codes, future health scores, prevented-late counts, record future JSON, simulation audit events, win-lab run ids, win scores, no-bid risk, differentiator text, bid thesis text, strategy memo bodies, decision twin run ids, projected health scores, scenario names, simulated record ids, approved decision states, actual-after scores, dispatch task ids, dispatch owner roles, dispatch lock states, dispatch SLAs, evidence requests, dispatch messages, and dispatch audit memory are mapped.", "blue"],
+        ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, and win lab task dispatch are mapped, but the real private repo and real staging environment are not created yet.", "red"],
+        ["Billing model", 100, "USD Starter, Team, Business, extra operator seats, manager/commercial seats, setup service pricing, checkout flow, invoice lifecycle, payment state simulator, adoption health monitor, provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, renewal decision pack, idempotency, signature verification, tenant mapping, retry rules, plan changes, access locks, audit events, pilot pitch packaging, customer feedback buying signals, ROI payback story, proposal export handoff, objection playbook proof paths, proposal acceptance tracking, buyer decision closeout, invoice request handoff, kickoff activation handoff, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "green"],
+        ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker, buyer decision room, pilot invoice request pack, pilot payment state simulator, pilot kickoff control pack, pilot adoption health monitor, closeout PDF render workflow, payment provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, attachment download audit evidence pack, pilot renewal decision pack, closeout archive attachment register, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, and win lab task dispatch.", "green"],
       ],
       phases: [
         ["0", "Positioning", "Done", "PursuitDesk direction is set."],
@@ -14711,12 +16616,25 @@
         ["100", "Webhook test evidence pack", "Done", "Membership now generates test payloads, signature proof, replay proof, access-transition proof, and billing audit evidence."],
         ["101", "Pilot expansion quote builder", "Done", "Pilot Pitch now converts renewal decisions into expansion seats, modules, setup scope, approvals, and invoice options."],
         ["102", "Attachment download audit evidence pack", "Done", "Closeout now captures actor, reason, checksum, retention, denied download, and audit-event proof for archive downloads."],
-        ["103", "Webhook evidence runner checklist", "Active", "Membership now turns webhook proof into command steps, expected responses, fixture rows, screenshots, pass/fail gates, and runner JSON."],
+        ["103", "Webhook evidence runner checklist", "Done", "Membership now turns webhook proof into command steps, expected responses, fixture rows, screenshots, pass/fail gates, and runner JSON."],
+        ["104", "Webhook runner operator console", "Done", "Runner commands now split command text, owner, timebox, expected result, proof file, release gate, and operator readiness states."],
+        ["105", "Download permission test matrix", "Done", "Membership now maps operational exports, commercial insight downloads, closeout PDFs, archive attachments, invoices, webhook runner JSON, role rules, expected HTTP decisions, and audit gates."],
+        ["106", "Webhook failure incident playbook", "Done", "Membership now maps failed, replayed, wrong-tenant, stale, partial-access, payment-grace, refund-review, and missing-audit webhook incident lanes with owner actions and release gates."],
+        ["107", "Expansion approval memory", "Done", "Pilot Pitch now captures sponsor approvals, finance holds, quote revisions, invoice decisions, rollout authorization, approval email, and audit fields for expansion closeout."],
+        ["108", "Download approval review board", "Done", "Membership now turns sensitive download attempts into approve, redact, hold, escalate, or reject decisions with owner, reviewer, proof, expiry, and audit memory."],
+        ["109", "Webhook incident customer notice pack", "Done", "Membership now generates privacy-safe admin, finance, support, internal, frontline, and executive messages for billing incident recovery."],
+        ["110", "Expansion invoice acceptance pack", "Done", "Pilot Pitch now turns approved expansion memory into invoice acceptance, paid-state proof, rollout locks, access snapshots, and renewal handoff."],
+        ["111", "Pursuit autopilot brain", "Done", "Autopilot now turns live records into mission lanes, privacy-safe action language, management script, and downloadable brain JSON."],
+        ["112", "Pursuit time machine", "Done", "PursuitDesk now simulates future risk, preventable late records, management interventions, control ROI, and record-level future states."],
+        ["113", "Pursuit win lab", "Done", "PursuitDesk now turns live pursuits into win confidence, bid posture, differentiators, blockers, no-bid watch, and strategy memo export."],
+        ["114", "Pursuit decision twin", "Done", "PursuitDesk now simulates management decisions before live tracker changes, projecting health lift, protected value, decision moves, and board memo export."],
+        ["115", "Decision twin approval ledger", "Done", "Decision Twin now converts simulations into approved, held, deferred, and actual-review decisions with owner, evidence, expected result, and audit memory."],
+        ["116", "Win Lab task dispatch", "Active", "Win Lab now converts strategy lanes into assigned owner packets with lock state, SLA, evidence request, review gate, message body, and audit memory."],
       ],
       nextBuilds: [
-        ["v179", "Expansion Approval Memory", "Capture sponsor approvals, finance holds, quote revisions, invoice decisions, and renewal-to-expansion audit memory."],
-        ["v180", "Download Permission Test Matrix", "Turn attachment download audit rules into role-based test cases, expected HTTP responses, screenshots, and release gates."],
-        ["v181", "Webhook Failure Incident Playbook", "Turn failed, replayed, stale, and wrong-tenant payment events into incident lanes, owner actions, and recovery evidence."],
+        ["v192", "Pursuit Twin Outcome Replay", "Compare predicted health lift against real record movement after weekly review."],
+        ["v193", "Twin Decision Inbox", "Route approved twin moves into owner inboxes with due dates, evidence requests, and closeout notes."],
+        ["v194", "Dispatch Evidence Closeout", "Turn completed Win Lab packets into proof, outcome, and reusable response memory."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -19886,7 +21804,7 @@
             <h3>Turn the prototype data into copy-ready backend fixtures.</h3>
             <p>The export separates frontline tracker records from commercial vault data, keeps source workbook lineage, defines seed files, creates validation scenarios, and gives the private repo a repeatable fixture contract.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-fixture-export-v178.json">Download fixture JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-fixture-export-v179.json">Download fixture JSON</a>
               <button class="ghost-btn" type="button" data-view="Import">Open import studio</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -20109,7 +22027,7 @@
             <h3>Move from product plan to the first private-repo sprint.</h3>
             <p>This checklist turns the private repo guide, fixture export, API contracts, issue export, and staging smoke script into a sprint-zero operating rhythm for the first backend build.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-sprint-checklist-v178.json">Download sprint JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-sprint-checklist-v179.json">Download sprint JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -20332,7 +22250,7 @@
             <h3>Turn sprint-zero output into a controlled staging release.</h3>
             <p>This checklist defines the first private backend staging environment: environment lanes, secrets, database checks, monitoring, rollback, owners, and go/no-go gates before any pilot user touches live data.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-staging-deployment-checklist-v178.json">Download deployment JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-staging-deployment-checklist-v179.json">Download deployment JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -20593,7 +22511,7 @@
             <h3>Convert the API contract pack into files engineers can create.</h3>
             <p>This map takes the alpha API contract pack and turns it into route files, controllers, services, validators, middleware, tests, folders, and implementation slices for the private backend repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-route-skeleton-map-v178.json">Download route JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-route-skeleton-map-v179.json">Download route JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -20817,7 +22735,7 @@
             <h3>Turn the route skeleton into a production database path.</h3>
             <p>This blueprint defines migration files, table ownership, indexes, seed order, rollback rules, validation gates, commands, and data contracts for the first private backend database.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-database-migration-blueprint-v178.json">Download migration JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-database-migration-blueprint-v179.json">Download migration JSON</a>
               <button class="ghost-btn" type="button" data-view="Import">Open import</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -21075,7 +22993,7 @@
             <h3>Protect every company, user, room, and commercial field.</h3>
             <p>This guard map turns the access model into backend middleware for sessions, tenant isolation, section permissions, commercial vault access, membership admin, mutations, safe errors, and denied-access audit proof.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-auth-tenant-guard-blueprint-v178.json">Download auth guard JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-auth-tenant-guard-blueprint-v179.json">Download auth guard JSON</a>
               <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -21353,7 +23271,7 @@
             <h3>Make the future backend prove itself before pilot data enters.</h3>
             <p>This pack converts routes, migrations, auth guards, tenant isolation, commercial redaction, billing, import, audit, restore, and staging smoke checks into executable commands with CI artifacts and release gates.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-test-command-pack-v178.json">Download test command JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-test-command-pack-v179.json">Download test command JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -21609,7 +23527,7 @@
             <h3>Turn the private backend repo into a disciplined first commit.</h3>
             <p>This file pack defines the folder tree, first commit files, API route batches, migration files, auth guard files, test files, CI workflows, environment examples, copy order, owners, and acceptance checks for the real PursuitDesk backend repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-file-pack-v178.json">Download repo file JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-file-pack-v179.json">Download repo file JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -21959,7 +23877,7 @@
             <h3>Give every backend route one safe response and one evidence trail.</h3>
             <p>This pack standardizes request ids, safe error bodies, audit payloads, denial evidence, route coverage, middleware files, and test proof before the private backend repo starts real implementation.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-api-error-audit-envelope-pack-v178.json">Download envelope JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-api-error-audit-envelope-pack-v179.json">Download envelope JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -22293,7 +24211,7 @@
             <h3>Turn backend quality rules into required GitHub proof.</h3>
             <p>This blueprint maps GitHub Actions workflow files, CI jobs, cache strategy, branch protection, secrets, command bindings, release gates, and artifacts for the first private PursuitDesk backend repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-ci-workflow-file-blueprint-v178.json">Download CI blueprint JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-ci-workflow-file-blueprint-v179.json">Download CI blueprint JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -22641,7 +24559,7 @@
             <h3>Turn the backend plan into a disciplined first commit.</h3>
             <p>This builder converts the repo file pack, safe error/audit envelope, CI workflow blueprint, route skeleton, migration blueprint, and guard plan into the first private PursuitDesk backend commit.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-first-commit-builder-v178.json">Download first commit JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-first-commit-builder-v179.json">Download first commit JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -22928,7 +24846,7 @@
             <h3>Turn the private-repo plan into copy-ready engineering issues.</h3>
             <p>This exporter converts first-commit files, safe error/audit rules, CI proof, route skeletons, migrations, and tenant guards into the first private-repo backlog with owners, labels, milestones, file scope, and proof commands.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-issue-body-exporter-v178.json">Download issue JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-issue-body-exporter-v179.json">Download issue JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -23203,7 +25121,7 @@
             <h3>Make the future private backend repo hard to break.</h3>
             <p>This checklist turns workflow files and backend issues into exact GitHub branch rules, required checks, protected environments, review owners, release artifacts, rollback moves, and acceptance gates before the first real backend commit.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-branch-protection-release-checklist-v178.json">Download release JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-branch-protection-release-checklist-v179.json">Download release JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -23512,7 +25430,7 @@
             <h3>Turn the private repo plan into paste-ready starter files.</h3>
             <p>This export gives the future backend repository its first real shape: root files, API shell, safe middleware boundaries, package starters, workflow files, copy order, implementation guardrails, and acceptance checks.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-file-content-export-v178.json">Download file content JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-file-content-export-v179.json">Download file content JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -23793,7 +25711,7 @@
             <h3>Turn the backend handoff into a guided private repo bootstrap.</h3>
             <p>This draft gives the future production repository a careful opening sequence: preflight checks, private repo creation, folder skeleton, starter-file writing, labels, milestones, first proof run, first PR, and branch protection timing.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-setup-script-draft-v178.json">Download setup script JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-setup-script-draft-v179.json">Download setup script JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -23979,7 +25897,7 @@
             <h3>Give the private repo a clean backlog taxonomy before issues arrive.</h3>
             <p>This pack creates the metadata spine for the future backend repo: label catalog, milestone catalog, board columns, issue routing rules, import sequence, command preview, taxonomy files, quality gates, and acceptance checks.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-labels-milestones-import-pack-v178.json">Download taxonomy JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-labels-milestones-import-pack-v179.json">Download taxonomy JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24219,7 +26137,7 @@
             <h3>Review the first private backend PR before feature coding begins.</h3>
             <p>This checklist turns the setup script, starter files, taxonomy, workflows, branch rules, and release evidence into a first-commit QA gate with clear go, hold, and no-go rules.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-commit-qa-checklist-v178.json">Download QA JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-commit-qa-checklist-v179.json">Download QA JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24435,7 +26353,7 @@
             <h3>Turn the backend plan into a controlled first day.</h3>
             <p>This runbook sequences repository creation, taxonomy import, issue opening, starter file copy, first proof run, first PR, review signoffs, and branch protection timing.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-opening-day-runbook-v178.json">Download runbook JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-opening-day-runbook-v179.json">Download runbook JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24620,7 +26538,7 @@
             <h3>Approve the private backend repo move without accidentally approving live SaaS.</h3>
             <p>The memo converts the repo runbook, first-commit QA, setup script, branch protection plan, issue export, and CI blueprint into one executive go, hold, or no-go decision.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-decision-memo-v178.json">Download memo JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-production-backend-repo-decision-memo-v179.json">Download memo JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -24823,7 +26741,7 @@
             <h3>Know what can break before the private backend repo opens.</h3>
             <p>This register turns the decision memo, opening-day runbook, first-commit QA, branch protection plan, CI blueprint, and setup script into clear risk controls before execution begins.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-risk-register-v178.json">Download risk JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-risk-register-v179.json">Download risk JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -25011,7 +26929,7 @@
             <h3>Make the private repo day auditable before the first file moves.</h3>
             <p>The pack converts the runbook and risk register into proof files, screenshots, command transcripts, PR notes, workflow check names, branch-protection evidence, and owner signoffs.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-opening-day-evidence-pack-v178.json">Download evidence JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-opening-day-evidence-pack-v179.json">Download evidence JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -25213,7 +27131,7 @@
             <h3>Run the private backend repo day without improvising.</h3>
             <p>The checklist converts the decision memo, risk register, runbook, and evidence pack into gates, owner actions, proof logs, command order, branch timing, stop rules, and completion checks.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-execution-checklist-v178.json">Download checklist JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-execution-checklist-v179.json">Download checklist JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -25428,7 +27346,7 @@
             <h3>See the repo day as a control board before it happens.</h3>
             <p>The board turns execution planning into one operating surface for repo status, first PR, issue wave, evidence health, CI check names, branch protection timing, blockers, owners, and go/hold/no-go movement.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-control-board-v178.json">Download board JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-control-board-v179.json">Download board JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -25652,7 +27570,7 @@
             <h3>Run the first backend repo day without improvising.</h3>
             <p>This script turns the control board into a practical execution path: preflight, private repo, clean copy set, branch, starter shell, issue wave, first PR, workflow names, branch protection, and closeout proof.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-day-one-script-v178.json">Download script JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-day-one-script-v179.json">Download script JSON</a>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -25883,7 +27801,7 @@
             <h3>Turn repo day into a proof packet people can trust.</h3>
             <p>The exporter converts the day-one script into markdown evidence files, screenshot checklist, command transcript slots, first PR sections, owner approval notes, closeout packet, and quality gates for the future private backend repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-proof-exporter-v178.json">Download proof JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-proof-exporter-v179.json">Download proof JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -26099,7 +28017,7 @@
             <h3>Open the private repo with facts, owners, proof, and no drift.</h3>
             <p>This packet converts the proof exporter into one repo-opening bundle: repo identity, owner matrix, issue wave, first PR starter, artifact manifest, launch files, risk locks, closeout ledger, and copy-ready text for the future private backend repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-repo-opening-packet-v178.json">Download opening packet JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-github-repo-opening-packet-v179.json">Download opening packet JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -26330,7 +28248,7 @@
             <h3>Turn the backlog into clean import rows before GitHub paste.</h3>
             <p>The import kit reshapes the backend issue bodies into CSV-style rows, owner lanes, label and milestone mapping, import waves, body-file names, validation gates, paste checks, and closeout files for the future private repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-issue-import-kit-v178.json">Download issue import JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-alpha-issue-import-kit-v179.json">Download issue import JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -26559,7 +28477,7 @@
             <h3>Write the first backend PR before the repo day starts.</h3>
             <p>This builder turns the issue import kit, repo opening packet, proof exporter, reviewers, rollback rules, and release checklist into one copy-ready first backend PR body for the future private repository.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-pr-body-builder-v178.json">Download PR body JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-pr-body-builder-v179.json">Download PR body JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -26809,7 +28727,7 @@
             <h3>Write the proof folder the first backend PR will link to.</h3>
             <p>This writer converts the PR body builder into exact docs/evidence files, screenshot slots, transcript slots, issue ledger rows, owner signoff files, branch-protection proof, and closeout notes for the future private backend repo.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-repo-evidence-folder-writer-v178.json">Download evidence folder JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-repo-evidence-folder-writer-v179.json">Download evidence folder JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -27070,7 +28988,7 @@
             <h3>Run repo day from a controlled command sheet.</h3>
             <p>This pack turns the evidence folder writer and day-one script into a practical execution cockpit: command order, expected outputs, evidence writes, artifact filenames, stop rules, owner prompts, branch timing, and closeout checks.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-command-runner-pack-v178.json">Download command runner JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-command-runner-pack-v179.json">Download command runner JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -27347,7 +29265,7 @@
             <h3>Make the first backend PR reviewable, holdable, and blockable.</h3>
             <p>This matrix turns the first PR body, evidence folder, and command runner into reviewer-specific gates: who approves what, what causes a hold, what blocks trust, and what must be true before merge readiness.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-pr-review-gate-matrix-v178.json">Download review gate JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-pr-review-gate-matrix-v179.json">Download review gate JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -27575,7 +29493,7 @@
             <h3>Know which proof is ready, held, deferred, or blocked.</h3>
             <p>This board turns the review matrix, evidence folder, command runner, and proof exporter into one operating view for real private-repo artifacts: screenshots, transcripts, issue URLs, owner signoffs, branch proof, and closeout notes.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-artifact-status-board-v178.json">Download artifact board JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-artifact-status-board-v179.json">Download artifact board JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -27761,7 +29679,7 @@
             <h3>Brief every owner before the first private backend repo session.</h3>
             <p>This pack converts the artifact board, PR review matrix, command runner, opening packet, and first PR body into a copy-ready owner email, agenda, evidence links, approval language, safety locks, and follow-up rhythm.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-handoff-email-pack-v178.json">Download handoff email JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-handoff-email-pack-v179.json">Download handoff email JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -28001,7 +29919,7 @@
             <h3>Turn review rules into paste-ready GitHub PR comments.</h3>
             <p>This pack converts the review gate matrix and private repo handoff into GitHub-ready comments for opening review, lane approval, evidence holds, request changes, no-leak signoff, branch-protection holds, and merge closeout.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-pr-review-comment-pack-v178.json">Download review comments JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-pr-review-comment-pack-v179.json">Download review comments JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -28213,7 +30131,7 @@
             <h3>Close the private repo day with proof, not memory.</h3>
             <p>This pack converts review comments, artifact status, owner handoff, and review gates into passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout records.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-evidence-closeout-pack-v178.json">Download closeout JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-evidence-closeout-pack-v179.json">Download closeout JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
             </div>
@@ -28427,7 +30345,7 @@
             <h3>Run the private repo day like a decision room.</h3>
             <p>This pack turns the closeout model into an agenda, attendee map, decision capture board, owner action queue, risk parking lot, evidence outputs, and facilitator script for the first backend repo session.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-day-meeting-pack-v178.json">Download meeting JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-day-meeting-pack-v179.json">Download meeting JSON</a>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -28660,7 +30578,7 @@
             <h3>Turn every reviewer reply into a clear next state.</h3>
             <p>This board captures real GitHub replies, holds, requested changes, deferred proof, no-response lanes, owner actions, and merge-readiness outcomes after the backend repo day meeting.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-reply-capture-board-v178.json">Download reply board JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-reply-capture-board-v179.json">Download reply board JSON</a>
               <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -28899,7 +30817,7 @@
             <h3>Turn captured replies into a management-ready closeout pack.</h3>
             <p>This plan defines the printable packet that will eventually convert reviewer replies, evidence status, redaction checks, distribution lanes, archive naming, and owner actions into a controlled closeout export.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-closeout-pdf-export-plan-v178.json">Download export plan JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-closeout-pdf-export-plan-v179.json">Download export plan JSON</a>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
             </div>
@@ -29119,7 +31037,7 @@
             <h3>Turn the repo-day review into clean minutes and owner actions.</h3>
             <p>This exporter converts the meeting pack, captured replies, evidence closeout, and PDF export plan into copy-ready minutes, attendance, decision register, action queue, privacy checks, follow-up cadence, and a management email.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-meeting-minutes-exporter-v178.json">Download minutes JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-meeting-minutes-exporter-v179.json">Download minutes JSON</a>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -29348,7 +31266,7 @@
             <h3>Turn unresolved reviewer states into precise follow-up emails.</h3>
             <p>This pack converts meeting minutes, reply capture states, review gates, and archive rules into targeted reviewer emails for approvals, holds, requested changes, deferrals, no responses, merge confirmation, and archive signoff.</p>
             <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-reviewer-decision-email-pack-v178.json">Download email pack JSON</a>
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-reviewer-decision-email-pack-v179.json">Download email pack JSON</a>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
               <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
             </div>
@@ -34584,7 +36502,7 @@
     const companyName = state.data.company?.name || "Tenant";
     const tenant = companyName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "tenant";
     const packetId = `PD-CLOSEOUT-${dateKey}`;
-    const archiveFolder = `archive/closeout/${stamp}/${tenant}/v178`;
+    const archiveFolder = `archive/closeout/${stamp}/${tenant}/v179`;
     const readySample = model.readyRecords.slice(0, 8).map((item) => ({
       archiveName: item.archiveName,
       reference: item.record.reference || item.record.agreementNo || "",
@@ -34621,7 +36539,7 @@
       `${releaseGate}: use this packet as the closeout handoff for governance, reports, and future backend archive storage.`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutExportPacket.v178",
+      schemaVersion: "pursuitdesk.closeoutExportPacket.v179",
       packetId,
       generatedOn: now.toISOString(),
       company: companyName,
@@ -34751,7 +36669,7 @@
       `${positiveShare}% of closed records are awarded or completed; use stopped records for lessons and positive records for repeatable playbooks.`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutLessons.v178",
+      schemaVersion: "pursuitdesk.closeoutLessons.v179",
       generatedOn: new Date().toISOString(),
       company: state.data.company?.name || "Tenant",
       sourcePacketId: exportPacket.packetId,
@@ -34903,7 +36821,7 @@
     const allowedDecisions = permissionActions.reduce((sum, action) => sum + action.allowed, 0);
     const permissionScore = Math.max(0, Math.min(100, Math.round((allowedDecisions / Math.max(totalDecisions, 1)) * 70 + (countAllowed("canApprove") ? 15 : 0) + (countAllowed("canUseCommercial") ? 15 : 0))));
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutPermissionGate.v178",
+      schemaVersion: "pursuitdesk.closeoutPermissionGate.v179",
       generatedOn: new Date().toISOString(),
       company: state.data.company?.name || "Tenant",
       sourcePacketId: exportPacket.packetId,
@@ -35064,7 +36982,7 @@
       ),
     );
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutReopenWorkflow.v178",
+      schemaVersion: "pursuitdesk.closeoutReopenWorkflow.v179",
       generatedOn: new Date().toISOString(),
       company: state.data.company?.name || "Tenant",
       sourcePacketId: exportPacket.packetId,
@@ -35211,7 +37129,7 @@
       ),
     );
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutApprovalMemory.v178",
+      schemaVersion: "pursuitdesk.closeoutApprovalMemory.v179",
       generatedOn: new Date().toISOString(),
       company: state.data.company?.name || "Tenant",
       sourcePacketId: exportPacket.packetId,
@@ -35401,7 +37319,7 @@
       `Retention policy stays simple for the prototype: ${exportPacket.retentionMarker}`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutRetentionCalendar.v178",
+      schemaVersion: "pursuitdesk.closeoutRetentionCalendar.v179",
       generatedOn: new Date().toISOString(),
       company: state.data.company?.name || "Tenant",
       sourcePacketId: exportPacket.packetId,
@@ -35609,7 +37527,7 @@
       `The closeout SLA connects archive packet ${exportPacket.packetId}, ${reopenWorkflow.candidates.length} reopen candidates, approval memory, and retention calendar into one operating clock.`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutSlaEscalationClock.v178",
+      schemaVersion: "pursuitdesk.closeoutSlaEscalationClock.v179",
       generatedOn: new Date().toISOString(),
       company: state.data.company?.name || "Tenant",
       sourcePacketId: exportPacket.packetId,
@@ -35785,7 +37703,7 @@
       `This queue connects SLA clock ${slaClock.packet.schemaVersion}, archive packet ${exportPacket.packetId}, approval memory, reopen workflow, and retention calendar into one management signoff surface.`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutExceptionApprovalQueue.v178",
+      schemaVersion: "pursuitdesk.closeoutExceptionApprovalQueue.v179",
       generatedOn: new Date().toISOString(),
       company: state.data.company?.name || "Tenant",
       sourcePacketId: exportPacket.packetId,
@@ -35947,7 +37865,7 @@
       `The evidence bundle connects exception queue ${exceptionQueue.packet.schemaVersion}, SLA clock ${slaClock.packet.schemaVersion}, approval memory, retention calendar, and archive packet ${exportPacket.packetId}.`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutExceptionEvidenceBundle.v178",
+      schemaVersion: "pursuitdesk.closeoutExceptionEvidenceBundle.v179",
       generatedOn: new Date().toISOString(),
       company: state.data.company?.name || "Tenant",
       sourcePacketId: exportPacket.packetId,
@@ -36099,7 +38017,7 @@
         : "No cover sheet is blocked from release after evidence review.",
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutEvidencePdfCoverSheet.v178",
+      schemaVersion: "pursuitdesk.closeoutEvidencePdfCoverSheet.v179",
       generatedOn: generatedOn.toISOString(),
       company: state.data.company?.name || "Tenant",
       coverSheetId,
@@ -36260,7 +38178,7 @@
     const handoffRows = [
       ["Evidence bundle", evidenceBundle.packet.schemaVersion, `${evidenceBundle.evidenceRows.length} evidence rows remain the source of proof requests.`, "teal"],
       ["PDF cover sheet", evidenceCoverSheet.packet.schemaVersion, `${coverSheets.length} cover sheets feed the render queue.`, "blue"],
-      ["Render workflow", "pursuitdesk.closeoutPdfRenderWorkflow.v178", `${renderWorkflowId} controls PDF status, storage, audit, and attachment.`, "green"],
+      ["Render workflow", "pursuitdesk.closeoutPdfRenderWorkflow.v179", `${renderWorkflowId} controls PDF status, storage, audit, and attachment.`, "green"],
       ["Archive packet", exportPacket.packet.schemaVersion, `${exportPacket.packetId} receives released PDF attachments.`, "amber"],
     ];
     const emailLines = [
@@ -36285,7 +38203,7 @@
       `The backend should persist ${renderWorkflowId} with PDF storage path, metadata JSON, audit event, and attachment state for each cover sheet.`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutPdfRenderWorkflow.v178",
+      schemaVersion: "pursuitdesk.closeoutPdfRenderWorkflow.v179",
       generatedOn: generatedOn.toISOString(),
       company: companyName,
       renderWorkflowId,
@@ -36466,7 +38384,7 @@
       `Production should persist ${registerId} as the link between closeout packet, PDF render workflow, object storage, checksum, retention state, and download audit.`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.closeoutArchiveAttachmentRegister.v178",
+      schemaVersion: "pursuitdesk.closeoutArchiveAttachmentRegister.v179",
       generatedOn: generatedOn.toISOString(),
       company: companyName,
       attachmentRegisterId: registerId,
@@ -36656,7 +38574,7 @@
       `Production should persist ${packId} as actor, reason, retention, checksum, access decision, and audit evidence for archive downloads.`,
     ];
     const packet = {
-      schemaVersion: "pursuitdesk.attachmentDownloadAuditEvidencePack.v178",
+      schemaVersion: "pursuitdesk.attachmentDownloadAuditEvidencePack.v179",
       generatedOn: generatedOn.toISOString(),
       company: companyName,
       downloadAuditEvidencePackId: packId,
@@ -36865,7 +38783,7 @@
           </div>
         </div>
         <div class="closeout-sla-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(clock.downloadHref)}" download="pursuitdesk-closeout-sla-escalation-clock-v178.json">Download SLA JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(clock.downloadHref)}" download="pursuitdesk-closeout-sla-escalation-clock-v179.json">Download SLA JSON</a>
           <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
           <button class="ghost-btn" type="button" data-view="Reminders">Open reminders</button>
         </div>
@@ -36976,7 +38894,7 @@
           </div>
         </div>
         <div class="closeout-exception-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(queue.downloadHref)}" download="pursuitdesk-closeout-exception-approval-queue-v178.json">Download exception JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(queue.downloadHref)}" download="pursuitdesk-closeout-exception-approval-queue-v179.json">Download exception JSON</a>
           <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
           <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
         </div>
@@ -37083,7 +39001,7 @@
           </div>
         </div>
         <div class="closeout-evidence-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(bundle.downloadHref)}" download="pursuitdesk-closeout-exception-evidence-bundle-v178.json">Download evidence JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(bundle.downloadHref)}" download="pursuitdesk-closeout-exception-evidence-bundle-v179.json">Download evidence JSON</a>
           <button class="ghost-btn" type="button" data-view="Documents">Open documents</button>
           <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
         </div>
@@ -37222,7 +39140,7 @@
           </div>
         </div>
         <div class="closeout-cover-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(sheet.downloadHref)}" download="pursuitdesk-closeout-evidence-pdf-cover-sheet-v178.json">Download cover JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(sheet.downloadHref)}" download="pursuitdesk-closeout-evidence-pdf-cover-sheet-v179.json">Download cover JSON</a>
           <button class="ghost-btn" type="button" data-action="print-report">Print cover sheet</button>
           <button class="ghost-btn" type="button" data-view="Documents">Open documents</button>
         </div>
@@ -37413,7 +39331,7 @@
           </div>
         </div>
         <div class="closeout-render-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(workflow.downloadHref)}" download="pursuitdesk-closeout-pdf-render-workflow-v178.json">Download render JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(workflow.downloadHref)}" download="pursuitdesk-closeout-pdf-render-workflow-v179.json">Download render JSON</a>
           <button class="ghost-btn" type="button" data-action="print-report">Print closeout pack</button>
           <button class="ghost-btn" type="button" data-view="Governance">Open audit</button>
         </div>
@@ -37525,7 +39443,7 @@
           </div>
         </div>
         <div class="closeout-attachment-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(register.downloadHref)}" download="pursuitdesk-closeout-archive-attachment-register-v178.json">Download attachment JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(register.downloadHref)}" download="pursuitdesk-closeout-archive-attachment-register-v179.json">Download attachment JSON</a>
           <button class="ghost-btn" type="button" data-view="Documents">Open documents</button>
           <button class="ghost-btn" type="button" data-view="Governance">Open audit</button>
         </div>
@@ -37614,7 +39532,7 @@
           </div>
         </div>
         <div class="closeout-download-audit-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(pack.downloadHref)}" download="pursuitdesk-attachment-download-audit-evidence-pack-v178.json">Download audit JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(pack.downloadHref)}" download="pursuitdesk-attachment-download-audit-evidence-pack-v179.json">Download audit JSON</a>
           <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
           <button class="ghost-btn" type="button" data-view="Documents">Open documents</button>
         </div>
@@ -37930,7 +39848,7 @@
           </div>
         </div>
         <div class="closeout-lessons-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(lessons.downloadHref)}" download="pursuitdesk-lessons-learned-intelligence-v178.json">Download lessons JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(lessons.downloadHref)}" download="pursuitdesk-lessons-learned-intelligence-v179.json">Download lessons JSON</a>
           <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
           <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
         </div>
@@ -38052,7 +39970,7 @@
           </div>
         </div>
         <div class="closeout-permission-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(gate.downloadHref)}" download="pursuitdesk-closeout-permission-gate-v178.json">Download permission JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(gate.downloadHref)}" download="pursuitdesk-closeout-permission-gate-v179.json">Download permission JSON</a>
           <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
           <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
         </div>
@@ -38209,7 +40127,7 @@
           </div>
         </div>
         <div class="closeout-reopen-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(workflow.downloadHref)}" download="pursuitdesk-closeout-reopen-workflow-v178.json">Download reopen JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(workflow.downloadHref)}" download="pursuitdesk-closeout-reopen-workflow-v179.json">Download reopen JSON</a>
           <button class="ghost-btn" type="button" data-view="Tenders">Open tenders</button>
           <button class="ghost-btn" type="button" data-view="Projects">Open projects</button>
           <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
@@ -38355,7 +40273,7 @@
           </div>
         </div>
         <div class="closeout-approval-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(memory.downloadHref)}" download="pursuitdesk-closeout-approval-memory-v178.json">Download memory JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(memory.downloadHref)}" download="pursuitdesk-closeout-approval-memory-v179.json">Download memory JSON</a>
           <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
           <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
           <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
@@ -38525,7 +40443,7 @@
           </div>
         </div>
         <div class="closeout-retention-actions">
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(calendar.downloadHref)}" download="pursuitdesk-closeout-retention-calendar-v178.json">Download retention JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(calendar.downloadHref)}" download="pursuitdesk-closeout-retention-calendar-v179.json">Download retention JSON</a>
           <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
           <button class="ghost-btn" type="button" data-view="Reminders">Open reminders</button>
           <button class="ghost-btn" type="button" data-view="Build Phase">Open Build Phase</button>
@@ -38633,7 +40551,7 @@
             <p>Closeout now produces a file-ready handoff for governance, reports, and future backend storage. It names the packet, archive folder, release gate, retention marker, ready records, and missing evidence queue.</p>
           </div>
           <div class="closeout-export-actions">
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(exportPacket.downloadHref)}" download="pursuitdesk-closeout-export-packet-v178.json">Download packet JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(exportPacket.downloadHref)}" download="pursuitdesk-closeout-export-packet-v179.json">Download packet JSON</a>
             <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
           </div>
         </div>
@@ -39498,7 +41416,7 @@
       "PursuitDesk team",
     ];
     const proposalPacket = {
-      schemaVersion: "pursuitdesk.pilotProposalExportPack.v178",
+      schemaVersion: "pursuitdesk.pilotProposalExportPack.v179",
       proposalId,
       generatedOn: proposalDate.toISOString(),
       company: company.name,
@@ -39630,7 +41548,7 @@
       "PursuitDesk team",
     ];
     const objectionPacket = {
-      schemaVersion: "pursuitdesk.customerObjectionPlaybook.v178",
+      schemaVersion: "pursuitdesk.customerObjectionPlaybook.v179",
       generatedOn: proposalDate.toISOString(),
       proposalId,
       company: company.name,
@@ -39784,7 +41702,7 @@
       "PursuitDesk team",
     ];
     const acceptancePacket = {
-      schemaVersion: "pursuitdesk.pilotProposalAcceptanceTracker.v178",
+      schemaVersion: "pursuitdesk.pilotProposalAcceptanceTracker.v179",
       generatedOn: proposalDate.toISOString(),
       proposalId,
       company: company.name,
@@ -39919,14 +41837,14 @@
       "PursuitDesk team",
     ];
     const buyerDecisionPacket = {
-      schemaVersion: "pursuitdesk.buyerDecisionRoom.v178",
+      schemaVersion: "pursuitdesk.buyerDecisionRoom.v179",
       generatedOn: proposalDate.toISOString(),
       proposalId,
       company: company.name,
       accountOwner: state.user.name,
       sourceVersions: {
-        feedback: "pursuitdesk.customerFeedbackFormPack.v178",
-        roi: "pursuitdesk.pilotRoiCalculator.v178",
+        feedback: "pursuitdesk.customerFeedbackFormPack.v179",
+        roi: "pursuitdesk.pilotRoiCalculator.v179",
         proposal: proposalPacket.schemaVersion,
         objection: objectionPacket.schemaVersion,
         acceptance: acceptancePacket.schemaVersion,
@@ -40036,7 +41954,7 @@
       "PursuitDesk team",
     ];
     const invoiceRequestPacket = {
-      schemaVersion: "pursuitdesk.pilotInvoiceRequestPack.v178",
+      schemaVersion: "pursuitdesk.pilotInvoiceRequestPack.v179",
       generatedOn: proposalDate.toISOString(),
       invoiceId,
       proposalId,
@@ -40236,7 +42154,7 @@
       "PursuitDesk team",
     ];
     const paymentStatePacket = {
-      schemaVersion: "pursuitdesk.pilotPaymentStateSimulator.v178",
+      schemaVersion: "pursuitdesk.pilotPaymentStateSimulator.v179",
       generatedOn: proposalDate.toISOString(),
       paymentSimulationId,
       invoiceId,
@@ -40410,7 +42328,7 @@
       "PursuitDesk team",
     ];
     const kickoffPacket = {
-      schemaVersion: "pursuitdesk.pilotKickoffControlPack.v178",
+      schemaVersion: "pursuitdesk.pilotKickoffControlPack.v179",
       generatedOn: proposalDate.toISOString(),
       kickoffId,
       invoiceId,
@@ -40600,7 +42518,7 @@
       "PursuitDesk team",
     ];
     const adoptionPacket = {
-      schemaVersion: "pursuitdesk.pilotAdoptionHealthMonitor.v178",
+      schemaVersion: "pursuitdesk.pilotAdoptionHealthMonitor.v179",
       generatedOn: proposalDate.toISOString(),
       adoptionMonitorId,
       kickoffId,
@@ -40612,7 +42530,7 @@
         kickoff: kickoffPacket.schemaVersion,
         paymentState: paymentStatePacket.schemaVersion,
         invoiceRequest: invoiceRequestPacket.schemaVersion,
-        feedback: "pursuitdesk.customerFeedbackFormPack.v178",
+        feedback: "pursuitdesk.customerFeedbackFormPack.v179",
       },
       score: adoptionHealthScore,
       activeUsers: activePilotUsers,
@@ -40793,7 +42711,7 @@
       "PursuitDesk team",
     ];
     const renewalDecisionPacket = {
-      schemaVersion: "pursuitdesk.pilotRenewalDecisionPack.v178",
+      schemaVersion: "pursuitdesk.pilotRenewalDecisionPack.v179",
       generatedOn: proposalDate.toISOString(),
       renewalDecisionId,
       proposalId,
@@ -40803,8 +42721,8 @@
       company: company.name,
       accountOwner: state.user.name,
       sourceVersions: {
-        feedback: "pursuitdesk.customerFeedbackFormPack.v178",
-        roi: "pursuitdesk.pilotRoiCalculator.v178",
+        feedback: "pursuitdesk.customerFeedbackFormPack.v179",
+        roi: "pursuitdesk.pilotRoiCalculator.v179",
         buyerDecision: buyerDecisionPacket.schemaVersion,
         invoiceRequest: invoiceRequestPacket.schemaVersion,
         paymentState: paymentStatePacket.schemaVersion,
@@ -40963,7 +42881,7 @@
       "PursuitDesk team",
     ];
     const expansionQuotePacket = {
-      schemaVersion: "pursuitdesk.pilotExpansionQuoteBuilder.v178",
+      schemaVersion: "pursuitdesk.pilotExpansionQuoteBuilder.v179",
       generatedOn: proposalDate.toISOString(),
       expansionQuoteId,
       company: company.name,
@@ -40971,7 +42889,7 @@
       sourceVersions: {
         renewalDecision: renewalDecisionPacket.schemaVersion,
         adoptionMonitor: adoptionPacket.schemaVersion,
-        roi: "pursuitdesk.pilotRoiCalculator.v178",
+        roi: "pursuitdesk.pilotRoiCalculator.v179",
         buyerDecision: buyerDecisionPacket.schemaVersion,
         paymentState: paymentStatePacket.schemaVersion,
       },
@@ -41057,6 +42975,315 @@
       emailBody: expansionQuotePacket.email.body,
       downloadHref: jsonDataUri(expansionQuotePacket),
     };
+    const expansionApprovalMemoryId = `PD-EXPAND-APPROVAL-${proposalDateKey}-${String(expansionSeats).padStart(3, "0")}`;
+    const sponsorApprovalReady = sponsorApprovals.filter(([, , passed]) => passed).length;
+    const financeApproved = expansionMonthlyQuote <= monthlyBenefit || roiPack.confidence >= 78;
+    const invoiceDecision =
+      financeApproved && expansionConfidence >= 84
+        ? "Annual prepaid approved"
+        : financeApproved
+          ? "Monthly expansion approved"
+          : "Finance hold";
+    const approvalMemoryScore = Math.max(
+      42,
+      Math.min(
+        99,
+        Math.round(
+          expansionConfidence * 0.32 +
+            renewalDecisionScore * 0.22 +
+            buyerDecisionRoom.score * 0.16 +
+            roiPack.confidence * 0.12 +
+            sponsorApprovalReady * 4 +
+            (financeApproved ? 8 : 2),
+        ),
+      ),
+    );
+    const approvalCards = [
+      ["Approval memory", `${approvalMemoryScore}%`, `${sponsorApprovalReady}/${sponsorApprovals.length} approval owners ready.`, approvalMemoryScore >= 82 ? "green" : "blue"],
+      ["Invoice decision", invoiceDecision, `${formatBilling(firstExpansionInvoice, company)} first invoice reference.`, financeApproved ? "green" : "amber"],
+      ["Quote version", "Rev 1", `${targetPlanLabel} / ${expansionSeats} users / ${quoteManagerSeats} manager seats.`, "teal"],
+      ["Audit posture", "Traceable", "Sponsor, finance, quote, invoice, and rollout decisions are stored as memory rows.", "blue"],
+    ];
+    const approvalLedger = [
+      ["Commercial sponsor", financeApproved ? "Approved" : "Conditional", `Package, seat count, and invoice path for ${targetPlanLabel}.`, "Commercial sponsor", financeApproved ? "green" : "amber"],
+      ["Admin owner", "Approved", "User list, section access, and management room grants confirmed for rollout.", state.user.name || "PursuitDesk Admin", "teal"],
+      ["Finance reviewer", financeApproved ? "Approved" : "Hold", financeApproved ? "Monthly value case supports the quoted invoice path." : "Monthly value case needs confirmation before invoice is sent.", "Finance owner", financeApproved ? "green" : "amber"],
+      ["Operations lead", adoptionHealthScore >= 70 ? "Approved" : "Watch", "Weekly review rhythm and rollout owner confirmed before wider usage.", "Operations lead", adoptionHealthScore >= 70 ? "green" : "blue"],
+      ["Product owner", recommendedRenewalPath === "Convert to backend plan" ? "Scope hold" : "Approved", "Backend alpha remains separate unless buyer explicitly approves production scope.", "Product owner", recommendedRenewalPath === "Convert to backend plan" ? "amber" : "teal"],
+    ];
+    const revisionTrail = [
+      ["Rev 0", "Pilot baseline", `${membership.label} / ${membership.seats} seats / ${formatBilling(monthlyPlanCost, company)} monthly run-rate.`, "blue"],
+      ["Rev 1", "Expansion quote", `${targetPlanLabel} / ${expansionSeats} seats / ${formatBilling(expansionMonthlyQuote, company)} monthly quote.`, "green"],
+      ["Seat memory", "Manager access", `${quoteManagerSeats} management/commercial seats counted separately from frontline users.`, "teal"],
+      ["Setup memory", "Implementation support", `${formatBilling(expansionSetupQuote, company)} setup for access matrix, import validation, reports, and handoff.`, "amber"],
+      ["Scope lock", "Backend optional", recommendedRenewalPath === "Convert to backend plan" ? "Backend alpha needs separate approval before invoice." : "Backend alpha stays outside this expansion invoice.", recommendedRenewalPath === "Convert to backend plan" ? "amber" : "green"],
+    ];
+    const invoiceDecisionRows = [
+      ["Monthly expansion", formatBilling(expansionMonthlyQuote, company), financeApproved ? "Approved path" : "Available after finance hold clears", financeApproved ? "green" : "amber"],
+      ["Annual prepaid", formatBilling(expansionAnnualPrepay, company), expansionConfidence >= 84 ? "Preferred if sponsor wants savings" : "Offer after usage stabilizes", expansionConfidence >= 84 ? "teal" : "blue"],
+      ["Setup invoice", formatBilling(expansionSetupQuote, company), "One-time onboarding and import cleanup memory.", "amber"],
+      ["Backend alpha", recommendedRenewalPath === "Convert to backend plan" ? formatBilling(Math.max(899, setupEstimate + 600), company) : "Separate later", "Do not mix production build scope into normal seat expansion.", "blue"],
+    ];
+    const approvalGates = [
+      ["Sponsor gate", sponsorApprovalReady >= 3, "Commercial sponsor, admin owner, finance, and operations decisions are visible."],
+      ["Finance gate", financeApproved, "Invoice path must be defensible against ROI, monthly value, or explicit sponsor approval."],
+      ["Revision gate", true, "Quote revision, seats, manager seats, setup scope, and invoice option are written to memory."],
+      ["Access gate", quoteManagerSeats >= quoteIncludedManagers, "Manager/commercial seats are separated from frontline users before rollout."],
+      ["Scope gate", recommendedRenewalPath !== "Convert to backend plan" || expansionConfidence >= 75, "Backend alpha is handled as a separate approval if it enters the expansion path."],
+    ];
+    const approvalEmailLines = [
+      `Subject: PursuitDesk expansion approval memory - ${company.name || "company workspace"}`,
+      "",
+      `Hi ${company.name || "team"},`,
+      "",
+      `The expansion approval memory ${expansionApprovalMemoryId} is ready to close the commercial decision around quote ${expansionQuoteId}.`,
+      "",
+      `Decision of record: ${invoiceDecision}`,
+      `Target plan: ${targetPlanLabel}`,
+      `Users: ${expansionSeats} total / ${quoteManagerSeats} manager-commercial seats`,
+      `Monthly quote: ${formatBilling(expansionMonthlyQuote, company)}`,
+      `Setup: ${formatBilling(expansionSetupQuote, company)}`,
+      `First invoice reference: ${formatBilling(firstExpansionInvoice, company)}`,
+      "",
+      "Approval memory:",
+      ...approvalLedger.map(([role, stateValue, note]) => `- ${role}: ${stateValue} - ${note}`),
+      "",
+      "Next step: confirm the selected invoice option, final user list, and rollout date before issuing the paid expansion invoice.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ];
+    const expansionApprovalPacket = {
+      schemaVersion: "pursuitdesk.expansionApprovalMemory.v182",
+      generatedOn: proposalDate.toISOString(),
+      expansionApprovalMemoryId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        renewalDecision: renewalDecisionPacket.schemaVersion,
+        expansionQuote: expansionQuotePacket.schemaVersion,
+        buyerDecision: buyerDecisionPacket.schemaVersion,
+        paymentState: paymentStatePacket.schemaVersion,
+      },
+      sourceIds: {
+        proposalId,
+        renewalDecisionId,
+        expansionQuoteId,
+        invoiceId,
+        adoptionMonitorId,
+      },
+      decisionOfRecord: invoiceDecision,
+      approvalMemoryScore,
+      financeApproved,
+      sponsorApprovalReady,
+      quote: expansionQuotePacket.quote,
+      approvalLedger: approvalLedger.map(([role, stateValue, note, owner, tone]) => ({ role, state: stateValue, note, owner, tone })),
+      revisionTrail: revisionTrail.map(([revision, label, note, tone]) => ({ revision, label, note, tone })),
+      invoiceDecisionRows: invoiceDecisionRows.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      approvalGates: approvalGates.map(([label, passed, note]) => ({ label, passed, note })),
+      email: {
+        subject: approvalEmailLines[0].replace("Subject: ", ""),
+        body: approvalEmailLines.slice(2).join("\n"),
+      },
+      nextBackendFields: [
+        "expansion_approval_memory_id",
+        "tenant_id",
+        "pilot_expansion_quote_id",
+        "approval_actor_role",
+        "approval_actor_user_id",
+        "approval_state",
+        "approval_note",
+        "finance_hold_reason",
+        "quote_revision",
+        "quoted_plan_id",
+        "quoted_seat_count",
+        "quoted_manager_seat_count",
+        "selected_invoice_option",
+        "first_invoice_amount",
+        "rollout_authorized_at",
+        "approval_email_body",
+        "audit_event_id",
+      ],
+    };
+    const expansionApprovalMemory = {
+      expansionApprovalMemoryId,
+      approvalMemoryScore,
+      decisionOfRecord: invoiceDecision,
+      financeApproved,
+      cards: approvalCards,
+      approvalLedger,
+      revisionTrail,
+      invoiceDecisionRows,
+      approvalGates,
+      emailSubject: expansionApprovalPacket.email.subject,
+      emailBody: expansionApprovalPacket.email.body,
+      downloadHref: jsonDataUri(expansionApprovalPacket),
+    };
+    const expansionInvoiceAcceptanceId = `PD-EXPAND-INVOICE-${proposalDateKey}-${String(expansionSeats).padStart(3, "0")}`;
+    const invoiceAccepted = financeApproved && approvalMemoryScore >= 76;
+    const paymentProofReady = invoiceAccepted && expansionConfidence >= 78;
+    const expansionActivationDate = addPilotDays(proposalDate, 3);
+    const expansionPaidByDate = addPilotDays(proposalDate, 7);
+    const expansionRenewalReviewDate = addPilotDays(proposalDate, 30);
+    const acceptanceDecision = invoiceAccepted
+      ? expansionConfidence >= 86
+        ? "Accepted for paid expansion"
+        : "Accepted with finance watch"
+      : "Hold before invoice";
+    const invoiceAcceptanceScore = Math.max(
+      44,
+      Math.min(
+        99,
+        Math.round(
+          approvalMemoryScore * 0.34 +
+            expansionConfidence * 0.24 +
+            renewalDecisionScore * 0.16 +
+            adoptionHealthScore * 0.12 +
+            (paymentProofReady ? 10 : 3) +
+            (invoiceAccepted ? 8 : 2),
+        ),
+      ),
+    );
+    const invoiceAcceptanceCards = [
+      ["Invoice acceptance", acceptanceDecision, `${formatBilling(firstExpansionInvoice, company)} first expansion invoice.`, invoiceAccepted ? "green" : "amber"],
+      ["Paid-state proof", paymentProofReady ? "Ready" : "Watch", paymentProofReady ? "Provider receipt or finance approval can unlock rollout." : "Do not unlock rollout before payment or manual approval proof.", paymentProofReady ? "teal" : "amber"],
+      ["Rollout locks", "6 locks", "Invoice, payment, access, import, seats, and renewal clock must open in order.", "blue"],
+      ["Renewal handoff", formatPilotDay(expansionRenewalReviewDate), "Expansion becomes a managed renewal checkpoint instead of a loose invoice.", "green"],
+    ];
+    const invoiceAcceptanceLedger = [
+      ["Decision source", expansionApprovalMemoryId, "Approval memory is the decision of record for this invoice.", "green"],
+      ["Accepted amount", formatBilling(firstExpansionInvoice, company), `${targetPlanLabel} plus setup/import expansion scope.`, invoiceAccepted ? "green" : "amber"],
+      ["Billing option", invoiceDecision, "Monthly, annual, setup, or finance-hold path selected before release.", financeApproved ? "teal" : "amber"],
+      ["Seat delta", `${expansionSeats - membership.seats} added`, `${quoteManagerSeats} manager/commercial seats protected separately.`, "blue"],
+      ["Paid-by date", formatPilotDay(expansionPaidByDate), "Payment, receipt, or manual finance approval must exist before full rollout.", "amber"],
+    ];
+    const paidStateProofRows = [
+      ["Provider invoice", `inv_${expansionInvoiceAcceptanceId.toLowerCase().replace(/[^a-z0-9]/g, "_")}`, "External provider invoice id should map back to approval memory.", "blue"],
+      ["Receipt proof", paymentProofReady ? "Ready to attach" : "Pending", "Payment receipt, bank transfer proof, or finance approval screenshot.", paymentProofReady ? "green" : "amber"],
+      ["Manual approval", financeApproved ? "Allowed with expiry" : "Not allowed", "Sponsor override must include approver, reason, expiry, and audit id.", financeApproved ? "teal" : "red"],
+      ["Access proof", "Before / after JSON", "Workspace roles, manager seats, and module grants captured before unlock.", "green"],
+      ["Audit event", "Required", "Invoice accepted, paid, failed, overridden, or locked outcomes write one envelope.", "blue"],
+    ];
+    const rolloutLocks = [
+      ["Invoice accepted", invoiceAccepted, "Selected invoice option and amount are locked to the approval memory."],
+      ["Payment confirmed", paymentProofReady, "Paid webhook, receipt, or manual finance approval proof is attached."],
+      ["Access matrix approved", quoteManagerSeats >= quoteIncludedManagers, "Manager/commercial seats are counted before room grants change."],
+      ["Import slot booked", adoptionHealthScore >= 65, "Operations has a rollout owner and workbook movement path."],
+      ["Commercial guard", true, "Values, invoices, and negotiation material stay out of frontline rooms."],
+      ["Renewal clock set", invoiceAccepted, "Day-7, day-14, and day-30 review dates are created after acceptance."],
+    ];
+    const releaseSequence = [
+      ["01", "Accept invoice", "Company admin confirms amount, plan, users, manager seats, setup, and billing option.", invoiceAccepted ? "green" : "amber"],
+      ["02", "Issue invoice", "Provider invoice or finance request is generated from the accepted approval memory.", invoiceAccepted ? "blue" : "amber"],
+      ["03", "Confirm paid state", "Paid webhook, receipt, or manual approval proves whether rollout can open.", paymentProofReady ? "green" : "amber"],
+      ["04", "Open rollout locks", "Unlock seats, rooms, imports, report packs, and expansion clock in a controlled order.", paymentProofReady ? "teal" : "blue"],
+      ["05", "Create renewal handoff", "Push expansion result into day-7 health, day-14 report, and day-30 renewal review.", invoiceAccepted ? "green" : "amber"],
+    ];
+    const renewalHandoffRows = [
+      ["Day 0", "Expansion kickoff", `Rollout starts ${formatPilotDay(expansionActivationDate)} if paid-state proof is ready.`, paymentProofReady ? "green" : "amber"],
+      ["Day 7", "Seat adoption check", "Confirm new users logged in, owners updated, and no commercial leakage.", "teal"],
+      ["Day 14", "Management report proof", "Show command, advisor, reports, and commercial privacy outcomes.", "blue"],
+      ["Day 30", "Renewal decision", `Review expansion value on ${formatPilotDay(expansionRenewalReviewDate)}.`, "green"],
+    ];
+    const invoiceAcceptanceEmailLines = [
+      `Subject: PursuitDesk expansion invoice acceptance - ${company.name || "company workspace"}`,
+      "",
+      `Hi ${company.name || "team"},`,
+      "",
+      `Expansion invoice acceptance pack ${expansionInvoiceAcceptanceId} is ready from approval memory ${expansionApprovalMemoryId}.`,
+      "",
+      `Decision: ${acceptanceDecision}`,
+      `Target plan: ${targetPlanLabel}`,
+      `Accepted invoice reference: ${formatBilling(firstExpansionInvoice, company)}`,
+      `Monthly run-rate: ${formatBilling(expansionMonthlyQuote, company)}`,
+      `Setup scope: ${formatBilling(expansionSetupQuote, company)}`,
+      `Paid-state proof due: ${formatPilotDay(expansionPaidByDate)}`,
+      "",
+      "Before rollout opens, please confirm paid-state proof, final user list, access matrix, and the day-30 renewal review owner.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ];
+    const expansionInvoiceAcceptancePacket = {
+      schemaVersion: "pursuitdesk.expansionInvoiceAcceptancePack.v185",
+      generatedOn: proposalDate.toISOString(),
+      expansionInvoiceAcceptanceId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        expansionApprovalMemory: expansionApprovalPacket.schemaVersion,
+        expansionQuote: expansionQuotePacket.schemaVersion,
+        paymentState: paymentStatePacket.schemaVersion,
+        renewalDecision: renewalDecisionPacket.schemaVersion,
+      },
+      sourceIds: {
+        proposalId,
+        renewalDecisionId,
+        expansionQuoteId,
+        expansionApprovalMemoryId,
+        invoiceId,
+      },
+      decision: acceptanceDecision,
+      score: invoiceAcceptanceScore,
+      invoiceAccepted,
+      paymentProofReady,
+      dates: {
+        activationDate: expansionActivationDate.toISOString().slice(0, 10),
+        paidByDate: expansionPaidByDate.toISOString().slice(0, 10),
+        renewalReviewDate: expansionRenewalReviewDate.toISOString().slice(0, 10),
+      },
+      amounts: {
+        monthlyRunRate: expansionMonthlyQuote,
+        annualPrepay: expansionAnnualPrepay,
+        setupAmount: expansionSetupQuote,
+        firstInvoiceAmount: firstExpansionInvoice,
+        currency: billingCurrency(company),
+      },
+      cards: invoiceAcceptanceCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      invoiceAcceptanceLedger: invoiceAcceptanceLedger.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      paidStateProofRows: paidStateProofRows.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      rolloutLocks: rolloutLocks.map(([label, passed, note]) => ({ label, passed, note })),
+      releaseSequence: releaseSequence.map(([step, label, note, tone]) => ({ step, label, note, tone })),
+      renewalHandoffRows: renewalHandoffRows.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      email: {
+        subject: invoiceAcceptanceEmailLines[0].replace("Subject: ", ""),
+        body: invoiceAcceptanceEmailLines.slice(2).join("\n"),
+      },
+      nextBackendFields: [
+        "expansion_invoice_acceptance_id",
+        "expansion_approval_memory_id",
+        "pilot_expansion_quote_id",
+        "provider_invoice_id",
+        "accepted_invoice_amount",
+        "invoice_acceptance_state",
+        "paid_state",
+        "paid_state_proof_url",
+        "manual_approval_reason",
+        "manual_approval_expires_at",
+        "rollout_lock_state_json",
+        "access_before_json",
+        "access_after_json",
+        "renewal_handoff_date",
+        "expansion_invoice_email_body",
+        "audit_event_id",
+      ],
+    };
+    const expansionInvoiceAcceptancePack = {
+      expansionInvoiceAcceptanceId,
+      invoiceAcceptanceScore,
+      decision: acceptanceDecision,
+      invoiceAccepted,
+      paymentProofReady,
+      cards: invoiceAcceptanceCards,
+      invoiceAcceptanceLedger,
+      paidStateProofRows,
+      rolloutLocks,
+      releaseSequence,
+      renewalHandoffRows,
+      emailSubject: expansionInvoiceAcceptancePacket.email.subject,
+      emailBody: expansionInvoiceAcceptancePacket.email.body,
+      downloadHref: jsonDataUri(expansionInvoiceAcceptancePacket),
+    };
     return {
       company,
       membership,
@@ -41078,6 +43305,8 @@
       adoptionHealthMonitor,
       renewalDecisionPack,
       expansionQuoteBuilder,
+      expansionApprovalMemory,
+      expansionInvoiceAcceptancePack,
       salesLines: [
         "PursuitDesk is not another generic task board; it is a controlled operating desk for tender and project pursuit teams.",
         "It gives smaller companies a practical step between messy Excel and expensive enterprise platforms.",
@@ -41373,7 +43602,7 @@
               <span class="metric-label">Pilot Proposal Export Pack</span>
               <h3>Convert the ROI story into a customer-ready offer</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.proposalPack.downloadHref)}" download="pursuitdesk-pilot-proposal-export-pack-v178.json">Download proposal JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.proposalPack.downloadHref)}" download="pursuitdesk-pilot-proposal-export-pack-v179.json">Download proposal JSON</a>
           </div>
           <div class="pilot-proposal-hero">
             <div class="pilot-proposal-id-card">
@@ -41453,7 +43682,7 @@
               <span class="metric-label">Pilot Proposal Acceptance Tracker</span>
               <h3>Track the buyer reply after the proposal is sent</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.acceptanceTracker.downloadHref)}" download="pursuitdesk-pilot-proposal-acceptance-tracker-v178.json">Download acceptance JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.acceptanceTracker.downloadHref)}" download="pursuitdesk-pilot-proposal-acceptance-tracker-v179.json">Download acceptance JSON</a>
           </div>
           <div class="pilot-acceptance-hero">
             <div class="pilot-acceptance-score-card">
@@ -41562,7 +43791,7 @@
               <span class="metric-label">Buyer Decision Room</span>
               <h3>Choose the next commercial move without losing the thread</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.buyerDecisionRoom.downloadHref)}" download="pursuitdesk-buyer-decision-room-v178.json">Download decision JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.buyerDecisionRoom.downloadHref)}" download="pursuitdesk-buyer-decision-room-v179.json">Download decision JSON</a>
           </div>
           <div class="pilot-decision-hero">
             <div class="pilot-decision-score-card">
@@ -41645,7 +43874,7 @@
               <span class="metric-label">Pilot Invoice Request Pack</span>
               <h3>Turn an approved buyer decision into a clean billing handoff</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.invoiceRequestPack.downloadHref)}" download="pursuitdesk-pilot-invoice-request-pack-v178.json">Download invoice JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.invoiceRequestPack.downloadHref)}" download="pursuitdesk-pilot-invoice-request-pack-v179.json">Download invoice JSON</a>
           </div>
           <div class="pilot-invoice-hero">
             <div class="pilot-invoice-id-card">
@@ -41749,7 +43978,7 @@
               <span class="metric-label">Pilot Payment State Simulator</span>
               <h3>Decide exactly when billing unlocks workspace activation</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.paymentStateSimulator.downloadHref)}" download="pursuitdesk-pilot-payment-state-simulator-v178.json">Download payment JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.paymentStateSimulator.downloadHref)}" download="pursuitdesk-pilot-payment-state-simulator-v179.json">Download payment JSON</a>
           </div>
           <div class="pilot-payment-hero">
             <div class="pilot-payment-id-card">
@@ -41853,7 +44082,7 @@
               <span class="metric-label">Pilot Kickoff Control Pack</span>
               <h3>Turn paid approval into a controlled 30-day launch</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.kickoffControlPack.downloadHref)}" download="pursuitdesk-pilot-kickoff-control-pack-v178.json">Download kickoff JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.kickoffControlPack.downloadHref)}" download="pursuitdesk-pilot-kickoff-control-pack-v179.json">Download kickoff JSON</a>
           </div>
           <div class="pilot-kickoff-hero">
             <div class="pilot-kickoff-id-card">
@@ -41976,7 +44205,7 @@
               <span class="metric-label">Pilot Adoption Health Monitor</span>
               <h3>Prove the first 30 days before asking for renewal</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.adoptionHealthMonitor.downloadHref)}" download="pursuitdesk-pilot-adoption-health-monitor-v178.json">Download adoption JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.adoptionHealthMonitor.downloadHref)}" download="pursuitdesk-pilot-adoption-health-monitor-v179.json">Download adoption JSON</a>
           </div>
           <div class="pilot-adoption-hero">
             <div class="pilot-adoption-id-card">
@@ -42098,7 +44327,7 @@
               <span class="metric-label">Pilot Renewal Decision Pack</span>
               <h3>Decide renew, expand, pause, or move to backend production</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.renewalDecisionPack.downloadHref)}" download="pursuitdesk-pilot-renewal-decision-pack-v178.json">Download renewal JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.renewalDecisionPack.downloadHref)}" download="pursuitdesk-pilot-renewal-decision-pack-v179.json">Download renewal JSON</a>
           </div>
           <div class="pilot-renewal-hero">
             <div class="pilot-renewal-id-card tone-${escapeHtml(model.renewalDecisionPack.tone)}">
@@ -42220,7 +44449,7 @@
               <span class="metric-label">Pilot Expansion Quote Builder</span>
               <h3>Turn renewal proof into the next invoice option</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.expansionQuoteBuilder.downloadHref)}" download="pursuitdesk-pilot-expansion-quote-builder-v178.json">Download quote JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.expansionQuoteBuilder.downloadHref)}" download="pursuitdesk-pilot-expansion-quote-builder-v179.json">Download quote JSON</a>
           </div>
           <div class="pilot-expansion-hero">
             <div class="pilot-expansion-id-card tone-${model.expansionQuoteBuilder.expansionConfidence >= 82 ? "green" : "blue"}">
@@ -42358,13 +44587,238 @@
           </div>
         </section>
 
+        <section class="pilot-pitch-panel pilot-expansion-approval-memory">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v182 Expansion Approval Memory</span>
+              <h3>Keep the expansion decision of record clean</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.expansionApprovalMemory.downloadHref)}" download="pursuitdesk-expansion-approval-memory-v182.json">Download approval JSON</a>
+          </div>
+          <div class="pilot-approval-hero">
+            <div class="pilot-approval-id-card tone-${model.expansionApprovalMemory.approvalMemoryScore >= 82 ? "green" : "blue"}">
+              <span>Approval memory</span>
+              <strong>${escapeHtml(model.expansionApprovalMemory.expansionApprovalMemoryId)}</strong>
+              <p>${escapeHtml(model.expansionApprovalMemory.decisionOfRecord)} / ${model.expansionApprovalMemory.approvalMemoryScore}% memory score</p>
+              <small>Approval memory ties sponsor approval, finance posture, quote revisions, invoice option, access scope, and audit handoff to one commercial decision.</small>
+            </div>
+            <div class="pilot-approval-card-grid">
+              ${model.expansionApprovalMemory.cards
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(value)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </div>
+          <div class="pilot-approval-grid-wrap">
+            <article>
+              <span class="metric-label">Approval ledger</span>
+              <h4>Who approved, held, or watched</h4>
+              <div class="pilot-approval-ledger-list">
+                ${model.expansionApprovalMemory.approvalLedger
+                  .map(
+                    ([role, stateValue, note, owner, tone]) => `
+                      <div class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(stateValue)} / ${escapeHtml(owner)}</span>
+                        <strong>${escapeHtml(role)}</strong>
+                        <p>${escapeHtml(note)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article>
+              <span class="metric-label">Revision trail</span>
+              <h4>What changed from pilot to expansion</h4>
+              <div class="pilot-approval-revision-list">
+                ${model.expansionApprovalMemory.revisionTrail
+                  .map(
+                    ([revision, label, note, tone]) => `
+                      <div class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(revision)}</span>
+                        <strong>${escapeHtml(label)}</strong>
+                        <p>${escapeHtml(note)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article>
+              <span class="metric-label">Invoice memory</span>
+              <h4>Which billing path was selected</h4>
+              <div class="pilot-approval-invoice-list">
+                ${model.expansionApprovalMemory.invoiceDecisionRows
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <div class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(label)}</span>
+                        <strong>${escapeHtml(value)}</strong>
+                        <p>${escapeHtml(note)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-approval-gate-grid">
+            ${model.expansionApprovalMemory.approvalGates
+              .map(
+                ([label, passed, note]) => `
+                  <article class="tone-${passed ? "green" : "amber"}">
+                    <span>${escapeHtml(passed ? "Passed" : "Hold")}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-approval-email">
+            <div>
+              <span class="metric-label">Copy-ready approval closeout email</span>
+              <h4>${escapeHtml(model.expansionApprovalMemory.emailSubject)}</h4>
+            </div>
+            <textarea readonly aria-label="Copy-ready expansion approval memory email">${escapeHtml(model.expansionApprovalMemory.emailBody)}</textarea>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-expansion-invoice-acceptance">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v185 Expansion Invoice Acceptance Pack</span>
+              <h3>Turn approval memory into paid rollout control</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.expansionInvoiceAcceptancePack.downloadHref)}" download="pursuitdesk-expansion-invoice-acceptance-pack-v185.json">Download acceptance JSON</a>
+          </div>
+          <div class="pilot-invoice-acceptance-hero">
+            <div class="pilot-invoice-acceptance-id-card tone-${model.expansionInvoiceAcceptancePack.invoiceAccepted ? "green" : "amber"}">
+              <span>Invoice acceptance</span>
+              <strong>${escapeHtml(model.expansionInvoiceAcceptancePack.expansionInvoiceAcceptanceId)}</strong>
+              <p>${escapeHtml(model.expansionInvoiceAcceptancePack.decision)} / ${model.expansionInvoiceAcceptancePack.invoiceAcceptanceScore}% acceptance score</p>
+              <small>Acceptance pack connects approved expansion memory to invoice issue, paid-state proof, rollout locks, and renewal handoff.</small>
+            </div>
+            <div class="pilot-invoice-acceptance-card-grid">
+              ${model.expansionInvoiceAcceptancePack.cards
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(String(value))}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </div>
+          <div class="pilot-invoice-acceptance-grid-wrap">
+            <article>
+              <span class="metric-label">Acceptance ledger</span>
+              <h4>What the invoice is allowed to use</h4>
+              <div class="pilot-invoice-acceptance-ledger-list">
+                ${model.expansionInvoiceAcceptancePack.invoiceAcceptanceLedger
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <div class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(label)}</span>
+                        <strong>${escapeHtml(String(value))}</strong>
+                        <p>${escapeHtml(note)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article>
+              <span class="metric-label">Paid-state proof</span>
+              <h4>Evidence before rollout unlocks</h4>
+              <div class="pilot-invoice-acceptance-proof-list">
+                ${model.expansionInvoiceAcceptancePack.paidStateProofRows
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <div class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(label)}</span>
+                        <strong>${escapeHtml(String(value))}</strong>
+                        <p>${escapeHtml(note)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article>
+              <span class="metric-label">Release sequence</span>
+              <h4>How expansion becomes live safely</h4>
+              <div class="pilot-invoice-acceptance-sequence-list">
+                ${model.expansionInvoiceAcceptancePack.releaseSequence
+                  .map(
+                    ([step, label, note, tone]) => `
+                      <div class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(step)}</span>
+                        <strong>${escapeHtml(label)}</strong>
+                        <p>${escapeHtml(note)}</p>
+                      </div>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-invoice-acceptance-lock-grid">
+            ${model.expansionInvoiceAcceptancePack.rolloutLocks
+              .map(
+                ([label, passed, note]) => `
+                  <article class="tone-${passed ? "green" : "amber"}">
+                    <span>${escapeHtml(passed ? "Open" : "Locked")}</span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-invoice-acceptance-handoff">
+            <span class="metric-label">Renewal handoff</span>
+            <h4>What happens after paid expansion starts</h4>
+            <div class="pilot-invoice-acceptance-handoff-grid">
+              ${model.expansionInvoiceAcceptancePack.renewalHandoffRows
+                .map(
+                  ([label, value, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(value)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </div>
+          <div class="pilot-invoice-acceptance-email">
+            <div>
+              <span class="metric-label">Copy-ready invoice acceptance email</span>
+              <h4>${escapeHtml(model.expansionInvoiceAcceptancePack.emailSubject)}</h4>
+            </div>
+            <textarea readonly aria-label="Copy-ready expansion invoice acceptance email">${escapeHtml(model.expansionInvoiceAcceptancePack.emailBody)}</textarea>
+          </div>
+        </section>
+
         <section class="pilot-pitch-panel pilot-objection-playbook">
           <div class="access-head">
             <div>
               <span class="metric-label">Customer Objection Playbook</span>
               <h3>Turn buyer pushback into the next proof action</h3>
             </div>
-            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.objectionPlaybook.downloadHref)}" download="pursuitdesk-customer-objection-playbook-v178.json">Download playbook JSON</a>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.objectionPlaybook.downloadHref)}" download="pursuitdesk-customer-objection-playbook-v179.json">Download playbook JSON</a>
           </div>
           <div class="pilot-objection-hero">
             <div class="pilot-objection-score-card">
@@ -42522,6 +44976,10 @@
     const webhookBlueprint = buildPaymentProviderWebhookBlueprint(membership, stats, company);
     const webhookEvidencePack = buildWebhookTestEvidencePack(webhookBlueprint, membership, stats, company);
     const webhookRunnerChecklist = buildWebhookEvidenceRunnerChecklist(webhookEvidencePack, webhookBlueprint, membership, stats, company);
+    const downloadPermissionMatrix = buildDownloadPermissionTestMatrix(webhookEvidencePack, webhookRunnerChecklist, membership, stats, company);
+    const downloadApprovalReviewBoard = buildDownloadApprovalReviewBoard(downloadPermissionMatrix, membership, stats, company);
+    const webhookFailurePlaybook = buildWebhookFailureIncidentPlaybook(webhookBlueprint, webhookEvidencePack, webhookRunnerChecklist, downloadPermissionMatrix, membership, stats, company);
+    const webhookIncidentCustomerNoticePack = buildWebhookIncidentCustomerNoticePack(webhookFailurePlaybook, downloadApprovalReviewBoard, membership, stats, company);
     return `
       <section class="membership-page" aria-labelledby="membershipTitle">
         <div class="membership-console">
@@ -42619,6 +45077,14 @@
         ${renderWebhookTestEvidencePack(webhookEvidencePack)}
 
         ${renderWebhookEvidenceRunnerChecklist(webhookRunnerChecklist)}
+
+        ${renderDownloadPermissionTestMatrix(downloadPermissionMatrix)}
+
+        ${renderDownloadApprovalReviewBoard(downloadApprovalReviewBoard)}
+
+        ${renderWebhookFailureIncidentPlaybook(webhookFailurePlaybook)}
+
+        ${renderWebhookIncidentCustomerNoticePack(webhookIncidentCustomerNoticePack)}
 
         ${renderPilotSalesPackage(stats, company, membership)}
 
@@ -42766,7 +45232,7 @@
       ),
     );
     const packet = {
-      schemaVersion: "pursuitdesk.paymentProviderWebhookBlueprint.v178",
+      schemaVersion: "pursuitdesk.paymentProviderWebhookBlueprint.v179",
       generatedOn: generatedOn.toISOString(),
       company: companyName,
       webhookBlueprintId,
@@ -42842,7 +45308,7 @@
             <span class="metric-label">v172 Payment Provider Webhook Blueprint</span>
             <h3>How checkout events safely control billing and access</h3>
           </div>
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-payment-provider-webhook-blueprint-v178.json">Download webhook JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-payment-provider-webhook-blueprint-v179.json">Download webhook JSON</a>
         </div>
         <div class="payment-webhook-hero">
           <div>
@@ -43086,7 +45552,7 @@
       ),
     );
     const packet = {
-      schemaVersion: "pursuitdesk.webhookTestEvidencePack.v178",
+      schemaVersion: "pursuitdesk.webhookTestEvidencePack.v179",
       generatedOn: generatedOn.toISOString(),
       company: companyName,
       evidencePackId,
@@ -43146,7 +45612,7 @@
             <span class="metric-label">v175 Webhook Test Evidence Pack</span>
             <h3>Proof pack before live payment webhooks</h3>
           </div>
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-webhook-test-evidence-pack-v178.json">Download evidence JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-webhook-test-evidence-pack-v179.json">Download evidence JSON</a>
         </div>
         <div class="webhook-evidence-hero">
           <div>
@@ -43297,6 +45763,8 @@
         step: "01",
         label: "Write fixtures",
         command: `npm run test:webhook:fixtures -- --tenant ${tenantSlug} --pack ${evidencePack.evidencePackId}`,
+        owner: "Backend / QA",
+        timebox: "5 min",
         expected: `${evidencePack.samplePayloads.length} payload files created`,
         proof: "webhook-test-payloads.json",
         gate: "Fixture file count matches provider event map",
@@ -43306,6 +45774,8 @@
         step: "02",
         label: "Verify signatures",
         command: `npm run test:webhook:signature -- --secret ${evidencePack.packet.testSecretRef}`,
+        owner: "Security",
+        timebox: "6 min",
         expected: "1 accepted and 4 rejected signature paths",
         proof: "webhook-signature-proof.json",
         gate: "Unsigned, stale, tampered, and wrong-tenant payloads are denied",
@@ -43315,6 +45785,8 @@
         step: "03",
         label: "Run provider events",
         command: `npm run test:webhook:events -- --provider ${webhookBlueprint.providerAccountId}`,
+        owner: "Backend",
+        timebox: "8 min",
         expected: "Checkout, invoice, subscription, and refund events return expected HTTP states",
         proof: "webhook-event-response-matrix.json",
         gate: "Every expected status equals actual status",
@@ -43324,6 +45796,8 @@
         step: "04",
         label: "Replay ledger",
         command: `npm run test:webhook:replay -- --pack ${evidencePack.evidencePackId}`,
+        owner: "Backend / Audit",
+        timebox: "6 min",
         expected: "Duplicate event returns replay-safe result without duplicate side effects",
         proof: "webhook-replay-proof.json",
         gate: "Side-effect count stays one per provider_event_id",
@@ -43333,6 +45807,8 @@
         step: "05",
         label: "Access transition",
         command: `npm run test:billing:access -- --company ${tenantSlug}`,
+        owner: "Product / Backend",
+        timebox: "7 min",
         expected: `${activeSeats}/${membership.seats} active users reconciled against billing state`,
         proof: "billing-access-transition-proof.json",
         gate: "Frontline, commercial, admin, and read/export states match policy",
@@ -43342,6 +45818,8 @@
         step: "06",
         label: "Audit closeout",
         command: `npm run test:webhook:audit -- --runner ${runnerChecklistId}`,
+        owner: "Audit owner",
+        timebox: "5 min",
         expected: `${evidencePack.auditEvidenceRows.length} audit envelopes linked to request, event, tenant, and result`,
         proof: "billing-audit-envelope-proof.json",
         gate: "No accepted, rejected, replayed, or failed event is missing an audit row",
@@ -43371,6 +45849,13 @@
       ["Audit complete", "Accepted, rejected, replayed, and failed events all produce immutable audit evidence.", "Pass before deploy", "teal"],
       ["Screenshot packet ready", "Every critical webhook path has screenshot proof for release review.", "Evidence before pilot", "blue"],
     ];
+    const operatorReadiness = [
+      ["Environment", "Test mode", "Provider test keys, webhook secret, and local env variables are present.", "green"],
+      ["Fixtures", `${fixtureMatrix.length} files`, "Payload fixtures can be regenerated from the same evidence pack id.", "blue"],
+      ["Database", "Reset ready", "Billing, audit, and access tables can be reset before the runner starts.", "teal"],
+      ["Screenshots", `${screenshotProof.length} captures`, "Release reviewer can see accepted, rejected, replay, grace, and audit states.", "amber"],
+      ["Decision", "Hold if red", "Any failed signature, tenant, replay, access, or audit gate blocks live payments.", "red"],
+    ];
     const managementLines = [
       `${commandSteps.length} webhook runner commands now convert the evidence pack into repeatable backend smoke tests.`,
       `${fixtureMatrix.length} provider fixture rows include expected HTTP results, screenshots, and audit ids.`,
@@ -43382,7 +45867,7 @@
       Math.min(99, Math.round(36 + commandSteps.length * 6 + fixtureMatrix.length * 3 + releaseGates.length * 3)),
     );
     const packet = {
-      schemaVersion: "pursuitdesk.webhookEvidenceRunnerChecklist.v178",
+      schemaVersion: "pursuitdesk.webhookEvidenceRunnerChecklist.v179",
       generatedOn: generatedOn.toISOString(),
       company: companyName,
       runnerChecklistId,
@@ -43399,11 +45884,13 @@
         fixtures: fixtureMatrix.length,
         screenshots: screenshotProof.length,
         releaseGates: releaseGates.length,
+        operatorReadiness: operatorReadiness.length,
       },
       commandSteps,
       fixtureMatrix,
       screenshotProof: screenshotProof.map(([label, file, proof, tone]) => ({ label, file, proof, tone })),
       releaseGates: releaseGates.map(([label, proof, status, tone]) => ({ label, proof, status, tone })),
+      operatorReadiness: operatorReadiness.map(([label, value, note, tone]) => ({ label, value, note, tone })),
       managementLines,
       nextBackendFields: [
         "webhook_runner_checklist_id",
@@ -43418,6 +45905,9 @@
         "failed_gate_reason",
         "provider_event_id",
         "audit_event_id",
+        "runner_owner_role",
+        "runner_timebox",
+        "operator_readiness_state",
         "verified_by_user_id",
         "verified_at",
       ],
@@ -43430,6 +45920,7 @@
       fixtureMatrix,
       screenshotProof,
       releaseGates,
+      operatorReadiness,
       managementLines,
       cards: [
         ["Runner score", `${runnerScore}%`, `${commandSteps.length} commands turn webhook proof into repeatable backend checks.`, runnerScore >= 85 ? "green" : "amber"],
@@ -43446,10 +45937,10 @@
       <article class="membership-panel webhook-runner-checklist">
         <div class="access-head">
           <div>
-            <span class="metric-label">v178 Webhook Evidence Runner Checklist</span>
-            <h3>Turn webhook proof into a repeatable test run</h3>
+            <span class="metric-label">v179 Webhook Runner Operator Console</span>
+            <h3>Run webhook proof with cleaner command control</h3>
           </div>
-          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-webhook-evidence-runner-checklist-v178.json">Download runner JSON</a>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-webhook-evidence-runner-checklist-v179.json">Download runner JSON</a>
         </div>
         <div class="webhook-runner-hero">
           <div>
@@ -43476,6 +45967,19 @@
             )
             .join("")}
         </div>
+        <div class="webhook-runner-readiness-strip">
+          ${model.operatorReadiness
+            .map(
+              ([label, value, note, tone]) => `
+                <div class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
         <div class="webhook-runner-layout">
           <section>
             <span class="metric-label">Runbook commands</span>
@@ -43485,10 +45989,16 @@
                 .map(
                   (row) => `
                     <div class="tone-${escapeHtml(row.tone)}">
-                      <span>${escapeHtml(row.step)} / ${escapeHtml(row.label)}</span>
-                      <strong>${escapeHtml(row.command)}</strong>
-                      <p>${escapeHtml(row.expected)}</p>
-                      <small>${escapeHtml(row.gate)} / ${escapeHtml(row.proof)}</small>
+                      <div class="webhook-runner-command-head">
+                        <span>${escapeHtml(row.step)} / ${escapeHtml(row.label)}</span>
+                        <em>${escapeHtml(row.owner)} / ${escapeHtml(row.timebox)}</em>
+                      </div>
+                      <code>${escapeHtml(row.command)}</code>
+                      <div class="webhook-runner-command-meta">
+                        <p><span>Expected</span><strong>${escapeHtml(row.expected)}</strong></p>
+                        <p><span>Proof file</span><strong>${escapeHtml(row.proof)}</strong></p>
+                        <p><span>Release gate</span><strong>${escapeHtml(row.gate)}</strong></p>
+                      </div>
                     </div>
                   `,
                 )
@@ -43556,6 +46066,1434 @@
               ${model.managementLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
             </div>
           </section>
+        </div>
+      </article>
+    `;
+  }
+
+  function buildDownloadPermissionTestMatrix(evidencePack, runnerChecklist, membership, stats, company) {
+    const generatedOn = new Date();
+    const stamp = generatedOn.toISOString().slice(0, 10).replace(/-/g, "");
+    const companyName = company.name || "Pilot company";
+    const tenantSlug = companyName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "tenant";
+    const matrixId = `PD-DOWNLOAD-PERM-${stamp}-${String(stats.total || 0).padStart(3, "0")}`;
+    const roleCards = [
+      ["Company admin", "Full control", "Can download policy JSON, invoices, audit packs, and redacted operational exports.", "green"],
+      ["Management user", "Commercial rooms", "Can download insights, reports, and value summaries when the room grant is active.", "blue"],
+      ["Frontline user", "Tracker only", "Can export operational tender/project lists with value, invoice, agreement, and negotiation fields removed.", "teal"],
+      ["Reviewer / auditor", "Evidence only", "Can download closeout proof with approval memory, watermark, reason, and retention state.", "amber"],
+      ["Finance owner", "Billing exports", "Can download invoice and payment evidence without changing subscription or access state.", "green"],
+      ["Viewer", "No export", "Can view permitted rooms but cannot download commercial, billing, attachment, or webhook artifacts.", "red"],
+    ];
+    const artifactPolicies = [
+      {
+        artifact: "Tender / project tracker CSV",
+        allowed: "Admin, management, frontline",
+        blocked: "Viewer, suspended user",
+        condition: "Operational fields only; value, agreement, invoice, and negotiation columns stripped.",
+        evidence: "tracker-export-redaction-proof.json",
+        tone: "teal",
+      },
+      {
+        artifact: "Commercial insight export",
+        allowed: "Admin, management",
+        blocked: "Frontline, viewer",
+        condition: "Requires commercial room access and tenant match before value fields are released.",
+        evidence: "commercial-export-access-proof.json",
+        tone: "blue",
+      },
+      {
+        artifact: "Closeout evidence PDF",
+        allowed: "Admin, reviewer / auditor",
+        blocked: "Frontline, viewer",
+        condition: "Requires closeout permission, retention state, watermark, and release decision.",
+        evidence: "closeout-pdf-download-proof.json",
+        tone: "amber",
+      },
+      {
+        artifact: "Archive attachment",
+        allowed: "Admin, reviewer, assigned owner",
+        blocked: "Wrong tenant, missing reason, checksum mismatch",
+        condition: "Reason, IP hash, checksum verification, retention gate, and audit event are mandatory.",
+        evidence: "attachment-download-permission-proof.json",
+        tone: "red",
+      },
+      {
+        artifact: "Invoice / payment export",
+        allowed: "Admin, finance owner",
+        blocked: "Management, frontline, viewer",
+        condition: "Billing room grant and paid workspace role required; provider ids stay audit-only.",
+        evidence: "invoice-download-role-proof.json",
+        tone: "green",
+      },
+      {
+        artifact: "Webhook runner JSON",
+        allowed: "Admin only",
+        blocked: "Everyone else",
+        condition: "Contains command, fixture, and audit wiring; download is locked to Membership admins.",
+        evidence: runnerChecklist.runnerChecklistId,
+        tone: "red",
+      },
+    ];
+    const testCases = [
+      {
+        step: "01",
+        actor: "Frontline user",
+        artifact: "Tender tracker CSV",
+        request: `GET /exports/${tenantSlug}/tenders.csv?scope=operational`,
+        expected: "200 redacted CSV",
+        proof: "download-test-01-tracker-redacted.png",
+        gate: "No value, invoice, agreement, provider, or negotiation fields in response.",
+        tone: "green",
+      },
+      {
+        step: "02",
+        actor: "Frontline user",
+        artifact: "Commercial insight export",
+        request: `GET /exports/${tenantSlug}/commercial-value.csv`,
+        expected: "403 denied",
+        proof: "download-test-02-commercial-denied.png",
+        gate: "Commercial value remains inside management rooms.",
+        tone: "red",
+      },
+      {
+        step: "03",
+        actor: "Reviewer",
+        artifact: "Closeout evidence PDF",
+        request: `GET /archive/${tenantSlug}/closeout/evidence.pdf?reason=review`,
+        expected: "200 watermarked PDF",
+        proof: "download-test-03-closeout-watermark.png",
+        gate: "Reason, reviewer role, release state, and watermark are present.",
+        tone: "amber",
+      },
+      {
+        step: "04",
+        actor: "Admin",
+        artifact: "Archive attachment without reason",
+        request: `GET /archive/${tenantSlug}/attachments/proof.zip`,
+        expected: "422 reason required",
+        proof: "download-test-04-reason-required.png",
+        gate: "Every attachment download must explain business purpose.",
+        tone: "red",
+      },
+      {
+        step: "05",
+        actor: "Admin",
+        artifact: "Archive attachment with checksum mismatch",
+        request: `GET /archive/${tenantSlug}/attachments/proof.zip?reason=audit`,
+        expected: "409 integrity hold",
+        proof: "download-test-05-checksum-hold.png",
+        gate: "Corrupt or mismatched file never downloads silently.",
+        tone: "amber",
+      },
+      {
+        step: "06",
+        actor: "Management user",
+        artifact: "Webhook runner JSON",
+        request: `GET /billing/${tenantSlug}/webhook-runner.json`,
+        expected: "403 admin only",
+        proof: "download-test-06-runner-denied.png",
+        gate: "Membership runner, billing secrets, and fixture paths stay admin-only.",
+        tone: "red",
+      },
+      {
+        step: "07",
+        actor: "Finance owner",
+        artifact: "Invoice export",
+        request: `GET /billing/${tenantSlug}/invoice-export.json`,
+        expected: "200 billing audit JSON",
+        proof: "download-test-07-invoice-role.png",
+        gate: "Finance owner can see invoice state without changing subscription access.",
+        tone: "blue",
+      },
+      {
+        step: "08",
+        actor: "Wrong tenant user",
+        artifact: "Any attachment",
+        request: "GET /archive/other-company/attachments/proof.zip?reason=review",
+        expected: "403 tenant denied",
+        proof: "download-test-08-tenant-denied.png",
+        gate: "Tenant mismatch blocks before storage object lookup.",
+        tone: "red",
+      },
+    ];
+    const auditGates = [
+      ["Role scope", "User role, room grant, tenant id, and subscription state are checked before a signed download URL exists.", "green"],
+      ["Reason capture", "Every evidence, archive, billing, or commercial download stores a business reason.", "amber"],
+      ["Commercial redaction", "Frontline exports never include value, invoice, agreement, provider, or negotiation fields.", "blue"],
+      ["Checksum proof", "Attachment downloads verify checksum, storage key, retention state, and source record id.", "red"],
+      ["Audit envelope", "Every accepted or denied download writes actor, role, reason, IP hash, file id, checksum, and result.", "teal"],
+      ["Expiry control", "Signed download links expire quickly and cannot be replayed into another tenant.", "amber"],
+    ];
+    const denialLines = [
+      "Denied downloads are product signals, not errors: the user should see which admin or room owner can approve access.",
+      "The frontline tracker stays useful without exposing commercial values, invoices, payment states, or webhook runner details.",
+      "Every download must be reproducible later from audit rows, checksum proof, reason, role, room grant, and tenant id.",
+      "This v180 matrix turns download privacy into executable backend tests before real customer files are stored.",
+    ];
+    const score = Math.max(
+      45,
+      Math.min(99, Math.round(38 + testCases.length * 4 + auditGates.length * 4 + artifactPolicies.length * 2)),
+    );
+    const packet = {
+      schemaVersion: "pursuitdesk.downloadPermissionTestMatrix.v180",
+      generatedOn: generatedOn.toISOString(),
+      company: companyName,
+      matrixId,
+      sourceWebhookEvidencePackId: evidencePack.evidencePackId,
+      sourceWebhookRunnerId: runnerChecklist.runnerChecklistId,
+      selectedPlan: membership.label,
+      billingTerm: membership.billingTerm,
+      currency: billingCurrency(company),
+      recordsInScope: stats.total,
+      summary: {
+        score,
+        roleProfiles: roleCards.length,
+        artifactPolicies: artifactPolicies.length,
+        testCases: testCases.length,
+        auditGates: auditGates.length,
+      },
+      roleCards: roleCards.map(([role, access, note, tone]) => ({ role, access, note, tone })),
+      artifactPolicies,
+      testCases,
+      auditGates: auditGates.map(([label, note, tone]) => ({ label, note, tone })),
+      denialLines,
+      nextBackendFields: [
+        "download_request_id",
+        "tenant_id",
+        "requested_by_user_id",
+        "requested_by_role",
+        "room_grant",
+        "artifact_type",
+        "artifact_id",
+        "download_reason",
+        "redaction_profile",
+        "checksum_sha256",
+        "storage_object_key",
+        "retention_release_state",
+        "signed_url_expires_at",
+        "request_ip_hash",
+        "expected_http_status",
+        "actual_http_status",
+        "access_decision",
+        "denied_reason",
+        "audit_event_id",
+      ],
+    };
+    return {
+      packet,
+      matrixId,
+      score,
+      roleCards,
+      artifactPolicies,
+      testCases,
+      auditGates,
+      denialLines,
+      cards: [
+        ["Permission score", `${score}%`, `${testCases.length} download tests cover role, tenant, reason, checksum, and audit outcomes.`, "green"],
+        ["Role profiles", roleCards.length, "Admin, management, frontline, reviewer, finance, and viewer boundaries are explicit.", "teal"],
+        ["Artifact policies", artifactPolicies.length, "Tracker, insight, closeout, attachment, invoice, and webhook files have separate rules.", "blue"],
+        ["Release gates", auditGates.length, "Backend must pass these before live customer downloads.", "red"],
+      ],
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function renderDownloadPermissionTestMatrix(model) {
+    return `
+      <article class="membership-panel download-permission-matrix">
+        <div class="access-head">
+          <div>
+            <span class="metric-label">v180 Download Permission Test Matrix</span>
+            <h3>Prove every download before real customer files exist</h3>
+          </div>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-download-permission-test-matrix-v180.json">Download permission JSON</a>
+        </div>
+        <div class="download-permission-hero">
+          <div>
+            <span>Permission matrix</span>
+            <strong>${escapeHtml(model.matrixId)}</strong>
+            <p>Every export, invoice, archive attachment, closeout PDF, and webhook runner file now has a role, condition, expected response, proof file, and audit gate.</p>
+          </div>
+          <div>
+            <span>Permission score</span>
+            <strong>${escapeHtml(String(model.score))}%</strong>
+            <p>${model.testCases.length} backend-ready tests, ${model.artifactPolicies.length} artifact policies, and ${model.auditGates.length} release gates.</p>
+          </div>
+        </div>
+        <div class="download-permission-card-grid">
+          ${model.cards
+            .map(
+              ([label, value, note, tone]) => `
+                <div class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="download-permission-role-strip">
+          ${model.roleCards
+            .map(
+              ([role, access, note, tone]) => `
+                <div class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(role)}</span>
+                  <strong>${escapeHtml(access)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="download-permission-layout">
+          <section>
+            <span class="metric-label">Permission tests</span>
+            <h4>Expected backend decisions</h4>
+            <div class="download-permission-tests">
+              ${model.testCases
+                .map(
+                  (row) => `
+                    <div class="tone-${escapeHtml(row.tone)}">
+                      <div class="download-permission-test-head">
+                        <span>${escapeHtml(row.step)} / ${escapeHtml(row.actor)}</span>
+                        <em>${escapeHtml(row.expected)}</em>
+                      </div>
+                      <strong>${escapeHtml(row.artifact)}</strong>
+                      <code>${escapeHtml(row.request)}</code>
+                      <div class="download-permission-test-meta">
+                        <p><span>Proof</span><strong>${escapeHtml(row.proof)}</strong></p>
+                        <p><span>Gate</span><strong>${escapeHtml(row.gate)}</strong></p>
+                      </div>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Artifact policies</span>
+            <h4>Who can download what</h4>
+            <div class="download-permission-artifacts">
+              ${model.artifactPolicies
+                .map(
+                  (row) => `
+                    <div class="tone-${escapeHtml(row.tone)}">
+                      <strong>${escapeHtml(row.artifact)}</strong>
+                      <p><b>Allowed:</b> ${escapeHtml(row.allowed)}</p>
+                      <p><b>Blocked:</b> ${escapeHtml(row.blocked)}</p>
+                      <small>${escapeHtml(row.condition)}</small>
+                      <em>${escapeHtml(row.evidence)}</em>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+        </div>
+        <div class="download-permission-proof-grid">
+          <section>
+            <span class="metric-label">Release gates</span>
+            <h4>Before download links go live</h4>
+            <div class="download-permission-gates">
+              ${model.auditGates
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Management script</span>
+            <h4>How to explain privacy to the buyer</h4>
+            <div class="download-permission-lines">
+              ${model.denialLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+            </div>
+          </section>
+        </div>
+      </article>
+    `;
+  }
+
+  function buildDownloadApprovalReviewBoard(downloadMatrix, membership, stats, company) {
+    const generatedOn = new Date();
+    const stamp = generatedOn.toISOString().slice(0, 10).replace(/-/g, "");
+    const companyName = company.name || "Pilot company";
+    const tenantSlug = companyName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "tenant";
+    const reviewBoardId = `PD-DOWNLOAD-APPROVAL-${stamp}-${String(downloadMatrix.testCases.length).padStart(2, "0")}`;
+    const pick = (step) => downloadMatrix.testCases.find((row) => row.step === step) || {};
+    const decisionQueue = [
+      {
+        id: "DAR-001",
+        sourceStep: "01",
+        requester: "Frontline user",
+        artifact: pick("01").artifact || "Tender tracker CSV",
+        decision: "Approve redacted",
+        owner: "Operations admin",
+        reviewer: "Company admin",
+        sla: "15 minutes",
+        risk: "Commercial privacy",
+        action: "Release operational CSV with value, invoice, agreement, provider, and negotiation fields removed.",
+        request: pick("01").request || `GET /exports/${tenantSlug}/tenders.csv?scope=operational`,
+        proof: pick("01").proof || "download-test-01-tracker-redacted.png",
+        gate: pick("01").gate || "No commercial fields in response.",
+        tone: "teal",
+      },
+      {
+        id: "DAR-002",
+        sourceStep: "02",
+        requester: "Frontline user",
+        artifact: pick("02").artifact || "Commercial insight export",
+        decision: "Reject release",
+        owner: "Commercial room owner",
+        reviewer: "Company admin",
+        sla: "Same day",
+        risk: "Value exposure",
+        action: "Convert the request into a manager access review; do not send the raw commercial export.",
+        request: pick("02").request || `GET /exports/${tenantSlug}/commercial-value.csv`,
+        proof: pick("02").proof || "download-test-02-commercial-denied.png",
+        gate: pick("02").gate || "Commercial value remains inside management rooms.",
+        tone: "red",
+      },
+      {
+        id: "DAR-003",
+        sourceStep: "03",
+        requester: "Reviewer",
+        artifact: pick("03").artifact || "Closeout evidence PDF",
+        decision: "Approve watermarked",
+        owner: "Archive reviewer",
+        reviewer: "Governance owner",
+        sla: "Same day",
+        risk: "Archive proof",
+        action: "Release the watermarked PDF only when reason, release state, and reviewer role are present.",
+        request: pick("03").request || `GET /archive/${tenantSlug}/closeout/evidence.pdf?reason=review`,
+        proof: pick("03").proof || "download-test-03-closeout-watermark.png",
+        gate: pick("03").gate || "Reason, reviewer role, release state, and watermark are present.",
+        tone: "green",
+      },
+      {
+        id: "DAR-004",
+        sourceStep: "04",
+        requester: "Admin",
+        artifact: pick("04").artifact || "Archive attachment without reason",
+        decision: "Hold for reason",
+        owner: "Archive owner",
+        reviewer: "Company admin",
+        sla: "30 minutes",
+        risk: "Audit gap",
+        action: "Request a business reason before the signed URL can be generated.",
+        request: pick("04").request || `GET /archive/${tenantSlug}/attachments/proof.zip`,
+        proof: pick("04").proof || "download-test-04-reason-required.png",
+        gate: pick("04").gate || "Every attachment download must explain business purpose.",
+        tone: "amber",
+      },
+      {
+        id: "DAR-005",
+        sourceStep: "05",
+        requester: "Admin",
+        artifact: pick("05").artifact || "Archive attachment with checksum mismatch",
+        decision: "Escalate integrity",
+        owner: "Storage owner",
+        reviewer: "Security reviewer",
+        sla: "Immediate hold",
+        risk: "File integrity",
+        action: "Expire any generated link, freeze the attachment, and re-run checksum proof before release.",
+        request: pick("05").request || `GET /archive/${tenantSlug}/attachments/proof.zip?reason=audit`,
+        proof: pick("05").proof || "download-test-05-checksum-hold.png",
+        gate: pick("05").gate || "Corrupt or mismatched file never downloads silently.",
+        tone: "blue",
+      },
+      {
+        id: "DAR-006",
+        sourceStep: "06",
+        requester: "Management user",
+        artifact: pick("06").artifact || "Webhook runner JSON",
+        decision: "Reject admin-only",
+        owner: "Billing admin",
+        reviewer: "Company admin",
+        sla: "Same day",
+        risk: "Billing command exposure",
+        action: "Keep runner commands inside Membership admin scope and offer a redacted status summary instead.",
+        request: pick("06").request || `GET /billing/${tenantSlug}/webhook-runner.json`,
+        proof: pick("06").proof || "download-test-06-runner-denied.png",
+        gate: pick("06").gate || "Membership runner, billing secrets, and fixture paths stay admin-only.",
+        tone: "red",
+      },
+      {
+        id: "DAR-007",
+        sourceStep: "07",
+        requester: "Finance owner",
+        artifact: pick("07").artifact || "Invoice export",
+        decision: "Approve billing",
+        owner: "Finance owner",
+        reviewer: "Company admin",
+        sla: "Same day",
+        risk: "Billing privacy",
+        action: "Release invoice audit JSON to finance while keeping subscription mutation locked.",
+        request: pick("07").request || `GET /billing/${tenantSlug}/invoice-export.json`,
+        proof: pick("07").proof || "download-test-07-invoice-role.png",
+        gate: pick("07").gate || "Finance owner can see invoice state without changing subscription access.",
+        tone: "green",
+      },
+      {
+        id: "DAR-008",
+        sourceStep: "08",
+        requester: "Wrong tenant user",
+        artifact: pick("08").artifact || "Any attachment",
+        decision: "Reject tenant",
+        owner: "Tenant guard",
+        reviewer: "Security reviewer",
+        sla: "Automatic",
+        risk: "Tenant isolation",
+        action: "Deny before storage lookup and write a tenant isolation audit event.",
+        request: pick("08").request || "GET /archive/other-company/attachments/proof.zip?reason=review",
+        proof: pick("08").proof || "download-test-08-tenant-denied.png",
+        gate: pick("08").gate || "Tenant mismatch blocks before storage object lookup.",
+        tone: "red",
+      },
+    ];
+    const decisionCounts = decisionQueue.reduce(
+      (acc, row) => {
+        const key = row.decision.toLowerCase();
+        if (key.includes("approve")) acc.approve += 1;
+        if (key.includes("redact")) acc.redact += 1;
+        if (key.includes("hold")) acc.hold += 1;
+        if (key.includes("escalate")) acc.escalate += 1;
+        if (key.includes("reject")) acc.reject += 1;
+        return acc;
+      },
+      { approve: 0, redact: 0, hold: 0, escalate: 0, reject: 0 },
+    );
+    const decisionLanes = [
+      ["Approve", decisionCounts.approve, "Safe release with role, reason, and audit proof.", "green"],
+      ["Redact", decisionCounts.redact, "Release only operational fields or status summary.", "teal"],
+      ["Hold", decisionCounts.hold, "Wait for reason, owner, retention, or evidence proof.", "amber"],
+      ["Escalate", decisionCounts.escalate, "Integrity, security, or tenant questions go to a senior reviewer.", "blue"],
+      ["Reject", decisionCounts.reject, "Do not generate a signed URL; write denial audit instead.", "red"],
+    ];
+    const approvalRules = [
+      ["Requester entitlement", "Role, room grant, tenant id, subscription state, and section permission must pass before review.", "green"],
+      ["Reason before link", "Attachment, PDF, billing, and commercial downloads require a business reason before signed URL generation.", "amber"],
+      ["Redaction first", "Operational exports are safer when the backend strips commercial, invoice, provider, and negotiation fields.", "teal"],
+      ["Expiry and replay", "Every approved link expires quickly and cannot be replayed across user, tenant, or artifact.", "blue"],
+      ["Integrity hold", "Checksum mismatch, missing storage key, or retention conflict blocks release until evidence is repaired.", "red"],
+      ["Audit memory", "Approved, redacted, held, escalated, rejected, and expired outcomes write the same decision envelope.", "green"],
+    ];
+    const reviewerChecklist = [
+      ["Check role", "Confirm the requester is allowed to see the room and artifact family.", "green"],
+      ["Check reason", "Force the business purpose into the audit row before any signed URL exists.", "amber"],
+      ["Check redaction", "Use redacted exports whenever the request can be satisfied without sensitive fields.", "teal"],
+      ["Check expiry", "Keep signed links short-lived and bind them to actor, tenant, and artifact.", "blue"],
+      ["Check denial", "If rejected, show the requester the right owner path instead of a blank error.", "red"],
+    ];
+    const managementLines = [
+      "Sensitive download requests now become managed decisions instead of invisible 403 events.",
+      "The board separates approved, redacted, held, escalated, and rejected outcomes so privacy is operational, not theoretical.",
+      "Frontline users still get useful tracker exports, while commercial, invoice, archive, and webhook materials stay under admin review.",
+      "This v183 board is the missing bridge between the permission test matrix and real download audit workflow.",
+    ];
+    const approvalNote = [
+      `Subject: Download approval review - ${reviewBoardId}`,
+      "",
+      `Team, the download approval board for ${companyName} is ready for review.`,
+      "",
+      `Approved or redacted releases: ${decisionCounts.approve + decisionCounts.redact}`,
+      `Held or escalated releases: ${decisionCounts.hold + decisionCounts.escalate}`,
+      `Rejected releases: ${decisionCounts.reject}`,
+      "",
+      "Please release only the approved/redacted items, hold anything missing reason or checksum proof, and keep rejected commercial, tenant, or webhook runner requests inside the denial audit.",
+      "",
+      "PursuitDesk will store requester, role, room grant, artifact, reason, decision, approver, expiry, proof file, and audit event for each outcome.",
+    ].join("\n");
+    const releaseReady = decisionCounts.approve + decisionCounts.redact;
+    const reviewScore = Math.max(55, Math.min(99, Math.round(downloadMatrix.score - decisionCounts.reject * 2 + releaseReady * 3)));
+    const packet = {
+      schemaVersion: "pursuitdesk.downloadApprovalReviewBoard.v183",
+      generatedOn: generatedOn.toISOString(),
+      company: companyName,
+      reviewBoardId,
+      sourceMatrixId: downloadMatrix.matrixId,
+      selectedPlan: membership.label,
+      billingTerm: membership.billingTerm,
+      recordsInScope: stats.total,
+      summary: {
+        reviewScore,
+        decisionRows: decisionQueue.length,
+        approvedOrRedacted: releaseReady,
+        heldOrEscalated: decisionCounts.hold + decisionCounts.escalate,
+        rejected: decisionCounts.reject,
+      },
+      decisionCounts,
+      decisionQueue,
+      decisionLanes: decisionLanes.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      approvalRules: approvalRules.map(([label, note, tone]) => ({ label, note, tone })),
+      reviewerChecklist: reviewerChecklist.map(([label, note, tone]) => ({ label, note, tone })),
+      managementLines,
+      approvalNote,
+      nextBackendFields: [
+        "download_approval_review_id",
+        "download_request_id",
+        "source_permission_matrix_id",
+        "requested_by_user_id",
+        "requested_by_role",
+        "requested_room_grant",
+        "artifact_type",
+        "artifact_id",
+        "business_reason",
+        "requested_action",
+        "approval_decision",
+        "decision_owner_user_id",
+        "decision_reviewer_role",
+        "redaction_profile",
+        "signed_url_expires_at",
+        "checksum_state",
+        "retention_state",
+        "denied_reason",
+        "escalation_reason",
+        "proof_file",
+        "audit_event_id",
+      ],
+    };
+    return {
+      packet,
+      reviewBoardId,
+      reviewScore,
+      decisionQueue,
+      decisionLanes,
+      approvalRules,
+      reviewerChecklist,
+      managementLines,
+      approvalNote,
+      cards: [
+        ["Review score", `${reviewScore}%`, `${decisionQueue.length} sensitive download decisions are ready for admin review.`, "green"],
+        ["Release ready", releaseReady, "Approved or redacted files can be released with audit memory.", "teal"],
+        ["Hold / escalate", decisionCounts.hold + decisionCounts.escalate, "Reason, checksum, or security proof is still needed.", "amber"],
+        ["Rejected", decisionCounts.reject, "Commercial, tenant, or admin-only requests remain blocked.", "red"],
+      ],
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function renderDownloadApprovalReviewBoard(model) {
+    return `
+      <article class="membership-panel download-approval-board">
+        <div class="access-head">
+          <div>
+            <span class="metric-label">v183 Download Approval Review Board</span>
+            <h3>Decide sensitive downloads before a link exists</h3>
+          </div>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-download-approval-review-board-v183.json">Download approval board JSON</a>
+        </div>
+        <div class="download-approval-hero">
+          <div>
+            <span>Review board</span>
+            <strong>${escapeHtml(model.reviewBoardId)}</strong>
+            <p>Denied and sensitive download attempts now become approve, redact, hold, escalate, or reject decisions with owner, proof, expiry, and audit memory.</p>
+          </div>
+          <div>
+            <span>Review score</span>
+            <strong>${escapeHtml(String(model.reviewScore))}%</strong>
+            <p>${model.decisionQueue.length} decisions, ${model.decisionLanes.length} release lanes, ${model.approvalRules.length} approval rules, and ${model.reviewerChecklist.length} reviewer checks.</p>
+          </div>
+        </div>
+        <div class="download-approval-card-grid">
+          ${model.cards
+            .map(
+              ([label, value, note, tone]) => `
+                <div class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="download-approval-lane-grid">
+          ${model.decisionLanes
+            .map(
+              ([label, value, note, tone]) => `
+                <div class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="download-approval-layout">
+          <section>
+            <span class="metric-label">Decision queue</span>
+            <h4>Release, redact, hold, escalate, or reject</h4>
+            <div class="download-approval-queue">
+              ${model.decisionQueue
+                .map(
+                  (row) => `
+                    <div class="tone-${escapeHtml(row.tone)}">
+                      <div class="download-approval-head">
+                        <span>${escapeHtml(row.id)} / ${escapeHtml(row.requester)}</span>
+                        <em>${escapeHtml(row.decision)} / ${escapeHtml(row.sla)}</em>
+                      </div>
+                      <strong>${escapeHtml(row.artifact)}</strong>
+                      <p>${escapeHtml(row.action)}</p>
+                      <code>${escapeHtml(row.request)}</code>
+                      <div class="download-approval-meta">
+                        <p><span>Owner</span><strong>${escapeHtml(row.owner)}</strong></p>
+                        <p><span>Reviewer</span><strong>${escapeHtml(row.reviewer)}</strong></p>
+                        <p><span>Risk</span><strong>${escapeHtml(row.risk)}</strong></p>
+                        <p><span>Proof</span><strong>${escapeHtml(row.proof)}</strong></p>
+                      </div>
+                      <small>${escapeHtml(row.gate)}</small>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Approval rules</span>
+            <h4>What must pass before release</h4>
+            <div class="download-approval-rules">
+              ${model.approvalRules
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+        </div>
+        <div class="download-approval-proof-grid">
+          <section>
+            <span class="metric-label">Reviewer checklist</span>
+            <h4>How an admin clears the queue</h4>
+            <div class="download-approval-checklist">
+              ${model.reviewerChecklist
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Management script</span>
+            <h4>What to say about controlled downloads</h4>
+            <div class="download-approval-lines">
+              ${model.managementLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+            </div>
+          </section>
+        </div>
+        <div class="download-approval-note">
+          <span class="metric-label">Copy-ready closeout</span>
+          <h4>Approval note for the company admin</h4>
+          <textarea readonly aria-label="Copy-ready download approval review note">${escapeHtml(model.approvalNote)}</textarea>
+        </div>
+      </article>
+    `;
+  }
+
+  function buildWebhookFailureIncidentPlaybook(webhookBlueprint, evidencePack, runnerChecklist, downloadMatrix, membership, stats, company) {
+    const generatedOn = new Date();
+    const stamp = generatedOn.toISOString().slice(0, 10).replace(/-/g, "");
+    const companyName = company.name || "Pilot company";
+    const tenantSlug = companyName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "tenant";
+    const incidentPlaybookId = `PD-WEBHOOK-INC-${stamp}-${String(evidencePack.samplePayloads.length).padStart(2, "0")}`;
+    const incidentLanes = [
+      {
+        lane: "Signature rejected",
+        trigger: "Missing, stale, tampered, or wrong-secret payload",
+        owner: "Security",
+        firstAction: "Hold event, keep subscription unchanged, capture raw body hash.",
+        recovery: "Rotate test secret only after confirming provider endpoint and signing header.",
+        evidence: "incident-signature-rejected-proof.json",
+        sla: "15 min",
+        tone: "red",
+      },
+      {
+        lane: "Wrong tenant",
+        trigger: "Provider customer or subscription maps to another company",
+        owner: "Backend lead",
+        firstAction: "Reject before storage lookup, write tenant-denied audit event.",
+        recovery: "Fix provider metadata mapping before replaying any event.",
+        evidence: "incident-wrong-tenant-proof.json",
+        sla: "15 min",
+        tone: "red",
+      },
+      {
+        lane: "Duplicate replay",
+        trigger: "Provider event id already processed",
+        owner: "Audit owner",
+        firstAction: "Return replay-safe success and do not repeat invoice or access effects.",
+        recovery: "Compare side-effect count, event ledger, and audit envelope.",
+        evidence: "incident-replay-ledger-proof.json",
+        sla: "10 min",
+        tone: "amber",
+      },
+      {
+        lane: "Provider retry",
+        trigger: "Database, audit writer, or provider lookup temporary failure",
+        owner: "Backend on-call",
+        firstAction: "Return retryable status, preserve unprocessed event state.",
+        recovery: "Replay after storage and audit writer are healthy.",
+        evidence: "incident-provider-retry-proof.json",
+        sla: "30 min",
+        tone: "blue",
+      },
+      {
+        lane: "Access partial sync",
+        trigger: "Invoice state updates but room or seat access does not reconcile",
+        owner: "Product / backend",
+        firstAction: "Freeze new paid-room grants, compare before/after access JSON.",
+        recovery: "Run access reconciler and verify frontline, commercial, admin, and read/export states.",
+        evidence: "incident-access-partial-sync-proof.json",
+        sla: "30 min",
+        tone: "teal",
+      },
+      {
+        lane: "Payment failed grace",
+        trigger: "invoice.payment_failed moves customer into grace",
+        owner: "Customer success",
+        firstAction: "Keep frontline work available, block upgrades, notify admin with payment link.",
+        recovery: "Clear grace only after paid invoice webhook or manual finance approval.",
+        evidence: "incident-payment-grace-proof.json",
+        sla: "1 day",
+        tone: "amber",
+      },
+      {
+        lane: "Refund review",
+        trigger: "charge.refunded or reversal arrives after access was enabled",
+        owner: "Finance owner",
+        firstAction: "Freeze billing proof and mark account for manual access decision.",
+        recovery: "Admin decides continue, downgrade, grace, or read/export state.",
+        evidence: "incident-refund-review-proof.json",
+        sla: "1 day",
+        tone: "blue",
+      },
+      {
+        lane: "Audit missing",
+        trigger: "Accepted, denied, replayed, or failed event has no audit envelope",
+        owner: "Release owner",
+        firstAction: "Block live webhook release and create closeout evidence task.",
+        recovery: "Backfill audit envelope from immutable request log before reopening release gate.",
+        evidence: "incident-audit-missing-proof.json",
+        sla: "Same day",
+        tone: "red",
+      },
+    ];
+    const recoveryCommands = [
+      ["01", "Freeze incident", `npm run incident:webhook:freeze -- --tenant ${tenantSlug} --incident ${incidentPlaybookId}`, "On-call", "Incident state, raw payload hash, and access snapshot are locked.", "webhook-incident-freeze-proof.json", "red"],
+      ["02", "Classify lane", `npm run incident:webhook:classify -- --evidence ${evidencePack.evidencePackId}`, "Security / backend", "Failure lane and severity are assigned from signature, tenant, replay, retry, access, and audit facts.", "webhook-incident-classification.json", "blue"],
+      ["03", "Reconcile access", `npm run billing:access:reconcile -- --company ${tenantSlug}`, "Product / backend", "Paid, grace, cancelled, read/export, and seat states match policy.", "webhook-incident-access-reconcile.json", "teal"],
+      ["04", "Replay safely", `npm run webhook:replay-safe -- --runner ${runnerChecklist.runnerChecklistId}`, "Backend", "Only retryable or corrected events replay; duplicate side effects stay blocked.", "webhook-incident-replay-safe.json", "amber"],
+      ["05", "Verify downloads", `npm run downloads:permission:smoke -- --matrix ${downloadMatrix.matrixId}`, "QA", "No incident exposes commercial, billing, attachment, or webhook files to wrong roles.", "webhook-incident-download-guard.json", "green"],
+      ["06", "Close incident", `npm run incident:webhook:closeout -- --incident ${incidentPlaybookId}`, "Release owner", "Root cause, owner action, screenshots, audit ids, and customer note are complete.", "webhook-incident-closeout.json", "green"],
+    ];
+    const severityCards = [
+      ["P0", "Wrong tenant or live access leak", "Block release, freeze account, and require owner signoff before replay.", "red"],
+      ["P1", "Payment state or access partial sync", "Hold upgrades, reconcile access, and notify admin if workspace state changed.", "amber"],
+      ["P2", "Duplicate replay or stale event", "Keep customer state unchanged, verify idempotency, and close with audit note.", "blue"],
+      ["P3", "Screenshot or evidence missing", "Do not block customer usage, but hold release evidence until proof is complete.", "teal"],
+    ];
+    const customerMessages = [
+      ["Admin", "Payment signal needs review; your team workspace remains protected while we verify the billing event.", "Customer success", "amber"],
+      ["Finance owner", "Invoice/payment evidence is under controlled review; no access downgrade will happen without the audit result.", "Finance", "blue"],
+      ["Frontline users", "No message unless access changes; operational trackers should stay quiet during billing incident handling.", "Product", "green"],
+      ["Internal release", "Do not enable live payment webhooks until incident lane, proof files, and release gates are complete.", "Release owner", "red"],
+    ];
+    const releaseGates = [
+      ["No tenant leak", "Wrong-tenant webhook and download attempts deny before storage, billing, or access mutation.", "red"],
+      ["No duplicate side effects", "Replay cannot create a second invoice, seat change, access lock, or audit closeout.", "amber"],
+      ["Access state corrected", "Final subscription, invoice, room grants, and seat limits match one source of truth.", "teal"],
+      ["Audit envelope complete", "Every accepted, denied, replayed, failed, and manually corrected step has an audit id.", "green"],
+      ["Customer note approved", "Any customer-facing billing/access message is clear, calm, and privacy-safe.", "blue"],
+      ["Download guard retested", "Incident handling does not expose invoices, attachments, runner JSON, or commercial exports.", "red"],
+    ];
+    const managementLines = [
+      `${incidentLanes.length} incident lanes now turn webhook failure modes into owned recovery paths.`,
+      `${recoveryCommands.length} recovery commands tell the private backend repo what to freeze, classify, reconcile, replay, retest, and close.`,
+      "The customer experience stays calm: frontline users are not disturbed unless access truly changes.",
+      "Live payment webhooks should not ship until incident proof, access reconciliation, download guards, and customer-safe messaging all pass.",
+    ];
+    const readinessScore = Math.max(
+      45,
+      Math.min(99, Math.round(34 + incidentLanes.length * 4 + recoveryCommands.length * 4 + releaseGates.length * 3)),
+    );
+    const packet = {
+      schemaVersion: "pursuitdesk.webhookFailureIncidentPlaybook.v181",
+      generatedOn: generatedOn.toISOString(),
+      company: companyName,
+      incidentPlaybookId,
+      sourceWebhookBlueprintId: webhookBlueprint.webhookBlueprintId,
+      sourceEvidencePackId: evidencePack.evidencePackId,
+      sourceRunnerChecklistId: runnerChecklist.runnerChecklistId,
+      sourceDownloadMatrixId: downloadMatrix.matrixId,
+      selectedPlan: membership.label,
+      billingTerm: membership.billingTerm,
+      recordsInScope: stats.total,
+      summary: {
+        readinessScore,
+        incidentLanes: incidentLanes.length,
+        recoveryCommands: recoveryCommands.length,
+        severityLevels: severityCards.length,
+        releaseGates: releaseGates.length,
+      },
+      incidentLanes,
+      recoveryCommands: recoveryCommands.map(([step, label, command, owner, expected, proof, tone]) => ({ step, label, command, owner, expected, proof, tone })),
+      severityCards: severityCards.map(([level, label, note, tone]) => ({ level, label, note, tone })),
+      customerMessages: customerMessages.map(([audience, message, owner, tone]) => ({ audience, message, owner, tone })),
+      releaseGates: releaseGates.map(([label, note, tone]) => ({ label, note, tone })),
+      managementLines,
+      nextBackendFields: [
+        "webhook_incident_id",
+        "incident_lane",
+        "severity_level",
+        "provider_event_id",
+        "tenant_id",
+        "raw_payload_hash",
+        "signature_failure_reason",
+        "wrong_tenant_reason",
+        "idempotency_status",
+        "before_access_state_json",
+        "after_access_state_json",
+        "replay_decision",
+        "customer_message_state",
+        "download_guard_retest_state",
+        "root_cause_summary",
+        "owner_action",
+        "release_gate_state",
+        "audit_event_id",
+        "closed_by_user_id",
+        "closed_at",
+      ],
+    };
+    return {
+      packet,
+      incidentPlaybookId,
+      readinessScore,
+      incidentLanes,
+      recoveryCommands,
+      severityCards,
+      customerMessages,
+      releaseGates,
+      managementLines,
+      cards: [
+        ["Incident readiness", `${readinessScore}%`, `${incidentLanes.length} failure lanes mapped from payment, access, replay, tenant, and audit risk.`, "green"],
+        ["Recovery commands", recoveryCommands.length, "Freeze, classify, reconcile, replay, retest, and closeout steps are defined.", "blue"],
+        ["Severity levels", severityCards.length, "P0 to P3 rules tell the team when to block, hold, or monitor.", "amber"],
+        ["Release gates", releaseGates.length, "No live payment webhook release until every gate is clean.", "red"],
+      ],
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function renderWebhookFailureIncidentPlaybook(model) {
+    return `
+      <article class="membership-panel webhook-incident-playbook">
+        <div class="access-head">
+          <div>
+            <span class="metric-label">v181 Webhook Failure Incident Playbook</span>
+            <h3>Recover failed payment events without exposing customers</h3>
+          </div>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-webhook-failure-incident-playbook-v181.json">Download incident JSON</a>
+        </div>
+        <div class="webhook-incident-hero">
+          <div>
+            <span>Incident playbook</span>
+            <strong>${escapeHtml(model.incidentPlaybookId)}</strong>
+            <p>Failed, duplicate, stale, wrong-tenant, partial-access, and missing-audit webhook events now have owned recovery lanes.</p>
+          </div>
+          <div>
+            <span>Readiness score</span>
+            <strong>${escapeHtml(String(model.readinessScore))}%</strong>
+            <p>${model.incidentLanes.length} lanes, ${model.recoveryCommands.length} commands, ${model.severityCards.length} severity levels, and ${model.releaseGates.length} release gates.</p>
+          </div>
+        </div>
+        <div class="webhook-incident-card-grid">
+          ${model.cards
+            .map(
+              ([label, value, note, tone]) => `
+                <div class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="webhook-incident-severity-strip">
+          ${model.severityCards
+            .map(
+              ([level, label, note, tone]) => `
+                <div class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(level)}</span>
+                  <strong>${escapeHtml(label)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="webhook-incident-layout">
+          <section>
+            <span class="metric-label">Incident lanes</span>
+            <h4>How each failure should move</h4>
+            <div class="webhook-incident-lanes">
+              ${model.incidentLanes
+                .map(
+                  (row) => `
+                    <div class="tone-${escapeHtml(row.tone)}">
+                      <div class="webhook-incident-lane-head">
+                        <span>${escapeHtml(row.lane)}</span>
+                        <em>${escapeHtml(row.owner)} / ${escapeHtml(row.sla)}</em>
+                      </div>
+                      <strong>${escapeHtml(row.trigger)}</strong>
+                      <p>${escapeHtml(row.firstAction)}</p>
+                      <small>${escapeHtml(row.recovery)}</small>
+                      <code>${escapeHtml(row.evidence)}</code>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Recovery commands</span>
+            <h4>Private backend incident runbook</h4>
+            <div class="webhook-incident-commands">
+              ${model.recoveryCommands
+                .map(
+                  ([step, label, command, owner, expected, proof, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <div class="webhook-incident-lane-head">
+                        <span>${escapeHtml(step)} / ${escapeHtml(label)}</span>
+                        <em>${escapeHtml(owner)}</em>
+                      </div>
+                      <code>${escapeHtml(command)}</code>
+                      <p>${escapeHtml(expected)}</p>
+                      <small>${escapeHtml(proof)}</small>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+        </div>
+        <div class="webhook-incident-proof-grid">
+          <section>
+            <span class="metric-label">Customer-safe messages</span>
+            <h4>What can be said during recovery</h4>
+            <div class="webhook-incident-messages">
+              ${model.customerMessages
+                .map(
+                  ([audience, message, owner, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(audience)} / ${escapeHtml(owner)}</strong>
+                      <p>${escapeHtml(message)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Release gates</span>
+            <h4>Before webhook release resumes</h4>
+            <div class="webhook-incident-gates">
+              ${model.releaseGates
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Management brief</span>
+            <h4>What to say before live payment control</h4>
+            <div class="webhook-incident-lines">
+              ${model.managementLines.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+            </div>
+          </section>
+        </div>
+      </article>
+    `;
+  }
+
+  function buildWebhookIncidentCustomerNoticePack(incidentPlaybook, downloadApprovalBoard, membership, stats, company) {
+    const generatedOn = new Date();
+    const stamp = generatedOn.toISOString().slice(0, 10).replace(/-/g, "");
+    const companyName = company.name || "Pilot company";
+    const tenantSlug = companyName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").toLowerCase() || "tenant";
+    const noticePackId = `PD-WEBHOOK-NOTICE-${stamp}-${String(incidentPlaybook.incidentLanes.length).padStart(2, "0")}`;
+    const audienceTemplates = [
+      {
+        audience: "Company admin",
+        trigger: "Payment or subscription signal is under review",
+        owner: "Customer success",
+        channel: "Email + in-app banner",
+        sendWindow: "Within 30 minutes",
+        visibility: "Customer safe",
+        subject: "PursuitDesk billing signal under review",
+        body: [
+          `Hello, we are reviewing a billing signal for ${companyName}.`,
+          "Your workspace is protected while we verify the event, and we will not change user access without a confirmed billing or admin decision.",
+          "You can continue using operational trackers during the review. If we need anything from you, we will ask for one clear action.",
+          "We will send a closeout note once the review is complete.",
+        ].join("\n\n"),
+        doSay: "Workspace protected, billing signal under review, no access change without confirmation.",
+        doNotSay: "Raw webhook payload, provider event ids, signature secrets, tenant mapping details, or internal incident labels.",
+        tone: "green",
+      },
+      {
+        audience: "Finance owner",
+        trigger: "Invoice, refund, failed payment, or grace-state evidence needs confirmation",
+        owner: "Finance",
+        channel: "Email",
+        sendWindow: "Same business day",
+        visibility: "Finance safe",
+        subject: "PursuitDesk invoice evidence review",
+        body: [
+          `Hello, we are reconciling the invoice/payment evidence for ${companyName}.`,
+          "The review checks invoice state, payment confirmation, refund posture, and subscription access before any account change is made.",
+          "Please confirm whether finance wants us to continue, retry payment, place the workspace in grace, or wait for manual approval.",
+          "We will keep the access state aligned with the confirmed invoice decision.",
+        ].join("\n\n"),
+        doSay: "Invoice state, payment decision, access policy, finance action needed.",
+        doNotSay: "Provider secret, raw event body, replay command, or unrelated tenant/payment details.",
+        tone: "blue",
+      },
+      {
+        audience: "Internal release team",
+        trigger: "Webhook incident blocks release or live payment enablement",
+        owner: "Release owner",
+        channel: "Internal note",
+        sendWindow: "Before release resumes",
+        visibility: "Internal only",
+        subject: "Webhook release hold and closeout requirements",
+        body: [
+          `Incident pack ${incidentPlaybook.incidentPlaybookId} is active for ${tenantSlug}.`,
+          "Do not resume live webhook release until classification, access reconciliation, safe replay decision, download guard retest, customer note, and audit closeout are complete.",
+          `Download approval board ${downloadApprovalBoard.reviewBoardId} must remain clean for invoices, attachments, commercial exports, and runner JSON.`,
+          "Close only after owner action, proof files, screenshots, and audit ids are attached.",
+        ].join("\n\n"),
+        doSay: "Release hold, proof required, closeout gates, owner action.",
+        doNotSay: "Nothing customer-facing until customer success approves the message.",
+        tone: "red",
+      },
+      {
+        audience: "Frontline users",
+        trigger: "Only if operational access changes",
+        owner: "Product owner",
+        channel: "In-app status",
+        sendWindow: "Only when needed",
+        visibility: "Minimal notice",
+        subject: "Workspace access update",
+        body: [
+          "A workspace setting is being checked by your admin team.",
+          "Your tender and project trackers remain available unless your admin tells you otherwise.",
+          "No action is required from frontline users right now.",
+        ].join("\n\n"),
+        doSay: "Tracker available, no action needed, admin handling.",
+        doNotSay: "Billing, invoice, provider, webhook, commercial values, or incident cause.",
+        tone: "teal",
+      },
+      {
+        audience: "Support / helpdesk",
+        trigger: "Customer asks why payment or access status changed",
+        owner: "Support lead",
+        channel: "Support macro",
+        sendWindow: "On inquiry",
+        visibility: "Support safe",
+        subject: "Controlled billing review response",
+        body: [
+          "Thanks for checking. Your workspace is under a controlled billing review.",
+          "We are verifying the payment state and access rule before making any account change.",
+          "Your admin or finance owner will receive the confirmed next step. We will keep the message simple and action-based.",
+        ].join("\n\n"),
+        doSay: "Controlled billing review, verification, admin/finance next step.",
+        doNotSay: "Internal incident severity, command names, payload hashes, or access schema.",
+        tone: "amber",
+      },
+      {
+        audience: "Executive sponsor",
+        trigger: "Incident impacts rollout, renewal, or expansion confidence",
+        owner: "Account owner",
+        channel: "Brief note",
+        sendWindow: "Same day if impact is material",
+        visibility: "Executive safe",
+        subject: "PursuitDesk rollout control note",
+        body: [
+          "The billing control review is being handled through the PursuitDesk incident and audit process.",
+          "The operating workspace remains protected while payment, access, and download controls are verified.",
+          "We will share the business decision and any required owner action without exposing internal security details.",
+        ].join("\n\n"),
+        doSay: "Protected workspace, controlled process, business decision, owner action.",
+        doNotSay: "Technical root cause until it has been verified and approved for external sharing.",
+        tone: "green",
+      },
+    ];
+    const noticeFlow = [
+      ["Detect", "Incident lane opens from webhook playbook.", "Internal only", "red"],
+      ["Classify", "Severity, customer impact, and access posture are confirmed.", "Internal only", "blue"],
+      ["Decide message", "Choose admin, finance, support, frontline, or executive template.", "Customer safe", "amber"],
+      ["Approve wording", "Customer success checks tone, privacy, and exact next action.", "Customer safe", "green"],
+      ["Send notice", "Send only the audience-specific note and keep technical facts internal.", "Customer safe", "teal"],
+      ["Closeout", "Attach message, owner, timestamp, and audit id to the incident packet.", "Audit memory", "green"],
+    ];
+    const privacyRules = [
+      ["Allowed", "Workspace protection, billing review, invoice decision needed, no access change without confirmation.", "green"],
+      ["Allowed", "Clear next action, owner, due date, and customer-safe business status.", "teal"],
+      ["Internal only", "Provider event id, raw payload hash, signature result, replay command, tenant mapping, and download guard internals.", "red"],
+      ["Internal only", "Incident severity label, suspected root cause, checksum conflict, or security finding until approved.", "amber"],
+      ["Never", "Secrets, tokens, webhook signing details, cross-tenant identifiers, or unrelated customer data.", "red"],
+    ];
+    const closeoutGates = [
+      ["Message matched to audience", "Admin, finance, support, executive, internal, and frontline notes stay separate.", "green"],
+      ["No sensitive technical leak", "Template hides raw payloads, provider secrets, event ids, replay details, and tenant internals.", "red"],
+      ["Access promise checked", "No message promises access behavior until billing/access state is reconciled.", "amber"],
+      ["Download impact checked", "If a download or invoice is involved, the approval board decision is attached.", "blue"],
+      ["Owner and next action named", "Every notice says who owns the next step and what the customer should do, if anything.", "teal"],
+      ["Audit attached", "Sent timestamp, audience, template id, approver, and incident id are retained.", "green"],
+    ];
+    const customerImpactRows = [
+      ["No access change", "Do not message frontline users; send admin closeout only if finance or subscription state was reviewed.", "green"],
+      ["Grace or payment retry", "Notify admin and finance; keep operational users calm unless admin asks for a user notice.", "amber"],
+      ["Access lock risk", "Notify admin before lock, explain action needed, and keep export/read policy clear.", "red"],
+      ["Wrong tenant or integrity hold", "Internal/security only until safe customer wording is approved.", "red"],
+      ["Download denied", "Tell the requester who can approve access without revealing restricted content.", "blue"],
+    ];
+    const adminCloseoutEmail = [
+      `Subject: PursuitDesk billing review closeout - ${noticePackId}`,
+      "",
+      `Hello, the billing signal review for ${companyName} has been completed.`,
+      "",
+      "Result: Workspace protection remained active while payment, access, and download controls were checked.",
+      "Customer action: Please follow the finance/admin action shown in PursuitDesk if one is still open.",
+      "Access posture: We will not change user access without a confirmed invoice, finance, or admin decision.",
+      "",
+      "For privacy, technical webhook and provider details are retained in the internal audit record rather than shared in email.",
+    ].join("\n");
+    const noticeScore = Math.max(
+      55,
+      Math.min(99, Math.round(42 + audienceTemplates.length * 4 + privacyRules.length * 3 + closeoutGates.length * 3)),
+    );
+    const packet = {
+      schemaVersion: "pursuitdesk.webhookIncidentCustomerNoticePack.v184",
+      generatedOn: generatedOn.toISOString(),
+      company: companyName,
+      noticePackId,
+      sourceIncidentPlaybookId: incidentPlaybook.incidentPlaybookId,
+      sourceDownloadApprovalBoardId: downloadApprovalBoard.reviewBoardId,
+      selectedPlan: membership.label,
+      billingTerm: membership.billingTerm,
+      recordsInScope: stats.total,
+      summary: {
+        noticeScore,
+        audienceTemplates: audienceTemplates.length,
+        noticeFlowSteps: noticeFlow.length,
+        privacyRules: privacyRules.length,
+        closeoutGates: closeoutGates.length,
+      },
+      audienceTemplates,
+      noticeFlow: noticeFlow.map(([label, note, visibility, tone]) => ({ label, note, visibility, tone })),
+      privacyRules: privacyRules.map(([state, note, tone]) => ({ state, note, tone })),
+      closeoutGates: closeoutGates.map(([label, note, tone]) => ({ label, note, tone })),
+      customerImpactRows: customerImpactRows.map(([impact, rule, tone]) => ({ impact, rule, tone })),
+      adminCloseoutEmail,
+      nextBackendFields: [
+        "webhook_customer_notice_id",
+        "webhook_incident_id",
+        "download_approval_review_id",
+        "tenant_id",
+        "audience_type",
+        "notice_template_id",
+        "notice_channel",
+        "notice_visibility",
+        "customer_impact_state",
+        "message_body_redacted",
+        "approved_by_user_id",
+        "approved_at",
+        "sent_by_user_id",
+        "sent_at",
+        "customer_action_required",
+        "internal_only_fields_json",
+        "audit_event_id",
+      ],
+    };
+    return {
+      packet,
+      noticePackId,
+      noticeScore,
+      audienceTemplates,
+      noticeFlow,
+      privacyRules,
+      closeoutGates,
+      customerImpactRows,
+      adminCloseoutEmail,
+      cards: [
+        ["Notice score", `${noticeScore}%`, `${audienceTemplates.length} audience templates keep incident messages calm and privacy-safe.`, "green"],
+        ["Templates", audienceTemplates.length, "Admin, finance, internal, frontline, support, and executive notes are separated.", "blue"],
+        ["Privacy rules", privacyRules.length, "Allowed, internal-only, and never-share facts are explicit.", "red"],
+        ["Closeout gates", closeoutGates.length, "Every notice must pass tone, access, download, owner, and audit checks.", "teal"],
+      ],
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function renderWebhookIncidentCustomerNoticePack(model) {
+    return `
+      <article class="membership-panel webhook-notice-pack">
+        <div class="access-head">
+          <div>
+            <span class="metric-label">v184 Webhook Incident Customer Notice Pack</span>
+            <h3>Send calm customer-safe billing incident messages</h3>
+          </div>
+          <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-webhook-incident-customer-notice-pack-v184.json">Download notice JSON</a>
+        </div>
+        <div class="webhook-notice-hero">
+          <div>
+            <span>Notice pack</span>
+            <strong>${escapeHtml(model.noticePackId)}</strong>
+            <p>Webhook incident recovery now has audience-specific notices for admins, finance, support, executives, internal release owners, and frontline users.</p>
+          </div>
+          <div>
+            <span>Notice score</span>
+            <strong>${escapeHtml(String(model.noticeScore))}%</strong>
+            <p>${model.audienceTemplates.length} templates, ${model.noticeFlow.length} send steps, ${model.privacyRules.length} privacy rules, and ${model.closeoutGates.length} closeout gates.</p>
+          </div>
+        </div>
+        <div class="webhook-notice-card-grid">
+          ${model.cards
+            .map(
+              ([label, value, note, tone]) => `
+                <div class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </div>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="webhook-notice-layout">
+          <section>
+            <span class="metric-label">Audience templates</span>
+            <h4>Who gets which message</h4>
+            <div class="webhook-notice-template-list">
+              ${model.audienceTemplates
+                .map(
+                  (row) => `
+                    <div class="tone-${escapeHtml(row.tone)}">
+                      <div class="webhook-notice-head">
+                        <span>${escapeHtml(row.audience)} / ${escapeHtml(row.owner)}</span>
+                        <em>${escapeHtml(row.channel)} / ${escapeHtml(row.sendWindow)}</em>
+                      </div>
+                      <strong>${escapeHtml(row.subject)}</strong>
+                      <p>${escapeHtml(row.trigger)}</p>
+                      <div class="webhook-notice-script">${escapeHtml(row.body)}</div>
+                      <div class="webhook-notice-safety">
+                        <p><span>Say</span><strong>${escapeHtml(row.doSay)}</strong></p>
+                        <p><span>Do not say</span><strong>${escapeHtml(row.doNotSay)}</strong></p>
+                      </div>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Notice flow</span>
+            <h4>From incident to approved wording</h4>
+            <div class="webhook-notice-flow">
+              ${model.noticeFlow
+                .map(
+                  ([label, note, visibility, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(visibility)}</span>
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+        </div>
+        <div class="webhook-notice-proof-grid">
+          <section>
+            <span class="metric-label">Privacy rules</span>
+            <h4>Allowed, internal-only, and never-share facts</h4>
+            <div class="webhook-notice-rules">
+              ${model.privacyRules
+                .map(
+                  ([state, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(state)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Customer impact routing</span>
+            <h4>When to message and when to stay quiet</h4>
+            <div class="webhook-notice-impact">
+              ${model.customerImpactRows
+                .map(
+                  ([impact, rule, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(impact)}</strong>
+                      <p>${escapeHtml(rule)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+          <section>
+            <span class="metric-label">Closeout gates</span>
+            <h4>Before a notice is sent or filed</h4>
+            <div class="webhook-notice-gates">
+              ${model.closeoutGates
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </section>
+        </div>
+        <div class="webhook-notice-email">
+          <span class="metric-label">Copy-ready admin closeout</span>
+          <h4>Privacy-safe message after the incident review</h4>
+          <textarea readonly aria-label="Copy-ready webhook incident customer notice">${escapeHtml(model.adminCloseoutEmail)}</textarea>
         </div>
       </article>
     `;
@@ -46545,6 +50483,8 @@
 
   render();
 })();
+
+
 
 
 

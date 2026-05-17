@@ -1,4 +1,4 @@
-PursuitDesk v178 webhook evidence runner checklist upload steps
+PursuitDesk v191 win lab task dispatch upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v178 webhook evidence runner checklist upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v178 webhook evidence runner checklist
+   PursuitDesk v191 win lab task dispatch
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Membership Model with v178 Webhook Evidence Runner Checklist. Membership now turns webhook evidence into command steps, expected HTTP responses, fixture rows, screenshot proof, release gates, audit IDs, and downloadable runner JSON.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Win Lab with Task Dispatch. Win Lab now turns attack, protect, clarify, and no-bid lanes into owner-ready task packets with lock state, SLA, evidence request, review gate, copy-ready message, and downloadable dispatch JSON.
 
 Demo login:
 admin@pursuitdesk.app
