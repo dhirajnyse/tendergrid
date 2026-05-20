@@ -1,4 +1,4 @@
-PursuitDesk v202 rule impact simulator upload steps
+PursuitDesk v244 playbook outcome control board upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v202 rule impact simulator upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v202 rule impact simulator
+   PursuitDesk v244 playbook outcome control board
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Decision Twin with v202 Rule Impact Simulator. Open Decision Twin to test whether approved, test-only, frozen, or retired learning rules should be promoted, retested, frozen, or blocked before they influence guidance.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Pilot Pitch with v244 Playbook Outcome Control Board. Open Pilot Pitch and review the new section after Success Playbook Outcome Tracker to test sponsor, invoice, and success stream scores, reuse rules, proof quality, blocked motion, privacy gates, and downloadable JSON.
 
 Demo login:
 admin@pursuitdesk.app

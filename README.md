@@ -1,111 +1,423 @@
-# Heavyster
+# PursuitDesk
 
-Heavyster is a phase-one SaaS/listing platform for heavy equipment rental companies.
+A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsheet-style workspace.
 
-The first version is intentionally simple:
+## Brand
 
-- Rental companies create accounts and list equipment.
-- Each listing can include photos, machine specs, region, availability, documents, and direct contact routes.
-- Customers send direct rental enquiries to the rental company.
-- Heavyster does not collect rental payments or rental commission in phase one.
-- Monetization is USD 9 per month or USD 99 per year per active equipment listing.
-- Phase two can add an optional 1% confirmed-booking success fee only when Heavyster provides booking workflow value.
+- Product name: PursuitDesk
+- Tagline: From opportunity to delivery.
+- 3D logo asset: `assets/pursuitdesk-logo-3d.svg`
+- UI direction: compact operations workspace for pursuits, tenders, projects, insights, access control, and membership management.
 
-## Current Prototype
+## Demo Login
 
-This folder contains a static product prototype with:
+- `admin@pursuitdesk.app` / `demo123`
+- `editor@pursuitdesk.app` / `demo123`
+- `viewer@pursuitdesk.app` / `demo123`
 
-- Marketplace search and filtered equipment listings
-- Marketplace Search Assist for one-click machine, category, supplier, and demand-gap routes while buyers type
-- Marketplace Supply Lens that summarizes strongest regions, categories, availability, and verified supply for the current result set
-- Marketplace Smart Views for one-click buyer shortcuts into useful fleet and demand views
-- Active marketplace filter trail so buyers can see, remove, or reset filters without losing context
-- Marketplace Result Intelligence that explains whether a search is supply-ready, supply-watch, or should become a demand signal
-- Command Center with role workspaces for buyer, supplier, and founder workflows
-- Workflow Dock that keeps buyer, supplier, and founder paths visible as a compact operating rail
-- Guided workflow movement that shows the current room, step progress, and previous/next actions
-- Demo Flight Deck that turns the full buyer, supplier, and founder product story into five clickable scenes and a copy-ready talk track
-- Boardroom Snapshot that turns wedge, listing ARR, direct pipeline, trust debt, and the next founder move into an investable operating memo
-- 30-Day Pilot Pack that converts the boardroom story into supplier calls, listing activation, controlled enquiries, pilot gates, and a copy-ready sprint memo
-- Founder Workbench that connects demand, supplier success, page factory, launch, twin, flywheel, autopilot, exchange, proof, commitment, activation, and ledger into one scale-control path
-- Founder Morning Brief that turns overnight supplier, trust, activation, launch, and market signals into one start-of-day operating read
-- Founder Daily Moves that ranks the few actions to do today across supplier success, Market Twin verdict, autopilot, activation, ledger, and market matrix
-- Founder Supplier Call Sheet that turns demand proof, supplier health, and package math into call-ready close scripts for paid listings
-- Buyer Workbench that connects search, shortlist, Jobsite Planner, Trust Passport, RFQ, Award, Quote Guard, Mobilization, and Direct Deal Trail into one decision path
-- Supplier Workbench that connects Studio, Storefront, Fleet Import, Proof Vault, Revenue Desk, Lead Desk, Account Health, and Yard Freshness into one supplier revenue path
-- Universal Command Palette for finding equipment, suppliers, markets, and workflow modules from one search layer
-- Compact searchable workflow launcher with role filters so buyer, supplier, and founder modules stay easy to reach without crowding the header
-- Compact catalog row view for large inventory UX
-- Smart Match Rescue on the hero search for zero-result buyer recovery
-- Smart no-results recovery with nearby matches and one-click filter relaxation
-- Buyer Fit Score on listing cards, compact rows, and the enquiry detail so renters can rank options faster
-- Buyer shortlist and comparison tray with scored options, saved badges, and suggested machines to add
-- Direct Enquiry Composer with quick, proof-first, and quote-ready messages that keep supplier payment direct
-- Supplier Response Route that shows first contact channel, response target, backup route, and follow-up timing
-- Direct Enquiry Response Tracker for copied, sent, replied, and follow-up states per selected machine
-- Supplier Reply Quality Gate that scores supplier answers for availability, rate terms, operator, documents, validity, and direct-payment readiness before award
-- Supplier Reply Clarifier that converts reply gaps into a copy-ready chase, clarification, or handoff message
-- Buyer Decision Receipt that packages fit, proof, reply quality, quote clarity, risk, and the no-commission payment rule into a copy-ready buyer note
-- Buyer Decision Action Router that sends the buyer to the next best move: chase, clarify, RFQ, quote guard, award, or mobilization
-- Supplier Listing ROI Proof that turns buyer intent, reply proof, decision movement, lead value, and direct-payment discipline into a renewal-ready supplier note
-- Supplier Renewal Close Pack that converts ROI proof into a renewal save, annual upgrade, or proof-first supplier close note
-- Jobsite Planner that turns a project note into a package of matched machines and supply gaps
-- Trust Passport with machine readiness score, proof stack, and buyer risk radar
-- RFQ Command Room for shortlist readiness and copy-ready supplier quote packets
-- Award Intelligence for supplier ranking and copy-ready buyer award memos
-- Quote Guard for rental quote clarity, hidden cost detection, and copy-ready supplier clarification
-- Mobilization Control Tower for pre-dispatch readiness and buyer-supplier handoff
-- Direct Deal Trail for no-commission booking proof, direct-payment rules, and future success-fee eligibility discipline
-- Yard Availability OS for supplier freshness scoring and copy-ready update queues
-- Supplier Fleet Storefront for verified supplier mini-sites, fleet lanes, proof stack, and buyer-ready profile packets
-- Fleet Import Console for bulk machine intake, validation gaps, and paid-listing revenue preview
-- Proof Vault for document expiry, inspection proof, operator proof, and buyer-ready verification packets
-- Listing Revenue Desk for paid listings, renewal risk, annual upsell, paused inventory, and copy-ready billing follow-up
-- Supplier Lead Desk for direct enquiry scoring, response urgency, reply playbooks, and copy-ready supplier replies
-- Supplier Account Health Radar for churn risk, expansion upside, health signals, and next-best save actions
-- Supplier Success Daily Queue for ranking which supplier to call first, why, and what action saves or grows the account
-- Demand request capture for unmet searches
-- Founder demand radar for supplier acquisition signals
-- Supplier hunt growth engine with revenue math and copy-ready outreach
-- Market Maker Mode for region/category expansion scoring and launch briefs
-- Market Page Factory for turning demand gaps into launch-ready SEO pages, proof gates, supplier targets, and copy-ready page packs
-- Market Launch Room for seven-day founder launch sprints, supplier strike lists, proof gaps, and first-week listing ARR targets
-- Market Twin for simulating launch intensity, paid listing density, trust risk, demand coverage, listing ARR, and founder go/no-go launch verdicts before scaling a category page
-- Liquidity Flywheel for detecting whether demand, supply, trust, response, and listing revenue are compounding or blocked by a founder bottleneck
-- Founder Autopilot for turning flywheel bottlenecks into owner-assigned weekly commands with ARR impact and copy-ready operating briefs
-- Demand Exchange for turning unmet buyer searches into supplier-facing opportunity tickets, proof requests, and copy-ready listing invites
-- Proof of Demand Room for packaging buyer demand, supply shortage, trust proof, ROI, and supplier objections into a copy-ready sales pack
-- Supplier Commitment Room for converting proof into paid listing packages, go-live gates, and copy-ready close notes
-- Listing Activation Room for turning paid listing commitments into activation queues, billing gates, publish readiness, and copy-ready go-live plans
-- Trust & Revenue Ledger for showing listing ARR, direct enquiry pipeline, trust debt, renewal exposure, and scale gates in one founder view
-- Market Signal Matrix for scanning region-by-category demand, visible supply, proof strength, supply gap, and modeled listing ARR before opening the next wedge
-- Supplier Studio 2.0 with supplier-specific fleet, profile readiness, storefront publishing, document gaps, freshness, and listing revenue preview
-- Supplier onboarding and listing builder preview
-- Category directory and founder admin board
-- Verification checklist for licenses, insurance, inspection, and lead routing
-- Pricing calculator for the listing model
-- Phase-two commission calculator for confirmed bookings
-- 3D-style corporate SVG logo and social card
+## What Is Included
 
-## Founder Docs
+- Company-scoped records seeded from the two supplied Excel workbooks.
+- Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- Admin-only Pilot Readiness Checklist inside Command Center tracks first-company launch score, readiness lanes, launch sequence, decision gates, blockers, users, access, data, backend, billing, and feedback checks.
+- Admin-only SaaS Conversion Sprint inside Command Center maps the bridge from static demo to production MVP with API groups, database objects, sprint sequence, repo blueprint, production gates, and engineering handoff notes.
+- Admin-only Production Security Model inside Command Center maps identity/session controls, tenant isolation, permission gates, commercial-data privacy, audit retention, backups, monitoring, live-data gates, and access matrix rules.
+- Admin-only Billing Checkout Blueprint inside Command Center maps checkout flow, invoice lifecycle, seat reconciliation, subscription webhooks, plan changes, access locks, billing audit gates, and backend billing handoff.
+- Data Migration Pack inside Command Center and Import Studio maps source inventory, target tables, migration batches, validation gates, dry-run cases, cutover sequence, rollback thinking, reconciliation, and backend import handoff.
+- Admin-only Pilot Feedback Room inside Command Center captures UAT feedback model, adoption score, blocker lanes, success metrics, two-week pilot runbook, launch decisions, and customer-success handoff.
+- Admin-only Backend Repository Scaffold inside Command Center maps production repo folders, API contracts, database migrations, shared packages, billing/import/audit boundaries, environment lanes, test packs, sprint backlog, and engineering handoff.
+- Admin-only Security Test Pack inside Command Center turns the security model into tenant isolation suites, role-access tests, commercial privacy cases, audit proof, release gates, automation plan, and backend QA handoff.
+- Admin-only Billing Test Pack inside Command Center turns USD membership into checkout session tests, invoice lifecycle checks, webhook verification, seat reconciliation scenarios, plan-change tests, access-lock gates, billing audit coverage, and paid-rollout handoff.
+- Admin-only Migration Test Pack inside Command Center turns Excel/workbook onboarding into source inventory tests, staging validation, duplicate quarantine, commercial privacy checks, commit/rollback scenarios, reconciliation proof, release gates, and importer QA handoff.
+- Admin-only Pilot Feedback Persistence room inside Command Center turns UAT comments into feedback sessions, feedback items, activity history, attachments, decisions, owner workflow, retest states, sponsor exports, and paid-pilot release gates.
+- Admin-only Backend MVP Ticket Board inside Command Center turns the production scaffold into implementation tickets, route tickets, schema slices, sprint order, dependency rules, backend release gates, and engineering handoff.
+- Admin-only Production Hosting Runbook inside Command Center maps the move from GitHub Pages demo to safe SaaS hosting with local, preview, staging, production, DNS, frontend hosting, API service, database, object storage, secrets, monitoring, backups, deployment checklist, rollback, and live-data launch gates.
+- Admin-only Customer Success Desk inside Command Center turns the first pilot into a post-launch operating layer with onboarding, training, adoption playbook, support queue, renewal risk, expansion signals, 30-day cadence, success gates, and customer-success handoff.
+- Admin-only Backend Repo Starter Pack inside Command Center turns the production plan into a practical first repository blueprint with folder map, setup commands, environment files, GitHub issue groups, branch plan, starter files, release checkpoints, and implementation handoff.
+- Admin-only Launch Control Center inside Command Center combines readiness, hosting, backend repo, customer success, billing, migration, owner matrix, launch packet, risk register, runbook, decision memo, and go/no-go gates into one executive launch cockpit.
+- Admin-only Production MVP Alpha Plan inside Command Center defines the first real backend alpha scope, non-goals, milestones, acceptance criteria, API cutline, data contracts, pilot constraints, exit gates, starter backlog, and implementation handoff.
+- Admin-only Private Backend Repo Kickoff inside Command Center maps the recommended private production repo name, visibility, owners, folder ownership, setup runbook, branch workflow, issue batches, seed package, CI gates, sprint-zero rhythm, and kickoff handoff.
+- Admin-only Implementation Issue Export inside Command Center turns the backend MVP board into GitHub-ready issue cards with labels, milestones, owners, definitions of done, acceptance tests, opening order, import steps, and implementation handoff.
+- Admin-only Alpha API Contract Pack inside Command Center defines route groups, endpoint contracts, request and response payloads, permission rules, error shapes, audit events, contract tests, implementation order, and backend handoff.
+- Admin-only Seed Data and Migration Fixture Pack inside Command Center defines the backend seed tenant, demo users, operational records, commercial vault fixtures, import batches, audit events, migration assertions, fixture files, release gates, and engineering handoff.
+- Admin-only Private Repo Creation Guide inside Command Center gives a practical GitHub setup path for `dhirajnyse/pursuitdesk-platform`, including repo identity, creation checklist, labels, milestones, branch protection, project board, secrets plan, first files, issue opening plan, setup commands, validation checklist, and handoff.
+- Admin-only Staging Smoke Test Script inside Command Center defines the first staging proof run with environment matrix, command order, smoke paths, fixture coverage, role checks, failure rules, evidence artifacts, acceptance gates, and handoff.
+- Admin-only Backend Fixture Export inside Command Center includes a downloadable JSON fixture manifest plus table files, export commands, seed file targets, privacy split, transformation rules, validation scenarios, source batches, and handoff for the private backend repo.
+- Admin-only First Backend Sprint Checklist inside Command Center includes a downloadable sprint-zero JSON checklist plus day plan, workstreams, opening tickets, PR gates, acceptance checks, daily rhythm, risk rules, and engineering handoff.
+- Admin-only Staging Deployment Checklist inside Command Center includes a downloadable deployment JSON checklist plus environment lanes, secret inventory, deployment runbook, database checks, monitoring checks, rollback plan, go/no-go gates, owner matrix, and release handoff.
+- Admin-only Backend Route Skeleton Map inside Command Center includes a downloadable route JSON handoff plus route files, controller/service/validator/test map, middleware stack, service boundaries, route test matrix, implementation slices, folder boundaries, and backend engineering handoff.
+- Admin-only Database Migration Blueprint inside Command Center includes a downloadable migration JSON handoff plus migration file order, table ownership, index plan, seed order, rollback rules, validation gates, backend commands, data contracts, and engineering handoff.
+- Admin-only Auth and Tenant Guard Blueprint inside Command Center includes a downloadable guard JSON handoff plus session policy, tenant isolation, section permission matrix, commercial vault guard, membership admin guard, denied-access audit events, route guard map, guard tests, and engineering handoff.
+- Admin-only API Error and Audit Envelope Pack inside Command Center includes a downloadable envelope JSON handoff plus safe error response fields, error catalog, audit payload fields, route envelope coverage, denial proof, middleware files, test commands, response examples, and acceptance checks.
+- Admin-only CI Workflow File Blueprint inside Command Center includes a downloadable CI JSON handoff plus GitHub Actions workflow files, job matrix, artifact plan, cache plan, secret policy, branch protection, command bindings, release gates, workflow examples, and acceptance checks.
+- Admin-only Private Repo First Commit Builder inside Command Center includes a downloadable first-commit JSON handoff plus root shell files, API starter files, package starter files, workflow file contents, package scripts, env examples, copy order, acceptance checks, and paste-ready examples for the future private repo.
+- Admin-only Backend Issue Body Exporter inside Command Center includes a downloadable issue JSON handoff plus copy-ready GitHub issue bodies, issue batches, labels, milestones, proof commands, opening order, templates, and acceptance checks for the future private repo backlog.
+- Admin-only Branch Protection and Release Checklist inside Command Center includes a downloadable release JSON handoff plus protected branch rules, required status checks, protected environments, review owners, artifact retention, issue-to-check mapping, release ritual, rollback playbook, setup checklist, and acceptance checks for the future private repo.
+- Admin-only First Backend File Content Export inside Command Center includes a downloadable file-content JSON handoff plus root shell files, API starter files, package starter files, workflow starter files, paste-ready previews, full file inventory, copy order, implementation guardrails, and acceptance checks for the future private backend repo.
+- Admin-only Private Repo Setup Script Draft inside Command Center includes a downloadable setup JSON handoff plus preflight checks, private repo creation commands, folder skeleton, starter-file writing plan, labels and milestones setup, first proof run, first PR sequence, branch protection timing, manual secret placeholders, safety gates, and acceptance checks for the future private backend repo.
+- Admin-only GitHub Labels and Milestones Import Pack inside Command Center includes a downloadable taxonomy JSON handoff plus label catalog, milestone catalog, board columns, issue routing rules, import sequence, GitHub CLI command preview, taxonomy files, quality gates, and acceptance checks for the future private backend repo.
+- Admin-only First Backend Commit QA Checklist inside Command Center includes a downloadable QA JSON handoff plus QA lanes, file QA matrix, proof commands, reviewer checks, artifact expectations, go/hold/no-go rules, role signoffs, first PR template checks, QA files, and acceptance checks for the future private backend repo.
+- Admin-only Private Repo Opening Day Runbook inside Command Center includes a downloadable runbook JSON handoff plus timed opening-day sequence, command blocks, issue import waves, evidence packets, owner checkpoints, live gates, no-go stops, and acceptance checks for the future private backend repo.
+- Admin-only Production Backend Repository Decision Memo inside Command Center includes a downloadable memo JSON handoff plus decision request, approval basis, scope cutline, evidence readiness, decision options, blocker register, approval checklist, next actions, risk controls, and acceptance checks for the future private backend repo.
+- Admin-only Backend Alpha Risk Register inside Command Center includes a downloadable risk JSON handoff plus risk domains, risk register, trigger matrix, mitigation plan, owner actions, decision rules, monitoring signals, residual risks, and acceptance checks for the future private backend repo.
+- Admin-only Backend Opening Day Evidence Pack inside Command Center includes a downloadable evidence JSON handoff plus evidence lanes, capture checklist, artifact file names, proof commands, screenshot plan, PR note sections, workflow check-name map, branch-protection proof, signoff trail, and acceptance checks for the future private backend repo.
+- Admin-only Private Repo Execution Checklist inside Command Center includes a downloadable checklist JSON handoff plus execution gates, opening-day timeline, operator checklist, stop rules, proof log, screenshot plan, command run order, issue wave, owner board, branch timing, and completion checks for the future private backend repo.
+- Admin-only Backend Alpha Control Board inside Command Center includes a downloadable board JSON handoff plus repo status, first PR status, issue wave status, evidence meters, CI check-name tracking, branch-protection timing, blocker queue, owner signoff lanes, GitHub signal map, decision log, and next-action queue for the future private backend repo.
+- Admin-only Private Repo Day One Script inside Command Center includes a downloadable script JSON handoff plus preflight checks, repo creation command blocks, branch and shell setup, taxonomy import, issue waves, first PR script, workflow check-name timing, branch protection rules, manual proof points, evidence files, owner prompts, stop rules, and closeout checks for the future private backend repo.
+- Admin-only Backend Repo Proof Exporter inside Command Center includes a downloadable proof JSON handoff plus evidence markdown templates, first PR body sections, screenshot checklist, command transcript slots, owner approval notes, closeout packet, export sequence, quality gates, and copy-ready snippets for the future private backend repo.
+- Pursuit Advisor turns live signals from Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminders into ranked next-best actions, decision prompts, management brief lines, and operating recommendations.
+- Weekly Review Room turns the same operating signals into a 55-minute agenda, owner-ready action register, leadership decision prompts, opening brief, closeout checklist, and management-pack handoff.
+- Intake Desk for controlled tender/project request capture, required-field validation, priority scoring, rework routing, and conversion into live records.
+- Import Studio for CSV or Excel-copied rows, template download, source workbook health, field coverage, duplicate reference checks, missing-field cleanup, preview before commit, and controlled clean-row import.
+- Import Normalization Lab routes messy Excel rows into operational tracker, commercial vault, governance evidence, and workflow action layers with staging signals, field mapping, commit gates, quarantine logic, and cleanup steps.
+- Data Migration Pack turns the current imported sample records into production migration planning with workbook batches, target schema, validation gates, dry-run paths, cutover runbook, rollback expectation, and audit handoff.
+- Governance Desk for audit trail, high-value review queue, access control visibility, policy health checks, and review approvals.
+- Governance Data Architecture panel separates Operational Tracker, Commercial Intelligence, and Governance Evidence layers with readiness, users, fields, and guard checks.
+- Clean Data Schema Room inside Governance maps the future SaaS database with tenant identity, operational tracker, commercial vault, evidence/workflow, billing tables, relationships, migration steps, and backend guardrails.
+- Backend Architecture Plan inside Governance maps the recommended SaaS stack, API groups, tenant security controls, request flow, deployment runway, and backend readiness signal.
+- Bid Desk for bid/no-bid decisions, submission readiness scoring, pack-ready status, deadline pressure, low-readiness cleanup, and audit-backed tender execution.
+- Review Calendar for overdue work, this-week movement, next-30-day pressure, eight-week planning, high-value diary checks, and no-date cleanup.
+- Risk Control Room for schedule, bid, commercial, delivery, value, and data risks with severity lanes, risk exposure, heatmap, critical queue, and mitigation rhythm.
+- Forecast Room for weighted pipeline value, next-90-day forecast, scenario range, conversion assumptions, date-window timing, client forecast, and at-risk forecast cleanup.
+- Inline table editing for Admin and Editor users.
+- Viewer-only role.
+- Tender, EOI, and project record types.
+- Compact daily-use tracker grid with type/category/owner metadata moved into the title cell to reduce horizontal scrolling.
+- Search, status/category/type filters, smarter action lanes, details panel, notes, CSV export.
+- Bottom-right floating search and scroll controls with a quick search overlay for jumping directly to records.
+- Cleaner product navigation keeps Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, and Reports visible while specialist modules sit inside a compact Rooms launcher.
+- Top navigation now separates daily work into Tenders, Tenders Insights, Projects, and Project Insights, with no All tab and no combined records pill.
+- Each main section is scoped to its own content so tender records, tender analytics, project records, and project analytics do not mix.
+- Quick search follows the current section, so tender pages search tender/EOI records and project pages search project records.
+- Commercial and billing material contained inside the dedicated Membership Model page, priced globally with Starter, Team, and Business USD packages, USD 5 extra operator seats, USD 15 manager/commercial seats, and optional onboarding/import setup fees.
+- Tenders and Projects are operational trackers only: commercial values, pricing, and negotiation money stay out of frontline worklists and live inside Insights, Forecast, Contracts, Reports, Advisor, and management rooms.
+- Monthly and annual prepaid billing views, with annual showing a two-month saving.
+- Admin-managed section access for each user across Command, Advisor, Weekly Review, Intake, Import, Governance, Bid Desk, Calendar, Risk, Tenders, Tenders Insights, Projects, Project Insights, Forecast, Clients, Contracts, Documents, Reminders, and Reports.
+- New users now default to operational tracker access only, while admins can deliberately add Insights, Forecast, Contracts, Reports, Governance, Import, or Documents access.
+- Dedicated admin-only Membership Model page beside the admin account control, with subscription builder, package selection, seat calculator, user access control, request preview, pilot sales package, plan comparison, and billing FAQ cards.
+- Membership Model now includes a v172 Payment Provider Webhook Blueprint that maps checkout and invoice events, signature verification, idempotency, tenant mapping, retry behavior, subscription state transitions, access effects, backend endpoints, proof artifacts, and downloadable webhook JSON.
+- Membership Model now includes a v175 Webhook Test Evidence Pack that turns the webhook blueprint into test payload fixtures, signature proof, replay proof, access-transition proof, billing audit rows, backend fields, and downloadable evidence JSON.
+- Membership Model now includes a v178 Webhook Evidence Runner Checklist that converts webhook proof into command steps, expected HTTP responses, fixture rows, screenshot evidence, audit IDs, pass/fail gates, and downloadable runner JSON.
+- Membership Model now includes a v179 Webhook Runner Operator Console that splits long runner commands into command, owner, timebox, expected result, proof file, release gate, and operator readiness cells.
+- Membership Model now includes a v180 Download Permission Test Matrix that proves tracker exports, commercial downloads, closeout PDFs, archive attachments, invoices, and webhook runner JSON against role scope, tenant checks, redaction rules, expected responses, proof files, and audit gates.
+- Membership Model now includes a v181 Webhook Failure Incident Playbook that turns failed, duplicate, wrong-tenant, partial-access, payment-grace, refund-review, and missing-audit webhook cases into owned recovery lanes, commands, customer-safe messages, and release gates.
+- Membership Model now includes a v183 Download Approval Review Board that turns sensitive download requests into approve, redact, hold, escalate, or reject decisions with owners, reviewers, proof, expiry posture, audit memory, and downloadable board JSON.
+- Membership Model now includes a v184 Webhook Incident Customer Notice Pack that creates privacy-safe admin, finance, support, internal, frontline, and executive notice templates with message rules, customer impact routing, closeout gates, and downloadable notice JSON.
+- Dedicated admin-only Pilot Pitch page beside Membership gives a buyer-facing one-pager for the first sales conversation: pain story, target buyers, USD packages, 30-day pilot path, proof points, and objection handling.
+- Pilot Pitch now includes a Customer Feedback Form Pack for capturing buyer role, pain, must-have outcome, commercial concern, decision date, owner, buying signals, objections, decision state, and follow-up motion.
+- Pilot Pitch now includes a Pilot ROI Calculator with monthly plan cost, setup estimate, saved coordination hours, follow-up control value, report-prep savings, payback months, confidence, and buyer-facing explanation lines.
+- Pilot Pitch now includes a v160 Pilot Proposal Export Pack with proposal ID, scope, success criteria, buyer questions, copy-ready proposal email, and downloadable proposal JSON.
+- Pilot Pitch now includes a v161 Customer Objection Playbook with price, Excel inertia, adoption, commercial privacy, system-weight, and decision-delay lanes plus proof paths, follow-up states, copy-ready reply language, and downloadable JSON.
+- Pilot Pitch now includes a v163 Pilot Proposal Acceptance Tracker that follows sent proposal, buyer reply, accepted scope, requested changes, renewal gate, closeout action, copy-ready acceptance email, and downloadable JSON.
+- Pilot Pitch now includes a v164 Buyer Decision Room that connects feedback, ROI, proposal, objections, and acceptance state into approve, revise, prove, park, or stop-chasing decisions with downloadable decision JSON.
+- Pilot Pitch now includes a v166 Pilot Invoice Request Pack that converts approved buyer decisions into invoice request, payment state, kickoff checklist, activation handoff, copy-ready invoice email, and downloadable invoice JSON.
+- Pilot Pitch now includes a v167 Pilot Kickoff Control Pack that converts invoice-ready buyers into kickoff dates, admin setup, workbook handoff, owner checklist, day-one runbook, adoption rhythm, launch locks, copy-ready kickoff email, and downloadable JSON.
+- Pilot Pitch now includes a v169 Pilot Payment State Simulator that models draft, open, paid, failed, grace, manual approval, access lock, active workspace states, provider events, access rules, billing risk controls, copy-ready payment email, and downloadable JSON.
+- Pilot Pitch now includes a v170 Pilot Adoption Health Monitor that tracks day-1, day-7, day-14, and day-30 usage signals, stuck users, workbook corrections, renewal risk, renewal proof rules, copy-ready adoption health email, and downloadable JSON.
+- Pilot Pitch now includes a v173 Pilot Renewal Decision Pack that turns adoption health, ROI confidence, sponsor feedback, payment state, and usage proof into renew, expand, pause, or backend-convert decisions with downloadable renewal JSON.
+- Pilot Pitch now includes a v176 Pilot Expansion Quote Builder that turns renewal proof into expansion seat plans, module add-ons, setup scope, sponsor approvals, next invoice options, and downloadable quote JSON.
+- Pilot Pitch now includes a v182 Expansion Approval Memory that captures sponsor approvals, finance holds, quote revisions, invoice choices, rollout authorization, approval closeout email, audit fields, and downloadable approval JSON.
+- Pilot Pitch now includes a v185 Expansion Invoice Acceptance Pack that turns approved expansion memory into invoice acceptance, paid-state proof, rollout locks, renewal handoff, copy-ready invoice acceptance email, and downloadable acceptance JSON.
+- Pilot Pitch now includes a v200 Famous Founder Demo Mode with a guided buyer route, talk track, objection rescue, 18-minute close plan, room launch buttons, and downloadable founder demo JSON.
+- Pilot Pitch now includes a v206 Demo-to-Pilot Conversion Board that combines demo replay, feedback, ROI, proposal proof, acceptance state, and buyer decision posture into one paid-pilot close surface with downloadable conversion JSON.
+- Pilot Pitch now includes a v207 Proposal Redaction Approval Gate that forces release, redact, review, or reject decisions before proof blocks become buyer-facing proposal language.
+- PursuitDesk now includes a v186 Pursuit Autopilot Brain as a top-level room beside Command, turning live tender/project records into mission lanes, privacy-safe owner actions, meeting script, and downloadable brain JSON.
+- PursuitDesk now includes a v187 Pursuit Time Machine as a top-level management room that simulates do-nothing, owner-push, management-intervention, and Autopilot futures with control ROI, preventable late records, protected value, record futures, and downloadable simulation JSON.
+- PursuitDesk now includes a v188 Pursuit Win Lab as a top-level strategy room that turns live pursuit records into win confidence, attack/protect/clarify/no-bid lanes, differentiators, relationship proof, bid-room memo, and downloadable strategy JSON.
+- PursuitDesk now includes a v189 Pursuit Decision Twin as a top-level what-if room that simulates management decisions before live tracker changes, showing projected health lift, decision moves, protected value, board memo, and downloadable twin JSON.
+- PursuitDesk now includes a v190 Decision Twin Approval Ledger that converts simulated moves into approved, held, deferred, and actual-review decisions with owner, evidence, expected lift, guardrails, and downloadable twin JSON.
+- PursuitDesk now includes a v191 Win Lab Task Dispatch layer that converts win posture into owner-ready task packets with lock state, SLA, evidence request, review gate, copy-ready message, and downloadable dispatch JSON.
+- PursuitDesk now includes a v192 Pursuit Twin Outcome Replay layer that compares predicted lift against actual movement with replay score, proof state, lift variance, next action, learning lanes, and downloadable replay JSON.
+- PursuitDesk now includes a v193 Twin Decision Inbox layer that routes replay outcomes into owner packets with due dates, evidence requests, reply states, closeout notes, inbox score, and downloadable inbox JSON.
+- PursuitDesk now includes a v194 Dispatch Evidence Closeout layer that turns Win Lab dispatch packets into proof packs, outcome states, release gates, reusable response memory, closeout notes, file manifests, and downloadable closeout JSON.
+- PursuitDesk now includes a v195 Replay Learning Memory layer that turns Decision Twin replay outcomes into reusable management rules with triggers, anti-patterns, scripts, confidence, evidence gates, source replay IDs, and downloadable learning JSON.
+- PursuitDesk now includes a v196 Header Navigation Guardrail that filters blank navigation labels, keeps core rooms in the main strip, moves advanced rooms into Rooms, and prevents clipped empty pills when sections are hidden or access-controlled.
+- PursuitDesk now includes a v197 Decision SLA Autopilot layer that gives Decision Twin inbox packets SLA clocks, breach states, escalation owners, owner nudges, weekly review lines, next-run dates, and downloadable autopilot JSON.
+- PursuitDesk now includes a v198 Proof-to-Response Library layer that converts Win Lab evidence closeouts into approved response snippets, reusable Q&A prompts, source closeout IDs, redaction rules, approval memory, and downloadable response-library JSON.
+- PursuitDesk now includes a v199 Learning Rule Approvals layer that lets management approve, test, freeze, or retire learned replay rules before they influence Advisor, Weekly Review, Reports, or future simulations.
+- PursuitDesk now includes a v200 Famous Founder Demo Mode inside Pilot Pitch, turning the product into a buyer-ready founder walkthrough across pressure, privacy, control, intelligence, and a 30-day pilot close.
+- PursuitDesk now includes a v201 Proof Library Search layer inside Win Lab, finding reusable response snippets by buyer, category, proof source, approval state, reuse rule, match score, and redaction guardrail.
+- PursuitDesk now includes a v202 Rule Impact Simulator inside Decision Twin, testing approved, test-only, frozen, and retired learning rules before they influence guidance, scores, reports, or management rooms.
+- PursuitDesk now includes a v203 Customer Demo Replay Recorder inside Pilot Pitch, converting founder-demo buyer reactions into replay scores, proof-to-repeat lanes, next-meeting playbook, copy-ready follow-up email, and downloadable replay JSON.
+- PursuitDesk now includes a v204 Proposal Proof Composer inside Pilot Pitch, turning Win Lab proof search into cited proposal answer blocks with approval state, redaction checks, reuse rules, proof addendum email, and downloadable proof JSON.
+- PursuitDesk now includes a v205 Rule Change Audit Trail inside Decision Twin, turning learning-rule promotions, retests, frozen states, and blocked decisions into reviewer-ready audit events with release gates, rollback triggers, evidence gates, and downloadable audit JSON.
+- PursuitDesk now includes a v206 Demo-to-Pilot Conversion Board inside Pilot Pitch, turning scattered buyer signals into a conversion score, lane board, close playbook, and copy-ready follow-up email for first paid pilots.
+- PursuitDesk now includes a v207 Proposal Redaction Approval Gate inside Pilot Pitch, turning proposal proof into reviewer-controlled release, redaction, review, and rejection lanes with buyer-safe text and audit-ready approval JSON.
+- PursuitDesk now includes a v208 Rule Reopen Review Queue inside Decision Twin, requiring reason code, evidence request, owner action, reviewer decision, due date, rollback, and audit memory before audited learning rules can return to guidance.
+- PursuitDesk now includes a v209 Pilot Close Probability Simulator inside Pilot Pitch, forecasting close now, revise offer, park with date, or stop pursuit using conversion, feedback, ROI, proof, redaction, and buyer reply signals.
+- PursuitDesk now includes a v210 Buyer-Safe Proposal Export inside Pilot Pitch, producing a customer-ready proposal email and JSON that includes only released or redacted proof while holding internal blocks out of the buyer version.
+- PursuitDesk now includes a v211 Rule Reopen Outcome Replay inside Decision Twin, replaying approve, hold, retest, and reject reopen decisions against actual signal, proof, health lift, risk change, next action, and audit memory.
+- PursuitDesk now includes a v212 Pilot Close Outcome Memory inside Pilot Pitch, recording won, revised, parked, and stopped buyer outcomes so future pilot forecasts learn from real close results.
+- PursuitDesk now includes a v213 Proposal Send Audit Receipt inside Pilot Pitch, recording proposal version, included proof, held proof, sender, timestamp, privacy checks, follow-up obligation, and audit event.
+- PursuitDesk now includes a v214 Rule Reopen Outcome Memory inside Decision Twin, promoting replayed reopen outcomes into trusted, held, test-only, or anti-pattern memory with influence surfaces, guardrails, Advisor lines, Report lines, next review dates, and downloadable JSON.
+- PursuitDesk now includes a v215 Pilot Outcome Forecast Tuner inside Pilot Pitch, turning won, revised, parked, and stopped close outcome memory into tuned probability deltas, future forecast rules, founder follow-up rules, review dates, and downloadable JSON.
+- PursuitDesk now includes a v216 Proposal Send Follow-up Tracker inside Pilot Pitch, turning sent proposal receipts into buyer reply states, late reminders, escalation owners, next close actions, founder-ready messages, and downloadable JSON.
+- PursuitDesk now includes a v217 Decision Memory Influence Switchboard inside Decision Twin, letting admins decide whether each governed memory can influence Advisor, Reports, Decision Twin scoring, Governance, or protective guardrails.
+- PursuitDesk now includes a v218 Pilot Follow-up Reply Memory inside Pilot Pitch, turning buyer replies into accepted, revised, delayed, silent, or stopped close-cycle memory with confidence, privacy, influence flags, founder reply text, and downloadable JSON.
+- PursuitDesk now includes a v219 Founder Close Command Script inside Pilot Pitch, converting reply memory into a morning command list for who to chase, what to say, what proof to request, which deadline matters, and when to stop.
+- PursuitDesk now includes a v220 Memory Influence Audit Diff inside Decision Twin, showing before-and-after effects for Advisor, Reports, Decision Twin scoring, privacy, risk, and audit gates whenever memory influence is enabled, simulated, held, or blocked.
+- PursuitDesk now includes a v221 Pilot Reply Pattern Library inside Pilot Pitch, turning accepted, revised, delayed, silent, and stopped buyer memories into reusable sales patterns with proof paths, reply angles, anti-patterns, stop rules, and downloadable JSON.
+- PursuitDesk now includes a v222 Founder Close Outcome Receipt inside Pilot Pitch, turning each founder close command into proof of sent message, buyer answer, next action, proof state, closeout result, renewal hint, and downloadable JSON.
+- PursuitDesk now includes a v223 Memory Diff Release Notes layer inside Decision Twin, turning memory influence audit diffs into internal admin change logs and buyer-safe release notes with privacy filters, approval gates, and downloadable JSON.
+- PursuitDesk now includes a v224 Pattern-to-Demo Coach inside Pilot Pitch, turning reply patterns into founder-ready demo moves with opening lines, screen routes, proof moments, control questions, handoff moves, stop rules, and downloadable JSON.
+- PursuitDesk now includes a v225 Receipt-to-Renewal Signal inside Pilot Pitch, converting founder close receipts into renew, expand, conditional, park, or stop guidance with evidence asks, success questions, due labels, audit events, and downloadable JSON.
+- PursuitDesk now includes a v226 Release Note Approval Board inside Decision Twin, gating memory release notes through publish, internal-test, evidence-hold, or reject decisions with approver roles, evidence requirements, buyer-safe approval, audit events, and downloadable JSON.
+- PursuitDesk now includes a v227 Demo Coach Replay Score inside Pilot Pitch, scoring whether coached demo moves created buyer movement and feeding the result into reply memory, close forecast deltas, next demo adjustments, and downloadable JSON.
+- PursuitDesk now includes a v228 Renewal Signal Replay Board inside Pilot Pitch, replaying receipt-to-renewal signals against adoption health, payment state, active usage, buyer response proof, commercial holds, forecast deltas, and downloadable JSON.
+- PursuitDesk now includes a v229 Buyer-Safe Changelog Publisher inside Decision Twin, converting approved release notes into customer-ready changelog entries with audience, channel, publish window, proof lock, privacy lock, rollback copy, readiness score, and downloadable JSON.
+- PursuitDesk now includes a v230 Coach-to-Close Learning Publisher inside Pilot Pitch, converting promoted demo-coach replay rows into founder scripts, reply-memory rules, forecast rules, next-demo adjustments, stop rules, proof requirements, privacy locks, close-lift scores, and downloadable JSON.
+- PursuitDesk now includes a v231 Renewal-to-Invoice Trust Publisher inside Pilot Pitch, converting trusted renewal replay rows into invoice asks, sponsor review scripts, customer-success memory, finance gates, rollout gates, and downloadable JSON.
+- PursuitDesk now includes a v232 Customer Changelog Reaction Tracker inside Decision Twin, converting buyer-safe changelog entries into sponsor reactions, commercial signals, objections, follow-up timing, Pilot Pitch signals, and downloadable JSON.
+- PursuitDesk now includes a v233 Founder Script Outcome Tracker inside Pilot Pitch, measuring whether founder close scripts create invoice movement, revision replies, timed pauses, or stop signals with confidence delta, Advisor feedback, and downloadable JSON.
+- PursuitDesk now includes a v234 Invoice Outcome Memory inside Pilot Pitch, converting renewal invoice asks into paid, revised, held, or reopen-only finance and customer-success memory with received value, proof gates, confidence delta, and downloadable JSON.
+- PursuitDesk now includes a v235 Sponsor Reply Outcome Memory inside Decision Twin, converting customer changelog reactions into actual sponsor reply outcomes with movement signals, proof needs, customer-success actions, Pilot Pitch learning, privacy gates, and downloadable JSON.
+- PursuitDesk now includes a v236 Invoice Reply Evidence Memory inside Pilot Pitch, converting invoice and revision replies into reusable proof, evidence blockers, renewal learning, finance learning, customer-success actions, privacy gates, and downloadable JSON.
+- PursuitDesk now includes a v237 Finance-to-Success Handoff Memory inside Pilot Pitch, connecting invoice reply evidence to access rollout, support owners, success proof, renewal review, privacy gates, and downloadable JSON.
+- PursuitDesk now includes a v238 Sponsor Reply Playbook Publisher inside Decision Twin, turning sponsor reply outcomes into buyer-safe scripts, proof requests, customer-success playbooks, privacy filters, owner actions, and downloadable JSON.
+- PursuitDesk now includes a v239 Invoice Evidence Playbook Publisher inside Pilot Pitch, turning invoice reply evidence into guarded finance scripts, proof tasks, revision scripts, renewal review scripts, privacy filters, and downloadable JSON.
+- PursuitDesk now includes a v240 Success Handoff Playbook Publisher inside Pilot Pitch, turning finance-to-success handoff memory into onboarding scripts, access tasks, support-owner packets, renewal proof requests, privacy filters, and downloadable JSON.
+- PursuitDesk now includes a v241 Sponsor Playbook Outcome Tracker inside Decision Twin, measuring whether published sponsor playbooks created proof calls, Pilot Pitch movement, customer-success action, blocked follow-up, privacy gates, and downloadable JSON.
+- PursuitDesk now includes a v242 Invoice Playbook Outcome Tracker inside Pilot Pitch, measuring whether published invoice playbooks created paid proof, revision approval, proof completion, protected no-chase decisions, privacy gates, and downloadable JSON.
+- PursuitDesk now includes a v243 Success Playbook Outcome Tracker inside Pilot Pitch, measuring whether published success playbooks created access activation, first-login proof, renewal proof, proof-sprint completion, protected rollout holds, privacy gates, and downloadable JSON.
+- PursuitDesk now includes a v244 Playbook Outcome Control Board inside Pilot Pitch, comparing sponsor, invoice, and success playbook outcomes in one management surface with reusable outcomes, proof gaps, blocked motion, privacy gates, and downloadable JSON.
+- Closeout now includes a v159 SLA and Escalation Clock with archive ageing, overdue lanes, due-now warnings, reviewer nudges, owner actions, management closeout lines, and downloadable SLA JSON.
+- Closeout now includes a v162 Closeout Exception Approval Queue that turns SLA pressure into approve, hold, defer, reopen, or reject decisions with approver roles, owner actions, management notes, and downloadable exception JSON.
+- Closeout now includes a v165 Closeout Exception Evidence Bundle that turns exception decisions into proof requests, named evidence files, owner reminders, release notes, management lines, and downloadable evidence JSON.
+- Closeout now includes a v168 Closeout Evidence PDF Cover Sheet that turns evidence bundle rows into printable front pages, proof indexes, approver signatures, release checklist, PDF QA notes, management cover script, and downloadable JSON.
+- Closeout now includes a v171 Closeout PDF Render Workflow that adds PDF render status, storage URL, printed-by audit, signature completion, metadata file, archive attachment state, release gates, and downloadable render JSON.
+- Closeout now includes a v174 Closeout Archive Attachment Register that tracks archive attachment IDs, storage provider paths, checksum proof, retention release state, download audit events, and downloadable attachment JSON.
+- Closeout now includes a v177 Attachment Download Audit Evidence Pack that proves archive downloads with actor, reason, checksum verification, retention release, denied-download rows, management evidence, and downloadable audit JSON.
+- Membership Model now includes a Checkout Blueprint panel so admins can see how the selected plan becomes checkout session, invoice state, webhook verification, seat sync, access state, and billing audit.
+- Membership access blueprints show Operations User, Pursuit Manager, and Control Admin templates so buyers can understand who should see operational, commercial, and governance rooms.
+- Admins can apply those access templates directly to users from the Membership access table, with changes written into the audit trail.
+- Admins can preview any non-admin user's workspace from Membership, seeing the exact enabled navigation and access profile with a clear Exit Preview control.
+- Membership Model is no longer grantable to editors or viewers; it appears only for company admins and is blocked by the same access guard if a non-admin tries to open it directly.
+- Tenders and Projects now include an operational privacy panel that confirms commercial fields are locked away from the frontline tracker while showing readiness, user split, and a controlled Insights handoff.
+- Tenders and Projects now include Frontline Work Scopes for all records, due watch, no date, missing owner, and ready rhythm so daily users can jump straight to the right operational list.
+- Tenders and Projects now include an Owner Focus panel showing the highest-load owners, due-watch counts, no-date counts, and one-click owner filtering.
+- Tracker pages now use a compact command surface that combines privacy, readiness, access split, and work scopes above the sheet while moving owner/action intelligence below the table.
+- Tracker pages now use a sheet-first density pass: compact KPI tiles and shorter command controls bring the editable records higher on desktop.
+- Tracker sheets now remove the duplicated column-guide row and rely on the real sticky table header for a cleaner spreadsheet feel.
+- v69 tightens the tracker surface with a denser toolbar, slimmer work-scope command strip, shorter insight handoff, and a compact record profile strip in the detail panel.
+- v70 sharpens the tracker controls again with shorter action labels, a flatter toolbar, and a simplified Open Insights handoff button.
+- v71 adds row-level operating chips in Tenders and Projects so each sheet row shows scope, owner, and live signal without exposing commercial fields.
+- v72 upgrades Tenders Insights and Project Insights into management-room pages with an executive command brief, management review queue, review talking points, and a control checklist above the analytics.
+- v73 adds an Insight Action Pack to Tenders Insights and Project Insights with first move, owner handoff, control gate, and board output cards, plus richer management review exports.
+- v74 adds a Management Run Sheet to Tenders Insights and Project Insights, turning each room into an 18-minute review flow for posture, decision, owner handoff, date control, exposure check, and pack closeout.
+- v75 adds a Decision Ledger to Tenders Insights and Project Insights, showing decision, owner, due signal, expected output, and direct record actions, with the ledger included in management exports.
+- v76 adds a Commitment Board to Tenders Insights and Project Insights, turning ledger decisions into owner, timing, proof, and record-linked follow-through cards that also export with the management pack.
+- v77 adds an Escalation Radar to Tenders Insights and Project Insights, highlighting executive push, owner capacity, value protection, and control gaps on screen and in the management export.
+- v78 adds a Review Minutes Composer to Tenders Insights and Project Insights, drafting opening notes, decisions, commitments, escalations, and closeout lines with a dedicated minutes export.
+- v79 adds a Review Dispatch Queue to Tenders Insights and Project Insights, converting commitments and escalations into owner-ready follow-up notes with a dedicated dispatch export.
+- v80 adds an admin-only Build Tracker inside Command Center, showing current phase, prototype progress, SaaS readiness, done/active/next phases, roadmap queue, and production blockers.
+- v81 adds a Clean Data Schema Room inside Governance, mapping future SaaS tables, fields, relationships, migration steps, guardrails, and current data readiness.
+- v82 adds a Backend Architecture Plan inside Governance, turning the schema map into a practical SaaS stack, API, security, data-flow, and deployment roadmap.
+- v83 upgrades Import Studio with an Import Normalization Lab for Excel-to-SaaS staging, routing, field mapping, quarantine, commit gates, and cleanup sequence.
+- v84 adds an admin-only Pilot Readiness Checklist inside Command Center with launch score, readiness lanes, launch sequence, decision gates, blockers, users, access, data, backend, billing, and feedback checks.
+- v85 adds an admin-only SaaS Conversion Sprint inside Command Center, turning the prototype into a practical MVP bridge across API groups, database objects, first backend sprint, repo structure, production gates, and engineering handoff.
+- v86 adds an admin-only Production Security Model inside Command Center, defining identity/session controls, tenant isolation, permissions, commercial privacy, audit retention, backup, monitoring, access matrix, and live-data gates.
+- v87 adds an admin-only Billing Checkout Blueprint inside Command Center and a Membership checkout blueprint, mapping checkout sessions, invoices, seat reconciliation, subscription webhooks, plan changes, access locks, and billing audit gates.
+- v88 adds a Data Migration Pack inside Command Center and Import Studio, mapping source inventory, target tables, migration batches, validation gates, dry-run cases, cutover sequence, rollback, reconciliation, and backend import handoff.
+- v89 adds an admin-only Pilot Feedback Room inside Command Center, mapping UAT feedback lanes, adoption score, open blockers, success metrics, feedback form fields, two-week pilot runbook, launch decisions, and customer-success handoff.
+- v90 adds an admin-only Backend Repository Scaffold inside Command Center, mapping apps, API, database migrations, domain packages, billing, importer, audit, infrastructure, environments, tests, and first production sprints.
+- v91 adds an admin-only Security Test Pack inside Command Center, mapping tenant isolation, access control, commercial privacy, audit immutability, import rollback, monitoring, release gates, and automated QA coverage.
+- v92 adds an admin-only Billing Test Pack inside Command Center, mapping checkout sessions, invoice states, webhook events, seat limits, plan changes, access locks, billing audit, automation, and paid-rollout gates.
+- v93 adds an admin-only Migration Test Pack inside Command Center, mapping workbook dry run, source trace, staging validation, duplicate quarantine, commercial split, commit, rollback, reconciliation, automation, and onboarding release gates.
+- v94 adds an admin-only Pilot Feedback Persistence room inside Command Center, mapping feedback tables, UAT form fields, feedback API contracts, owner workflow, retest status, sponsor exports, audit decisions, and paid-pilot memory gates.
+- v95 adds an admin-only Backend MVP Ticket Board inside Command Center, mapping foundation, tenant identity, auth, access, records API, commercial vault, import, billing, feedback, audit, tests, deployment, schema slices, and release gates.
+- v96 adds an admin-only Production Hosting Runbook inside Command Center, mapping domains, environments, frontend hosting, API hosting, database, object storage, secrets, monitoring, backups, deployment checklist, rollback steps, and live-data approval gates.
+- v97 adds an admin-only Customer Success Desk inside Command Center, mapping onboarding, training, adoption rhythm, support queue, renewal risk, expansion signals, 30-day cadence, success gates, and post-pilot handoff for the first paying customer.
+- v98 adds an admin-only Backend Repo Starter Pack inside Command Center, mapping apps, packages, infrastructure, docs, setup commands, environment files, GitHub issue groups, branch plan, starter files, and backend alpha checkpoints.
+- v99 adds an admin-only Launch Control Center inside Command Center, mapping launch score, go/no-go status, readiness workstreams, live-data gates, launch-day runbook, owner matrix, launch packet, risk register, decision memo, and launch handoff.
+- v100 adds an admin-only Production MVP Alpha Plan inside Command Center, mapping the first real SaaS alpha scope, deliberate non-goals, A0-A5 milestones, acceptance criteria, API cutline, data contracts, pilot constraints, exit gates, day-one backlog, and implementation handoff.
+- v101 adds an admin-only Private Backend Repo Kickoff inside Command Center, mapping the first private production repo name, visibility, owner matrix, folder ownership, setup commands, branch workflow, issue batches, seed package, CI gates, sprint-zero plan, and repo handoff.
+- v102 adds an admin-only Implementation Issue Export inside Command Center, converting backend MVP tickets into GitHub-ready issues with batches, labels, milestones, owners, definitions of done, acceptance tests, opening order, issue body template, and import steps.
+- v103 adds an admin-only Alpha API Contract Pack inside Command Center, mapping auth, users, records, commercial vault, import, billing, feedback, and audit route contracts with guards, payloads, responses, error model, audit catalog, contract tests, and implementation order.
+- v104 adds an admin-only Seed Data and Migration Fixture Pack inside Command Center, mapping tenant seed, users, operational records, commercial vault facts, workbook import batches, audit seed events, migration assertions, fixture files, backend smoke tests, and release gates.
+- v105 adds an admin-only Private Repo Creation Guide inside Command Center, mapping the exact GitHub repo setup order, private visibility, labels, milestones, branch protection, project board, staging secrets, first files, issue opening plan, setup commands, and validation gates.
+- v106 adds an admin-only Staging Smoke Test Script inside Command Center, mapping environments, smoke commands, critical user paths, seed fixture coverage, role-access checks, failure rules, evidence artifacts, acceptance gates, and staging handoff.
+- v107 adds an admin-only Backend Fixture Export inside Command Center, with a downloadable backend fixture JSON manifest, export table map, seed commands, privacy split, validation scenarios, source batch ledger, and private-repo handoff.
+- v108 adds an admin-only First Backend Sprint Checklist inside Command Center, with a downloadable sprint JSON checklist, day-by-day sprint calendar, workstream lanes, opening backend tickets, PR gates, sprint acceptance checks, daily rhythm, and risk rules.
+- v109 adds an admin-only Staging Deployment Checklist inside Command Center, with a downloadable deployment JSON checklist, staging environment lanes, secret inventory, deployment runbook, database checks, monitoring checks, rollback plan, go/no-go gates, owner matrix, and release handoff.
+- v110 adds an admin-only Backend Route Skeleton Map inside Command Center, with a downloadable route JSON handoff, exact route files, controllers, services, validators, middleware stack, route tests, folder boundaries, and implementation slices for the future private backend repo.
+- v111 adds an admin-only Database Migration Blueprint inside Command Center, with a downloadable migration JSON handoff, ordered migration files, table ownership, index plan, seed order, rollback rules, validation gates, migration commands, data contracts, and tenant-first guardrails.
+- v112 adds an admin-only Auth and Tenant Guard Blueprint inside Command Center, with a downloadable guard JSON handoff, guard implementation files, middleware order, section permission matrix, tenant isolation rules, denied audit events, session policies, route guard map, and backend guard tests.
+- v113 adds an admin-only Backend Test Command Pack inside Command Center, with a downloadable test-command JSON handoff, local command suite, GitHub Actions lanes, proof artifacts, coverage matrix, fixture-command bindings, failure policies, release gates, and developer runbook.
+- v114 adds an admin-only Production Backend Repo File Pack inside Command Center, with a downloadable repo-file JSON handoff, folder tree, first commit files, API file batches, migration files, auth guard files, test files, GitHub workflows, env examples, copy order, owners, and acceptance checks.
+- v115 adds an admin-only API Error and Audit Envelope Pack inside Command Center, with a downloadable envelope JSON handoff, standard safe error body, request-id trace, audit envelope fields, route coverage, denial proof cases, middleware files, test bindings, response examples, and backend acceptance checks.
+- v116 adds an admin-only CI Workflow File Blueprint inside Command Center, with a downloadable workflow JSON handoff, GitHub Actions files, CI job matrix, artifact plan, cache strategy, secrets policy, branch protection rules, command bindings, release gates, and workflow examples.
+- v117 adds an admin-only Private Repo First Commit Builder inside Command Center, with a downloadable first-commit JSON handoff, root shell files, API starter files, package boundaries, workflow file contents, script bindings, env examples, copy-paste order, acceptance checks, and first commit examples.
+- v118 adds an admin-only Backend Issue Body Exporter inside Command Center, with a downloadable issue JSON handoff, copy-ready backend issue bodies, issue batches, labels, milestones, command proof map, opening order, reusable templates, and acceptance checks.
+- v119 adds an admin-only Branch Protection and Release Checklist inside Command Center, with a downloadable release JSON handoff, protected branch rules, required status checks, protected environments, review ownership, artifact retention, issue-to-check mapping, release ritual, rollback playbook, setup checklist, and acceptance checks.
+- v120 adds an admin-only First Backend File Content Export inside Command Center, with a downloadable file-content JSON handoff, root shell files, API starter files, package starter files, workflow starter files, paste-ready previews, full inventory, copy order, implementation guardrails, and acceptance checks.
+- v121 adds an admin-only Private Repo Setup Script Draft inside Command Center, with a downloadable setup JSON handoff, preflight checks, private repo creation commands, folder skeleton, starter-file writing plan, labels and milestones setup, first proof run, first PR sequence, branch protection timing, manual secret placeholders, safety gates, and acceptance checks.
+- v122 adds an admin-only GitHub Labels and Milestones Import Pack inside Command Center, with a downloadable taxonomy JSON handoff, label catalog, milestone catalog, board columns, issue routing rules, import sequence, GitHub CLI command preview, taxonomy files, quality gates, and acceptance checks.
+- v123 adds an admin-only First Backend Commit QA Checklist inside Command Center, with a downloadable QA JSON handoff, QA lanes, file QA matrix, proof commands, reviewer checks, artifact expectations, go/hold/no-go rules, role signoffs, first PR template checks, QA files, and acceptance checks.
+- v124 adds an admin-only Private Repo Opening Day Runbook inside Command Center, with a downloadable runbook JSON handoff, timed opening-day sequence, command blocks, issue import waves, evidence packets, owner checkpoints, live gates, no-go stops, and acceptance checks.
+- v125 adds an admin-only Production Backend Repository Decision Memo inside Command Center, with a downloadable memo JSON handoff, decision request, approval basis, scope cutline, evidence readiness, decision options, blocker register, approval checklist, next actions, risk controls, and acceptance checks.
+- v126 adds an admin-only Backend Alpha Risk Register inside Command Center, with a downloadable risk JSON handoff, risk domains, formal risk register, trigger matrix, mitigation plan, owner actions, decision rules, monitoring signals, residual risks, acceptance checks, and a refreshed build tracker.
+- v127 adds an admin-only Backend Opening Day Evidence Pack inside Command Center, with a downloadable evidence JSON handoff, proof file naming plan, capture checklist, command transcript expectations, screenshot plan, PR note sections, workflow check-name map, branch-protection evidence, owner signoff trail, and refreshed build tracker.
+- v128 adds an admin-only Private Repo Execution Checklist inside Command Center, with a downloadable checklist JSON handoff, execution gates, opening-day timeline, operator checks, stop and hold rules, proof logs, screenshot plan, command run order, issue wave, owner board, branch timing, completion checks, and a refreshed build tracker.
+- v129 adds an admin-only Backend Alpha Control Board inside Command Center, with a downloadable board JSON handoff, control lanes, ready/proof/waiting/blocked swimlanes, blocker queue, evidence meters, first PR controls, GitHub source-of-truth map, decision log, next-action queue, and refreshed build tracker.
+- v130 adds an admin-only Private Repo Day One Script inside Command Center, with a downloadable script JSON handoff, exact command blocks, preflight checks, manual proof points, evidence files, issue wave script, first PR script, branch protection timing, stop rules, owner prompts, closeout checks, and refreshed build tracker.
+- v131 adds an admin-only Backend Repo Proof Exporter inside Command Center, with a downloadable proof JSON handoff, evidence markdown templates, PR body sections, screenshot checklist, command transcript slots, owner approvals, closeout packet, export sequence, quality gates, copy-ready snippets, and refreshed build tracker.
+- v132 adds an admin-only GitHub Repo Opening Packet inside Command Center, with a downloadable opening JSON handoff, repo identity, owner matrix, issue wave, first PR starter, artifact manifest, opening sequence, launch files, risk locks, closeout ledger, copy-ready text, and refreshed build tracker.
+- v133 adds an admin-only Backend Alpha Issue Import Kit inside Command Center, with a downloadable import JSON handoff, CSV-style issue rows, owner lanes, label and milestone mapping, import waves, body-file names, validation gates, paste checks, import files, acceptance checks, and refreshed build tracker.
+- v134 adds an admin-only First PR Body Builder inside Command Center, with a downloadable PR JSON handoff, PR identity, executive summary, scope checklist, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback plan, release checklist, copy-ready PR sections, and refreshed build tracker.
+- v135 adds an admin-only Repo Evidence Folder Writer inside Command Center, with a downloadable evidence JSON handoff, docs/evidence folder tree, markdown proof templates, screenshot slots, transcript slots, issue trace ledger, owner signoff files, branch-proof gates, closeout notes, copy-ready markdown, and refreshed build tracker.
+- v136 adds an admin-only Private Repo Command Runner Pack inside Command Center, with a downloadable command-runner JSON handoff, preflight commands, exact repo-day runbook, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, closeout checks, copy-ready commands, and refreshed build tracker.
+- v137 adds an admin-only Backend PR Review Gate Matrix inside Command Center, with a downloadable review-gate JSON handoff, reviewer lanes, decision gates, evidence review map, hold queue, block rules, merge-readiness checklist, reviewer packets, PR comment templates, and refreshed build tracker.
+- v138 adds an admin-only Evidence Artifact Status Board inside Command Center, with ready/hold/deferred/blocked artifact lanes, screenshot and transcript capture status, issue and signoff deferrals, branch-proof blockers, escalation queue, source-of-truth map, quality rules, and downloadable JSON handoff.
+- v139 adds an admin-only Private Repo Handoff Email Pack inside Command Center, with copy-ready owner email, recipient lanes, evidence link bundle, approval language, briefing agenda, send checklist, follow-up cadence, safety disclaimers, and downloadable JSON handoff.
+- v140 adds an admin-only First Backend PR Review Comment Pack inside Command Center, with copy-ready GitHub review comments, reviewer packets, inline snippets, review decision board, send checklist, reply handling, no-leak signoff, request-changes language, merge closeout text, and downloadable JSON handoff.
+- v141 adds an admin-only Private Repo Evidence Closeout Pack inside Command Center, with passed/held/blocked/deferred outcome lanes, no-leak and rollback checks, owner closeout queue, decision log, management summary lines, copy-ready closeout note, and downloadable JSON handoff.
+- v142 adds an admin-only Backend Repo Day Meeting Pack inside Command Center, with facilitator script, agenda blocks, attendee roles, decision capture board, owner action queue, evidence outputs, risk parking lot, meeting timeline, management brief, and downloadable JSON handoff.
+- v143 adds an admin-only Private Repo Reply Capture Board inside Command Center, with reviewer reply lanes, reply states, thread capture checklist, requested-changes resolver, approval readiness, merge readiness gates, reply SLA cadence, management reply brief, copy-ready reply log, and downloadable JSON handoff.
+- v144 adds an admin-only Evidence Closeout PDF Export Plan inside Command Center, with PDF page blueprint, printable sections, redaction checks, export QA gates, distribution lanes, archive naming rules, management closeout lines, copy-ready export brief, and downloadable JSON handoff.
+- v145 adds an admin-only Backend Meeting Minutes Exporter inside Command Center, with attendance log, minutes sections, decision register, owner action queue, management email blocks, follow-up cadence, privacy and audit checks, copy-ready minutes, and downloadable JSON handoff.
+- v146 adds an admin-only Reviewer Decision Email Pack inside Command Center, with reviewer lanes, decision-state templates, response triggers, send checklist, escalation cadence, privacy guardrails, management summary blocks, copy-ready reviewer emails, and downloadable JSON handoff.
+- v147 moves the full Build Tracker, phase map, and admin build artifact bundle out of Command Center into a new admin-only Build Phase tab after Rooms, keeping the daily operating cockpit shorter while preserving roadmap, next builds, blockers, backend packs, and SaaS-readiness detail.
+- v148 adds a Closeout room under Rooms, giving awarded, completed, cancelled, and regret records an archive control board with Ready archive, Needs evidence, Needs owner/date, and Learning loop lanes while keeping frontline commercial figures out of the tracker.
+- v149 adds a Closeout Export Packet inside the Closeout room, with packet ID, archive folder, release gate, retention marker, release checklist, copy-ready management brief, ready archive sample, evidence-gap queue, and downloadable JSON handoff.
+- v150 adds Lessons Learned Intelligence inside Closeout, turning closed outcomes into repeat client memory, category patterns, evidence controls, owner/date gaps, stopped-work lessons, next-cycle rules, management brief lines, and downloadable JSON handoff.
+- v151 adds an Archive Permission Gate inside Closeout, showing who can close records, prepare packets, approve release, reopen archive, export JSON, and view commercial closeout context with route guards, denied states, audit events, and downloadable permission JSON.
+- v152 adds a Closeout Reopen Workflow inside Closeout, turning archive exceptions into reasoned reopen requests with approver decision, owner handoff, next action, route guards, commercial redaction, audit events, and downloadable reopen JSON.
+- v153 adds Closeout Approval Memory inside Closeout, capturing who approved the packet, what changed, which standard rule became normal, owner handoff, commercial redaction, audit chain, management memory lines, and downloadable approval-memory JSON.
+- v154 adds an Archive Retention Calendar inside Closeout, giving closed records evidence review dates, annual review timing, seven-year retention posture, exception lanes, owner handoff, management brief, and downloadable retention JSON.
+- v155 adds a market pilot pricing pack inside Membership Model, replacing the flat-only seat story with Starter, Team, Business, extra operator seats, manager/commercial seats, setup/import fees, and a buyer-ready pilot sales package.
+- v156 adds an admin-only Pilot Pitch one-pager beside Membership, converting the pricing pack into a buyer-ready pitch with value proposition, buyer fit, proof stats, 30-day pilot path, package cards, and objection handling.
+- v157 adds a Customer Feedback Form Pack inside Pilot Pitch, turning demo reactions into feedback score, buyer-role fields, pain capture, commercial concern, decision states, buying-signal cards, objection handling, and follow-up templates.
+- v158 adds a Pilot ROI Calculator inside Pilot Pitch, turning plan cost, setup fee, saved admin hours, follow-up control, report-prep savings, payback months, and ROI confidence into a buyer-ready value story.
+- v159 adds a Closeout SLA and Escalation Clock inside Closeout, turning archived records into ageing lanes, overdue escalation, due-now warnings, reviewer nudges, owner actions, and a downloadable SLA handoff.
+- v160 adds a Pilot Proposal Export Pack inside Pilot Pitch, turning selected plan, setup scope, buyer feedback, ROI assumptions, success criteria, and buyer questions into downloadable proposal JSON and a copy-ready customer email.
+- v161 adds a Customer Objection Playbook inside Pilot Pitch, turning price, Excel inertia, adoption, privacy, system-weight, and decision-delay objections into proof paths, follow-up states, reply language, and downloadable playbook JSON.
+- v162 adds a Closeout Exception Approval Queue inside Closeout, turning SLA escalations into approve, hold, defer, reopen, and reject decisions with approver roles, owner actions, retention posture, management script, and downloadable exception JSON.
+- v163 adds a Pilot Proposal Acceptance Tracker inside Pilot Pitch, turning sent proposal, buyer reply, accepted scope, requested changes, renewal gate, closeout action, and follow-up email into downloadable acceptance JSON.
+- v164 adds a Buyer Decision Room inside Pilot Pitch, joining feedback, ROI, proposal, objection, and acceptance signals into a buyer-close command surface with decision matrix, approve/revise/prove/park/stop actions, management brief, decision email, and downloadable JSON.
+- v165 adds a Closeout Exception Evidence Bundle inside Closeout, converting held/deferred/reopen exception decisions into owner proof requests, required evidence file names, reminder copy, archive release notes, management lines, and downloadable evidence JSON.
+- v166 adds a Pilot Invoice Request Pack inside Pilot Pitch, converting approved buyer decisions into admin-only invoice request, draft/open/paid/failed payment-state lanes, kickoff checklist, workspace activation handoff, copy-ready invoice email, and downloadable invoice JSON.
+- v167 adds a Pilot Kickoff Control Pack inside Pilot Pitch, converting invoice-ready buyers into kickoff dates, admin setup, workbook handoff, owner checklist, day-one runbook, adoption rhythm, launch locks, copy-ready kickoff email, and downloadable kickoff JSON.
+- v168 adds a Closeout Evidence PDF Cover Sheet inside Closeout, converting exception evidence rows into printable cover sheets, proof indexes, approver signatures, release checklist, PDF QA notes, management cover script, and downloadable cover JSON.
+- v169 adds a Pilot Payment State Simulator inside Pilot Pitch, modelling draft, open, paid, failed, grace, manual approval, access lock, active workspace states, provider events, workspace access rules, billing risk controls, copy-ready payment email, and downloadable payment JSON.
+- v170 adds a Pilot Adoption Health Monitor inside Pilot Pitch, turning kickoff into day-1, day-7, day-14, and day-30 adoption checkpoints with stuck users, workbook corrections, renewal risk, success rules, copy-ready adoption email, and downloadable JSON.
+- v172 adds a Payment Provider Webhook Blueprint inside Membership Model, mapping provider events, signature verification, idempotency, tenant mapping, retry behavior, access effects, billing audit, and downloadable webhook JSON.
+- v173 adds a Pilot Renewal Decision Pack inside Pilot Pitch, turning adoption health, ROI confidence, sponsor feedback, payment state, and usage proof into renew, expand, pause, or backend-convert decisions with downloadable renewal JSON.
+- v174 adds a Closeout Archive Attachment Register inside Closeout, turning rendered PDF outputs into attachment IDs, storage object keys, checksum proof, retention release states, download audit rows, and downloadable attachment JSON.
+- v175 adds a Webhook Test Evidence Pack inside Membership Model, converting the provider webhook blueprint into payload fixtures, signature reject cases, replay proof, access transition proof, billing audit envelopes, and downloadable evidence JSON.
+- v176 adds a Pilot Expansion Quote Builder inside Pilot Pitch, converting renewal decisions into seat expansion, manager seats, module add-ons, setup scope, sponsor approvals, invoice options, quote email, and downloadable quote JSON.
+- v177 adds an Attachment Download Audit Evidence Pack inside Closeout, turning archive attachment rows into actor, reason, checksum, retention release, access decision, denied download, audit event, and downloadable evidence JSON.
+- v178 adds a Webhook Evidence Runner Checklist inside Membership Model, turning webhook evidence into runbook commands, fixture response rows, expected HTTP states, screenshot proof, release gates, and downloadable runner JSON.
+- v179 upgrades the webhook runner into an operator console, making long commands readable with split command blocks, owner and timebox labels, expected/proof/gate cells, operator readiness states, and stronger runner JSON.
+- v180 adds a Download Permission Test Matrix inside Membership Model, turning every sensitive export and attachment download into role-based test cases, expected HTTP decisions, redaction proof, checksum gates, signed-link expiry, and downloadable permission JSON.
+- v181 adds a Webhook Failure Incident Playbook inside Membership Model, mapping payment webhook failures into severity levels, incident lanes, freeze/classify/reconcile/replay/retest/close commands, customer-safe messaging, and downloadable incident JSON.
+- v182 adds Expansion Approval Memory inside Pilot Pitch, turning expansion quotes into sponsor, finance, admin, and operations decision memory, quote revision trail, invoice option, approval gates, copy-ready closeout email, and downloadable approval JSON.
+- v183 adds a Download Approval Review Board inside Membership Model, turning sensitive download attempts into approve, redact, hold, escalate, or reject decisions with owner/reviewer lanes, proof files, expiry control, approval rules, copy-ready admin note, and downloadable board JSON.
+- v184 adds a Webhook Incident Customer Notice Pack inside Membership Model, turning billing incident recovery into privacy-safe admin, finance, support, internal, frontline, and executive messages with allowed/internal-only rules, impact routing, approval gates, copy-ready closeout note, and downloadable notice JSON.
+- v185 adds an Expansion Invoice Acceptance Pack inside Pilot Pitch, turning expansion approvals into invoice acceptance, paid-state proof, rollout locks, access snapshots, renewal handoff, copy-ready email, and downloadable acceptance JSON.
+- v186 adds Pursuit Autopilot Brain, a top-level mission room that scans live records, separates do-now/delegate/decide/protect/watch lanes, keeps commercial signals guarded, writes the meeting script, and exports brain JSON.
+- v187 adds Pursuit Time Machine, a future-simulation room that shows buyers what happens if nobody moves, what owners can prevent, what management can rescue, and what Autopilot mode changes before the next review.
+- v188 adds Pursuit Win Lab, a strategy room that scores live pursuits, separates attack/protect/clarify/no-bid watch lanes, writes the bid-room thesis, and exports a strategy JSON handoff.
+- v189 adds Pursuit Decision Twin, a what-if room that simulates date rescue, owner reset, attack winners, no-bid discipline, and evidence sprint decisions before changing live records.
+- v190 adds Decision Twin Approval Ledger, turning simulated scenarios into signed management decisions with owner lanes, proof requirements, expected results, actual-review windows, and control guardrails.
+- v191 adds Win Lab Task Dispatch, turning attack/protect/clarify/no-bid lanes into assigned owner packets with proof requests, SLA, lock state, and review gates.
+- v192 adds Pursuit Twin Outcome Replay, closing the loop between predicted management lift and actual record movement with proof state, variance, replay score, and learning lanes.
+- v193 adds Twin Decision Inbox, routing replay outcomes into accountable owner packets with due dates, evidence requests, reply states, closeout notes, and audit-ready messages.
+- v194 adds Dispatch Evidence Closeout, converting Win Lab owner packets into proof packs, outcome states, release gates, reusable memory, closeout notes, and file manifests.
+- v195 adds Replay Learning Memory, converting replay outcomes into reusable rules, anti-patterns, confidence scores, evidence gates, source replay IDs, and management scripts.
+- v196 adds a Header Navigation Guardrail, keeping core daily rooms visible, moving advanced rooms into Rooms, filtering blank labels, and preventing clipped empty pills in the top bar.
+- v197 adds Decision SLA Autopilot, turning stale Decision Twin inbox packets into escalation nudges, owner follow-ups, weekly review lines, SLA breach states, next-run dates, and audit-ready autopilot events.
+- v198 adds Proof-to-Response Library, turning Win Lab evidence closeouts into approved snippets, reusable Q&A prompts, source closeout IDs, redaction rules, approval memory, and response-library JSON.
+- v199 adds Learning Rule Approvals, gating replay learning memory through approved, test-only, frozen, and retired states before those rules can influence product guidance.
+- v200 adds Famous Founder Demo Mode inside Pilot Pitch, giving the founder a guided buyer story, room route, talk track, objection rescue, close plan, and downloadable demo JSON.
+- v201 adds Proof Library Search inside Win Lab, turning approved response memory into searchable proof by buyer, category, source proof, approval state, reuse rule, match score, and redaction rule.
+- v202 adds Rule Impact Simulator inside Decision Twin, projecting lift, pressure reduction, affected surfaces, promotion gates, rollback triggers, reviewers, evidence gates, and audit events before a learning rule becomes active guidance.
+- v203 adds Customer Demo Replay Recorder inside Pilot Pitch, capturing founder-demo buyer reactions, replay scores, proof-to-repeat lanes, next-meeting playbook, copy-ready follow-up email, and downloadable replay JSON.
+- v204 adds Proposal Proof Composer inside Pilot Pitch, composing proof-search results into proposal answer blocks with citations, approval state, redaction checks, reuse rules, buyer-safe addendum email, and downloadable proof JSON.
+- v205 adds Rule Change Audit Trail inside Decision Twin, recording before-state, after-state, reviewer, release gate, evidence gate, rollback trigger, timestamp, and audit event for every learning-rule state change.
+- v206 adds Demo-to-Pilot Conversion Board inside Pilot Pitch, joining replay heat, feedback score, ROI proof, proposal proof, buyer acceptance state, and decision posture into one conversion score, close lane board, playbook, follow-up email, and downloadable JSON.
+- v207 adds Proposal Redaction Approval Gate inside Pilot Pitch, requiring reviewer release, redaction, review, or rejection before proof blocks are sent to buyers, with safe-language rows, blocked-field memory, reviewer notes, approval email, and downloadable JSON.
+- v208 adds Rule Reopen Review Queue inside Decision Twin, routing audited learning rules into approve reopen, evidence hold, retest first, or reject reopen lanes with reviewer script, owner action, rollback condition, and downloadable JSON.
+- v209 adds Pilot Close Probability Simulator inside Pilot Pitch, ranking buyer conversations by close probability and producing lanes, founder-time discipline, copy-ready close email, and downloadable JSON.
+- v210 adds Buyer-Safe Proposal Export inside Pilot Pitch, filtering proposal proof into included and held-back blocks, producing a send checklist, buyer-safe proposal email, and downloadable proposal JSON.
+- v211 adds Rule Reopen Outcome Replay inside Decision Twin, checking approve, hold, retest, and reject reopen decisions against actual outcomes, replay lanes, management script, runbook, and downloadable JSON.
+- v212 adds Pilot Close Outcome Memory inside Pilot Pitch, turning close-now, revise, park, and stop forecasts into actual outcome memory with reasons, commercial result, forecast accuracy, learning signal, next action, and downloadable JSON.
+- v213 adds Proposal Send Audit Receipt inside Pilot Pitch, locking the buyer-safe proposal version, included proof, held proof, sender, timestamp, privacy checks, follow-up obligation, and downloadable receipt JSON.
+- v214 adds Rule Reopen Outcome Memory inside Decision Twin, deciding which replayed reopen lessons are trusted, held, test-only, or anti-pattern memory before they can influence Advisor, Reports, or future guardrails.
+- v215 adds Pilot Outcome Forecast Tuner inside Pilot Pitch, using actual close outcomes to strengthen close-now drivers, cap revision confidence, date-gate parked interest, and protect founder time in future forecasts.
+- v216 adds Proposal Send Follow-up Tracker inside Pilot Pitch, converting send receipts into reply lanes, overdue nudges, escalation owners, next close actions, founder message text, and downloadable follow-up JSON.
+- v217 adds Decision Memory Influence Switchboard inside Decision Twin, making every memory influence path explicit with enabled surfaces, blocked surfaces, admin decision, audit gate, review date, and downloadable switchboard JSON.
+- v218 adds Pilot Follow-up Reply Memory inside Pilot Pitch, converting proposal follow-up replies into reusable buyer memory, next-cycle rules, forecast and Advisor influence flags, privacy guardrails, and copy-ready founder reply language.
+- v219 adds Founder Close Command Script inside Pilot Pitch, translating buyer reply memory into prioritized close, revise, date-gate, and close-loop commands with script text, proof requests, stop rules, and downloadable command JSON.
+- v220 adds Memory Influence Audit Diff inside Decision Twin, making every memory surface decision show before state, after state, risk delta, health lift, privacy effect, and audit trail.
+- v221 adds Pilot Reply Pattern Library inside Pilot Pitch, converting buyer reply memories into reusable pattern names, trigger signals, proof paths, sample replies, reuse rules, anti-patterns, and stop rules.
+- v222 adds Founder Close Outcome Receipt inside Pilot Pitch, proving what happened after each close command with sent message, buyer answer, sent proof, next action, closeout result, outcome score, and audit event.
+- v223 adds Memory Diff Release Notes inside Decision Twin, converting each memory audit diff into admin release language, buyer-safe release language, privacy-safe detail, approval gate, release lane, score, and audit event.
+- v224 adds Pattern-to-Demo Coach inside Pilot Pitch, converting reply patterns into buyer-type demo routes with founder opening lines, screens to show, proof moments, one control question, objection rescue, handoff move, and stop rule.
+- v225 adds Receipt-to-Renewal Signal inside Pilot Pitch, converting close receipts into expansion, conditional renewal, parked review, or stop/reopen signals with owner roles, evidence asks, commercial next move, renewal due labels, and audit fields.
+- v226 adds Release Note Approval Board inside Decision Twin, converting memory release notes into publish, internal-test, hold, or reject decisions with approver roles, publish targets, evidence requirements, buyer-safe approval status, and audit fields.
+- v227 adds Demo Coach Replay Score inside Pilot Pitch, checking coached demo routes against buyer-room reactions, promotion lanes, test-only memory, close forecast deltas, next demo adjustments, and audit events.
+- v228 adds Renewal Signal Replay Board inside Pilot Pitch, testing renewal and expansion signals against usage, payment, adoption, buyer response, commercial hold rules, forecast deltas, and audit events before renewal memory is trusted.
+- v229 adds Buyer-Safe Changelog Publisher inside Decision Twin, turning approved release notes into customer-facing changelog entries with publication lanes, audiences, channels, publish windows, proof locks, privacy locks, rollback copy, readiness scores, and audit events.
+- v230 adds Coach-to-Close Learning Publisher inside Pilot Pitch, publishing promoted demo-learning into founder close scripts, reply-memory rules, forecast rules, next-demo adjustments, stop rules, proof locks, privacy locks, close-lift scores, and audit events.
+- v231 adds Renewal-to-Invoice Trust Publisher inside Pilot Pitch, publishing trusted renewal replay rows into invoice-ready handoff with sponsor scripts, billing options, finance gates, rollout gates, success proof, and audit events.
+- v232 adds Customer Changelog Reaction Tracker inside Decision Twin, turning customer-safe product updates into sponsor reaction lanes, objection handling, follow-up windows, confidence lift, Pilot Pitch signals, and audit events.
+- v233 adds Founder Script Outcome Tracker inside Pilot Pitch, converting founder close commands into outcome lanes, actual buyer signals, next system moves, confidence deltas, Advisor feedback, close learning, and audit events.
+- v234 adds Invoice Outcome Memory inside Pilot Pitch, turning renewal invoice asks into paid/activated, revised invoice, evidence hold, or reopen-only outcomes with provider state, received value, finance actions, customer-success actions, renewal memory, and audit events.
+- v235 adds Sponsor Reply Outcome Memory inside Decision Twin, turning changelog reactions into confirmed movement, proof-requested, internal-only, evidence-challenged, or blocked sponsor reply outcomes with actual reply text, movement signal, success action, Pilot Pitch learning, and audit events.
+- v236 adds Invoice Reply Evidence Memory inside Pilot Pitch, turning invoice replies into proof captured, revision proof, evidence blocker, or no-chase memory with reply text, evidence type, proof quality, finance learning, renewal learning, customer-success action, and audit events.
+- v237 adds Finance-to-Success Handoff Memory inside Pilot Pitch, turning invoice reply evidence into access rollout, revision checkpoint, proof sprint, or no-chase archive rows with support owners, success proof, renewal review, privacy gates, and audit events.
+- v238 adds Sponsor Reply Playbook Publisher inside Decision Twin, publishing sponsor reply outcomes into follow-up scripts, proof-request scripts, internal success playbooks, evidence repair tasks, blocked buyer-use memory, privacy filters, and audit events.
+- v239 adds Invoice Evidence Playbook Publisher inside Pilot Pitch, publishing invoice reply evidence into finance follow-up scripts, revision scripts, proof-request tasks, renewal review scripts, blocked invoice-use memory, privacy filters, and audit events.
+- v240 adds Success Handoff Playbook Publisher inside Pilot Pitch, publishing finance-to-success handoff memory into onboarding scripts, access tasks, support-owner packets, renewal proof requests, success checkpoints, blocked rollout memory, privacy filters, and audit events.
+- v241 adds Sponsor Playbook Outcome Tracker inside Decision Twin, resolving published sponsor playbooks into proof calls, Pilot Pitch movement, customer-success actions, blocked follow-ups, next controls, reusable learning, privacy gates, and audit events.
+- v242 adds Invoice Playbook Outcome Tracker inside Pilot Pitch, resolving published invoice playbooks into paid proof, revision approval, proof completion, protected no-chase decisions, finance actions, customer-success actions, reusable learning, privacy gates, and audit events.
+- v243 adds Success Playbook Outcome Tracker inside Pilot Pitch, resolving published success handoff playbooks into access activation, first-login proof, renewal proof, proof-sprint completion, protected rollout holds, success actions, reusable learning, privacy gates, and audit events.
+- v244 adds Playbook Outcome Control Board inside Pilot Pitch, normalizing sponsor, invoice, and success playbook outcomes into stream scores, reuse rules, proof quality, blocked-motion state, management actions, reusable learning, privacy gates, and audit events.
+- Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
+- Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
+- Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
+- Operating cards now follow a unified soft status-color system inspired by the Reports Calendar Pressure cards: light red, amber, blue, green, and teal surfaces with strong dark text.
+- Command Center includes a Signal Legend so users understand critical, decision, evidence, healthy, and active card colors consistently across the product.
+- Command Center includes a Readability Audit panel to show the soft-card standard, strong-text rule, signal language, and intentional saturated exceptions.
+- Pursuit Advisor now has a Focus Strip for first move, decision queue, schedule cleanup, and review posture before the full recommendation board.
+- Advisor recommendation cards now use a calmer white-card treatment with colored left rails and soft lane headers, reducing the heavy wall of red/amber/blue cards.
+- Tenders and Projects now start with guided Focus Strips for past due/delivery risk, next submission/due watch, missing ownership/date gaps, and movement readiness.
+- Weekly Review now opens with a Focus Strip for meeting priority, decision queue, owner load, and report readiness.
+- Reports now opens with a Focus Strip for executive summary, overdue actions, evidence gaps, and client pressure before the full pack.
+- Tenders and Projects now use the same soft corporate color system across KPI cards, command rail counters, action cards, board lanes, timeline lanes, and tracker headers.
+- New operational signal strip on Tenders and Projects shows Past Due, Next 30, Missing Owner, and Ready Rhythm without exposing commercial values.
+- Top navigation now uses equal-width, equal-height section buttons for a cleaner command bar.
+- Hero summary tiles now use fixed sizing so Health, Actions, Gaps, Records, Open, and similar top-bar boxes stay visually aligned across rooms.
+- Rooms dropdown cards now use the same soft status palette and equal tile sizing as the rest of the workspace.
+- Tenders and Projects board lanes now follow the same soft red, amber, blue, green, and teal treatment for a calmer operating board.
+- Demo Editor now starts as an operations-only user for realistic frontline testing, while Admin keeps full workspace access.
+- Platform roadmap section showing how PursuitDesk can grow into future modules for contracts, clients, documents, reminders, and reports while keeping tenders and projects as the current foundation.
+- Cache-busted asset links so GitHub Pages visitors receive the latest PursuitDesk JavaScript, CSS, sample data, favicon, and logo after upload.
+- Main section navigation resets the viewport to the top so Tenders, Projects, Insights, and Membership never open halfway down the page.
+- Expanded desktop tracker grid so Tenders and Projects show roughly a working-sheet depth of records before internal table scrolling begins.
+- Grid polish with stronger selected-row highlighting, a visible "Showing 1-N of total" range hint, Comfortable/Compact density controls, and a collapsible right detail panel.
+- Tracker toolbar uses explicit filter/action rows so density controls, New, and Export remain visible beside the detail panel.
+- Sticky sheet header keeps filters, actions, range hint, and column labels visible while scrolling through the expanded Tenders and Projects grids.
+- Sheet/Board mode lets users keep the spreadsheet tracker or switch to a visual operating board, with tender lanes for Active Pipeline, Due Watch, Awarded, and Closed/Regret, plus project lanes for Ongoing, Due Watch, Completed, and Stopped/Regret.
+- Timeline mode turns the same Tender and Project records into date lanes for Past Due, This Month, Next 30, Next Quarter, Later, and No Date, making schedule pressure visible without leaving the tracker.
+- Action Queue scans the current Tender or Project view and surfaces the top operational next moves for overdue records, due-watch items, missing dates, owner gaps, category gaps, and reference cleanup.
+- Counter fix keeps the command rail and mix panels based on the full current section, so clicking a status filter changes visible rows without resetting the other counter values to zero.
+- Bid Desk actions let editors set Bid, Watch, or No-bid, mark submission packs ready, and write those movements into the Governance audit trail.
+- Review Calendar adds a rolling eight-week view, urgency lanes, date coverage score, owner diary, client pressure, work-type mix, and quality signals for dated work.
+- Risk Control Room generates a risk register from existing records, including critical/high/watch severity, exposure value, owner/client risk concentration, and commercial/data cleanup queues.
+- Pursuit Advisor adds a decision layer above the control rooms, with do-now, decide, schedule, commercial, forecast, and clean-data lanes plus value touched, source signal mix, owner focus, client focus, and a management review playbook.
+- Weekly Review Room adds meeting cadence over the product, converting Advisor recommendations into timed agenda blocks, action rows, decision cards, owner workload, source mix, and review closeout discipline.
+- Intake conversion turns clean requests into live Tender, EOI, or Project records with source marked as Intake Desk and full audit logging.
+- Import governance keeps new CSV rows out of the live workspace until references, core fields, duplicates, source sheet, status, and value parsing have been reviewed in the preview grid.
+- Governance audit logging captures imports, manual row creation, key record edits, deletes, user creation, role updates, section-access changes, and high-value review approvals.
+- Smart Record Brief appears inside the right detail panel for selected tracker records, showing health score, readiness, due signal, owner/category coverage, missing data, next move, and a short operating line.
+- Client Memory appears at the top of the selected-record detail panel, summarizing account history across tenders and projects with open work, same-unit count, due-watch signal, latest touch, and clickable related records.
+- Clients Portfolio adds a dedicated relationship intelligence page with account cards, active/open work signals, due-watch pressure, value exposure, related latest-record links, and a roadmap strip toward Contracts, Documents, Reminders, and Reports.
+- Contracts Room adds a commercial control register for agreement numbers, LOA/agreement received flags, award handover, live delivery contracts, contract value, document coverage, and commercial gaps.
+- Documents Room adds an evidence register for tender/project document packs, source workbook and sheet coverage, agreement/LOA proof, missing document gaps, and source-record drilldowns.
+- Reminders adds a generated follow-up desk with lanes for overdue work, next-30-day pressure, missing data, negotiation reviews, and high-value management reviews, with each reminder linking back to its source record.
+- Reports Room adds a printable weekly operating pack with executive summary, tender/project split, follow-up actions, client concentration, value exposure, due radar, and meeting checklist.
 
-- `docs/PRODUCT_SPEC.md`
-- `docs/MONETIZATION.md`
-- `docs/DATA_MODEL.md`
-- `docs/BUILD_BACKLOG.md`
-- `docs/BRAND.md`
-- `docs/ROADMAP.md`
+## Production Notes
 
-## Run
-
-Open `index.html` in a browser, or serve the folder with:
-
-```bash
-npm start
-```
-
-## Check
-
-```bash
-npm run check
-```
+This is a local browser prototype. A hosted version should move authentication, company isolation, record storage, billing, and audit history into a backend database and API.
