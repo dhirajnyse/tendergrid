@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" role="img" aria-labelledby="title desc">
+  <title id="title">Heavyster 3D H mark</title>
+  <desc id="desc">A corporate isometric H logo built from heavy steel plates with amber and teal accents.</desc>
+  <defs>
+    <linearGradient id="front" x1="40" x2="174" y1="28" y2="184" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#38434d"/>
+      <stop offset="1" stop-color="#171f26"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="42" x2="178" y1="52" y2="168" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd465"/>
+      <stop offset="1" stop-color="#b56d16"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="92" x2="166" y1="74" y2="138" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#67c6ba"/>
+      <stop offset="1" stop-color="#19716d"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="12" flood-color="#000000" flood-opacity=".22"/>
+    </filter>
+  </defs>
+  <rect x="24" y="18" width="164" height="164" rx="34" fill="url(#front)" filter="url(#shadow)"/>
+  <path d="M188 52l18 18v128l-18-16z" fill="#10161c"/>
+  <path d="M58 52h31v43h38V52h31v115h-31v-45H89v45H58z" fill="url(#amber)"/>
+  <path d="M89 95h38l20 20H108z" fill="url(#teal)"/>
+  <path d="M58 167h100l-18 18H40z" fill="#8f5312"/>
+  <path d="M158 52l18 18v115l-18-18z" fill="#26313a"/>
+  <path d="M89 52l18 18v25H89z" fill="#c8871d"/>
+  <circle cx="158" cy="181" r="10" fill="#50b0a7"/>
+</svg>

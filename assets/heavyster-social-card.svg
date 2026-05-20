@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f3f0e8"/>
+  <path d="M0 520h1200" stroke="#d9d2c3" stroke-width="2"/>
+  <path d="M0 410h1200" stroke="#d9d2c3" stroke-width="2"/>
+  <rect x="70" y="70" width="1060" height="490" rx="22" fill="#fff" stroke="#d9d2c3"/>
+  <g transform="translate(110 112) scale(.72)">
+    <rect x="24" y="18" width="164" height="164" rx="34" fill="#20262d"/>
+    <path d="M58 52h31v43h38V52h31v115h-31v-45H89v45H58z" fill="#f7c548"/>
+    <path d="M89 95h38l20 20H108z" fill="#50b0a7"/>
+    <path d="M58 167h100l-18 18H40z" fill="#b56d16"/>
+  </g>
+  <text x="270" y="158" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="800" fill="#172027">Heavyster</text>
+  <text x="270" y="202" font-family="Inter, Arial, sans-serif" font-size="25" fill="#6f7982">Heavy equipment rental listings</text>
+  <text x="110" y="330" font-family="Inter, Arial, sans-serif" font-size="47" font-weight="800" fill="#172027">Paid listings for rental companies.</text>
+  <text x="110" y="382" font-family="Inter, Arial, sans-serif" font-size="31" fill="#34424d">USD 9 monthly or USD 99 yearly per active equipment listing.</text>
+  <rect x="110" y="438" width="248" height="78" rx="12" fill="#e6f2e9"/>
+  <rect x="390" y="438" width="248" height="78" rx="12" fill="#fff0cc"/>
+  <rect x="670" y="438" width="248" height="78" rx="12" fill="#e6eef5"/>
+  <text x="136" y="471" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#287a4d">DIRECT ENQUIRIES</text>
+  <text x="136" y="501" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#172027">No commission</text>
+  <text x="416" y="471" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#b56d16">SUPPLIER SAAS</text>
+  <text x="416" y="501" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#172027">Listing tools</text>
+  <text x="696" y="471" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#285d86">GLOBAL MARKET</text>
+  <text x="696" y="501" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#172027">Verified fleet</text>
+</svg>

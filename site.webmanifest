@@ -1,0 +1,17 @@
+{
+  "name": "Heavyster",
+  "short_name": "Heavyster",
+  "description": "Heavy equipment rental listing SaaS for verified suppliers and direct enquiries.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f1e8",
+  "theme_color": "#252a31",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "128x128",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

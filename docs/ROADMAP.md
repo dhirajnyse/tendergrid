@@ -1,0 +1,152 @@
+# Heavyster Product Roadmap
+
+## Phase 1: Listing SaaS
+
+- Supplier signup and company profile
+- Equipment categories and listing pages
+- Marketplace Search Assist for keeping large inventory discovery simple as supply grows
+- Marketplace Supply Lens for making inventory density and trust quality understandable in one glance
+- Marketplace Smart Views for one-click discovery across common fleet, verified supply, and demand-gap views
+- Active marketplace filter trail for visible filter state and fast recovery from narrow searches
+- Marketplace Result Intelligence for translating search quality into the next buyer or founder action
+- Buyer Fit Score for ranking visible machines by intent, proof, availability, and trust
+- Direct Enquiry Composer for turning selected listings into supplier-ready messages while keeping payment direct
+- Supplier Response Route for showing channel, response promise, backup path, and follow-up timing
+- Direct Enquiry Response Tracker for copied, sent, replied, and follow-up states
+- Supplier Reply Quality Gate for deciding whether a supplier answer is ready for RFQ, award, quote guard, or mobilization
+- Supplier Reply Clarifier for turning supplier reply gaps into a copy-ready chase, clarification, or handoff message
+- Buyer Decision Receipt for packaging fit, proof, reply quality, quote clarity, risk, and direct-payment rules into a shareable buyer note
+- Buyer Decision Action Router for moving each receipt state into chase, clarification, RFQ, quote guard, award, or mobilization
+- Supplier Listing ROI Proof for converting buyer workflow progress into renewal-ready paid-listing evidence
+- Supplier Renewal Close Pack for converting ROI proof into renewal save, annual upgrade, or proof-first supplier close actions
+- Command Center role workspaces for simple buyer, supplier, and founder navigation
+- Workflow Dock that keeps active role paths visible while advanced modules stay discoverable through grouped navigation and command search
+- Guided workflow movement for current-room awareness, step progress, and previous/next path controls
+- Demo Flight Deck for guided investor, supplier, and internal team walkthroughs across the full marketplace loop
+- Boardroom Snapshot for investor/operator review of wedge, monetization, trust risk, and next 30-day founder action
+- 30-Day Pilot Pack for converting the boardroom snapshot into a controlled launch sprint with supplier calls, listing activation, enquiry routing, and ARR review
+- Founder Workbench for one guided scale-control path from demand proof to listing activation and trust-ledger decision
+- Founder Morning Brief for a start-of-day operating read across supplier urgency, trust, launch verdict, activation, market wedge, and ARR at stake
+- Founder Daily Moves for one ranked daily action queue across supplier success, market twin verdicts, activation, trust, and market selection
+- Founder Supplier Call Sheet for demand-backed supplier outreach, package offers, proof asks, and paid listing close scripts
+- Buyer Workbench for one guided renter decision path from search to mobilization handoff and direct deal trail
+- Supplier Workbench for one guided rental-yard revenue path from profile readiness to listing ARR, lead response, proof, and freshness
+- Universal Command Palette for instant access to equipment, suppliers, markets, pricing, activation, and workflow modules
+- Compact searchable workflow launcher that keeps the expanding product simple as buyer, supplier, and founder rooms grow
+- Compact catalog UI for thousands of listings
+- Smart Match Rescue for zero-result searches
+- Smart empty-state recovery and shortlist comparison matrix with next-best machine suggestions
+- Jobsite Planner that turns project notes into rental packages
+- Trust Passport for every active machine
+- RFQ Command Room for shortlist-based quote packets
+- Award Intelligence for shortlist ranking and buyer award memos
+- Quote Guard for hidden cost and quote term clarity
+- Mobilization Control Tower for pre-dispatch buyer-supplier handoff
+- Direct Deal Trail for no-commission booking proof before any success-fee monetization
+- Yard Availability OS for supplier inventory freshness
+- Supplier Fleet Storefront for verified rental company mini-sites
+- Fleet Import Console for bulk machine intake and paid-listing validation
+- Proof Vault for document expiry, missing proof, inspection/load-test evidence, and buyer-ready verification packets
+- Listing Revenue Desk for paid listings, renewal risk, annual upsell, paused inventory, and phase-one subscription control
+- Supplier Studio 2.0 for profile readiness, storefront publishing, and supplier-specific fleet controls
+- Supplier Lead Desk for direct enquiry response workflow and lead quality scoring
+- Supplier Account Health Radar for churn risk, renewal saves, account expansion, and next-best supplier actions
+- Supplier Success Daily Queue for cross-supplier priority ranking and founder daily account operations
+- Demand request capture for zero-result searches
+- Supplier hunt autopilot for demand-led supplier acquisition
+- Market Maker Mode for choosing the next region/category launch
+- Market Page Factory for launch-ready category pages, proof gates, supplier targets, and copy-ready page packs
+- Market Launch Room for seven-day launch sprints, supplier strike lists, proof work, and first-week listing ARR targets
+- Market Twin for simulating launch intensity, demand coverage, trust risk, supplier response, listing ARR, and founder launch verdict before scaling a page
+- Liquidity Flywheel for measuring whether a category market is compounding across demand, supply, trust, response, and listing revenue
+- Founder Autopilot for converting the active flywheel bottleneck into weekly owner-assigned commands with ARR impact
+- Demand Exchange for showing suppliers the unmet demand, supply gap, proof ask, and listing ARR behind each market opportunity
+- Proof of Demand Room for converting supplier doubt into demand proof, shortage proof, trust proof, and no-commission ROI proof
+- Supplier Commitment Room for choosing starter, market anchor, or annual listing packages and clearing go-live gates
+- Listing Activation Room for turning accepted packages into paid listing shells, billing gates, publish readiness, and direct enquiry routes
+- Trust & Revenue Ledger for deciding when listing ARR, trust proof, supplier response, and renewal protection are strong enough to scale
+- Market Signal Matrix for scanning region/category wedges before the founder commits growth, supplier outreach, or page traffic
+- Photo upload slots
+- License, insurance, inspection, and operator document fields
+- Availability status per listing
+- Direct enquiry routing by phone, email, WhatsApp, and web form
+- Stripe-style subscription billing for listings only
+- USD 9 monthly or USD 99 yearly per active equipment listing
+
+## Phase 2: Lead Intelligence
+
+- Supplier lead inbox
+- Command Center usage analytics, saved role-specific workspaces, and role-based onboarding
+- Buyer Workbench analytics for path drop-off, proof gaps, RFQ readiness, award confidence, and quote clarity
+- Supplier Workbench analytics for revenue-path gaps, proof debt, lead response, import readiness, renewal risk, and yard freshness
+- Universal Command Palette analytics for search intent, failed searches, module launches, and workflow discovery
+- Search Assist analytics for machine, category, supplier, and demand-gap suggestion clicks
+- Supply Lens analytics for which region, category, availability, verified, and demand-gap shortcuts create enquiries
+- Marketplace Smart View analytics for which preset views create enquiries, demand signals, and supplier leads
+- Active filter trail analytics for filter removals, reset events, and no-result recovery behavior
+- Result Intelligence analytics for supply-ready searches, supply-watch searches, demand-signal clicks, and best-match opens
+- Buyer Fit Score analytics for score distribution, best-fit clicks, and fit-sort usage
+- Direct Enquiry Composer analytics for message mode selection, readiness gates, and copy events
+- Supplier Response Route analytics for channel selection, response targets, backup paths, and follow-up timing
+- Direct Enquiry Response Tracker analytics for sent status, reply status, follow-up delay, and supplier chase loops
+- Supplier Reply Quality Gate analytics for reply completeness, missing terms, supplier clarification loops, and award readiness
+- Supplier Reply Clarifier analytics for copied clarifications, missing-gate frequency, and reply-to-award conversion
+- Buyer Decision Receipt analytics for receipt score, risk frequency, copy events, and movement into RFQ, award, or mobilization
+- Buyer Decision Action Router analytics for next-best action clicks, route choice, copy events, and workflow movement after a receipt
+- Supplier Listing ROI Proof analytics for renewal-proof score, lead value, buyer movement, copy events, and supplier retention impact
+- Supplier Renewal Close Pack analytics for annual upgrade asks, renewal saves, close pack copy events, and supplier conversion
+- Shortlist Compare analytics for saved machines, suggested additions, best-score winners, and RFQ movement
+- Guided workflow movement analytics for previous/next usage, skipped rooms, and path completion
+- Workflow navigation analytics for role paths, menu searches, active-section changes, and module discovery friction
+- Trust Passport expiry and confidence history
+- Quote templates
+- Multi-machine package templates by jobsite type
+- RFQ response comparison and supplier reply scoring
+- Award history, decision audit trail, and post-award supplier scoring
+- Quote Guard history, daily rate normalization, and missing-term analytics
+- Mobilization history, dispatch evidence, and site readiness memory
+- Direct Deal Trail analytics for workflow proof, copy events, supplier response, quote clarity, and future success-fee eligibility
+- Availability history, stale listing prevention, and supplier refresh SLAs
+- Supplier storefront analytics, profile completion scoring, and branch pages
+- Fleet import templates, CSV/XLSX mapping, duplicate detection, and photo/document matching
+- Proof Vault reminders, expiry history, and supplier trust SLA
+- Listing Revenue Desk analytics, renewal history, annual-plan conversion, and supplier account health alerts
+- Lead Desk analytics, response SLA scoring, and supplier reply templates
+- Supplier Account Health history, retention playbooks, expansion triggers, and founder daily account queue
+- Supplier Success Daily Queue history, completed save actions, founder call notes, and weekly retention review
+- Founder Workbench analytics for scale-path gaps, next-best founder actions, held scale decisions, activation readiness, and ledger risk
+- Founder Morning Brief analytics for copied briefs, risk signals opened, first action follow-through, and payment-discipline status
+- Founder Daily Moves analytics for completed actions, skipped moves, guardrail breaches, ARR protected, and daily founder velocity
+- Founder Supplier Call Sheet analytics for supplier calls opened, packages offered, proof asks completed, and listing ARR closed from scripts
+- Response time scoring
+- Category demand heatmaps from demand radar
+- Supplier acquisition scoring by region, equipment, and listing revenue
+- Automated market launch briefs for category pages
+- Market Page Factory publishing history, SEO performance, supplier conversion, and page-to-listing revenue tracking
+- Market Launch Room execution history, supplier invite outcomes, proof completion, and weekly ARR review
+- Market Twin prediction and verdict history compared against real supplier onboarding, enquiry, and listing revenue results
+- Liquidity Flywheel trendline showing bottleneck fixes, compounding score, and when a market can scale with less founder push
+- Founder Autopilot command history, owner completion rates, weekly operating briefs, and ARR unlocked per command
+- Demand Exchange analytics for supplier invite conversion, demand-ticket clicks, and paid listings generated from buyer gaps
+- Proof of Demand analytics for objection resolution, proof-pack copies, and supplier conversion by evidence type
+- Supplier Commitment analytics for package mix, close score, go-live readiness, and ARR closed from supplier commitments
+- Listing Activation analytics for activation queue completion, launch-gate delays, billing plan selection, and first live paid listing time
+- Trust & Revenue Ledger analytics for scale decisions, trust debt, renewal exposure, listing ARR, and direct enquiry pipeline
+- Market Signal Matrix analytics for region/category heat, supply gaps, proof weakness, ARR concentration, and wedge selection history
+- Saved renter requirements
+- Search rescue conversion analytics
+- CRM export
+- Featured listing upgrades
+- Optional 1% confirmed-booking success fee when Heavyster creates a booking trail
+- Optional lower success fee for annual suppliers
+
+## Phase 3: Optional Transaction Rails
+
+Only add this after supplier demand is proven.
+
+- Rental deposit collection
+- Insurance partner workflows
+- Operator scheduling
+- Delivery quote partners
+- Escrow or milestone payment options
+- Dispute and damage evidence workflows
