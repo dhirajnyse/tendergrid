@@ -36057,6 +36057,534 @@ tr.selected-row td:first-child {
   line-height: 1.45;
 }
 
+.pilot-outcome-renewal-control-bridge {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(223, 242, 234, 0.68));
+}
+
+.pilot-outcome-renewal-control-bridge .pilot-close-hero > div:first-child {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-outcome-renewal-control-bridge .pilot-close-score-card {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-outcome-renewal-control-bridge .pilot-close-playbook-list {
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  margin-top: 10px;
+}
+
+.pilot-renewal-bridge-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.pilot-renewal-bridge-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-renewal-bridge-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-renewal-bridge-grid > article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-renewal-bridge-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-renewal-bridge-grid > article.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-renewal-bridge-grid > article.tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.pilot-renewal-bridge-grid h4,
+.pilot-renewal-bridge-grid p {
+  margin: 0;
+}
+
+.pilot-renewal-bridge-grid h4 {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.pilot-renewal-bridge-grid p,
+.pilot-renewal-bridge-grid small {
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.pilot-playbook-outcome-renewal-map {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(223, 242, 234, 0.7));
+}
+
+.pilot-playbook-outcome-renewal-map .pilot-close-hero > div:first-child {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-playbook-outcome-renewal-map .pilot-close-score-card {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-playbook-outcome-renewal-map .pilot-close-playbook-list {
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  margin-top: 10px;
+}
+
+.pilot-renewal-map-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.pilot-renewal-map-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-renewal-map-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-renewal-map-grid > article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-renewal-map-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-renewal-map-grid > article.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-renewal-map-grid > article.tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.pilot-renewal-map-grid h4,
+.pilot-renewal-map-grid p {
+  margin: 0;
+}
+
+.pilot-renewal-map-grid h4 {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.pilot-renewal-map-grid p,
+.pilot-renewal-map-grid small {
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.pilot-outcome-expansion-proposal-router {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 237, 248, 0.66));
+}
+
+.pilot-outcome-expansion-proposal-router .pilot-close-hero > div:first-child {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-outcome-expansion-proposal-router .pilot-close-score-card {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-outcome-expansion-proposal-router .pilot-close-playbook-list {
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  margin-top: 10px;
+}
+
+.pilot-proposal-router-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.pilot-proposal-router-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-proposal-router-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-proposal-router-grid > article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-proposal-router-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-proposal-router-grid > article.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-proposal-router-grid > article.tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.pilot-proposal-router-grid h4,
+.pilot-proposal-router-grid p {
+  margin: 0;
+}
+
+.pilot-proposal-router-grid h4 {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.pilot-proposal-router-grid p,
+.pilot-proposal-router-grid small {
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.pilot-renewal-evidence-approval-gate {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 241, 233, 0.68));
+}
+
+.pilot-renewal-evidence-approval-gate .pilot-close-hero > div:first-child {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-renewal-evidence-approval-gate .pilot-close-score-card {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-renewal-evidence-approval-gate .pilot-close-playbook-list {
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  margin-top: 10px;
+}
+
+.pilot-evidence-approval-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.pilot-evidence-approval-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-evidence-approval-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-evidence-approval-grid > article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-evidence-approval-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-evidence-approval-grid > article.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-evidence-approval-grid > article.tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.pilot-evidence-approval-grid h4,
+.pilot-evidence-approval-grid p {
+  margin: 0;
+}
+
+.pilot-evidence-approval-grid h4 {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.pilot-evidence-approval-grid p,
+.pilot-evidence-approval-grid small {
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.pilot-simple-buyer-review-pack {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 237, 248, 0.62));
+}
+
+.pilot-simple-buyer-review-pack .pilot-close-hero > div:first-child {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-simple-buyer-review-pack .pilot-close-score-card {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-simple-buyer-review-pack .pilot-close-playbook-list {
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  margin-top: 10px;
+}
+
+.pilot-buyer-review-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.pilot-buyer-review-flow span {
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(13, 111, 97, 0.22);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: var(--teal-soft);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pilot-buyer-review-sheet {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 0.8fr);
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-buyer-review-page,
+.pilot-buyer-review-hidden {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-buyer-review-hidden {
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-buyer-review-page h4,
+.pilot-buyer-review-hidden h4 {
+  margin: 4px 0 12px;
+  color: var(--ink);
+  font-size: 20px;
+}
+
+.pilot-buyer-review-lines {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-buyer-review-lines section,
+.pilot-buyer-review-hidden p {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.pilot-buyer-review-lines section.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-buyer-review-lines section.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-buyer-review-lines section.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-buyer-review-lines span,
+.pilot-buyer-review-hidden span {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.pilot-buyer-review-lines strong,
+.pilot-buyer-review-hidden strong {
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.pilot-buyer-review-lines p,
+.pilot-buyer-review-lines small,
+.pilot-buyer-review-lines em {
+  margin: 0;
+  color: var(--ink-soft);
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.pilot-buyer-review-pack-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.pilot-buyer-review-pack-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-buyer-review-pack-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-buyer-review-pack-grid > article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-buyer-review-pack-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-buyer-review-pack-grid > article.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-buyer-review-pack-grid h4,
+.pilot-buyer-review-pack-grid p {
+  margin: 0;
+}
+
+.pilot-buyer-review-pack-grid h4 {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.pilot-buyer-review-pack-grid p,
+.pilot-buyer-review-pack-grid small {
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
 .pilot-renewal-invoice-trust-grid,
 .pilot-invoice-outcome-grid,
 .pilot-invoice-reply-evidence-grid,
@@ -42385,8 +42913,20 @@ tr.selected-row td:first-child {
   .pilot-success-handoff-playbook-publisher .pilot-close-playbook-list,
   .pilot-success-playbook-outcome-tracker .pilot-close-playbook-list,
   .pilot-playbook-outcome-control-board .pilot-close-playbook-list,
+  .pilot-outcome-renewal-control-bridge .pilot-close-playbook-list,
+  .pilot-playbook-outcome-renewal-map .pilot-close-playbook-list,
+  .pilot-outcome-expansion-proposal-router .pilot-close-playbook-list,
+  .pilot-renewal-evidence-approval-gate .pilot-close-playbook-list,
+  .pilot-simple-buyer-review-pack .pilot-close-playbook-list,
   .pilot-playbook-stream-grid,
   .pilot-playbook-control-grid,
+  .pilot-renewal-bridge-grid,
+  .pilot-renewal-map-grid,
+  .pilot-proposal-router-grid,
+  .pilot-evidence-approval-grid,
+  .pilot-buyer-review-flow,
+  .pilot-buyer-review-sheet,
+  .pilot-buyer-review-pack-grid,
   .pilot-renewal-invoice-trust-grid,
   .pilot-invoice-outcome-grid,
   .pilot-invoice-reply-evidence-grid,
@@ -42482,8 +43022,20 @@ tr.selected-row td:first-child {
   .pilot-success-handoff-playbook-publisher .pilot-close-playbook-list,
   .pilot-success-playbook-outcome-tracker .pilot-close-playbook-list,
   .pilot-playbook-outcome-control-board .pilot-close-playbook-list,
+  .pilot-outcome-renewal-control-bridge .pilot-close-playbook-list,
+  .pilot-playbook-outcome-renewal-map .pilot-close-playbook-list,
+  .pilot-outcome-expansion-proposal-router .pilot-close-playbook-list,
+  .pilot-renewal-evidence-approval-gate .pilot-close-playbook-list,
+  .pilot-simple-buyer-review-pack .pilot-close-playbook-list,
   .pilot-playbook-stream-grid,
   .pilot-playbook-control-grid,
+  .pilot-renewal-bridge-grid,
+  .pilot-renewal-map-grid,
+  .pilot-proposal-router-grid,
+  .pilot-evidence-approval-grid,
+  .pilot-buyer-review-flow,
+  .pilot-buyer-review-sheet,
+  .pilot-buyer-review-pack-grid,
   .pilot-renewal-invoice-trust-grid,
   .pilot-invoice-outcome-grid,
   .pilot-invoice-reply-evidence-grid,

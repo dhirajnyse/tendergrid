@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=244";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=244";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=249";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=249";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
@@ -16895,7 +16895,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-fixture-export.json?v=244";
+    const downloadHref = "data/backend-fixture-export.json?v=249";
     const exportTables = [
       ["tenants.json", 1, "Company, workspace defaults, billing currency, plan state, and retention settings.", "green"],
       ["users.json", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and role-access fixture users.", "blue"],
@@ -16988,7 +16988,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-sprint-checklist.json?v=244";
+    const downloadHref = "data/backend-sprint-checklist.json?v=249";
     const sprintDays = [
       ["Day 0", "Repo creation and protection", "Private repo, develop branch, labels, milestones, board, first issues, secrets list.", "Repo is private and branch rules are visible.", "Control Admin"],
       ["Day 1", "Workspace skeleton", "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.", "Fresh clone can install and run the empty shell.", "Backend Lead"],
@@ -17102,7 +17102,7 @@
         ),
       ),
     );
-    const downloadHref = "data/staging-deployment-checklist.json?v=244";
+    const downloadHref = "data/staging-deployment-checklist.json?v=249";
     const environmentLanes = [
       ["Staging URL", `staging.${BRAND_DOMAIN}`, "Private pilot preview with test data, HTTPS, cache headers, and admin-only deployment notes.", "green"],
       ["API service", "api-staging", "Backend API deploys from develop or release candidate with health, version, and smoke endpoints.", "blue"],
@@ -17233,7 +17233,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-route-skeleton-map.json?v=244";
+    const downloadHref = "data/backend-route-skeleton-map.json?v=249";
     const routeFiles = [
       ["apps/api/src/server.ts", "Bootstrap", "Health route, request id, middleware chain, error shape, and route registration.", "Platform Owner", "green"],
       ["apps/api/src/middleware/request-context.ts", "Context", "Request id, actor shell, tenant shell, logger scope, and response timing.", "Backend Lead", "blue"],
@@ -17351,7 +17351,7 @@
         ),
       ),
     );
-    const downloadHref = "data/database-migration-blueprint.json?v=244";
+    const downloadHref = "data/database-migration-blueprint.json?v=249";
     const migrationFiles = [
       ["0001_tenant_identity.sql", "Tenant identity", "companies, users, access_profiles, sessions, invitations", "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data.", "Security Owner", "red"],
       ["0002_operational_records.sql", "Operational records", "records, record_notes, record_status_events, client_memory", `Load ${records.length} tracker-safe tender and project records without commercial values.`, "Records Owner", "teal"],
@@ -17490,7 +17490,7 @@
         ),
       ),
     );
-    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=244";
+    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=249";
     const guardFiles = [
       ["apps/api/src/auth/session.ts", "Session guard", "Verify signed session, expiry, inactive user, password reset freshness, and actor context.", "auth.session.test.ts", "Identity Owner", "red"],
       ["apps/api/src/auth/password.ts", "Password policy", "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.", "auth.password.test.ts", "Identity Owner", "red"],
@@ -17646,7 +17646,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-test-command-pack.json?v=244";
+    const downloadHref = "data/backend-test-command-pack.json?v=249";
     const testCommands = [
       ["01", "pnpm test:unit", "Domain unit tests", "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.", "junit-unit.xml", "green"],
       ["02", "pnpm test:contracts", "API contract tests", `${apiContractPack.endpointContracts.length} endpoint contracts for auth, users, records, commercial, import, billing, feedback, and audit.`, "junit-contracts.xml", "blue"],
@@ -17777,7 +17777,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-file-pack.json?v=244";
+    const downloadHref = "data/production-backend-repo-file-pack.json?v=249";
     const repositoryFolders = [
       ["apps/web", "Frontend app", "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.", "Frontend Owner", "green"],
       ["apps/api", "Backend API", "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.", "Backend Lead", "teal"],
@@ -17937,7 +17937,7 @@
         ),
       ),
     );
-    const downloadHref = "data/api-error-audit-envelope-pack.json?v=244";
+    const downloadHref = "data/api-error-audit-envelope-pack.json?v=249";
     const errorEnvelopeFields = [
       ["ok", "boolean", "Always false for errors and true for success responses.", "green"],
       ["requestId", "string", "Public-safe trace id returned to the UI, logs, and audit rows.", "blue"],
@@ -18141,7 +18141,7 @@
         ),
       ),
     );
-    const downloadHref = "data/ci-workflow-file-blueprint.json?v=244";
+    const downloadHref = "data/ci-workflow-file-blueprint.json?v=249";
     const workflowFiles = [
       [".github/workflows/ci.yml", "Primary PR gate", "Pull request", "install, lint, typecheck, unit, contracts, route envelopes, audit envelopes", "ci-summary.json", "red"],
       [".github/workflows/security-audit.yml", "Security and tenant proof", "Pull request + nightly", "auth tenant guards, section denials, commercial vault denial, redaction, request id", "security-audit-proof.json", "red"],
@@ -18312,7 +18312,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-first-commit-builder.json?v=244";
+    const downloadHref = "data/private-repo-first-commit-builder.json?v=249";
     const repoShellFiles = [
       ["README.md", "Repository orientation", "Explains alpha scope, local setup, proof commands, privacy rules, and release ritual.", "Repo Owner", "green"],
       ["package.json", "Root command map", "Defines install, dev, lint, typecheck, test, migrate, seed, smoke, and release-gate scripts.", "Platform Owner", "blue"],
@@ -18444,7 +18444,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-issue-body-exporter.json?v=244";
+    const downloadHref = "data/backend-issue-body-exporter.json?v=249";
     const labelPlan = [
       ["type:foundation", "Repository shell, docs, env examples, and workspace wiring.", "green"],
       ["type:api", "Server, routes, controllers, services, validators, and contracts.", "teal"],
@@ -18721,7 +18721,7 @@
         ),
       ),
     );
-    const downloadHref = "data/branch-protection-release-checklist.json?v=244";
+    const downloadHref = "data/branch-protection-release-checklist.json?v=249";
     const protectedBranches = [
       ["main", "Require pull request review", "ci.yml, security-audit.yml, migration-restore.yml, billing-testmode.yml, release-gate.yml", "No direct push, no force push, owner approval before production release.", "red"],
       ["develop", "Require primary CI", "ci.yml, security-audit.yml", "Feature integration only after lint, typecheck, route envelopes, auth tenant, and redaction proof.", "blue"],
@@ -18877,7 +18877,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-file-content-export.json?v=244";
+    const downloadHref = "data/first-backend-file-content-export.json?v=249";
     const makeFile = (path, owner, issue, purpose, tone, contentLines) => {
       const content = contentLines.join("\n");
       return {
@@ -19302,7 +19302,7 @@
       ),
     );
     const targetRepository = "dhirajnyse/pursuitdesk-platform";
-    const downloadHref = "data/private-repo-setup-script-draft.json?v=244";
+    const downloadHref = "data/private-repo-setup-script-draft.json?v=249";
     const prerequisites = [
       ["GitHub access", "Admin rights for dhirajnyse and permission to create a private repository.", "red"],
       ["GitHub CLI", "gh auth status should show the account that will own pursuitdesk-platform.", "blue"],
@@ -19685,7 +19685,7 @@
     );
     return {
       importPackScore,
-      downloadHref: "data/github-labels-milestones-import-pack.json?v=244",
+      downloadHref: "data/github-labels-milestones-import-pack.json?v=249",
       labelCatalog,
       labelGroups,
       milestoneCatalog,
@@ -19730,7 +19730,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=244";
+    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=249";
     const qaLanes = [
       ["Repository shell", "Root files, workspace, README, env example, CODEOWNERS, PR template, and release runbook exist.", "green"],
       ["API shell", "Server, app, route registry, health route, request id, safe error, tenant scope, and access decision exist.", "teal"],
@@ -19882,7 +19882,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-opening-day-runbook.json?v=244";
+    const downloadHref = "data/private-repo-opening-day-runbook.json?v=249";
     const daySequence = [
       ["08:30", "Preflight", "Confirm GitHub access, repo name, owners, no live secrets, and local folder location.", "green"],
       ["09:00", "Create private repo", "Create dhirajnyse/pursuitdesk-platform as private, with main protected later after first checks appear.", "red"],
@@ -20003,7 +20003,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-decision-memo.json?v=244";
+    const downloadHref = "data/production-backend-repo-decision-memo.json?v=249";
     const memoSections = [
       ["Decision requested", "Approve creation of dhirajnyse/pursuitdesk-platform as the private production backend repo.", "green"],
       ["Why now", "Prototype has reached a stable SaaS blueprint with repo files, issues, QA gates, taxonomy, and opening-day sequence.", "teal"],
@@ -20134,7 +20134,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-risk-register.json?v=244";
+    const downloadHref = "data/backend-alpha-risk-register.json?v=249";
     const riskDomains = [
       ["Repository control", "Critical", "Private visibility, PR-first branch discipline, and no direct main commits.", "red"],
       ["Secret handling", "Critical", "No live keys, .env files, billing secrets, tokens, or private certificates in the first repo.", "red"],
@@ -20268,7 +20268,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=244";
+    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=249";
     const evidenceLanes = [
       ["Repo privacy proof", "Hard gate", "Screenshot or note proving the production backend repo is private before files move.", "red"],
       ["Setup command proof", "Execution", "Capture preflight, folder creation, starter file copy, install, and first quality command output.", "green"],
@@ -20416,7 +20416,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-execution-checklist.json?v=244";
+    const downloadHref = "data/private-repo-execution-checklist.json?v=249";
     const executionGates = [
       ["Gate 0", "Owner go/no-go", "Product owner confirms the controlled go is for repo creation and first PR evidence only.", "green"],
       ["Gate 1", "Private visibility", "Repo is private before files, labels, issues, or screenshots are added.", "red"],
@@ -20577,7 +20577,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-control-board.json?v=244";
+    const downloadHref = "data/backend-alpha-control-board.json?v=249";
     const boardKpis = [
       ["Control readiness", `${controlReadinessScore}%`, "How ready the private repo day is to be managed from one board", controlReadinessScore >= 70 ? "green" : "amber"],
       ["Repo status", "Not opened", "The private production backend repo still needs real GitHub creation.", "red"],
@@ -20728,7 +20728,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-day-one-script.json?v=244";
+    const downloadHref = "data/private-repo-day-one-script.json?v=249";
     const scriptKpis = [
       ["Script readiness", `${scriptReadinessScore}%`, "How ready the private repo day is to run from one command script.", scriptReadinessScore >= 70 ? "green" : "amber"],
       ["Command blocks", "10", "Preflight, repo, branch, files, taxonomy, issues, PR, checks, protection, closeout.", "blue"],
@@ -20875,7 +20875,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-proof-exporter.json?v=244";
+    const downloadHref = "data/backend-repo-proof-exporter.json?v=249";
     const proofKpis = [
       ["Proof readiness", `${proofReadinessScore}%`, "How ready the repo day is to produce copy-ready evidence.", proofReadinessScore >= 80 ? "green" : "amber"],
       ["Evidence files", privateRepoDayOneScript.evidenceFiles.length, "Markdown files that turn screenshots and commands into review proof.", "teal"],
@@ -21016,7 +21016,7 @@
         ),
       ),
     );
-    const downloadHref = "data/github-repo-opening-packet.json?v=244";
+    const downloadHref = "data/github-repo-opening-packet.json?v=249";
     const openingKpis = [
       ["Opening readiness", `${openingReadinessScore}%`, "How ready the private GitHub repo opening packet is before the real repo exists.", openingReadinessScore >= 80 ? "green" : "amber"],
       ["Issue wave", issueCount, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
@@ -21162,7 +21162,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=244";
+    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=249";
     const issueRows = issues.map((issue, index) => [
       issue.id,
       issue.title,
@@ -21316,7 +21316,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-pr-body-builder.json?v=244";
+    const downloadHref = "data/first-pr-body-builder.json?v=249";
     const prKpis = [
       ["PR readiness", `${firstPrReadinessScore}%`, "How ready the first backend PR body is before the private repo exists.", firstPrReadinessScore >= 80 ? "green" : "amber"],
       ["Linked issues", issueRows.length, "Issue rows that can be referenced after real GitHub URLs exist.", "teal"],
@@ -21496,7 +21496,7 @@
         ),
       ),
     );
-    const downloadHref = "data/repo-evidence-folder-writer.json?v=244";
+    const downloadHref = "data/repo-evidence-folder-writer.json?v=249";
     const evidenceKpis = [
       ["Evidence folder", `${evidenceFolderScore}%`, "How ready the first backend PR evidence folder is before the private repo exists.", evidenceFolderScore >= 80 ? "green" : "amber"],
       ["Markdown files", evidenceTemplates.length, "Proof files that should exist under docs/evidence before review.", "teal"],
@@ -21656,7 +21656,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-command-runner-pack.json?v=244";
+    const downloadHref = "data/private-repo-command-runner-pack.json?v=249";
     const runnerKpis = [
       ["Runner readiness", `${commandRunnerScore}%`, "How ready the real private repo command session is to run without improvising.", commandRunnerScore >= 80 ? "green" : "amber"],
       ["Command blocks", commandBlocks.length, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
@@ -21795,7 +21795,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=244";
+    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=249";
     const reviewKpis = [
       ["Review readiness", `${reviewGateScore}%`, "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", reviewGateScore >= 80 ? "green" : "amber"],
       ["Reviewer lanes", reviewerRows.length, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
@@ -21963,7 +21963,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-artifact-status-board.json?v=244";
+    const downloadHref = "data/evidence-artifact-status-board.json?v=249";
     const boardKpis = [
       ["Artifact board", `${evidenceBoardScore}%`, "How ready the proof packet is to move from planned evidence into real captured artifacts.", evidenceBoardScore >= 80 ? "green" : "amber"],
       ["Artifact rows", artifactRows.length, "Markdown, screenshots, transcripts, signoffs, issue traces, branch proof, closeout, and block rules.", "teal"],
@@ -22187,7 +22187,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-handoff-email-pack.json?v=244";
+    const downloadHref = "data/private-repo-handoff-email-pack.json?v=249";
     const handoffKpis = [
       ["Email pack", `${handoffEmailScore}%`, "Readiness to send the private repo briefing without improvising.", handoffEmailScore >= 80 ? "green" : "amber"],
       ["Owner lanes", audienceBriefs.length, "Recipients with clear decision and evidence expectations.", "teal"],
@@ -22364,7 +22364,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=244";
+    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=249";
     const reviewCommentKpis = [
       ["Comment pack", `${firstBackendPrCommentScore}%`, "Readiness to paste controlled GitHub review language into the first backend PR.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
       ["Review actions", reviewCommentLibrary.length, "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.", "teal"],
@@ -22539,7 +22539,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=244";
+    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=249";
     const closeoutKpis = [
       ["Closeout pack", `${evidenceCloseoutScore}%`, "Readiness to close the first private backend PR evidence session without losing proof state.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
       ["Outcome lanes", closeoutOutcomeLanes.length, "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.", "teal"],
@@ -22708,7 +22708,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=244";
+    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=249";
     return {
       backendRepoDayMeetingScore,
       downloadHref,
@@ -22881,7 +22881,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-reply-capture-board.json?v=244";
+    const downloadHref = "data/private-repo-reply-capture-board.json?v=249";
     return {
       replyCaptureScore,
       downloadHref,
@@ -23031,7 +23031,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=244";
+    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=249";
     return {
       pdfExportScore,
       downloadHref,
@@ -23214,7 +23214,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=244";
+    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=249";
     return {
       meetingMinutesScore,
       downloadHref,
@@ -23395,7 +23395,7 @@
         ),
       ),
     );
-    const downloadHref = "data/reviewer-decision-email-pack.json?v=244";
+    const downloadHref = "data/reviewer-decision-email-pack.json?v=249";
     return {
       reviewerDecisionEmailScore,
       downloadHref,
@@ -23447,14 +23447,14 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v244 Playbook Outcome Control Board",
-      phase: "Playbook outcome control board",
+      version: "v249 Simple Buyer Review Pack",
+      phase: "Simple buyer review pack",
       lane: "Static product prototype on GitHub Pages",
-      pace: "225 meaningful versions since rebrand",
-      summary: "Pilot Pitch now compares sponsor, invoice, and success playbook outcomes in one management surface with reuse rules, proof quality, blocked motion, privacy gates, and audit-ready control rows.",
+      pace: "230 meaningful versions since rebrand",
+      summary: "Pilot Pitch now publishes approved renewal evidence into a simple buyer review pack with one opening, clean proof, optional next step, hidden rows, and a short downloadable handoff.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, and Playbook Outcome Control Board are live in demo form.", "teal"],
+        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, and Simple Buyer Review Pack are live in demo form.", "teal"],
         ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, workflow job matrix, branch protection, cache policy, secret policy, release artifacts, first-commit file contents, issue bodies, issue labels, milestones, proof commands, opening order, protected environments, review ownership, artifact retention, release ritual, rollback playbook, issue-to-check map, root file contents, API starter contents, package starter contents, workflow starter contents, setup scripts, repository bootstrap commands, folder creation, secret placeholders, first PR proof, label catalog, milestone catalog, board columns, issue routing rules, taxonomy gates, first commit QA lanes, artifact expectations, role signoffs, go/no-go rules, opening-day command sequence, evidence packets, no-go stops, owner checkpoints, decision memo scope cutline, approval basis, decision options, blocker register, definitions of done, risk domains, risk triggers, mitigations, residual risks, owner actions, monitoring signals, evidence files, screenshots, PR note sections, workflow check names, branch-protection proof, signoff trail, execution gates, proof logs, command order, issue waves, branch timing, closeout checks, control lanes, blocker queue, owner readiness, decision log, alpha board action queue, day-one command blocks, manual proof points, PR script, owner prompts, closeout checks, evidence templates, command transcript slots, approval notes, proof snippets, proof quality gates, repo identity facts, owner matrix, issue wave ledger, launch files, risk locks, closeout ledger, copy-ready repo-opening text, CSV-style issue rows, owner lanes, label mapping, body-file names, validation gates, paste checks, import closeout files, PR identity, PR scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback text, release checklist, copy-ready PR body, evidence folder tree, markdown templates, screenshot slots, transcript slots, issue ledger, owner signoff files, branch-proof gates, closeout notes, command runner steps, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, copy-ready commands, runner closeout, reviewer gate matrix, decision gates, evidence review map, hold queue, block rules, merge checklist, reviewer packets, PR comment templates, GitHub review action text, lane comment packets, inline note snippets, no-leak signoffs, request-changes text, merge closeout text, review send checklist, evidence closeout lanes, decision logs, owner closeout queue, no-leak rollback checks, closeout timeline, management summary lines, meeting agenda, attendee map, decision capture board, action queue, risk parking lot, evidence outputs, facilitator script, reviewer reply lanes, reply states, thread capture fields, requested-change resolver, approval readiness, merge gates, reply SLA, management reply brief, PDF page blueprint, printable sections, redaction checks, export QA, distribution matrix, archive naming, export management brief, attendance log, minutes sections, decision register, action queue, management email blocks, follow-up cadence, privacy/audit checks, copy-ready minutes, closeout reopen reasons, approver handoff, route guards, audit fields, approval memory rows, standard rules, approver coverage, decision audit chains, retention calendar rows, evidence review dates, annual review dates, retention-until dates, exception lanes, retention audit fields, closeout SLA ids, due lanes, days late, escalation levels, reviewer nudges, owner action clocks, exception queue ids, decision states, approval owner roles, rejection reasons, closeout exception audit events, proposal acceptance rows, buyer reply states, accepted scope JSON, requested-change ledger, renewal gates, closeout actions, proposal email bodies, buyer decision ids, decision-readiness score, source-version map, decision matrix, action owners, decision email bodies, evidence bundle ids, proof statuses, required file lists, owner reminder text, release notes, document folder ids, evidence audit events, pilot invoice request ids, payment simulator ids, provider events, manual approval expiry, grace windows, access lock reasons, payment states, due dates, provider invoice ids, payment URLs, workspace activation states, pilot kickoff ids, kickoff dates, admin setup states, workbook handoff tasks, invite batches, adoption checkpoints, launch locks, renewal gates, pdf render workflow ids, render statuses, pdf storage urls, print audit fields, signature completion, archive attachment states, provider event ids, webhook signature status, idempotency ledger rows, tenant payment mapping, retry counts, access effect JSON, billing audit envelopes, renewal decision ids, renewal scores, recommended paths, proof rows, sponsor actions, expansion handoff fields, archive attachment register ids, storage object keys, checksum proof, retention release state, download audit events, webhook test pack ids, raw body hashes, signature headers, expected HTTP status, actual HTTP status, replay counts, verified-by fields, expansion quote ids, quoted seats, quoted manager seats, monthly quotes, setup quotes, first invoice amounts, sponsor approval states, next invoice options, attachment download audit ids, requested-by roles, download reasons, request IP hashes, checksum verification states, access decisions, denied reasons, retention release checks, webhook runner checklist ids, test commands, fixture files, screenshot paths, release gate states, failed gate reasons, runner owner roles, runner timeboxes, operator readiness states, command proof cells, download permission matrix ids, role scopes, room grants, redaction profiles, signed URL expiry, expected HTTP decisions, download audit gates, webhook incident ids, incident lanes, severity levels, replay decisions, customer message states, root cause summaries, incident release gates, expansion approval memory ids, finance hold reasons, quote revisions, invoice decisions, rollout authorization, approval audit fields, download approval board ids, approver decisions, redaction release states, expiry review, escalation reasons, webhook notice pack ids, audience templates, privacy-safe message bodies, notice approvals, sent timestamps, customer impact states, expansion invoice acceptance ids, paid-state proof, rollout locks, access snapshots, renewal handoff dates, autopilot run ids, mission codes, record signal JSON, assigned action JSON, privacy guard states, meeting script bodies, time-machine run ids, scenario codes, future health scores, prevented-late counts, record future JSON, simulation audit events, win-lab run ids, win scores, no-bid risk, differentiator text, bid thesis text, strategy memo bodies, decision twin run ids, projected health scores, scenario names, simulated record ids, approved decision states, actual-after scores, dispatch task ids, dispatch owner roles, dispatch lock states, dispatch SLAs, evidence requests, dispatch messages, dispatch audit memory, outcome replay ids, predicted lift, actual lift, movement proof state, lift variance, replay next actions, decision inbox ids, inbox owner roles, inbox due dates, inbox reply states, inbox evidence requests, inbox message bodies, inbox closeout notes, dispatch closeout ids, proof packs, outcome states, reusable memory text, release gates, file manifests, learning memory ids, learning lanes, learning confidence, trigger rules, anti-patterns, reusable scripts, learning evidence gates, rule reopen request ids, reopen reason codes, reopen reviewer roles, reopen owner actions, reopen decisions, reopen due dates, rollback triggers, rule reopen audit events, pilot close probability ids, close forecast states, probability drivers, buyer close lanes, probability scores, close owner roles, close due labels, commercial ask text, close email bodies, buyer-safe proposal ids, included proof JSON, excluded proof JSON, hidden field lists, send states, buyer-safe email bodies, rule reopen outcome replay ids, outcome states, actual signal text, health lift, risk change, outcome next action, outcome proof, outcome audit events, pilot close outcome memory ids, actual close outcomes, forecast accuracy states, close learning signals, commercial results, close next actions, close outcome audit events, proposal send receipt ids, proposal versions, sender users, prepared timestamps, included proof maps, held proof maps, privacy checks, follow-up due dates, proposal send audit events, rule reopen outcome memory ids, memory states, confidence scores, influence surfaces, memory rules, Advisor lines, Report lines, next review dates, memory audit events, pilot outcome forecast tuner ids, forecast tuning row ids, probability deltas, tuned probabilities, forecast tune states, founder follow-up rules, forecast review dates, forecast tuner audit events, proposal follow-up tracker ids, follow-up row ids, buyer reply states, reply timestamps, follow-up due dates, reminder states, next close actions, founder message text, escalation owner roles, proposal follow-up audit events, decision memory influence switchboard ids, influence switch row ids, enabled surfaces, blocked surfaces, admin decisions, surface effects, audit gates, review dates, influence switch audit events, pilot follow-up reply memory ids, reply memory row ids, reply memory lanes, confidence scores, forecast influence flags, Advisor influence flags, commercial privacy states, decision memory text, next-cycle rules, founder reply templates, reply memory audit gates, reply memory audit events, founder close command ids, founder command row ids, command lanes, command priorities, command deadlines, owner roles, founder say-this text, buyer proof requests, stop rules, decision gates, privacy notes, founder close command audit events, memory influence audit diff ids, before/after surface states, risk deltas, health lifts, privacy effects, and memory influence diff audit events, pilot reply pattern library ids, reply pattern rows, trigger signals, buyer phrases, proof paths, reply angles, reuse rules, anti-patterns, pattern confidence, stop rules, sample replies, reply pattern audit events, founder close outcome receipt ids, receipt rows, command sent timestamps, buyer answers, sent proof, next actions, closeout results, outcome scores, renewal hints, proof-complete states, and founder close receipt audit events, memory diff release note ids, release rows, admin headlines, buyer-safe headlines, buyer-safe notes, approval gates, release scores, memory diff release audit events, pattern-to-demo coach ids, demo coach rows, buyer types, opening lines, screen sequences, proof moments, control questions, handoff moves, founder stop rules, coach scores, demo coach audit events, receipt-to-renewal signal ids, renewal signal rows, renewal lanes, renewal states, recommended renewal paths, commercial asks, success questions, renewal due labels, renewal scores, renewal signal audit events, release note approval board ids, release note approval rows, approval lanes, decision states, approver roles, publish targets, reviewer instructions, evidence requirements, buyer-safe approval states, approval scores, release approval audit events, demo coach replay score ids, demo coach replay rows, replay outcome lanes, buyer reaction proof, reply memory effects, forecast deltas, retest decisions, demo replay audit events, renewal signal replay board ids, renewal replay rows, renewal replay lanes, adoption proof, payment proof, usage proof, buyer response proof, commercial hold states, renewal forecast deltas, renewal replay audit events, buyer-safe changelog publisher ids, changelog rows, publication lanes, customer audiences, channels, publish windows, proof locks, privacy locks, rollback copy, readiness scores, changelog audit events, coach-to-close learning publisher ids, learning rows, learning lanes, founder scripts, reply-memory rules, forecast rules, next-demo adjustments, stop rules, proof requirements, privacy locks, close lifts, learning scores, and coach-to-close learning audit events are mapped.", "blue"],
         ["v231 handoff schema", 100, "Renewal-to-invoice trust publisher rows now map invoice lane, invoice state, sponsor script, invoice ask, billing option, invoice amount, finance gate, rollout gate, customer-success memory, trust score, and audit event.", "green"],
         ["v232 reaction schema", 100, "Customer changelog reaction rows now map reaction lane, sponsor reaction, commercial signal, objection, follow-up window, Pilot Pitch signal, Advisor signal, privacy gate, confidence lift, and audit event.", "teal"],
@@ -23470,6 +23470,11 @@
         ["v242 invoice playbook outcome schema", 100, "Invoice playbook outcome rows now map published invoice playbooks to payment proof state, revision approval, proof completion, protected no-chase state, finance action, customer-success action, next control, reusable learning, privacy gate, and audit event.", "blue"],
         ["v243 success playbook outcome schema", 100, "Success playbook outcome rows now map published success playbooks to access activation, first-login proof, renewal proof, proof-sprint completion, protected rollout state, next control, reusable learning, privacy gate, and audit event.", "green"],
         ["v244 playbook outcome control schema", 100, "Playbook outcome control rows now normalize sponsor, invoice, and success outcomes into stream, source row, proof quality, reuse rule, blocked-motion state, management action, reusable learning, privacy gate, and audit event.", "blue"],
+        ["v245 renewal bridge schema", 100, "Outcome-to-renewal bridge rows now map control rows to renewal path, proof status, renewal prompt, expansion proof, stop rule, next action, privacy gate, confidence delta, and audit event.", "teal"],
+        ["v246 renewal map schema", 100, "Playbook outcome renewal map rows now map bridge rows to review lane, readiness score, renewal evidence, expansion option, success proof, customer review line, next step, stop rule, privacy gate, and audit event.", "green"],
+        ["v247 proposal router schema", 100, "Outcome-to-expansion proposal router rows now map renewal-map rows to proposal route, proposal readiness, buyer-safe proof, renewal option, expansion option, proposal next step, guardrail, privacy gate, and audit event.", "teal"],
+        ["v248 renewal evidence approval gate", 100, "Renewal evidence approval gate rows now map proposal-router rows to approval lane, approval score, buyer pack section, reviewer role, evidence action, redaction rule, simplicity rule, privacy gate, and audit event.", "green"],
+        ["v249 simple buyer review pack", 100, "Simple buyer review pack rows now map approved evidence to buyer-facing opening, proof, optional next, hidden state, visible sentence, hidden fields, simplicity score, privacy gate, and audit event.", "teal"],
         ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, rule impact simulator, customer demo replay recorder, proposal proof composer, rule change audit trail, demo-to-pilot conversion board, proposal redaction approval gate, rule reopen review queue, pilot close probability simulator, buyer-safe proposal export, rule reopen outcome replay, pilot close outcome memory, proposal send audit receipt, rule reopen outcome memory, pilot outcome forecast tuner, proposal send follow-up tracker, decision memory influence switchboard, pilot follow-up reply memory, founder close command script, memory influence audit diff, pilot reply pattern library, founder close outcome receipt, memory diff release notes, pattern-to-demo coach, receipt-to-renewal signal, release note approval board, demo coach replay score, renewal signal replay board, buyer-safe changelog publisher, coach-to-close learning publisher, and renewal-to-invoice trust publisher are mapped, but the real private repo and real staging environment are not created yet.", "red"],
         ["Billing model", 100, "USD Starter, Team, Business, extra operator seats, manager/commercial seats, setup service pricing, checkout flow, invoice lifecycle, payment state simulator, adoption health monitor, provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, renewal decision pack, idempotency, signature verification, tenant mapping, retry rules, plan changes, access locks, audit events, pilot pitch packaging, customer feedback buying signals, ROI payback story, proposal export handoff, objection playbook proof paths, proposal acceptance tracking, buyer decision closeout, invoice request handoff, kickoff activation handoff, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "green"],
         ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker, buyer decision room, pilot invoice request pack, pilot payment state simulator, pilot kickoff control pack, pilot adoption health monitor, closeout PDF render workflow, payment provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, attachment download audit evidence pack, pilot renewal decision pack, closeout archive attachment register, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, and rule impact simulator.", "green"],
@@ -23644,12 +23649,17 @@
         ["166", "Sponsor playbook outcome tracker", "Done", "Decision Twin now measures whether published sponsor playbooks created proof calls, Pilot Pitch movement, customer-success action, blocked follow-up, privacy gates, and audit-ready outcome memory."],
         ["167", "Invoice playbook outcome tracker", "Done", "Pilot Pitch now measures whether published invoice playbooks created paid proof, revision approval, proof completion, protected no-chase decisions, privacy gates, and audit-ready outcome memory."],
         ["168", "Success playbook outcome tracker", "Done", "Pilot Pitch now measures whether published success playbooks created access activation, first-login proof, renewal proof, proof-sprint completion, protected rollout holds, privacy gates, and audit-ready outcome memory."],
-        ["169", "Playbook outcome control board", "Active", "Pilot Pitch now compares sponsor, invoice, and success playbook outcomes in one management surface with reuse rules, proof quality, blocked motion, privacy gates, and audit-ready control rows."],
+        ["169", "Playbook outcome control board", "Done", "Pilot Pitch now compares sponsor, invoice, and success playbook outcomes in one management surface with reuse rules, proof quality, blocked motion, privacy gates, and audit-ready control rows."],
+        ["170", "Outcome-to-renewal control bridge", "Done", "Pilot Pitch now turns verified playbook outcomes into renewal prompts, expansion proof, proof repair queues, protected stop rules, privacy gates, and audit-ready bridge rows."],
+        ["171", "Playbook outcome renewal map", "Done", "Pilot Pitch now turns the renewal bridge into a first customer review map with renewal evidence, expansion options, success proof, repair holds, privacy gates, and audit-ready review rows."],
+        ["172", "Outcome-to-expansion proposal router", "Done", "Pilot Pitch now turns renewal-map evidence into buyer-safe proposal routes, optional expansion paths, proof appendix rows, protected holds, proposal guardrails, privacy gates, and audit-ready router rows."],
+        ["173", "Renewal evidence approval gate", "Done", "Pilot Pitch now adds a simple proof gate that decides release, redact, hold, or internal-only before evidence reaches a buyer-facing pack."],
+        ["174", "Simple buyer review pack", "Active", "Pilot Pitch now collapses approved evidence into a short buyer-facing review with visible proof, optional next step, hidden rows, and a clean handoff JSON."],
       ],
       nextBuilds: [
-        ["v245", "Outcome-to-Renewal Control Bridge", "Turn sponsor, invoice, and success playbook outcomes into renewal prompts, expansion proof, and protected stop rules."],
-        ["v246", "Playbook Outcome Renewal Map", "Turn verified playbook outcomes into renewal evidence, expansion options, and success proof for the first customer review."],
-        ["v247", "Outcome-to-Expansion Proposal Router", "Turn verified playbook outcomes into buyer-safe expansion proof, renewal options, and protected proposal next steps."],
+        ["v250", "Proposal Proof Approval Gate", "Approve which routed proposal proof can appear in buyer-safe proposal, renewal appendix, expansion option, or internal-only notes."],
+        ["v251", "Simple Buyer Review Pack", "Collapse approved renewal evidence into a clean one-page buyer review with only problem, proof, option, owner, and next step."],
+        ["v252", "Buyer Review Send Receipt", "Record the exact simple review pack sent, who received it, hidden rows, follow-up date, and customer-safe audit receipt."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -57653,6 +57663,1016 @@
       runbook: playbookOutcomeControlRunbook,
       downloadHref: jsonDataUri(playbookOutcomeControlBoardPacket),
     };
+    const outcomeRenewalBridgeId = `PD-OUTCOME-RENEWAL-BRIDGE-${proposalDateKey}-${String(playbookOutcomeControlRows.length).padStart(3, "0")}`;
+    const classifyRenewalBridge = (row) => {
+      if (row.blockedMotion !== "Not blocked") {
+        return {
+          path: "Protected stop",
+          tone: "red",
+          proofStatus: "Do not reuse",
+          renewalPrompt: "Do not push renewal until governance or buyer proof reopens this outcome.",
+          expansionProof: "Blocked from expansion story.",
+          stopRule: row.blockedMotion,
+        };
+      }
+      if (row.score >= 90 && isReusableOutcome(row)) {
+        return {
+          path: "Renewal ready",
+          tone: "green",
+          proofStatus: "Ready for renewal review",
+          renewalPrompt: `${row.stream} outcome can support the renewal story after final privacy check.`,
+          expansionProof: row.resultSignal,
+          stopRule: "Stop only if buyer asks for fresh evidence or legal proof.",
+        };
+      }
+      if (row.stream === "Success" || row.outcomeLane.includes("Renewal") || row.outcomeLane.includes("Access") || row.outcomeLane.includes("Paid")) {
+        return {
+          path: "Expansion proof",
+          tone: "teal",
+          proofStatus: "Use as expansion proof with source attached",
+          renewalPrompt: `${row.stream} motion can open a renewal or expansion question.`,
+          expansionProof: row.reusableLearning,
+          stopRule: "Do not mention commercial expansion until proof quality is attached.",
+        };
+      }
+      return {
+        path: "Proof repair",
+        tone: "amber",
+        proofStatus: "Needs evidence repair",
+        renewalPrompt: "Hold renewal language until the missing proof is repaired.",
+        expansionProof: row.proofQuality,
+        stopRule: "Stop if the proof owner cannot produce a dated evidence item.",
+      };
+    };
+    const outcomeRenewalBridgeRows = playbookOutcomeControlRows.map((row, index) => {
+      const bridge = classifyRenewalBridge(row);
+      return {
+        outcomeRenewalBridgeRowId: `ORB-${String(index + 1).padStart(3, "0")}`,
+        sourceControlRowId: row.playbookOutcomeControlRowId,
+        sourceRoom: row.sourceRoom,
+        stream: row.stream,
+        buyer: row.buyer,
+        outcomeLane: row.outcomeLane,
+        renewalPath: bridge.path,
+        tone: bridge.tone,
+        score: row.score,
+        confidenceDelta: row.confidenceDelta,
+        ownerRole: row.ownerRole,
+        proofStatus: bridge.proofStatus,
+        renewalPrompt: bridge.renewalPrompt,
+        expansionProof: bridge.expansionProof,
+        stopRule: bridge.stopRule,
+        nextAction: row.managementAction,
+        privacyGate: row.privacyGate,
+        auditEvent: `outcome_renewal_bridge.${row.auditEvent}`,
+      };
+    });
+    const outcomeRenewalReady = outcomeRenewalBridgeRows.filter((row) => row.renewalPath === "Renewal ready").length;
+    const outcomeExpansionProof = outcomeRenewalBridgeRows.filter((row) => row.renewalPath === "Expansion proof").length;
+    const outcomeProofRepair = outcomeRenewalBridgeRows.filter((row) => row.renewalPath === "Proof repair").length;
+    const outcomeProtectedStop = outcomeRenewalBridgeRows.filter((row) => row.renewalPath === "Protected stop").length;
+    const outcomeRenewalLift = outcomeRenewalBridgeRows.reduce((sum, row) => sum + row.confidenceDelta, 0);
+    const outcomeRenewalBridgeScore = Math.max(
+      44,
+      Math.min(
+        99,
+        Math.round(
+          playbookOutcomeControlScore * 0.35 +
+            Math.min(100, outcomeRenewalReady * 14) * 0.2 +
+            Math.min(100, outcomeExpansionProof * 10) * 0.17 +
+            Math.max(0, 100 - outcomeProofRepair * 8) * 0.14 +
+            Math.max(0, 100 - outcomeProtectedStop * 10) * 0.14,
+        ),
+      ),
+    );
+    const outcomeRenewalBridgeCards = [
+      ["Renewal bridge", `${outcomeRenewalBridgeScore}%`, "Playbook outcomes now resolve into renewal, expansion, proof repair, or protected stop decisions.", outcomeRenewalBridgeScore >= 88 ? "green" : "blue"],
+      ["Renewal ready", outcomeRenewalReady, "Outcomes strong enough to support the first renewal review after privacy check.", outcomeRenewalReady ? "green" : "amber"],
+      ["Expansion proof", outcomeExpansionProof, "Outcomes that can become expansion evidence once source proof is attached.", outcomeExpansionProof ? "teal" : "blue"],
+      ["Protected stops", outcomeProtectedStop, "Outcomes blocked from renewal or expansion language until proof reopens them.", outcomeProtectedStop ? "red" : "green"],
+    ];
+    const outcomeRenewalBridgeLaneDefs = [
+      ["Renewal ready", "green", "Use these outcomes in the renewal review once final privacy check is done."],
+      ["Expansion proof", "teal", "Turn these outcomes into buyer-safe expansion proof after source evidence is attached."],
+      ["Proof repair", "amber", "Repair evidence before the outcome is allowed into renewal language."],
+      ["Protected stop", "red", "Keep these out of renewal, expansion, and sales language until governance reopens them."],
+    ];
+    const outcomeRenewalBridgeLanes = outcomeRenewalBridgeLaneDefs.map(([lane, tone, note]) => ({
+      lane,
+      tone,
+      note,
+      items: outcomeRenewalBridgeRows.filter((row) => row.renewalPath === lane),
+    }));
+    const firstRenewalReady = outcomeRenewalBridgeRows.find((row) => row.renewalPath === "Renewal ready");
+    const firstExpansionProof = outcomeRenewalBridgeRows.find((row) => row.renewalPath === "Expansion proof");
+    const firstRenewalStop = outcomeRenewalBridgeRows.find((row) => row.renewalPath === "Protected stop");
+    const outcomeRenewalBridgeDigest = [
+      `Outcome-to-Renewal Control Bridge ${outcomeRenewalBridgeId}`,
+      `${outcomeRenewalBridgeRows.length} playbook outcomes routed from v244 into renewal, expansion, proof repair, or protected stop paths.`,
+      `Bridge score ${outcomeRenewalBridgeScore}%. Renewal ready ${outcomeRenewalReady}; expansion proof ${outcomeExpansionProof}; proof repair ${outcomeProofRepair}; protected stops ${outcomeProtectedStop}.`,
+      `Total confidence lift carried forward: ${outcomeRenewalLift >= 0 ? "+" : ""}${outcomeRenewalLift}.`,
+      "",
+      "Bridge rule: no outcome becomes renewal or expansion proof until source room, source row, proof status, stop rule, privacy gate, and audit event are visible.",
+      firstRenewalReady ? `First renewal-ready story: ${firstRenewalReady.stream} / ${firstRenewalReady.buyer} -> ${firstRenewalReady.renewalPrompt}` : "No renewal-ready story is available yet.",
+      firstExpansionProof ? `First expansion proof: ${firstExpansionProof.stream} / ${firstExpansionProof.buyer} -> ${firstExpansionProof.expansionProof}` : "No expansion proof story is ready yet.",
+      firstRenewalStop ? `First protected stop: ${firstRenewalStop.stream} / ${firstRenewalStop.buyer} -> ${firstRenewalStop.stopRule}` : "No protected stop is active.",
+    ].join("\n");
+    const outcomeRenewalBridgeEmail = [
+      `Subject: Outcome-to-renewal bridge - ${outcomeRenewalBridgeScore}% ready`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The playbook outcome board now routes into renewal control: ${outcomeRenewalReady} renewal-ready stories, ${outcomeExpansionProof} expansion proof candidates, ${outcomeProofRepair} proof repairs, and ${outcomeProtectedStop} protected stops.`,
+      firstRenewalReady ? `Use first in renewal: ${firstRenewalReady.buyer} - ${firstRenewalReady.renewalPrompt}` : "No renewal-ready story should be used yet.",
+      firstRenewalStop ? `Protect first: ${firstRenewalStop.buyer} - ${firstRenewalStop.stopRule}` : "No stop rule needs escalation right now.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const outcomeRenewalBridgeRunbook = [
+      ["1", "Open renewal ready stories", `${outcomeRenewalReady} outcomes can enter a renewal review after final privacy check.`, outcomeRenewalReady ? "green" : "amber"],
+      ["2", "Attach expansion proof", `${outcomeExpansionProof} outcomes can become expansion proof if source evidence is attached.`, outcomeExpansionProof ? "teal" : "blue"],
+      ["3", "Repair weak evidence", `${outcomeProofRepair} outcomes still need evidence repair before buyer-facing use.`, outcomeProofRepair ? "amber" : "green"],
+      ["4", "Respect protected stops", `${outcomeProtectedStop} outcomes stay out of renewal and expansion language until reopened.`, outcomeProtectedStop ? "red" : "green"],
+    ];
+    const outcomeRenewalBridgePacket = {
+      schemaVersion: "pursuitdesk.outcomeRenewalControlBridge.v245",
+      generatedOn: proposalDate.toISOString(),
+      outcomeRenewalBridgeId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        playbookOutcomeControlBoard: playbookOutcomeControlBoardPacket.schemaVersion,
+      },
+      sourceIds: {
+        playbookOutcomeControlBoardId,
+      },
+      score: outcomeRenewalBridgeScore,
+      counts: {
+        rows: outcomeRenewalBridgeRows.length,
+        renewalReady: outcomeRenewalReady,
+        expansionProof: outcomeExpansionProof,
+        proofRepair: outcomeProofRepair,
+        protectedStop: outcomeProtectedStop,
+      },
+      cards: outcomeRenewalBridgeCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      lanes: outcomeRenewalBridgeLanes.map((lane) => ({
+        lane: lane.lane,
+        tone: lane.tone,
+        note: lane.note,
+        count: lane.items.length,
+        outcomeRenewalBridgeRowIds: lane.items.map((item) => item.outcomeRenewalBridgeRowId),
+      })),
+      rows: outcomeRenewalBridgeRows,
+      digest: outcomeRenewalBridgeDigest,
+      email: outcomeRenewalBridgeEmail,
+      runbook: outcomeRenewalBridgeRunbook.map(([step, title, detail, tone]) => ({ step, title, detail, tone })),
+      nextBackendFields: [
+        "outcome_renewal_bridge_id",
+        "outcome_renewal_bridge_row_id",
+        "source_control_row_id",
+        "source_room",
+        "stream",
+        "renewal_path",
+        "proof_status",
+        "renewal_prompt",
+        "expansion_proof_text",
+        "stop_rule_text",
+        "next_action",
+        "privacy_gate",
+        "confidence_delta",
+        "bridge_score",
+        "outcome_renewal_bridge_audit_event",
+      ],
+    };
+    const outcomeRenewalControlBridge = {
+      outcomeRenewalBridgeId,
+      score: outcomeRenewalBridgeScore,
+      renewalReady: outcomeRenewalReady,
+      expansionProof: outcomeExpansionProof,
+      proofRepair: outcomeProofRepair,
+      protectedStop: outcomeProtectedStop,
+      confidenceLift: outcomeRenewalLift,
+      cards: outcomeRenewalBridgeCards,
+      rows: outcomeRenewalBridgeRows,
+      lanes: outcomeRenewalBridgeLanes,
+      digest: outcomeRenewalBridgeDigest,
+      email: outcomeRenewalBridgeEmail,
+      runbook: outcomeRenewalBridgeRunbook,
+      downloadHref: jsonDataUri(outcomeRenewalBridgePacket),
+    };
+    const playbookOutcomeRenewalMapId = `PD-PLAYBOOK-OUTCOME-RENEWAL-MAP-${proposalDateKey}-${String(outcomeRenewalBridgeRows.length).padStart(3, "0")}`;
+    const buildRenewalMapDecision = (row) => {
+      if (row.renewalPath === "Protected stop") {
+        return {
+          lane: "Repair or hold",
+          tone: "red",
+          readiness: Math.max(24, row.score - 22),
+          renewalEvidence: "No renewal evidence can be used until the stop rule is cleared.",
+          expansionOption: "No expansion option allowed.",
+          successProof: "Success proof is blocked.",
+          customerReviewLine: `Hold ${row.buyer} out of the review pack until ${row.stopRule}`,
+        };
+      }
+      if (row.renewalPath === "Proof repair") {
+        return {
+          lane: "Repair or hold",
+          tone: "amber",
+          readiness: Math.max(42, row.score - 10),
+          renewalEvidence: row.proofStatus,
+          expansionOption: "Keep expansion language out until the evidence owner repairs the source proof.",
+          successProof: row.expansionProof,
+          customerReviewLine: `Repair proof for ${row.buyer} before it appears in the customer review.`,
+        };
+      }
+      if (row.renewalPath === "Expansion proof" && row.stream === "Success") {
+        return {
+          lane: "Success proof",
+          tone: "teal",
+          readiness: Math.min(99, row.score + 4),
+          renewalEvidence: row.renewalPrompt,
+          expansionOption: "Use this as adoption or success evidence before asking for wider rollout.",
+          successProof: row.expansionProof,
+          customerReviewLine: `${row.buyer} can support the success proof section if source evidence is attached.`,
+        };
+      }
+      if (row.renewalPath === "Expansion proof") {
+        return {
+          lane: "Expansion option",
+          tone: "teal",
+          readiness: Math.min(97, row.score + 2),
+          renewalEvidence: row.renewalPrompt,
+          expansionOption: row.expansionProof,
+          successProof: "Attach source proof before using as expansion evidence.",
+          customerReviewLine: `${row.buyer} can become an expansion option after proof attachment.`,
+        };
+      }
+      return {
+        lane: "First review",
+        tone: "green",
+        readiness: Math.min(99, row.score + 6),
+        renewalEvidence: row.expansionProof,
+        expansionOption: "Offer renewal first; expansion can follow if the buyer asks for broader control.",
+        successProof: row.proofStatus,
+        customerReviewLine: `${row.buyer} is ready for the first renewal review after final privacy check.`,
+      };
+    };
+    const playbookOutcomeRenewalMapRows = outcomeRenewalBridgeRows.map((row, index) => {
+      const map = buildRenewalMapDecision(row);
+      return {
+        playbookOutcomeRenewalMapRowId: `ORM-${String(index + 1).padStart(3, "0")}`,
+        sourceBridgeRowId: row.outcomeRenewalBridgeRowId,
+        sourceControlRowId: row.sourceControlRowId,
+        stream: row.stream,
+        buyer: row.buyer,
+        reviewLane: map.lane,
+        tone: map.tone,
+        readinessScore: map.readiness,
+        renewalPath: row.renewalPath,
+        renewalEvidence: map.renewalEvidence,
+        expansionOption: map.expansionOption,
+        successProof: map.successProof,
+        customerReviewLine: map.customerReviewLine,
+        ownerRole: row.ownerRole,
+        nextStep: row.nextAction,
+        stopRule: row.stopRule,
+        privacyGate: row.privacyGate,
+        auditEvent: `playbook_outcome_renewal_map.${row.auditEvent}`,
+      };
+    }).sort((a, b) => b.readinessScore - a.readinessScore);
+    const renewalMapFirstReview = playbookOutcomeRenewalMapRows.filter((row) => row.reviewLane === "First review").length;
+    const renewalMapExpansionOptions = playbookOutcomeRenewalMapRows.filter((row) => row.reviewLane === "Expansion option").length;
+    const renewalMapSuccessProof = playbookOutcomeRenewalMapRows.filter((row) => row.reviewLane === "Success proof").length;
+    const renewalMapRepairHold = playbookOutcomeRenewalMapRows.filter((row) => row.reviewLane === "Repair or hold").length;
+    const renewalMapAverageReadiness = Math.round(playbookOutcomeRenewalMapRows.reduce((sum, row) => sum + row.readinessScore, 0) / Math.max(1, playbookOutcomeRenewalMapRows.length));
+    const playbookOutcomeRenewalMapScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          outcomeRenewalBridgeScore * 0.32 +
+            renewalMapAverageReadiness * 0.28 +
+            Math.min(100, renewalMapFirstReview * 16) * 0.16 +
+            Math.min(100, (renewalMapExpansionOptions + renewalMapSuccessProof) * 12) * 0.14 +
+            Math.max(0, 100 - renewalMapRepairHold * 8) * 0.1,
+        ),
+      ),
+    );
+    const playbookOutcomeRenewalMapCards = [
+      ["Renewal map", `${playbookOutcomeRenewalMapScore}%`, "First customer review evidence is now separated from expansion options, success proof, and holds.", playbookOutcomeRenewalMapScore >= 88 ? "green" : "blue"],
+      ["First review", renewalMapFirstReview, "Rows ready for the first renewal conversation after final privacy check.", renewalMapFirstReview ? "green" : "amber"],
+      ["Expansion options", renewalMapExpansionOptions, "Rows that can become buyer-safe expansion options after source proof is attached.", renewalMapExpansionOptions ? "teal" : "blue"],
+      ["Success proof", renewalMapSuccessProof, "Rows that can support adoption, rollout, or customer-success proof.", renewalMapSuccessProof ? "teal" : "green"],
+    ];
+    const playbookOutcomeRenewalMapLaneDefs = [
+      ["First review", "green", "Use these rows in the first renewal review after final privacy check."],
+      ["Expansion option", "teal", "Hold these as optional expansion evidence until the buyer asks for wider rollout."],
+      ["Success proof", "blue", "Use these to prove adoption, access, onboarding, or renewal readiness."],
+      ["Repair or hold", "amber", "Repair evidence or keep the row out of the review pack until reopened."],
+    ];
+    const playbookOutcomeRenewalMapLanes = playbookOutcomeRenewalMapLaneDefs.map(([lane, tone, note]) => ({
+      lane,
+      tone,
+      note,
+      items: playbookOutcomeRenewalMapRows.filter((row) => row.reviewLane === lane),
+    }));
+    const firstReviewStory = playbookOutcomeRenewalMapRows.find((row) => row.reviewLane === "First review");
+    const firstExpansionOption = playbookOutcomeRenewalMapRows.find((row) => row.reviewLane === "Expansion option");
+    const firstRepairHold = playbookOutcomeRenewalMapRows.find((row) => row.reviewLane === "Repair or hold");
+    const playbookOutcomeRenewalMapDigest = [
+      `Playbook Outcome Renewal Map ${playbookOutcomeRenewalMapId}`,
+      `${playbookOutcomeRenewalMapRows.length} bridge rows mapped into first review, expansion option, success proof, or repair/hold lanes.`,
+      `Map score ${playbookOutcomeRenewalMapScore}%. First review ${renewalMapFirstReview}; expansion options ${renewalMapExpansionOptions}; success proof ${renewalMapSuccessProof}; repair or hold ${renewalMapRepairHold}.`,
+      `Average review readiness ${renewalMapAverageReadiness}%.`,
+      "",
+      "Review rule: no outcome enters the first customer review unless renewal evidence, expansion option, success proof, next step, stop rule, privacy gate, and audit event are visible.",
+      firstReviewStory ? `First renewal story: ${firstReviewStory.buyer} -> ${firstReviewStory.customerReviewLine}` : "No first-review story is ready yet.",
+      firstExpansionOption ? `First expansion option: ${firstExpansionOption.buyer} -> ${firstExpansionOption.expansionOption}` : "No expansion option is ready yet.",
+      firstRepairHold ? `First repair or hold: ${firstRepairHold.buyer} -> ${firstRepairHold.stopRule}` : "No repair or hold item is active.",
+    ].join("\n");
+    const playbookOutcomeRenewalMapEmail = [
+      `Subject: Playbook outcome renewal map - ${playbookOutcomeRenewalMapScore}% ready`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The first customer review map is ready: ${renewalMapFirstReview} renewal-review rows, ${renewalMapExpansionOptions} expansion options, ${renewalMapSuccessProof} success-proof rows, and ${renewalMapRepairHold} repair/hold rows.`,
+      firstReviewStory ? `Open with: ${firstReviewStory.customerReviewLine}` : "Do not open the renewal review yet; no review story is ready.",
+      firstRepairHold ? `Keep out: ${firstRepairHold.buyer} until ${firstRepairHold.stopRule}` : "No hold needs to be excluded from the review pack.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const playbookOutcomeRenewalMapRunbook = [
+      ["1", "Open the first review", `${renewalMapFirstReview} outcome rows can enter the first customer review.`, renewalMapFirstReview ? "green" : "amber"],
+      ["2", "Keep expansion optional", `${renewalMapExpansionOptions} rows can become expansion options if the buyer asks for more scope.`, renewalMapExpansionOptions ? "teal" : "blue"],
+      ["3", "Prove success before selling", `${renewalMapSuccessProof} rows should support adoption, rollout, or success proof.`, renewalMapSuccessProof ? "blue" : "green"],
+      ["4", "Exclude unsafe rows", `${renewalMapRepairHold} rows need repair or hold before buyer-facing use.`, renewalMapRepairHold ? "amber" : "green"],
+    ];
+    const playbookOutcomeRenewalMapPacket = {
+      schemaVersion: "pursuitdesk.playbookOutcomeRenewalMap.v246",
+      generatedOn: proposalDate.toISOString(),
+      playbookOutcomeRenewalMapId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        outcomeRenewalControlBridge: outcomeRenewalBridgePacket.schemaVersion,
+      },
+      sourceIds: {
+        outcomeRenewalBridgeId,
+      },
+      score: playbookOutcomeRenewalMapScore,
+      counts: {
+        rows: playbookOutcomeRenewalMapRows.length,
+        firstReview: renewalMapFirstReview,
+        expansionOptions: renewalMapExpansionOptions,
+        successProof: renewalMapSuccessProof,
+        repairOrHold: renewalMapRepairHold,
+      },
+      averageReadiness: renewalMapAverageReadiness,
+      cards: playbookOutcomeRenewalMapCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      lanes: playbookOutcomeRenewalMapLanes.map((lane) => ({
+        lane: lane.lane,
+        tone: lane.tone,
+        note: lane.note,
+        count: lane.items.length,
+        playbookOutcomeRenewalMapRowIds: lane.items.map((item) => item.playbookOutcomeRenewalMapRowId),
+      })),
+      rows: playbookOutcomeRenewalMapRows,
+      digest: playbookOutcomeRenewalMapDigest,
+      email: playbookOutcomeRenewalMapEmail,
+      runbook: playbookOutcomeRenewalMapRunbook.map(([step, title, detail, tone]) => ({ step, title, detail, tone })),
+      nextBackendFields: [
+        "playbook_outcome_renewal_map_id",
+        "playbook_outcome_renewal_map_row_id",
+        "source_bridge_row_id",
+        "source_control_row_id",
+        "stream",
+        "review_lane",
+        "readiness_score",
+        "renewal_evidence_text",
+        "expansion_option_text",
+        "success_proof_text",
+        "customer_review_line",
+        "next_step",
+        "stop_rule",
+        "privacy_gate",
+        "playbook_outcome_renewal_map_audit_event",
+      ],
+    };
+    const playbookOutcomeRenewalMap = {
+      playbookOutcomeRenewalMapId,
+      score: playbookOutcomeRenewalMapScore,
+      firstReview: renewalMapFirstReview,
+      expansionOptions: renewalMapExpansionOptions,
+      successProof: renewalMapSuccessProof,
+      repairOrHold: renewalMapRepairHold,
+      averageReadiness: renewalMapAverageReadiness,
+      cards: playbookOutcomeRenewalMapCards,
+      rows: playbookOutcomeRenewalMapRows,
+      lanes: playbookOutcomeRenewalMapLanes,
+      digest: playbookOutcomeRenewalMapDigest,
+      email: playbookOutcomeRenewalMapEmail,
+      runbook: playbookOutcomeRenewalMapRunbook,
+      downloadHref: jsonDataUri(playbookOutcomeRenewalMapPacket),
+    };
+    const outcomeExpansionProposalRouterId = `PD-OUTCOME-EXPANSION-PROPOSAL-ROUTER-${proposalDateKey}-${String(playbookOutcomeRenewalMapRows.length).padStart(3, "0")}`;
+    const buildExpansionProposalRoute = (row) => {
+      if (row.reviewLane === "Repair or hold") {
+        return {
+          route: "Protected hold",
+          tone: row.tone === "red" ? "red" : "amber",
+          proposalReadiness: Math.max(20, row.readinessScore - 18),
+          buyerSafeProof: "Exclude from buyer proposal until the hold is repaired.",
+          renewalOption: "No renewal language allowed.",
+          expansionOption: "No expansion proposal allowed.",
+          proposalNextStep: `Repair or reopen: ${row.nextStep}`,
+          proposalGuardrail: row.stopRule,
+        };
+      }
+      if (row.reviewLane === "Expansion option") {
+        return {
+          route: "Expansion proposal",
+          tone: "teal",
+          proposalReadiness: Math.min(99, row.readinessScore + 4),
+          buyerSafeProof: row.expansionOption,
+          renewalOption: "Renew current workspace first, then offer controlled expansion.",
+          expansionOption: "Add users, review rooms, or customer-success proof workflow after renewal.",
+          proposalNextStep: "Prepare an expansion option as an optional second page, not the opening ask.",
+          proposalGuardrail: "Keep commercial ask separate from proof unless buyer asks for broader rollout.",
+        };
+      }
+      if (row.reviewLane === "Success proof") {
+        return {
+          route: "Proof appendix",
+          tone: "blue",
+          proposalReadiness: Math.min(97, row.readinessScore + 2),
+          buyerSafeProof: row.successProof,
+          renewalOption: "Use as success proof supporting renewal confidence.",
+          expansionOption: "Mention expansion only as future potential after adoption proof is accepted.",
+          proposalNextStep: "Attach source evidence and place this in the proof appendix.",
+          proposalGuardrail: "Do not lead with expansion before success proof is accepted.",
+        };
+      }
+      return {
+        route: "Renewal proposal",
+        tone: "green",
+        proposalReadiness: Math.min(99, row.readinessScore + 5),
+        buyerSafeProof: row.renewalEvidence,
+        renewalOption: "Renew the workspace with the same operating rhythm and management review cadence.",
+        expansionOption: row.expansionOption,
+        proposalNextStep: "Open the buyer proposal with this renewal story after final privacy check.",
+        proposalGuardrail: "Offer expansion only as optional follow-on language.",
+      };
+    };
+    const outcomeExpansionProposalRouterRows = playbookOutcomeRenewalMapRows.map((row, index) => {
+      const route = buildExpansionProposalRoute(row);
+      return {
+        outcomeExpansionProposalRouterRowId: `EPR-${String(index + 1).padStart(3, "0")}`,
+        sourceRenewalMapRowId: row.playbookOutcomeRenewalMapRowId,
+        sourceBridgeRowId: row.sourceBridgeRowId,
+        stream: row.stream,
+        buyer: row.buyer,
+        proposalRoute: route.route,
+        tone: route.tone,
+        proposalReadiness: route.proposalReadiness,
+        reviewLane: row.reviewLane,
+        buyerSafeProof: route.buyerSafeProof,
+        renewalOption: route.renewalOption,
+        expansionOption: route.expansionOption,
+        proposalNextStep: route.proposalNextStep,
+        proposalGuardrail: route.proposalGuardrail,
+        ownerRole: row.ownerRole,
+        privacyGate: row.privacyGate,
+        auditEvent: `outcome_expansion_proposal_router.${row.auditEvent}`,
+      };
+    }).sort((a, b) => b.proposalReadiness - a.proposalReadiness);
+    const routerRenewalProposals = outcomeExpansionProposalRouterRows.filter((row) => row.proposalRoute === "Renewal proposal").length;
+    const routerExpansionProposals = outcomeExpansionProposalRouterRows.filter((row) => row.proposalRoute === "Expansion proposal").length;
+    const routerProofAppendix = outcomeExpansionProposalRouterRows.filter((row) => row.proposalRoute === "Proof appendix").length;
+    const routerProtectedHolds = outcomeExpansionProposalRouterRows.filter((row) => row.proposalRoute === "Protected hold").length;
+    const routerAverageReadiness = Math.round(outcomeExpansionProposalRouterRows.reduce((sum, row) => sum + row.proposalReadiness, 0) / Math.max(1, outcomeExpansionProposalRouterRows.length));
+    const outcomeExpansionProposalRouterScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          playbookOutcomeRenewalMapScore * 0.3 +
+            routerAverageReadiness * 0.28 +
+            Math.min(100, routerRenewalProposals * 17) * 0.16 +
+            Math.min(100, (routerExpansionProposals + routerProofAppendix) * 12) * 0.14 +
+            Math.max(0, 100 - routerProtectedHolds * 9) * 0.12,
+        ),
+      ),
+    );
+    const outcomeExpansionProposalRouterCards = [
+      ["Proposal router", `${outcomeExpansionProposalRouterScore}%`, "Renewal, expansion, proof appendix, and protected hold rows are now separated before buyer-facing proposal language.", outcomeExpansionProposalRouterScore >= 88 ? "green" : "blue"],
+      ["Renewal proposals", routerRenewalProposals, "Rows safe enough to open the buyer proposal with renewal language.", routerRenewalProposals ? "green" : "amber"],
+      ["Expansion routes", routerExpansionProposals, "Rows that can become optional expansion paths after renewal proof is accepted.", routerExpansionProposals ? "teal" : "blue"],
+      ["Protected holds", routerProtectedHolds, "Rows excluded from buyer proposal language until proof or governance reopens them.", routerProtectedHolds ? "red" : "green"],
+    ];
+    const outcomeExpansionProposalLaneDefs = [
+      ["Renewal proposal", "green", "Use these rows to open the buyer proposal with renewal language."],
+      ["Expansion proposal", "teal", "Keep these as optional second-page expansion routes, not the opening ask."],
+      ["Proof appendix", "blue", "Use these as buyer-safe proof blocks after source evidence is attached."],
+      ["Protected hold", "amber", "Keep these rows out of the proposal until proof or governance clears them."],
+    ];
+    const outcomeExpansionProposalRouterLanes = outcomeExpansionProposalLaneDefs.map(([lane, tone, note]) => ({
+      lane,
+      tone,
+      note,
+      items: outcomeExpansionProposalRouterRows.filter((row) => row.proposalRoute === lane),
+    }));
+    const firstProposalStory = outcomeExpansionProposalRouterRows.find((row) => row.proposalRoute === "Renewal proposal");
+    const firstExpansionRoute = outcomeExpansionProposalRouterRows.find((row) => row.proposalRoute === "Expansion proposal");
+    const firstProposalHold = outcomeExpansionProposalRouterRows.find((row) => row.proposalRoute === "Protected hold");
+    const outcomeExpansionProposalRouterDigest = [
+      `Outcome-to-Expansion Proposal Router ${outcomeExpansionProposalRouterId}`,
+      `${outcomeExpansionProposalRouterRows.length} renewal-map rows routed into renewal proposal, expansion proposal, proof appendix, or protected hold lanes.`,
+      `Router score ${outcomeExpansionProposalRouterScore}%. Renewal proposals ${routerRenewalProposals}; expansion routes ${routerExpansionProposals}; proof appendix ${routerProofAppendix}; protected holds ${routerProtectedHolds}.`,
+      `Average proposal readiness ${routerAverageReadiness}%.`,
+      "",
+      "Proposal rule: no outcome enters buyer-facing proposal language unless buyer-safe proof, renewal option, expansion option, next step, guardrail, privacy gate, and audit event are visible.",
+      firstProposalStory ? `First proposal opener: ${firstProposalStory.buyer} -> ${firstProposalStory.proposalNextStep}` : "No renewal proposal opener is ready yet.",
+      firstExpansionRoute ? `First optional expansion route: ${firstExpansionRoute.buyer} -> ${firstExpansionRoute.expansionOption}` : "No expansion route is ready yet.",
+      firstProposalHold ? `First protected hold: ${firstProposalHold.buyer} -> ${firstProposalHold.proposalGuardrail}` : "No protected proposal hold is active.",
+    ].join("\n");
+    const outcomeExpansionProposalRouterEmail = [
+      `Subject: Outcome-to-expansion proposal router - ${outcomeExpansionProposalRouterScore}% ready`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The proposal router is ready: ${routerRenewalProposals} renewal proposal rows, ${routerExpansionProposals} optional expansion routes, ${routerProofAppendix} proof appendix rows, and ${routerProtectedHolds} protected holds.`,
+      firstProposalStory ? `Open proposal with: ${firstProposalStory.buyer} - ${firstProposalStory.renewalOption}` : "Do not send proposal opener yet; no renewal proposal row is ready.",
+      firstExpansionRoute ? `Optional expansion: ${firstExpansionRoute.buyer} - ${firstExpansionRoute.expansionOption}` : "No optional expansion route should be offered yet.",
+      firstProposalHold ? `Keep out: ${firstProposalHold.buyer} - ${firstProposalHold.proposalGuardrail}` : "No hold needs exclusion from the proposal pack.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const outcomeExpansionProposalRouterRunbook = [
+      ["1", "Open with renewal", `${routerRenewalProposals} rows can open a buyer-safe renewal proposal.`, routerRenewalProposals ? "green" : "amber"],
+      ["2", "Offer expansion second", `${routerExpansionProposals} rows can become optional expansion routes after proof is accepted.`, routerExpansionProposals ? "teal" : "blue"],
+      ["3", "Attach proof appendix", `${routerProofAppendix} rows should support the proposal as evidence, not as the commercial ask.`, routerProofAppendix ? "blue" : "green"],
+      ["4", "Hold unsafe rows", `${routerProtectedHolds} rows stay out of proposal language until reopened.`, routerProtectedHolds ? "amber" : "green"],
+    ];
+    const outcomeExpansionProposalRouterPacket = {
+      schemaVersion: "pursuitdesk.outcomeExpansionProposalRouter.v247",
+      generatedOn: proposalDate.toISOString(),
+      outcomeExpansionProposalRouterId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        playbookOutcomeRenewalMap: playbookOutcomeRenewalMapPacket.schemaVersion,
+      },
+      sourceIds: {
+        playbookOutcomeRenewalMapId,
+      },
+      score: outcomeExpansionProposalRouterScore,
+      counts: {
+        rows: outcomeExpansionProposalRouterRows.length,
+        renewalProposals: routerRenewalProposals,
+        expansionRoutes: routerExpansionProposals,
+        proofAppendix: routerProofAppendix,
+        protectedHolds: routerProtectedHolds,
+      },
+      averageReadiness: routerAverageReadiness,
+      cards: outcomeExpansionProposalRouterCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      lanes: outcomeExpansionProposalRouterLanes.map((lane) => ({
+        lane: lane.lane,
+        tone: lane.tone,
+        note: lane.note,
+        count: lane.items.length,
+        outcomeExpansionProposalRouterRowIds: lane.items.map((item) => item.outcomeExpansionProposalRouterRowId),
+      })),
+      rows: outcomeExpansionProposalRouterRows,
+      digest: outcomeExpansionProposalRouterDigest,
+      email: outcomeExpansionProposalRouterEmail,
+      runbook: outcomeExpansionProposalRouterRunbook.map(([step, title, detail, tone]) => ({ step, title, detail, tone })),
+      nextBackendFields: [
+        "outcome_expansion_proposal_router_id",
+        "outcome_expansion_proposal_router_row_id",
+        "source_renewal_map_row_id",
+        "source_bridge_row_id",
+        "stream",
+        "proposal_route",
+        "proposal_readiness",
+        "buyer_safe_proof_text",
+        "renewal_option_text",
+        "expansion_option_text",
+        "proposal_next_step",
+        "proposal_guardrail",
+        "privacy_gate",
+        "outcome_expansion_proposal_router_audit_event",
+      ],
+    };
+    const outcomeExpansionProposalRouter = {
+      outcomeExpansionProposalRouterId,
+      score: outcomeExpansionProposalRouterScore,
+      renewalProposals: routerRenewalProposals,
+      expansionRoutes: routerExpansionProposals,
+      proofAppendix: routerProofAppendix,
+      protectedHolds: routerProtectedHolds,
+      averageReadiness: routerAverageReadiness,
+      cards: outcomeExpansionProposalRouterCards,
+      rows: outcomeExpansionProposalRouterRows,
+      lanes: outcomeExpansionProposalRouterLanes,
+      digest: outcomeExpansionProposalRouterDigest,
+      email: outcomeExpansionProposalRouterEmail,
+      runbook: outcomeExpansionProposalRouterRunbook,
+      downloadHref: jsonDataUri(outcomeExpansionProposalRouterPacket),
+    };
+    const renewalEvidenceApprovalGateId = `PD-RENEWAL-EVIDENCE-APPROVAL-GATE-${proposalDateKey}-${String(outcomeExpansionProposalRouterRows.length).padStart(3, "0")}`;
+    const buildRenewalEvidenceDecision = (row) => {
+      if (row.proposalRoute === "Protected hold") {
+        return {
+          approvalLane: "Hold",
+          tone: row.tone === "red" ? "red" : "amber",
+          approvalScore: Math.max(15, row.proposalReadiness - 20),
+          buyerPackSection: "Keep internal",
+          evidenceAction: "Repair proof before proposal use.",
+          reviewerRole: "Governance approver",
+          redactionRule: "Do not redact into vague buyer language. Keep the row internal until reopened.",
+          simplicityRule: "Do not send.",
+          approvalReason: row.proposalGuardrail,
+        };
+      }
+      if (row.proposalRoute === "Expansion proposal") {
+        return {
+          approvalLane: "Redact",
+          tone: "teal",
+          approvalScore: Math.min(96, row.proposalReadiness + 1),
+          buyerPackSection: "Optional expansion page",
+          evidenceAction: "Redact commercial pressure and present as optional next step.",
+          reviewerRole: "Commercial approver",
+          redactionRule: "Show the outcome and option; hide internal forecast, private negotiation detail, and unapproved value language.",
+          simplicityRule: "Offer second.",
+          approvalReason: "Expansion proof is useful, but the renewal story should remain the opening ask.",
+        };
+      }
+      if (row.proposalRoute === "Proof appendix") {
+        return {
+          approvalLane: "Release",
+          tone: "blue",
+          approvalScore: Math.min(97, row.proposalReadiness + 2),
+          buyerPackSection: "Proof appendix",
+          evidenceAction: "Release only as supporting proof after source evidence is attached.",
+          reviewerRole: "Evidence reviewer",
+          redactionRule: "Keep the proof factual and remove internal owner notes.",
+          simplicityRule: "Attach proof.",
+          approvalReason: "This row supports the proposal better as evidence than as the main commercial message.",
+        };
+      }
+      return {
+        approvalLane: "Release",
+        tone: "green",
+        approvalScore: Math.min(99, row.proposalReadiness + 2),
+        buyerPackSection: "Renewal opener",
+        evidenceAction: "Release as the main renewal proposal story after final privacy check.",
+        reviewerRole: "Proposal owner",
+        redactionRule: "Keep the renewal language outcome-led and remove internal routing notes.",
+        simplicityRule: "Open here.",
+        approvalReason: "This is clear enough to start the buyer proposal without adding proposal noise.",
+      };
+    };
+    const renewalEvidenceApprovalGateRows = outcomeExpansionProposalRouterRows.map((row, index) => {
+      const decision = buildRenewalEvidenceDecision(row);
+      return {
+        renewalEvidenceApprovalGateRowId: `EAG-${String(index + 1).padStart(3, "0")}`,
+        sourceProposalRouterRowId: row.outcomeExpansionProposalRouterRowId,
+        sourceRenewalMapRowId: row.sourceRenewalMapRowId,
+        buyer: row.buyer,
+        stream: row.stream,
+        proposalRoute: row.proposalRoute,
+        approvalLane: decision.approvalLane,
+        tone: decision.tone,
+        approvalScore: decision.approvalScore,
+        buyerPackSection: decision.buyerPackSection,
+        evidenceAction: decision.evidenceAction,
+        reviewerRole: decision.reviewerRole,
+        redactionRule: decision.redactionRule,
+        simplicityRule: decision.simplicityRule,
+        approvalReason: decision.approvalReason,
+        buyerSafeProof: row.buyerSafeProof,
+        privacyGate: row.privacyGate,
+        auditEvent: `renewal_evidence_approval_gate.${row.auditEvent}`,
+      };
+    }).sort((a, b) => b.approvalScore - a.approvalScore);
+    const evidenceReleaseCount = renewalEvidenceApprovalGateRows.filter((row) => row.approvalLane === "Release").length;
+    const evidenceRedactCount = renewalEvidenceApprovalGateRows.filter((row) => row.approvalLane === "Redact").length;
+    const evidenceHoldCount = renewalEvidenceApprovalGateRows.filter((row) => row.approvalLane === "Hold").length;
+    const evidenceInternalOnlyCount = renewalEvidenceApprovalGateRows.filter((row) => row.approvalLane === "Internal only").length;
+    const evidenceBuyerReadyCount = evidenceReleaseCount + evidenceRedactCount;
+    const evidenceAverageApproval = Math.round(renewalEvidenceApprovalGateRows.reduce((sum, row) => sum + row.approvalScore, 0) / Math.max(1, renewalEvidenceApprovalGateRows.length));
+    const renewalEvidenceApprovalGateScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          outcomeExpansionProposalRouterScore * 0.34 +
+            evidenceAverageApproval * 0.32 +
+            Math.min(100, evidenceBuyerReadyCount * 13) * 0.18 +
+            Math.max(0, 100 - evidenceHoldCount * 10 - evidenceInternalOnlyCount * 7) * 0.16,
+        ),
+      ),
+    );
+    const renewalEvidenceApprovalGateCards = [
+      ["Approval gate", `${renewalEvidenceApprovalGateScore}%`, "One decision per proof row keeps proposal review simple and controlled.", renewalEvidenceApprovalGateScore >= 88 ? "green" : "blue"],
+      ["Buyer-ready", evidenceBuyerReadyCount, "Rows approved for release or redacted buyer use.", evidenceBuyerReadyCount ? "green" : "amber"],
+      ["Redactions", evidenceRedactCount, "Rows allowed only after internal commercial pressure is removed.", evidenceRedactCount ? "teal" : "blue"],
+      ["Holds", evidenceHoldCount + evidenceInternalOnlyCount, "Rows kept out of the buyer proposal until proof, privacy, or governance clears them.", evidenceHoldCount || evidenceInternalOnlyCount ? "amber" : "green"],
+    ];
+    const renewalEvidenceApprovalLaneDefs = [
+      ["Release", "green", "Use directly in the buyer proposal or renewal review."],
+      ["Redact", "teal", "Use only after removing internal or commercial pressure."],
+      ["Hold", "amber", "Keep out of buyer-facing packs until repaired."],
+      ["Internal only", "blue", "Useful for management memory, not for customer packs."],
+    ];
+    const renewalEvidenceApprovalGateLanes = renewalEvidenceApprovalLaneDefs.map(([lane, tone, note]) => ({
+      lane,
+      tone,
+      note,
+      items: renewalEvidenceApprovalGateRows.filter((row) => row.approvalLane === lane),
+    }));
+    const firstReleasedEvidence = renewalEvidenceApprovalGateRows.find((row) => row.approvalLane === "Release");
+    const firstRedactedEvidence = renewalEvidenceApprovalGateRows.find((row) => row.approvalLane === "Redact");
+    const firstHeldEvidence = renewalEvidenceApprovalGateRows.find((row) => row.approvalLane === "Hold");
+    const renewalEvidenceApprovalGateDigest = [
+      `Renewal Evidence Approval Gate ${renewalEvidenceApprovalGateId}`,
+      `${renewalEvidenceApprovalGateRows.length} proposal-router rows now have a release, redact, hold, or internal-only decision.`,
+      `Gate score ${renewalEvidenceApprovalGateScore}%. Release ${evidenceReleaseCount}; redact ${evidenceRedactCount}; hold ${evidenceHoldCount}; internal only ${evidenceInternalOnlyCount}.`,
+      `Buyer-ready rows ${evidenceBuyerReadyCount}; average approval score ${evidenceAverageApproval}%.`,
+      "",
+      "Simplicity rule: every proof row must answer one question only - can this safely appear in the buyer proposal?",
+      firstReleasedEvidence ? `First release: ${firstReleasedEvidence.buyer} -> ${firstReleasedEvidence.evidenceAction}` : "No release row is ready yet.",
+      firstRedactedEvidence ? `First redaction: ${firstRedactedEvidence.buyer} -> ${firstRedactedEvidence.redactionRule}` : "No redaction row is required yet.",
+      firstHeldEvidence ? `First hold: ${firstHeldEvidence.buyer} -> ${firstHeldEvidence.approvalReason}` : "No hold row is active.",
+    ].join("\n");
+    const renewalEvidenceApprovalGateEmail = [
+      `Subject: Renewal evidence approval gate - ${renewalEvidenceApprovalGateScore}% ready`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The proof review is simple: ${evidenceReleaseCount} release, ${evidenceRedactCount} redact, ${evidenceHoldCount} hold, and ${evidenceInternalOnlyCount} internal-only rows.`,
+      firstReleasedEvidence ? `Use first: ${firstReleasedEvidence.buyer} - ${firstReleasedEvidence.buyerPackSection}.` : "No proof should be released yet.",
+      firstRedactedEvidence ? `Redact first: ${firstRedactedEvidence.buyer} - ${firstRedactedEvidence.redactionRule}` : "No redaction is blocking the pack.",
+      firstHeldEvidence ? `Keep out: ${firstHeldEvidence.buyer} - ${firstHeldEvidence.approvalReason}` : "No held row needs management review.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const renewalEvidenceApprovalGateRunbook = [
+      ["1", "Release only clean rows", `${evidenceReleaseCount} rows can be used without extra proposal complexity.`, evidenceReleaseCount ? "green" : "amber"],
+      ["2", "Redact optional expansion", `${evidenceRedactCount} rows need buyer-safe wording before they appear.`, evidenceRedactCount ? "teal" : "green"],
+      ["3", "Hold unsafe proof", `${evidenceHoldCount} rows stay out until proof or governance repairs them.`, evidenceHoldCount ? "amber" : "green"],
+      ["4", "Keep the UI quiet", "Show the decision, reason, and next action. Hide the rest unless the reviewer opens the JSON.", "blue"],
+    ];
+    const renewalEvidenceApprovalGatePacket = {
+      schemaVersion: "pursuitdesk.renewalEvidenceApprovalGate.v248",
+      generatedOn: proposalDate.toISOString(),
+      renewalEvidenceApprovalGateId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        outcomeExpansionProposalRouter: outcomeExpansionProposalRouterPacket.schemaVersion,
+      },
+      sourceIds: {
+        outcomeExpansionProposalRouterId,
+      },
+      score: renewalEvidenceApprovalGateScore,
+      counts: {
+        rows: renewalEvidenceApprovalGateRows.length,
+        release: evidenceReleaseCount,
+        redact: evidenceRedactCount,
+        hold: evidenceHoldCount,
+        internalOnly: evidenceInternalOnlyCount,
+        buyerReady: evidenceBuyerReadyCount,
+      },
+      averageApproval: evidenceAverageApproval,
+      cards: renewalEvidenceApprovalGateCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      lanes: renewalEvidenceApprovalGateLanes.map((lane) => ({
+        lane: lane.lane,
+        tone: lane.tone,
+        note: lane.note,
+        count: lane.items.length,
+        renewalEvidenceApprovalGateRowIds: lane.items.map((item) => item.renewalEvidenceApprovalGateRowId),
+      })),
+      rows: renewalEvidenceApprovalGateRows,
+      digest: renewalEvidenceApprovalGateDigest,
+      email: renewalEvidenceApprovalGateEmail,
+      runbook: renewalEvidenceApprovalGateRunbook.map(([step, title, detail, tone]) => ({ step, title, detail, tone })),
+      nextBackendFields: [
+        "renewal_evidence_approval_gate_id",
+        "renewal_evidence_approval_gate_row_id",
+        "source_proposal_router_row_id",
+        "approval_lane",
+        "approval_score",
+        "buyer_pack_section",
+        "evidence_action",
+        "reviewer_role",
+        "redaction_rule",
+        "simplicity_rule",
+        "privacy_gate",
+        "renewal_evidence_approval_gate_audit_event",
+      ],
+    };
+    const renewalEvidenceApprovalGate = {
+      renewalEvidenceApprovalGateId,
+      score: renewalEvidenceApprovalGateScore,
+      release: evidenceReleaseCount,
+      redact: evidenceRedactCount,
+      hold: evidenceHoldCount,
+      internalOnly: evidenceInternalOnlyCount,
+      buyerReady: evidenceBuyerReadyCount,
+      averageApproval: evidenceAverageApproval,
+      cards: renewalEvidenceApprovalGateCards,
+      rows: renewalEvidenceApprovalGateRows,
+      lanes: renewalEvidenceApprovalGateLanes,
+      digest: renewalEvidenceApprovalGateDigest,
+      email: renewalEvidenceApprovalGateEmail,
+      runbook: renewalEvidenceApprovalGateRunbook,
+      downloadHref: jsonDataUri(renewalEvidenceApprovalGatePacket),
+    };
+    const simpleBuyerReviewPackId = `PD-SIMPLE-BUYER-REVIEW-PACK-${proposalDateKey}-${String(renewalEvidenceApprovalGateRows.length).padStart(3, "0")}`;
+    const buildBuyerReviewRow = (row, index) => {
+      const included = row.approvalLane === "Release" || row.approvalLane === "Redact";
+      const packLane =
+        row.approvalLane === "Release"
+          ? row.proposalRoute === "Renewal proposal"
+            ? "Opening"
+            : "Proof"
+          : row.approvalLane === "Redact"
+            ? "Optional next"
+            : "Hidden";
+      const headline =
+        packLane === "Opening"
+          ? "Continue the operating rhythm"
+          : packLane === "Optional next"
+            ? "Optional expansion after renewal"
+            : packLane === "Proof"
+              ? "Proof supporting renewal confidence"
+              : "Kept out of buyer pack";
+      return {
+        simpleBuyerReviewPackRowId: `BRP-${String(index + 1).padStart(3, "0")}`,
+        sourceApprovalGateRowId: row.renewalEvidenceApprovalGateRowId,
+        sourceProposalRouterRowId: row.sourceProposalRouterRowId,
+        buyer: row.buyer,
+        stream: row.stream,
+        packLane,
+        approvalLane: row.approvalLane,
+        tone: included ? row.tone : "amber",
+        headline,
+        buyerSentence: included ? row.evidenceAction : "This item is withheld from the buyer pack until the approval gate changes.",
+        proofLine: included ? row.buyerSafeProof : row.approvalReason,
+        nextStep: included ? row.simplicityRule : "Repair internally before customer review.",
+        ownerRole: row.reviewerRole,
+        includedInBuyerPack: included,
+        hiddenFields: included ? row.redactionRule : "Full proof, commercial context, and internal guardrail remain internal.",
+        simplicityScore: included ? Math.min(99, row.approvalScore + 2) : Math.max(20, row.approvalScore - 10),
+        privacyGate: row.privacyGate,
+        auditEvent: `simple_buyer_review_pack.${row.auditEvent}`,
+      };
+    };
+    const simpleBuyerReviewPackRows = renewalEvidenceApprovalGateRows.map(buildBuyerReviewRow);
+    const buyerReviewIncludedRows = simpleBuyerReviewPackRows.filter((row) => row.includedInBuyerPack);
+    const buyerReviewHiddenRows = simpleBuyerReviewPackRows.filter((row) => !row.includedInBuyerPack);
+    const buyerReviewOpeningRows = simpleBuyerReviewPackRows.filter((row) => row.packLane === "Opening").length;
+    const buyerReviewProofRows = simpleBuyerReviewPackRows.filter((row) => row.packLane === "Proof").length;
+    const buyerReviewOptionalRows = simpleBuyerReviewPackRows.filter((row) => row.packLane === "Optional next").length;
+    const buyerReviewReadingLoad = Math.min(6, buyerReviewIncludedRows.length);
+    const buyerReviewAverageSimplicity = Math.round(simpleBuyerReviewPackRows.reduce((sum, row) => sum + row.simplicityScore, 0) / Math.max(1, simpleBuyerReviewPackRows.length));
+    const simpleBuyerReviewPackScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          renewalEvidenceApprovalGateScore * 0.32 +
+            buyerReviewAverageSimplicity * 0.34 +
+            Math.min(100, buyerReviewIncludedRows.length * 12) * 0.18 +
+            Math.max(0, 100 - Math.max(0, buyerReviewReadingLoad - 4) * 9) * 0.16,
+        ),
+      ),
+    );
+    const buyerReviewFirstOpening = buyerReviewIncludedRows.find((row) => row.packLane === "Opening");
+    const buyerReviewFirstProof = buyerReviewIncludedRows.find((row) => row.packLane === "Proof") || buyerReviewIncludedRows[0];
+    const buyerReviewFirstOptional = buyerReviewIncludedRows.find((row) => row.packLane === "Optional next");
+    const simpleBuyerReviewPackCards = [
+      ["Buyer pack", `${simpleBuyerReviewPackScore}%`, "Approved evidence is collapsed into a short buyer review instead of another long analysis surface.", simpleBuyerReviewPackScore >= 88 ? "green" : "blue"],
+      ["Visible rows", buyerReviewIncludedRows.length, "Rows the buyer can see after release or redaction approval.", buyerReviewIncludedRows.length ? "green" : "amber"],
+      ["Hidden rows", buyerReviewHiddenRows.length, "Rows kept out of the buyer pack to protect privacy, proof quality, or commercial context.", buyerReviewHiddenRows.length ? "amber" : "green"],
+      ["Reading load", `${buyerReviewReadingLoad} items`, "The buyer page intentionally stays short so the next action is obvious.", buyerReviewReadingLoad <= 5 ? "teal" : "amber"],
+    ];
+    const simpleBuyerReviewPackLaneDefs = [
+      ["Opening", "green", "Start the review with one clear renewal story."],
+      ["Proof", "blue", "Support the story with only approved proof."],
+      ["Optional next", "teal", "Show expansion as a secondary path only."],
+      ["Hidden", "amber", "Keep unsafe or noisy proof out of the buyer page."],
+    ];
+    const simpleBuyerReviewPackLanes = simpleBuyerReviewPackLaneDefs.map(([lane, tone, note]) => ({
+      lane,
+      tone,
+      note,
+      items: simpleBuyerReviewPackRows.filter((row) => row.packLane === lane),
+    }));
+    const simpleBuyerReviewPackDigest = [
+      `Simple Buyer Review Pack ${simpleBuyerReviewPackId}`,
+      `${buyerReviewIncludedRows.length} rows are visible to the buyer; ${buyerReviewHiddenRows.length} rows stay hidden.`,
+      `Pack score ${simpleBuyerReviewPackScore}%. Opening ${buyerReviewOpeningRows}; proof ${buyerReviewProofRows}; optional next ${buyerReviewOptionalRows}; reading load ${buyerReviewReadingLoad} items.`,
+      "",
+      "Simplicity rule: the buyer page shows only headline, proof, owner, and next step. Everything else stays in the approval JSON.",
+      buyerReviewFirstOpening ? `Opening line: ${buyerReviewFirstOpening.buyer} -> ${buyerReviewFirstOpening.buyerSentence}` : "No opening row is ready yet.",
+      buyerReviewFirstProof ? `Proof line: ${buyerReviewFirstProof.buyer} -> ${buyerReviewFirstProof.proofLine}` : "No proof line is ready yet.",
+      buyerReviewFirstOptional ? `Optional next: ${buyerReviewFirstOptional.buyer} -> ${buyerReviewFirstOptional.buyerSentence}` : "No optional next step should be shown yet.",
+    ].join("\n");
+    const simpleBuyerReviewPackEmail = [
+      `Subject: Simple buyer review pack - ${simpleBuyerReviewPackScore}% ready`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The buyer review pack is ready with ${buyerReviewIncludedRows.length} visible rows and ${buyerReviewHiddenRows.length} hidden rows.`,
+      buyerReviewFirstOpening ? `Open with: ${buyerReviewFirstOpening.headline} for ${buyerReviewFirstOpening.buyer}.` : "Do not open the buyer review yet; no approved opening row is ready.",
+      buyerReviewFirstProof ? `Show proof: ${buyerReviewFirstProof.proofLine}` : "No approved proof should be shown yet.",
+      buyerReviewHiddenRows.length ? `${buyerReviewHiddenRows.length} rows remain hidden from the customer page.` : "No rows are hidden from this review pack.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const simpleBuyerReviewPackRunbook = [
+      ["1", "Keep one opening", buyerReviewFirstOpening ? `Open with ${buyerReviewFirstOpening.buyer}.` : "No opening is approved yet.", buyerReviewFirstOpening ? "green" : "amber"],
+      ["2", "Show only approved proof", `${buyerReviewProofRows} proof rows can support the review.`, buyerReviewProofRows ? "blue" : "amber"],
+      ["3", "Make expansion optional", `${buyerReviewOptionalRows} optional next-step rows stay secondary.`, buyerReviewOptionalRows ? "teal" : "green"],
+      ["4", "Hide the rest", `${buyerReviewHiddenRows.length} rows are intentionally excluded from the buyer page.`, buyerReviewHiddenRows.length ? "amber" : "green"],
+    ];
+    const simpleBuyerReviewPackPacket = {
+      schemaVersion: "pursuitdesk.simpleBuyerReviewPack.v249",
+      generatedOn: proposalDate.toISOString(),
+      simpleBuyerReviewPackId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        renewalEvidenceApprovalGate: renewalEvidenceApprovalGatePacket.schemaVersion,
+      },
+      sourceIds: {
+        renewalEvidenceApprovalGateId,
+      },
+      score: simpleBuyerReviewPackScore,
+      counts: {
+        rows: simpleBuyerReviewPackRows.length,
+        visible: buyerReviewIncludedRows.length,
+        hidden: buyerReviewHiddenRows.length,
+        opening: buyerReviewOpeningRows,
+        proof: buyerReviewProofRows,
+        optionalNext: buyerReviewOptionalRows,
+        readingLoad: buyerReviewReadingLoad,
+      },
+      averageSimplicity: buyerReviewAverageSimplicity,
+      cards: simpleBuyerReviewPackCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      lanes: simpleBuyerReviewPackLanes.map((lane) => ({
+        lane: lane.lane,
+        tone: lane.tone,
+        note: lane.note,
+        count: lane.items.length,
+        simpleBuyerReviewPackRowIds: lane.items.map((item) => item.simpleBuyerReviewPackRowId),
+      })),
+      visibleRows: buyerReviewIncludedRows,
+      hiddenRows: buyerReviewHiddenRows,
+      digest: simpleBuyerReviewPackDigest,
+      email: simpleBuyerReviewPackEmail,
+      runbook: simpleBuyerReviewPackRunbook.map(([step, title, detail, tone]) => ({ step, title, detail, tone })),
+      nextBackendFields: [
+        "simple_buyer_review_pack_id",
+        "simple_buyer_review_pack_row_id",
+        "source_approval_gate_row_id",
+        "pack_lane",
+        "buyer_sentence",
+        "proof_line",
+        "next_step",
+        "included_in_buyer_pack",
+        "hidden_fields",
+        "simplicity_score",
+        "privacy_gate",
+        "simple_buyer_review_pack_audit_event",
+      ],
+    };
+    const simpleBuyerReviewPack = {
+      simpleBuyerReviewPackId,
+      score: simpleBuyerReviewPackScore,
+      visible: buyerReviewIncludedRows.length,
+      hidden: buyerReviewHiddenRows.length,
+      opening: buyerReviewOpeningRows,
+      proof: buyerReviewProofRows,
+      optionalNext: buyerReviewOptionalRows,
+      readingLoad: buyerReviewReadingLoad,
+      averageSimplicity: buyerReviewAverageSimplicity,
+      cards: simpleBuyerReviewPackCards,
+      rows: simpleBuyerReviewPackRows,
+      visibleRows: buyerReviewIncludedRows,
+      hiddenRows: buyerReviewHiddenRows,
+      lanes: simpleBuyerReviewPackLanes,
+      digest: simpleBuyerReviewPackDigest,
+      email: simpleBuyerReviewPackEmail,
+      runbook: simpleBuyerReviewPackRunbook,
+      downloadHref: jsonDataUri(simpleBuyerReviewPackPacket),
+    };
     return {
       company,
       membership,
@@ -57690,6 +58710,11 @@
       successHandoffPlaybookPublisher,
       successPlaybookOutcomeTracker,
       playbookOutcomeControlBoard,
+      outcomeRenewalControlBridge,
+      playbookOutcomeRenewalMap,
+      outcomeExpansionProposalRouter,
+      renewalEvidenceApprovalGate,
+      simpleBuyerReviewPack,
       feedbackPack,
       roiPack,
       proposalPack,
@@ -60914,6 +61939,597 @@
           </div>
           <div class="pilot-close-playbook-list">
             ${model.playbookOutcomeControlBoard.runbook
+              .map(([step, title, detail, tone]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(`${step}. ${title}`)}</strong>${escapeHtml(detail)}</p>`)
+              .join("")}
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-outcome-renewal-control-bridge">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v245 Outcome-to-Renewal Control Bridge</span>
+              <h3>Turn verified outcomes into renewal prompts and protected stop rules</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.outcomeRenewalControlBridge.downloadHref)}" download="pursuitdesk-outcome-renewal-control-bridge-v245.json">Download renewal bridge JSON</a>
+          </div>
+          <div class="pilot-close-hero">
+            <div>
+              <span>Renewal control bridge</span>
+              <strong>${escapeHtml(model.outcomeRenewalControlBridge.outcomeRenewalBridgeId)}</strong>
+              <p>The v244 playbook outcome board now becomes a renewal decision surface: use strong outcomes in renewal, convert success into expansion proof, repair weak evidence, and keep unsafe rows stopped.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review renewal bridge</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+                <button class="ghost-btn" type="button" data-view="Membership Model">Open membership</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Bridge score</span>
+              <strong>${model.outcomeRenewalControlBridge.score}%</strong>
+              <p>${model.outcomeRenewalControlBridge.renewalReady} renewal ready / ${model.outcomeRenewalControlBridge.protectedStop} protected stops</p>
+              <small>${model.outcomeRenewalControlBridge.confidenceLift >= 0 ? "+" : ""}${model.outcomeRenewalControlBridge.confidenceLift} confidence carried forward</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.outcomeRenewalControlBridge.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lane-grid">
+            ${model.outcomeRenewalControlBridge.lanes
+              .map(
+                (lane) => `
+                  <article class="tone-${escapeHtml(lane.tone)}">
+                    <div class="pilot-close-lane-head">
+                      <div>
+                        <span>${escapeHtml(lane.lane)}</span>
+                        <strong>${lane.items.length}</strong>
+                      </div>
+                      <em>${escapeHtml(lane.note)}</em>
+                    </div>
+                    <div class="pilot-close-lane-items">
+                      ${lane.items.length
+                        ? lane.items
+                            .slice(0, 3)
+                            .map(
+                              (item) => `
+                                <div>
+                                  <span>${escapeHtml(item.stream)} / ${escapeHtml(item.sourceControlRowId)} / ${escapeHtml(item.proofStatus)}</span>
+                                  <strong>${escapeHtml(item.buyer)}</strong>
+                                  <p>${escapeHtml(item.renewalPrompt)}</p>
+                                  <small>${escapeHtml(item.ownerRole)} / ${item.score}% score / ${item.confidenceDelta >= 0 ? "+" : ""}${item.confidenceDelta}</small>
+                                </div>
+                              `,
+                            )
+                            .join("")
+                        : `<div class="empty-state compact">No ${escapeHtml(lane.lane.toLowerCase())} rows.</div>`}
+                    </div>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-renewal-bridge-grid">
+            ${model.outcomeRenewalControlBridge.rows
+              .slice(0, 12)
+              .map(
+                (row) => `
+                  <article class="tone-${escapeHtml(row.tone)}">
+                    <div class="pilot-close-row-head">
+                      <span>${escapeHtml(row.outcomeRenewalBridgeRowId)} / ${escapeHtml(row.renewalPath)}</span>
+                      <em>${row.score}%</em>
+                    </div>
+                    <h4>${escapeHtml(row.buyer)}</h4>
+                    <p>${escapeHtml(row.renewalPrompt)}</p>
+                    <div class="pilot-invoice-outcome-proof">
+                      <b>${escapeHtml(row.stream)}</b>
+                      <b>${escapeHtml(row.proofStatus)}</b>
+                      <b>${escapeHtml(row.outcomeLane)}</b>
+                    </div>
+                    <small>Expansion proof: ${escapeHtml(row.expansionProof)}</small>
+                    <small>Stop rule: ${escapeHtml(row.stopRule)}</small>
+                    <small>Next action: ${escapeHtml(row.nextAction)}</small>
+                    <small>Privacy: ${escapeHtml(row.privacyGate)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Renewal bridge digest</span>
+              <h4>What can move into renewal, expansion, repair, or stop</h4>
+              <textarea readonly aria-label="Outcome-to-renewal bridge digest">${escapeHtml(model.outcomeRenewalControlBridge.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready renewal note</span>
+              <h4>Outcome-to-renewal control bridge</h4>
+              <textarea readonly aria-label="Copy-ready outcome-to-renewal bridge note">${escapeHtml(model.outcomeRenewalControlBridge.email)}</textarea>
+            </article>
+          </div>
+          <div class="pilot-close-playbook-list">
+            ${model.outcomeRenewalControlBridge.runbook
+              .map(([step, title, detail, tone]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(`${step}. ${title}`)}</strong>${escapeHtml(detail)}</p>`)
+              .join("")}
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-playbook-outcome-renewal-map">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v246 Playbook Outcome Renewal Map</span>
+              <h3>Prepare the first customer review without mixing renewal, expansion, and holds</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.playbookOutcomeRenewalMap.downloadHref)}" download="pursuitdesk-playbook-outcome-renewal-map-v246.json">Download renewal map JSON</a>
+          </div>
+          <div class="pilot-close-hero">
+            <div>
+              <span>First customer review map</span>
+              <strong>${escapeHtml(model.playbookOutcomeRenewalMap.playbookOutcomeRenewalMapId)}</strong>
+              <p>The renewal bridge now becomes a review-ready map: renewal evidence, optional expansion proof, success proof, and repair or hold items are separated before the buyer conversation.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review map</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+                <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Map score</span>
+              <strong>${model.playbookOutcomeRenewalMap.score}%</strong>
+              <p>${model.playbookOutcomeRenewalMap.firstReview} first review / ${model.playbookOutcomeRenewalMap.expansionOptions} expansion</p>
+              <small>${model.playbookOutcomeRenewalMap.averageReadiness}% average review readiness</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.playbookOutcomeRenewalMap.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lane-grid">
+            ${model.playbookOutcomeRenewalMap.lanes
+              .map(
+                (lane) => `
+                  <article class="tone-${escapeHtml(lane.tone)}">
+                    <div class="pilot-close-lane-head">
+                      <div>
+                        <span>${escapeHtml(lane.lane)}</span>
+                        <strong>${lane.items.length}</strong>
+                      </div>
+                      <em>${escapeHtml(lane.note)}</em>
+                    </div>
+                    <div class="pilot-close-lane-items">
+                      ${lane.items.length
+                        ? lane.items
+                            .slice(0, 3)
+                            .map(
+                              (item) => `
+                                <div>
+                                  <span>${escapeHtml(item.stream)} / ${escapeHtml(item.sourceBridgeRowId)} / ${item.readinessScore}% ready</span>
+                                  <strong>${escapeHtml(item.buyer)}</strong>
+                                  <p>${escapeHtml(item.customerReviewLine)}</p>
+                                  <small>${escapeHtml(item.ownerRole)} / ${escapeHtml(item.reviewLane)}</small>
+                                </div>
+                              `,
+                            )
+                            .join("")
+                        : `<div class="empty-state compact">No ${escapeHtml(lane.lane.toLowerCase())} rows.</div>`}
+                    </div>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-renewal-map-grid">
+            ${model.playbookOutcomeRenewalMap.rows
+              .slice(0, 12)
+              .map(
+                (row) => `
+                  <article class="tone-${escapeHtml(row.tone)}">
+                    <div class="pilot-close-row-head">
+                      <span>${escapeHtml(row.playbookOutcomeRenewalMapRowId)} / ${escapeHtml(row.reviewLane)}</span>
+                      <em>${row.readinessScore}% ready</em>
+                    </div>
+                    <h4>${escapeHtml(row.buyer)}</h4>
+                    <p>${escapeHtml(row.customerReviewLine)}</p>
+                    <div class="pilot-invoice-outcome-proof">
+                      <b>${escapeHtml(row.stream)}</b>
+                      <b>${escapeHtml(row.renewalPath)}</b>
+                      <b>${escapeHtml(row.ownerRole)}</b>
+                    </div>
+                    <small>Renewal evidence: ${escapeHtml(row.renewalEvidence)}</small>
+                    <small>Expansion option: ${escapeHtml(row.expansionOption)}</small>
+                    <small>Success proof: ${escapeHtml(row.successProof)}</small>
+                    <small>Stop rule: ${escapeHtml(row.stopRule)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Renewal map digest</span>
+              <h4>What goes into the first customer review</h4>
+              <textarea readonly aria-label="Playbook outcome renewal map digest">${escapeHtml(model.playbookOutcomeRenewalMap.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready review note</span>
+              <h4>Playbook outcome renewal map</h4>
+              <textarea readonly aria-label="Copy-ready playbook outcome renewal map note">${escapeHtml(model.playbookOutcomeRenewalMap.email)}</textarea>
+            </article>
+          </div>
+          <div class="pilot-close-playbook-list">
+            ${model.playbookOutcomeRenewalMap.runbook
+              .map(([step, title, detail, tone]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(`${step}. ${title}`)}</strong>${escapeHtml(detail)}</p>`)
+              .join("")}
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-outcome-expansion-proposal-router">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v247 Outcome-to-Expansion Proposal Router</span>
+              <h3>Route renewal evidence into buyer-safe proposal language</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.outcomeExpansionProposalRouter.downloadHref)}" download="pursuitdesk-outcome-expansion-proposal-router-v247.json">Download proposal router JSON</a>
+          </div>
+          <div class="pilot-close-hero">
+            <div>
+              <span>Buyer-safe proposal router</span>
+              <strong>${escapeHtml(model.outcomeExpansionProposalRouter.outcomeExpansionProposalRouterId)}</strong>
+              <p>The renewal map now becomes proposal control: renewal openers, optional expansion routes, proof appendix rows, and protected holds are separated before anything goes to the buyer.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review router</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+                <button class="ghost-btn" type="button" data-view="Membership Model">Open pricing</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Router score</span>
+              <strong>${model.outcomeExpansionProposalRouter.score}%</strong>
+              <p>${model.outcomeExpansionProposalRouter.renewalProposals} renewal / ${model.outcomeExpansionProposalRouter.expansionRoutes} expansion</p>
+              <small>${model.outcomeExpansionProposalRouter.averageReadiness}% average proposal readiness</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.outcomeExpansionProposalRouter.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lane-grid">
+            ${model.outcomeExpansionProposalRouter.lanes
+              .map(
+                (lane) => `
+                  <article class="tone-${escapeHtml(lane.tone)}">
+                    <div class="pilot-close-lane-head">
+                      <div>
+                        <span>${escapeHtml(lane.lane)}</span>
+                        <strong>${lane.items.length}</strong>
+                      </div>
+                      <em>${escapeHtml(lane.note)}</em>
+                    </div>
+                    <div class="pilot-close-lane-items">
+                      ${lane.items.length
+                        ? lane.items
+                            .slice(0, 3)
+                            .map(
+                              (item) => `
+                                <div>
+                                  <span>${escapeHtml(item.stream)} / ${escapeHtml(item.sourceRenewalMapRowId)} / ${item.proposalReadiness}% ready</span>
+                                  <strong>${escapeHtml(item.buyer)}</strong>
+                                  <p>${escapeHtml(item.proposalNextStep)}</p>
+                                  <small>${escapeHtml(item.ownerRole)} / ${escapeHtml(item.proposalRoute)}</small>
+                                </div>
+                              `,
+                            )
+                            .join("")
+                        : `<div class="empty-state compact">No ${escapeHtml(lane.lane.toLowerCase())} rows.</div>`}
+                    </div>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-proposal-router-grid">
+            ${model.outcomeExpansionProposalRouter.rows
+              .slice(0, 12)
+              .map(
+                (row) => `
+                  <article class="tone-${escapeHtml(row.tone)}">
+                    <div class="pilot-close-row-head">
+                      <span>${escapeHtml(row.outcomeExpansionProposalRouterRowId)} / ${escapeHtml(row.proposalRoute)}</span>
+                      <em>${row.proposalReadiness}% ready</em>
+                    </div>
+                    <h4>${escapeHtml(row.buyer)}</h4>
+                    <p>${escapeHtml(row.proposalNextStep)}</p>
+                    <div class="pilot-invoice-outcome-proof">
+                      <b>${escapeHtml(row.stream)}</b>
+                      <b>${escapeHtml(row.reviewLane)}</b>
+                      <b>${escapeHtml(row.ownerRole)}</b>
+                    </div>
+                    <small>Buyer-safe proof: ${escapeHtml(row.buyerSafeProof)}</small>
+                    <small>Renewal option: ${escapeHtml(row.renewalOption)}</small>
+                    <small>Expansion option: ${escapeHtml(row.expansionOption)}</small>
+                    <small>Guardrail: ${escapeHtml(row.proposalGuardrail)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Proposal router digest</span>
+              <h4>What enters renewal, expansion, proof appendix, or hold</h4>
+              <textarea readonly aria-label="Outcome-to-expansion proposal router digest">${escapeHtml(model.outcomeExpansionProposalRouter.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready proposal note</span>
+              <h4>Outcome-to-expansion proposal router</h4>
+              <textarea readonly aria-label="Copy-ready outcome-to-expansion proposal router note">${escapeHtml(model.outcomeExpansionProposalRouter.email)}</textarea>
+            </article>
+          </div>
+          <div class="pilot-close-playbook-list">
+            ${model.outcomeExpansionProposalRouter.runbook
+              .map(([step, title, detail, tone]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(`${step}. ${title}`)}</strong>${escapeHtml(detail)}</p>`)
+              .join("")}
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-renewal-evidence-approval-gate">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v248 Renewal Evidence Approval Gate</span>
+              <h3>Approve proof before it reaches the buyer pack</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.renewalEvidenceApprovalGate.downloadHref)}" download="pursuitdesk-renewal-evidence-approval-gate-v248.json">Download approval gate JSON</a>
+          </div>
+          <div class="pilot-close-hero">
+            <div>
+              <span>Proposal simplicity gate</span>
+              <strong>${escapeHtml(model.renewalEvidenceApprovalGate.renewalEvidenceApprovalGateId)}</strong>
+              <p>Every proof row gets one clear decision: release it, redact it, hold it, or keep it internal. This keeps the proposal clean, buyer-safe, and easy for a reviewer to approve.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review gate</button>
+                <button class="ghost-btn" type="button" data-view="Build Phase">Open roadmap</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Gate score</span>
+              <strong>${model.renewalEvidenceApprovalGate.score}%</strong>
+              <p>${model.renewalEvidenceApprovalGate.buyerReady} buyer-ready / ${model.renewalEvidenceApprovalGate.hold} held</p>
+              <small>${model.renewalEvidenceApprovalGate.averageApproval}% average approval score</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.renewalEvidenceApprovalGate.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lane-grid">
+            ${model.renewalEvidenceApprovalGate.lanes
+              .map(
+                (lane) => `
+                  <article class="tone-${escapeHtml(lane.tone)}">
+                    <div class="pilot-close-lane-head">
+                      <div>
+                        <span>${escapeHtml(lane.lane)}</span>
+                        <strong>${lane.items.length}</strong>
+                      </div>
+                      <em>${escapeHtml(lane.note)}</em>
+                    </div>
+                    <div class="pilot-close-lane-items">
+                      ${lane.items.length
+                        ? lane.items
+                            .slice(0, 3)
+                            .map(
+                              (item) => `
+                                <div>
+                                  <span>${escapeHtml(item.simplicityRule)} / ${item.approvalScore}% ready</span>
+                                  <strong>${escapeHtml(item.buyer)}</strong>
+                                  <p>${escapeHtml(item.evidenceAction)}</p>
+                                  <small>${escapeHtml(item.buyerPackSection)} / ${escapeHtml(item.reviewerRole)}</small>
+                                </div>
+                              `,
+                            )
+                            .join("")
+                        : `<div class="empty-state compact">No ${escapeHtml(lane.lane.toLowerCase())} rows.</div>`}
+                    </div>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-evidence-approval-grid">
+            ${model.renewalEvidenceApprovalGate.rows
+              .slice(0, 12)
+              .map(
+                (row) => `
+                  <article class="tone-${escapeHtml(row.tone)}">
+                    <div class="pilot-close-row-head">
+                      <span>${escapeHtml(row.renewalEvidenceApprovalGateRowId)} / ${escapeHtml(row.approvalLane)}</span>
+                      <em>${row.approvalScore}%</em>
+                    </div>
+                    <h4>${escapeHtml(row.buyer)}</h4>
+                    <p>${escapeHtml(row.approvalReason)}</p>
+                    <div class="pilot-invoice-outcome-proof">
+                      <b>${escapeHtml(row.buyerPackSection)}</b>
+                      <b>${escapeHtml(row.reviewerRole)}</b>
+                      <b>${escapeHtml(row.simplicityRule)}</b>
+                    </div>
+                    <small>${escapeHtml(row.evidenceAction)}</small>
+                    <small>Redaction: ${escapeHtml(row.redactionRule)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Approval gate digest</span>
+              <h4>What can enter the buyer pack</h4>
+              <textarea readonly aria-label="Renewal evidence approval gate digest">${escapeHtml(model.renewalEvidenceApprovalGate.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready reviewer note</span>
+              <h4>Renewal evidence approval gate</h4>
+              <textarea readonly aria-label="Copy-ready renewal evidence approval gate note">${escapeHtml(model.renewalEvidenceApprovalGate.email)}</textarea>
+            </article>
+          </div>
+          <div class="pilot-close-playbook-list">
+            ${model.renewalEvidenceApprovalGate.runbook
+              .map(([step, title, detail, tone]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(`${step}. ${title}`)}</strong>${escapeHtml(detail)}</p>`)
+              .join("")}
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-simple-buyer-review-pack">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v249 Simple Buyer Review Pack</span>
+              <h3>Publish a short buyer review from approved evidence</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.simpleBuyerReviewPack.downloadHref)}" download="pursuitdesk-simple-buyer-review-pack-v249.json">Download buyer review JSON</a>
+          </div>
+          <div class="pilot-close-hero">
+            <div>
+              <span>Buyer-facing review pack</span>
+              <strong>${escapeHtml(model.simpleBuyerReviewPack.simpleBuyerReviewPackId)}</strong>
+              <p>The approved proof is now collapsed into a simple buyer page: one opening, clean proof, optional next step, and a visible list of what stays hidden.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review pack</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+                <button class="ghost-btn" type="button" data-view="Build Phase">Open roadmap</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Pack score</span>
+              <strong>${model.simpleBuyerReviewPack.score}%</strong>
+              <p>${model.simpleBuyerReviewPack.visible} visible / ${model.simpleBuyerReviewPack.hidden} hidden</p>
+              <small>${model.simpleBuyerReviewPack.readingLoad} item reading load</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.simpleBuyerReviewPack.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-buyer-review-flow" aria-label="Simple buyer review pack structure">
+            <span>Opening</span>
+            <span>Proof</span>
+            <span>Optional next</span>
+            <span>Hidden</span>
+          </div>
+          <div class="pilot-buyer-review-sheet">
+            <article class="pilot-buyer-review-page">
+              <span class="metric-label">Buyer page</span>
+              <h4>First renewal review</h4>
+              <div class="pilot-buyer-review-lines">
+                ${model.simpleBuyerReviewPack.visibleRows
+                  .slice(0, 6)
+                  .map(
+                    (row) => `
+                      <section class="tone-${escapeHtml(row.tone)}">
+                        <span>${escapeHtml(row.packLane)}</span>
+                        <strong>${escapeHtml(row.headline)}</strong>
+                        <p>${escapeHtml(row.buyerSentence)}</p>
+                        <small>${escapeHtml(row.proofLine)}</small>
+                        <em>${escapeHtml(row.nextStep)} / ${escapeHtml(row.ownerRole)}</em>
+                      </section>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="pilot-buyer-review-hidden">
+              <span class="metric-label">Hidden from buyer</span>
+              <h4>Protected proof</h4>
+              ${model.simpleBuyerReviewPack.hiddenRows.length
+                ? model.simpleBuyerReviewPack.hiddenRows
+                    .slice(0, 5)
+                    .map(
+                      (row) => `
+                        <p>
+                          <strong>${escapeHtml(row.buyer)}</strong>
+                          <span>${escapeHtml(row.hiddenFields)}</span>
+                        </p>
+                      `,
+                    )
+                    .join("")
+                : `<p><strong>No hidden rows</strong><span>All approved evidence can appear in the buyer review pack.</span></p>`}
+            </article>
+          </div>
+          <div class="pilot-buyer-review-pack-grid">
+            ${model.simpleBuyerReviewPack.rows
+              .slice(0, 10)
+              .map(
+                (row) => `
+                  <article class="tone-${escapeHtml(row.tone)}">
+                    <div class="pilot-close-row-head">
+                      <span>${escapeHtml(row.simpleBuyerReviewPackRowId)} / ${escapeHtml(row.packLane)}</span>
+                      <em>${row.simplicityScore}%</em>
+                    </div>
+                    <h4>${escapeHtml(row.buyer)}</h4>
+                    <p>${escapeHtml(row.buyerSentence)}</p>
+                    <small>${escapeHtml(row.proofLine)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Buyer review digest</span>
+              <h4>What the customer sees and what stays hidden</h4>
+              <textarea readonly aria-label="Simple buyer review pack digest">${escapeHtml(model.simpleBuyerReviewPack.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready review note</span>
+              <h4>Simple buyer review pack</h4>
+              <textarea readonly aria-label="Copy-ready simple buyer review pack note">${escapeHtml(model.simpleBuyerReviewPack.email)}</textarea>
+            </article>
+          </div>
+          <div class="pilot-close-playbook-list">
+            ${model.simpleBuyerReviewPack.runbook
               .map(([step, title, detail, tone]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(`${step}. ${title}`)}</strong>${escapeHtml(detail)}</p>`)
               .join("")}
           </div>
