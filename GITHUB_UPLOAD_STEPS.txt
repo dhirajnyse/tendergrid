@@ -1,4 +1,4 @@
-PursuitDesk v249 simple buyer review pack upload steps
+PursuitDesk v264 review pack send receipt upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v249 simple buyer review pack upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v249 simple buyer review pack
+   PursuitDesk v264 review pack send receipt
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Pilot Pitch with v249 Simple Buyer Review Pack. Open Pilot Pitch and review the new section after Renewal Evidence Approval Gate to test the short buyer page, visible proof, optional next steps, hidden rows, and downloadable JSON.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Pilot Pitch with v264 Review Pack Send Receipt. Open Pilot Pitch, scroll below the v261 First-Week Review Pack, and check the recipients, buyer-safe proof, protected private fields, decision due date, send rules, digest, and downloadable receipt JSON.
 
 Demo login:
 admin@pursuitdesk.app

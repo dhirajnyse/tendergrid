@@ -495,7 +495,7 @@ textarea:disabled {
   top: calc(100% + 8px);
   left: 0;
   z-index: 40;
-  width: min(560px, calc(100vw - 32px));
+  width: min(620px, calc(100vw - 32px));
   padding: 10px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -517,6 +517,549 @@ textarea:disabled {
   font-size: 12px;
   font-weight: 950;
   text-transform: uppercase;
+}
+
+.rooms-memory-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid rgba(49, 95, 147, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: var(--blue-soft);
+}
+
+.rooms-memory-strip span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.rooms-memory-strip strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.rooms-memory-strip p {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.rooms-memory-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  max-width: 280px;
+}
+
+.rooms-memory-actions button {
+  min-height: 30px;
+  padding: 6px 9px;
+  border: 1px solid rgba(49, 95, 147, 0.2);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.rooms-memory-actions .rooms-memory-primary {
+  color: #ffffff;
+  background: var(--blue);
+}
+
+.rooms-preference-controls {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(232, 246, 240, 0.82), rgba(255, 255, 255, 0.95));
+}
+
+.rooms-preference-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.rooms-preference-head span,
+.rooms-preference-pins > span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.rooms-preference-head strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.rooms-preference-profile {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.rooms-preference-profile div {
+  min-height: 50px;
+  padding: 8px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.rooms-preference-profile span {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.rooms-preference-profile strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.rooms-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.rooms-preset-card {
+  display: grid;
+  gap: 4px;
+  min-height: 112px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  text-align: left;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.rooms-preset-card:hover,
+.rooms-preset-card.active {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(17, 24, 21, 0.08);
+}
+
+.rooms-preset-card.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.rooms-preset-card.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.rooms-preset-card.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.rooms-preset-card.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.rooms-preset-card.active {
+  outline: 2px solid rgba(13, 111, 97, 0.24);
+  outline-offset: 2px;
+}
+
+.rooms-preset-card span {
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.rooms-preset-card strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.rooms-preset-card small,
+.rooms-preset-card em {
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.rooms-preset-card em {
+  font-weight: 800;
+}
+
+.rooms-policy-handoff {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 8px;
+  padding: 9px;
+  border: 1px solid rgba(49, 95, 147, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(231, 239, 249, 0.75), rgba(255, 255, 255, 0.9));
+}
+
+.rooms-policy-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.rooms-policy-head span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.rooms-policy-head strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.rooms-policy-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.rooms-policy-summary,
+.rooms-policy-grid,
+.rooms-policy-rules {
+  display: grid;
+  gap: 7px;
+}
+
+.rooms-policy-summary {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.rooms-policy-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.rooms-policy-rules {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.rooms-policy-summary-card,
+.rooms-policy-card,
+.rooms-policy-rules div {
+  min-width: 0;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.rooms-policy-summary-card {
+  min-height: 62px;
+  padding: 8px;
+}
+
+.rooms-policy-card {
+  display: grid;
+  gap: 4px;
+  min-height: 94px;
+  padding: 9px;
+}
+
+.rooms-policy-card.active {
+  outline: 2px solid rgba(13, 111, 97, 0.24);
+  outline-offset: 2px;
+}
+
+.rooms-policy-rules div {
+  min-height: 56px;
+  padding: 8px;
+}
+
+.rooms-policy-summary-card.tone-teal,
+.rooms-policy-card.tone-teal,
+.rooms-policy-rules .tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.rooms-policy-summary-card.tone-green,
+.rooms-policy-card.tone-green,
+.rooms-policy-rules .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.rooms-policy-summary-card.tone-amber,
+.rooms-policy-card.tone-amber,
+.rooms-policy-rules .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.rooms-policy-summary-card.tone-blue,
+.rooms-policy-card.tone-blue,
+.rooms-policy-rules .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.rooms-policy-summary-card span,
+.rooms-policy-card span,
+.rooms-policy-rules span {
+  display: block;
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.rooms-policy-summary-card strong,
+.rooms-policy-card strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.1;
+}
+
+.rooms-policy-card small,
+.rooms-policy-card em,
+.rooms-policy-rules small,
+.rooms-policy-summary-card small {
+  color: var(--ink-soft);
+  font-size: 10px;
+  font-style: normal;
+  line-height: 1.32;
+}
+
+.rooms-policy-card em {
+  font-weight: 900;
+}
+
+.rooms-policy-card code {
+  display: block;
+  width: 100%;
+  padding: 5px 6px;
+  border-radius: 7px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.rooms-preference-actions,
+.rooms-preference-pins div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.rooms-preference-actions {
+  margin-bottom: 8px;
+}
+
+.rooms-preference-actions button,
+.rooms-preference-pins button {
+  min-height: 28px;
+  padding: 6px 8px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.8);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+}
+
+.rooms-preference-actions button:first-child,
+.rooms-preference-pins button.active {
+  color: #ffffff;
+  background: var(--teal);
+  border-color: var(--teal);
+}
+
+.rooms-preference-pins {
+  display: grid;
+  gap: 6px;
+}
+
+.rooms-preference-controls p {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.rooms-simple-guide {
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(232, 246, 240, 0.78), rgba(255, 255, 255, 0.92));
+}
+
+.rooms-simple-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.rooms-simple-head span,
+.rooms-menu-divider span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.rooms-simple-head strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.rooms-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.rooms-guide-card {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: var(--teal-soft);
+}
+
+.rooms-guide-card.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.rooms-guide-card.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.rooms-guide-card.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.rooms-guide-card.active {
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 21, 0.08), 0 10px 22px rgba(17, 24, 21, 0.09);
+}
+
+.rooms-guide-card span {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 1.15;
+}
+
+.rooms-guide-card p {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.rooms-guide-open {
+  width: 100%;
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 1px solid rgba(13, 111, 97, 0.24);
+  border-radius: 8px;
+  color: #ffffff;
+  background: var(--teal);
+  font-size: 11px;
+  font-weight: 950;
+  text-align: center;
+}
+
+.rooms-guide-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.rooms-guide-pills button {
+  min-height: 24px;
+  padding: 4px 7px;
+  border: 1px solid rgba(13, 111, 97, 0.14);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.rooms-menu-divider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0 8px;
+  padding: 0 2px;
 }
 
 .rooms-menu-grid {
@@ -36585,6 +37128,1128 @@ tr.selected-row td:first-child {
   line-height: 1.45;
 }
 
+.pilot-buyer-review-send-receipt {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(220, 243, 238, 0.56));
+}
+
+.pilot-buyer-review-send-receipt .buyer-review-receipt-hero > div:first-child {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-buyer-review-send-receipt .pilot-close-score-card {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.buyer-review-receipt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.buyer-review-receipt-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.buyer-review-receipt-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.buyer-review-receipt-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.buyer-review-receipt-grid > article.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.buyer-review-receipt-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.buyer-review-receipt-list {
+  display: grid;
+  gap: 8px;
+}
+
+.buyer-review-receipt-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.buyer-review-receipt-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.buyer-review-receipt-list span,
+.buyer-review-receipt-list small {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.buyer-review-privacy-list {
+  grid-template-columns: repeat(5, minmax(160px, 1fr));
+  margin: 10px 0;
+}
+
+.pilot-buyer-reply-tracker {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 236, 248, 0.58));
+}
+
+.pilot-buyer-reply-tracker .buyer-reply-tracker-hero > div:first-child {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-buyer-reply-tracker .pilot-close-score-card {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.buyer-reply-tracker-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.buyer-reply-tracker-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.buyer-reply-tracker-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.buyer-reply-tracker-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.buyer-reply-tracker-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.buyer-reply-list {
+  display: grid;
+  gap: 8px;
+}
+
+.buyer-reply-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(49, 95, 147, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.buyer-reply-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.buyer-reply-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.buyer-reply-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.buyer-reply-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.buyer-reply-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.buyer-reply-list span,
+.buyer-reply-list small {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-reply-kickoff-bridge {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(222, 242, 237, 0.58));
+}
+
+.pilot-reply-kickoff-bridge .pilot-reply-bridge-hero > div:first-child {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-reply-kickoff-bridge .pilot-close-score-card {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-reply-bridge-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr) minmax(280px, 0.9fr);
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-reply-bridge-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-reply-bridge-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-reply-bridge-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-reply-bridge-grid > article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.22);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-reply-bridge-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.pilot-reply-bridge-list {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-reply-bridge-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(13, 111, 97, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pilot-reply-bridge-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.pilot-reply-bridge-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.pilot-reply-bridge-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.pilot-reply-bridge-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.pilot-reply-bridge-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.pilot-reply-bridge-list span,
+.pilot-reply-bridge-list small {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-handoff-sheet {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 242, 231, 0.6));
+}
+
+.pilot-handoff-sheet .pilot-handoff-hero > div:first-child {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-handoff-sheet .pilot-close-score-card {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-handoff-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 0.9fr) minmax(260px, 0.9fr);
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-handoff-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-handoff-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-handoff-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-handoff-grid > article.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-handoff-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.pilot-handoff-list {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-handoff-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(13, 111, 97, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.pilot-handoff-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.pilot-handoff-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.pilot-handoff-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.pilot-handoff-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.pilot-handoff-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.pilot-handoff-list span {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-handoff-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-handoff-summary > div {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.pilot-handoff-summary span {
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.pilot-handoff-summary strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.pilot-handoff-summary p {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+
+.pilot-kickoff-confirmation {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(222, 242, 237, 0.58));
+}
+
+.pilot-kickoff-confirmation .pilot-kickoff-hero > div:first-child {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-kickoff-confirmation .pilot-close-score-card {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-kickoff-confirmation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-kickoff-confirmation-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-kickoff-confirmation-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-kickoff-confirmation-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-kickoff-confirmation-grid > article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.22);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-kickoff-confirmation-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.pilot-kickoff-list {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-kickoff-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(13, 111, 97, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pilot-kickoff-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.pilot-kickoff-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.pilot-kickoff-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.pilot-kickoff-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.pilot-kickoff-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.pilot-kickoff-list span {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-first-week-pulse {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(221, 234, 248, 0.54));
+}
+
+.pilot-first-week-pulse .pilot-first-week-hero > div:first-child {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-first-week-pulse .pilot-close-score-card {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-first-week-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr) minmax(280px, 0.9fr);
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-first-week-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-first-week-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-first-week-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-first-week-grid > article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.22);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-first-week-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.pilot-first-week-list {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-first-week-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(13, 111, 97, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pilot-first-week-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.pilot-first-week-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.pilot-first-week-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.pilot-first-week-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.pilot-first-week-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.pilot-first-week-list span,
+.pilot-first-week-list small {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-first-week-proof-inbox {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 242, 231, 0.58));
+}
+
+.pilot-first-week-proof-inbox .pilot-proof-inbox-hero > div:first-child {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-first-week-proof-inbox .pilot-close-score-card {
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-proof-inbox-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-proof-inbox-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-proof-inbox-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-proof-inbox-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-proof-inbox-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.pilot-proof-inbox-list {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-proof-inbox-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(36, 119, 71, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pilot-proof-inbox-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.pilot-proof-inbox-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.pilot-proof-inbox-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.pilot-proof-inbox-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.pilot-proof-inbox-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.pilot-proof-inbox-list span,
+.pilot-proof-inbox-list small {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-first-week-review-pack {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(225, 235, 247, 0.58));
+}
+
+.pilot-first-week-review-pack .pilot-review-pack-hero > div:first-child {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-first-week-review-pack .pilot-close-score-card {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-review-pack-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-review-pack-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-review-pack-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-review-pack-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-review-pack-grid > article.tone-teal {
+  border-color: rgba(18, 125, 112, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-review-pack-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.pilot-review-pack-list {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-review-pack-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(18, 125, 112, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pilot-review-pack-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.pilot-review-pack-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.pilot-review-pack-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.pilot-review-pack-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.pilot-review-pack-list p.tone-red {
+  border-left-color: var(--red);
+}
+
+.pilot-review-pack-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.pilot-review-pack-list span,
+.pilot-review-pack-list small {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-first-week-review-send-receipt {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 242, 232, 0.58));
+}
+
+.pilot-first-week-review-send-receipt .pilot-review-send-hero > div:first-child {
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-first-week-review-send-receipt .pilot-close-score-card {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-review-send-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-review-send-grid > article {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-review-send-grid > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-review-send-grid > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-review-send-grid > article.tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-review-send-grid > article.tone-teal {
+  border-color: rgba(18, 125, 112, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-review-send-grid h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.pilot-review-send-list {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-review-send-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(18, 125, 112, 0.18);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.pilot-review-send-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.pilot-review-send-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.pilot-review-send-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.pilot-review-send-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.pilot-review-send-list p.tone-red {
+  border-left-color: var(--red);
+}
+
+.pilot-review-send-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.pilot-review-send-list span,
+.pilot-review-send-list small {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-kickoff-handoff-emails {
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(221, 244, 239, 0.58));
+}
+
+.pilot-kickoff-handoff-emails .pilot-kickoff-email-hero > div:first-child {
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-kickoff-handoff-emails .pilot-close-score-card {
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-kickoff-email-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-kickoff-email-grid > article,
+.pilot-kickoff-email-footer > article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.96);
+}
+
+.pilot-kickoff-email-grid > article.tone-green,
+.pilot-kickoff-email-footer > article.tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.pilot-kickoff-email-grid > article.tone-teal,
+.pilot-kickoff-email-footer > article.tone-teal {
+  border-color: rgba(18, 125, 112, 0.24);
+  border-left-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.pilot-kickoff-email-grid > article.tone-blue,
+.pilot-kickoff-email-footer > article.tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.pilot-kickoff-email-grid > article.tone-amber,
+.pilot-kickoff-email-footer > article.tone-amber {
+  border-color: rgba(191, 112, 29, 0.26);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.pilot-kickoff-email-grid h4,
+.pilot-kickoff-email-footer h4 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.pilot-kickoff-email-grid p,
+.pilot-kickoff-email-grid small {
+  margin: 0;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.pilot-kickoff-email-grid textarea,
+.pilot-kickoff-email-footer textarea {
+  min-height: 178px;
+  margin-top: 4px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.pilot-kickoff-email-footer {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.pilot-kickoff-email-rule-list {
+  display: grid;
+  gap: 8px;
+}
+
+.pilot-kickoff-email-rule-list p {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-left: 4px solid rgba(18, 125, 112, 0.2);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.pilot-kickoff-email-rule-list p.tone-green {
+  border-left-color: var(--green);
+}
+
+.pilot-kickoff-email-rule-list p.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.pilot-kickoff-email-rule-list p.tone-teal {
+  border-left-color: var(--teal);
+}
+
+.pilot-kickoff-email-rule-list p.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.pilot-kickoff-email-rule-list strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.pilot-kickoff-email-rule-list span {
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+@media (max-width: 980px) {
+  .buyer-review-receipt-grid,
+  .buyer-review-privacy-list,
+  .buyer-reply-tracker-grid,
+  .pilot-reply-bridge-grid,
+  .pilot-handoff-grid,
+  .pilot-handoff-summary,
+  .pilot-kickoff-confirmation-grid,
+  .pilot-first-week-grid,
+  .pilot-proof-inbox-grid,
+  .pilot-review-pack-grid,
+  .pilot-review-send-grid,
+  .pilot-kickoff-email-grid,
+  .pilot-kickoff-email-footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .buyer-review-receipt-grid,
+  .buyer-review-privacy-list,
+  .buyer-reply-tracker-grid,
+  .pilot-reply-bridge-grid,
+  .pilot-handoff-grid,
+  .pilot-handoff-summary,
+  .pilot-kickoff-confirmation-grid,
+  .pilot-first-week-grid,
+  .pilot-proof-inbox-grid,
+  .pilot-review-pack-grid,
+  .pilot-review-send-grid,
+  .pilot-kickoff-email-grid,
+  .pilot-kickoff-email-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .pilot-renewal-invoice-trust-grid,
 .pilot-invoice-outcome-grid,
 .pilot-invoice-reply-evidence-grid,
@@ -42080,6 +43745,38 @@ tr.selected-row td:first-child {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .rooms-memory-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .rooms-memory-actions {
+    justify-content: flex-start;
+    max-width: none;
+  }
+
+  .rooms-preference-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .rooms-preset-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rooms-policy-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .rooms-policy-summary,
+  .rooms-policy-grid,
+  .rooms-policy-rules {
+    grid-template-columns: 1fr;
+  }
+
+  .rooms-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
   .workspace-header {
     padding: 14px 18px;
   }
@@ -42722,6 +44419,10 @@ tr.selected-row td:first-child {
   }
 
   .rooms-menu-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rooms-guide-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 

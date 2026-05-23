@@ -1,10 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=249";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=249";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=264";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=264";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
+  const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
+  const ROOM_MEMORY_LIMIT = 6;
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
   const STATUS_OPTIONS = [
     "Active",
@@ -123,6 +125,70 @@
     { key: "pitch", label: "Pilot Pitch", view: "Pilot Pitch" },
     { key: "buildPhase", label: "Build Phase", view: "Build Phase" },
     { key: "membership", label: "Membership Model", view: "Membership" },
+  ];
+  const ROOM_NAVIGATOR_GROUPS = [
+    {
+      label: "Run today",
+      tone: "teal",
+      primaryView: "Command",
+      note: "Open the daily operating screen, then move into the tracker that needs action.",
+      rooms: ["Command", "Autopilot", "Advisor", "Weekly Review", "Tenders", "Projects", "Reports"],
+    },
+    {
+      label: "Win work",
+      tone: "blue",
+      primaryView: "Win Lab",
+      note: "Use when a pursuit needs bid posture, a decision replay, or due-date control.",
+      rooms: ["Win Lab", "Decision Twin", "Bid Desk", "Calendar", "Risk", "Forecast"],
+    },
+    {
+      label: "Control proof",
+      tone: "green",
+      primaryView: "Governance",
+      note: "Keep imports, access, documents, contracts, and archive proof clean.",
+      rooms: ["Intake", "Import", "Governance", "Documents", "Contracts", "Closeout"],
+    },
+    {
+      label: "Sell pilot",
+      tone: "amber",
+      primaryView: "Pilot Pitch",
+      note: "Use admin-only pricing, buyer proof, and roadmap pages for customer conversations.",
+      rooms: ["Pilot Pitch", "Membership", "Build Phase"],
+    },
+  ];
+  const NAVIGATION_ROLE_PRESETS = [
+    {
+      key: "operations",
+      label: "Operations user",
+      tone: "teal",
+      defaultView: "Command",
+      pinnedViews: ["Command", "Tenders", "Projects", "Weekly Review", "Reports"],
+      note: "Daily trackers, ownership, due dates, and review rhythm without commercial rooms.",
+    },
+    {
+      key: "management",
+      label: "Management user",
+      tone: "green",
+      defaultView: "Command",
+      pinnedViews: ["Command", "Advisor", "Weekly Review", "Reports", "Tenders Insights"],
+      note: "Morning command, recommendations, weekly review, reports, and tender insight summary.",
+    },
+    {
+      key: "commercial",
+      label: "Commercial user",
+      tone: "amber",
+      defaultView: "Tenders Insights",
+      pinnedViews: ["Tenders Insights", "Project Insights", "Forecast", "Contracts", "Clients"],
+      note: "Commercial rooms for value, forecast, contracts, clients, and controlled insight work.",
+    },
+    {
+      key: "governance",
+      label: "Governance user",
+      tone: "blue",
+      defaultView: "Governance",
+      pinnedViews: ["Governance", "Import", "Documents", "Closeout", "Reports"],
+      note: "Audit, import proof, documents, closeout control, and report evidence.",
+    },
   ];
   const DEFAULT_OPERATION_ACCESS_KEYS = ["tenders", "projects"];
   const COMMERCIAL_ACCESS_KEYS = ["tenderInsights", "projectInsights", "forecast", "clients", "contracts", "reports", "advisor", "autopilot", "timeMachine", "winLab", "decisionTwin", "command"];
@@ -528,9 +594,10 @@
   ];
 
   const app = document.getElementById("app");
+  const initialUser = loadSession();
   const state = {
     data: loadData(),
-    user: loadSession(),
+    user: initialUser,
     view: "Command",
     filters: {
       search: "",
@@ -548,6 +615,7 @@
     quickSearchOpen: false,
     quickSearch: "",
     roomsOpen: false,
+    roomMemory: loadRoomMemory(initialUser),
     tableDensity: "Comfortable",
     trackerMode: "Sheet",
     detailCollapsed: false,
@@ -556,6 +624,10 @@
     importMessage: "",
     previewAdmin: null,
   };
+
+  if (initialUser) {
+    state.view = preferredStartView(initialUser, state.roomMemory) || "Command";
+  }
 
   function clone(value) {
     return JSON.parse(JSON.stringify(value));
@@ -711,6 +783,82 @@
       return;
     }
     localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+  }
+
+  function readRoomMemoryStore() {
+    const saved = localStorage.getItem(ROOM_MEMORY_KEY);
+    if (!saved) return {};
+    try {
+      const parsed = JSON.parse(saved);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (error) {
+      localStorage.removeItem(ROOM_MEMORY_KEY);
+      return {};
+    }
+  }
+
+  function roomMemoryUserKey(user = state.user) {
+    return user?.id || "guest";
+  }
+
+  function isKnownView(view) {
+    const cleanView = String(view || "").trim();
+    return ACCESS_SECTIONS.some((section) => section.view === cleanView);
+  }
+
+  function normalizeMemoryViews(views = []) {
+    return Array.isArray(views)
+      ? views
+          .map((view) => String(view || "").trim())
+          .filter((view, index, values) => view && isKnownView(view) && values.indexOf(view) === index)
+      : [];
+  }
+
+  function isKnownNavigationPreset(key) {
+    const cleanKey = String(key || "").trim();
+    return NAVIGATION_ROLE_PRESETS.some((preset) => preset.key === cleanKey);
+  }
+
+  function normalizeRoomMemory(memory) {
+    const recentViews = normalizeMemoryViews(memory?.recentViews).slice(0, ROOM_MEMORY_LIMIT);
+    const defaultView = String(memory?.defaultView || "").trim();
+    const presetKey = String(memory?.presetKey || "").trim();
+    return {
+      recentViews,
+      lastMode: String(memory?.lastMode || "").trim(),
+      defaultView: isKnownView(defaultView) ? defaultView : "",
+      pinnedViews: normalizeMemoryViews(memory?.pinnedViews).slice(0, 5),
+      presetKey: isKnownNavigationPreset(presetKey) ? presetKey : "",
+    };
+  }
+
+  function loadRoomMemory(user = null) {
+    const store = readRoomMemoryStore();
+    return normalizeRoomMemory(store[roomMemoryUserKey(user)]);
+  }
+
+  function persistRoomMemory(user = state.user, memory = state.roomMemory) {
+    const store = readRoomMemoryStore();
+    store[roomMemoryUserKey(user)] = normalizeRoomMemory(memory);
+    localStorage.setItem(ROOM_MEMORY_KEY, JSON.stringify(store));
+  }
+
+  function roomModeForView(view) {
+    return ROOM_NAVIGATOR_GROUPS.find((group) => group.rooms.includes(view)) || null;
+  }
+
+  function rememberRoomView(view) {
+    const cleanView = String(view || "").trim();
+    if (!ACCESS_SECTIONS.some((section) => section.view === cleanView)) return;
+    const mode = roomModeForView(cleanView);
+    state.roomMemory = normalizeRoomMemory({
+      recentViews: [cleanView, ...state.roomMemory.recentViews.filter((item) => item !== cleanView)],
+      lastMode: mode?.label || state.roomMemory.lastMode,
+      defaultView: state.roomMemory.defaultView,
+      pinnedViews: state.roomMemory.pinnedViews,
+      presetKey: state.roomMemory.presetKey,
+    });
+    persistRoomMemory();
   }
 
   function companyRecords() {
@@ -965,6 +1113,146 @@
     return section ? section.view : null;
   }
 
+  function preferredStartView(user = state.user, memory = state.roomMemory) {
+    const normalized = normalizeRoomMemory(memory);
+    if (normalized.defaultView && canAccessView(normalized.defaultView, user)) return normalized.defaultView;
+    return defaultViewForUser(user) || "No Access";
+  }
+
+  function setNavigationDefault(view) {
+    if (!canAdmin()) return;
+    const cleanView = String(view || "").trim();
+    if (!canAccessView(cleanView)) return;
+    const mode = roomModeForView(cleanView);
+    state.roomMemory = normalizeRoomMemory({
+      ...state.roomMemory,
+      defaultView: cleanView,
+      recentViews: [cleanView, ...state.roomMemory.recentViews.filter((item) => item !== cleanView)],
+      lastMode: mode?.label || state.roomMemory.lastMode,
+      presetKey: "",
+    });
+    persistRoomMemory();
+  }
+
+  function togglePinnedRoom(view) {
+    if (!canAdmin()) return;
+    const cleanView = String(view || "").trim();
+    if (!canAccessView(cleanView)) return;
+    const pinned = state.roomMemory.pinnedViews.includes(cleanView)
+      ? state.roomMemory.pinnedViews.filter((item) => item !== cleanView)
+      : [cleanView, ...state.roomMemory.pinnedViews].slice(0, 5);
+    state.roomMemory = normalizeRoomMemory({
+      ...state.roomMemory,
+      pinnedViews: pinned,
+      presetKey: "",
+    });
+    persistRoomMemory();
+  }
+
+  function applyNavigationPreset(presetKey) {
+    if (!canAdmin()) return;
+    const preset = NAVIGATION_ROLE_PRESETS.find((item) => item.key === String(presetKey || "").trim());
+    if (!preset) return;
+    const pinnedViews = preset.pinnedViews.filter((view) => canAccessView(view)).slice(0, 5);
+    const defaultView = canAccessView(preset.defaultView) ? preset.defaultView : pinnedViews[0] || preferredStartView() || "Command";
+    state.roomMemory = normalizeRoomMemory({
+      ...state.roomMemory,
+      presetKey: preset.key,
+      defaultView,
+      pinnedViews,
+      recentViews: [defaultView, ...state.roomMemory.recentViews.filter((item) => item !== defaultView)],
+      lastMode: preset.label,
+    });
+    persistRoomMemory();
+  }
+
+  function buildPresetAccessPolicyHandoff(memory = state.roomMemory) {
+    const normalized = normalizeRoomMemory(memory);
+    const activePreset = NAVIGATION_ROLE_PRESETS.find((preset) => preset.key === normalized.presetKey);
+    const grantableKeys = new Set(GRANTABLE_ACCESS_SECTIONS.map((section) => section.key));
+    const policyLaneByPreset = {
+      operations: "Tracker operations",
+      management: "Management review",
+      commercial: "Commercial control",
+      governance: "Audit evidence",
+    };
+    const accessModeByPreset = {
+      operations: "Edit tracker fields",
+      management: "Review signals",
+      commercial: "Commercial rooms",
+      governance: "Audit and import",
+    };
+    const rows = NAVIGATION_ROLE_PRESETS.map((preset) => {
+      const defaultKey = sectionForView(preset.defaultView);
+      const roomViews = preset.pinnedViews.filter((view) => isKnownView(view));
+      const grantKeys = Array.from(
+        new Set([defaultKey, ...roomViews.map((view) => sectionForView(view))].filter((key) => grantableKeys.has(key))),
+      );
+      return {
+        key: preset.key,
+        label: preset.label,
+        tone: preset.tone,
+        active: activePreset?.key === preset.key,
+        defaultRoom: simpleRoomLabel(preset.defaultView),
+        policyLane: policyLaneByPreset[preset.key] || "Workspace access",
+        accessMode: accessModeByPreset[preset.key] || "Controlled access",
+        grantCount: grantKeys.length,
+        grantKeys,
+        grantLabel: accessLabelForKeys(grantKeys) || "No grantable rooms",
+        roomsLabel: roomViews.map(simpleRoomLabel).join(" / "),
+        auditEvent: `navigation_preset_applied:${preset.key}`,
+        note: preset.note,
+      };
+    });
+    const activeRow = rows.find((row) => row.active) || rows[0];
+    const grantCount = new Set(rows.flatMap((row) => row.grantKeys)).size;
+    const summaryCards = [
+      ["Policy templates", `${rows.length}`, "Operations, management, commercial, and governance", "teal"],
+      ["Active preset", activeRow?.label || "Operations user", "Current browser navigation memory", activeRow?.tone || "green"],
+      ["Grantable rooms", `${grantCount}`, "Future Membership access sections covered", "blue"],
+      ["Audit event", activeRow?.auditEvent || "navigation_preset_applied", "Every apply becomes an admin event", "amber"],
+    ];
+    const rules = [
+      ["Preset is not permission", "A preset suggests the path; Membership still grants access.", "green"],
+      ["Admin approves grants", "Company admins decide who receives each room bundle.", "blue"],
+      ["Commercial stays controlled", "Value, forecast, and contract rooms remain separate from tracker users.", "amber"],
+      ["Audit every apply", "Each preset change should write an admin audit event.", "teal"],
+    ];
+    const packet = {
+      schemaVersion: "pursuitdesk.presetAccessPolicyHandoff.v263",
+      generatedAt: new Date().toISOString(),
+      activePreset: activeRow?.key || "operations",
+      digest: `${rows.length} role presets map into ${grantCount} grantable room sections with admin audit events.`,
+      policyRows: rows.map((row) => ({
+        presetKey: row.key,
+        presetLabel: row.label,
+        policyLane: row.policyLane,
+        defaultRoom: row.defaultRoom,
+        grantKeys: row.grantKeys,
+        grantLabel: row.grantLabel,
+        auditEvent: row.auditEvent,
+      })),
+      rules: rules.map(([label, note]) => ({ label, note })),
+    };
+    return {
+      rows,
+      summaryCards,
+      rules,
+      digest: packet.digest,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function clearNavigationMemory() {
+    if (!canAdmin()) return;
+    state.roomMemory = normalizeRoomMemory({
+      defaultView: "Command",
+      pinnedViews: ["Command", "Tenders", "Projects", "Weekly Review", "Reports"].filter((view) => canAccessView(view)),
+      presetKey: "operations",
+    });
+    persistRoomMemory();
+  }
+
   function refreshSessionUser() {
     if (!state.user) return;
     const current = state.data.users.find((user) => user.id === state.user.id);
@@ -989,7 +1277,7 @@
     if (!state.user) return;
     if (state.view === "All") state.view = "Tenders";
     if (state.view === "Insights" || state.view === "Tender Insights") state.view = "Tenders Insights";
-    if (!canAccessView(state.view)) state.view = defaultViewForUser() || "No Access";
+    if (!canAccessView(state.view)) state.view = preferredStartView() || "No Access";
   }
 
   function escapeHtml(value) {
@@ -1261,6 +1549,12 @@
                           <span>Specialist rooms</span>
                           <button class="mini-btn" type="button" data-action="close-rooms">Close</button>
                         </div>
+                        ${renderRoomMemoryStrip()}
+                        ${renderNavigationPreferenceControls(roomSections)}
+                        ${renderSimpleRoomsNavigator()}
+                        <div class="rooms-menu-divider">
+                          <span>All specialist rooms</span>
+                        </div>
                         <div class="rooms-menu-grid">
                           ${roomSections
                             .map((section) => {
@@ -1290,6 +1584,203 @@
         }
       </div>
     `;
+  }
+
+  function renderRoomMemoryStrip() {
+    const memory = normalizeRoomMemory(state.roomMemory);
+    const recentViews = memory.recentViews.filter((view) => canAccessView(view));
+    const defaultView = memory.defaultView && canAccessView(memory.defaultView)
+      ? memory.defaultView
+      : preferredStartView() || "Command";
+    const resumeView = recentViews[0] || defaultView || (canAccessView("Command") ? "Command" : defaultViewForUser() || "Command");
+    const resumeMode = roomModeForView(resumeView)?.label || memory.lastMode || roomModeForView(defaultView)?.label || "Run today";
+    const pinnedViews = memory.pinnedViews.filter((view) => canAccessView(view));
+    const quickViews = (pinnedViews.length ? pinnedViews : recentViews.length ? recentViews : ["Command", "Tenders", "Projects", "Weekly Review", "Advisor"]).filter((view) => canAccessView(view));
+    const activePreset = NAVIGATION_ROLE_PRESETS.find((preset) => preset.key === memory.presetKey);
+    const memoryCopy = recentViews.length
+      ? activePreset
+        ? `${escapeHtml(activePreset.label)} preset is active. Default start is ${escapeHtml(simpleRoomLabel(defaultView))}.`
+        : `${escapeHtml(resumeMode)} was your last work mode. Default start is ${escapeHtml(simpleRoomLabel(defaultView))}.`
+      : memory.defaultView
+        ? `Default start is ${escapeHtml(simpleRoomLabel(defaultView))}. Pinned rooms can stay here for quick access.`
+        : "Your recent rooms will appear here after you open them.";
+    return `
+      <section class="rooms-memory-strip" aria-label="Room memory">
+        <div>
+          <span>Room memory</span>
+          <strong>${activePreset ? escapeHtml(activePreset.label) : recentViews.length ? `Resume ${escapeHtml(simpleRoomLabel(resumeView))}` : memory.defaultView ? `Open default ${escapeHtml(simpleRoomLabel(defaultView))}` : "Start simple"}</strong>
+          <p>${memoryCopy}</p>
+        </div>
+        <div class="rooms-memory-actions">
+          <button class="rooms-memory-primary" type="button" data-view="${escapeHtml(resumeView)}">${recentViews.length ? "Resume" : "Open"} ${escapeHtml(simpleRoomLabel(resumeView))}</button>
+          ${quickViews
+            .slice(1, 4)
+            .map((view) => `<button type="button" data-view="${escapeHtml(view)}">${escapeHtml(simpleRoomLabel(view))}</button>`)
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderNavigationPreferenceControls(roomSections = []) {
+    if (!canAdmin()) return "";
+    const memory = normalizeRoomMemory(state.roomMemory);
+    const currentView = canAccessView(state.view) ? state.view : preferredStartView() || "Command";
+    const defaultView = memory.defaultView && canAccessView(memory.defaultView) ? memory.defaultView : preferredStartView() || "Command";
+    const pinnedViews = memory.pinnedViews.filter((view) => canAccessView(view));
+    const mainCount = ACCESS_SECTIONS.filter((section) => isRenderableNavSection(section) && PRIMARY_NAV_KEYS.includes(section.key) && hasSectionAccess(section.key)).length;
+    const roomCount = roomSections.length + ADMIN_ONLY_SECTION_KEYS.filter((key) => hasSectionAccess(key)).length;
+    const defaultButtons = ["Command", "Reports"].filter((view) => canAccessView(view) && view !== currentView);
+    const pinCandidates = [
+      "Command",
+      "Autopilot",
+      "Advisor",
+      "Weekly Review",
+      "Tenders",
+      "Projects",
+      "Reports",
+      "Pilot Pitch",
+      "Build Phase",
+    ].filter((view) => canAccessView(view));
+    const activePreset = NAVIGATION_ROLE_PRESETS.find((preset) => preset.key === memory.presetKey);
+    const policyHandoff = buildPresetAccessPolicyHandoff(memory);
+
+    return `
+      <section class="rooms-preference-controls" aria-label="Navigation preference controls">
+        <div class="rooms-preference-head">
+          <div>
+            <span>v263 preset policy handoff</span>
+            <strong>Choose how each role should start</strong>
+          </div>
+          <button class="mini-btn" type="button" data-action="clear-navigation-memory">Reset memory</button>
+        </div>
+        <div class="rooms-preference-profile" aria-label="Navigation profile">
+          <div><span>Default start</span><strong>${escapeHtml(simpleRoomLabel(defaultView))}</strong></div>
+          <div><span>Main strip</span><strong>${mainCount} rooms</strong></div>
+          <div><span>Specialist rooms</span><strong>${roomCount} rooms</strong></div>
+        </div>
+        <div class="rooms-preset-grid" aria-label="Role navigation presets">
+          ${NAVIGATION_ROLE_PRESETS.map((preset) => {
+            const presetDefault = canAccessView(preset.defaultView) ? preset.defaultView : preset.pinnedViews.find((view) => canAccessView(view)) || defaultView;
+            const presetPins = preset.pinnedViews.filter((view) => canAccessView(view)).slice(0, 5);
+            return `
+              <button class="rooms-preset-card tone-${escapeHtml(preset.tone)} ${activePreset?.key === preset.key ? "active" : ""}" type="button" data-action="apply-navigation-preset" data-preset="${escapeHtml(preset.key)}">
+                <span>${escapeHtml(preset.label)}</span>
+                <strong>Start ${escapeHtml(simpleRoomLabel(presetDefault))}</strong>
+                <small>${escapeHtml(preset.note)}</small>
+                <em>${escapeHtml(presetPins.map(simpleRoomLabel).join(" / "))}</em>
+              </button>
+            `;
+          }).join("")}
+        </div>
+        <div class="rooms-policy-handoff" aria-label="Preset-to-access policy handoff">
+          <div class="rooms-policy-head">
+            <div>
+              <span>Preset-to-access policy handoff</span>
+              <strong>Turn navigation presets into future access templates</strong>
+            </div>
+            <a class="mini-btn rooms-policy-download fixture-export-download" href="${escapeHtml(policyHandoff.downloadHref)}" download="pursuitdesk-preset-access-policy-handoff-v263.json">Download JSON</a>
+          </div>
+          <div class="rooms-policy-summary">
+            ${policyHandoff.summaryCards
+              .map(
+                ([label, value, note, tone]) => `
+                  <article class="rooms-policy-summary-card tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <small>${escapeHtml(note)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="rooms-policy-grid">
+            ${policyHandoff.rows
+              .map(
+                (row) => `
+                  <article class="rooms-policy-card tone-${escapeHtml(row.tone)} ${row.active ? "active" : ""}">
+                    <span>${escapeHtml(row.label)}</span>
+                    <strong>${escapeHtml(row.policyLane)}</strong>
+                    <small>Default: ${escapeHtml(row.defaultRoom)} / ${escapeHtml(row.grantCount)} rooms</small>
+                    <em>${escapeHtml(row.accessMode)}</em>
+                    <code>${escapeHtml(row.auditEvent)}</code>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="rooms-policy-rules">
+            ${policyHandoff.rules
+              .map(
+                ([label, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <small>${escapeHtml(note)}</small>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        </div>
+        <div class="rooms-preference-actions">
+          <button type="button" data-action="set-navigation-default" data-view="${escapeHtml(currentView)}">Make current default</button>
+          ${defaultButtons
+            .map((view) => `<button type="button" data-action="set-navigation-default" data-view="${escapeHtml(view)}">Default ${escapeHtml(simpleRoomLabel(view))}</button>`)
+            .join("")}
+        </div>
+        <div class="rooms-preference-pins">
+          <span>Pinned shortcuts</span>
+          <div>
+            ${pinCandidates
+              .map((view) => `<button class="${pinnedViews.includes(view) ? "active" : ""}" type="button" data-action="pin-room" data-view="${escapeHtml(view)}">${escapeHtml(simpleRoomLabel(view))}</button>`)
+              .join("")}
+          </div>
+        </div>
+        <p>Membership access still decides who can see each room. These controls only shape the starting path and quick shortcuts on this browser.</p>
+      </section>
+    `;
+  }
+
+  function renderSimpleRoomsNavigator() {
+    const cards = ROOM_NAVIGATOR_GROUPS.map((group) => {
+      const availableRooms = group.rooms.filter((view) => canAccessView(view));
+      if (!availableRooms.length) return "";
+      const primaryView = canAccessView(group.primaryView) ? group.primaryView : availableRooms[0];
+      const primaryLabel = simpleRoomLabel(primaryView);
+      const active = availableRooms.includes(state.view);
+      return `
+        <article class="rooms-guide-card tone-${escapeHtml(group.tone)} ${active ? "active" : ""}">
+          <div>
+            <span>${escapeHtml(group.label)}</span>
+            <p>${escapeHtml(group.note)}</p>
+          </div>
+          <button class="rooms-guide-open" type="button" data-view="${escapeHtml(primaryView)}">Open ${escapeHtml(primaryLabel)}</button>
+          <div class="rooms-guide-pills" aria-label="${escapeHtml(group.label)} rooms">
+            ${availableRooms
+              .slice(0, 5)
+              .map((view) => `<button type="button" data-view="${escapeHtml(view)}">${escapeHtml(simpleRoomLabel(view))}</button>`)
+              .join("")}
+          </div>
+        </article>
+      `;
+    }).filter(Boolean);
+    if (!cards.length) return "";
+    return `
+      <section class="rooms-simple-guide" aria-label="Simple room guide">
+        <div class="rooms-simple-head">
+          <span>Simple room guide</span>
+          <strong>Choose one work mode first</strong>
+        </div>
+        <div class="rooms-guide-grid">
+          ${cards.join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function simpleRoomLabel(view) {
+    const section = ACCESS_SECTIONS.find((item) => item.view === view);
+    return section ? navSectionLabel(section) : String(view || "");
   }
 
   function isRenderableNavSection(section) {
@@ -16895,7 +17386,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-fixture-export.json?v=249";
+    const downloadHref = "data/backend-fixture-export.json?v=264";
     const exportTables = [
       ["tenants.json", 1, "Company, workspace defaults, billing currency, plan state, and retention settings.", "green"],
       ["users.json", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and role-access fixture users.", "blue"],
@@ -16988,7 +17479,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-sprint-checklist.json?v=249";
+    const downloadHref = "data/backend-sprint-checklist.json?v=264";
     const sprintDays = [
       ["Day 0", "Repo creation and protection", "Private repo, develop branch, labels, milestones, board, first issues, secrets list.", "Repo is private and branch rules are visible.", "Control Admin"],
       ["Day 1", "Workspace skeleton", "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.", "Fresh clone can install and run the empty shell.", "Backend Lead"],
@@ -17102,7 +17593,7 @@
         ),
       ),
     );
-    const downloadHref = "data/staging-deployment-checklist.json?v=249";
+    const downloadHref = "data/staging-deployment-checklist.json?v=264";
     const environmentLanes = [
       ["Staging URL", `staging.${BRAND_DOMAIN}`, "Private pilot preview with test data, HTTPS, cache headers, and admin-only deployment notes.", "green"],
       ["API service", "api-staging", "Backend API deploys from develop or release candidate with health, version, and smoke endpoints.", "blue"],
@@ -17233,7 +17724,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-route-skeleton-map.json?v=249";
+    const downloadHref = "data/backend-route-skeleton-map.json?v=264";
     const routeFiles = [
       ["apps/api/src/server.ts", "Bootstrap", "Health route, request id, middleware chain, error shape, and route registration.", "Platform Owner", "green"],
       ["apps/api/src/middleware/request-context.ts", "Context", "Request id, actor shell, tenant shell, logger scope, and response timing.", "Backend Lead", "blue"],
@@ -17351,7 +17842,7 @@
         ),
       ),
     );
-    const downloadHref = "data/database-migration-blueprint.json?v=249";
+    const downloadHref = "data/database-migration-blueprint.json?v=264";
     const migrationFiles = [
       ["0001_tenant_identity.sql", "Tenant identity", "companies, users, access_profiles, sessions, invitations", "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data.", "Security Owner", "red"],
       ["0002_operational_records.sql", "Operational records", "records, record_notes, record_status_events, client_memory", `Load ${records.length} tracker-safe tender and project records without commercial values.`, "Records Owner", "teal"],
@@ -17490,7 +17981,7 @@
         ),
       ),
     );
-    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=249";
+    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=264";
     const guardFiles = [
       ["apps/api/src/auth/session.ts", "Session guard", "Verify signed session, expiry, inactive user, password reset freshness, and actor context.", "auth.session.test.ts", "Identity Owner", "red"],
       ["apps/api/src/auth/password.ts", "Password policy", "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.", "auth.password.test.ts", "Identity Owner", "red"],
@@ -17646,7 +18137,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-test-command-pack.json?v=249";
+    const downloadHref = "data/backend-test-command-pack.json?v=264";
     const testCommands = [
       ["01", "pnpm test:unit", "Domain unit tests", "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.", "junit-unit.xml", "green"],
       ["02", "pnpm test:contracts", "API contract tests", `${apiContractPack.endpointContracts.length} endpoint contracts for auth, users, records, commercial, import, billing, feedback, and audit.`, "junit-contracts.xml", "blue"],
@@ -17777,7 +18268,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-file-pack.json?v=249";
+    const downloadHref = "data/production-backend-repo-file-pack.json?v=264";
     const repositoryFolders = [
       ["apps/web", "Frontend app", "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.", "Frontend Owner", "green"],
       ["apps/api", "Backend API", "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.", "Backend Lead", "teal"],
@@ -17937,7 +18428,7 @@
         ),
       ),
     );
-    const downloadHref = "data/api-error-audit-envelope-pack.json?v=249";
+    const downloadHref = "data/api-error-audit-envelope-pack.json?v=264";
     const errorEnvelopeFields = [
       ["ok", "boolean", "Always false for errors and true for success responses.", "green"],
       ["requestId", "string", "Public-safe trace id returned to the UI, logs, and audit rows.", "blue"],
@@ -18141,7 +18632,7 @@
         ),
       ),
     );
-    const downloadHref = "data/ci-workflow-file-blueprint.json?v=249";
+    const downloadHref = "data/ci-workflow-file-blueprint.json?v=264";
     const workflowFiles = [
       [".github/workflows/ci.yml", "Primary PR gate", "Pull request", "install, lint, typecheck, unit, contracts, route envelopes, audit envelopes", "ci-summary.json", "red"],
       [".github/workflows/security-audit.yml", "Security and tenant proof", "Pull request + nightly", "auth tenant guards, section denials, commercial vault denial, redaction, request id", "security-audit-proof.json", "red"],
@@ -18312,7 +18803,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-first-commit-builder.json?v=249";
+    const downloadHref = "data/private-repo-first-commit-builder.json?v=264";
     const repoShellFiles = [
       ["README.md", "Repository orientation", "Explains alpha scope, local setup, proof commands, privacy rules, and release ritual.", "Repo Owner", "green"],
       ["package.json", "Root command map", "Defines install, dev, lint, typecheck, test, migrate, seed, smoke, and release-gate scripts.", "Platform Owner", "blue"],
@@ -18444,7 +18935,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-issue-body-exporter.json?v=249";
+    const downloadHref = "data/backend-issue-body-exporter.json?v=264";
     const labelPlan = [
       ["type:foundation", "Repository shell, docs, env examples, and workspace wiring.", "green"],
       ["type:api", "Server, routes, controllers, services, validators, and contracts.", "teal"],
@@ -18721,7 +19212,7 @@
         ),
       ),
     );
-    const downloadHref = "data/branch-protection-release-checklist.json?v=249";
+    const downloadHref = "data/branch-protection-release-checklist.json?v=264";
     const protectedBranches = [
       ["main", "Require pull request review", "ci.yml, security-audit.yml, migration-restore.yml, billing-testmode.yml, release-gate.yml", "No direct push, no force push, owner approval before production release.", "red"],
       ["develop", "Require primary CI", "ci.yml, security-audit.yml", "Feature integration only after lint, typecheck, route envelopes, auth tenant, and redaction proof.", "blue"],
@@ -18877,7 +19368,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-file-content-export.json?v=249";
+    const downloadHref = "data/first-backend-file-content-export.json?v=264";
     const makeFile = (path, owner, issue, purpose, tone, contentLines) => {
       const content = contentLines.join("\n");
       return {
@@ -19302,7 +19793,7 @@
       ),
     );
     const targetRepository = "dhirajnyse/pursuitdesk-platform";
-    const downloadHref = "data/private-repo-setup-script-draft.json?v=249";
+    const downloadHref = "data/private-repo-setup-script-draft.json?v=264";
     const prerequisites = [
       ["GitHub access", "Admin rights for dhirajnyse and permission to create a private repository.", "red"],
       ["GitHub CLI", "gh auth status should show the account that will own pursuitdesk-platform.", "blue"],
@@ -19685,7 +20176,7 @@
     );
     return {
       importPackScore,
-      downloadHref: "data/github-labels-milestones-import-pack.json?v=249",
+      downloadHref: "data/github-labels-milestones-import-pack.json?v=264",
       labelCatalog,
       labelGroups,
       milestoneCatalog,
@@ -19730,7 +20221,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=249";
+    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=264";
     const qaLanes = [
       ["Repository shell", "Root files, workspace, README, env example, CODEOWNERS, PR template, and release runbook exist.", "green"],
       ["API shell", "Server, app, route registry, health route, request id, safe error, tenant scope, and access decision exist.", "teal"],
@@ -19882,7 +20373,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-opening-day-runbook.json?v=249";
+    const downloadHref = "data/private-repo-opening-day-runbook.json?v=264";
     const daySequence = [
       ["08:30", "Preflight", "Confirm GitHub access, repo name, owners, no live secrets, and local folder location.", "green"],
       ["09:00", "Create private repo", "Create dhirajnyse/pursuitdesk-platform as private, with main protected later after first checks appear.", "red"],
@@ -20003,7 +20494,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-decision-memo.json?v=249";
+    const downloadHref = "data/production-backend-repo-decision-memo.json?v=264";
     const memoSections = [
       ["Decision requested", "Approve creation of dhirajnyse/pursuitdesk-platform as the private production backend repo.", "green"],
       ["Why now", "Prototype has reached a stable SaaS blueprint with repo files, issues, QA gates, taxonomy, and opening-day sequence.", "teal"],
@@ -20134,7 +20625,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-risk-register.json?v=249";
+    const downloadHref = "data/backend-alpha-risk-register.json?v=264";
     const riskDomains = [
       ["Repository control", "Critical", "Private visibility, PR-first branch discipline, and no direct main commits.", "red"],
       ["Secret handling", "Critical", "No live keys, .env files, billing secrets, tokens, or private certificates in the first repo.", "red"],
@@ -20268,7 +20759,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=249";
+    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=264";
     const evidenceLanes = [
       ["Repo privacy proof", "Hard gate", "Screenshot or note proving the production backend repo is private before files move.", "red"],
       ["Setup command proof", "Execution", "Capture preflight, folder creation, starter file copy, install, and first quality command output.", "green"],
@@ -20416,7 +20907,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-execution-checklist.json?v=249";
+    const downloadHref = "data/private-repo-execution-checklist.json?v=264";
     const executionGates = [
       ["Gate 0", "Owner go/no-go", "Product owner confirms the controlled go is for repo creation and first PR evidence only.", "green"],
       ["Gate 1", "Private visibility", "Repo is private before files, labels, issues, or screenshots are added.", "red"],
@@ -20577,7 +21068,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-control-board.json?v=249";
+    const downloadHref = "data/backend-alpha-control-board.json?v=264";
     const boardKpis = [
       ["Control readiness", `${controlReadinessScore}%`, "How ready the private repo day is to be managed from one board", controlReadinessScore >= 70 ? "green" : "amber"],
       ["Repo status", "Not opened", "The private production backend repo still needs real GitHub creation.", "red"],
@@ -20728,7 +21219,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-day-one-script.json?v=249";
+    const downloadHref = "data/private-repo-day-one-script.json?v=264";
     const scriptKpis = [
       ["Script readiness", `${scriptReadinessScore}%`, "How ready the private repo day is to run from one command script.", scriptReadinessScore >= 70 ? "green" : "amber"],
       ["Command blocks", "10", "Preflight, repo, branch, files, taxonomy, issues, PR, checks, protection, closeout.", "blue"],
@@ -20875,7 +21366,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-proof-exporter.json?v=249";
+    const downloadHref = "data/backend-repo-proof-exporter.json?v=264";
     const proofKpis = [
       ["Proof readiness", `${proofReadinessScore}%`, "How ready the repo day is to produce copy-ready evidence.", proofReadinessScore >= 80 ? "green" : "amber"],
       ["Evidence files", privateRepoDayOneScript.evidenceFiles.length, "Markdown files that turn screenshots and commands into review proof.", "teal"],
@@ -21016,7 +21507,7 @@
         ),
       ),
     );
-    const downloadHref = "data/github-repo-opening-packet.json?v=249";
+    const downloadHref = "data/github-repo-opening-packet.json?v=264";
     const openingKpis = [
       ["Opening readiness", `${openingReadinessScore}%`, "How ready the private GitHub repo opening packet is before the real repo exists.", openingReadinessScore >= 80 ? "green" : "amber"],
       ["Issue wave", issueCount, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
@@ -21162,7 +21653,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=249";
+    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=264";
     const issueRows = issues.map((issue, index) => [
       issue.id,
       issue.title,
@@ -21316,7 +21807,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-pr-body-builder.json?v=249";
+    const downloadHref = "data/first-pr-body-builder.json?v=264";
     const prKpis = [
       ["PR readiness", `${firstPrReadinessScore}%`, "How ready the first backend PR body is before the private repo exists.", firstPrReadinessScore >= 80 ? "green" : "amber"],
       ["Linked issues", issueRows.length, "Issue rows that can be referenced after real GitHub URLs exist.", "teal"],
@@ -21496,7 +21987,7 @@
         ),
       ),
     );
-    const downloadHref = "data/repo-evidence-folder-writer.json?v=249";
+    const downloadHref = "data/repo-evidence-folder-writer.json?v=264";
     const evidenceKpis = [
       ["Evidence folder", `${evidenceFolderScore}%`, "How ready the first backend PR evidence folder is before the private repo exists.", evidenceFolderScore >= 80 ? "green" : "amber"],
       ["Markdown files", evidenceTemplates.length, "Proof files that should exist under docs/evidence before review.", "teal"],
@@ -21656,7 +22147,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-command-runner-pack.json?v=249";
+    const downloadHref = "data/private-repo-command-runner-pack.json?v=264";
     const runnerKpis = [
       ["Runner readiness", `${commandRunnerScore}%`, "How ready the real private repo command session is to run without improvising.", commandRunnerScore >= 80 ? "green" : "amber"],
       ["Command blocks", commandBlocks.length, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
@@ -21795,7 +22286,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=249";
+    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=264";
     const reviewKpis = [
       ["Review readiness", `${reviewGateScore}%`, "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", reviewGateScore >= 80 ? "green" : "amber"],
       ["Reviewer lanes", reviewerRows.length, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
@@ -21963,7 +22454,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-artifact-status-board.json?v=249";
+    const downloadHref = "data/evidence-artifact-status-board.json?v=264";
     const boardKpis = [
       ["Artifact board", `${evidenceBoardScore}%`, "How ready the proof packet is to move from planned evidence into real captured artifacts.", evidenceBoardScore >= 80 ? "green" : "amber"],
       ["Artifact rows", artifactRows.length, "Markdown, screenshots, transcripts, signoffs, issue traces, branch proof, closeout, and block rules.", "teal"],
@@ -22187,7 +22678,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-handoff-email-pack.json?v=249";
+    const downloadHref = "data/private-repo-handoff-email-pack.json?v=264";
     const handoffKpis = [
       ["Email pack", `${handoffEmailScore}%`, "Readiness to send the private repo briefing without improvising.", handoffEmailScore >= 80 ? "green" : "amber"],
       ["Owner lanes", audienceBriefs.length, "Recipients with clear decision and evidence expectations.", "teal"],
@@ -22364,7 +22855,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=249";
+    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=264";
     const reviewCommentKpis = [
       ["Comment pack", `${firstBackendPrCommentScore}%`, "Readiness to paste controlled GitHub review language into the first backend PR.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
       ["Review actions", reviewCommentLibrary.length, "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.", "teal"],
@@ -22539,7 +23030,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=249";
+    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=264";
     const closeoutKpis = [
       ["Closeout pack", `${evidenceCloseoutScore}%`, "Readiness to close the first private backend PR evidence session without losing proof state.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
       ["Outcome lanes", closeoutOutcomeLanes.length, "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.", "teal"],
@@ -22708,7 +23199,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=249";
+    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=264";
     return {
       backendRepoDayMeetingScore,
       downloadHref,
@@ -22881,7 +23372,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-reply-capture-board.json?v=249";
+    const downloadHref = "data/private-repo-reply-capture-board.json?v=264";
     return {
       replyCaptureScore,
       downloadHref,
@@ -23031,7 +23522,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=249";
+    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=264";
     return {
       pdfExportScore,
       downloadHref,
@@ -23214,7 +23705,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=249";
+    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=264";
     return {
       meetingMinutesScore,
       downloadHref,
@@ -23395,7 +23886,7 @@
         ),
       ),
     );
-    const downloadHref = "data/reviewer-decision-email-pack.json?v=249";
+    const downloadHref = "data/reviewer-decision-email-pack.json?v=264";
     return {
       reviewerDecisionEmailScore,
       downloadHref,
@@ -23447,14 +23938,14 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v249 Simple Buyer Review Pack",
-      phase: "Simple buyer review pack",
+      version: "v264 Review Pack Send Receipt",
+      phase: "Review pack send receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "230 meaningful versions since rebrand",
-      summary: "Pilot Pitch now publishes approved renewal evidence into a simple buyer review pack with one opening, clean proof, optional next step, hidden rows, and a short downloadable handoff.",
+      pace: "245 meaningful versions since rebrand",
+      summary: "Pilot Pitch now records who received the first-week review pack, what proof was shown, what stayed private, and the next buyer decision date.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, and Simple Buyer Review Pack are live in demo form.", "teal"],
+        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, Simple Buyer Review Pack, Simple Rooms Navigator, Navigation Preference Memory, Buyer Review Send Receipt, Buyer Receipt Reply Tracker, Navigation Preference Controls, Pilot First-Week Pulse, First-Week Proof Inbox, First-Week Review Pack, Review Pack Send Receipt, Kickoff Proof Handoff Emails, Pilot Reply-to-Kickoff Bridge, Role Navigation Presets, Preset-to-Access Policy Handoff, Pilot Handoff Sheet, and Pilot Kickoff Confirmation are live in demo form.", "teal"],
         ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, workflow job matrix, branch protection, cache policy, secret policy, release artifacts, first-commit file contents, issue bodies, issue labels, milestones, proof commands, opening order, protected environments, review ownership, artifact retention, release ritual, rollback playbook, issue-to-check map, root file contents, API starter contents, package starter contents, workflow starter contents, setup scripts, repository bootstrap commands, folder creation, secret placeholders, first PR proof, label catalog, milestone catalog, board columns, issue routing rules, taxonomy gates, first commit QA lanes, artifact expectations, role signoffs, go/no-go rules, opening-day command sequence, evidence packets, no-go stops, owner checkpoints, decision memo scope cutline, approval basis, decision options, blocker register, definitions of done, risk domains, risk triggers, mitigations, residual risks, owner actions, monitoring signals, evidence files, screenshots, PR note sections, workflow check names, branch-protection proof, signoff trail, execution gates, proof logs, command order, issue waves, branch timing, closeout checks, control lanes, blocker queue, owner readiness, decision log, alpha board action queue, day-one command blocks, manual proof points, PR script, owner prompts, closeout checks, evidence templates, command transcript slots, approval notes, proof snippets, proof quality gates, repo identity facts, owner matrix, issue wave ledger, launch files, risk locks, closeout ledger, copy-ready repo-opening text, CSV-style issue rows, owner lanes, label mapping, body-file names, validation gates, paste checks, import closeout files, PR identity, PR scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback text, release checklist, copy-ready PR body, evidence folder tree, markdown templates, screenshot slots, transcript slots, issue ledger, owner signoff files, branch-proof gates, closeout notes, command runner steps, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, copy-ready commands, runner closeout, reviewer gate matrix, decision gates, evidence review map, hold queue, block rules, merge checklist, reviewer packets, PR comment templates, GitHub review action text, lane comment packets, inline note snippets, no-leak signoffs, request-changes text, merge closeout text, review send checklist, evidence closeout lanes, decision logs, owner closeout queue, no-leak rollback checks, closeout timeline, management summary lines, meeting agenda, attendee map, decision capture board, action queue, risk parking lot, evidence outputs, facilitator script, reviewer reply lanes, reply states, thread capture fields, requested-change resolver, approval readiness, merge gates, reply SLA, management reply brief, PDF page blueprint, printable sections, redaction checks, export QA, distribution matrix, archive naming, export management brief, attendance log, minutes sections, decision register, action queue, management email blocks, follow-up cadence, privacy/audit checks, copy-ready minutes, closeout reopen reasons, approver handoff, route guards, audit fields, approval memory rows, standard rules, approver coverage, decision audit chains, retention calendar rows, evidence review dates, annual review dates, retention-until dates, exception lanes, retention audit fields, closeout SLA ids, due lanes, days late, escalation levels, reviewer nudges, owner action clocks, exception queue ids, decision states, approval owner roles, rejection reasons, closeout exception audit events, proposal acceptance rows, buyer reply states, accepted scope JSON, requested-change ledger, renewal gates, closeout actions, proposal email bodies, buyer decision ids, decision-readiness score, source-version map, decision matrix, action owners, decision email bodies, evidence bundle ids, proof statuses, required file lists, owner reminder text, release notes, document folder ids, evidence audit events, pilot invoice request ids, payment simulator ids, provider events, manual approval expiry, grace windows, access lock reasons, payment states, due dates, provider invoice ids, payment URLs, workspace activation states, pilot kickoff ids, kickoff dates, admin setup states, workbook handoff tasks, invite batches, adoption checkpoints, launch locks, renewal gates, pdf render workflow ids, render statuses, pdf storage urls, print audit fields, signature completion, archive attachment states, provider event ids, webhook signature status, idempotency ledger rows, tenant payment mapping, retry counts, access effect JSON, billing audit envelopes, renewal decision ids, renewal scores, recommended paths, proof rows, sponsor actions, expansion handoff fields, archive attachment register ids, storage object keys, checksum proof, retention release state, download audit events, webhook test pack ids, raw body hashes, signature headers, expected HTTP status, actual HTTP status, replay counts, verified-by fields, expansion quote ids, quoted seats, quoted manager seats, monthly quotes, setup quotes, first invoice amounts, sponsor approval states, next invoice options, attachment download audit ids, requested-by roles, download reasons, request IP hashes, checksum verification states, access decisions, denied reasons, retention release checks, webhook runner checklist ids, test commands, fixture files, screenshot paths, release gate states, failed gate reasons, runner owner roles, runner timeboxes, operator readiness states, command proof cells, download permission matrix ids, role scopes, room grants, redaction profiles, signed URL expiry, expected HTTP decisions, download audit gates, webhook incident ids, incident lanes, severity levels, replay decisions, customer message states, root cause summaries, incident release gates, expansion approval memory ids, finance hold reasons, quote revisions, invoice decisions, rollout authorization, approval audit fields, download approval board ids, approver decisions, redaction release states, expiry review, escalation reasons, webhook notice pack ids, audience templates, privacy-safe message bodies, notice approvals, sent timestamps, customer impact states, expansion invoice acceptance ids, paid-state proof, rollout locks, access snapshots, renewal handoff dates, autopilot run ids, mission codes, record signal JSON, assigned action JSON, privacy guard states, meeting script bodies, time-machine run ids, scenario codes, future health scores, prevented-late counts, record future JSON, simulation audit events, win-lab run ids, win scores, no-bid risk, differentiator text, bid thesis text, strategy memo bodies, decision twin run ids, projected health scores, scenario names, simulated record ids, approved decision states, actual-after scores, dispatch task ids, dispatch owner roles, dispatch lock states, dispatch SLAs, evidence requests, dispatch messages, dispatch audit memory, outcome replay ids, predicted lift, actual lift, movement proof state, lift variance, replay next actions, decision inbox ids, inbox owner roles, inbox due dates, inbox reply states, inbox evidence requests, inbox message bodies, inbox closeout notes, dispatch closeout ids, proof packs, outcome states, reusable memory text, release gates, file manifests, learning memory ids, learning lanes, learning confidence, trigger rules, anti-patterns, reusable scripts, learning evidence gates, rule reopen request ids, reopen reason codes, reopen reviewer roles, reopen owner actions, reopen decisions, reopen due dates, rollback triggers, rule reopen audit events, pilot close probability ids, close forecast states, probability drivers, buyer close lanes, probability scores, close owner roles, close due labels, commercial ask text, close email bodies, buyer-safe proposal ids, included proof JSON, excluded proof JSON, hidden field lists, send states, buyer-safe email bodies, rule reopen outcome replay ids, outcome states, actual signal text, health lift, risk change, outcome next action, outcome proof, outcome audit events, pilot close outcome memory ids, actual close outcomes, forecast accuracy states, close learning signals, commercial results, close next actions, close outcome audit events, proposal send receipt ids, proposal versions, sender users, prepared timestamps, included proof maps, held proof maps, privacy checks, follow-up due dates, proposal send audit events, rule reopen outcome memory ids, memory states, confidence scores, influence surfaces, memory rules, Advisor lines, Report lines, next review dates, memory audit events, pilot outcome forecast tuner ids, forecast tuning row ids, probability deltas, tuned probabilities, forecast tune states, founder follow-up rules, forecast review dates, forecast tuner audit events, proposal follow-up tracker ids, follow-up row ids, buyer reply states, reply timestamps, follow-up due dates, reminder states, next close actions, founder message text, escalation owner roles, proposal follow-up audit events, decision memory influence switchboard ids, influence switch row ids, enabled surfaces, blocked surfaces, admin decisions, surface effects, audit gates, review dates, influence switch audit events, pilot follow-up reply memory ids, reply memory row ids, reply memory lanes, confidence scores, forecast influence flags, Advisor influence flags, commercial privacy states, decision memory text, next-cycle rules, founder reply templates, reply memory audit gates, reply memory audit events, founder close command ids, founder command row ids, command lanes, command priorities, command deadlines, owner roles, founder say-this text, buyer proof requests, stop rules, decision gates, privacy notes, founder close command audit events, memory influence audit diff ids, before/after surface states, risk deltas, health lifts, privacy effects, and memory influence diff audit events, pilot reply pattern library ids, reply pattern rows, trigger signals, buyer phrases, proof paths, reply angles, reuse rules, anti-patterns, pattern confidence, stop rules, sample replies, reply pattern audit events, founder close outcome receipt ids, receipt rows, command sent timestamps, buyer answers, sent proof, next actions, closeout results, outcome scores, renewal hints, proof-complete states, and founder close receipt audit events, memory diff release note ids, release rows, admin headlines, buyer-safe headlines, buyer-safe notes, approval gates, release scores, memory diff release audit events, pattern-to-demo coach ids, demo coach rows, buyer types, opening lines, screen sequences, proof moments, control questions, handoff moves, founder stop rules, coach scores, demo coach audit events, receipt-to-renewal signal ids, renewal signal rows, renewal lanes, renewal states, recommended renewal paths, commercial asks, success questions, renewal due labels, renewal scores, renewal signal audit events, release note approval board ids, release note approval rows, approval lanes, decision states, approver roles, publish targets, reviewer instructions, evidence requirements, buyer-safe approval states, approval scores, release approval audit events, demo coach replay score ids, demo coach replay rows, replay outcome lanes, buyer reaction proof, reply memory effects, forecast deltas, retest decisions, demo replay audit events, renewal signal replay board ids, renewal replay rows, renewal replay lanes, adoption proof, payment proof, usage proof, buyer response proof, commercial hold states, renewal forecast deltas, renewal replay audit events, buyer-safe changelog publisher ids, changelog rows, publication lanes, customer audiences, channels, publish windows, proof locks, privacy locks, rollback copy, readiness scores, changelog audit events, coach-to-close learning publisher ids, learning rows, learning lanes, founder scripts, reply-memory rules, forecast rules, next-demo adjustments, stop rules, proof requirements, privacy locks, close lifts, learning scores, and coach-to-close learning audit events are mapped.", "blue"],
         ["v231 handoff schema", 100, "Renewal-to-invoice trust publisher rows now map invoice lane, invoice state, sponsor script, invoice ask, billing option, invoice amount, finance gate, rollout gate, customer-success memory, trust score, and audit event.", "green"],
         ["v232 reaction schema", 100, "Customer changelog reaction rows now map reaction lane, sponsor reaction, commercial signal, objection, follow-up window, Pilot Pitch signal, Advisor signal, privacy gate, confidence lift, and audit event.", "teal"],
@@ -23475,6 +23966,21 @@
         ["v247 proposal router schema", 100, "Outcome-to-expansion proposal router rows now map renewal-map rows to proposal route, proposal readiness, buyer-safe proof, renewal option, expansion option, proposal next step, guardrail, privacy gate, and audit event.", "teal"],
         ["v248 renewal evidence approval gate", 100, "Renewal evidence approval gate rows now map proposal-router rows to approval lane, approval score, buyer pack section, reviewer role, evidence action, redaction rule, simplicity rule, privacy gate, and audit event.", "green"],
         ["v249 simple buyer review pack", 100, "Simple buyer review pack rows now map approved evidence to buyer-facing opening, proof, optional next, hidden state, visible sentence, hidden fields, simplicity score, privacy gate, and audit event.", "teal"],
+        ["v250 simple rooms navigator", 100, "Rooms navigation now groups available sections into Run today, Win work, Control proof, and Sell pilot before showing the full specialist-room grid.", "teal"],
+        ["v251 navigation preference memory", 100, "Room memory now stores each browser user's recent route, last work mode, resume button, and short quick links without adding another menu layer.", "green"],
+        ["v252 buyer review send receipt", 100, "Buyer review send receipts now map source pack, recipients, send state, visible row ids, hidden row ids, privacy checks, follow-up date, copy-ready note, and audit event.", "blue"],
+        ["v253 pilot handoff sheet", 100, "Pilot handoff sheets now map buyer review receipt, package, pricing, access split, kickoff date, 30-day review date, launch steps, checklist, copy-ready note, and audit event.", "green"],
+        ["v254 pilot kickoff confirmation", 100, "Pilot kickoff confirmation now maps sponsor, workbook owner, invoice owner, kickoff date, first review date, 30-day decision date, confirmation gates, runbook, copy-ready note, and audit event.", "teal"],
+        ["v255 buyer receipt reply tracker", 100, "Buyer receipt reply tracker now maps reply state, buyer interest, concern, next owner, follow-up date, response lanes, copy-ready response, and audit event.", "blue"],
+        ["v256 navigation preference controls", 100, "Rooms navigation controls now map default start room, pinned shortcuts, recent memory, visible room counts, reset action, and access-grant boundary in one admin-only panel.", "green"],
+        ["v257 pilot first-week pulse", 100, "Pilot first-week pulse now maps day-1 access, day-3 row movement, day-7 review proof, owner queue, proof checks, privacy rule, copy-ready message, and audit event.", "teal"],
+        ["v258 pilot reply-to-kickoff bridge", 100, "Pilot reply-to-kickoff bridge now maps warm buyer reply, kickoff confirmation, first-week pulse, task queue, owner handoff, bridge checks, copy-ready email, and audit event.", "green"],
+        ["v259 role navigation presets", 100, "Rooms navigation now maps operations, management, commercial, and governance presets to default start rooms, pinned shortcuts, active preset memory, and admin-only browser policy.", "teal"],
+        ["v260 first-week proof inbox", 100, "First-week proof inbox now maps login proof, row movement proof, report review proof, privacy proof, sponsor signal, proof owners, due dates, digest, email, and audit event.", "green"],
+        ["v261 first-week review pack", 100, "Pilot Pitch now maps buyer-safe proof rows, review agenda, continue/repair/extend/stop decision lanes, digest, email, and review JSON from the first-week proof inbox.", "blue"],
+        ["v262 kickoff proof handoff emails", 100, "Pilot Pitch now maps sponsor, admin, workbook owner, and finance handoff emails with owner asks, due dates, privacy rules, digest, and export JSON.", "teal"],
+        ["v263 preset-to-access policy handoff", 100, "Rooms now maps each role navigation preset to a future access template, room grants, default section, admin audit event, policy rules, digest, and export JSON.", "green"],
+        ["v264 review pack send receipt", 100, "Pilot Pitch now maps first-week review recipients, visible proof, protected private fields, buyer decision due date, audit rule, email note, and export JSON.", "blue"],
         ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, rule impact simulator, customer demo replay recorder, proposal proof composer, rule change audit trail, demo-to-pilot conversion board, proposal redaction approval gate, rule reopen review queue, pilot close probability simulator, buyer-safe proposal export, rule reopen outcome replay, pilot close outcome memory, proposal send audit receipt, rule reopen outcome memory, pilot outcome forecast tuner, proposal send follow-up tracker, decision memory influence switchboard, pilot follow-up reply memory, founder close command script, memory influence audit diff, pilot reply pattern library, founder close outcome receipt, memory diff release notes, pattern-to-demo coach, receipt-to-renewal signal, release note approval board, demo coach replay score, renewal signal replay board, buyer-safe changelog publisher, coach-to-close learning publisher, and renewal-to-invoice trust publisher are mapped, but the real private repo and real staging environment are not created yet.", "red"],
         ["Billing model", 100, "USD Starter, Team, Business, extra operator seats, manager/commercial seats, setup service pricing, checkout flow, invoice lifecycle, payment state simulator, adoption health monitor, provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, renewal decision pack, idempotency, signature verification, tenant mapping, retry rules, plan changes, access locks, audit events, pilot pitch packaging, customer feedback buying signals, ROI payback story, proposal export handoff, objection playbook proof paths, proposal acceptance tracking, buyer decision closeout, invoice request handoff, kickoff activation handoff, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "green"],
         ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker, buyer decision room, pilot invoice request pack, pilot payment state simulator, pilot kickoff control pack, pilot adoption health monitor, closeout PDF render workflow, payment provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, attachment download audit evidence pack, pilot renewal decision pack, closeout archive attachment register, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, and rule impact simulator.", "green"],
@@ -23654,12 +24160,27 @@
         ["171", "Playbook outcome renewal map", "Done", "Pilot Pitch now turns the renewal bridge into a first customer review map with renewal evidence, expansion options, success proof, repair holds, privacy gates, and audit-ready review rows."],
         ["172", "Outcome-to-expansion proposal router", "Done", "Pilot Pitch now turns renewal-map evidence into buyer-safe proposal routes, optional expansion paths, proof appendix rows, protected holds, proposal guardrails, privacy gates, and audit-ready router rows."],
         ["173", "Renewal evidence approval gate", "Done", "Pilot Pitch now adds a simple proof gate that decides release, redact, hold, or internal-only before evidence reaches a buyer-facing pack."],
-        ["174", "Simple buyer review pack", "Active", "Pilot Pitch now collapses approved evidence into a short buyer-facing review with visible proof, optional next step, hidden rows, and a clean handoff JSON."],
+        ["174", "Simple buyer review pack", "Done", "Pilot Pitch now collapses approved evidence into a short buyer-facing review with visible proof, optional next step, hidden rows, and a clean handoff JSON."],
+        ["175", "Simple rooms navigator", "Done", "Rooms now opens with work-mode cards for Run today, Win work, Control proof, and Sell pilot before the specialist-room grid."],
+        ["176", "Navigation preference memory", "Done", "Rooms now remembers the recent room path for the current browser user and presents a simple resume strip before the full map."],
+        ["177", "Buyer review send receipt", "Done", "Pilot Pitch now records exactly what was sent to the buyer, what stayed internal, who received it, and when follow-up is due."],
+        ["178", "Pilot handoff sheet", "Done", "Pilot Pitch now places package, pricing, access, kickoff, review date, and next steps into one simple pilot handoff."],
+        ["179", "Pilot kickoff confirmation", "Done", "Pilot Pitch now confirms named owners, dates, first invoice estimate, and start gates before live pilot work begins."],
+        ["180", "Buyer receipt reply tracker", "Done", "Pilot Pitch now captures buyer reply state, objections, next follow-up, and response copy after the review receipt is sent."],
+        ["181", "Navigation preference controls", "Done", "Rooms now lets admins set a default start room, pin quick rooms, reset memory, and keep navigation policy tied to Membership grants."],
+        ["182", "Pilot first-week pulse", "Done", "Pilot Pitch now turns kickoff into day-1 access, day-3 row movement, day-7 review proof, owner queue, and first-week message."],
+        ["183", "Pilot reply-to-kickoff bridge", "Done", "Pilot Pitch now converts warm buyer replies into kickoff tasks, owner handoff, bridge checks, and first-week proof."],
+        ["184", "Role navigation presets", "Done", "Rooms now lets admins apply operations, management, commercial, and governance start paths in one click."],
+        ["185", "First-week proof inbox", "Done", "Pilot Pitch now collects first-login, row movement, report review, privacy, and sponsor proof in one inbox."],
+        ["186", "First-week review pack", "Done", "Pilot Pitch now turns first-week proof into a buyer-safe review pack with agenda, decision path, digest, email, and export JSON."],
+        ["187", "Kickoff proof handoff emails", "Done", "Pilot Pitch now turns the reply-to-kickoff bridge into copy-ready sponsor, admin, workbook owner, and finance handoff emails."],
+        ["188", "Preset-to-access policy handoff", "Done", "Rooms now connects role navigation presets to future company role templates, user access grants, and audit events."],
+        ["189", "Review pack send receipt", "Active", "Pilot Pitch now records first-week review recipients, buyer-safe proof, hidden fields, and the next buyer decision date."],
       ],
       nextBuilds: [
-        ["v250", "Proposal Proof Approval Gate", "Approve which routed proposal proof can appear in buyer-safe proposal, renewal appendix, expansion option, or internal-only notes."],
-        ["v251", "Simple Buyer Review Pack", "Collapse approved renewal evidence into a clean one-page buyer review with only problem, proof, option, owner, and next step."],
-        ["v252", "Buyer Review Send Receipt", "Record the exact simple review pack sent, who received it, hidden rows, follow-up date, and customer-safe audit receipt."],
+        ["v265", "Kickoff send receipt", "Record which kickoff handoff emails were sent, which owner accepted, and what first-week proof is still waiting."],
+        ["v266", "Preset policy apply receipt", "Record which admin applied a role preset, what rooms changed, what grants were proposed, and what audit packet was created."],
+        ["v267", "Review receipt reply outcome", "Capture whether the buyer continued, requested repair, extended proof, or stopped after the first-week review receipt."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -48397,6 +48918,12 @@
     };
     const proposalDate = new Date();
     const proposalDateKey = proposalDate.toISOString().slice(0, 10).replaceAll("-", "");
+    const formatPilotDate = (date) =>
+      date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
     const proposalId = `PD-PILOT-${proposalDateKey}-${String(records.length).padStart(3, "0")}`;
     const proposalScope = [
       ["Workspace setup", "Create one company workspace with admin, operations, and management access split.", "Included in setup"],
@@ -58673,6 +59200,1299 @@
       runbook: simpleBuyerReviewPackRunbook,
       downloadHref: jsonDataUri(simpleBuyerReviewPackPacket),
     };
+    const buyerReviewSendReceiptId = `PD-BUYER-REVIEW-SEND-RECEIPT-${proposalDateKey}-${String(buyerReviewIncludedRows.length).padStart(3, "0")}`;
+    const buyerReviewSendFollowUpDate = addPilotDays(proposalDate, 3);
+    const buyerReviewSendFollowUpLabel = formatPilotDate(buyerReviewSendFollowUpDate);
+    const buyerReviewSendState = buyerReviewIncludedRows.length ? "Ready to send" : "Hold send";
+    const buyerReviewSendRecipients = [
+      {
+        role: "Buyer sponsor",
+        name: "Owner / Director",
+        email: `sponsor@${BRAND_DOMAIN}`,
+        access: "Buyer review page only",
+      },
+      {
+        role: "Operations reviewer",
+        name: "Operations Lead",
+        email: `operations@${BRAND_DOMAIN}`,
+        access: "Visible proof only",
+      },
+      {
+        role: "Internal copy",
+        name: proposalSendOwner,
+        email: `admin@${BRAND_DOMAIN}`,
+        access: "Full receipt and hidden-row log",
+      },
+    ];
+    const buyerReviewSendReceiptCards = [
+      ["Send state", buyerReviewSendState, buyerReviewIncludedRows.length ? "The buyer review has approved visible rows and can be sent." : "No buyer-safe rows are ready yet.", buyerReviewIncludedRows.length ? "green" : "amber"],
+      ["Visible rows", buyerReviewIncludedRows.length, "Rows included in the customer-facing buyer review.", "green"],
+      ["Hidden rows", buyerReviewHiddenRows.length, "Rows intentionally kept internal for proof quality, privacy, or commercial context.", buyerReviewHiddenRows.length ? "amber" : "green"],
+      ["Follow-up", buyerReviewSendFollowUpLabel, `${proposalSendOwner} owns the next buyer check-in.`, "blue"],
+    ];
+    const buyerReviewSendPrivacyChecks = [
+      ["Source pack locked", simpleBuyerReviewPackId, "The receipt points back to the exact simple buyer review pack.", "green"],
+      ["Buyer-visible rows listed", `${buyerReviewIncludedRows.length} rows`, "Only released or redacted rows are shown to the buyer.", buyerReviewIncludedRows.length ? "green" : "amber"],
+      ["Internal rows documented", `${buyerReviewHiddenRows.length} rows`, "Hidden rows remain visible to admin and commercial reviewers only.", buyerReviewHiddenRows.length ? "amber" : "green"],
+      ["Commercial data shielded", "Protected", "Values, negotiation proof, and internal approval reasons stay outside the buyer page.", "blue"],
+      ["Follow-up owner recorded", proposalSendOwner, `Next buyer check-in due ${buyerReviewSendFollowUpLabel}.`, "teal"],
+    ];
+    const buyerReviewSendDigest = [
+      `Buyer Review Send Receipt ${buyerReviewSendReceiptId}`,
+      `Source pack: ${simpleBuyerReviewPackId}`,
+      `Send state: ${buyerReviewSendState}`,
+      `Prepared by: ${proposalSendOwner} on ${formatPilotDate(proposalDate)}`,
+      `Recipients: ${buyerReviewSendRecipients.map((recipient) => `${recipient.name} (${recipient.role})`).join("; ")}`,
+      `Buyer sees ${buyerReviewIncludedRows.length} rows: ${buyerReviewIncludedRows.map((row) => row.simpleBuyerReviewPackRowId).join(", ") || "none"}.`,
+      `Internal-only rows: ${buyerReviewHiddenRows.map((row) => row.simpleBuyerReviewPackRowId).join(", ") || "none"}.`,
+      `Follow-up due: ${buyerReviewSendFollowUpLabel}.`,
+    ].join("\n");
+    const buyerReviewSendEmail = [
+      `Subject: Buyer review sent - ${buyerReviewSendState}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `Receipt ${buyerReviewSendReceiptId} is ready for the simple buyer review pack.`,
+      `Send state: ${buyerReviewSendState}.`,
+      `Buyer-visible rows: ${buyerReviewIncludedRows.length}. Internal-only rows: ${buyerReviewHiddenRows.length}.`,
+      `Recipients: ${buyerReviewSendRecipients.map((recipient) => `${recipient.name} / ${recipient.access}`).join("; ")}.`,
+      `Follow-up due: ${buyerReviewSendFollowUpLabel}.`,
+      "",
+      "Keep this receipt with the pilot handoff so everyone knows exactly what was shared and what remained internal.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const buyerReviewSendReceiptScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          simpleBuyerReviewPackScore * 0.42 +
+            Math.min(100, buyerReviewIncludedRows.length * 14) * 0.18 +
+            Math.min(100, buyerReviewSendRecipients.length * 28) * 0.16 +
+            12 +
+            (buyerReviewHiddenRows.length >= 0 ? 12 : 0),
+        ),
+      ),
+    );
+    const buyerReviewSendReceiptPacket = {
+      schemaVersion: "pursuitdesk.buyerReviewSendReceipt.v252",
+      generatedOn: proposalDate.toISOString(),
+      buyerReviewSendReceiptId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        simpleBuyerReviewPack: simpleBuyerReviewPackPacket.schemaVersion,
+      },
+      sourceIds: {
+        simpleBuyerReviewPackId,
+      },
+      score: buyerReviewSendReceiptScore,
+      sendState: buyerReviewSendState,
+      sentBy: proposalSendOwner,
+      sentAt: proposalDate.toISOString(),
+      followUpDue: buyerReviewSendFollowUpDate.toISOString(),
+      recipients: buyerReviewSendRecipients,
+      cards: buyerReviewSendReceiptCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      privacyChecks: buyerReviewSendPrivacyChecks.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      visibleRows: buyerReviewIncludedRows.map((row) => ({
+        simpleBuyerReviewPackRowId: row.simpleBuyerReviewPackRowId,
+        buyer: row.buyer,
+        headline: row.headline,
+        buyerSentence: row.buyerSentence,
+        proofLine: row.proofLine,
+        nextStep: row.nextStep,
+        ownerRole: row.ownerRole,
+      })),
+      hiddenRows: buyerReviewHiddenRows.map((row) => ({
+        simpleBuyerReviewPackRowId: row.simpleBuyerReviewPackRowId,
+        buyer: row.buyer,
+        hiddenFields: row.hiddenFields,
+        privacyGate: row.privacyGate,
+      })),
+      digest: buyerReviewSendDigest,
+      email: buyerReviewSendEmail,
+      nextBackendFields: [
+        "buyer_review_send_receipt_id",
+        "simple_buyer_review_pack_id",
+        "buyer_review_send_state",
+        "recipient_access_json",
+        "visible_buyer_review_row_ids",
+        "hidden_buyer_review_row_ids",
+        "privacy_check_json",
+        "follow_up_due_at",
+        "sent_by_user_id",
+        "buyer_review_send_audit_event",
+      ],
+    };
+    const buyerReviewSendReceipt = {
+      buyerReviewSendReceiptId,
+      score: buyerReviewSendReceiptScore,
+      sendState: buyerReviewSendState,
+      sentBy: proposalSendOwner,
+      sentAt: formatDate(proposalDate),
+      followUpLabel: buyerReviewSendFollowUpLabel,
+      recipients: buyerReviewSendRecipients,
+      cards: buyerReviewSendReceiptCards,
+      privacyChecks: buyerReviewSendPrivacyChecks,
+      visibleRows: buyerReviewIncludedRows,
+      hiddenRows: buyerReviewHiddenRows,
+      digest: buyerReviewSendDigest,
+      email: buyerReviewSendEmail,
+      downloadHref: jsonDataUri(buyerReviewSendReceiptPacket),
+    };
+    const buyerReceiptReplyTrackerId = `PD-BUYER-REPLY-TRACKER-${proposalDateKey}-${String(buyerReviewSendRecipients.length).padStart(2, "0")}`;
+    const buyerReplyDate = addPilotDays(proposalDate, 2);
+    const buyerReplyDateLabel = formatPilotDate(buyerReplyDate);
+    const buyerReplyNextFollowUpDate = addPilotDays(proposalDate, 4);
+    const buyerReplyNextFollowUpLabel = formatPilotDate(buyerReplyNextFollowUpDate);
+    const buyerReplyKickoffTarget = formatPilotDate(addPilotDays(proposalDate, 5));
+    const buyerReplyReviewTarget = formatPilotDate(addPilotDays(proposalDate, 35));
+    const buyerReplyState = buyerReviewSendState === "Ready to send" ? "Warm reply" : "Waiting for send";
+    const buyerReplyInterest = buyerReviewIncludedRows.length >= 3 ? "High" : "Medium";
+    const buyerReplyConcern = buyerReviewHiddenRows.length ? "Commercial privacy and setup clarity" : "Pilot date confirmation";
+    const buyerReplyNextAction = buyerReviewSendState === "Ready to send" ? "Confirm kickoff call and workbook owner" : "Send buyer review first";
+    const buyerReplyRows = [
+      {
+        lane: "Sponsor signal",
+        state: buyerReplyState,
+        owner: buyerReviewSendRecipients[0].name,
+        message: buyerReviewSendState === "Ready to send" ? "Looks useful. Can we see who owns the workbook and how quickly the first pilot can start?" : "No sponsor reply until the buyer review is sent.",
+        next: buyerReplyNextAction,
+        tone: buyerReviewSendState === "Ready to send" ? "green" : "amber",
+      },
+      {
+        lane: "Operations question",
+        state: "Needs answer",
+        owner: buyerReviewSendRecipients[1].name,
+        message: "Will daily users see values, pricing, or negotiation notes?",
+        next: "Reply with operational privacy line and access split.",
+        tone: "blue",
+      },
+      {
+        lane: "Commercial concern",
+        state: buyerReplyConcern,
+        owner: proposalSendOwner,
+        message: "Keep commercial fields out of tracker rooms and show them only in management areas.",
+        next: "Send privacy-safe response and link to pilot kickoff confirmation.",
+        tone: "amber",
+      },
+    ];
+    const buyerReplyCards = [
+      ["Reply state", buyerReplyState, buyerReviewSendState === "Ready to send" ? `First buyer reply logged on ${buyerReplyDateLabel}.` : "Send receipt is not buyer-ready yet.", buyerReviewSendState === "Ready to send" ? "green" : "amber"],
+      ["Interest", buyerReplyInterest, `${buyerReviewIncludedRows.length} buyer-visible rows support the pilot story.`, buyerReplyInterest === "High" ? "green" : "blue"],
+      ["Concern", buyerReplyConcern, "Keep the reply focused on privacy, setup, and next step.", "amber"],
+      ["Next follow-up", buyerReplyNextFollowUpLabel, `${proposalSendOwner} owns the next buyer response.`, "blue"],
+    ];
+    const buyerReplyResponsePlan = [
+      ["Acknowledge", "Thank the buyer and confirm the problem they reacted to.", "green"],
+      ["Answer privacy", "State clearly that operational users do not need commercial values to update trackers.", "blue"],
+      ["Name owners", "Confirm sponsor, workbook owner, invoice owner, and admin before kickoff.", "teal"],
+      ["Offer next step", `Propose a ${buyerReplyKickoffTarget} kickoff and ${buyerReplyReviewTarget} review checkpoint.`, "green"],
+    ];
+    const buyerReplyScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          buyerReviewSendReceiptScore * 0.34 +
+            Math.min(100, buyerReviewIncludedRows.length * 13) * 0.18 +
+            simpleBuyerReviewPackScore * 0.18 +
+            Math.min(100, buyerReplyRows.length * 30) * 0.16 +
+            14,
+        ),
+      ),
+    );
+    const buyerReplyDigest = [
+      `Buyer Receipt Reply Tracker ${buyerReceiptReplyTrackerId}`,
+      `Source receipt: ${buyerReviewSendReceiptId}`,
+      `Reply state: ${buyerReplyState}`,
+      `Reply date: ${buyerReplyDateLabel}`,
+      `Interest: ${buyerReplyInterest}`,
+      `Concern: ${buyerReplyConcern}`,
+      `Next action: ${buyerReplyNextAction}`,
+      `Next follow-up: ${buyerReplyNextFollowUpLabel}`,
+      `Owner: ${proposalSendOwner}`,
+      `Response lanes: ${buyerReplyRows.map((row) => `${row.lane} / ${row.state}`).join("; ")}`,
+    ].join("\n");
+    const buyerReplyEmail = [
+      `Subject: Re: PursuitDesk pilot review - next step`,
+      "",
+      "Hi Owner / Director,",
+      "",
+      "Thank you for the quick review. The main point is simple: your daily tender and project users can keep the tracker moving without seeing commercial values, pricing, or negotiation notes.",
+      `We can start with one source workbook, a named workbook owner, and a controlled pilot kickoff target of ${buyerReplyKickoffTarget}.`,
+      `The first review can be held on ${buyerReplyReviewTarget}, where we decide whether to convert, revise, extend proof, or stop.`,
+      "",
+      "Suggested next step: confirm the sponsor, workbook owner, invoice contact, and kickoff call time.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const buyerReceiptReplyTrackerPacket = {
+      schemaVersion: "pursuitdesk.buyerReceiptReplyTracker.v255",
+      generatedOn: proposalDate.toISOString(),
+      buyerReceiptReplyTrackerId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        buyerReviewSendReceipt: buyerReviewSendReceiptPacket.schemaVersion,
+        pilotHandoffSheet: "pursuitdesk.pilotHandoffSheet.v253",
+      },
+      sourceIds: {
+        buyerReviewSendReceiptId,
+        pilotHandoffSheetId: `PD-PILOT-HANDOFF-SHEET-${proposalDateKey}-${String(openRecords.length).padStart(3, "0")}`,
+      },
+      score: buyerReplyScore,
+      replyState: buyerReplyState,
+      replyDate: buyerReplyDate.toISOString(),
+      interest: buyerReplyInterest,
+      concern: buyerReplyConcern,
+      nextAction: buyerReplyNextAction,
+      nextFollowUpDue: buyerReplyNextFollowUpDate.toISOString(),
+      responseRows: buyerReplyRows,
+      responsePlan: buyerReplyResponsePlan.map(([label, detail, tone]) => ({ label, detail, tone })),
+      cards: buyerReplyCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      digest: buyerReplyDigest,
+      email: buyerReplyEmail,
+      nextBackendFields: [
+        "buyer_receipt_reply_tracker_id",
+        "buyer_review_send_receipt_id",
+        "buyer_reply_state",
+        "buyer_reply_date",
+        "buyer_interest_level",
+        "buyer_concern_text",
+        "buyer_reply_next_action",
+        "buyer_reply_follow_up_due_at",
+        "buyer_reply_response_json",
+        "buyer_reply_audit_event",
+      ],
+    };
+    const buyerReceiptReplyTracker = {
+      buyerReceiptReplyTrackerId,
+      score: buyerReplyScore,
+      replyState: buyerReplyState,
+      replyDate: buyerReplyDateLabel,
+      interest: buyerReplyInterest,
+      concern: buyerReplyConcern,
+      nextAction: buyerReplyNextAction,
+      nextFollowUp: buyerReplyNextFollowUpLabel,
+      cards: buyerReplyCards,
+      rows: buyerReplyRows,
+      responsePlan: buyerReplyResponsePlan,
+      digest: buyerReplyDigest,
+      email: buyerReplyEmail,
+      downloadHref: jsonDataUri(buyerReceiptReplyTrackerPacket),
+    };
+    const pilotHandoffSheetId = `PD-PILOT-HANDOFF-SHEET-${proposalDateKey}-${String(openRecords.length).padStart(3, "0")}`;
+    const pilotHandoffStartDate = formatPilotDate(addPilotDays(proposalDate, 5));
+    const pilotHandoffReviewDate = formatPilotDate(addPilotDays(proposalDate, 35));
+    const pilotHandoffUsers = (state.data.users || [])
+      .filter((user) => user.companyId === company.id)
+      .map((user) => ({
+        name: user.name,
+        role: user.role,
+        email: user.email,
+        access: accessLabelForKeys(normalizeUserAccess(user)),
+      }));
+    const pilotHandoffScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          buyerReviewSendReceiptScore * 0.28 +
+            simpleBuyerReviewPackScore * 0.2 +
+            roiPack.confidence * 0.2 +
+            feedbackScore * 0.16 +
+            Math.min(100, pilotHandoffUsers.length * 22) * 0.1 +
+            6,
+        ),
+      ),
+    );
+    const pilotHandoffCards = [
+      ["Pilot package", membership.label, `${formatBilling(monthlyPlanCost, company)}/month for ${membership.seats} users`, "green"],
+      ["First invoice", formatBilling(firstMonthCost, company), `${formatBilling(setupEstimate, company)} setup/import plus first month`, "amber"],
+      ["Buyer review", buyerReviewSendState, `${buyerReviewIncludedRows.length} visible rows / ${buyerReviewHiddenRows.length} internal rows`, "blue"],
+      ["Decision date", pilotHandoffReviewDate, "30-day review window for convert, revise, or stop.", "teal"],
+    ];
+    const pilotHandoffSteps = [
+      ["1", "Confirm sponsor", "Name the buyer owner, invoice contact, and decision date before importing live data.", "green"],
+      ["2", "Lock workbook", "Use one source workbook and keep commercial fields out of frontline tracker rooms.", "blue"],
+      ["3", "Invite users", `${pilotHandoffUsers.length} demo users are mapped now; admin can adjust access before kickoff.`, "teal"],
+      ["4", "Run weekly review", "Use Command, Advisor, Tenders, Projects, Reports, and reminders as the first operating rhythm.", "amber"],
+      ["5", "Close loop", "At day 30, decide convert, revise, extend proof, or stop with notes captured in the handoff.", "green"],
+    ];
+    const pilotHandoffChecklist = [
+      ["Buyer page sent", buyerReviewSendState, "Buyer-facing review is traceable to the v252 receipt.", buyerReviewSendState === "Ready to send" ? "green" : "amber"],
+      ["Commercial privacy", "Protected", "Operational users see tracker fields; pricing and hidden proof stay in management rooms.", "blue"],
+      ["Access split", `${pilotHandoffUsers.length} users`, "Admin, editor, and viewer roles are ready for pilot review.", pilotHandoffUsers.length >= 3 ? "green" : "amber"],
+      ["ROI story", `${roiPack.roiMultiple}x`, `${formatBilling(monthlyBenefit, company)} monthly value case against ${formatBilling(monthlyPlanCost, company)} plan.`, roiPack.confidence >= 75 ? "green" : "amber"],
+    ];
+    const pilotHandoffDigest = [
+      `Pilot Handoff Sheet ${pilotHandoffSheetId}`,
+      `Company: ${company.name}`,
+      `Package: ${membership.label} / ${membership.seats} users / ${formatBilling(monthlyPlanCost, company)} monthly`,
+      `First invoice estimate: ${formatBilling(firstMonthCost, company)} including ${formatBilling(setupEstimate, company)} setup/import`,
+      `Buyer review receipt: ${buyerReviewSendReceiptId} / ${buyerReviewSendState}`,
+      `Privacy: ${buyerReviewIncludedRows.length} rows buyer-visible; ${buyerReviewHiddenRows.length} rows internal-only`,
+      `Kickoff target: ${pilotHandoffStartDate}`,
+      `30-day review: ${pilotHandoffReviewDate}`,
+      `Users: ${pilotHandoffUsers.map((user) => `${user.name} (${user.role})`).join("; ")}`,
+    ].join("\n");
+    const pilotHandoffEmail = [
+      `Subject: PursuitDesk pilot handoff - ${company.name}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The pilot handoff is ready for ${company.name}.`,
+      `Recommended package: ${membership.label} at ${formatBilling(monthlyPlanCost, company)}/month for ${membership.seats} users.`,
+      `First invoice estimate: ${formatBilling(firstMonthCost, company)} including setup/import.`,
+      `Buyer review receipt: ${buyerReviewSendReceiptId} with ${buyerReviewIncludedRows.length} visible rows and ${buyerReviewHiddenRows.length} internal rows.`,
+      `Kickoff target: ${pilotHandoffStartDate}; 30-day review: ${pilotHandoffReviewDate}.`,
+      "",
+      "Next step: confirm sponsor, workbook owner, pilot users, invoice contact, and kickoff date.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const pilotHandoffSheetPacket = {
+      schemaVersion: "pursuitdesk.pilotHandoffSheet.v253",
+      generatedOn: proposalDate.toISOString(),
+      pilotHandoffSheetId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        simpleBuyerReviewPack: simpleBuyerReviewPackPacket.schemaVersion,
+        buyerReviewSendReceipt: buyerReviewSendReceiptPacket.schemaVersion,
+      },
+      sourceIds: {
+        simpleBuyerReviewPackId,
+        buyerReviewSendReceiptId,
+      },
+      score: pilotHandoffScore,
+      package: {
+        label: membership.label,
+        seats: membership.seats,
+        monthlyPlanCost,
+        setupEstimate,
+        firstMonthCost,
+      },
+      dates: {
+        kickoffTarget: addPilotDays(proposalDate, 5).toISOString(),
+        reviewTarget: addPilotDays(proposalDate, 35).toISOString(),
+      },
+      cards: pilotHandoffCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      steps: pilotHandoffSteps.map(([step, title, detail, tone]) => ({ step, title, detail, tone })),
+      checklist: pilotHandoffChecklist.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      users: pilotHandoffUsers,
+      digest: pilotHandoffDigest,
+      email: pilotHandoffEmail,
+      nextBackendFields: [
+        "pilot_handoff_sheet_id",
+        "buyer_review_send_receipt_id",
+        "pilot_package_label",
+        "pilot_monthly_price",
+        "pilot_setup_estimate",
+        "pilot_kickoff_target",
+        "pilot_review_target",
+        "pilot_user_access_json",
+        "pilot_handoff_status",
+        "pilot_handoff_audit_event",
+      ],
+    };
+    const pilotHandoffSheet = {
+      pilotHandoffSheetId,
+      score: pilotHandoffScore,
+      packageLabel: membership.label,
+      monthlyPlanCost: formatBilling(monthlyPlanCost, company),
+      setupEstimate: formatBilling(setupEstimate, company),
+      firstMonthCost: formatBilling(firstMonthCost, company),
+      kickoffTarget: pilotHandoffStartDate,
+      reviewTarget: pilotHandoffReviewDate,
+      cards: pilotHandoffCards,
+      steps: pilotHandoffSteps,
+      checklist: pilotHandoffChecklist,
+      users: pilotHandoffUsers,
+      digest: pilotHandoffDigest,
+      email: pilotHandoffEmail,
+      downloadHref: jsonDataUri(pilotHandoffSheetPacket),
+    };
+    const pilotKickoffConfirmationId = `PD-PILOT-KICKOFF-CONFIRM-${proposalDateKey}-${String(pilotHandoffUsers.length).padStart(2, "0")}`;
+    const pilotKickoffConfirmationItems = [
+      ["Sponsor confirmed", "Owner / Director", "Buyer-side decision owner for the first 30 days.", "green"],
+      ["Workbook owner", "Commercial Coordinator", "Responsible for source workbook cleanup and import questions.", "blue"],
+      ["Invoice owner", "Finance Contact", `${pilotHandoffSheet.firstMonthCost} first invoice estimate is ready to confirm.`, "amber"],
+      ["Workspace admin", proposalSendOwner, "Owns users, access, import handoff, and first weekly review.", "teal"],
+      ["Kickoff date", pilotHandoffSheet.kickoffTarget, "Target launch meeting for pilot users.", "green"],
+      ["First review", pilotHandoffSheet.reviewTarget, "30-day convert, revise, extend, or stop decision.", "blue"],
+    ];
+    const pilotKickoffMissing = pilotKickoffConfirmationItems.filter(([, value]) => !value || value === "-").length;
+    const pilotKickoffStatus = pilotKickoffMissing ? "Hold for confirmation" : "Ready for kickoff";
+    const pilotKickoffConfirmationScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          pilotHandoffScore * 0.42 +
+            Math.max(0, 100 - pilotKickoffMissing * 18) * 0.28 +
+            Math.min(100, pilotHandoffUsers.length * 22) * 0.14 +
+            buyerReviewSendReceiptScore * 0.16,
+        ),
+      ),
+    );
+    const pilotKickoffConfirmationCards = [
+      ["Kickoff state", pilotKickoffStatus, pilotKickoffMissing ? `${pilotKickoffMissing} confirmation item needs owner input.` : "Named owners and dates are ready for the pilot start.", pilotKickoffMissing ? "amber" : "green"],
+      ["Users mapped", pilotHandoffUsers.length, "Pilot users have access labels ready for admin review.", pilotHandoffUsers.length >= 3 ? "green" : "amber"],
+      ["First invoice", pilotHandoffSheet.firstMonthCost, "Subscription plus setup/import estimate.", "blue"],
+      ["Review window", pilotHandoffSheet.reviewTarget, "Decision point stays visible from day one.", "teal"],
+    ];
+    const pilotKickoffConfirmationGates = [
+      ["No commercial leak", "Pass", "Tenders and Projects stay operational; pricing stays in Pilot Pitch and Membership.", "green"],
+      ["Buyer review trace", "Pass", `Linked to ${buyerReviewSendReceiptId}.`, "blue"],
+      ["Access owner", proposalSendOwner, "Admin can adjust section access before kickoff.", "teal"],
+      ["Decision rule", "Pass", "Day-30 outcome must be convert, revise, extend proof, or stop.", "green"],
+    ];
+    const pilotKickoffConfirmationDigest = [
+      `Pilot Kickoff Confirmation ${pilotKickoffConfirmationId}`,
+      `Status: ${pilotKickoffStatus}`,
+      `Handoff: ${pilotHandoffSheetId}`,
+      `Sponsor: Owner / Director`,
+      `Workbook owner: Commercial Coordinator`,
+      `Invoice owner: Finance Contact`,
+      `Workspace admin: ${proposalSendOwner}`,
+      `Kickoff date: ${pilotHandoffSheet.kickoffTarget}`,
+      `First review: ${pilotHandoffSheet.reviewTarget}`,
+      `First invoice estimate: ${pilotHandoffSheet.firstMonthCost}`,
+      `Users: ${pilotHandoffUsers.map((user) => `${user.name} (${user.role})`).join("; ")}`,
+    ].join("\n");
+    const pilotKickoffConfirmationEmail = [
+      `Subject: PursuitDesk pilot kickoff confirmation - ${pilotKickoffStatus}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The pilot kickoff confirmation is ${pilotKickoffStatus.toLowerCase()}.`,
+      `Sponsor: Owner / Director. Workbook owner: Commercial Coordinator. Invoice owner: Finance Contact.`,
+      `Workspace admin: ${proposalSendOwner}. Kickoff target: ${pilotHandoffSheet.kickoffTarget}.`,
+      `First 30-day review: ${pilotHandoffSheet.reviewTarget}. First invoice estimate: ${pilotHandoffSheet.firstMonthCost}.`,
+      "",
+      "Next step: confirm these names with the buyer, then start the kickoff meeting with one workbook, one access review, and one weekly review rhythm.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const pilotKickoffConfirmationPacket = {
+      schemaVersion: "pursuitdesk.pilotKickoffConfirmation.v254",
+      generatedOn: proposalDate.toISOString(),
+      pilotKickoffConfirmationId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        pilotHandoffSheet: pilotHandoffSheetPacket.schemaVersion,
+        buyerReviewSendReceipt: buyerReviewSendReceiptPacket.schemaVersion,
+      },
+      sourceIds: {
+        pilotHandoffSheetId,
+        buyerReviewSendReceiptId,
+      },
+      score: pilotKickoffConfirmationScore,
+      status: pilotKickoffStatus,
+      confirmations: pilotKickoffConfirmationItems.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      gates: pilotKickoffConfirmationGates.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      users: pilotHandoffUsers,
+      digest: pilotKickoffConfirmationDigest,
+      email: pilotKickoffConfirmationEmail,
+      nextBackendFields: [
+        "pilot_kickoff_confirmation_id",
+        "pilot_handoff_sheet_id",
+        "sponsor_name",
+        "workbook_owner_name",
+        "invoice_owner_name",
+        "workspace_admin_user_id",
+        "kickoff_target_date",
+        "first_review_date",
+        "kickoff_status",
+        "kickoff_confirmation_audit_event",
+      ],
+    };
+    const pilotKickoffConfirmation = {
+      pilotKickoffConfirmationId,
+      score: pilotKickoffConfirmationScore,
+      status: pilotKickoffStatus,
+      confirmations: pilotKickoffConfirmationItems,
+      cards: pilotKickoffConfirmationCards,
+      gates: pilotKickoffConfirmationGates,
+      digest: pilotKickoffConfirmationDigest,
+      email: pilotKickoffConfirmationEmail,
+      downloadHref: jsonDataUri(pilotKickoffConfirmationPacket),
+    };
+    const pilotFirstWeekPulseId = `PD-PILOT-FIRST-WEEK-PULSE-${proposalDateKey}-${String(pilotHandoffUsers.length).padStart(2, "0")}`;
+    const firstWeekDay1Date = addPilotDays(proposalDate, 6);
+    const firstWeekDay3Date = addPilotDays(proposalDate, 8);
+    const firstWeekDay7Date = addPilotDays(proposalDate, 12);
+    const firstWeekDay1Label = formatPilotDate(firstWeekDay1Date);
+    const firstWeekDay3Label = formatPilotDate(firstWeekDay3Date);
+    const firstWeekDay7Label = formatPilotDate(firstWeekDay7Date);
+    const firstWeekCoreUsers = Math.max(1, pilotHandoffUsers.filter((user) => user.role !== "Viewer").length);
+    const firstWeekMovementTarget = Math.min(12, Math.max(5, Math.round(openRecords.length * 0.08)));
+    const firstWeekPulseState = pilotKickoffStatus === "Ready for kickoff" ? "Ready for first week" : "Hold until kickoff clears";
+    const firstWeekPulseCheckpoints = [
+      {
+        day: "Day 1",
+        date: firstWeekDay1Label,
+        title: "Access and first login",
+        owner: proposalSendOwner,
+        state: pilotKickoffStatus === "Ready for kickoff" ? "Ready" : "Waiting",
+        metric: `${pilotHandoffUsers.length} users`,
+        detail: "Confirm every pilot user can open Command, Tenders, Projects, Reports, and their granted rooms.",
+        tone: pilotKickoffStatus === "Ready for kickoff" ? "green" : "amber",
+      },
+      {
+        day: "Day 3",
+        date: firstWeekDay3Label,
+        title: "Workbook movement",
+        owner: "Commercial Coordinator",
+        state: "Needs proof",
+        metric: `${firstWeekMovementTarget} rows`,
+        detail: "Move a small batch of live rows, correct missing owners/dates, and record what changed from the source workbook.",
+        tone: "blue",
+      },
+      {
+        day: "Day 7",
+        date: firstWeekDay7Label,
+        title: "First weekly review",
+        owner: proposalSendOwner,
+        state: "Schedule",
+        metric: "1 report",
+        detail: "Run one management review using Command, Advisor, Reports, and the first evidence of user adoption.",
+        tone: "teal",
+      },
+    ];
+    const firstWeekOwnerQueue = [
+      ["Workspace admin", proposalSendOwner, "Open access, confirm section grants, and pin the default rooms for the pilot browser.", firstWeekDay1Label, "green"],
+      ["Workbook owner", "Commercial Coordinator", `Clean and move ${firstWeekMovementTarget} records without exposing commercial values to tracker users.`, firstWeekDay3Label, "blue"],
+      ["Buyer sponsor", "Owner / Director", "Attend the first weekly review and decide what proof matters before day 30.", firstWeekDay7Label, "teal"],
+      ["Finance contact", "Finance Contact", "Keep invoice, setup, and commercial questions in Pilot Pitch and Membership only.", firstWeekDay7Label, "amber"],
+    ];
+    const firstWeekProofChecks = [
+      ["Login proof", `${firstWeekCoreUsers}/${pilotHandoffUsers.length} core users`, "Capture first-use proof before asking for more features.", firstWeekCoreUsers >= 2 ? "green" : "amber"],
+      ["Tracker proof", `${firstWeekMovementTarget} rows`, "Show source workbook rows moving into controlled tracker fields.", "blue"],
+      ["Report proof", "One weekly pack", "Export or review one management-ready summary before day 7 ends.", "teal"],
+      ["Privacy proof", "Commercial shielded", "Values, invoice details, and negotiation proof stay out of frontline tracker rooms.", "green"],
+    ];
+    const firstWeekPulseScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          pilotKickoffConfirmationScore * 0.35 +
+            pilotHandoffScore * 0.18 +
+            buyerReplyScore * 0.15 +
+            Math.min(100, pilotHandoffUsers.length * 20) * 0.12 +
+            Math.min(100, firstWeekMovementTarget * 7) * 0.1 +
+            10,
+        ),
+      ),
+    );
+    const firstWeekPulseCards = [
+      ["Pulse state", firstWeekPulseState, pilotKickoffStatus === "Ready for kickoff" ? "Kickoff has enough owners and gates to start the first-week rhythm." : "Clear kickoff confirmation before opening the first-week pulse.", pilotKickoffStatus === "Ready for kickoff" ? "green" : "amber"],
+      ["Day-1 access", firstWeekDay1Label, `${pilotHandoffUsers.length} users should prove first login and room access.`, "green"],
+      ["Day-3 movement", firstWeekDay3Label, `${firstWeekMovementTarget} live rows should move or be corrected.`, "blue"],
+      ["Day-7 review", firstWeekDay7Label, "One weekly review should turn usage into management proof.", "teal"],
+    ];
+    const firstWeekPulseDigest = [
+      `Pilot First-Week Pulse ${pilotFirstWeekPulseId}`,
+      `Source kickoff: ${pilotKickoffConfirmationId} / ${pilotKickoffStatus}`,
+      `Pulse state: ${firstWeekPulseState}`,
+      `Day 1: ${firstWeekDay1Label} / access and first login / owner ${proposalSendOwner}`,
+      `Day 3: ${firstWeekDay3Label} / ${firstWeekMovementTarget} row movement target / owner Commercial Coordinator`,
+      `Day 7: ${firstWeekDay7Label} / first weekly review / owner ${proposalSendOwner}`,
+      `Proof checks: ${firstWeekProofChecks.map(([label, value]) => `${label} ${value}`).join("; ")}`,
+      `Privacy rule: commercial proof stays in Pilot Pitch and Membership; tracker users see operational fields only.`,
+    ].join("\n");
+    const firstWeekPulseEmail = [
+      `Subject: PursuitDesk pilot first-week pulse - ${firstWeekPulseState}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The kickoff is ready to become real usage. Use this first-week pulse to avoid a quiet pilot.`,
+      `Day 1 (${firstWeekDay1Label}): confirm first login and room access for ${pilotHandoffUsers.length} users.`,
+      `Day 3 (${firstWeekDay3Label}): move or correct ${firstWeekMovementTarget} live rows from the source workbook.`,
+      `Day 7 (${firstWeekDay7Label}): run the first weekly review and capture one management-ready report proof.`,
+      "",
+      "Keep commercial questions in Pilot Pitch and Membership. Keep Tenders and Projects simple for the operating team.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const pilotFirstWeekPulsePacket = {
+      schemaVersion: "pursuitdesk.pilotFirstWeekPulse.v257",
+      generatedOn: proposalDate.toISOString(),
+      pilotFirstWeekPulseId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        pilotKickoffConfirmation: pilotKickoffConfirmationPacket.schemaVersion,
+        pilotHandoffSheet: pilotHandoffSheetPacket.schemaVersion,
+        buyerReceiptReplyTracker: buyerReceiptReplyTrackerPacket.schemaVersion,
+      },
+      sourceIds: {
+        pilotKickoffConfirmationId,
+        pilotHandoffSheetId,
+        buyerReceiptReplyTrackerId,
+      },
+      score: firstWeekPulseScore,
+      pulseState: firstWeekPulseState,
+      checkpoints: firstWeekPulseCheckpoints,
+      ownerQueue: firstWeekOwnerQueue.map(([role, owner, action, due, tone]) => ({ role, owner, action, due, tone })),
+      proofChecks: firstWeekProofChecks.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      cards: firstWeekPulseCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      digest: firstWeekPulseDigest,
+      email: firstWeekPulseEmail,
+      nextBackendFields: [
+        "pilot_first_week_pulse_id",
+        "pilot_kickoff_confirmation_id",
+        "day_1_access_due_at",
+        "day_3_movement_due_at",
+        "day_7_review_due_at",
+        "first_week_owner_queue_json",
+        "first_week_proof_check_json",
+        "commercial_privacy_guard_state",
+        "first_week_pulse_state",
+        "first_week_pulse_audit_event",
+      ],
+    };
+    const pilotFirstWeekPulse = {
+      pilotFirstWeekPulseId,
+      score: firstWeekPulseScore,
+      pulseState: firstWeekPulseState,
+      checkpoints: firstWeekPulseCheckpoints,
+      ownerQueue: firstWeekOwnerQueue,
+      proofChecks: firstWeekProofChecks,
+      cards: firstWeekPulseCards,
+      digest: firstWeekPulseDigest,
+      email: firstWeekPulseEmail,
+      downloadHref: jsonDataUri(pilotFirstWeekPulsePacket),
+    };
+    const pilotReplyKickoffBridgeId = `PD-REPLY-KICKOFF-BRIDGE-${proposalDateKey}-${String(pilotHandoffUsers.length).padStart(2, "0")}`;
+    const replyKickoffBridgeState =
+      buyerReplyState === "Warm reply" && pilotKickoffStatus === "Ready for kickoff" ? "Ready to bridge" : "Needs confirmation";
+    const replyKickoffBridgeTasks = [
+      ["01", "Confirm sponsor answer", "Owner / Director", buyerReplyNextFollowUpLabel, buyerReplyNextAction, "green"],
+      ["02", "Lock kickoff meeting", proposalSendOwner, pilotHandoffSheet.kickoffTarget, `Confirm kickoff agenda, access split, and ${pilotHandoffUsers.length} pilot users.`, "teal"],
+      ["03", "Prepare source workbook", "Commercial Coordinator", firstWeekDay1Label, `Prepare the first ${firstWeekMovementTarget} live rows and keep commercial values out of tracker rooms.`, "blue"],
+      ["04", "Open first-week pulse", proposalSendOwner, firstWeekDay1Label, "Start day-1 login proof, day-3 row movement, and day-7 review rhythm.", "amber"],
+    ];
+    const replyKickoffBridgeOwners = [
+      ["Sponsor", "Owner / Director", "Approves pilot start and review rule.", buyerReplyState, "green"],
+      ["Admin", proposalSendOwner, "Owns access, Rooms defaults, and kickoff confirmation.", pilotKickoffStatus, "teal"],
+      ["Workbook", "Commercial Coordinator", `Owns ${firstWeekMovementTarget} row movement before day 3.`, "Needs proof", "blue"],
+      ["Finance", "Finance Contact", `Keeps ${pilotHandoffSheet.firstMonthCost} invoice context outside tracker rooms.`, "Protected", "amber"],
+    ];
+    const replyKickoffBridgeChecks = [
+      ["Buyer reply linked", buyerReplyState, `Reply tracker ${buyerReceiptReplyTrackerId} feeds this bridge.`, buyerReplyState === "Warm reply" ? "green" : "amber"],
+      ["Kickoff linked", pilotKickoffStatus, `Kickoff confirmation ${pilotKickoffConfirmationId} is the start gate.`, pilotKickoffStatus === "Ready for kickoff" ? "green" : "amber"],
+      ["First-week linked", pilotFirstWeekPulse.pulseState, `Pulse ${pilotFirstWeekPulseId} defines the adoption rhythm.`, "teal"],
+      ["Privacy rule", "Tracker stays operational", "Commercial amounts stay in Pilot Pitch and Membership.", "green"],
+    ];
+    const replyKickoffBridgeScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          buyerReplyScore * 0.28 +
+            pilotKickoffConfirmationScore * 0.28 +
+            firstWeekPulseScore * 0.24 +
+            Math.min(100, replyKickoffBridgeTasks.length * 20) * 0.1 +
+            10,
+        ),
+      ),
+    );
+    const replyKickoffBridgeCards = [
+      [
+        "Bridge state",
+        replyKickoffBridgeState,
+        replyKickoffBridgeState === "Ready to bridge"
+          ? "Buyer reply, kickoff confirmation, and first-week pulse are connected."
+          : "Clear reply or kickoff confirmation before the bridge becomes actionable.",
+        replyKickoffBridgeState === "Ready to bridge" ? "green" : "amber",
+      ],
+      ["Kickoff task queue", replyKickoffBridgeTasks.length, "Founder-ready tasks convert buyer response into pilot start movement.", "teal"],
+      ["Owner handoff", replyKickoffBridgeOwners.length, "Sponsor, admin, workbook, and finance owners are visible in one place.", "blue"],
+      ["First proof date", firstWeekDay1Label, "The bridge immediately points to day-1 access proof.", "green"],
+    ];
+    const replyKickoffBridgeDigest = [
+      `Pilot Reply-to-Kickoff Bridge ${pilotReplyKickoffBridgeId}`,
+      `Bridge state: ${replyKickoffBridgeState}`,
+      `Buyer reply: ${buyerReceiptReplyTrackerId} / ${buyerReplyState} / ${buyerReplyInterest} interest`,
+      `Kickoff confirmation: ${pilotKickoffConfirmationId} / ${pilotKickoffStatus}`,
+      `First-week pulse: ${pilotFirstWeekPulseId} / ${pilotFirstWeekPulse.pulseState}`,
+      `Tasks: ${replyKickoffBridgeTasks.map(([step, title, owner, due]) => `${step} ${title} / ${owner} / ${due}`).join("; ")}`,
+      "Privacy rule: operational tracker users do not need commercial values to execute kickoff tasks.",
+    ].join("\n");
+    const replyKickoffBridgeEmail = [
+      `Subject: PursuitDesk reply-to-kickoff bridge - ${replyKickoffBridgeState}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      "The buyer reply is now translated into a kickoff bridge.",
+      `Reply state: ${buyerReplyState}. Kickoff state: ${pilotKickoffStatus}. First-week pulse: ${pilotFirstWeekPulse.pulseState}.`,
+      `Next: confirm sponsor answer by ${buyerReplyNextFollowUpLabel}, lock kickoff for ${pilotHandoffSheet.kickoffTarget}, and prepare ${firstWeekMovementTarget} source rows for first movement proof.`,
+      "",
+      "Keep commercial questions inside Pilot Pitch and Membership; keep tracker rooms clean for operating users.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const pilotReplyKickoffBridgePacket = {
+      schemaVersion: "pursuitdesk.pilotReplyKickoffBridge.v258",
+      generatedOn: proposalDate.toISOString(),
+      pilotReplyKickoffBridgeId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        buyerReceiptReplyTracker: buyerReceiptReplyTrackerPacket.schemaVersion,
+        pilotKickoffConfirmation: pilotKickoffConfirmationPacket.schemaVersion,
+        pilotFirstWeekPulse: pilotFirstWeekPulsePacket.schemaVersion,
+      },
+      sourceIds: {
+        buyerReceiptReplyTrackerId,
+        pilotKickoffConfirmationId,
+        pilotFirstWeekPulseId,
+      },
+      score: replyKickoffBridgeScore,
+      bridgeState: replyKickoffBridgeState,
+      cards: replyKickoffBridgeCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      tasks: replyKickoffBridgeTasks.map(([step, title, owner, due, action, tone]) => ({ step, title, owner, due, action, tone })),
+      owners: replyKickoffBridgeOwners.map(([role, owner, action, state, tone]) => ({ role, owner, action, state, tone })),
+      checks: replyKickoffBridgeChecks.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      digest: replyKickoffBridgeDigest,
+      email: replyKickoffBridgeEmail,
+      nextBackendFields: [
+        "pilot_reply_kickoff_bridge_id",
+        "buyer_receipt_reply_tracker_id",
+        "pilot_kickoff_confirmation_id",
+        "pilot_first_week_pulse_id",
+        "reply_to_kickoff_bridge_state",
+        "kickoff_task_queue_json",
+        "kickoff_owner_handoff_json",
+        "first_week_proof_due_at",
+        "commercial_privacy_guard_state",
+        "reply_kickoff_bridge_audit_event",
+      ],
+    };
+    const pilotReplyKickoffBridge = {
+      pilotReplyKickoffBridgeId,
+      score: replyKickoffBridgeScore,
+      bridgeState: replyKickoffBridgeState,
+      cards: replyKickoffBridgeCards,
+      tasks: replyKickoffBridgeTasks,
+      owners: replyKickoffBridgeOwners,
+      checks: replyKickoffBridgeChecks,
+      digest: replyKickoffBridgeDigest,
+      email: replyKickoffBridgeEmail,
+      downloadHref: jsonDataUri(pilotReplyKickoffBridgePacket),
+    };
+    const kickoffProofHandoffEmailPackId = `PD-KICKOFF-HANDOFF-EMAILS-${proposalDateKey}-${String(replyKickoffBridgeOwners.length).padStart(2, "0")}`;
+    const kickoffProofHandoffEmailRows = [
+      [
+        "Sponsor",
+        "Owner / Director",
+        `PursuitDesk pilot sponsor confirmation - ${replyKickoffBridgeState}`,
+        buyerReplyNextFollowUpLabel,
+        "Confirm pilot start, review rule, and the sponsor decision path.",
+        [
+          `Hi Owner / Director,`,
+          "",
+          "The buyer reply is ready to convert into pilot kickoff movement.",
+          `Please confirm the sponsor answer by ${buyerReplyNextFollowUpLabel} and agree that the first formal review stays tied to ${pilotHandoffSheet.reviewTarget}.`,
+          "The team will show access proof, row movement proof, and privacy proof before asking for the next decision.",
+          "",
+          "Regards,",
+          "PursuitDesk team",
+        ].join("\n"),
+        "green",
+      ],
+      [
+        "Admin",
+        proposalSendOwner,
+        "PursuitDesk pilot admin setup handoff",
+        pilotHandoffSheet.kickoffTarget,
+        "Open users, access, Rooms defaults, and kickoff confirmation.",
+        [
+          `Hi ${proposalSendOwner},`,
+          "",
+          "Please prepare the pilot workspace for kickoff.",
+          `Target kickoff: ${pilotHandoffSheet.kickoffTarget}. Pilot users: ${pilotHandoffUsers.length}. First-week pulse starts on ${firstWeekDay1Label}.`,
+          "Confirm the admin account, room access, navigation defaults, and first review date before inviting the wider team.",
+          "",
+          "Regards,",
+          "PursuitDesk team",
+        ].join("\n"),
+        "teal",
+      ],
+      [
+        "Workbook",
+        "Commercial Coordinator",
+        "PursuitDesk source workbook movement handoff",
+        firstWeekDay3Label,
+        `Prepare ${firstWeekMovementTarget} live rows without exposing commercial values.`,
+        [
+          "Hi Commercial Coordinator,",
+          "",
+          `Please prepare the first ${firstWeekMovementTarget} live tender or project rows for controlled movement into PursuitDesk.`,
+          `Target movement proof: ${firstWeekDay3Label}. Keep tender values, invoice notes, and negotiation detail out of the frontline tracker.`,
+          "The goal is simple proof that the team can move from workbook tracking into controlled operating fields.",
+          "",
+          "Regards,",
+          "PursuitDesk team",
+        ].join("\n"),
+        "blue",
+      ],
+      [
+        "Finance",
+        "Finance Contact",
+        "PursuitDesk pilot finance privacy handoff",
+        firstWeekDay7Label,
+        `Keep ${pilotHandoffSheet.firstMonthCost} invoice context in admin-only commercial rooms.`,
+        [
+          "Hi Finance Contact,",
+          "",
+          `The first pilot estimate is ${pilotHandoffSheet.firstMonthCost}. Please keep invoice and commercial discussion inside Pilot Pitch, Membership, and admin-only review.`,
+          `By ${firstWeekDay7Label}, confirm that operational tracker users can work without seeing pricing, invoice, tender value, or negotiation detail.`,
+          "This privacy proof is part of the first-week customer review.",
+          "",
+          "Regards,",
+          "PursuitDesk team",
+        ].join("\n"),
+        "amber",
+      ],
+    ];
+    const kickoffProofHandoffReady = kickoffProofHandoffEmailRows.length;
+    const kickoffProofHandoffScore = Math.max(
+      55,
+      Math.min(99, Math.round(replyKickoffBridgeScore * 0.5 + pilotKickoffConfirmationScore * 0.24 + firstWeekPulseScore * 0.16 + kickoffProofHandoffReady * 2.5)),
+    );
+    const kickoffProofHandoffState = kickoffProofHandoffScore >= 80 ? "Ready to send" : "Review before send";
+    const kickoffProofHandoffCards = [
+      ["Handoff state", kickoffProofHandoffState, "Each kickoff owner gets a focused message and due date.", kickoffProofHandoffScore >= 80 ? "green" : "amber"],
+      ["Owner emails", kickoffProofHandoffReady, "Sponsor, admin, workbook owner, and finance are separated.", "teal"],
+      ["First due", buyerReplyNextFollowUpLabel, "Sponsor confirmation stays the first movement gate.", "blue"],
+      ["Privacy lock", "Commercial shield", "Finance context stays away from frontline trackers.", "green"],
+    ];
+    const kickoffProofHandoffRules = [
+      ["One owner per message", "Each recipient sees only the action they own.", "green"],
+      ["No commercial leak", "Finance values stay in admin-only commercial rooms.", "teal"],
+      ["Proof before review", "Login, row movement, report, and privacy proof feed the review pack.", "blue"],
+      ["Short enough to send", "The handoff is copy-ready, not a policy document.", "amber"],
+    ];
+    const kickoffProofHandoffDigest = [
+      `Kickoff Proof Handoff Emails ${kickoffProofHandoffEmailPackId}`,
+      `State: ${kickoffProofHandoffState}`,
+      `Source bridge: ${pilotReplyKickoffBridgeId} / ${pilotReplyKickoffBridge.bridgeState}`,
+      `Emails: ${kickoffProofHandoffEmailRows.map(([audience, owner, subject, due]) => `${audience} / ${owner} / ${due} / ${subject}`).join("; ")}`,
+      `First-week proof starts: ${firstWeekDay1Label} access, ${firstWeekDay3Label} row movement, ${firstWeekDay7Label} review.`,
+      "Privacy rule: every email keeps commercial values out of frontline tracker rooms.",
+    ].join("\n");
+    const kickoffProofHandoffEmailPackPacket = {
+      schemaVersion: "pursuitdesk.kickoffProofHandoffEmails.v262",
+      generatedOn: proposalDate.toISOString(),
+      kickoffProofHandoffEmailPackId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        pilotReplyKickoffBridge: pilotReplyKickoffBridgePacket.schemaVersion,
+        pilotKickoffConfirmation: pilotKickoffConfirmationPacket.schemaVersion,
+        pilotFirstWeekPulse: pilotFirstWeekPulsePacket.schemaVersion,
+      },
+      sourceIds: {
+        pilotReplyKickoffBridgeId,
+        pilotKickoffConfirmationId,
+        pilotFirstWeekPulseId,
+      },
+      score: kickoffProofHandoffScore,
+      handoffState: kickoffProofHandoffState,
+      cards: kickoffProofHandoffCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      emails: kickoffProofHandoffEmailRows.map(([audience, owner, subject, due, action, body, tone]) => ({ audience, owner, subject, due, action, body, tone })),
+      rules: kickoffProofHandoffRules.map(([label, note, tone]) => ({ label, note, tone })),
+      digest: kickoffProofHandoffDigest,
+      nextBackendFields: [
+        "kickoff_proof_handoff_email_pack_id",
+        "pilot_reply_kickoff_bridge_id",
+        "kickoff_email_audience",
+        "kickoff_email_subject",
+        "kickoff_email_body",
+        "kickoff_email_due_at",
+        "kickoff_email_owner_role",
+        "commercial_privacy_guard_state",
+        "kickoff_handoff_audit_event",
+      ],
+    };
+    const kickoffProofHandoffEmailPack = {
+      kickoffProofHandoffEmailPackId,
+      score: kickoffProofHandoffScore,
+      handoffState: kickoffProofHandoffState,
+      cards: kickoffProofHandoffCards,
+      emails: kickoffProofHandoffEmailRows,
+      rules: kickoffProofHandoffRules,
+      digest: kickoffProofHandoffDigest,
+      downloadHref: jsonDataUri(kickoffProofHandoffEmailPackPacket),
+    };
+    const firstWeekProofInboxId = `PD-FIRST-WEEK-PROOF-INBOX-${proposalDateKey}-${String(firstWeekMovementTarget).padStart(2, "0")}`;
+    const firstWeekProofRows = [
+      ["First-login proof", proposalSendOwner, firstWeekDay1Label, `${firstWeekCoreUsers}/${pilotHandoffUsers.length} core users`, "Ready to capture", "Screenshot, session audit, or admin note confirming pilot users opened their rooms.", "green"],
+      ["Row movement proof", "Commercial Coordinator", firstWeekDay3Label, `${firstWeekMovementTarget} rows`, "Needs proof", "Short before/after note proving source workbook rows moved into controlled tracker fields.", "blue"],
+      ["Report review proof", proposalSendOwner, firstWeekDay7Label, "1 weekly pack", "Schedule review", "One management-ready report or meeting note showing the pilot was reviewed.", "teal"],
+      ["Privacy proof", "Finance Contact", firstWeekDay7Label, "Commercial shield", "Protected", "Confirm operational tracker users did not need pricing, invoice, or negotiation values.", "green"],
+      ["Sponsor proof", "Owner / Director", pilotHandoffSheet.reviewTarget, "Decision signal", "Awaiting review", "Capture the buyer sponsor's day-30 convert, revise, extend, or stop signal.", "amber"],
+    ];
+    const firstWeekProofCaptured = firstWeekProofRows.filter(([, , , , state]) => ["Ready to capture", "Protected"].includes(state)).length;
+    const firstWeekProofBlocked = firstWeekProofRows.filter(([, , , , state]) => ["Needs proof", "Awaiting review"].includes(state)).length;
+    const firstWeekProofScore = Math.max(
+      45,
+      Math.min(
+        99,
+        Math.round(
+          firstWeekPulseScore * 0.34 +
+            replyKickoffBridgeScore * 0.24 +
+            pilotKickoffConfirmationScore * 0.18 +
+            Math.min(100, firstWeekProofCaptured * 22) * 0.14 +
+            Math.max(0, 100 - firstWeekProofBlocked * 12) * 0.1,
+        ),
+      ),
+    );
+    const firstWeekProofState = firstWeekProofBlocked > 1 ? "Proof still forming" : "Proof ready for review";
+    const firstWeekProofCards = [
+      ["Inbox state", firstWeekProofState, firstWeekProofBlocked > 1 ? `${firstWeekProofBlocked} proof lanes still need evidence.` : "Enough proof exists for a first customer review.", firstWeekProofBlocked > 1 ? "amber" : "green"],
+      ["Proof lanes", firstWeekProofRows.length, "Login, row movement, report, privacy, and sponsor signal stay in one inbox.", "teal"],
+      ["Captured/ready", firstWeekProofCaptured, "Evidence that can be checked immediately by the founder or admin.", "green"],
+      ["Next due", firstWeekDay1Label, "Start with access proof before asking the buyer for more decisions.", "blue"],
+    ];
+    const firstWeekProofChecklist = [
+      ["No silent pilot", "Every first-week proof lane has an owner and date.", "green"],
+      ["No commercial leak", "Proof can be collected without exposing values to tracker users.", "teal"],
+      ["No vague adoption", "Usage proof is framed as login, row movement, report review, and sponsor signal.", "blue"],
+      ["No day-30 surprise", "Sponsor proof is prepared from week one, not invented at renewal time.", "amber"],
+    ];
+    const firstWeekProofDigest = [
+      `First-Week Proof Inbox ${firstWeekProofInboxId}`,
+      `State: ${firstWeekProofState}`,
+      `Source pulse: ${pilotFirstWeekPulseId} / ${pilotFirstWeekPulse.pulseState}`,
+      `Source bridge: ${pilotReplyKickoffBridgeId} / ${pilotReplyKickoffBridge.bridgeState}`,
+      `Captured or ready lanes: ${firstWeekProofCaptured}`,
+      `Blocked or waiting lanes: ${firstWeekProofBlocked}`,
+      `Proof rows: ${firstWeekProofRows.map(([label, owner, due, value, state]) => `${label} / ${owner} / ${due} / ${value} / ${state}`).join("; ")}`,
+      "Privacy rule: proof collection must not expose commercial fields to frontline tracker users.",
+    ].join("\n");
+    const firstWeekProofEmail = [
+      `Subject: PursuitDesk first-week proof inbox - ${firstWeekProofState}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      "The pilot now has a first-week proof inbox. Use it to turn early activity into evidence before the customer review.",
+      `Start with login proof by ${firstWeekDay1Label}, row movement proof by ${firstWeekDay3Label}, and report review proof by ${firstWeekDay7Label}.`,
+      `Keep privacy proof explicit: commercial fields stay out of daily tracker rooms, while management can review protected proof in Pilot Pitch.`,
+      "",
+      "The day-30 sponsor signal should be prepared from week one, so the conversion discussion is based on evidence instead of memory.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const firstWeekProofInboxPacket = {
+      schemaVersion: "pursuitdesk.firstWeekProofInbox.v260",
+      generatedOn: proposalDate.toISOString(),
+      firstWeekProofInboxId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        pilotFirstWeekPulse: pilotFirstWeekPulsePacket.schemaVersion,
+        pilotReplyKickoffBridge: pilotReplyKickoffBridgePacket.schemaVersion,
+        pilotKickoffConfirmation: pilotKickoffConfirmationPacket.schemaVersion,
+      },
+      sourceIds: {
+        pilotFirstWeekPulseId,
+        pilotReplyKickoffBridgeId,
+        pilotKickoffConfirmationId,
+      },
+      score: firstWeekProofScore,
+      inboxState: firstWeekProofState,
+      capturedOrReady: firstWeekProofCaptured,
+      blockedOrWaiting: firstWeekProofBlocked,
+      cards: firstWeekProofCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      proofRows: firstWeekProofRows.map(([label, owner, due, value, state, proof, tone]) => ({ label, owner, due, value, state, proof, tone })),
+      checklist: firstWeekProofChecklist.map(([label, note, tone]) => ({ label, note, tone })),
+      digest: firstWeekProofDigest,
+      email: firstWeekProofEmail,
+      nextBackendFields: [
+        "first_week_proof_inbox_id",
+        "pilot_first_week_pulse_id",
+        "pilot_reply_kickoff_bridge_id",
+        "proof_lane_json",
+        "proof_capture_state",
+        "proof_owner_user_id",
+        "proof_due_at",
+        "commercial_privacy_guard_state",
+        "sponsor_review_signal_state",
+        "first_week_proof_audit_event",
+      ],
+    };
+    const firstWeekProofInbox = {
+      firstWeekProofInboxId,
+      score: firstWeekProofScore,
+      inboxState: firstWeekProofState,
+      capturedOrReady: firstWeekProofCaptured,
+      blockedOrWaiting: firstWeekProofBlocked,
+      cards: firstWeekProofCards,
+      proofRows: firstWeekProofRows,
+      checklist: firstWeekProofChecklist,
+      digest: firstWeekProofDigest,
+      email: firstWeekProofEmail,
+      downloadHref: jsonDataUri(firstWeekProofInboxPacket),
+    };
+    const firstWeekReviewPackId = `PD-FIRST-WEEK-REVIEW-PACK-${proposalDateKey}-${String(firstWeekProofScore).padStart(2, "0")}`;
+    const firstWeekReviewBuyerProofRows = [
+      ["Access proof", "Pilot users opened the workspace", `${firstWeekCoreUsers}/${pilotHandoffUsers.length} core users`, firstWeekDay1Label, "green"],
+      ["Movement proof", "Workbook rows moved into controlled tracker fields", `${firstWeekMovementTarget} source rows`, firstWeekDay3Label, "blue"],
+      ["Review proof", "Management saw the first weekly operating view", "Weekly pack ready", firstWeekDay7Label, "teal"],
+      ["Privacy proof", "Operational users worked without commercial values", "Commercial fields protected", firstWeekDay7Label, "green"],
+    ];
+    const firstWeekReviewAgenda = [
+      ["1", "Confirm access", `Show who logged in by ${firstWeekDay1Label}.`, "green"],
+      ["2", "Show movement", `Review ${firstWeekMovementTarget} rows that moved out of Excel into PursuitDesk.`, "blue"],
+      ["3", "Protect privacy", "Confirm tender/project operators still do not see commercial values.", "teal"],
+      ["4", "Choose next step", `Agree whether the pilot continues to ${pilotHandoffSheet.reviewTarget}.`, "amber"],
+    ];
+    const firstWeekReviewDecisionLanes = [
+      ["Continue", "Evidence is enough to keep the 30-day pilot moving.", firstWeekProofScore >= 70 ? "Recommended" : "Available", "green"],
+      ["Repair", "Ask for missing row movement or report review proof before the sponsor meeting.", firstWeekProofBlocked ? "Watch" : "Optional", "amber"],
+      ["Extend", "Use only if the customer needs more workbook cleanup time.", "Fallback", "blue"],
+      ["Stop", "Use only if no sponsor or owner action appears after follow-up.", "Protected", "red"],
+    ];
+    const firstWeekReviewScore = Math.max(
+      50,
+      Math.min(
+        99,
+        Math.round(firstWeekProofScore * 0.54 + firstWeekProofCaptured * 8 + Math.max(0, 24 - firstWeekProofBlocked * 7)),
+      ),
+    );
+    const firstWeekReviewState = firstWeekReviewScore >= 78 ? "Ready for buyer review" : "Needs proof before review";
+    const firstWeekReviewCards = [
+      ["Review state", firstWeekReviewState, firstWeekReviewScore >= 78 ? "The founder can use this in a customer review." : "Capture more movement proof before sending.", firstWeekReviewScore >= 78 ? "green" : "amber"],
+      ["Buyer-safe proof", firstWeekReviewBuyerProofRows.length, "Only simple operating proof appears here; commercial details stay private.", "teal"],
+      ["Agenda", firstWeekReviewAgenda.length, "A short day-7 or day-30 review path, not a long report.", "blue"],
+      ["Decision", firstWeekReviewDecisionLanes[0][0], "The default ask is to continue the controlled pilot path.", "green"],
+    ];
+    const firstWeekReviewDigest = [
+      `First-Week Review Pack ${firstWeekReviewPackId}`,
+      `State: ${firstWeekReviewState}`,
+      `Proof inbox: ${firstWeekProofInboxId} / ${firstWeekProofInbox.inboxState} / ${firstWeekProofInbox.score}%`,
+      `Buyer-safe proof: ${firstWeekReviewBuyerProofRows.map(([label, note, value, date]) => `${label} / ${value} / ${date} / ${note}`).join("; ")}`,
+      `Agenda: ${firstWeekReviewAgenda.map(([step, title, note]) => `${step}. ${title} - ${note}`).join(" ")}`,
+      `Recommended decision: ${firstWeekReviewDecisionLanes[0][0]} - ${firstWeekReviewDecisionLanes[0][1]}`,
+      "Privacy rule: do not expose pricing, invoice, tender value, or negotiation detail in the buyer review pack.",
+    ].join("\n");
+    const firstWeekReviewEmail = [
+      `Subject: PursuitDesk first-week review - ${firstWeekReviewState}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      "Here is the simple first-week customer review pack.",
+      `Proof ready: access by ${firstWeekDay1Label}, row movement by ${firstWeekDay3Label}, management review by ${firstWeekDay7Label}, and privacy protection confirmed.`,
+      `Suggested review flow: confirm access, show moved rows, confirm commercial privacy, then agree whether the pilot continues to ${pilotHandoffSheet.reviewTarget}.`,
+      "",
+      "Buyer-safe rule: keep pricing, invoices, tender values, and negotiation detail out of this pack. Use it to prove control, not to expose commercial data.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const firstWeekReviewPackPacket = {
+      schemaVersion: "pursuitdesk.firstWeekReviewPack.v261",
+      generatedOn: proposalDate.toISOString(),
+      firstWeekReviewPackId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        firstWeekProofInbox: firstWeekProofInboxPacket.schemaVersion,
+        pilotFirstWeekPulse: pilotFirstWeekPulsePacket.schemaVersion,
+        pilotReplyKickoffBridge: pilotReplyKickoffBridgePacket.schemaVersion,
+      },
+      sourceIds: {
+        firstWeekProofInboxId,
+        pilotFirstWeekPulseId,
+        pilotReplyKickoffBridgeId,
+      },
+      score: firstWeekReviewScore,
+      reviewState: firstWeekReviewState,
+      cards: firstWeekReviewCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      buyerSafeProofRows: firstWeekReviewBuyerProofRows.map(([label, note, value, date, tone]) => ({ label, note, value, date, tone })),
+      agenda: firstWeekReviewAgenda.map(([step, title, note, tone]) => ({ step, title, note, tone })),
+      decisionLanes: firstWeekReviewDecisionLanes.map(([label, note, state, tone]) => ({ label, note, state, tone })),
+      digest: firstWeekReviewDigest,
+      email: firstWeekReviewEmail,
+      nextBackendFields: [
+        "first_week_review_pack_id",
+        "first_week_proof_inbox_id",
+        "buyer_safe_proof_json",
+        "review_agenda_json",
+        "pilot_review_decision_state",
+        "review_email_body",
+        "commercial_privacy_guard_state",
+        "first_week_review_audit_event",
+      ],
+    };
+    const firstWeekReviewPack = {
+      firstWeekReviewPackId,
+      score: firstWeekReviewScore,
+      reviewState: firstWeekReviewState,
+      cards: firstWeekReviewCards,
+      buyerSafeProofRows: firstWeekReviewBuyerProofRows,
+      agenda: firstWeekReviewAgenda,
+      decisionLanes: firstWeekReviewDecisionLanes,
+      digest: firstWeekReviewDigest,
+      email: firstWeekReviewEmail,
+      downloadHref: jsonDataUri(firstWeekReviewPackPacket),
+    };
+    const firstWeekReviewSendReceiptId = `PD-FIRST-WEEK-REVIEW-SEND-${proposalDateKey}-${String(firstWeekReviewScore).padStart(2, "0")}`;
+    const firstWeekReviewSendDate = addPilotDays(proposalDate, 13);
+    const firstWeekReviewDecisionDate = addPilotDays(proposalDate, 35);
+    const firstWeekReviewSendLabel = formatPilotDate(firstWeekReviewSendDate);
+    const firstWeekReviewDecisionLabel = formatPilotDate(firstWeekReviewDecisionDate);
+    const firstWeekReviewRecipients = [
+      {
+        name: "Owner / Director",
+        role: "Buyer sponsor",
+        email: "sponsor@customer.example",
+        access: "Buyer-safe proof only",
+      },
+      {
+        name: proposalSendOwner,
+        role: "Workspace admin",
+        email: state.user.email,
+        access: "Admin audit copy",
+      },
+      {
+        name: "Commercial Coordinator",
+        role: "Workbook owner",
+        email: "workbook.owner@customer.example",
+        access: "Movement proof follow-up",
+      },
+    ];
+    const firstWeekReviewVisibleProof = firstWeekReviewBuyerProofRows.map(([label, note, value, date, tone], index) => ({
+      id: `FW-PROOF-${String(index + 1).padStart(2, "0")}`,
+      label,
+      note,
+      value,
+      date,
+      tone,
+    }));
+    const firstWeekReviewPrivateRows = [
+      ["Commercial values", "Tender/project values, forecast figures, and negotiation amounts stay out of the buyer-safe review.", "Protected", "amber"],
+      ["Pricing and invoice", "Plan pricing, invoice state, setup estimate, and payment proof stay in Membership/Pilot Pitch.", "Protected", "blue"],
+      ["Source workbook", "Raw Excel rows are not attached; only movement proof and source-control notes are shared.", "Protected", "green"],
+      ["Internal decisions", "No-bid, reopen, risk, and commercial posture notes stay inside admin or management rooms.", "Protected", "red"],
+    ];
+    const firstWeekReviewReceiptRules = [
+      ["Send one page", "Use the short proof story, not the full internal workspace.", "green"],
+      ["Show movement", `Point to ${firstWeekMovementTarget} moved rows and the first weekly review proof.`, "teal"],
+      ["Keep values private", "Do not expose value, price, invoice, or negotiation fields.", "amber"],
+      ["Ask for decision", `Request continue, repair, extend, or stop by ${firstWeekReviewDecisionLabel}.`, "blue"],
+    ];
+    const firstWeekReviewSendScore = Math.max(
+      60,
+      Math.min(
+        99,
+        Math.round(
+          firstWeekReviewScore * 0.52 +
+            Math.min(100, firstWeekReviewRecipients.length * 25) * 0.16 +
+            firstWeekReviewVisibleProof.length * 5 +
+            firstWeekReviewPrivateRows.length * 3,
+        ),
+      ),
+    );
+    const firstWeekReviewSendState = firstWeekReviewSendScore >= 82 ? "Send receipt ready" : "Prepare before send";
+    const firstWeekReviewSendCards = [
+      ["Send state", firstWeekReviewSendState, `Prepared for ${firstWeekReviewSendLabel}.`, firstWeekReviewSendScore >= 82 ? "green" : "amber"],
+      ["Recipients", firstWeekReviewRecipients.length, "Sponsor, admin, and workbook owner are recorded.", "teal"],
+      ["Proof shown", firstWeekReviewVisibleProof.length, "Only access, movement, review, and privacy proof appear.", "blue"],
+      ["Decision due", firstWeekReviewDecisionLabel, "Buyer chooses continue, repair, extend, or stop.", "amber"],
+    ];
+    const firstWeekReviewSendDigest = [
+      `First-Week Review Send Receipt ${firstWeekReviewSendReceiptId}`,
+      `Source pack: ${firstWeekReviewPackId} / ${firstWeekReviewPack.reviewState} / ${firstWeekReviewPack.score}%`,
+      `Send state: ${firstWeekReviewSendState}`,
+      `Prepared send date: ${firstWeekReviewSendLabel}`,
+      `Buyer decision due: ${firstWeekReviewDecisionLabel}`,
+      `Recipients: ${firstWeekReviewRecipients.map((recipient) => `${recipient.name} / ${recipient.role} / ${recipient.access}`).join("; ")}`,
+      `Proof shown: ${firstWeekReviewVisibleProof.map((proof) => `${proof.label} / ${proof.value} / ${proof.date}`).join("; ")}`,
+      `Kept private: ${firstWeekReviewPrivateRows.map(([label, note]) => `${label} - ${note}`).join("; ")}`,
+      "Audit rule: production send must record sender, recipients, visible proof ids, hidden field classes, decision due date, and privacy guard state.",
+    ].join("\n");
+    const firstWeekReviewSendEmail = [
+      `Subject: PursuitDesk first-week review sent - decision due ${firstWeekReviewDecisionLabel}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The first-week buyer review pack is ready to send on ${firstWeekReviewSendLabel}.`,
+      `Source pack: ${firstWeekReviewPackId}. Review state: ${firstWeekReviewPack.reviewState}.`,
+      `Visible proof: access, movement, weekly review, and commercial privacy. Private fields remain protected: commercial values, pricing, invoices, raw workbook rows, and internal decisions.`,
+      "",
+      `Ask the buyer to choose continue, repair, extend proof, or stop by ${firstWeekReviewDecisionLabel}.`,
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const firstWeekReviewSendReceiptPacket = {
+      schemaVersion: "pursuitdesk.firstWeekReviewSendReceipt.v264",
+      generatedOn: proposalDate.toISOString(),
+      firstWeekReviewSendReceiptId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        firstWeekReviewPack: firstWeekReviewPackPacket.schemaVersion,
+        firstWeekProofInbox: firstWeekProofInboxPacket.schemaVersion,
+      },
+      sourceIds: {
+        firstWeekReviewPackId,
+        firstWeekProofInboxId,
+      },
+      score: firstWeekReviewSendScore,
+      sendState: firstWeekReviewSendState,
+      preparedSendDate: firstWeekReviewSendDate.toISOString(),
+      decisionDueDate: firstWeekReviewDecisionDate.toISOString(),
+      recipients: firstWeekReviewRecipients,
+      visibleProof: firstWeekReviewVisibleProof,
+      privateRows: firstWeekReviewPrivateRows.map(([label, note, state, tone]) => ({ label, note, state, tone })),
+      sendRules: firstWeekReviewReceiptRules.map(([label, note, tone]) => ({ label, note, tone })),
+      cards: firstWeekReviewSendCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      digest: firstWeekReviewSendDigest,
+      email: firstWeekReviewSendEmail,
+      nextBackendFields: [
+        "first_week_review_send_receipt_id",
+        "first_week_review_pack_id",
+        "sent_by_user_id",
+        "recipient_json",
+        "visible_proof_ids",
+        "hidden_field_classes",
+        "buyer_decision_due_at",
+        "privacy_guard_state",
+        "review_send_audit_event",
+      ],
+    };
+    const firstWeekReviewSendReceipt = {
+      firstWeekReviewSendReceiptId,
+      score: firstWeekReviewSendScore,
+      sendState: firstWeekReviewSendState,
+      sendDate: firstWeekReviewSendLabel,
+      decisionDue: firstWeekReviewDecisionLabel,
+      cards: firstWeekReviewSendCards,
+      recipients: firstWeekReviewRecipients,
+      visibleProof: firstWeekReviewVisibleProof,
+      privateRows: firstWeekReviewPrivateRows,
+      rules: firstWeekReviewReceiptRules,
+      digest: firstWeekReviewSendDigest,
+      email: firstWeekReviewSendEmail,
+      downloadHref: jsonDataUri(firstWeekReviewSendReceiptPacket),
+    };
     return {
       company,
       membership,
@@ -58715,6 +60535,16 @@
       outcomeExpansionProposalRouter,
       renewalEvidenceApprovalGate,
       simpleBuyerReviewPack,
+      buyerReviewSendReceipt,
+      buyerReceiptReplyTracker,
+      pilotHandoffSheet,
+      pilotKickoffConfirmation,
+      pilotFirstWeekPulse,
+      pilotReplyKickoffBridge,
+      kickoffProofHandoffEmailPack,
+      firstWeekProofInbox,
+      firstWeekReviewPack,
+      firstWeekReviewSendReceipt,
       feedbackPack,
       roiPack,
       proposalPack,
@@ -61960,7 +63790,7 @@
               <div class="pilot-pitch-actions">
                 <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review renewal bridge</button>
                 <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
-                <button class="ghost-btn" type="button" data-view="Membership Model">Open membership</button>
+                <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
               </div>
             </div>
             <div class="pilot-close-score-card">
@@ -62196,7 +64026,7 @@
               <div class="pilot-pitch-actions">
                 <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review router</button>
                 <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
-                <button class="ghost-btn" type="button" data-view="Membership Model">Open pricing</button>
+                <button class="ghost-btn" type="button" data-view="Membership">Open pricing</button>
               </div>
             </div>
             <div class="pilot-close-score-card">
@@ -62532,6 +64362,1042 @@
             ${model.simpleBuyerReviewPack.runbook
               .map(([step, title, detail, tone]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(`${step}. ${title}`)}</strong>${escapeHtml(detail)}</p>`)
               .join("")}
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-buyer-review-send-receipt">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v252 Buyer Review Send Receipt</span>
+              <h3>Record what the buyer received</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.buyerReviewSendReceipt.downloadHref)}" download="pursuitdesk-buyer-review-send-receipt-v252.json">Download receipt JSON</a>
+          </div>
+          <div class="pilot-close-hero buyer-review-receipt-hero">
+            <div>
+              <span>Send receipt</span>
+              <strong>${escapeHtml(model.buyerReviewSendReceipt.buyerReviewSendReceiptId)}</strong>
+              <p>One short audit receipt records who received the buyer review, which rows were visible, which rows stayed internal, and when follow-up is due.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open buyer page</button>
+                <button class="ghost-btn" type="button" data-view="Membership">Check access</button>
+                <button class="ghost-btn" type="button" data-view="Build Phase">Open roadmap</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Receipt score</span>
+              <strong>${model.buyerReviewSendReceipt.score}%</strong>
+              <p>${escapeHtml(model.buyerReviewSendReceipt.sendState)} / ${escapeHtml(model.buyerReviewSendReceipt.followUpLabel)}</p>
+              <small>${model.buyerReviewSendReceipt.recipients.length} recipients recorded</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.buyerReviewSendReceipt.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="buyer-review-receipt-grid">
+            <article class="tone-green">
+              <span class="metric-label">Recipients</span>
+              <h4>Who received the review</h4>
+              <div class="buyer-review-receipt-list">
+                ${model.buyerReviewSendReceipt.recipients
+                  .map(
+                    (recipient) => `
+                      <p>
+                        <strong>${escapeHtml(recipient.name)}</strong>
+                        <span>${escapeHtml(recipient.role)} / ${escapeHtml(recipient.access)}</span>
+                        <small>${escapeHtml(recipient.email)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Visible to buyer</span>
+              <h4>${model.buyerReviewSendReceipt.visibleRows.length} review rows</h4>
+              <div class="buyer-review-receipt-list">
+                ${model.buyerReviewSendReceipt.visibleRows
+                  .slice(0, 4)
+                  .map(
+                    (row) => `
+                      <p>
+                        <strong>${escapeHtml(row.simpleBuyerReviewPackRowId)} / ${escapeHtml(row.buyer)}</strong>
+                        <span>${escapeHtml(row.headline)}</span>
+                        <small>${escapeHtml(row.nextStep)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-amber">
+              <span class="metric-label">Internal only</span>
+              <h4>${model.buyerReviewSendReceipt.hiddenRows.length} hidden rows</h4>
+              <div class="buyer-review-receipt-list">
+                ${model.buyerReviewSendReceipt.hiddenRows.length
+                  ? model.buyerReviewSendReceipt.hiddenRows
+                      .slice(0, 4)
+                      .map(
+                        (row) => `
+                          <p>
+                            <strong>${escapeHtml(row.simpleBuyerReviewPackRowId)} / ${escapeHtml(row.buyer)}</strong>
+                            <span>${escapeHtml(row.hiddenFields)}</span>
+                            <small>${escapeHtml(row.privacyGate)}</small>
+                          </p>
+                        `,
+                      )
+                      .join("")
+                  : `<p><strong>No hidden rows</strong><span>The buyer review does not hold anything back.</span><small>Ready for direct handoff.</small></p>`}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-playbook-list buyer-review-privacy-list">
+            ${model.buyerReviewSendReceipt.privacyChecks
+              .map(([label, value, note, tone]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>${escapeHtml(note)}</p>`)
+              .join("")}
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Receipt digest</span>
+              <h4>Visible rows, hidden rows, and follow-up</h4>
+              <textarea readonly aria-label="Buyer review send receipt digest">${escapeHtml(model.buyerReviewSendReceipt.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready send receipt</span>
+              <h4>Send receipt note</h4>
+              <textarea readonly aria-label="Copy-ready buyer review send receipt">${escapeHtml(model.buyerReviewSendReceipt.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-buyer-reply-tracker">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v255 Buyer Receipt Reply Tracker</span>
+              <h3>Track what the buyer said back</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.buyerReceiptReplyTracker.downloadHref)}" download="pursuitdesk-buyer-receipt-reply-tracker-v255.json">Download reply JSON</a>
+          </div>
+          <div class="pilot-close-hero buyer-reply-tracker-hero">
+            <div>
+              <span>Buyer reply</span>
+              <strong>${escapeHtml(model.buyerReceiptReplyTracker.buyerReceiptReplyTrackerId)}</strong>
+              <p>A short reply tracker keeps the sales motion simple: what the buyer said, what concern remains, who owns the next answer, and when to follow up.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open reply pack</button>
+                <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Reply score</span>
+              <strong>${model.buyerReceiptReplyTracker.score}%</strong>
+              <p>${escapeHtml(model.buyerReceiptReplyTracker.replyState)} / ${escapeHtml(model.buyerReceiptReplyTracker.interest)} interest</p>
+              <small>${escapeHtml(model.buyerReceiptReplyTracker.nextFollowUp)} next follow-up</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.buyerReceiptReplyTracker.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="buyer-reply-tracker-grid">
+            <article class="tone-green">
+              <span class="metric-label">Reply lanes</span>
+              <h4>Signals to act on</h4>
+              <div class="buyer-reply-list">
+                ${model.buyerReceiptReplyTracker.rows
+                  .map(
+                    (row) => `
+                      <p class="tone-${escapeHtml(row.tone)}">
+                        <strong>${escapeHtml(row.lane)} / ${escapeHtml(row.state)}</strong>
+                        <span>${escapeHtml(row.message)}</span>
+                        <small>${escapeHtml(row.next)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Response plan</span>
+              <h4>What to send next</h4>
+              <div class="buyer-reply-list">
+                ${model.buyerReceiptReplyTracker.responsePlan
+                  .map(
+                    ([label, detail, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(detail)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Reply digest</span>
+              <h4>State, concern, owner, and follow-up</h4>
+              <textarea readonly aria-label="Buyer receipt reply tracker digest">${escapeHtml(model.buyerReceiptReplyTracker.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready buyer reply</span>
+              <h4>Send the next answer</h4>
+              <textarea readonly aria-label="Copy-ready buyer receipt reply">${escapeHtml(model.buyerReceiptReplyTracker.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-reply-kickoff-bridge">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v258 Pilot Reply-to-Kickoff Bridge</span>
+              <h3>Turn a warm reply into kickoff movement</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.pilotReplyKickoffBridge.downloadHref)}" download="pursuitdesk-pilot-reply-kickoff-bridge-v258.json">Download bridge JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-reply-bridge-hero">
+            <div>
+              <span>Reply-to-kickoff bridge</span>
+              <strong>${escapeHtml(model.pilotReplyKickoffBridge.pilotReplyKickoffBridgeId)}</strong>
+              <p>A warm buyer reply becomes a simple kickoff queue: confirm the sponsor answer, lock the meeting, prepare source rows, and open the first-week pulse.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open pilot pitch</button>
+                <button class="ghost-btn" type="button" data-view="Command">Open command</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Bridge score</span>
+              <strong>${model.pilotReplyKickoffBridge.score}%</strong>
+              <p>${escapeHtml(model.pilotReplyKickoffBridge.bridgeState)}</p>
+              <small>Reply, kickoff, and first-week pulse connected</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.pilotReplyKickoffBridge.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-reply-bridge-grid">
+            <article class="tone-green">
+              <span class="metric-label">Kickoff task queue</span>
+              <h4>What to do after the reply</h4>
+              <div class="pilot-reply-bridge-list">
+                ${model.pilotReplyKickoffBridge.tasks
+                  .map(
+                    ([step, title, owner, due, action, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(`${step}. ${title}`)} / ${escapeHtml(owner)}</strong>
+                        <span>${escapeHtml(action)}</span>
+                        <small>Due ${escapeHtml(due)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Owner handoff</span>
+              <h4>Who owns the pilot start</h4>
+              <div class="pilot-reply-bridge-list">
+                ${model.pilotReplyKickoffBridge.owners
+                  .map(
+                    ([role, owner, action, bridgeState, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(role)} / ${escapeHtml(owner)}</strong>
+                        <span>${escapeHtml(action)}</span>
+                        <small>${escapeHtml(bridgeState)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-teal">
+              <span class="metric-label">Bridge checks</span>
+              <h4>What must stay linked</h4>
+              <div class="pilot-reply-bridge-list">
+                ${model.pilotReplyKickoffBridge.checks
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Bridge digest</span>
+              <h4>Reply, kickoff, pulse, and privacy guard</h4>
+              <textarea readonly aria-label="Pilot reply-to-kickoff bridge digest">${escapeHtml(model.pilotReplyKickoffBridge.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready bridge email</span>
+              <h4>Send the kickoff handoff</h4>
+              <textarea readonly aria-label="Copy-ready pilot reply-to-kickoff bridge">${escapeHtml(model.pilotReplyKickoffBridge.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-kickoff-handoff-emails">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v262 Kickoff Proof Handoff Emails</span>
+              <h3>Send each kickoff owner the right ask</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.kickoffProofHandoffEmailPack.downloadHref)}" download="pursuitdesk-kickoff-proof-handoff-emails-v262.json">Download email JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-kickoff-email-hero">
+            <div>
+              <span>Kickoff email pack</span>
+              <strong>${escapeHtml(model.kickoffProofHandoffEmailPack.kickoffProofHandoffEmailPackId)}</strong>
+              <p>Once a buyer reply becomes kickoff movement, the work should split cleanly. This pack gives sponsor, admin, workbook owner, and finance a focused message with one owner ask and one due date.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open pilot pitch</button>
+                <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+                <button class="ghost-btn" type="button" data-view="Command">Open command</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Email score</span>
+              <strong>${model.kickoffProofHandoffEmailPack.score}%</strong>
+              <p>${escapeHtml(model.kickoffProofHandoffEmailPack.handoffState)}</p>
+              <small>${model.kickoffProofHandoffEmailPack.emails.length} owner messages ready</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.kickoffProofHandoffEmailPack.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-kickoff-email-grid">
+            ${model.kickoffProofHandoffEmailPack.emails
+              .map(
+                ([audience, owner, subject, due, action, body, tone]) => `
+                  <article class="tone-${escapeHtml(tone)}">
+                    <span class="metric-label">${escapeHtml(audience)} handoff</span>
+                    <h4>${escapeHtml(owner)}</h4>
+                    <p>${escapeHtml(action)}</p>
+                    <small>Due ${escapeHtml(due)}</small>
+                    <textarea readonly aria-label="${escapeHtml(audience)} kickoff handoff email">${escapeHtml(`Subject: ${subject}\n\n${body}`)}</textarea>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-kickoff-email-footer">
+            <article class="tone-green">
+              <span class="metric-label">Send rules</span>
+              <h4>Keep kickoff simple</h4>
+              <div class="pilot-kickoff-email-rule-list">
+                ${model.kickoffProofHandoffEmailPack.rules
+                  .map(
+                    ([label, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Handoff digest</span>
+              <h4>Who gets what and when</h4>
+              <textarea readonly aria-label="Kickoff proof handoff email digest">${escapeHtml(model.kickoffProofHandoffEmailPack.digest)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-handoff-sheet">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v253 Pilot Handoff Sheet</span>
+              <h3>Put the pilot in one page</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.pilotHandoffSheet.downloadHref)}" download="pursuitdesk-pilot-handoff-sheet-v253.json">Download handoff JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-handoff-hero">
+            <div>
+              <span>Founder handoff</span>
+              <strong>${escapeHtml(model.pilotHandoffSheet.pilotHandoffSheetId)}</strong>
+              <p>A clean one-page pilot handoff joins the buyer review, access split, pricing, kickoff date, review date, and next action without opening more rooms.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review buyer pack</button>
+                <button class="ghost-btn" type="button" data-view="Membership">Open membership</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Handoff score</span>
+              <strong>${model.pilotHandoffSheet.score}%</strong>
+              <p>${escapeHtml(model.pilotHandoffSheet.packageLabel)} / ${escapeHtml(model.pilotHandoffSheet.kickoffTarget)}</p>
+              <small>${escapeHtml(model.pilotHandoffSheet.reviewTarget)} review target</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.pilotHandoffSheet.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-handoff-grid">
+            <article class="tone-green">
+              <span class="metric-label">Launch sequence</span>
+              <h4>What happens next</h4>
+              <div class="pilot-handoff-list">
+                ${model.pilotHandoffSheet.steps
+                  .map(
+                    ([step, title, detail, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(`${step}. ${title}`)}</strong>
+                        <span>${escapeHtml(detail)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Access split</span>
+              <h4>Who joins the pilot</h4>
+              <div class="pilot-handoff-list">
+                ${model.pilotHandoffSheet.users
+                  .slice(0, 4)
+                  .map(
+                    (user) => `
+                      <p>
+                        <strong>${escapeHtml(user.name)} / ${escapeHtml(user.role)}</strong>
+                        <span>${escapeHtml(user.access)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-amber">
+              <span class="metric-label">Pilot checks</span>
+              <h4>Before kickoff</h4>
+              <div class="pilot-handoff-list">
+                ${model.pilotHandoffSheet.checklist
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-handoff-summary">
+            <div>
+              <span>Monthly</span>
+              <strong>${escapeHtml(model.pilotHandoffSheet.monthlyPlanCost)}</strong>
+              <p>${escapeHtml(model.pilotHandoffSheet.packageLabel)}</p>
+            </div>
+            <div>
+              <span>Setup/import</span>
+              <strong>${escapeHtml(model.pilotHandoffSheet.setupEstimate)}</strong>
+              <p>One-time launch support</p>
+            </div>
+            <div>
+              <span>First invoice</span>
+              <strong>${escapeHtml(model.pilotHandoffSheet.firstMonthCost)}</strong>
+              <p>Subscription plus setup</p>
+            </div>
+            <div>
+              <span>Review</span>
+              <strong>${escapeHtml(model.pilotHandoffSheet.reviewTarget)}</strong>
+              <p>Convert, revise, or stop</p>
+            </div>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Handoff digest</span>
+              <h4>Everything needed for kickoff</h4>
+              <textarea readonly aria-label="Pilot handoff sheet digest">${escapeHtml(model.pilotHandoffSheet.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready pilot handoff</span>
+              <h4>Send to sponsor or internal team</h4>
+              <textarea readonly aria-label="Copy-ready pilot handoff sheet">${escapeHtml(model.pilotHandoffSheet.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-kickoff-confirmation">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v254 Pilot Kickoff Confirmation</span>
+              <h3>Confirm the pilot before work starts</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.pilotKickoffConfirmation.downloadHref)}" download="pursuitdesk-pilot-kickoff-confirmation-v254.json">Download kickoff JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-kickoff-hero">
+            <div>
+              <span>Start gate</span>
+              <strong>${escapeHtml(model.pilotKickoffConfirmation.pilotKickoffConfirmationId)}</strong>
+              <p>This layer turns the handoff into a simple start decision: named owners, first invoice estimate, kickoff date, review date, and clean privacy gates.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Review handoff</button>
+                <button class="ghost-btn" type="button" data-view="Tenders">Open tenders</button>
+                <button class="ghost-btn" type="button" data-view="Projects">Open projects</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Kickoff score</span>
+              <strong>${model.pilotKickoffConfirmation.score}%</strong>
+              <p>${escapeHtml(model.pilotKickoffConfirmation.status)}</p>
+              <small>Start only when owner, workbook, invoice, access, and review gates are clear.</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.pilotKickoffConfirmation.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-kickoff-confirmation-grid">
+            <article class="tone-green">
+              <span class="metric-label">Named owners</span>
+              <h4>Who must confirm</h4>
+              <div class="pilot-kickoff-list">
+                ${model.pilotKickoffConfirmation.confirmations
+                  .slice(0, 4)
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Control dates</span>
+              <h4>When the pilot moves</h4>
+              <div class="pilot-kickoff-list">
+                ${model.pilotKickoffConfirmation.confirmations
+                  .slice(4)
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-teal">
+              <span class="metric-label">Go-live gates</span>
+              <h4>Start only when these are true</h4>
+              <div class="pilot-kickoff-list">
+                ${model.pilotKickoffConfirmation.gates
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Kickoff digest</span>
+              <h4>Confirmation record</h4>
+              <textarea readonly aria-label="Pilot kickoff confirmation digest">${escapeHtml(model.pilotKickoffConfirmation.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready kickoff confirmation</span>
+              <h4>Send before the pilot starts</h4>
+              <textarea readonly aria-label="Copy-ready kickoff confirmation">${escapeHtml(model.pilotKickoffConfirmation.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-first-week-pulse">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v257 Pilot First-Week Pulse</span>
+              <h3>Make the first seven days impossible to ignore</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.pilotFirstWeekPulse.downloadHref)}" download="pursuitdesk-pilot-first-week-pulse-v257.json">Download pulse JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-first-week-hero">
+            <div>
+              <span>First-week pulse</span>
+              <strong>${escapeHtml(model.pilotFirstWeekPulse.pilotFirstWeekPulseId)}</strong>
+              <p>After kickoff, the pilot has to become visible usage fast. This pulse turns day-1 access, day-3 row movement, and day-7 review proof into one simple follow-up surface.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Command">Open command</button>
+                <button class="ghost-btn" type="button" data-view="Tenders">Open tenders</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Pulse score</span>
+              <strong>${model.pilotFirstWeekPulse.score}%</strong>
+              <p>${escapeHtml(model.pilotFirstWeekPulse.pulseState)}</p>
+              <small>Day 1 access / Day 3 movement / Day 7 review</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.pilotFirstWeekPulse.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-first-week-grid">
+            <article class="tone-green">
+              <span class="metric-label">Checkpoint rhythm</span>
+              <h4>Day 1, Day 3, Day 7</h4>
+              <div class="pilot-first-week-list">
+                ${model.pilotFirstWeekPulse.checkpoints
+                  .map(
+                    (checkpoint) => `
+                      <p class="tone-${escapeHtml(checkpoint.tone)}">
+                        <strong>${escapeHtml(`${checkpoint.day} / ${checkpoint.title}`)}</strong>
+                        <span>${escapeHtml(`${checkpoint.date} / ${checkpoint.owner} / ${checkpoint.metric}`)}</span>
+                        <small>${escapeHtml(checkpoint.detail)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Owner queue</span>
+              <h4>Who moves before week one closes</h4>
+              <div class="pilot-first-week-list">
+                ${model.pilotFirstWeekPulse.ownerQueue
+                  .map(
+                    ([role, owner, action, due, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(role)} / ${escapeHtml(owner)}</strong>
+                        <span>${escapeHtml(action)}</span>
+                        <small>Due ${escapeHtml(due)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-teal">
+              <span class="metric-label">Proof checks</span>
+              <h4>What proves the pilot is alive</h4>
+              <div class="pilot-first-week-list">
+                ${model.pilotFirstWeekPulse.proofChecks
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">First-week digest</span>
+              <h4>Usage proof before the pilot goes quiet</h4>
+              <textarea readonly aria-label="Pilot first-week pulse digest">${escapeHtml(model.pilotFirstWeekPulse.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready first-week message</span>
+              <h4>Send after kickoff confirmation</h4>
+              <textarea readonly aria-label="Copy-ready pilot first-week pulse">${escapeHtml(model.pilotFirstWeekPulse.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-first-week-proof-inbox">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v260 First-Week Proof Inbox</span>
+              <h3>Collect pilot evidence before it goes quiet</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.firstWeekProofInbox.downloadHref)}" download="pursuitdesk-first-week-proof-inbox-v260.json">Download proof JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-proof-inbox-hero">
+            <div>
+              <span>First-week proof inbox</span>
+              <strong>${escapeHtml(model.firstWeekProofInbox.firstWeekProofInboxId)}</strong>
+              <p>Every pilot needs proof, not just enthusiasm. This inbox keeps first login, row movement, report review, privacy proof, and sponsor signal in one quiet evidence surface.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open pilot pitch</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+                <button class="ghost-btn" type="button" data-view="Command">Open command</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Proof score</span>
+              <strong>${model.firstWeekProofInbox.score}%</strong>
+              <p>${escapeHtml(model.firstWeekProofInbox.inboxState)}</p>
+              <small>${model.firstWeekProofInbox.capturedOrReady} ready / ${model.firstWeekProofInbox.blockedOrWaiting} waiting</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.firstWeekProofInbox.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-proof-inbox-grid">
+            <article class="tone-green">
+              <span class="metric-label">Evidence inbox</span>
+              <h4>Five proof lanes</h4>
+              <div class="pilot-proof-inbox-list">
+                ${model.firstWeekProofInbox.proofRows
+                  .map(
+                    ([label, owner, due, value, proofState, proof, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(proofState)}</strong>
+                        <span>${escapeHtml(`${owner} / ${due} / ${value}`)}</span>
+                        <small>${escapeHtml(proof)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Proof rules</span>
+              <h4>Keep the pilot evidence clean</h4>
+              <div class="pilot-proof-inbox-list">
+                ${model.firstWeekProofInbox.checklist
+                  .map(
+                    ([label, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Proof digest</span>
+              <h4>Evidence lanes and source links</h4>
+              <textarea readonly aria-label="First-week proof inbox digest">${escapeHtml(model.firstWeekProofInbox.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready proof follow-up</span>
+              <h4>Send before week one closes</h4>
+              <textarea readonly aria-label="Copy-ready first-week proof inbox">${escapeHtml(model.firstWeekProofInbox.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-first-week-review-pack">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v261 First-Week Review Pack</span>
+              <h3>Turn first-week proof into a buyer-safe review</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.firstWeekReviewPack.downloadHref)}" download="pursuitdesk-first-week-review-pack-v261.json">Download review JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-review-pack-hero">
+            <div>
+              <span>Customer review pack</span>
+              <strong>${escapeHtml(model.firstWeekReviewPack.firstWeekReviewPackId)}</strong>
+              <p>Use the first-week proof inbox to run a short customer review: what opened, what moved, what stayed private, and what decision is needed next.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open pilot pitch</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+                <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Review score</span>
+              <strong>${model.firstWeekReviewPack.score}%</strong>
+              <p>${escapeHtml(model.firstWeekReviewPack.reviewState)}</p>
+              <small>Buyer-safe proof only</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.firstWeekReviewPack.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-review-pack-grid">
+            <article class="tone-green">
+              <span class="metric-label">Buyer-safe proof</span>
+              <h4>What can be shown</h4>
+              <div class="pilot-review-pack-list">
+                ${model.firstWeekReviewPack.buyerSafeProofRows
+                  .map(
+                    ([label, note, value, date, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>
+                        <span>${escapeHtml(date)}</span>
+                        <small>${escapeHtml(note)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Review agenda</span>
+              <h4>Four-step conversation</h4>
+              <div class="pilot-review-pack-list">
+                ${model.firstWeekReviewPack.agenda
+                  .map(
+                    ([step, title, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(step)}. ${escapeHtml(title)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-teal">
+              <span class="metric-label">Decision path</span>
+              <h4>What to ask for</h4>
+              <div class="pilot-review-pack-list">
+                ${model.firstWeekReviewPack.decisionLanes
+                  .map(
+                    ([label, note, state, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(state)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Review digest</span>
+              <h4>Short proof story for the founder</h4>
+              <textarea readonly aria-label="First-week review pack digest">${escapeHtml(model.firstWeekReviewPack.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready review email</span>
+              <h4>Send before the customer review</h4>
+              <textarea readonly aria-label="Copy-ready first-week review pack">${escapeHtml(model.firstWeekReviewPack.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-first-week-review-send-receipt">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v264 Review Pack Send Receipt</span>
+              <h3>Record who received the first-week review</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.firstWeekReviewSendReceipt.downloadHref)}" download="pursuitdesk-first-week-review-send-receipt-v264.json">Download send receipt JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-review-send-hero">
+            <div>
+              <span>Buyer review send receipt</span>
+              <strong>${escapeHtml(model.firstWeekReviewSendReceipt.firstWeekReviewSendReceiptId)}</strong>
+              <p>The review pack now gets a simple send receipt: who received it, what proof was shown, what stayed private, and what decision date the buyer must answer.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open pilot pitch</button>
+                <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+                <button class="ghost-btn" type="button" data-view="Membership">Check access</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Receipt score</span>
+              <strong>${model.firstWeekReviewSendReceipt.score}%</strong>
+              <p>${escapeHtml(model.firstWeekReviewSendReceipt.sendState)}</p>
+              <small>Decision due ${escapeHtml(model.firstWeekReviewSendReceipt.decisionDue)}</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.firstWeekReviewSendReceipt.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-review-send-grid">
+            <article class="tone-green">
+              <span class="metric-label">Recipients</span>
+              <h4>Who receives it</h4>
+              <div class="pilot-review-send-list">
+                ${model.firstWeekReviewSendReceipt.recipients
+                  .map(
+                    (recipient) => `
+                      <p>
+                        <strong>${escapeHtml(recipient.name)}</strong>
+                        <span>${escapeHtml(recipient.role)} / ${escapeHtml(recipient.access)}</span>
+                        <small>${escapeHtml(recipient.email)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Proof shown</span>
+              <h4>Buyer-safe evidence</h4>
+              <div class="pilot-review-send-list">
+                ${model.firstWeekReviewSendReceipt.visibleProof
+                  .map(
+                    (proof) => `
+                      <p class="tone-${escapeHtml(proof.tone)}">
+                        <strong>${escapeHtml(proof.id)} / ${escapeHtml(proof.label)}</strong>
+                        <span>${escapeHtml(proof.value)} / ${escapeHtml(proof.date)}</span>
+                        <small>${escapeHtml(proof.note)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-amber">
+              <span class="metric-label">Kept private</span>
+              <h4>Commercial guardrails</h4>
+              <div class="pilot-review-send-list">
+                ${model.firstWeekReviewSendReceipt.privateRows
+                  .map(
+                    ([label, note, state, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(state)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-teal">
+              <span class="metric-label">Send rules</span>
+              <h4>Next buyer decision</h4>
+              <div class="pilot-review-send-list">
+                ${model.firstWeekReviewSendReceipt.rules
+                  .map(
+                    ([label, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Send receipt digest</span>
+              <h4>Recipients, proof, private fields, and decision date</h4>
+              <textarea readonly aria-label="First-week review send receipt digest">${escapeHtml(model.firstWeekReviewSendReceipt.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready send note</span>
+              <h4>Use after sending the review pack</h4>
+              <textarea readonly aria-label="Copy-ready first-week review send receipt">${escapeHtml(model.firstWeekReviewSendReceipt.email)}</textarea>
+            </article>
           </div>
         </section>
 
@@ -69523,6 +72389,8 @@
         access: normalizeUserAccess(user),
       };
       state.message = "";
+      state.roomMemory = loadRoomMemory(state.user);
+      state.view = preferredStartView(state.user, state.roomMemory) || "Command";
       persistSession(state.user);
       render();
       scrollToTop();
@@ -69616,6 +72484,30 @@
       return;
     }
 
+    if (action === "set-navigation-default") {
+      setNavigationDefault(button.dataset.view || state.view);
+      render();
+      return;
+    }
+
+    if (action === "apply-navigation-preset") {
+      applyNavigationPreset(button.dataset.preset);
+      render();
+      return;
+    }
+
+    if (action === "pin-room") {
+      togglePinnedRoom(button.dataset.view || state.view);
+      render();
+      return;
+    }
+
+    if (action === "clear-navigation-memory") {
+      clearNavigationMemory();
+      render();
+      return;
+    }
+
     if (action === "toggle-rooms") {
       state.roomsOpen = !state.roomsOpen;
       render();
@@ -69644,6 +72536,7 @@
         return;
       }
       state.view = button.dataset.view;
+      rememberRoomView(state.view);
       state.roomsOpen = false;
       if (state.view === "Tenders Insights") state.insightLens = "Tendering";
       if (state.view === "Project Insights") state.insightLens = "Projects";
@@ -69660,6 +72553,7 @@
       state.quickSearchOpen = false;
       state.quickSearch = "";
       state.roomsOpen = false;
+      state.roomMemory = loadRoomMemory(null);
       persistSession(null);
       render();
       return;
