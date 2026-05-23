@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=264";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=264";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=273";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=273";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1210,7 +1210,7 @@
       ["Policy templates", `${rows.length}`, "Operations, management, commercial, and governance", "teal"],
       ["Active preset", activeRow?.label || "Operations user", "Current browser navigation memory", activeRow?.tone || "green"],
       ["Grantable rooms", `${grantCount}`, "Future Membership access sections covered", "blue"],
-      ["Audit event", activeRow?.auditEvent || "navigation_preset_applied", "Every apply becomes an admin event", "amber"],
+      ["Audit event", "Preset applied", activeRow?.auditEvent || "navigation_preset_applied", "amber"],
     ];
     const rules = [
       ["Preset is not permission", "A preset suggests the path; Membership still grants access.", "green"],
@@ -1239,6 +1239,421 @@
       summaryCards,
       rules,
       digest: packet.digest,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function buildPresetPolicyApplyReceipt(memory = state.roomMemory) {
+    const normalized = normalizeRoomMemory(memory);
+    const activePreset = NAVIGATION_ROLE_PRESETS.find((preset) => preset.key === normalized.presetKey) || NAVIGATION_ROLE_PRESETS[0];
+    const appliedBy = state.user?.name || "PursuitDesk Admin";
+    const appliedAt = new Date();
+    const appliedLabel = formatDate(appliedAt.toISOString().slice(0, 10));
+    const defaultRoom = normalized.defaultView || activePreset.defaultView || "Command";
+    const visiblePins = (normalized.pinnedViews.length ? normalized.pinnedViews : activePreset.pinnedViews)
+      .filter((view) => isKnownView(view))
+      .slice(0, 5);
+    const afterRooms = Array.from(new Set([defaultRoom, ...visiblePins].filter(Boolean)));
+    const beforeRooms = ["Command", "Tenders", "Projects", "Weekly Review", "Reports"].filter((view) => isKnownView(view));
+    const changedRooms = afterRooms.filter((view) => !beforeRooms.includes(view));
+    const grantableKeys = new Set(GRANTABLE_ACCESS_SECTIONS.map((section) => section.key));
+    const grantKeys = Array.from(
+      new Set(afterRooms.map((view) => sectionForView(view)).filter((key) => grantableKeys.has(key))),
+    );
+    const receiptId = `PD-PRESET-APPLY-${String(activePreset.key || "operations").toUpperCase()}-${appliedAt.toISOString().slice(0, 10).replaceAll("-", "")}`;
+    const auditEvent = `navigation_preset_apply_receipt:${activePreset.key}`;
+    const changedLabel = changedRooms.length ? changedRooms.map(simpleRoomLabel).join(" / ") : "No new rooms";
+    const grantLabel = accessLabelForKeys(grantKeys) || "No grant change";
+    const receiptCards = [
+      ["Applied preset", activePreset.label, `${appliedBy} applied this browser start path.`, activePreset.tone || "teal"],
+      ["Rooms changed", changedRooms.length || "0", changedLabel, changedRooms.length ? "blue" : "green"],
+      ["Grant proposal", grantKeys.length, grantLabel, "green"],
+      ["Audit packet", "Ready", auditEvent, "amber"],
+    ];
+    const receiptRows = [
+      ["Default start", simpleRoomLabel(defaultRoom), "The first room this role should open.", "green"],
+      ["Pinned rooms", visiblePins.map(simpleRoomLabel).join(" / ") || "None", "Quick rooms shown before the full menu.", "teal"],
+      ["Proposed grants", grantLabel, "Future Membership can convert this into access sections.", "blue"],
+      ["Audit event", auditEvent, "Backend should write this event when the preset is applied.", "amber"],
+    ];
+    const checklist = [
+      ["Apply is reversible", "Reset memory returns the browser to Operations defaults.", "green"],
+      ["Membership still rules", "Preset does not override actual user access grants.", "blue"],
+      ["Admin owns change", `${appliedBy} is recorded as the receipt owner for demo audit.`, "teal"],
+      ["Commercial stays separate", "Commercial grants are proposed, not silently given to tracker users.", "amber"],
+    ];
+    const digest = [
+      `Preset Policy Apply Receipt ${receiptId}`,
+      `Applied preset: ${activePreset.label}`,
+      `Applied by: ${appliedBy}`,
+      `Applied on: ${appliedLabel}`,
+      `Default room: ${simpleRoomLabel(defaultRoom)}`,
+      `Pinned rooms: ${visiblePins.map(simpleRoomLabel).join("; ") || "None"}`,
+      `Proposed grants: ${grantLabel}`,
+      `Changed rooms from operations baseline: ${changedLabel}`,
+      `Audit event: ${auditEvent}`,
+    ].join("\n");
+    const packet = {
+      schemaVersion: "pursuitdesk.presetPolicyApplyReceipt.v266",
+      generatedAt: appliedAt.toISOString(),
+      receiptId,
+      company: state.data.company.name,
+      appliedBy,
+      activePreset: activePreset.key,
+      defaultRoom,
+      pinnedViews: visiblePins,
+      changedRooms,
+      grantKeys,
+      grantLabel,
+      auditEvent,
+      receiptRows: receiptRows.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      checklist: checklist.map(([label, note, tone]) => ({ label, note, tone })),
+      digest,
+      nextBackendFields: [
+        "navigation_preset_apply_receipt_id",
+        "tenant_id",
+        "applied_by_user_id",
+        "preset_key",
+        "before_room_json",
+        "after_room_json",
+        "proposed_grant_keys",
+        "membership_approval_state",
+        "navigation_preset_apply_audit_event",
+      ],
+    };
+    return {
+      receiptId,
+      activePreset,
+      appliedBy,
+      appliedAt: appliedAt.toISOString(),
+      defaultRoom,
+      pinnedViews: visiblePins,
+      changedRooms,
+      grantKeys,
+      grantLabel,
+      auditEvent,
+      cards: receiptCards,
+      rows: receiptRows,
+      checklist,
+      digest,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function buildPresetGrantApprovalQueue(memory = state.roomMemory, applyReceipt = buildPresetPolicyApplyReceipt(memory)) {
+    const normalized = normalizeRoomMemory(memory);
+    const activePreset = applyReceipt.activePreset || NAVIGATION_ROLE_PRESETS.find((preset) => preset.key === normalized.presetKey) || NAVIGATION_ROLE_PRESETS[0];
+    const generatedAt = new Date();
+    const approvalId = `PD-PRESET-GRANT-${String(activePreset.key || "operations").toUpperCase()}-${generatedAt.toISOString().slice(0, 10).replaceAll("-", "")}`;
+    const proposedKeys = Array.isArray(applyReceipt.grantKeys) ? applyReceipt.grantKeys : [];
+    const sensitiveKeys = new Set(["advisor", "autopilot", "timeMachine", "winLab", "decisionTwin", "tenderInsights", "projectInsights", "forecast", "clients", "contracts"]);
+    const rows = proposedKeys.map((key) => {
+      const section = GRANTABLE_ACCESS_SECTIONS.find((item) => item.key === key) || ACCESS_SECTIONS.find((item) => item.key === key);
+      const label = section?.label || key;
+      const needsManager = sensitiveKeys.has(key);
+      const decision = needsManager ? "Hold" : "Approve";
+      return {
+        grantKey: key,
+        sectionLabel: label,
+        decision,
+        reviewer: needsManager ? "Manager approval" : "Admin release",
+        reason: needsManager
+          ? "Insight, commercial, or intelligence room needs explicit management approval before access changes."
+          : "Operational room matches the preset and can be released after admin confirmation.",
+        effect: needsManager ? "Keep proposed until Membership approval is recorded." : "Convert into active room access after approval.",
+        tone: needsManager ? "amber" : "green",
+      };
+    });
+    rows.push({
+      grantKey: "membership",
+      sectionLabel: "Membership Model",
+      decision: "Reject",
+      reviewer: "Company owner",
+      reason: "Billing, subscription, and seat controls stay admin-only and cannot be granted by a navigation preset.",
+      effect: "No access change. Grant only from the Membership Model when the account owner approves it.",
+      tone: "red",
+    });
+    const approveCount = rows.filter((row) => row.decision === "Approve").length;
+    const holdCount = rows.filter((row) => row.decision === "Hold").length;
+    const rejectCount = rows.filter((row) => row.decision === "Reject").length;
+    const cards = [
+      ["Queue state", "Approval required", `${rows.length} proposed access decisions`, "blue"],
+      ["Approve", approveCount, "Operational rooms ready for release", "green"],
+      ["Hold", holdCount, "Management or commercial rooms need review", "amber"],
+      ["Reject", rejectCount, "Admin-only areas blocked", "red"],
+    ];
+    const rules = [
+      ["Preset suggests", "The preset can propose access sections, but it does not activate them.", "blue"],
+      ["Admin approves", "Company admin must approve every grant before Membership changes.", "green"],
+      ["Commercial holds", "Insight, value, contract, and client rooms remain held until management approves.", "amber"],
+      ["Membership protected", "Billing and seat control remains admin-only by rule.", "red"],
+    ];
+    const digest = [
+      `Preset Grant Approval Queue ${approvalId}`,
+      `Source receipt: ${applyReceipt.receiptId}`,
+      `Preset: ${activePreset.label}`,
+      `Proposed grants: ${applyReceipt.grantLabel || accessLabelForKeys(proposedKeys) || "No grant change"}`,
+      `Approve: ${approveCount}`,
+      `Hold: ${holdCount}`,
+      `Reject: ${rejectCount}`,
+      "Membership access changes only after an approved decision row is written.",
+    ].join("\n");
+    const packet = {
+      schemaVersion: "pursuitdesk.presetGrantApprovalQueue.v269",
+      generatedAt: generatedAt.toISOString(),
+      approvalId,
+      sourceReceiptId: applyReceipt.receiptId,
+      company: state.data.company.name,
+      presetKey: activePreset.key,
+      presetLabel: activePreset.label,
+      proposedGrantKeys: proposedKeys,
+      decisions: rows.map((row) => ({
+        grantKey: row.grantKey,
+        sectionLabel: row.sectionLabel,
+        decision: row.decision,
+        reviewer: row.reviewer,
+        reason: row.reason,
+        effect: row.effect,
+      })),
+      rules: rules.map(([label, note, tone]) => ({ label, note, tone })),
+      digest,
+      nextBackendFields: [
+        "preset_grant_approval_queue_id",
+        "navigation_preset_apply_receipt_id",
+        "tenant_id",
+        "target_user_id",
+        "proposed_grant_key",
+        "grant_decision_state",
+        "grant_reviewer_role",
+        "approval_reason",
+        "membership_access_change_state",
+        "grant_approval_audit_event",
+      ],
+    };
+    return {
+      approvalId,
+      approveCount,
+      holdCount,
+      rejectCount,
+      cards,
+      rows,
+      rules,
+      digest,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function buildPresetGrantFollowUpTasks(memory = state.roomMemory, applyReceipt = buildPresetPolicyApplyReceipt(memory), grantApprovalQueue = buildPresetGrantApprovalQueue(memory, applyReceipt)) {
+    const generatedAt = new Date();
+    const taskPackId = `PD-GRANT-FOLLOWUP-${String(applyReceipt.activePreset?.key || "operations").toUpperCase()}-${generatedAt.toISOString().slice(0, 10).replaceAll("-", "")}`;
+    const dueLabel = (offsetDays) => {
+      const dueDate = new Date(generatedAt);
+      dueDate.setDate(dueDate.getDate() + offsetDays);
+      return formatDate(dueDate.toISOString().slice(0, 10));
+    };
+    const taskRows = grantApprovalQueue.rows.map((row, index) => {
+      const decision = row.decision;
+      const isApprove = decision === "Approve";
+      const isHold = decision === "Hold";
+      const isReject = decision === "Reject";
+      return {
+        taskId: `${taskPackId}-${String(index + 1).padStart(2, "0")}`,
+        sectionLabel: row.sectionLabel,
+        decision,
+        owner: isApprove ? "Company admin" : isHold ? row.reviewer : "Account owner",
+        due: isApprove ? dueLabel(1) : isHold ? dueLabel(2) : dueLabel(0),
+        lane: isApprove ? "Release access" : isHold ? "Request signoff" : "Keep blocked",
+        action: isApprove
+          ? `Release ${row.sectionLabel} in Membership access, then confirm the user can open only the approved room.`
+          : isHold
+            ? `Keep ${row.sectionLabel} proposed and request a management approval note before any Membership change.`
+            : `Keep ${row.sectionLabel} disabled and record why the preset cannot grant it.`,
+        reminder: isApprove
+          ? "Write the access-change audit event after Membership is updated."
+          : isHold
+            ? "Review again after the manager gives approve, hold, or reject."
+            : "Do not reopen this grant from navigation presets; only the account owner can change it.",
+        tone: isApprove ? "green" : isHold ? "amber" : "red",
+      };
+    });
+    const releaseCount = taskRows.filter((row) => row.decision === "Approve").length;
+    const signoffCount = taskRows.filter((row) => row.decision === "Hold").length;
+    const blockedCount = taskRows.filter((row) => row.decision === "Reject").length;
+    const primaryTask = taskRows.find((row) => row.decision === "Hold") || taskRows.find((row) => row.decision === "Approve") || taskRows[0];
+    const cards = [
+      ["Task pack", taskRows.length, "Every approval decision now has an admin follow-up action.", "teal"],
+      ["Release now", releaseCount, "Operational rooms can be activated from Membership.", "green"],
+      ["Needs signoff", signoffCount, "Management or commercial rooms stay held until reviewed.", "amber"],
+      ["Blocked", blockedCount, "Admin-only areas remain protected.", "red"],
+    ];
+    const checks = [
+      ["Membership is source", "Navigation presets propose access, but Membership still performs the real change.", "green"],
+      ["Held rooms stay held", "Commercial, client, contract, and intelligence sections need a manager note before release.", "amber"],
+      ["Billing stays protected", "Membership Model cannot be granted from a navigation preset.", "red"],
+      ["Audit every movement", "Each release, hold, or rejection becomes an audit reminder for the backend.", "blue"],
+    ];
+    const digest = [
+      `Preset Grant Follow-up Tasks ${taskPackId}`,
+      `Source approval queue: ${grantApprovalQueue.approvalId}`,
+      `Source apply receipt: ${applyReceipt.receiptId}`,
+      `Primary task: ${primaryTask.lane} / ${primaryTask.sectionLabel} / ${primaryTask.owner} / due ${primaryTask.due}`,
+      `Release: ${releaseCount}`,
+      `Signoff: ${signoffCount}`,
+      `Blocked: ${blockedCount}`,
+      `Task rows: ${taskRows.map((row) => `${row.decision} / ${row.sectionLabel} / ${row.owner} / ${row.due} / ${row.action}`).join("; ")}`,
+      "Rule: follow-up tasks may change Membership access only after a recorded approval decision and audit reminder.",
+    ].join("\n");
+    const email = [
+      `Subject: PursuitDesk access approval follow-up - ${primaryTask.sectionLabel}`,
+      "",
+      `Hi ${primaryTask.owner},`,
+      "",
+      `The preset approval queue created a follow-up task: ${primaryTask.action}`,
+      `Due: ${primaryTask.due}.`,
+      `Reminder: ${primaryTask.reminder}`,
+      "",
+      "Please keep Membership as the source of access control and record the audit event after the task is closed.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const packet = {
+      schemaVersion: "pursuitdesk.presetGrantFollowUpTasks.v272",
+      generatedAt: generatedAt.toISOString(),
+      taskPackId,
+      sourceApprovalId: grantApprovalQueue.approvalId,
+      sourceReceiptId: applyReceipt.receiptId,
+      company: state.data.company.name,
+      presetKey: applyReceipt.activePreset?.key || "operations",
+      presetLabel: applyReceipt.activePreset?.label || "Operations user",
+      primaryTask,
+      releaseCount,
+      signoffCount,
+      blockedCount,
+      cards: cards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      tasks: taskRows,
+      checks: checks.map(([label, note, tone]) => ({ label, note, tone })),
+      digest,
+      email,
+      nextBackendFields: [
+        "preset_grant_follow_up_task_pack_id",
+        "preset_grant_approval_queue_id",
+        "navigation_preset_apply_receipt_id",
+        "target_user_id",
+        "access_task_state",
+        "access_task_owner_role",
+        "access_task_due_at",
+        "membership_access_change_id",
+        "grant_follow_up_audit_event",
+      ],
+    };
+    return {
+      taskPackId,
+      primaryTask,
+      releaseCount,
+      signoffCount,
+      blockedCount,
+      cards,
+      taskRows,
+      checks,
+      digest,
+      email,
+      downloadHref: jsonDataUri(packet),
+    };
+  }
+
+  function buildPresetGrantExecutionReceipt(memory = state.roomMemory, applyReceipt = buildPresetPolicyApplyReceipt(memory), grantApprovalQueue = buildPresetGrantApprovalQueue(memory, applyReceipt), grantFollowUpTasks = buildPresetGrantFollowUpTasks(memory, applyReceipt, grantApprovalQueue)) {
+    const executedAt = new Date();
+    const receiptId = `PD-GRANT-EXEC-${String(applyReceipt.activePreset?.key || "operations").toUpperCase()}-${executedAt.toISOString().slice(0, 10).replaceAll("-", "")}`;
+    const executionRows = grantFollowUpTasks.taskRows.map((task, index) => {
+      const released = task.decision === "Approve";
+      const held = task.decision === "Hold";
+      return {
+        receiptRowId: `${receiptId}-${String(index + 1).padStart(2, "0")}`,
+        sectionLabel: task.sectionLabel,
+        taskId: task.taskId,
+        owner: task.owner,
+        due: task.due,
+        outcome: released ? "Released" : held ? "Held again" : "Blocked",
+        evidence: released
+          ? "Membership access change queued with section-limited verification."
+          : held
+            ? "Manager approval note still required before access can change."
+            : "Admin-only section remains blocked with reason retained.",
+        auditEvent: released
+          ? `membership_access_released:${task.sectionLabel}`
+          : held
+            ? `membership_access_hold:${task.sectionLabel}`
+            : `membership_access_blocked:${task.sectionLabel}`,
+        tone: released ? "green" : held ? "amber" : "red",
+      };
+    });
+    const releasedCount = executionRows.filter((row) => row.outcome === "Released").length;
+    const heldAgainCount = executionRows.filter((row) => row.outcome === "Held again").length;
+    const blockedCount = executionRows.filter((row) => row.outcome === "Blocked").length;
+    const auditReadyCount = executionRows.filter((row) => row.auditEvent).length;
+    const cards = [
+      ["Receipt", "Execution ready", `${executionRows.length} access task outcomes`, "blue"],
+      ["Released", releasedCount, "Operational rooms can move to Membership access.", "green"],
+      ["Held again", heldAgainCount, "Sensitive rooms still need management signoff.", "amber"],
+      ["Blocked", blockedCount, "Admin-only grants stay protected.", "red"],
+    ];
+    const closeRules = [
+      ["Verify user view", "After release, preview the target user before telling the team access is live.", "green"],
+      ["Do not auto-release holds", "Held rooms need a fresh management decision before Membership changes.", "amber"],
+      ["Keep billing closed", "Membership Model remains outside preset grants and cannot be released from Rooms.", "red"],
+      ["Write audit memory", `${auditReadyCount} receipt rows define the backend audit events to store.`, "blue"],
+    ];
+    const digest = [
+      `Preset Grant Execution Receipt ${receiptId}`,
+      `Source task pack: ${grantFollowUpTasks.taskPackId}`,
+      `Source approval queue: ${grantApprovalQueue.approvalId}`,
+      `Released: ${releasedCount}`,
+      `Held again: ${heldAgainCount}`,
+      `Blocked: ${blockedCount}`,
+      `Execution rows: ${executionRows.map((row) => `${row.outcome} / ${row.sectionLabel} / ${row.owner} / ${row.auditEvent}`).join("; ")}`,
+      "Rule: execution receipt is proof only; Membership remains the system of record for actual access changes.",
+    ].join("\n");
+    const packet = {
+      schemaVersion: "pursuitdesk.presetGrantExecutionReceipt.v273",
+      executedAt: executedAt.toISOString(),
+      receiptId,
+      sourceTaskPackId: grantFollowUpTasks.taskPackId,
+      sourceApprovalId: grantApprovalQueue.approvalId,
+      sourceReceiptId: applyReceipt.receiptId,
+      company: state.data.company.name,
+      presetKey: applyReceipt.activePreset?.key || "operations",
+      presetLabel: applyReceipt.activePreset?.label || "Operations user",
+      releasedCount,
+      heldAgainCount,
+      blockedCount,
+      auditReadyCount,
+      cards: cards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      executionRows,
+      closeRules: closeRules.map(([label, note, tone]) => ({ label, note, tone })),
+      digest,
+      nextBackendFields: [
+        "preset_grant_execution_receipt_id",
+        "preset_grant_follow_up_task_pack_id",
+        "preset_grant_approval_queue_id",
+        "target_user_id",
+        "section_key",
+        "access_execution_outcome",
+        "membership_access_change_id",
+        "verification_preview_user_id",
+        "grant_execution_audit_event",
+      ],
+    };
+    return {
+      receiptId,
+      releasedCount,
+      heldAgainCount,
+      blockedCount,
+      auditReadyCount,
+      cards,
+      executionRows,
+      closeRules,
+      digest,
       downloadHref: jsonDataUri(packet),
     };
   }
@@ -1644,12 +2059,16 @@
     ].filter((view) => canAccessView(view));
     const activePreset = NAVIGATION_ROLE_PRESETS.find((preset) => preset.key === memory.presetKey);
     const policyHandoff = buildPresetAccessPolicyHandoff(memory);
+    const applyReceipt = buildPresetPolicyApplyReceipt(memory);
+    const grantApprovalQueue = buildPresetGrantApprovalQueue(memory, applyReceipt);
+    const grantFollowUpTasks = buildPresetGrantFollowUpTasks(memory, applyReceipt, grantApprovalQueue);
+    const grantExecutionReceipt = buildPresetGrantExecutionReceipt(memory, applyReceipt, grantApprovalQueue, grantFollowUpTasks);
 
     return `
       <section class="rooms-preference-controls" aria-label="Navigation preference controls">
         <div class="rooms-preference-head">
           <div>
-            <span>v263 preset policy handoff</span>
+            <span>v273 grant task execution receipt</span>
             <strong>Choose how each role should start</strong>
           </div>
           <button class="mini-btn" type="button" data-action="clear-navigation-memory">Reset memory</button>
@@ -1720,6 +2139,206 @@
                 `,
               )
               .join("")}
+          </div>
+        </div>
+        <div class="rooms-apply-receipt" aria-label="Preset policy apply receipt">
+          <div class="rooms-policy-head">
+            <div>
+              <span>Preset policy apply receipt</span>
+              <strong>Show what the admin just changed</strong>
+            </div>
+            <a class="mini-btn rooms-policy-download fixture-export-download" href="${escapeHtml(applyReceipt.downloadHref)}" download="pursuitdesk-preset-policy-apply-receipt-v266.json">Download receipt</a>
+          </div>
+          <div class="rooms-apply-summary">
+            ${applyReceipt.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <article class="rooms-apply-card tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <small>${escapeHtml(note)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="rooms-apply-body">
+            <article>
+              <span>Receipt ledger</span>
+              ${applyReceipt.rows
+                .map(
+                  ([label, value, note, tone]) => `
+                    <p class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)} / ${escapeHtml(value)}</strong>
+                      <small>${escapeHtml(note)}</small>
+                    </p>
+                  `,
+                )
+                .join("")}
+            </article>
+            <article>
+              <span>Apply checklist</span>
+              ${applyReceipt.checklist
+                .map(
+                  ([label, note, tone]) => `
+                    <p class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <small>${escapeHtml(note)}</small>
+                    </p>
+                  `,
+                )
+                .join("")}
+            </article>
+          </div>
+        </div>
+        <div class="rooms-grant-approval" aria-label="Preset grant approval queue">
+          <div class="rooms-policy-head">
+            <div>
+              <span>Preset grant approval queue</span>
+              <strong>Approve access before Membership changes</strong>
+            </div>
+            <a class="mini-btn rooms-policy-download fixture-export-download" href="${escapeHtml(grantApprovalQueue.downloadHref)}" download="pursuitdesk-preset-grant-approval-queue-v269.json">Download queue</a>
+          </div>
+          <div class="rooms-grant-summary">
+            ${grantApprovalQueue.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <article class="rooms-grant-card tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <small>${escapeHtml(note)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="rooms-grant-body">
+            <article>
+              <span>Decision queue</span>
+              ${grantApprovalQueue.rows
+                .map(
+                  (row) => `
+                    <p class="tone-${escapeHtml(row.tone)}">
+                      <strong>${escapeHtml(row.decision)} / ${escapeHtml(row.sectionLabel)}</strong>
+                      <small>${escapeHtml(row.reviewer)} - ${escapeHtml(row.reason)}</small>
+                    </p>
+                  `,
+                )
+                .join("")}
+            </article>
+            <article>
+              <span>Approval rules</span>
+              ${grantApprovalQueue.rules
+                .map(
+                  ([label, note, tone]) => `
+                    <p class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <small>${escapeHtml(note)}</small>
+                    </p>
+                  `,
+                )
+                .join("")}
+            </article>
+          </div>
+        </div>
+        <div class="rooms-grant-approval rooms-grant-followup" aria-label="Grant approval follow-up tasks">
+          <div class="rooms-policy-head">
+            <div>
+              <span>v272 grant approval follow-up tasks</span>
+              <strong>Turn decisions into admin actions</strong>
+            </div>
+            <a class="mini-btn rooms-policy-download fixture-export-download" href="${escapeHtml(grantFollowUpTasks.downloadHref)}" download="pursuitdesk-preset-grant-follow-up-tasks-v272.json">Download tasks</a>
+          </div>
+          <div class="rooms-grant-summary">
+            ${grantFollowUpTasks.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <article class="rooms-grant-card tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <small>${escapeHtml(note)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="rooms-grant-body">
+            <article>
+              <span>Admin task queue</span>
+              ${grantFollowUpTasks.taskRows
+                .map(
+                  (row) => `
+                    <p class="tone-${escapeHtml(row.tone)}">
+                      <strong>${escapeHtml(row.lane)} / ${escapeHtml(row.sectionLabel)}</strong>
+                      <small>${escapeHtml(row.action)} ${escapeHtml(row.owner)} / due ${escapeHtml(row.due)}</small>
+                    </p>
+                  `,
+                )
+                .join("")}
+            </article>
+            <article>
+              <span>Audit reminders</span>
+              ${grantFollowUpTasks.checks
+                .map(
+                  ([label, note, tone]) => `
+                    <p class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <small>${escapeHtml(note)}</small>
+                    </p>
+                  `,
+                )
+                .join("")}
+            </article>
+          </div>
+        </div>
+        <div class="rooms-grant-approval rooms-grant-execution" aria-label="Grant task execution receipt">
+          <div class="rooms-policy-head">
+            <div>
+              <span>v273 grant task execution receipt</span>
+              <strong>Prove which access tasks moved</strong>
+            </div>
+            <a class="mini-btn rooms-policy-download fixture-export-download" href="${escapeHtml(grantExecutionReceipt.downloadHref)}" download="pursuitdesk-preset-grant-execution-receipt-v273.json">Download receipt</a>
+          </div>
+          <div class="rooms-grant-summary">
+            ${grantExecutionReceipt.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <article class="rooms-grant-card tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <small>${escapeHtml(note)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="rooms-grant-body">
+            <article>
+              <span>Execution ledger</span>
+              ${grantExecutionReceipt.executionRows
+                .map(
+                  (row) => `
+                    <p class="tone-${escapeHtml(row.tone)}">
+                      <strong>${escapeHtml(row.outcome)} / ${escapeHtml(row.sectionLabel)}</strong>
+                      <small>${escapeHtml(row.evidence)} ${escapeHtml(row.owner)} / ${escapeHtml(row.auditEvent)}</small>
+                    </p>
+                  `,
+                )
+                .join("")}
+            </article>
+            <article>
+              <span>Close rules</span>
+              ${grantExecutionReceipt.closeRules
+                .map(
+                  ([label, note, tone]) => `
+                    <p class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <small>${escapeHtml(note)}</small>
+                    </p>
+                  `,
+                )
+                .join("")}
+            </article>
           </div>
         </div>
         <div class="rooms-preference-actions">
@@ -17386,7 +18005,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-fixture-export.json?v=264";
+    const downloadHref = "data/backend-fixture-export.json?v=273";
     const exportTables = [
       ["tenants.json", 1, "Company, workspace defaults, billing currency, plan state, and retention settings.", "green"],
       ["users.json", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and role-access fixture users.", "blue"],
@@ -17479,7 +18098,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-sprint-checklist.json?v=264";
+    const downloadHref = "data/backend-sprint-checklist.json?v=273";
     const sprintDays = [
       ["Day 0", "Repo creation and protection", "Private repo, develop branch, labels, milestones, board, first issues, secrets list.", "Repo is private and branch rules are visible.", "Control Admin"],
       ["Day 1", "Workspace skeleton", "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.", "Fresh clone can install and run the empty shell.", "Backend Lead"],
@@ -17593,7 +18212,7 @@
         ),
       ),
     );
-    const downloadHref = "data/staging-deployment-checklist.json?v=264";
+    const downloadHref = "data/staging-deployment-checklist.json?v=273";
     const environmentLanes = [
       ["Staging URL", `staging.${BRAND_DOMAIN}`, "Private pilot preview with test data, HTTPS, cache headers, and admin-only deployment notes.", "green"],
       ["API service", "api-staging", "Backend API deploys from develop or release candidate with health, version, and smoke endpoints.", "blue"],
@@ -17724,7 +18343,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-route-skeleton-map.json?v=264";
+    const downloadHref = "data/backend-route-skeleton-map.json?v=273";
     const routeFiles = [
       ["apps/api/src/server.ts", "Bootstrap", "Health route, request id, middleware chain, error shape, and route registration.", "Platform Owner", "green"],
       ["apps/api/src/middleware/request-context.ts", "Context", "Request id, actor shell, tenant shell, logger scope, and response timing.", "Backend Lead", "blue"],
@@ -17842,7 +18461,7 @@
         ),
       ),
     );
-    const downloadHref = "data/database-migration-blueprint.json?v=264";
+    const downloadHref = "data/database-migration-blueprint.json?v=273";
     const migrationFiles = [
       ["0001_tenant_identity.sql", "Tenant identity", "companies, users, access_profiles, sessions, invitations", "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data.", "Security Owner", "red"],
       ["0002_operational_records.sql", "Operational records", "records, record_notes, record_status_events, client_memory", `Load ${records.length} tracker-safe tender and project records without commercial values.`, "Records Owner", "teal"],
@@ -17981,7 +18600,7 @@
         ),
       ),
     );
-    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=264";
+    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=273";
     const guardFiles = [
       ["apps/api/src/auth/session.ts", "Session guard", "Verify signed session, expiry, inactive user, password reset freshness, and actor context.", "auth.session.test.ts", "Identity Owner", "red"],
       ["apps/api/src/auth/password.ts", "Password policy", "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.", "auth.password.test.ts", "Identity Owner", "red"],
@@ -18137,7 +18756,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-test-command-pack.json?v=264";
+    const downloadHref = "data/backend-test-command-pack.json?v=273";
     const testCommands = [
       ["01", "pnpm test:unit", "Domain unit tests", "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.", "junit-unit.xml", "green"],
       ["02", "pnpm test:contracts", "API contract tests", `${apiContractPack.endpointContracts.length} endpoint contracts for auth, users, records, commercial, import, billing, feedback, and audit.`, "junit-contracts.xml", "blue"],
@@ -18268,7 +18887,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-file-pack.json?v=264";
+    const downloadHref = "data/production-backend-repo-file-pack.json?v=273";
     const repositoryFolders = [
       ["apps/web", "Frontend app", "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.", "Frontend Owner", "green"],
       ["apps/api", "Backend API", "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.", "Backend Lead", "teal"],
@@ -18428,7 +19047,7 @@
         ),
       ),
     );
-    const downloadHref = "data/api-error-audit-envelope-pack.json?v=264";
+    const downloadHref = "data/api-error-audit-envelope-pack.json?v=273";
     const errorEnvelopeFields = [
       ["ok", "boolean", "Always false for errors and true for success responses.", "green"],
       ["requestId", "string", "Public-safe trace id returned to the UI, logs, and audit rows.", "blue"],
@@ -18632,7 +19251,7 @@
         ),
       ),
     );
-    const downloadHref = "data/ci-workflow-file-blueprint.json?v=264";
+    const downloadHref = "data/ci-workflow-file-blueprint.json?v=273";
     const workflowFiles = [
       [".github/workflows/ci.yml", "Primary PR gate", "Pull request", "install, lint, typecheck, unit, contracts, route envelopes, audit envelopes", "ci-summary.json", "red"],
       [".github/workflows/security-audit.yml", "Security and tenant proof", "Pull request + nightly", "auth tenant guards, section denials, commercial vault denial, redaction, request id", "security-audit-proof.json", "red"],
@@ -18803,7 +19422,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-first-commit-builder.json?v=264";
+    const downloadHref = "data/private-repo-first-commit-builder.json?v=273";
     const repoShellFiles = [
       ["README.md", "Repository orientation", "Explains alpha scope, local setup, proof commands, privacy rules, and release ritual.", "Repo Owner", "green"],
       ["package.json", "Root command map", "Defines install, dev, lint, typecheck, test, migrate, seed, smoke, and release-gate scripts.", "Platform Owner", "blue"],
@@ -18935,7 +19554,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-issue-body-exporter.json?v=264";
+    const downloadHref = "data/backend-issue-body-exporter.json?v=273";
     const labelPlan = [
       ["type:foundation", "Repository shell, docs, env examples, and workspace wiring.", "green"],
       ["type:api", "Server, routes, controllers, services, validators, and contracts.", "teal"],
@@ -19212,7 +19831,7 @@
         ),
       ),
     );
-    const downloadHref = "data/branch-protection-release-checklist.json?v=264";
+    const downloadHref = "data/branch-protection-release-checklist.json?v=273";
     const protectedBranches = [
       ["main", "Require pull request review", "ci.yml, security-audit.yml, migration-restore.yml, billing-testmode.yml, release-gate.yml", "No direct push, no force push, owner approval before production release.", "red"],
       ["develop", "Require primary CI", "ci.yml, security-audit.yml", "Feature integration only after lint, typecheck, route envelopes, auth tenant, and redaction proof.", "blue"],
@@ -19368,7 +19987,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-file-content-export.json?v=264";
+    const downloadHref = "data/first-backend-file-content-export.json?v=273";
     const makeFile = (path, owner, issue, purpose, tone, contentLines) => {
       const content = contentLines.join("\n");
       return {
@@ -19793,7 +20412,7 @@
       ),
     );
     const targetRepository = "dhirajnyse/pursuitdesk-platform";
-    const downloadHref = "data/private-repo-setup-script-draft.json?v=264";
+    const downloadHref = "data/private-repo-setup-script-draft.json?v=273";
     const prerequisites = [
       ["GitHub access", "Admin rights for dhirajnyse and permission to create a private repository.", "red"],
       ["GitHub CLI", "gh auth status should show the account that will own pursuitdesk-platform.", "blue"],
@@ -20176,7 +20795,7 @@
     );
     return {
       importPackScore,
-      downloadHref: "data/github-labels-milestones-import-pack.json?v=264",
+      downloadHref: "data/github-labels-milestones-import-pack.json?v=273",
       labelCatalog,
       labelGroups,
       milestoneCatalog,
@@ -20221,7 +20840,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=264";
+    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=273";
     const qaLanes = [
       ["Repository shell", "Root files, workspace, README, env example, CODEOWNERS, PR template, and release runbook exist.", "green"],
       ["API shell", "Server, app, route registry, health route, request id, safe error, tenant scope, and access decision exist.", "teal"],
@@ -20373,7 +20992,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-opening-day-runbook.json?v=264";
+    const downloadHref = "data/private-repo-opening-day-runbook.json?v=273";
     const daySequence = [
       ["08:30", "Preflight", "Confirm GitHub access, repo name, owners, no live secrets, and local folder location.", "green"],
       ["09:00", "Create private repo", "Create dhirajnyse/pursuitdesk-platform as private, with main protected later after first checks appear.", "red"],
@@ -20494,7 +21113,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-decision-memo.json?v=264";
+    const downloadHref = "data/production-backend-repo-decision-memo.json?v=273";
     const memoSections = [
       ["Decision requested", "Approve creation of dhirajnyse/pursuitdesk-platform as the private production backend repo.", "green"],
       ["Why now", "Prototype has reached a stable SaaS blueprint with repo files, issues, QA gates, taxonomy, and opening-day sequence.", "teal"],
@@ -20625,7 +21244,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-risk-register.json?v=264";
+    const downloadHref = "data/backend-alpha-risk-register.json?v=273";
     const riskDomains = [
       ["Repository control", "Critical", "Private visibility, PR-first branch discipline, and no direct main commits.", "red"],
       ["Secret handling", "Critical", "No live keys, .env files, billing secrets, tokens, or private certificates in the first repo.", "red"],
@@ -20759,7 +21378,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=264";
+    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=273";
     const evidenceLanes = [
       ["Repo privacy proof", "Hard gate", "Screenshot or note proving the production backend repo is private before files move.", "red"],
       ["Setup command proof", "Execution", "Capture preflight, folder creation, starter file copy, install, and first quality command output.", "green"],
@@ -20907,7 +21526,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-execution-checklist.json?v=264";
+    const downloadHref = "data/private-repo-execution-checklist.json?v=273";
     const executionGates = [
       ["Gate 0", "Owner go/no-go", "Product owner confirms the controlled go is for repo creation and first PR evidence only.", "green"],
       ["Gate 1", "Private visibility", "Repo is private before files, labels, issues, or screenshots are added.", "red"],
@@ -21068,7 +21687,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-control-board.json?v=264";
+    const downloadHref = "data/backend-alpha-control-board.json?v=273";
     const boardKpis = [
       ["Control readiness", `${controlReadinessScore}%`, "How ready the private repo day is to be managed from one board", controlReadinessScore >= 70 ? "green" : "amber"],
       ["Repo status", "Not opened", "The private production backend repo still needs real GitHub creation.", "red"],
@@ -21219,7 +21838,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-day-one-script.json?v=264";
+    const downloadHref = "data/private-repo-day-one-script.json?v=273";
     const scriptKpis = [
       ["Script readiness", `${scriptReadinessScore}%`, "How ready the private repo day is to run from one command script.", scriptReadinessScore >= 70 ? "green" : "amber"],
       ["Command blocks", "10", "Preflight, repo, branch, files, taxonomy, issues, PR, checks, protection, closeout.", "blue"],
@@ -21366,7 +21985,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-proof-exporter.json?v=264";
+    const downloadHref = "data/backend-repo-proof-exporter.json?v=273";
     const proofKpis = [
       ["Proof readiness", `${proofReadinessScore}%`, "How ready the repo day is to produce copy-ready evidence.", proofReadinessScore >= 80 ? "green" : "amber"],
       ["Evidence files", privateRepoDayOneScript.evidenceFiles.length, "Markdown files that turn screenshots and commands into review proof.", "teal"],
@@ -21507,7 +22126,7 @@
         ),
       ),
     );
-    const downloadHref = "data/github-repo-opening-packet.json?v=264";
+    const downloadHref = "data/github-repo-opening-packet.json?v=273";
     const openingKpis = [
       ["Opening readiness", `${openingReadinessScore}%`, "How ready the private GitHub repo opening packet is before the real repo exists.", openingReadinessScore >= 80 ? "green" : "amber"],
       ["Issue wave", issueCount, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
@@ -21653,7 +22272,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=264";
+    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=273";
     const issueRows = issues.map((issue, index) => [
       issue.id,
       issue.title,
@@ -21807,7 +22426,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-pr-body-builder.json?v=264";
+    const downloadHref = "data/first-pr-body-builder.json?v=273";
     const prKpis = [
       ["PR readiness", `${firstPrReadinessScore}%`, "How ready the first backend PR body is before the private repo exists.", firstPrReadinessScore >= 80 ? "green" : "amber"],
       ["Linked issues", issueRows.length, "Issue rows that can be referenced after real GitHub URLs exist.", "teal"],
@@ -21987,7 +22606,7 @@
         ),
       ),
     );
-    const downloadHref = "data/repo-evidence-folder-writer.json?v=264";
+    const downloadHref = "data/repo-evidence-folder-writer.json?v=273";
     const evidenceKpis = [
       ["Evidence folder", `${evidenceFolderScore}%`, "How ready the first backend PR evidence folder is before the private repo exists.", evidenceFolderScore >= 80 ? "green" : "amber"],
       ["Markdown files", evidenceTemplates.length, "Proof files that should exist under docs/evidence before review.", "teal"],
@@ -22147,7 +22766,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-command-runner-pack.json?v=264";
+    const downloadHref = "data/private-repo-command-runner-pack.json?v=273";
     const runnerKpis = [
       ["Runner readiness", `${commandRunnerScore}%`, "How ready the real private repo command session is to run without improvising.", commandRunnerScore >= 80 ? "green" : "amber"],
       ["Command blocks", commandBlocks.length, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
@@ -22286,7 +22905,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=264";
+    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=273";
     const reviewKpis = [
       ["Review readiness", `${reviewGateScore}%`, "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", reviewGateScore >= 80 ? "green" : "amber"],
       ["Reviewer lanes", reviewerRows.length, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
@@ -22454,7 +23073,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-artifact-status-board.json?v=264";
+    const downloadHref = "data/evidence-artifact-status-board.json?v=273";
     const boardKpis = [
       ["Artifact board", `${evidenceBoardScore}%`, "How ready the proof packet is to move from planned evidence into real captured artifacts.", evidenceBoardScore >= 80 ? "green" : "amber"],
       ["Artifact rows", artifactRows.length, "Markdown, screenshots, transcripts, signoffs, issue traces, branch proof, closeout, and block rules.", "teal"],
@@ -22678,7 +23297,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-handoff-email-pack.json?v=264";
+    const downloadHref = "data/private-repo-handoff-email-pack.json?v=273";
     const handoffKpis = [
       ["Email pack", `${handoffEmailScore}%`, "Readiness to send the private repo briefing without improvising.", handoffEmailScore >= 80 ? "green" : "amber"],
       ["Owner lanes", audienceBriefs.length, "Recipients with clear decision and evidence expectations.", "teal"],
@@ -22855,7 +23474,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=264";
+    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=273";
     const reviewCommentKpis = [
       ["Comment pack", `${firstBackendPrCommentScore}%`, "Readiness to paste controlled GitHub review language into the first backend PR.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
       ["Review actions", reviewCommentLibrary.length, "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.", "teal"],
@@ -23030,7 +23649,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=264";
+    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=273";
     const closeoutKpis = [
       ["Closeout pack", `${evidenceCloseoutScore}%`, "Readiness to close the first private backend PR evidence session without losing proof state.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
       ["Outcome lanes", closeoutOutcomeLanes.length, "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.", "teal"],
@@ -23199,7 +23818,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=264";
+    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=273";
     return {
       backendRepoDayMeetingScore,
       downloadHref,
@@ -23372,7 +23991,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-reply-capture-board.json?v=264";
+    const downloadHref = "data/private-repo-reply-capture-board.json?v=273";
     return {
       replyCaptureScore,
       downloadHref,
@@ -23522,7 +24141,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=264";
+    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=273";
     return {
       pdfExportScore,
       downloadHref,
@@ -23705,7 +24324,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=264";
+    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=273";
     return {
       meetingMinutesScore,
       downloadHref,
@@ -23886,7 +24505,7 @@
         ),
       ),
     );
-    const downloadHref = "data/reviewer-decision-email-pack.json?v=264";
+    const downloadHref = "data/reviewer-decision-email-pack.json?v=273";
     return {
       reviewerDecisionEmailScore,
       downloadHref,
@@ -23938,14 +24557,14 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v264 Review Pack Send Receipt",
-      phase: "Review pack send receipt",
+      version: "v273 Grant Task Execution Receipt",
+      phase: "Grant task execution receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "245 meaningful versions since rebrand",
-      summary: "Pilot Pitch now records who received the first-week review pack, what proof was shown, what stayed private, and the next buyer decision date.",
+      pace: "254 meaningful versions since rebrand",
+      summary: "Rooms now proves which preset-grant follow-up tasks were released, held again, blocked, and audit-ready.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
-        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, Simple Buyer Review Pack, Simple Rooms Navigator, Navigation Preference Memory, Buyer Review Send Receipt, Buyer Receipt Reply Tracker, Navigation Preference Controls, Pilot First-Week Pulse, First-Week Proof Inbox, First-Week Review Pack, Review Pack Send Receipt, Kickoff Proof Handoff Emails, Pilot Reply-to-Kickoff Bridge, Role Navigation Presets, Preset-to-Access Policy Handoff, Pilot Handoff Sheet, and Pilot Kickoff Confirmation are live in demo form.", "teal"],
+        ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, Simple Buyer Review Pack, Simple Rooms Navigator, Navigation Preference Memory, Buyer Review Send Receipt, Buyer Receipt Reply Tracker, Navigation Preference Controls, Pilot First-Week Pulse, First-Week Proof Inbox, First-Week Review Pack, Review Pack Send Receipt, Kickoff Proof Handoff Emails, Kickoff Send Receipt, Kickoff Proof Outcome Receipt, Pilot Reply-to-Kickoff Bridge, Role Navigation Presets, Preset-to-Access Policy Handoff, Preset Policy Apply Receipt, Preset Grant Approval Queue, Grant Approval Follow-up Tasks, Grant Task Execution Receipt, Review Receipt Reply Outcome, Review Outcome Follow-up Tasks, Kickoff Outcome Follow-up Tasks, Pilot Handoff Sheet, and Pilot Kickoff Confirmation are live in demo form.", "teal"],
         ["Data architecture", 100, "Production tables, API groups, route tickets, schema slices, import gates, migration batches, validation gates, source trace, feedback sessions, customer success signals, billing events, audit retention, hosting environments, repo folders, launch packet, alpha cutline, repo seed package, issue acceptance matrix, route contracts, payload boundaries, seed files, fixture assertions, labels, milestones, repo files, smoke commands, smoke artifacts, fixture export contract, sprint days, PR gates, staging environments, secrets, database checks, rollback, go/no-go gates, route files, controllers, services, middleware, validators, tests, migration files, table ownership, indexes, seed order, data contracts, restore gates, tenant guards, section rules, denied audit events, route guard map, CI jobs, proof artifacts, failure policy, first commit files, workflow files, env examples, copy order, owners, request ids, error catalog, audit envelopes, denial scenarios, idempotency rules, workflow job matrix, branch protection, cache policy, secret policy, release artifacts, first-commit file contents, issue bodies, issue labels, milestones, proof commands, opening order, protected environments, review ownership, artifact retention, release ritual, rollback playbook, issue-to-check map, root file contents, API starter contents, package starter contents, workflow starter contents, setup scripts, repository bootstrap commands, folder creation, secret placeholders, first PR proof, label catalog, milestone catalog, board columns, issue routing rules, taxonomy gates, first commit QA lanes, artifact expectations, role signoffs, go/no-go rules, opening-day command sequence, evidence packets, no-go stops, owner checkpoints, decision memo scope cutline, approval basis, decision options, blocker register, definitions of done, risk domains, risk triggers, mitigations, residual risks, owner actions, monitoring signals, evidence files, screenshots, PR note sections, workflow check names, branch-protection proof, signoff trail, execution gates, proof logs, command order, issue waves, branch timing, closeout checks, control lanes, blocker queue, owner readiness, decision log, alpha board action queue, day-one command blocks, manual proof points, PR script, owner prompts, closeout checks, evidence templates, command transcript slots, approval notes, proof snippets, proof quality gates, repo identity facts, owner matrix, issue wave ledger, launch files, risk locks, closeout ledger, copy-ready repo-opening text, CSV-style issue rows, owner lanes, label mapping, body-file names, validation gates, paste checks, import closeout files, PR identity, PR scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback text, release checklist, copy-ready PR body, evidence folder tree, markdown templates, screenshot slots, transcript slots, issue ledger, owner signoff files, branch-proof gates, closeout notes, command runner steps, expected outputs, failure holds, evidence write map, artifact slots, owner prompts, branch timing, copy-ready commands, runner closeout, reviewer gate matrix, decision gates, evidence review map, hold queue, block rules, merge checklist, reviewer packets, PR comment templates, GitHub review action text, lane comment packets, inline note snippets, no-leak signoffs, request-changes text, merge closeout text, review send checklist, evidence closeout lanes, decision logs, owner closeout queue, no-leak rollback checks, closeout timeline, management summary lines, meeting agenda, attendee map, decision capture board, action queue, risk parking lot, evidence outputs, facilitator script, reviewer reply lanes, reply states, thread capture fields, requested-change resolver, approval readiness, merge gates, reply SLA, management reply brief, PDF page blueprint, printable sections, redaction checks, export QA, distribution matrix, archive naming, export management brief, attendance log, minutes sections, decision register, action queue, management email blocks, follow-up cadence, privacy/audit checks, copy-ready minutes, closeout reopen reasons, approver handoff, route guards, audit fields, approval memory rows, standard rules, approver coverage, decision audit chains, retention calendar rows, evidence review dates, annual review dates, retention-until dates, exception lanes, retention audit fields, closeout SLA ids, due lanes, days late, escalation levels, reviewer nudges, owner action clocks, exception queue ids, decision states, approval owner roles, rejection reasons, closeout exception audit events, proposal acceptance rows, buyer reply states, accepted scope JSON, requested-change ledger, renewal gates, closeout actions, proposal email bodies, buyer decision ids, decision-readiness score, source-version map, decision matrix, action owners, decision email bodies, evidence bundle ids, proof statuses, required file lists, owner reminder text, release notes, document folder ids, evidence audit events, pilot invoice request ids, payment simulator ids, provider events, manual approval expiry, grace windows, access lock reasons, payment states, due dates, provider invoice ids, payment URLs, workspace activation states, pilot kickoff ids, kickoff dates, admin setup states, workbook handoff tasks, invite batches, adoption checkpoints, launch locks, renewal gates, pdf render workflow ids, render statuses, pdf storage urls, print audit fields, signature completion, archive attachment states, provider event ids, webhook signature status, idempotency ledger rows, tenant payment mapping, retry counts, access effect JSON, billing audit envelopes, renewal decision ids, renewal scores, recommended paths, proof rows, sponsor actions, expansion handoff fields, archive attachment register ids, storage object keys, checksum proof, retention release state, download audit events, webhook test pack ids, raw body hashes, signature headers, expected HTTP status, actual HTTP status, replay counts, verified-by fields, expansion quote ids, quoted seats, quoted manager seats, monthly quotes, setup quotes, first invoice amounts, sponsor approval states, next invoice options, attachment download audit ids, requested-by roles, download reasons, request IP hashes, checksum verification states, access decisions, denied reasons, retention release checks, webhook runner checklist ids, test commands, fixture files, screenshot paths, release gate states, failed gate reasons, runner owner roles, runner timeboxes, operator readiness states, command proof cells, download permission matrix ids, role scopes, room grants, redaction profiles, signed URL expiry, expected HTTP decisions, download audit gates, webhook incident ids, incident lanes, severity levels, replay decisions, customer message states, root cause summaries, incident release gates, expansion approval memory ids, finance hold reasons, quote revisions, invoice decisions, rollout authorization, approval audit fields, download approval board ids, approver decisions, redaction release states, expiry review, escalation reasons, webhook notice pack ids, audience templates, privacy-safe message bodies, notice approvals, sent timestamps, customer impact states, expansion invoice acceptance ids, paid-state proof, rollout locks, access snapshots, renewal handoff dates, autopilot run ids, mission codes, record signal JSON, assigned action JSON, privacy guard states, meeting script bodies, time-machine run ids, scenario codes, future health scores, prevented-late counts, record future JSON, simulation audit events, win-lab run ids, win scores, no-bid risk, differentiator text, bid thesis text, strategy memo bodies, decision twin run ids, projected health scores, scenario names, simulated record ids, approved decision states, actual-after scores, dispatch task ids, dispatch owner roles, dispatch lock states, dispatch SLAs, evidence requests, dispatch messages, dispatch audit memory, outcome replay ids, predicted lift, actual lift, movement proof state, lift variance, replay next actions, decision inbox ids, inbox owner roles, inbox due dates, inbox reply states, inbox evidence requests, inbox message bodies, inbox closeout notes, dispatch closeout ids, proof packs, outcome states, reusable memory text, release gates, file manifests, learning memory ids, learning lanes, learning confidence, trigger rules, anti-patterns, reusable scripts, learning evidence gates, rule reopen request ids, reopen reason codes, reopen reviewer roles, reopen owner actions, reopen decisions, reopen due dates, rollback triggers, rule reopen audit events, pilot close probability ids, close forecast states, probability drivers, buyer close lanes, probability scores, close owner roles, close due labels, commercial ask text, close email bodies, buyer-safe proposal ids, included proof JSON, excluded proof JSON, hidden field lists, send states, buyer-safe email bodies, rule reopen outcome replay ids, outcome states, actual signal text, health lift, risk change, outcome next action, outcome proof, outcome audit events, pilot close outcome memory ids, actual close outcomes, forecast accuracy states, close learning signals, commercial results, close next actions, close outcome audit events, proposal send receipt ids, proposal versions, sender users, prepared timestamps, included proof maps, held proof maps, privacy checks, follow-up due dates, proposal send audit events, rule reopen outcome memory ids, memory states, confidence scores, influence surfaces, memory rules, Advisor lines, Report lines, next review dates, memory audit events, pilot outcome forecast tuner ids, forecast tuning row ids, probability deltas, tuned probabilities, forecast tune states, founder follow-up rules, forecast review dates, forecast tuner audit events, proposal follow-up tracker ids, follow-up row ids, buyer reply states, reply timestamps, follow-up due dates, reminder states, next close actions, founder message text, escalation owner roles, proposal follow-up audit events, decision memory influence switchboard ids, influence switch row ids, enabled surfaces, blocked surfaces, admin decisions, surface effects, audit gates, review dates, influence switch audit events, pilot follow-up reply memory ids, reply memory row ids, reply memory lanes, confidence scores, forecast influence flags, Advisor influence flags, commercial privacy states, decision memory text, next-cycle rules, founder reply templates, reply memory audit gates, reply memory audit events, founder close command ids, founder command row ids, command lanes, command priorities, command deadlines, owner roles, founder say-this text, buyer proof requests, stop rules, decision gates, privacy notes, founder close command audit events, memory influence audit diff ids, before/after surface states, risk deltas, health lifts, privacy effects, and memory influence diff audit events, pilot reply pattern library ids, reply pattern rows, trigger signals, buyer phrases, proof paths, reply angles, reuse rules, anti-patterns, pattern confidence, stop rules, sample replies, reply pattern audit events, founder close outcome receipt ids, receipt rows, command sent timestamps, buyer answers, sent proof, next actions, closeout results, outcome scores, renewal hints, proof-complete states, and founder close receipt audit events, memory diff release note ids, release rows, admin headlines, buyer-safe headlines, buyer-safe notes, approval gates, release scores, memory diff release audit events, pattern-to-demo coach ids, demo coach rows, buyer types, opening lines, screen sequences, proof moments, control questions, handoff moves, founder stop rules, coach scores, demo coach audit events, receipt-to-renewal signal ids, renewal signal rows, renewal lanes, renewal states, recommended renewal paths, commercial asks, success questions, renewal due labels, renewal scores, renewal signal audit events, release note approval board ids, release note approval rows, approval lanes, decision states, approver roles, publish targets, reviewer instructions, evidence requirements, buyer-safe approval states, approval scores, release approval audit events, demo coach replay score ids, demo coach replay rows, replay outcome lanes, buyer reaction proof, reply memory effects, forecast deltas, retest decisions, demo replay audit events, renewal signal replay board ids, renewal replay rows, renewal replay lanes, adoption proof, payment proof, usage proof, buyer response proof, commercial hold states, renewal forecast deltas, renewal replay audit events, buyer-safe changelog publisher ids, changelog rows, publication lanes, customer audiences, channels, publish windows, proof locks, privacy locks, rollback copy, readiness scores, changelog audit events, coach-to-close learning publisher ids, learning rows, learning lanes, founder scripts, reply-memory rules, forecast rules, next-demo adjustments, stop rules, proof requirements, privacy locks, close lifts, learning scores, and coach-to-close learning audit events are mapped.", "blue"],
         ["v231 handoff schema", 100, "Renewal-to-invoice trust publisher rows now map invoice lane, invoice state, sponsor script, invoice ask, billing option, invoice amount, finance gate, rollout gate, customer-success memory, trust score, and audit event.", "green"],
         ["v232 reaction schema", 100, "Customer changelog reaction rows now map reaction lane, sponsor reaction, commercial signal, objection, follow-up window, Pilot Pitch signal, Advisor signal, privacy gate, confidence lift, and audit event.", "teal"],
@@ -23981,6 +24600,15 @@
         ["v262 kickoff proof handoff emails", 100, "Pilot Pitch now maps sponsor, admin, workbook owner, and finance handoff emails with owner asks, due dates, privacy rules, digest, and export JSON.", "teal"],
         ["v263 preset-to-access policy handoff", 100, "Rooms now maps each role navigation preset to a future access template, room grants, default section, admin audit event, policy rules, digest, and export JSON.", "green"],
         ["v264 review pack send receipt", 100, "Pilot Pitch now maps first-week review recipients, visible proof, protected private fields, buyer decision due date, audit rule, email note, and export JSON.", "blue"],
+        ["v265 kickoff send receipt", 100, "Pilot Pitch now maps kickoff email recipients, sent state, owner acceptance, proof still waiting, first-week due date, audit rule, email note, and export JSON.", "green"],
+        ["v266 preset policy apply receipt", 100, "Rooms now maps the active preset into applied admin, changed rooms, proposed grant keys, audit event, receipt ledger, checklist, digest, and export JSON.", "blue"],
+        ["v267 review receipt reply outcome", 100, "Pilot Pitch now maps first-week review receipt replies into continue, repair proof, extend proof, no response, or stop-safe outcome lanes with owner, next move, privacy rule, digest, and export JSON.", "green"],
+        ["v268 kickoff proof outcome receipt", 100, "Pilot Pitch now maps kickoff proof lanes into arrived, missed, waiting, or scheduled states with missed owners, success action due dates, privacy rules, digest, and export JSON.", "amber"],
+        ["v269 preset grant approval queue", 100, "Rooms now maps proposed preset grants into approve, hold, or reject decisions with reviewer roles, reasons, protected admin-only areas, digest, and export JSON.", "blue"],
+        ["v270 review outcome follow-up tasks", 100, "Pilot Pitch now converts continue, repair, extend, no-response, and stop-safe review outcomes into owner tasks, due dates, buyer-safe lines, privacy checks, digest, and export JSON.", "green"],
+        ["v271 kickoff outcome follow-up tasks", 100, "Pilot Pitch now converts missed kickoff proof into owner tasks, due dates, buyer-safe notes, privacy checks, digest, and export JSON for Advisor and Weekly Review.", "amber"],
+        ["v272 grant approval follow-up tasks", 100, "Rooms now converts approved, held, and rejected preset grants into Membership admin actions, signoff tasks, blocked-access reminders, digest, email, and export JSON.", "teal"],
+        ["v273 grant task execution receipt", 100, "Rooms now records released, held-again, and blocked access outcomes with verification rules, audit events, digest, and export JSON.", "blue"],
         ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, rule impact simulator, customer demo replay recorder, proposal proof composer, rule change audit trail, demo-to-pilot conversion board, proposal redaction approval gate, rule reopen review queue, pilot close probability simulator, buyer-safe proposal export, rule reopen outcome replay, pilot close outcome memory, proposal send audit receipt, rule reopen outcome memory, pilot outcome forecast tuner, proposal send follow-up tracker, decision memory influence switchboard, pilot follow-up reply memory, founder close command script, memory influence audit diff, pilot reply pattern library, founder close outcome receipt, memory diff release notes, pattern-to-demo coach, receipt-to-renewal signal, release note approval board, demo coach replay score, renewal signal replay board, buyer-safe changelog publisher, coach-to-close learning publisher, and renewal-to-invoice trust publisher are mapped, but the real private repo and real staging environment are not created yet.", "red"],
         ["Billing model", 100, "USD Starter, Team, Business, extra operator seats, manager/commercial seats, setup service pricing, checkout flow, invoice lifecycle, payment state simulator, adoption health monitor, provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, renewal decision pack, idempotency, signature verification, tenant mapping, retry rules, plan changes, access locks, audit events, pilot pitch packaging, customer feedback buying signals, ROI payback story, proposal export handoff, objection playbook proof paths, proposal acceptance tracking, buyer decision closeout, invoice request handoff, kickoff activation handoff, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "green"],
         ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker, buyer decision room, pilot invoice request pack, pilot payment state simulator, pilot kickoff control pack, pilot adoption health monitor, closeout PDF render workflow, payment provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, attachment download audit evidence pack, pilot renewal decision pack, closeout archive attachment register, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, and rule impact simulator.", "green"],
@@ -24175,12 +24803,21 @@
         ["186", "First-week review pack", "Done", "Pilot Pitch now turns first-week proof into a buyer-safe review pack with agenda, decision path, digest, email, and export JSON."],
         ["187", "Kickoff proof handoff emails", "Done", "Pilot Pitch now turns the reply-to-kickoff bridge into copy-ready sponsor, admin, workbook owner, and finance handoff emails."],
         ["188", "Preset-to-access policy handoff", "Done", "Rooms now connects role navigation presets to future company role templates, user access grants, and audit events."],
-        ["189", "Review pack send receipt", "Active", "Pilot Pitch now records first-week review recipients, buyer-safe proof, hidden fields, and the next buyer decision date."],
+        ["189", "Review pack send receipt", "Done", "Pilot Pitch now records first-week review recipients, buyer-safe proof, hidden fields, and the next buyer decision date."],
+        ["190", "Kickoff send receipt", "Done", "Pilot Pitch now records sent kickoff handoff emails, accepted owners, waiting proof, and first-week due dates."],
+        ["191", "Preset policy apply receipt", "Done", "Rooms now records the applied preset, changed rooms, proposed grants, and audit packet for future backend enforcement."],
+        ["192", "Review receipt reply outcome", "Done", "Pilot Pitch now records the buyer answer after the first-week review receipt and turns it into a controlled next move."],
+        ["193", "Kickoff proof outcome receipt", "Done", "Pilot Pitch now checks arrived proof, missed owners, and success actions after kickoff before the first-week review."],
+        ["194", "Preset grant approval queue", "Done", "Rooms now requires admin approval, hold, or rejection before proposed preset grants become Membership access changes."],
+        ["195", "Review outcome follow-up tasks", "Done", "Pilot Pitch now routes buyer review outcomes into owner tasks, due dates, buyer-safe lines, privacy checks, and Weekly Review handoff."],
+        ["196", "Kickoff outcome follow-up tasks", "Done", "Pilot Pitch now turns kickoff proof misses into owner tasks, due dates, buyer-safe notes, privacy checks, and Weekly Review handoff."],
+        ["197", "Grant approval follow-up tasks", "Done", "Rooms now routes approved, held, and rejected preset grants into Membership admin actions and audit reminders."],
+        ["198", "Grant task execution receipt", "Active", "Rooms now records which Membership access tasks were released, held again, blocked, verified, and audit-ready."],
       ],
       nextBuilds: [
-        ["v265", "Kickoff send receipt", "Record which kickoff handoff emails were sent, which owner accepted, and what first-week proof is still waiting."],
-        ["v266", "Preset policy apply receipt", "Record which admin applied a role preset, what rooms changed, what grants were proposed, and what audit packet was created."],
-        ["v267", "Review receipt reply outcome", "Capture whether the buyer continued, requested repair, extended proof, or stopped after the first-week review receipt."],
+        ["v274", "Review task execution receipt", "Record which review follow-up tasks were sent, accepted, missed, or closed before the next weekly review."],
+        ["v275", "Kickoff task execution receipt", "Record which kickoff follow-up tasks were sent, accepted, closed, or carried into the first-week review."],
+        ["v276", "Grant execution audit exporter", "Bundle access execution receipts into a backend-ready audit export for Membership."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -60138,6 +60775,401 @@
       digest: kickoffProofHandoffDigest,
       downloadHref: jsonDataUri(kickoffProofHandoffEmailPackPacket),
     };
+    const kickoffSendReceiptId = `PD-KICKOFF-SEND-RECEIPT-${proposalDateKey}-${String(kickoffProofHandoffReady).padStart(2, "0")}`;
+    const kickoffSendDate = addPilotDays(proposalDate, 4);
+    const kickoffProofDueDate = addPilotDays(proposalDate, 12);
+    const kickoffSendLabel = formatPilotDate(kickoffSendDate);
+    const kickoffProofDueLabel = formatPilotDate(kickoffProofDueDate);
+    const kickoffSendRecipients = kickoffProofHandoffEmailRows.map(([audience, owner, subject, due, action, body, tone], index) => ({
+      audience,
+      owner,
+      subject,
+      sentAt: index < 3 ? kickoffSendLabel : "Queued after finance review",
+      due,
+      action,
+      status: index === 0 ? "Accepted" : index === 1 ? "Sent" : index === 2 ? "Waiting rows" : "Privacy ack due",
+      proof: index === 0 ? "Sponsor route confirmed" : index === 1 ? "Workspace setup started" : index === 2 ? "Source workbook not yet attached" : "Commercial privacy pending",
+      tone,
+      body,
+    }));
+    const kickoffSendAccepted = kickoffSendRecipients.filter((row) => ["Accepted", "Sent"].includes(row.status)).length;
+    const kickoffProofWaiting = [
+      ["Access proof", proposalSendOwner, firstWeekDay1Label, "Waiting screenshot", "Confirm users opened their assigned rooms.", "green"],
+      ["Row movement proof", "Commercial Coordinator", firstWeekDay3Label, "Waiting rows", `Move or correct ${firstWeekMovementTarget} source rows without exposing values.`, "blue"],
+      ["Privacy proof", "Finance Contact", firstWeekDay7Label, "Waiting signoff", "Confirm pricing, invoice, value, and negotiation fields stayed out of trackers.", "teal"],
+      ["Review proof", proposalSendOwner, firstWeekDay7Label, "Schedule review", "Capture one weekly review note before the day-30 buyer decision.", "amber"],
+    ];
+    const kickoffSendRules = [
+      ["Receipt before chase", "Only chase an owner after the send state is recorded.", "green"],
+      ["No value leak", "The receipt can mention privacy but must not expose commercial values.", "teal"],
+      ["Proof has a date", `Every waiting proof lane points to ${kickoffProofDueLabel} or earlier.`, "blue"],
+      ["Owner acceptance wins", "Accepted owners become first-week proof owners, not passive recipients.", "amber"],
+    ];
+    const kickoffSendScore = Math.max(
+      55,
+      Math.min(99, Math.round(kickoffProofHandoffScore * 0.44 + pilotFirstWeekPulseScore * 0.26 + kickoffSendAccepted * 8 + Math.max(0, 24 - kickoffProofWaiting.length * 3))),
+    );
+    const kickoffSendState = kickoffSendScore >= 82 ? "Send receipt ready" : "Owner proof needed";
+    const kickoffSendCards = [
+      ["Receipt state", kickoffSendState, `${kickoffSendRecipients.length} kickoff messages are tracked after send.`, kickoffSendScore >= 82 ? "green" : "amber"],
+      ["Accepted owners", kickoffSendAccepted, "Sponsor and admin movement are no longer hidden in email.", "teal"],
+      ["Proof waiting", kickoffProofWaiting.length, "Access, movement, privacy, and review proof have clear owners.", "blue"],
+      ["Proof due", kickoffProofDueLabel, "First-week proof stays tied to the review pack.", "amber"],
+    ];
+    const kickoffSendDigest = [
+      `Kickoff Send Receipt ${kickoffSendReceiptId}`,
+      `State: ${kickoffSendState}`,
+      `Source email pack: ${kickoffProofHandoffEmailPackId}`,
+      `Sent on: ${kickoffSendLabel}`,
+      `Recipients: ${kickoffSendRecipients.map((row) => `${row.audience} / ${row.owner} / ${row.status} / due ${row.due}`).join("; ")}`,
+      `Waiting proof: ${kickoffProofWaiting.map(([label, owner, due, state]) => `${label} / ${owner} / ${due} / ${state}`).join("; ")}`,
+      "Privacy rule: record proof status without exposing tender values, invoice detail, or negotiation notes to frontline users.",
+    ].join("\n");
+    const kickoffSendEmail = [
+      `Subject: PursuitDesk kickoff send receipt - ${kickoffSendState}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      "The kickoff owner emails are now recorded as a send receipt.",
+      `Use this receipt to confirm who received the sponsor, admin, workbook, and finance handoff on ${kickoffSendLabel}.`,
+      `Before ${kickoffProofDueLabel}, capture access proof, row movement proof, privacy proof, and one weekly review note.`,
+      "Keep the commercial privacy rule simple: frontline tracker users should see operational movement only, while management keeps value and invoice context in protected rooms.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const kickoffSendReceiptPacket = {
+      schemaVersion: "pursuitdesk.kickoffSendReceipt.v265",
+      generatedOn: proposalDate.toISOString(),
+      kickoffSendReceiptId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        kickoffProofHandoffEmailPack: kickoffProofHandoffEmailPackPacket.schemaVersion,
+        pilotReplyKickoffBridge: pilotReplyKickoffBridgePacket.schemaVersion,
+        pilotFirstWeekPulse: pilotFirstWeekPulsePacket.schemaVersion,
+      },
+      sourceIds: {
+        kickoffProofHandoffEmailPackId,
+        pilotReplyKickoffBridgeId,
+        pilotFirstWeekPulseId,
+      },
+      score: kickoffSendScore,
+      sendState: kickoffSendState,
+      sentAt: kickoffSendDate.toISOString(),
+      proofDueAt: kickoffProofDueDate.toISOString(),
+      cards: kickoffSendCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      recipients: kickoffSendRecipients,
+      proofWaiting: kickoffProofWaiting.map(([label, owner, due, state, note, tone]) => ({ label, owner, due, state, note, tone })),
+      rules: kickoffSendRules.map(([label, note, tone]) => ({ label, note, tone })),
+      digest: kickoffSendDigest,
+      email: kickoffSendEmail,
+      nextBackendFields: [
+        "kickoff_send_receipt_id",
+        "kickoff_proof_handoff_email_pack_id",
+        "kickoff_email_sent_at",
+        "kickoff_email_recipient_role",
+        "kickoff_email_status",
+        "owner_acceptance_state",
+        "first_week_proof_waiting_json",
+        "first_week_proof_due_at",
+        "commercial_privacy_guard_state",
+        "kickoff_send_receipt_audit_event",
+      ],
+    };
+    const kickoffSendReceipt = {
+      kickoffSendReceiptId,
+      score: kickoffSendScore,
+      sendState: kickoffSendState,
+      sentAt: kickoffSendLabel,
+      proofDue: kickoffProofDueLabel,
+      cards: kickoffSendCards,
+      recipients: kickoffSendRecipients,
+      proofWaiting: kickoffProofWaiting,
+      rules: kickoffSendRules,
+      digest: kickoffSendDigest,
+      email: kickoffSendEmail,
+      downloadHref: jsonDataUri(kickoffSendReceiptPacket),
+    };
+    const kickoffProofOutcomeReceiptId = `PD-KICKOFF-PROOF-OUTCOME-${proposalDateKey}-${String(kickoffSendScore).padStart(2, "0")}`;
+    const kickoffProofOutcomeDate = addPilotDays(proposalDate, 13);
+    const kickoffProofOutcomeLabel = formatPilotDate(kickoffProofOutcomeDate);
+    const kickoffSuccessActionDueDate = addPilotDays(proposalDate, 14);
+    const kickoffSuccessActionDueLabel = formatPilotDate(kickoffSuccessActionDueDate);
+    const kickoffProofOutcomeRows = [
+      {
+        proof: "Access proof",
+        owner: proposalSendOwner,
+        sourceState: "Sponsor route confirmed",
+        outcomeState: "Arrived",
+        evidence: "Admin screenshot or session note confirms the sponsor opened the workspace.",
+        successAction: "Keep the sponsor path clean and prepare the first-week review note.",
+        due: firstWeekDay1Label,
+        tone: "green",
+      },
+      {
+        proof: "Row movement proof",
+        owner: "Commercial Coordinator",
+        sourceState: "Source workbook waiting",
+        outcomeState: "Missing owner",
+        evidence: `${firstWeekMovementTarget} rows still need movement proof without value fields.`,
+        successAction: `Assign row movement proof before ${kickoffSuccessActionDueLabel}.`,
+        due: firstWeekDay3Label,
+        tone: "amber",
+      },
+      {
+        proof: "Privacy proof",
+        owner: "Finance Contact",
+        sourceState: "Commercial shield pending",
+        outcomeState: "Waiting signoff",
+        evidence: "Pricing, invoice, value, and negotiation fields need one privacy confirmation.",
+        successAction: "Record the privacy signoff before the first-week review pack is used.",
+        due: firstWeekDay7Label,
+        tone: "blue",
+      },
+      {
+        proof: "Review proof",
+        owner: proposalSendOwner,
+        sourceState: "Review note scheduled",
+        outcomeState: "Scheduled",
+        evidence: "Weekly review note is planned and tied to the buyer decision path.",
+        successAction: "Use the review note to keep the day-30 decision from becoming vague.",
+        due: firstWeekDay7Label,
+        tone: "teal",
+      },
+    ];
+    const kickoffProofArrived = kickoffProofOutcomeRows.filter((row) => ["Arrived", "Scheduled"].includes(row.outcomeState)).length;
+    const kickoffProofMissedOwners = kickoffProofOutcomeRows.filter((row) => ["Missing owner", "Waiting signoff"].includes(row.outcomeState));
+    const kickoffProofOutcomeScore = Math.max(
+      50,
+      Math.min(
+        99,
+        Math.round(
+          kickoffSendScore * 0.44 +
+            Math.round((kickoffProofArrived / kickoffProofOutcomeRows.length) * 100) * 0.32 +
+            Math.max(0, 100 - kickoffProofMissedOwners.length * 18) * 0.16 +
+            pilotFirstWeekPulseScore * 0.08,
+        ),
+      ),
+    );
+    const kickoffProofOutcomeState = kickoffProofMissedOwners.length === 0 ? "Ready for review" : kickoffProofMissedOwners.length <= 2 ? "Success action due" : "Proof recovery needed";
+    const kickoffProofOutcomeCards = [
+      ["Outcome state", kickoffProofOutcomeState, `${kickoffProofArrived}/${kickoffProofOutcomeRows.length} proof lanes are arrived or scheduled.`, kickoffProofMissedOwners.length ? "amber" : "green"],
+      ["Missed owners", kickoffProofMissedOwners.length, kickoffProofMissedOwners.length ? kickoffProofMissedOwners.map((row) => row.owner).join(", ") : "No owner miss recorded.", kickoffProofMissedOwners.length ? "red" : "green"],
+      ["Success action due", kickoffSuccessActionDueLabel, "Missing proof must turn into an owner task before the review.", "blue"],
+      ["Privacy rule", "Still locked", "Proof status can move without exposing value, invoice, or negotiation notes.", "teal"],
+    ];
+    const kickoffProofOutcomeActions = [
+      ["Recover workbook proof", "Commercial Coordinator", kickoffSuccessActionDueLabel, "Move or document the source rows that prove operational progress.", "amber"],
+      ["Confirm privacy signoff", "Finance Contact", kickoffSuccessActionDueLabel, "Record that commercial fields stayed in protected management rooms.", "blue"],
+      ["Keep review alive", proposalSendOwner, firstWeekDay7Label, "Use arrived proof and missing-owner notes to run a short first-week review.", "green"],
+    ];
+    const kickoffProofOutcomeRules = [
+      ["No proof drift", "A sent kickoff email is not enough; every proof lane gets arrived, missing, waiting, or scheduled.", "green"],
+      ["Owner miss is visible", "The receipt names the owner who missed proof so Weekly Review can act without hunting.", "amber"],
+      ["Review stays buyer-safe", "The first-week review can mention progress and blockers, not values or negotiation logic.", "teal"],
+      ["Success action beats blame", "Each miss becomes a due action before the buyer decision path is damaged.", "blue"],
+    ];
+    const kickoffProofOutcomeDigest = [
+      `Kickoff Proof Outcome Receipt ${kickoffProofOutcomeReceiptId}`,
+      `Source send receipt: ${kickoffSendReceiptId} / ${kickoffSendState}`,
+      `Outcome captured on: ${kickoffProofOutcomeLabel}`,
+      `State: ${kickoffProofOutcomeState}`,
+      `Arrived or scheduled proof: ${kickoffProofArrived}/${kickoffProofOutcomeRows.length}`,
+      `Missed owners: ${kickoffProofMissedOwners.length ? kickoffProofMissedOwners.map((row) => `${row.owner} / ${row.proof}`).join("; ") : "None"}`,
+      `Success action due: ${kickoffSuccessActionDueLabel}`,
+      `Proof outcomes: ${kickoffProofOutcomeRows.map((row) => `${row.proof} / ${row.outcomeState} / ${row.owner} / due ${row.due}`).join("; ")}`,
+      "Privacy rule: proof outcomes may show operational proof state and owner miss, but not tender value, invoice detail, pricing assumptions, or negotiation notes.",
+    ].join("\n");
+    const kickoffProofOutcomeEmail = [
+      `Subject: PursuitDesk kickoff proof outcome - ${kickoffProofOutcomeState}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `Kickoff proof has been checked after the send receipt: ${kickoffProofArrived}/${kickoffProofOutcomeRows.length} proof lanes are arrived or scheduled.`,
+      kickoffProofMissedOwners.length ? `Owner misses: ${kickoffProofMissedOwners.map((row) => `${row.owner} for ${row.proof}`).join("; ")}.` : "No missed proof owner is currently recorded.",
+      `Please close the success actions before ${kickoffSuccessActionDueLabel}, then use the first-week review to decide continue, repair proof, extend proof, no response, or stop safely.`,
+      "",
+      "Keep the note operational and buyer-safe. Do not include commercial values, invoices, negotiation notes, or internal stop logic.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const kickoffProofOutcomeReceiptPacket = {
+      schemaVersion: "pursuitdesk.kickoffProofOutcomeReceipt.v268",
+      generatedOn: proposalDate.toISOString(),
+      kickoffProofOutcomeReceiptId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        kickoffSendReceipt: kickoffSendReceiptPacket.schemaVersion,
+        kickoffProofHandoffEmailPack: kickoffProofHandoffEmailPackPacket.schemaVersion,
+        pilotFirstWeekPulse: pilotFirstWeekPulsePacket.schemaVersion,
+      },
+      sourceIds: {
+        kickoffSendReceiptId,
+        kickoffProofHandoffEmailPackId,
+        pilotFirstWeekPulseId,
+      },
+      score: kickoffProofOutcomeScore,
+      outcomeState: kickoffProofOutcomeState,
+      outcomeCapturedAt: kickoffProofOutcomeDate.toISOString(),
+      successActionDueAt: kickoffSuccessActionDueDate.toISOString(),
+      arrivedOrScheduledCount: kickoffProofArrived,
+      missedOwnerCount: kickoffProofMissedOwners.length,
+      cards: kickoffProofOutcomeCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      proofOutcomes: kickoffProofOutcomeRows,
+      successActions: kickoffProofOutcomeActions.map(([label, owner, due, action, tone]) => ({ label, owner, due, action, tone })),
+      rules: kickoffProofOutcomeRules.map(([label, note, tone]) => ({ label, note, tone })),
+      digest: kickoffProofOutcomeDigest,
+      email: kickoffProofOutcomeEmail,
+      nextBackendFields: [
+        "kickoff_proof_outcome_receipt_id",
+        "kickoff_send_receipt_id",
+        "first_week_proof_lane",
+        "proof_outcome_state",
+        "missed_owner_user_id",
+        "success_action_due_at",
+        "buyer_safe_review_state",
+        "commercial_privacy_guard_state",
+        "kickoff_proof_outcome_audit_event",
+      ],
+    };
+    const kickoffProofOutcomeReceipt = {
+      kickoffProofOutcomeReceiptId,
+      score: kickoffProofOutcomeScore,
+      outcomeState: kickoffProofOutcomeState,
+      capturedOn: kickoffProofOutcomeLabel,
+      successActionDue: kickoffSuccessActionDueLabel,
+      arrivedCount: kickoffProofArrived,
+      missedOwnerCount: kickoffProofMissedOwners.length,
+      cards: kickoffProofOutcomeCards,
+      proofOutcomes: kickoffProofOutcomeRows,
+      successActions: kickoffProofOutcomeActions,
+      rules: kickoffProofOutcomeRules,
+      digest: kickoffProofOutcomeDigest,
+      email: kickoffProofOutcomeEmail,
+      downloadHref: jsonDataUri(kickoffProofOutcomeReceiptPacket),
+    };
+    const kickoffOutcomeFollowUpTasksId = `PD-KICKOFF-OUTCOME-TASKS-${proposalDateKey}-${String(kickoffProofOutcomeScore).padStart(2, "0")}`;
+    const kickoffOutcomeFollowUpRows = kickoffProofOutcomeRows.map((row, index) => {
+      const needsRecovery = ["Missing owner", "Waiting signoff"].includes(row.outcomeState);
+      const keepReviewAlive = row.outcomeState === "Scheduled";
+      const dueDate = addPilotDays(kickoffProofOutcomeDate, needsRecovery ? index + 1 : index + 3);
+      return {
+        proof: row.proof,
+        lane: needsRecovery ? "Recover proof" : keepReviewAlive ? "Keep review alive" : "Maintain proof",
+        taskState: needsRecovery ? "Do now" : "Monitor",
+        owner: row.owner,
+        dueDate: dueDate.toISOString(),
+        dueLabel: formatPilotDate(dueDate),
+        task: needsRecovery ? row.successAction : `Keep ${row.proof.toLowerCase()} visible for the first-week review.`,
+        buyerSafeLine: needsRecovery ? `We are closing ${row.proof.toLowerCase()} before the first-week review.` : `${row.proof} is recorded for the first-week review.`,
+        privacyRule: "Mention proof state and next action only; keep values, invoice detail, pricing assumptions, and negotiation notes out.",
+        sourceState: row.outcomeState,
+        evidence: row.evidence,
+        tone: needsRecovery ? row.tone : "green",
+      };
+    });
+    const kickoffOutcomeDoNow = kickoffOutcomeFollowUpRows.filter((row) => row.taskState === "Do now").length;
+    const kickoffOutcomePrimaryTask = kickoffOutcomeFollowUpRows.find((row) => row.taskState === "Do now") || kickoffOutcomeFollowUpRows[0];
+    const kickoffOutcomeFollowUpScore = Math.max(
+      54,
+      Math.min(
+        99,
+        Math.round(
+          kickoffProofOutcomeScore * 0.48 +
+            kickoffSendScore * 0.18 +
+            Math.max(0, 100 - kickoffOutcomeDoNow * 16) * 0.22 +
+            pilotFirstWeekPulseScore * 0.12,
+        ),
+      ),
+    );
+    const kickoffOutcomeTaskCards = [
+      ["Task state", kickoffOutcomeDoNow ? "Action due" : "Monitor", kickoffOutcomeDoNow ? `${kickoffOutcomeDoNow} kickoff proof tasks need owner movement.` : "All kickoff proof lanes can be monitored.", kickoffOutcomeDoNow ? "amber" : "green"],
+      ["Owner tasks", kickoffOutcomeFollowUpRows.length, "Each kickoff proof lane has one owner, one task, and one due date.", "teal"],
+      ["Buyer-safe notes", kickoffOutcomeFollowUpRows.length, "Every task has a simple outside-safe line for the customer conversation.", "blue"],
+      ["Privacy lock", "On", "Commercial values, invoice detail, and negotiation notes stay out of the follow-up task.", "green"],
+    ];
+    const kickoffOutcomeTaskChecks = [
+      ["One owner", "Every missed proof lane must name the person who can close it.", "green"],
+      ["One due date", "No kickoff proof miss leaves the system without a next control date.", "amber"],
+      ["One buyer-safe line", "The buyer can hear progress and blockers without seeing commercial fields.", "blue"],
+      ["Weekly Review handoff", "Open tasks can move into Advisor and Weekly Review without another spreadsheet.", "teal"],
+    ];
+    const kickoffOutcomeTaskDigest = [
+      `Kickoff Outcome Follow-up Tasks ${kickoffOutcomeFollowUpTasksId}`,
+      `Source outcome receipt: ${kickoffProofOutcomeReceiptId} / ${kickoffProofOutcomeState}`,
+      `Task score: ${kickoffOutcomeFollowUpScore}%`,
+      `Do-now tasks: ${kickoffOutcomeDoNow}`,
+      `Primary owner: ${kickoffOutcomePrimaryTask.owner}`,
+      `Primary due: ${kickoffOutcomePrimaryTask.dueLabel}`,
+      `Task rows: ${kickoffOutcomeFollowUpRows.map((row) => `${row.lane} / ${row.taskState} / ${row.owner} / due ${row.dueLabel} / ${row.task}`).join("; ")}`,
+      "Buyer-safe rule: talk about proof status, owner movement, and next review only; keep commercial value, invoice, pricing, and negotiation logic private.",
+    ].join("\n");
+    const kickoffOutcomeTaskEmail = [
+      `Subject: PursuitDesk kickoff proof task - ${kickoffOutcomePrimaryTask.lane}`,
+      "",
+      `Hi ${kickoffOutcomePrimaryTask.owner},`,
+      "",
+      `Kickoff proof has a follow-up task for you: ${kickoffOutcomePrimaryTask.task}`,
+      `Due date: ${kickoffOutcomePrimaryTask.dueLabel}.`,
+      `Buyer-safe line: ${kickoffOutcomePrimaryTask.buyerSafeLine}`,
+      "",
+      "Please close the proof action or add a short recovery note before Weekly Review. Keep values, invoice details, pricing assumptions, and negotiation notes out of the update.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const kickoffOutcomeFollowUpTasksPacket = {
+      schemaVersion: "pursuitdesk.kickoffOutcomeFollowUpTasks.v271",
+      generatedOn: proposalDate.toISOString(),
+      kickoffOutcomeFollowUpTasksId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        kickoffProofOutcomeReceipt: kickoffProofOutcomeReceiptPacket.schemaVersion,
+        kickoffSendReceipt: kickoffSendReceiptPacket.schemaVersion,
+        pilotFirstWeekPulse: pilotFirstWeekPulsePacket.schemaVersion,
+      },
+      sourceIds: {
+        kickoffProofOutcomeReceiptId,
+        kickoffSendReceiptId,
+        pilotFirstWeekPulseId,
+      },
+      score: kickoffOutcomeFollowUpScore,
+      doNowCount: kickoffOutcomeDoNow,
+      primaryTask: kickoffOutcomePrimaryTask,
+      taskRows: kickoffOutcomeFollowUpRows,
+      cards: kickoffOutcomeTaskCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      checks: kickoffOutcomeTaskChecks.map(([label, note, tone]) => ({ label, note, tone })),
+      digest: kickoffOutcomeTaskDigest,
+      email: kickoffOutcomeTaskEmail,
+      nextBackendFields: [
+        "kickoff_outcome_follow_up_task_pack_id",
+        "kickoff_proof_outcome_receipt_id",
+        "proof_lane",
+        "task_state",
+        "task_owner_user_id",
+        "task_due_at",
+        "buyer_safe_line",
+        "commercial_privacy_guard_state",
+        "weekly_review_handoff_state",
+        "kickoff_task_audit_event",
+      ],
+    };
+    const kickoffOutcomeFollowUpTasks = {
+      kickoffOutcomeFollowUpTasksId,
+      score: kickoffOutcomeFollowUpScore,
+      doNowCount: kickoffOutcomeDoNow,
+      primaryTask: kickoffOutcomePrimaryTask,
+      cards: kickoffOutcomeTaskCards,
+      taskRows: kickoffOutcomeFollowUpRows,
+      checks: kickoffOutcomeTaskChecks,
+      digest: kickoffOutcomeTaskDigest,
+      email: kickoffOutcomeTaskEmail,
+      downloadHref: jsonDataUri(kickoffOutcomeFollowUpTasksPacket),
+    };
     const firstWeekProofInboxId = `PD-FIRST-WEEK-PROOF-INBOX-${proposalDateKey}-${String(firstWeekMovementTarget).padStart(2, "0")}`;
     const firstWeekProofRows = [
       ["First-login proof", proposalSendOwner, firstWeekDay1Label, `${firstWeekCoreUsers}/${pilotHandoffUsers.length} core users`, "Ready to capture", "Screenshot, session audit, or admin note confirming pilot users opened their rooms.", "green"],
@@ -60493,6 +61525,316 @@
       email: firstWeekReviewSendEmail,
       downloadHref: jsonDataUri(firstWeekReviewSendReceiptPacket),
     };
+    const reviewReceiptReplyOutcomeId = `PD-REVIEW-RECEIPT-REPLY-${proposalDateKey}-${String(firstWeekReviewSendScore).padStart(2, "0")}`;
+    const reviewReplyDate = addPilotDays(proposalDate, 16);
+    const reviewReplyDateLabel = formatPilotDate(reviewReplyDate);
+    const reviewReplyPreferredOutcome = firstWeekReviewSendScore >= 84 && firstWeekProofBlocked <= 1 ? "Continue pilot" : firstWeekProofBlocked > 1 ? "Repair proof" : "Extend proof";
+    const reviewReplyOutcomeRows = [
+      {
+        lane: "Continue pilot",
+        state: reviewReplyPreferredOutcome === "Continue pilot" ? "Recommended" : "Ready option",
+        buyerSignal: "Sponsor accepts the first-week proof and keeps the day-30 decision date.",
+        nextMove: `Keep the pilot running to ${firstWeekReviewDecisionLabel} with one weekly review and one proof queue.`,
+        owner: proposalSendOwner,
+        score: Math.min(99, firstWeekReviewSendScore + 4),
+        tone: "green",
+      },
+      {
+        lane: "Repair proof",
+        state: firstWeekProofBlocked ? "Watch" : "Backup",
+        buyerSignal: "Buyer asks for missing row movement, report proof, access proof, or privacy evidence.",
+        nextMove: `Assign the missing proof owner and send repaired evidence before ${firstWeekReviewDecisionLabel}.`,
+        owner: "Commercial Coordinator",
+        score: Math.max(48, 78 - firstWeekProofBlocked * 8),
+        tone: "amber",
+      },
+      {
+        lane: "Extend proof",
+        state: reviewReplyPreferredOutcome === "Extend proof" ? "Fallback" : "Available",
+        buyerSignal: "Buyer needs more workbook cleanup time but still sees value in controlled tracking.",
+        nextMove: "Extend proof for one short window and keep the same privacy guardrails.",
+        owner: proposalSendOwner,
+        score: 72,
+        tone: "blue",
+      },
+      {
+        lane: "No response",
+        state: "Chase once",
+        buyerSignal: "Review was sent, but no sponsor decision has arrived.",
+        nextMove: "Send one short follow-up with the proof summary, decision choices, and stop date.",
+        owner: proposalSendOwner,
+        score: 54,
+        tone: "red",
+      },
+      {
+        lane: "Stop safely",
+        state: "Protected",
+        buyerSignal: "No sponsor, no proof repair, or no operational owner after follow-up.",
+        nextMove: "Close the pilot motion without exposing internal notes or commercial assumptions.",
+        owner: "PursuitDesk Admin",
+        score: 46,
+        tone: "red",
+      },
+    ];
+    const reviewReplyActiveRow = reviewReplyOutcomeRows.find((row) => row.lane === reviewReplyPreferredOutcome) || reviewReplyOutcomeRows[0];
+    const reviewReplyContinueCount = reviewReplyOutcomeRows.filter((row) => row.lane === "Continue pilot" && row.state === "Recommended").length;
+    const reviewReplyRepairCount = reviewReplyOutcomeRows.filter((row) => row.lane === "Repair proof" && row.state === "Watch").length;
+    const reviewReplyOutcomeScore = Math.max(
+      52,
+      Math.min(
+        99,
+        Math.round(
+          firstWeekReviewSendScore * 0.42 +
+            firstWeekReviewScore * 0.22 +
+            Math.max(0, 100 - firstWeekProofBlocked * 11) * 0.16 +
+            Math.min(100, firstWeekProofCaptured * 22) * 0.12 +
+            (reviewReplyPreferredOutcome === "Continue pilot" ? 8 : 3),
+        ),
+      ),
+    );
+    const reviewReplyCards = [
+      ["Buyer outcome", reviewReplyActiveRow.lane, reviewReplyActiveRow.buyerSignal, reviewReplyActiveRow.tone],
+      ["Outcome score", `${reviewReplyOutcomeScore}%`, "Reply strength is based on send quality, proof readiness, and blocked proof lanes.", reviewReplyOutcomeScore >= 82 ? "green" : "amber"],
+      ["Decision due", firstWeekReviewDecisionLabel, "Continue, repair, extend proof, no response, or stop must be recorded.", "blue"],
+      ["Private fields", "Protected", "Commercial values and internal decisions stay out of the buyer reply thread.", "teal"],
+    ];
+    const reviewReplyChecklist = [
+      ["Decision is explicit", "Do not let a warm reply sit as a vague note; classify it into one outcome lane.", "green"],
+      ["Repair has owner", "If proof is missing, assign one owner and one due date before chasing the buyer again.", "amber"],
+      ["Extend is limited", "Extension should be one short proof window, not an open-ended pilot.", "blue"],
+      ["Stop is safe", "If the buyer stops or stays silent, close without exposing commercial or internal notes.", "red"],
+    ];
+    const reviewReplyDigest = [
+      `Review Receipt Reply Outcome ${reviewReceiptReplyOutcomeId}`,
+      `Source send receipt: ${firstWeekReviewSendReceiptId} / ${firstWeekReviewSendState}`,
+      `Reply captured on: ${reviewReplyDateLabel}`,
+      `Preferred outcome: ${reviewReplyActiveRow.lane} / ${reviewReplyActiveRow.state}`,
+      `Buyer signal: ${reviewReplyActiveRow.buyerSignal}`,
+      `Next move: ${reviewReplyActiveRow.nextMove}`,
+      `Decision due: ${firstWeekReviewDecisionLabel}`,
+      `Outcome lanes: ${reviewReplyOutcomeRows.map((row) => `${row.lane} / ${row.state} / owner ${row.owner}`).join("; ")}`,
+      "Privacy rule: buyer reply outcomes can mention proof state and decision path, but not tender values, invoice details, negotiation notes, or internal stop reasons.",
+    ].join("\n");
+    const reviewReplyEmail = [
+      `Subject: PursuitDesk review reply outcome - ${reviewReplyActiveRow.lane}`,
+      "",
+      `Hi ${proposalSendOwner},`,
+      "",
+      `The first-week review receipt now has a buyer reply outcome: ${reviewReplyActiveRow.lane}.`,
+      `Signal: ${reviewReplyActiveRow.buyerSignal}`,
+      `Next move: ${reviewReplyActiveRow.nextMove}`,
+      "",
+      `Decision due remains ${firstWeekReviewDecisionLabel}. Keep the reply short: continue, repair proof, extend proof, no response follow-up, or stop safely.`,
+      "Keep commercial values, invoices, negotiation notes, and internal stop logic out of the buyer thread.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const reviewReceiptReplyOutcomePacket = {
+      schemaVersion: "pursuitdesk.reviewReceiptReplyOutcome.v267",
+      generatedOn: proposalDate.toISOString(),
+      reviewReceiptReplyOutcomeId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        firstWeekReviewSendReceipt: firstWeekReviewSendReceiptPacket.schemaVersion,
+        firstWeekReviewPack: firstWeekReviewPackPacket.schemaVersion,
+        firstWeekProofInbox: firstWeekProofInboxPacket.schemaVersion,
+      },
+      sourceIds: {
+        firstWeekReviewSendReceiptId,
+        firstWeekReviewPackId,
+        firstWeekProofInboxId,
+      },
+      score: reviewReplyOutcomeScore,
+      capturedReplyAt: reviewReplyDate.toISOString(),
+      preferredOutcome: reviewReplyActiveRow.lane,
+      preferredState: reviewReplyActiveRow.state,
+      continueCount: reviewReplyContinueCount,
+      repairCount: reviewReplyRepairCount,
+      outcomeRows: reviewReplyOutcomeRows,
+      cards: reviewReplyCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      checklist: reviewReplyChecklist.map(([label, note, tone]) => ({ label, note, tone })),
+      digest: reviewReplyDigest,
+      email: reviewReplyEmail,
+      nextBackendFields: [
+        "review_receipt_reply_outcome_id",
+        "first_week_review_send_receipt_id",
+        "buyer_reply_outcome_lane",
+        "buyer_reply_outcome_state",
+        "buyer_reply_captured_at",
+        "buyer_reply_next_move",
+        "buyer_reply_owner_user_id",
+        "buyer_decision_due_at",
+        "privacy_guard_state",
+        "review_receipt_reply_audit_event",
+      ],
+    };
+    const reviewReceiptReplyOutcome = {
+      reviewReceiptReplyOutcomeId,
+      score: reviewReplyOutcomeScore,
+      replyDate: reviewReplyDateLabel,
+      preferredOutcome: reviewReplyActiveRow.lane,
+      preferredState: reviewReplyActiveRow.state,
+      nextMove: reviewReplyActiveRow.nextMove,
+      cards: reviewReplyCards,
+      outcomeRows: reviewReplyOutcomeRows,
+      checklist: reviewReplyChecklist,
+      digest: reviewReplyDigest,
+      email: reviewReplyEmail,
+      downloadHref: jsonDataUri(reviewReceiptReplyOutcomePacket),
+    };
+    const reviewOutcomeFollowUpTasksId = `PD-REVIEW-OUTCOME-TASKS-${proposalDateKey}-${String(reviewReplyOutcomeScore).padStart(2, "0")}`;
+    const reviewOutcomeTaskBase = [
+      {
+        lane: "Continue pilot",
+        owner: proposalSendOwner,
+        task: "Confirm next weekly review and keep the live proof queue moving.",
+        buyerSafeLine: "We will continue the pilot with one weekly review and visible operating proof.",
+        privacyRule: "Show progress, dates, and control proof only.",
+      },
+      {
+        lane: "Repair proof",
+        owner: "Commercial Coordinator",
+        task: "Collect missing proof, assign the source owner, and resend the corrected proof pack.",
+        buyerSafeLine: "We are repairing the missing proof items before asking for the next decision.",
+        privacyRule: "Do not expose internal blockers, values, invoices, or negotiation notes.",
+      },
+      {
+        lane: "Extend proof",
+        owner: proposalSendOwner,
+        task: "Set one short extension window and define the proof that must arrive before it closes.",
+        buyerSafeLine: "We can extend the proof window once, with a clear date and visible outcome.",
+        privacyRule: "Keep the extension reason operational, not commercial.",
+      },
+      {
+        lane: "No response",
+        owner: proposalSendOwner,
+        task: "Send one short decision chase, then protect the stop date if the buyer stays silent.",
+        buyerSafeLine: "Sharing one short follow-up so the pilot does not remain open without a decision.",
+        privacyRule: "No pressure language, hidden values, or internal scoring in the buyer thread.",
+      },
+      {
+        lane: "Stop safely",
+        owner: "PursuitDesk Admin",
+        task: "Close the pilot motion, archive safe proof, and keep internal notes private.",
+        buyerSafeLine: "We will close the pilot cleanly and retain only safe operating proof.",
+        privacyRule: "Archive commercial, invoice, and internal stop logic away from buyer notes.",
+      },
+    ];
+    const reviewOutcomeFollowUpRows = reviewReplyOutcomeRows.map((row, index) => {
+      const taskBase = reviewOutcomeTaskBase.find((item) => item.lane === row.lane) || reviewOutcomeTaskBase[0];
+      const dueDate = addPilotDays(reviewReplyDate, index + 1);
+      const isPrimary = row.lane === reviewReplyActiveRow.lane;
+      return {
+        lane: row.lane,
+        state: isPrimary ? "Primary task" : row.state,
+        owner: taskBase.owner,
+        task: taskBase.task,
+        dueDate: dueDate.toISOString(),
+        dueLabel: formatPilotDate(dueDate),
+        buyerSafeLine: taskBase.buyerSafeLine,
+        privacyRule: taskBase.privacyRule,
+        sourceSignal: row.buyerSignal,
+        tone: isPrimary ? "green" : row.tone,
+      };
+    });
+    const reviewOutcomeFollowUpScore = Math.max(
+      56,
+      Math.min(
+        99,
+        Math.round(
+          reviewReplyOutcomeScore * 0.48 +
+            firstWeekReviewSendScore * 0.24 +
+            Math.min(100, reviewOutcomeFollowUpRows.length * 16) * 0.12 +
+            (reviewOutcomeFollowUpRows.some((row) => row.state === "Primary task") ? 12 : 4),
+        ),
+      ),
+    );
+    const reviewOutcomePrimaryTask = reviewOutcomeFollowUpRows.find((row) => row.state === "Primary task") || reviewOutcomeFollowUpRows[0];
+    const reviewOutcomeTaskCards = [
+      ["Task pack", reviewOutcomeFollowUpRows.length, "Every buyer outcome now becomes a named owner task.", "green"],
+      ["Primary lane", reviewOutcomePrimaryTask.lane, `${reviewOutcomePrimaryTask.owner} owns the first move.`, reviewOutcomePrimaryTask.tone],
+      ["Next due", reviewOutcomePrimaryTask.dueLabel, "The next action is dated instead of left as a loose note.", "blue"],
+      ["Privacy lock", "On", "Buyer-safe lines are separated from internal task and commercial context.", "teal"],
+    ];
+    const reviewOutcomeTaskChecks = [
+      ["Owner named", "Every outcome has one accountable owner before it reaches Advisor or Weekly Review.", "green"],
+      ["Due date written", "The primary action is dated from the captured reply, not from a vague follow-up promise.", "blue"],
+      ["Buyer-safe copy", "The external line says what will happen without exposing pricing, invoice, or negotiation detail.", "teal"],
+      ["Stop remains safe", "No response and stop-safe paths close the loop without leaking internal decision logic.", "red"],
+    ];
+    const reviewOutcomeTaskDigest = [
+      `Review Outcome Follow-up Tasks ${reviewOutcomeFollowUpTasksId}`,
+      `Source outcome: ${reviewReceiptReplyOutcomeId} / ${reviewReceiptReplyOutcome.preferredOutcome} / ${reviewReceiptReplyOutcome.preferredState}`,
+      `Task score: ${reviewOutcomeFollowUpScore}%`,
+      `Primary task: ${reviewOutcomePrimaryTask.lane} / ${reviewOutcomePrimaryTask.owner} / due ${reviewOutcomePrimaryTask.dueLabel}`,
+      `Task rows: ${reviewOutcomeFollowUpRows.map((row) => `${row.lane} -> ${row.owner} -> ${row.dueLabel}`).join("; ")}`,
+      "Weekly Review handoff: show lane, owner, due date, source signal, and buyer-safe line.",
+      "Privacy rule: commercial values, invoice states, negotiation notes, and internal stop logic stay out of tracker rooms and buyer replies.",
+    ].join("\n");
+    const reviewOutcomeTaskEmail = [
+      `Subject: PursuitDesk review outcome tasks - ${reviewOutcomePrimaryTask.lane}`,
+      "",
+      `Hi ${reviewOutcomePrimaryTask.owner},`,
+      "",
+      `The buyer review outcome has been converted into follow-up tasks. Primary lane: ${reviewOutcomePrimaryTask.lane}.`,
+      `Your next task: ${reviewOutcomePrimaryTask.task}`,
+      `Due: ${reviewOutcomePrimaryTask.dueLabel}`,
+      "",
+      `Buyer-safe line: ${reviewOutcomePrimaryTask.buyerSafeLine}`,
+      "",
+      "Keep values, invoice details, negotiation notes, and internal stop reasons out of the buyer thread.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const reviewOutcomeFollowUpTasksPacket = {
+      schemaVersion: "pursuitdesk.reviewOutcomeFollowUpTasks.v270",
+      generatedOn: proposalDate.toISOString(),
+      reviewOutcomeFollowUpTasksId,
+      company: company.name,
+      accountOwner: state.user.name,
+      sourceVersions: {
+        reviewReceiptReplyOutcome: reviewReceiptReplyOutcomePacket.schemaVersion,
+        firstWeekReviewSendReceipt: firstWeekReviewSendReceiptPacket.schemaVersion,
+      },
+      sourceIds: {
+        reviewReceiptReplyOutcomeId,
+        firstWeekReviewSendReceiptId,
+      },
+      score: reviewOutcomeFollowUpScore,
+      preferredOutcome: reviewReceiptReplyOutcome.preferredOutcome,
+      primaryTask: reviewOutcomePrimaryTask,
+      taskRows: reviewOutcomeFollowUpRows,
+      cards: reviewOutcomeTaskCards.map(([label, value, note, tone]) => ({ label, value, note, tone })),
+      checks: reviewOutcomeTaskChecks.map(([label, note, tone]) => ({ label, note, tone })),
+      digest: reviewOutcomeTaskDigest,
+      email: reviewOutcomeTaskEmail,
+      nextBackendFields: [
+        "review_outcome_followup_task_id",
+        "review_receipt_reply_outcome_id",
+        "tenant_id",
+        "task_lane",
+        "task_owner_role",
+        "task_due_at",
+        "task_state",
+        "buyer_safe_line",
+        "privacy_guard_state",
+        "weekly_review_action_event",
+      ],
+    };
+    const reviewOutcomeFollowUpTasks = {
+      reviewOutcomeFollowUpTasksId,
+      score: reviewOutcomeFollowUpScore,
+      primaryTask: reviewOutcomePrimaryTask,
+      taskRows: reviewOutcomeFollowUpRows,
+      cards: reviewOutcomeTaskCards,
+      checks: reviewOutcomeTaskChecks,
+      digest: reviewOutcomeTaskDigest,
+      email: reviewOutcomeTaskEmail,
+      downloadHref: jsonDataUri(reviewOutcomeFollowUpTasksPacket),
+    };
     return {
       company,
       membership,
@@ -60542,9 +61884,14 @@
       pilotFirstWeekPulse,
       pilotReplyKickoffBridge,
       kickoffProofHandoffEmailPack,
+      kickoffSendReceipt,
+      kickoffProofOutcomeReceipt,
+      kickoffOutcomeFollowUpTasks,
       firstWeekProofInbox,
       firstWeekReviewPack,
       firstWeekReviewSendReceipt,
+      reviewReceiptReplyOutcome,
+      reviewOutcomeFollowUpTasks,
       feedbackPack,
       roiPack,
       proposalPack,
@@ -64752,6 +66099,321 @@
           </div>
         </section>
 
+        <section class="pilot-pitch-panel pilot-kickoff-send-receipt">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v265 Kickoff Send Receipt</span>
+              <h3>Record the kickoff handoff after it is sent</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.kickoffSendReceipt.downloadHref)}" download="pursuitdesk-kickoff-send-receipt-v265.json">Download receipt JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-kickoff-send-hero">
+            <div>
+              <span>Kickoff send receipt</span>
+              <strong>${escapeHtml(model.kickoffSendReceipt.kickoffSendReceiptId)}</strong>
+              <p>The email pack is now treated like a controlled handoff: who received it, who accepted action, what proof is still waiting, and what must be ready before the first review.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open pilot pitch</button>
+                <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Receipt score</span>
+              <strong>${model.kickoffSendReceipt.score}%</strong>
+              <p>${escapeHtml(model.kickoffSendReceipt.sendState)}</p>
+              <small>Proof due ${escapeHtml(model.kickoffSendReceipt.proofDue)}</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.kickoffSendReceipt.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-kickoff-send-grid">
+            <article class="tone-green">
+              <span class="metric-label">Recipients</span>
+              <h4>Who received the handoff</h4>
+              <div class="pilot-kickoff-send-list">
+                ${model.kickoffSendReceipt.recipients
+                  .map(
+                    (row) => `
+                      <p class="tone-${escapeHtml(row.tone)}">
+                        <strong>${escapeHtml(row.audience)} / ${escapeHtml(row.status)}</strong>
+                        <span>${escapeHtml(row.owner)} - ${escapeHtml(row.action)}</span>
+                        <small>Due ${escapeHtml(row.due)} / ${escapeHtml(row.sentAt)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Proof waiting</span>
+              <h4>Before first review</h4>
+              <div class="pilot-kickoff-send-list">
+                ${model.kickoffSendReceipt.proofWaiting
+                  .map(
+                    ([label, owner, due, state, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)} / ${escapeHtml(state)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                        <small>${escapeHtml(owner)} / ${escapeHtml(due)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-teal">
+              <span class="metric-label">Send rules</span>
+              <h4>Keep the handoff controlled</h4>
+              <div class="pilot-kickoff-send-list">
+                ${model.kickoffSendReceipt.rules
+                  .map(
+                    ([label, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Receipt digest</span>
+              <h4>Sent owners, proof due, and privacy rule</h4>
+              <textarea readonly aria-label="Kickoff send receipt digest">${escapeHtml(model.kickoffSendReceipt.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready follow-up</span>
+              <h4>Send the kickoff receipt note</h4>
+              <textarea readonly aria-label="Copy-ready kickoff send receipt">${escapeHtml(model.kickoffSendReceipt.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-kickoff-proof-outcome-receipt">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v268 Kickoff Proof Outcome Receipt</span>
+              <h3>Check what actually arrived after kickoff</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.kickoffProofOutcomeReceipt.downloadHref)}" download="pursuitdesk-kickoff-proof-outcome-receipt-v268.json">Download outcome JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-kickoff-outcome-hero">
+            <div>
+              <span>Proof outcome</span>
+              <strong>${escapeHtml(model.kickoffProofOutcomeReceipt.kickoffProofOutcomeReceiptId)}</strong>
+              <p>After kickoff, the system checks whether proof arrived, which owner missed, and what success action is due before the first-week review.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+                <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Outcome score</span>
+              <strong>${model.kickoffProofOutcomeReceipt.score}%</strong>
+              <p>${escapeHtml(model.kickoffProofOutcomeReceipt.outcomeState)}</p>
+              <small>Action due ${escapeHtml(model.kickoffProofOutcomeReceipt.successActionDue)}</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.kickoffProofOutcomeReceipt.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-kickoff-outcome-grid">
+            <article class="tone-green">
+              <span class="metric-label">Proof outcomes</span>
+              <h4>Arrived, missed, waiting, scheduled</h4>
+              <div class="pilot-kickoff-outcome-list">
+                ${model.kickoffProofOutcomeReceipt.proofOutcomes
+                  .map(
+                    (row) => `
+                      <p class="tone-${escapeHtml(row.tone)}">
+                        <strong>${escapeHtml(row.proof)} / ${escapeHtml(row.outcomeState)}</strong>
+                        <span>${escapeHtml(row.evidence)}</span>
+                        <small>${escapeHtml(row.owner)} / due ${escapeHtml(row.due)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-amber">
+              <span class="metric-label">Success actions</span>
+              <h4>Before the review</h4>
+              <div class="pilot-kickoff-outcome-list">
+                ${model.kickoffProofOutcomeReceipt.successActions
+                  .map(
+                    ([label, owner, due, action, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(action)}</span>
+                        <small>${escapeHtml(owner)} / ${escapeHtml(due)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Release rules</span>
+              <h4>Keep it controlled</h4>
+              <div class="pilot-kickoff-outcome-list">
+                ${model.kickoffProofOutcomeReceipt.rules
+                  .map(
+                    ([label, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Outcome digest</span>
+              <h4>Arrived proof, missed owners, and privacy rule</h4>
+              <textarea readonly aria-label="Kickoff proof outcome receipt digest">${escapeHtml(model.kickoffProofOutcomeReceipt.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready outcome note</span>
+              <h4>Send before the first-week review</h4>
+              <textarea readonly aria-label="Copy-ready kickoff proof outcome receipt">${escapeHtml(model.kickoffProofOutcomeReceipt.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-kickoff-proof-outcome-receipt pilot-kickoff-followup-tasks">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v271 Kickoff Outcome Follow-up Tasks</span>
+              <h3>Turn missed kickoff proof into owner tasks</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.kickoffOutcomeFollowUpTasks.downloadHref)}" download="pursuitdesk-kickoff-outcome-follow-up-tasks-v271.json">Download task JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-kickoff-outcome-hero">
+            <div>
+              <span>Kickoff task pack</span>
+              <strong>${escapeHtml(model.kickoffOutcomeFollowUpTasks.kickoffOutcomeFollowUpTasksId)}</strong>
+              <p>Missed kickoff proof now becomes one owner task, one due date, and one buyer-safe line before it moves into Advisor or Weekly Review.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
+                <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+                <button class="ghost-btn" type="button" data-view="Pilot Pitch">Review pilot pitch</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Task score</span>
+              <strong>${model.kickoffOutcomeFollowUpTasks.score}%</strong>
+              <p>${escapeHtml(model.kickoffOutcomeFollowUpTasks.primaryTask.lane)}</p>
+              <small>${escapeHtml(model.kickoffOutcomeFollowUpTasks.primaryTask.owner)} / ${escapeHtml(model.kickoffOutcomeFollowUpTasks.primaryTask.dueLabel)}</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.kickoffOutcomeFollowUpTasks.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-kickoff-outcome-grid">
+            <article class="tone-amber">
+              <span class="metric-label">Owner task lanes</span>
+              <h4>Who must move next</h4>
+              <div class="pilot-kickoff-outcome-list">
+                ${model.kickoffOutcomeFollowUpTasks.taskRows
+                  .map(
+                    (row) => `
+                      <p class="tone-${escapeHtml(row.tone)}">
+                        <strong>${escapeHtml(row.lane)} / ${escapeHtml(row.taskState)}</strong>
+                        <span>${escapeHtml(row.task)}</span>
+                        <small>${escapeHtml(row.owner)} / due ${escapeHtml(row.dueLabel)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Buyer-safe handoff</span>
+              <h4>What can be said outside</h4>
+              <div class="pilot-kickoff-outcome-list">
+                ${model.kickoffOutcomeFollowUpTasks.taskRows
+                  .map(
+                    (row) => `
+                      <p class="tone-${escapeHtml(row.tone)}">
+                        <strong>${escapeHtml(row.proof)}</strong>
+                        <span>${escapeHtml(row.buyerSafeLine)}</span>
+                        <small>${escapeHtml(row.privacyRule)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-green">
+              <span class="metric-label">Release checks</span>
+              <h4>Before Weekly Review</h4>
+              <div class="pilot-kickoff-outcome-list">
+                ${model.kickoffOutcomeFollowUpTasks.checks
+                  .map(
+                    ([label, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Task digest</span>
+              <h4>Advisor and Weekly Review handoff</h4>
+              <textarea readonly aria-label="Kickoff outcome follow-up task digest">${escapeHtml(model.kickoffOutcomeFollowUpTasks.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready owner note</span>
+              <h4>Send to the primary proof owner</h4>
+              <textarea readonly aria-label="Copy-ready kickoff outcome follow-up task">${escapeHtml(model.kickoffOutcomeFollowUpTasks.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
         <section class="pilot-pitch-panel pilot-handoff-sheet">
           <div class="access-head">
             <div>
@@ -65397,6 +67059,206 @@
               <span class="metric-label">Copy-ready send note</span>
               <h4>Use after sending the review pack</h4>
               <textarea readonly aria-label="Copy-ready first-week review send receipt">${escapeHtml(model.firstWeekReviewSendReceipt.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-review-reply-outcome">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v267 Review Receipt Reply Outcome</span>
+              <h3>Turn the buyer reply into a clear next move</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.reviewReceiptReplyOutcome.downloadHref)}" download="pursuitdesk-review-receipt-reply-outcome-v267.json">Download outcome JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-review-outcome-hero">
+            <div>
+              <span>Reply outcome</span>
+              <strong>${escapeHtml(model.reviewReceiptReplyOutcome.reviewReceiptReplyOutcomeId)}</strong>
+              <p>The first-week review no longer ends as a loose email thread. Capture the buyer as continue, repair proof, extend proof, no response, or stop safely.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Pilot Pitch">Open pilot pitch</button>
+                <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
+                <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Outcome score</span>
+              <strong>${model.reviewReceiptReplyOutcome.score}%</strong>
+              <p>${escapeHtml(model.reviewReceiptReplyOutcome.preferredOutcome)}</p>
+              <small>${escapeHtml(model.reviewReceiptReplyOutcome.replyDate)} reply capture</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.reviewReceiptReplyOutcome.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-review-outcome-grid">
+            <article class="tone-green">
+              <span class="metric-label">Outcome lanes</span>
+              <h4>Classify the buyer response</h4>
+              <div class="pilot-review-outcome-list">
+                ${model.reviewReceiptReplyOutcome.outcomeRows
+                  .map(
+                    (row) => `
+                      <p class="tone-${escapeHtml(row.tone)}">
+                        <strong>${escapeHtml(row.lane)} / ${escapeHtml(row.state)}</strong>
+                        <span>${escapeHtml(row.buyerSignal)}</span>
+                        <small>${escapeHtml(row.owner)} / ${escapeHtml(row.nextMove)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Reply discipline</span>
+              <h4>Keep the next step simple</h4>
+              <div class="pilot-review-outcome-list">
+                ${model.reviewReceiptReplyOutcome.checklist
+                  .map(
+                    ([label, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Reply digest</span>
+              <h4>Outcome, owner, next move, and privacy rule</h4>
+              <textarea readonly aria-label="Review receipt reply outcome digest">${escapeHtml(model.reviewReceiptReplyOutcome.digest)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Copy-ready outcome note</span>
+              <h4>Send after the buyer answers</h4>
+              <textarea readonly aria-label="Copy-ready review receipt reply outcome">${escapeHtml(model.reviewReceiptReplyOutcome.email)}</textarea>
+            </article>
+          </div>
+        </section>
+
+        <section class="pilot-pitch-panel pilot-review-reply-outcome pilot-review-followup-tasks">
+          <div class="access-head">
+            <div>
+              <span class="metric-label">v270 Review Outcome Follow-up Tasks</span>
+              <h3>Turn the review outcome into owner work</h3>
+            </div>
+            <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.reviewOutcomeFollowUpTasks.downloadHref)}" download="pursuitdesk-review-outcome-follow-up-tasks-v270.json">Download task JSON</a>
+          </div>
+          <div class="pilot-close-hero pilot-review-outcome-hero">
+            <div>
+              <span>Follow-up task pack</span>
+              <strong>${escapeHtml(model.reviewOutcomeFollowUpTasks.reviewOutcomeFollowUpTasksId)}</strong>
+              <p>Each buyer outcome becomes a simple owner task with a due date, buyer-safe line, and privacy rule before it reaches Advisor or Weekly Review.</p>
+              <div class="pilot-pitch-actions">
+                <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
+                <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+                <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              </div>
+            </div>
+            <div class="pilot-close-score-card">
+              <span>Task score</span>
+              <strong>${model.reviewOutcomeFollowUpTasks.score}%</strong>
+              <p>${escapeHtml(model.reviewOutcomeFollowUpTasks.primaryTask.lane)}</p>
+              <small>${escapeHtml(model.reviewOutcomeFollowUpTasks.primaryTask.owner)} / ${escapeHtml(model.reviewOutcomeFollowUpTasks.primaryTask.dueLabel)}</small>
+            </div>
+          </div>
+          <div class="pilot-close-card-grid">
+            ${model.reviewOutcomeFollowUpTasks.cards
+              .map(
+                ([label, value, note, tone]) => `
+                  <div class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <p>${escapeHtml(note)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="pilot-review-outcome-grid">
+            <article class="tone-green">
+              <span class="metric-label">Owner task lanes</span>
+              <h4>What happens after the buyer answers</h4>
+              <div class="pilot-review-outcome-list">
+                ${model.reviewOutcomeFollowUpTasks.taskRows
+                  .map(
+                    (row) => `
+                      <p class="tone-${escapeHtml(row.tone)}">
+                        <strong>${escapeHtml(row.lane)} / ${escapeHtml(row.state)}</strong>
+                        <span>${escapeHtml(row.task)}</span>
+                        <small>${escapeHtml(row.owner)} / due ${escapeHtml(row.dueLabel)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Buyer-safe handoff</span>
+              <h4>What can be said outside</h4>
+              <div class="pilot-review-outcome-list">
+                ${model.reviewOutcomeFollowUpTasks.taskRows
+                  .map(
+                    (row) => `
+                      <p class="tone-${escapeHtml(row.tone)}">
+                        <strong>${escapeHtml(row.lane)}</strong>
+                        <span>${escapeHtml(row.buyerSafeLine)}</span>
+                        <small>${escapeHtml(row.privacyRule)}</small>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+          </div>
+          <div class="pilot-review-outcome-grid">
+            <article class="tone-green">
+              <span class="metric-label">Release checks</span>
+              <h4>Before tasks are sent forward</h4>
+              <div class="pilot-review-outcome-list">
+                ${model.reviewOutcomeFollowUpTasks.checks
+                  .map(
+                    ([label, note, tone]) => `
+                      <p class="tone-${escapeHtml(tone)}">
+                        <strong>${escapeHtml(label)}</strong>
+                        <span>${escapeHtml(note)}</span>
+                      </p>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            </article>
+            <article class="tone-blue">
+              <span class="metric-label">Task digest</span>
+              <h4>Advisor and Weekly Review handoff</h4>
+              <textarea readonly aria-label="Review outcome follow-up task digest">${escapeHtml(model.reviewOutcomeFollowUpTasks.digest)}</textarea>
+            </article>
+          </div>
+          <div class="pilot-close-lower-grid">
+            <article>
+              <span class="metric-label">Copy-ready owner note</span>
+              <h4>Send to the primary owner</h4>
+              <textarea readonly aria-label="Copy-ready review outcome follow-up task">${escapeHtml(model.reviewOutcomeFollowUpTasks.email)}</textarea>
+            </article>
+            <article>
+              <span class="metric-label">Backend handoff</span>
+              <h4>What v270 prepares for production</h4>
+              <p>Review outcomes now have task ids, source outcome ids, owners, due dates, buyer-safe lines, privacy locks, and Weekly Review action events ready for the private backend.</p>
             </article>
           </div>
         </section>

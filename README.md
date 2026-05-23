@@ -200,6 +200,15 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - PursuitDesk now includes a v262 Kickoff Proof Handoff Emails pack inside Pilot Pitch, turning the reply-to-kickoff bridge into focused sponsor, admin, workbook owner, and finance handoff messages.
 - PursuitDesk now includes a v263 Preset-to-Access Policy Handoff inside Rooms, connecting Operations, Management, Commercial, and Governance navigation presets to future access templates, grant sets, and audit events.
 - PursuitDesk now includes a v264 Review Pack Send Receipt inside Pilot Pitch, recording first-week review recipients, buyer-safe proof shown, private fields protected, and the buyer decision due date.
+- PursuitDesk now includes a v265 Kickoff Send Receipt inside Pilot Pitch, recording which kickoff handoff emails were sent, which owners accepted action, and what first-week proof is still waiting.
+- PursuitDesk now includes a v266 Preset Policy Apply Receipt inside Rooms, recording which admin applied a role preset, what rooms changed, what grants were proposed, and the future audit packet.
+- PursuitDesk now includes a v267 Review Receipt Reply Outcome inside Pilot Pitch, recording whether the buyer continued, requested proof repair, extended proof, went silent, or stopped safely after the first-week review receipt.
+- PursuitDesk now includes a v268 Kickoff Proof Outcome Receipt inside Pilot Pitch, checking what proof arrived after kickoff, which owner missed, and what success action is due before the first-week review.
+- PursuitDesk now includes a v269 Preset Grant Approval Queue inside Rooms, letting admins approve, hold, or reject proposed role-preset grants before Membership access changes.
+- PursuitDesk now includes v270 Review Outcome Follow-up Tasks inside Pilot Pitch, converting first-week review reply outcomes into owner tasks, due dates, buyer-safe lines, privacy checks, and downloadable JSON.
+- PursuitDesk now includes v271 Kickoff Outcome Follow-up Tasks inside Pilot Pitch, converting missed kickoff proof into owner tasks, due dates, buyer-safe notes, privacy checks, and downloadable JSON.
+- PursuitDesk now includes v272 Grant Approval Follow-up Tasks inside Rooms, converting approved, held, and rejected preset grants into Membership admin actions, signoff reminders, blocked-access notes, audit checks, and downloadable JSON.
+- PursuitDesk now includes v273 Grant Task Execution Receipt inside Rooms, proving which preset-grant tasks were released, held again, blocked, verified, and audit-ready before Membership changes become real.
 - Closeout now includes a v159 SLA and Escalation Clock with archive ageing, overdue lanes, due-now warnings, reviewer nudges, owner actions, management closeout lines, and downloadable SLA JSON.
 - Closeout now includes a v162 Closeout Exception Approval Queue that turns SLA pressure into approve, hold, defer, reopen, or reject decisions with approver roles, owner actions, management notes, and downloadable exception JSON.
 - Closeout now includes a v165 Closeout Exception Evidence Bundle that turns exception decisions into proof requests, named evidence files, owner reminders, release notes, management lines, and downloadable evidence JSON.
@@ -413,6 +422,15 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v262 adds Kickoff Proof Handoff Emails inside Pilot Pitch, turning the reply-to-kickoff bridge into sponsor, admin, workbook owner, and finance messages with owner asks, due dates, privacy rules, digest, and downloadable JSON.
 - v263 adds Preset-to-Access Policy Handoff inside Rooms, turning each role navigation preset into access template rows, grant labels, default room policy, admin audit event, rules, digest, and downloadable JSON.
 - v264 adds Review Pack Send Receipt inside Pilot Pitch, turning the first-week review pack into recipients, shown proof, private-field guardrails, buyer decision date, send rules, digest, email note, and downloadable JSON.
+- v265 adds Kickoff Send Receipt inside Pilot Pitch, turning the kickoff email pack into recipients, sent state, owner acceptance, proof still waiting, first-week due date, send rules, digest, email note, and downloadable JSON.
+- v266 adds Preset Policy Apply Receipt inside Rooms, turning active role presets into applied admin, changed rooms, proposed grants, audit event, checklist, digest, and downloadable JSON.
+- v267 adds Review Receipt Reply Outcome inside Pilot Pitch, turning first-week review receipt replies into continue, repair proof, extend proof, no response, or stop-safe lanes with owner, next move, privacy rule, digest, and downloadable JSON.
+- v268 adds Kickoff Proof Outcome Receipt inside Pilot Pitch, turning kickoff proof lanes into arrived, missed owner, waiting signoff, or scheduled states with success actions, privacy rule, digest, and downloadable JSON.
+- v269 adds Preset Grant Approval Queue inside Rooms, turning proposed role-preset grants into approve, hold, or reject decisions before Membership access changes.
+- v270 adds Review Outcome Follow-up Tasks inside Pilot Pitch, turning continue, repair, extend, no-response, and stop-safe review outcomes into dated owner work for Advisor and Weekly Review.
+- v271 adds Kickoff Outcome Follow-up Tasks inside Pilot Pitch, sending missed kickoff proof owners into Advisor and Weekly Review with one due action and one buyer-safe note.
+- v272 adds Grant Approval Follow-up Tasks inside Rooms, turning preset grant decisions into Membership release tasks, management signoff holds, blocked-access reminders, and audit handoff.
+- v273 adds Grant Task Execution Receipt inside Rooms, recording released, held-again, and blocked access outcomes with verification rules, audit events, digest, and downloadable JSON.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.
