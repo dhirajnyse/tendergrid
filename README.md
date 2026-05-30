@@ -218,6 +218,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - PursuitDesk now includes v282 Command Decision Line so the Command Center shows the first room, owner, date, and proof in one compact strip while the full meeting script stays folded until needed.
 - PursuitDesk now includes v283 Command Focus Mode so the Command Center opens with the four highest-value rooms and keeps the full Module Cockpit folded behind one clean summary.
 - PursuitDesk now includes v284 Admin Tools Tray so Pilot Pitch, Membership Model, and Build Phase move into one admin-only launcher while daily navigation stays simpler.
+- PursuitDesk now includes v285 Header Build Badge so the current build is visible in the top shell and the PursuitDesk logo/brand returns users to Command.
 - Closeout now includes a v159 SLA and Escalation Clock with archive ageing, overdue lanes, due-now warnings, reviewer nudges, owner actions, management closeout lines, and downloadable SLA JSON.
 - Closeout now includes a v162 Closeout Exception Approval Queue that turns SLA pressure into approve, hold, defer, reopen, or reject decisions with approver roles, owner actions, management notes, and downloadable exception JSON.
 - Closeout now includes a v165 Closeout Exception Evidence Bundle that turns exception decisions into proof requests, named evidence files, owner reminders, release notes, management lines, and downloadable evidence JSON.
@@ -449,6 +450,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v282 adds Command Decision Line: the Command Center now keeps the 15-minute flow and handoff receipt folded by default while one compact strip tells the team what to open, who owns it, what date matters, and what proof to bring.
 - v283 adds Command Focus Mode: the Command Center now shows four highest-value operating rooms first and folds the full Module Cockpit behind one clean summary.
 - v284 adds Admin Tools Tray: Pilot Pitch, Membership Model, and Build Phase are grouped into a compact admin-only menu so the main header keeps daily work first.
+- v285 adds Header Build Badge: the top shell now shows the active build version during testing, and clicking the PursuitDesk logo/brand opens the Command home view.
 - v281 adds Handoff Receipt: the Morning Brief now finishes with owner, date, proof, and next-room fields so the first meeting action is explicit without adding another navigation surface.
 - v278 adds Today Mission Strip: Command Center now turns the Autopilot mission into a compact morning strip with first move, privacy guardrail, next room, and meeting closeout.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
