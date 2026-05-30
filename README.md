@@ -209,6 +209,10 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - PursuitDesk now includes v271 Kickoff Outcome Follow-up Tasks inside Pilot Pitch, converting missed kickoff proof into owner tasks, due dates, buyer-safe notes, privacy checks, and downloadable JSON.
 - PursuitDesk now includes v272 Grant Approval Follow-up Tasks inside Rooms, converting approved, held, and rejected preset grants into Membership admin actions, signoff reminders, blocked-access notes, audit checks, and downloadable JSON.
 - PursuitDesk now includes v273 Grant Task Execution Receipt inside Rooms, proving which preset-grant tasks were released, held again, blocked, verified, and audit-ready before Membership changes become real.
+- PursuitDesk now includes v274 Pilot Pitch Navigation and Render Hotfix so admin-only Pilot Pitch, Build Phase, and Membership Model buttons use a dedicated reliable opener, and Pilot Pitch renders its first-week pulse model cleanly.
+- PursuitDesk now includes v275 Pilot Pitch Route Fallback so Pilot Pitch, Build Phase, and Membership Model also have URL-hash fallback routes for GitHub Pages cache safety and direct admin links.
+- PursuitDesk now includes v276 Room Jump Search so the floating search opens a simple Quick Switcher with rooms first, records second, and direct access to Pilot Pitch, Build Phase, Membership, and daily work.
+- PursuitDesk now includes v277 Quick Switcher Memory so recent rooms appear in the switcher and pressing Enter opens the best matching room or record without adding more header buttons.
 - Closeout now includes a v159 SLA and Escalation Clock with archive ageing, overdue lanes, due-now warnings, reviewer nudges, owner actions, management closeout lines, and downloadable SLA JSON.
 - Closeout now includes a v162 Closeout Exception Approval Queue that turns SLA pressure into approve, hold, defer, reopen, or reject decisions with approver roles, owner actions, management notes, and downloadable exception JSON.
 - Closeout now includes a v165 Closeout Exception Evidence Bundle that turns exception decisions into proof requests, named evidence files, owner reminders, release notes, management lines, and downloadable evidence JSON.
@@ -431,6 +435,10 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v271 adds Kickoff Outcome Follow-up Tasks inside Pilot Pitch, sending missed kickoff proof owners into Advisor and Weekly Review with one due action and one buyer-safe note.
 - v272 adds Grant Approval Follow-up Tasks inside Rooms, turning preset grant decisions into Membership release tasks, management signoff holds, blocked-access reminders, and audit handoff.
 - v273 adds Grant Task Execution Receipt inside Rooms, recording released, held-again, and blocked access outcomes with verification rules, audit events, digest, and downloadable JSON.
+- v274 fixes the top Pilot Pitch button by routing admin-only Pilot Pitch, Build Phase, and Membership Model buttons through a dedicated admin view opener, then stabilizes the Pilot Pitch first-week pulse score model.
+- v275 adds route-aware admin links and hash handling for Pilot Pitch, Build Phase, and Membership Model so the top Pilot Pitch button opens even after reloads, direct links, or GitHub Pages cache refreshes.
+- v276 adds Room Jump Search: the floating search now works as a Quick Switcher for rooms and records, reducing top navigation pressure while keeping admin pages easy to reach.
+- v277 adds Quick Switcher Memory: recent specialist rooms appear before normal room results, and Enter opens the best typed room or record match for faster navigation.
 - Membership access control now includes an access coverage strip showing operations users, commercial users, governance users, and admin-only membership ownership at a glance.
 - Saturated card colors have been retired from the main content areas; color is now carried by pale surfaces, borders, pills, and progress fills.
 - Command Center analytics now start directly below the pulse cards inside the main command column, removing the large blank gap caused by the taller right-side brief panel.

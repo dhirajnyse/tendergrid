@@ -1,4 +1,4 @@
-PursuitDesk v273 grant task execution receipt upload steps
+PursuitDesk v277 quick switcher memory upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v273 grant task execution receipt upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v273 grant task execution receipt
+   PursuitDesk v277 quick switcher memory
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links and upgrades Rooms with v273 Grant Task Execution Receipt. Open Rooms, scroll below v272 Grant Approval Follow-up Tasks, and check released, held-again, and blocked access outcomes, verification rules, audit events, digest, and downloadable receipt JSON.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, URL fallback routes, and Quick Switcher memory. After upload, click the green search button, type Pilot or Build, press Enter, and confirm the matching room opens from the results.
 
 Demo login:
 admin@pursuitdesk.app
