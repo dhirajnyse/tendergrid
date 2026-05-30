@@ -1,8 +1,8 @@
-﻿(function () {
+(function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=277";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=277";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=284";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=284";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -96,6 +96,11 @@
   const BILLING_TERMS = ["Monthly", "Annual"];
   const IMPORT_COLUMNS = ["type", "reference", "client", "title", "category", "status", "startDate", "endDate", "valueText", "owner", "sourceSheet"];
   const ADMIN_ONLY_SECTION_KEYS = ["membership", "pitch", "buildPhase"];
+  const ADMIN_TOOL_VIEWS = [
+    { key: "pitch", label: "Pilot Pitch", view: "Pilot Pitch", note: "Buyer one-pager, pilot proof, and sales close flow.", tone: "green", href: "#pilot-pitch" },
+    { key: "membership", label: "Membership Model", view: "Membership", note: "Pricing, seats, billing, checkout, and access rules.", tone: "amber", href: "#membership" },
+    { key: "buildPhase", label: "Build Phase", view: "Build Phase", note: "Roadmap, next release queue, blockers, and SaaS readiness.", tone: "blue", href: "#build-phase" },
+  ];
   const PRIMARY_NAV_KEYS = ["command", "autopilot", "advisor", "review", "tenders", "projects", "reports"];
   const ACCESS_SECTIONS = [
     { key: "command", label: "Command", view: "Command" },
@@ -615,6 +620,7 @@
     quickSearchOpen: false,
     quickSearch: "",
     roomsOpen: false,
+    adminToolsOpen: false,
     roomMemory: loadRoomMemory(initialUser),
     tableDensity: "Comfortable",
     trackerMode: "Sheet",
@@ -1156,6 +1162,7 @@
     state.view = cleanView;
     rememberRoomView(state.view);
     state.roomsOpen = false;
+    state.adminToolsOpen = false;
     state.quickSearchOpen = false;
     state.quickSearch = "";
     if (state.view === "Tenders Insights") state.insightLens = "Tendering";
@@ -1784,6 +1791,12 @@
       .replaceAll("'", "&#039;");
   }
 
+  function compactText(value, maxLength = 92) {
+    const text = String(value ?? "").trim();
+    if (text.length <= maxLength) return text;
+    return `${text.slice(0, maxLength - 3).trim()}...`;
+  }
+
   function normalize(value) {
     return String(value ?? "").trim().toLowerCase();
   }
@@ -2070,11 +2083,6 @@
                 }
               </div>
             `
-            : ""
-        }
-        ${
-          canAdmin()
-            ? `<a class="mode-btn admin-build-phase-btn ${state.view === "Build Phase" ? "active" : ""}" href="#build-phase" data-action="open-admin-view" data-view="Build Phase" role="button">Build Phase</a>`
             : ""
         }
       </div>
@@ -3109,6 +3117,47 @@
     focusQuickSearch();
   }
 
+  function renderAdminToolsTray() {
+    if (!canAdmin()) return "";
+    const tools = ADMIN_TOOL_VIEWS.filter((tool) => hasSectionAccess(tool.key));
+    if (!tools.length) return "";
+    const activeTool = tools.find((tool) => tool.view === state.view);
+    const launcherLabel = activeTool ? `Admin: ${activeTool.label}` : "Admin Tools";
+    return `
+      <div class="admin-tools-launcher">
+        <button class="ghost-btn admin-tools-btn ${activeTool || state.adminToolsOpen ? "active" : ""}" type="button" data-action="toggle-admin-tools" aria-expanded="${state.adminToolsOpen ? "true" : "false"}">
+          <span>${escapeHtml(launcherLabel)}</span>
+          <small>${tools.length}</small>
+        </button>
+        ${
+          state.adminToolsOpen
+            ? `
+              <div class="admin-tools-menu" role="menu" aria-label="${BRAND_NAME} admin tools">
+                <div class="rooms-menu-head admin-tools-head">
+                  <span>Admin tools</span>
+                  <button class="mini-btn" type="button" data-action="close-admin-tools">Close</button>
+                </div>
+                <div class="admin-tools-note">
+                  Keep the daily operating strip simple. Use these only for sales, billing, and roadmap control.
+                </div>
+                <div class="admin-tools-grid">
+                  ${tools
+                    .map((tool) => `
+                      <a class="admin-tools-card tone-${escapeHtml(tool.tone)} ${state.view === tool.view ? "active" : ""}" href="${escapeHtml(tool.href)}" data-action="open-admin-view" data-view="${escapeHtml(tool.view)}" role="menuitem">
+                        <span>${escapeHtml(tool.label)}</span>
+                        <small>${escapeHtml(tool.note)}</small>
+                      </a>
+                    `)
+                    .join("")}
+                </div>
+              </div>
+            `
+            : ""
+        }
+      </div>
+    `;
+  }
+
   function renderAccountActions() {
     if (isAccessPreviewing()) {
       return `
@@ -3117,12 +3166,7 @@
       `;
     }
     return `
-      ${
-        canAdmin()
-          ? `<a class="ghost-btn admin-membership-btn ${state.view === "Pilot Pitch" ? "active" : ""}" href="#pilot-pitch" data-action="open-admin-view" data-view="Pilot Pitch" role="button">Pilot Pitch</a>
-             <a class="ghost-btn admin-membership-btn ${state.view === "Membership" ? "active" : ""}" href="#membership" data-action="open-admin-view" data-view="Membership" role="button">Membership Model</a>`
-          : ""
-      }
+      ${renderAdminToolsTray()}
       <div class="user-pill">${escapeHtml(state.user.name)} / ${escapeHtml(state.user.role)}</div>
       <button class="ghost-btn" type="button" data-action="reset">Reset demo</button>
       <button class="secondary-btn" type="button" data-action="logout">Logout</button>
@@ -6160,8 +6204,355 @@
     `;
   }
 
+  function renderCommandTodayMission(model, autopilot) {
+    const firstSignal = autopilot.signals[0];
+    const firstRecord = firstSignal?.record;
+    const missionTone = autopilot.nowCount
+      ? "red"
+      : autopilot.delegateCount
+        ? "amber"
+        : autopilot.decideCount
+          ? "blue"
+          : "green";
+    const nextRoom =
+      autopilot.missionCode === "RESCUE"
+        ? "Reminders"
+        : autopilot.missionCode === "DECIDE"
+          ? "Bid Desk"
+          : autopilot.missionCode === "CLEAN"
+            ? "Weekly Review"
+            : "Reports";
+    const firstMoveTitle = firstRecord?.title || "No urgent record";
+    const firstMoveNote = firstSignal?.action || "Keep the weekly rhythm moving.";
+    const privacyNote = `${formatCompactMoney(autopilot.protectedValue)} stays in management rooms while frontline users receive actions only.`;
+    return `
+      <section class="command-mission-strip tone-${escapeHtml(missionTone)}" aria-label="Today mission">
+        <article class="command-mission-primary">
+          <span class="metric-label">Today mission</span>
+          <h3>${escapeHtml(autopilot.missionTitle)}</h3>
+          <p>${autopilot.nowCount} do-now moves, ${autopilot.delegateCount} cleanups, and ${autopilot.decideCount} decisions shape the morning order.</p>
+          <div class="command-mission-actions">
+            <button class="secondary-btn" type="button" data-view="Autopilot">Open autopilot</button>
+            <button class="ghost-btn" type="button" data-view="${escapeHtml(nextRoom)}">Open ${escapeHtml(simpleRoomLabel(nextRoom))}</button>
+          </div>
+        </article>
+        <article class="command-mission-card tone-${escapeHtml(missionTone)}">
+          <span>First move</span>
+          <strong>${escapeHtml(compactText(firstMoveTitle, 72))}</strong>
+          <small>${escapeHtml(compactText(firstMoveNote, 118))}</small>
+        </article>
+        <article class="command-mission-card tone-blue">
+          <span>Private by design</span>
+          <strong>Values stay guarded</strong>
+          <small>${escapeHtml(compactText(privacyNote, 118))}</small>
+        </article>
+        <article class="command-mission-card tone-green">
+          <span>Meeting close</span>
+          <strong>One action, date, proof</strong>
+          <small>${model.priorityTasks.length} priority items are ready for owner follow-up and weekly review.</small>
+        </article>
+      </section>
+    `;
+  }
+
+  function renderCommandDecisionLine(model, autopilot) {
+    const firstSignal = autopilot.signals[0];
+    const firstRecord = firstSignal?.record;
+    const nextRoom =
+      autopilot.missionCode === "RESCUE"
+        ? "Reminders"
+        : autopilot.missionCode === "DECIDE"
+          ? "Bid Desk"
+          : autopilot.missionCode === "CLEAN"
+            ? "Weekly Review"
+            : "Reports";
+    const missionTone = autopilot.nowCount
+      ? "red"
+      : autopilot.delegateCount
+        ? "amber"
+        : autopilot.decideCount
+          ? "blue"
+          : "green";
+    const owner = firstRecord?.owner || (firstRecord?.type === "Project" ? "Operations" : "Commercial");
+    const date = firstRecord?.endDate ? formatDate(firstRecord.endDate) : firstSignal?.dueText || "Set date";
+    const proof = firstRecord?.sourceSheet || firstRecord?.sourceWorkbook || firstRecord?.agreementNo || "Add proof path";
+    const lineItems = [
+      {
+        tone: missionTone,
+        label: "Open first",
+        value: simpleRoomLabel(nextRoom),
+        note: compactText(firstSignal?.action || "Start with the room carrying the strongest pressure.", 92),
+      },
+      {
+        tone: firstRecord?.owner ? "green" : "amber",
+        label: "Owner",
+        value: owner,
+        note: firstRecord?.owner ? "Already accountable." : "Confirm before routine updates.",
+      },
+      {
+        tone: firstSignal?.days !== null && firstSignal?.days < 0 ? "red" : "amber",
+        label: "Date",
+        value: date,
+        note: firstSignal?.dueText || "Date signal for the first handoff.",
+      },
+      {
+        tone: proof === "Add proof path" ? "amber" : "blue",
+        label: "Proof",
+        value: proof,
+        note: "Bring one evidence source into review.",
+      },
+    ];
+
+    return `
+      <section class="command-decision-line" aria-label="Command decision line">
+        <article class="command-decision-lead tone-${escapeHtml(missionTone)}">
+          <span class="metric-label">Decision line</span>
+          <strong>${escapeHtml(autopilot.missionTitle)}</strong>
+          <p>Use this single line before opening the full meeting script: room, owner, date, and proof.</p>
+          <button class="secondary-btn" type="button" data-view="${escapeHtml(nextRoom)}">Open ${escapeHtml(simpleRoomLabel(nextRoom))}</button>
+        </article>
+        ${lineItems
+          .map(
+            (item) => `
+              <article class="command-decision-card tone-${escapeHtml(item.tone)}">
+                <span>${escapeHtml(item.label)}</span>
+                <strong>${escapeHtml(compactText(item.value, 42))}</strong>
+                <small>${escapeHtml(compactText(item.note, 84))}</small>
+              </article>
+            `
+          )
+          .join("")}
+      </section>
+    `;
+  }
+
+  function renderCommandFocusRooms(model) {
+    const preferredRooms = ["Advisor", "Weekly Review", "Reminders", "Reports", "Bid Desk", "Calendar"];
+    const cardsByView = new Map(model.moduleCards.map((card) => [card.view, card]));
+    const focusCards = preferredRooms
+      .map((view) => cardsByView.get(view))
+      .filter(Boolean)
+      .slice(0, 4);
+
+    return `
+      <section class="command-focus-rooms" aria-label="Command focus rooms">
+        <div class="info-head command-focus-head">
+          <div>
+            <span class="metric-label">Focus mode</span>
+            <h3>Open only what needs movement now</h3>
+          </div>
+          <span>${focusCards.length} rooms</span>
+        </div>
+        <div class="command-focus-grid">
+          ${focusCards
+            .map((card) => {
+              const enabled = canAccessView(card.view);
+              return `
+                <button class="command-focus-card tone-${escapeHtml(card.tone)}" type="button" data-view="${escapeHtml(card.view)}" ${enabled ? "" : "disabled"}>
+                  <span>${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(card.value)}</strong>
+                  <small>${escapeHtml(card.note)}</small>
+                  <em>${escapeHtml(card.signal)}</em>
+                </button>
+              `;
+            })
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandMorningFlow(model, autopilot) {
+    const mainSignal = autopilot.signals[0];
+    const mainRecord = mainSignal?.record;
+    const decisionRoom = autopilot.decideCount ? "Bid Desk" : "Reports";
+    const flowSteps = [
+      {
+        time: "00-05",
+        label: "Start red",
+        title: mainRecord?.title || "No urgent red item",
+        note: mainSignal?.action || "Open Autopilot and keep the daily rhythm moving.",
+        view: "Autopilot",
+        cta: "Open autopilot",
+        tone: autopilot.nowCount ? "red" : "green",
+      },
+      {
+        time: "05-10",
+        label: "Assign owners",
+        title: `${autopilot.delegateCount} cleanup tasks`,
+        note: "Confirm owner, due date, and proof path before routine tracker updates.",
+        view: "Weekly Review",
+        cta: "Open review",
+        tone: autopilot.delegateCount ? "amber" : "green",
+      },
+      {
+        time: "10-13",
+        label: "Decide",
+        title: `${autopilot.decideCount} bid decisions`,
+        note: "Move bid, no-bid, hold, or submission decisions out of tracker noise.",
+        view: decisionRoom,
+        cta: autopilot.decideCount ? "Open Bid Desk" : "Open reports",
+        tone: autopilot.decideCount ? "blue" : "green",
+      },
+      {
+        time: "13-15",
+        label: "Close clean",
+        title: "Send one handoff",
+        note: `${model.reminders.overdue} overdue items and ${model.evidenceGaps.length} evidence gaps stay visible for review.`,
+        view: "Reports",
+        cta: "Open reports",
+        tone: model.reminders.overdue ? "red" : "green",
+      },
+    ];
+
+    return `
+      <section class="morning-flow-panel" aria-label="Morning flow">
+        <div class="info-head morning-flow-head">
+          <div>
+            <span class="metric-label">Morning flow</span>
+            <h3>Run the first 15 minutes in order</h3>
+          </div>
+          <span>4 moves</span>
+        </div>
+        <div class="morning-flow-grid">
+          ${flowSteps
+            .map(
+              (step) => `
+                <article class="morning-flow-card tone-${escapeHtml(step.tone)}">
+                  <div class="morning-flow-time">
+                    <span>${escapeHtml(step.time)}</span>
+                    <b>${escapeHtml(step.label)}</b>
+                  </div>
+                  <h4>${escapeHtml(compactText(step.title, 68))}</h4>
+                  <p>${escapeHtml(compactText(step.note, 118))}</p>
+                  <button class="mini-btn" type="button" data-view="${escapeHtml(step.view)}">${escapeHtml(step.cta)}</button>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandMorningBrief(model, autopilot) {
+    const firstSignal = autopilot.signals[0];
+    const firstRecord = firstSignal?.record;
+    const nextRoom =
+      autopilot.missionCode === "RESCUE"
+        ? "Reminders"
+        : autopilot.missionCode === "DECIDE"
+          ? "Bid Desk"
+          : autopilot.missionCode === "CLEAN"
+            ? "Weekly Review"
+            : "Reports";
+    const primaryClient = firstRecord?.client || model.topClients[0]?.label || "the hottest account";
+    const dueText = firstSignal?.dueText || "review rhythm";
+    const protectedLine = `${formatCompactMoney(autopilot.protectedValue)} stays in management rooms while frontline users receive only movement tasks.`;
+    const ownerLabel = firstRecord?.owner || (firstRecord?.type === "Project" ? "Operations" : "Commercial");
+    const dateLabel = firstRecord?.endDate ? formatDate(firstRecord.endDate) : firstSignal?.dueText || "Set date";
+    const proofLabel = firstRecord?.sourceSheet || firstRecord?.sourceWorkbook || firstRecord?.agreementNo || "Add proof path";
+    const briefCards = [
+      {
+        tone: autopilot.nowCount ? "red" : "green",
+        label: "Say first",
+        title: autopilot.missionTitle,
+        note: `${model.openRecords.length} open records, ${autopilot.nowCount} red moves, and ${model.reminders.overdue} overdue follow-ups shape today's order.`,
+      },
+      {
+        tone: "amber",
+        label: "Ask next",
+        title: `Confirm ${primaryClient}`,
+        note: `Get one owner, one date, and one proof path for ${compactText(firstRecord?.title || "the first priority record", 74)}.`,
+      },
+      {
+        tone: "blue",
+        label: "Open next",
+        title: simpleRoomLabel(nextRoom),
+        note: `${dueText} is the current pressure signal. Use the next room before broad reporting.`,
+      },
+      {
+        tone: "green",
+        label: "Keep private",
+        title: "Commercial shield",
+        note: protectedLine,
+      },
+    ];
+    const receiptCards = [
+      {
+        tone: firstRecord?.owner ? "green" : "amber",
+        label: "Owner",
+        value: ownerLabel,
+        note: firstRecord?.owner ? "Accountable for the first move." : "Assign before routine updates.",
+      },
+      {
+        tone: firstSignal?.days !== null && firstSignal?.days < 0 ? "red" : "amber",
+        label: "Date",
+        value: dateLabel,
+        note: firstSignal?.dueText || "Control date for the handoff.",
+      },
+      {
+        tone: proofLabel === "Add proof path" ? "amber" : "blue",
+        label: "Proof",
+        value: proofLabel,
+        note: "Evidence source to mention in review.",
+      },
+      {
+        tone: "green",
+        label: "Next room",
+        value: simpleRoomLabel(nextRoom),
+        note: "Open after the script is agreed.",
+      },
+    ];
+
+    return `
+      <section class="morning-brief-strip" aria-label="Morning brief">
+        <div class="info-head morning-brief-head">
+          <div>
+            <span class="metric-label">Morning brief</span>
+            <h3>One script before the team opens trackers</h3>
+          </div>
+          <span>v284</span>
+        </div>
+        <div class="morning-brief-grid">
+          ${briefCards
+            .map(
+              (card) => `
+                <article class="morning-brief-card tone-${escapeHtml(card.tone)}">
+                  <span>${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(compactText(card.title, 58))}</strong>
+                  <p>${escapeHtml(compactText(card.note, 132))}</p>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="morning-brief-receipt">
+          <div class="morning-brief-receipt-title">
+            <span class="metric-label">Handoff receipt</span>
+            <strong>Leave the brief with one owner, one date, one proof, one room.</strong>
+          </div>
+          <div class="morning-brief-receipt-grid">
+            ${receiptCards
+              .map(
+                (card) => `
+                  <article class="morning-brief-receipt-card tone-${escapeHtml(card.tone)}">
+                    <span>${escapeHtml(card.label)}</span>
+                    <strong>${escapeHtml(compactText(card.value, 48))}</strong>
+                    <small>${escapeHtml(compactText(card.note, 92))}</small>
+                  </article>
+                `
+              )
+              .join("")}
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
+    const autopilot = buildPursuitAutopilotModel();
     return `
       <section class="command-center">
         <section class="command-console">
@@ -6190,19 +6581,46 @@
           ${renderInsightKpi("Evidence health", `${model.evidenceScore}%`, `${model.documents.sourceCoverage}% source coverage after gap penalty`)}
         </div>
 
+        ${renderCommandTodayMission(model, autopilot)}
+
+        ${renderCommandDecisionLine(model, autopilot)}
+
+        <details class="command-playbook-fold">
+          <summary>
+            <span class="metric-label">Meeting script</span>
+            <strong>Open the 15-minute flow and handoff receipt</strong>
+            <small>Kept folded so the Command Center stays light until the team needs the full script.</small>
+          </summary>
+          <div class="command-playbook-fold-body">
+            ${renderCommandMorningFlow(model, autopilot)}
+            ${renderCommandMorningBrief(model, autopilot)}
+          </div>
+        </details>
+
         <div class="command-layout">
           <section class="command-main">
-            <div class="info-head command-main-head">
-              <div>
-                <span class="metric-label">Operating rooms</span>
-                <h3>Module cockpit</h3>
+            ${renderCommandFocusRooms(model)}
+
+            <details class="command-room-cockpit-fold">
+              <summary>
+                <span class="metric-label">All operating rooms</span>
+                <strong>Open full module cockpit</strong>
+                <small>${model.moduleCards.length} rooms stay available when the team needs the complete map.</small>
+              </summary>
+              <div class="command-room-cockpit-fold-body">
+                <div class="info-head command-main-head">
+                  <div>
+                    <span class="metric-label">Operating rooms</span>
+                    <h3>Module cockpit</h3>
+                  </div>
+                  <span>${model.moduleCards.length} rooms</span>
+                </div>
+                <div class="command-module-grid">
+                  ${model.moduleCards.map(renderCommandModuleCard).join("")}
+                </div>
+                ${renderCommandPulse(model)}
               </div>
-              <span>${model.moduleCards.length} rooms</span>
-            </div>
-            <div class="command-module-grid">
-              ${model.moduleCards.map(renderCommandModuleCard).join("")}
-            </div>
-            ${renderCommandPulse(model)}
+            </details>
 
             <div class="command-analytics-grid">
               <article class="info-panel">
@@ -18088,7 +18506,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-fixture-export.json?v=277";
+    const downloadHref = "data/backend-fixture-export.json?v=281";
     const exportTables = [
       ["tenants.json", 1, "Company, workspace defaults, billing currency, plan state, and retention settings.", "green"],
       ["users.json", seedFixturePack.userFixtures.length, "Admin, editor, viewer, inactive, and role-access fixture users.", "blue"],
@@ -18181,7 +18599,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-sprint-checklist.json?v=277";
+    const downloadHref = "data/backend-sprint-checklist.json?v=281";
     const sprintDays = [
       ["Day 0", "Repo creation and protection", "Private repo, develop branch, labels, milestones, board, first issues, secrets list.", "Repo is private and branch rules are visible.", "Control Admin"],
       ["Day 1", "Workspace skeleton", "Apps, packages, env examples, CI shell, README, API contract docs, fixture folder map.", "Fresh clone can install and run the empty shell.", "Backend Lead"],
@@ -18295,7 +18713,7 @@
         ),
       ),
     );
-    const downloadHref = "data/staging-deployment-checklist.json?v=277";
+    const downloadHref = "data/staging-deployment-checklist.json?v=281";
     const environmentLanes = [
       ["Staging URL", `staging.${BRAND_DOMAIN}`, "Private pilot preview with test data, HTTPS, cache headers, and admin-only deployment notes.", "green"],
       ["API service", "api-staging", "Backend API deploys from develop or release candidate with health, version, and smoke endpoints.", "blue"],
@@ -18426,7 +18844,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-route-skeleton-map.json?v=277";
+    const downloadHref = "data/backend-route-skeleton-map.json?v=281";
     const routeFiles = [
       ["apps/api/src/server.ts", "Bootstrap", "Health route, request id, middleware chain, error shape, and route registration.", "Platform Owner", "green"],
       ["apps/api/src/middleware/request-context.ts", "Context", "Request id, actor shell, tenant shell, logger scope, and response timing.", "Backend Lead", "blue"],
@@ -18544,7 +18962,7 @@
         ),
       ),
     );
-    const downloadHref = "data/database-migration-blueprint.json?v=277";
+    const downloadHref = "data/database-migration-blueprint.json?v=281";
     const migrationFiles = [
       ["0001_tenant_identity.sql", "Tenant identity", "companies, users, access_profiles, sessions, invitations", "Create company scope, admin ownership, user access snapshots, inactive-user state, and session shell before any business data.", "Security Owner", "red"],
       ["0002_operational_records.sql", "Operational records", "records, record_notes, record_status_events, client_memory", `Load ${records.length} tracker-safe tender and project records without commercial values.`, "Records Owner", "teal"],
@@ -18683,7 +19101,7 @@
         ),
       ),
     );
-    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=277";
+    const downloadHref = "data/auth-tenant-guard-blueprint.json?v=281";
     const guardFiles = [
       ["apps/api/src/auth/session.ts", "Session guard", "Verify signed session, expiry, inactive user, password reset freshness, and actor context.", "auth.session.test.ts", "Identity Owner", "red"],
       ["apps/api/src/auth/password.ts", "Password policy", "Hash passwords, expire reset links, block reused reset tokens, and avoid secret logging.", "auth.password.test.ts", "Identity Owner", "red"],
@@ -18839,7 +19257,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-test-command-pack.json?v=277";
+    const downloadHref = "data/backend-test-command-pack.json?v=281";
     const testCommands = [
       ["01", "pnpm test:unit", "Domain unit tests", "Status rules, access helpers, date parsing, money redaction, billing math, and audit payload helpers.", "junit-unit.xml", "green"],
       ["02", "pnpm test:contracts", "API contract tests", `${apiContractPack.endpointContracts.length} endpoint contracts for auth, users, records, commercial, import, billing, feedback, and audit.`, "junit-contracts.xml", "blue"],
@@ -18970,7 +19388,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-file-pack.json?v=277";
+    const downloadHref = "data/production-backend-repo-file-pack.json?v=281";
     const repositoryFolders = [
       ["apps/web", "Frontend app", "Move the current PursuitDesk UI into an authenticated product shell with route guards and API client.", "Frontend Owner", "green"],
       ["apps/api", "Backend API", "HTTP server, middleware, routes, controllers, schemas, safe error envelopes, and OpenAPI contract export.", "Backend Lead", "teal"],
@@ -19130,7 +19548,7 @@
         ),
       ),
     );
-    const downloadHref = "data/api-error-audit-envelope-pack.json?v=277";
+    const downloadHref = "data/api-error-audit-envelope-pack.json?v=281";
     const errorEnvelopeFields = [
       ["ok", "boolean", "Always false for errors and true for success responses.", "green"],
       ["requestId", "string", "Public-safe trace id returned to the UI, logs, and audit rows.", "blue"],
@@ -19334,7 +19752,7 @@
         ),
       ),
     );
-    const downloadHref = "data/ci-workflow-file-blueprint.json?v=277";
+    const downloadHref = "data/ci-workflow-file-blueprint.json?v=281";
     const workflowFiles = [
       [".github/workflows/ci.yml", "Primary PR gate", "Pull request", "install, lint, typecheck, unit, contracts, route envelopes, audit envelopes", "ci-summary.json", "red"],
       [".github/workflows/security-audit.yml", "Security and tenant proof", "Pull request + nightly", "auth tenant guards, section denials, commercial vault denial, redaction, request id", "security-audit-proof.json", "red"],
@@ -19505,7 +19923,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-first-commit-builder.json?v=277";
+    const downloadHref = "data/private-repo-first-commit-builder.json?v=281";
     const repoShellFiles = [
       ["README.md", "Repository orientation", "Explains alpha scope, local setup, proof commands, privacy rules, and release ritual.", "Repo Owner", "green"],
       ["package.json", "Root command map", "Defines install, dev, lint, typecheck, test, migrate, seed, smoke, and release-gate scripts.", "Platform Owner", "blue"],
@@ -19637,7 +20055,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-issue-body-exporter.json?v=277";
+    const downloadHref = "data/backend-issue-body-exporter.json?v=281";
     const labelPlan = [
       ["type:foundation", "Repository shell, docs, env examples, and workspace wiring.", "green"],
       ["type:api", "Server, routes, controllers, services, validators, and contracts.", "teal"],
@@ -19914,7 +20332,7 @@
         ),
       ),
     );
-    const downloadHref = "data/branch-protection-release-checklist.json?v=277";
+    const downloadHref = "data/branch-protection-release-checklist.json?v=281";
     const protectedBranches = [
       ["main", "Require pull request review", "ci.yml, security-audit.yml, migration-restore.yml, billing-testmode.yml, release-gate.yml", "No direct push, no force push, owner approval before production release.", "red"],
       ["develop", "Require primary CI", "ci.yml, security-audit.yml", "Feature integration only after lint, typecheck, route envelopes, auth tenant, and redaction proof.", "blue"],
@@ -20070,7 +20488,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-file-content-export.json?v=277";
+    const downloadHref = "data/first-backend-file-content-export.json?v=281";
     const makeFile = (path, owner, issue, purpose, tone, contentLines) => {
       const content = contentLines.join("\n");
       return {
@@ -20495,7 +20913,7 @@
       ),
     );
     const targetRepository = "dhirajnyse/pursuitdesk-platform";
-    const downloadHref = "data/private-repo-setup-script-draft.json?v=277";
+    const downloadHref = "data/private-repo-setup-script-draft.json?v=281";
     const prerequisites = [
       ["GitHub access", "Admin rights for dhirajnyse and permission to create a private repository.", "red"],
       ["GitHub CLI", "gh auth status should show the account that will own pursuitdesk-platform.", "blue"],
@@ -20878,7 +21296,7 @@
     );
     return {
       importPackScore,
-      downloadHref: "data/github-labels-milestones-import-pack.json?v=277",
+      downloadHref: "data/github-labels-milestones-import-pack.json?v=281",
       labelCatalog,
       labelGroups,
       milestoneCatalog,
@@ -20923,7 +21341,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=277";
+    const downloadHref = "data/first-backend-commit-qa-checklist.json?v=281";
     const qaLanes = [
       ["Repository shell", "Root files, workspace, README, env example, CODEOWNERS, PR template, and release runbook exist.", "green"],
       ["API shell", "Server, app, route registry, health route, request id, safe error, tenant scope, and access decision exist.", "teal"],
@@ -21075,7 +21493,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-opening-day-runbook.json?v=277";
+    const downloadHref = "data/private-repo-opening-day-runbook.json?v=281";
     const daySequence = [
       ["08:30", "Preflight", "Confirm GitHub access, repo name, owners, no live secrets, and local folder location.", "green"],
       ["09:00", "Create private repo", "Create dhirajnyse/pursuitdesk-platform as private, with main protected later after first checks appear.", "red"],
@@ -21196,7 +21614,7 @@
         ),
       ),
     );
-    const downloadHref = "data/production-backend-repo-decision-memo.json?v=277";
+    const downloadHref = "data/production-backend-repo-decision-memo.json?v=281";
     const memoSections = [
       ["Decision requested", "Approve creation of dhirajnyse/pursuitdesk-platform as the private production backend repo.", "green"],
       ["Why now", "Prototype has reached a stable SaaS blueprint with repo files, issues, QA gates, taxonomy, and opening-day sequence.", "teal"],
@@ -21327,7 +21745,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-risk-register.json?v=277";
+    const downloadHref = "data/backend-alpha-risk-register.json?v=281";
     const riskDomains = [
       ["Repository control", "Critical", "Private visibility, PR-first branch discipline, and no direct main commits.", "red"],
       ["Secret handling", "Critical", "No live keys, .env files, billing secrets, tokens, or private certificates in the first repo.", "red"],
@@ -21461,7 +21879,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=277";
+    const downloadHref = "data/backend-opening-day-evidence-pack.json?v=281";
     const evidenceLanes = [
       ["Repo privacy proof", "Hard gate", "Screenshot or note proving the production backend repo is private before files move.", "red"],
       ["Setup command proof", "Execution", "Capture preflight, folder creation, starter file copy, install, and first quality command output.", "green"],
@@ -21609,7 +22027,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-execution-checklist.json?v=277";
+    const downloadHref = "data/private-repo-execution-checklist.json?v=281";
     const executionGates = [
       ["Gate 0", "Owner go/no-go", "Product owner confirms the controlled go is for repo creation and first PR evidence only.", "green"],
       ["Gate 1", "Private visibility", "Repo is private before files, labels, issues, or screenshots are added.", "red"],
@@ -21770,7 +22188,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-control-board.json?v=277";
+    const downloadHref = "data/backend-alpha-control-board.json?v=281";
     const boardKpis = [
       ["Control readiness", `${controlReadinessScore}%`, "How ready the private repo day is to be managed from one board", controlReadinessScore >= 70 ? "green" : "amber"],
       ["Repo status", "Not opened", "The private production backend repo still needs real GitHub creation.", "red"],
@@ -21921,7 +22339,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-day-one-script.json?v=277";
+    const downloadHref = "data/private-repo-day-one-script.json?v=281";
     const scriptKpis = [
       ["Script readiness", `${scriptReadinessScore}%`, "How ready the private repo day is to run from one command script.", scriptReadinessScore >= 70 ? "green" : "amber"],
       ["Command blocks", "10", "Preflight, repo, branch, files, taxonomy, issues, PR, checks, protection, closeout.", "blue"],
@@ -22068,7 +22486,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-proof-exporter.json?v=277";
+    const downloadHref = "data/backend-repo-proof-exporter.json?v=281";
     const proofKpis = [
       ["Proof readiness", `${proofReadinessScore}%`, "How ready the repo day is to produce copy-ready evidence.", proofReadinessScore >= 80 ? "green" : "amber"],
       ["Evidence files", privateRepoDayOneScript.evidenceFiles.length, "Markdown files that turn screenshots and commands into review proof.", "teal"],
@@ -22209,7 +22627,7 @@
         ),
       ),
     );
-    const downloadHref = "data/github-repo-opening-packet.json?v=277";
+    const downloadHref = "data/github-repo-opening-packet.json?v=281";
     const openingKpis = [
       ["Opening readiness", `${openingReadinessScore}%`, "How ready the private GitHub repo opening packet is before the real repo exists.", openingReadinessScore >= 80 ? "green" : "amber"],
       ["Issue wave", issueCount, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
@@ -22355,7 +22773,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=277";
+    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=281";
     const issueRows = issues.map((issue, index) => [
       issue.id,
       issue.title,
@@ -22509,7 +22927,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-pr-body-builder.json?v=277";
+    const downloadHref = "data/first-pr-body-builder.json?v=281";
     const prKpis = [
       ["PR readiness", `${firstPrReadinessScore}%`, "How ready the first backend PR body is before the private repo exists.", firstPrReadinessScore >= 80 ? "green" : "amber"],
       ["Linked issues", issueRows.length, "Issue rows that can be referenced after real GitHub URLs exist.", "teal"],
@@ -22689,7 +23107,7 @@
         ),
       ),
     );
-    const downloadHref = "data/repo-evidence-folder-writer.json?v=277";
+    const downloadHref = "data/repo-evidence-folder-writer.json?v=281";
     const evidenceKpis = [
       ["Evidence folder", `${evidenceFolderScore}%`, "How ready the first backend PR evidence folder is before the private repo exists.", evidenceFolderScore >= 80 ? "green" : "amber"],
       ["Markdown files", evidenceTemplates.length, "Proof files that should exist under docs/evidence before review.", "teal"],
@@ -22849,7 +23267,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-command-runner-pack.json?v=277";
+    const downloadHref = "data/private-repo-command-runner-pack.json?v=281";
     const runnerKpis = [
       ["Runner readiness", `${commandRunnerScore}%`, "How ready the real private repo command session is to run without improvising.", commandRunnerScore >= 80 ? "green" : "amber"],
       ["Command blocks", commandBlocks.length, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
@@ -22988,7 +23406,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=277";
+    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=281";
     const reviewKpis = [
       ["Review readiness", `${reviewGateScore}%`, "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", reviewGateScore >= 80 ? "green" : "amber"],
       ["Reviewer lanes", reviewerRows.length, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
@@ -23156,7 +23574,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-artifact-status-board.json?v=277";
+    const downloadHref = "data/evidence-artifact-status-board.json?v=281";
     const boardKpis = [
       ["Artifact board", `${evidenceBoardScore}%`, "How ready the proof packet is to move from planned evidence into real captured artifacts.", evidenceBoardScore >= 80 ? "green" : "amber"],
       ["Artifact rows", artifactRows.length, "Markdown, screenshots, transcripts, signoffs, issue traces, branch proof, closeout, and block rules.", "teal"],
@@ -23380,7 +23798,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-handoff-email-pack.json?v=277";
+    const downloadHref = "data/private-repo-handoff-email-pack.json?v=281";
     const handoffKpis = [
       ["Email pack", `${handoffEmailScore}%`, "Readiness to send the private repo briefing without improvising.", handoffEmailScore >= 80 ? "green" : "amber"],
       ["Owner lanes", audienceBriefs.length, "Recipients with clear decision and evidence expectations.", "teal"],
@@ -23557,7 +23975,7 @@
         ),
       ),
     );
-    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=277";
+    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=281";
     const reviewCommentKpis = [
       ["Comment pack", `${firstBackendPrCommentScore}%`, "Readiness to paste controlled GitHub review language into the first backend PR.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
       ["Review actions", reviewCommentLibrary.length, "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.", "teal"],
@@ -23732,7 +24150,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=277";
+    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=281";
     const closeoutKpis = [
       ["Closeout pack", `${evidenceCloseoutScore}%`, "Readiness to close the first private backend PR evidence session without losing proof state.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
       ["Outcome lanes", closeoutOutcomeLanes.length, "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.", "teal"],
@@ -23901,7 +24319,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=277";
+    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=281";
     return {
       backendRepoDayMeetingScore,
       downloadHref,
@@ -24074,7 +24492,7 @@
         ),
       ),
     );
-    const downloadHref = "data/private-repo-reply-capture-board.json?v=277";
+    const downloadHref = "data/private-repo-reply-capture-board.json?v=281";
     return {
       replyCaptureScore,
       downloadHref,
@@ -24224,7 +24642,7 @@
         ),
       ),
     );
-    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=277";
+    const downloadHref = "data/evidence-closeout-pdf-export-plan.json?v=281";
     return {
       pdfExportScore,
       downloadHref,
@@ -24407,7 +24825,7 @@
         ),
       ),
     );
-    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=277";
+    const downloadHref = "data/backend-meeting-minutes-exporter.json?v=281";
     return {
       meetingMinutesScore,
       downloadHref,
@@ -24588,7 +25006,7 @@
         ),
       ),
     );
-    const downloadHref = "data/reviewer-decision-email-pack.json?v=277";
+    const downloadHref = "data/reviewer-decision-email-pack.json?v=281";
     return {
       reviewerDecisionEmailScore,
       downloadHref,
@@ -24640,11 +25058,11 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v277 Quick Switcher Memory",
-      phase: "Quick switcher memory",
+      version: "v284 Admin Tools Tray",
+      phase: "Admin tools tray",
       lane: "Static product prototype on GitHub Pages",
-      pace: "258 meaningful versions since rebrand",
-      summary: "Quick Switcher now remembers recent rooms and opens the best typed match with Enter, reducing navigation effort without adding more header buttons.",
+      pace: "265 meaningful versions since rebrand",
+      summary: "Admin-only Build Phase, Pilot Pitch, and Membership now sit inside one compact Admin Tools tray so daily navigation stays calm while admin paths remain one click away.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
         ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, Simple Buyer Review Pack, Simple Rooms Navigator, Navigation Preference Memory, Buyer Review Send Receipt, Buyer Receipt Reply Tracker, Navigation Preference Controls, Pilot First-Week Pulse, First-Week Proof Inbox, First-Week Review Pack, Review Pack Send Receipt, Kickoff Proof Handoff Emails, Kickoff Send Receipt, Kickoff Proof Outcome Receipt, Pilot Reply-to-Kickoff Bridge, Role Navigation Presets, Preset-to-Access Policy Handoff, Preset Policy Apply Receipt, Preset Grant Approval Queue, Grant Approval Follow-up Tasks, Grant Task Execution Receipt, Review Receipt Reply Outcome, Review Outcome Follow-up Tasks, Kickoff Outcome Follow-up Tasks, Pilot Handoff Sheet, and Pilot Kickoff Confirmation are live in demo form.", "teal"],
@@ -24696,6 +25114,13 @@
         ["v275 pilot pitch route fallback", 100, "Pilot Pitch, Build Phase, and Membership now carry URL-hash route fallbacks so GitHub Pages cache refreshes and direct links cannot leave the top button inert.", "green"],
         ["v276 room jump search", 100, "The floating search now opens a simple Quick Switcher with rooms first and records second, making Pilot Pitch, Build Phase, Membership, and daily work easy to reach without adding more top navigation.", "teal"],
         ["v277 quick switcher memory", 100, "Quick Switcher now brings recent specialist rooms into the first panel and supports Enter-to-open for the best matching room or record, making navigation feel faster without making the header heavier.", "green"],
+        ["v278 today mission strip", 100, "Command Center now surfaces the Autopilot mission as a compact morning strip with first move, value guardrail, next room, and meeting closeout, keeping the product smarter while the UI stays simple.", "teal"],
+        ["v279 morning flow", 100, "Command Center now converts the Autopilot mission into a compact 15-minute operating flow with four clear moves: start red, assign owners, decide, and close with one handoff.", "teal"],
+        ["v280 morning brief", 100, "Command Center now adds a one-script Morning Brief below the flow so managers know what to say first, what to ask next, which room to open, and what stays private.", "blue"],
+        ["v281 handoff receipt", 100, "Morning Brief now ends with a compact receipt for owner, date, proof, and next room, making the meeting handoff precise without adding navigation.", "green"],
+        ["v282 command decision line", 100, "Command Center now adds a single Decision Line and folds the longer 15-minute flow and handoff script by default, keeping the first screen simpler.", "teal"],
+        ["v283 command focus mode", 100, "Command Center now puts the highest-value rooms into a compact Focus Mode and folds the full Module Cockpit so daily users see fewer cards first.", "teal"],
+        ["v284 admin tools tray", 100, "Pilot Pitch, Membership Model, and Build Phase now move into one admin tray, preserving admin speed while keeping the daily operating header cleaner.", "green"],
         ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, rule impact simulator, customer demo replay recorder, proposal proof composer, rule change audit trail, demo-to-pilot conversion board, proposal redaction approval gate, rule reopen review queue, pilot close probability simulator, buyer-safe proposal export, rule reopen outcome replay, pilot close outcome memory, proposal send audit receipt, rule reopen outcome memory, pilot outcome forecast tuner, proposal send follow-up tracker, decision memory influence switchboard, pilot follow-up reply memory, founder close command script, memory influence audit diff, pilot reply pattern library, founder close outcome receipt, memory diff release notes, pattern-to-demo coach, receipt-to-renewal signal, release note approval board, demo coach replay score, renewal signal replay board, buyer-safe changelog publisher, coach-to-close learning publisher, and renewal-to-invoice trust publisher are mapped, but the real private repo and real staging environment are not created yet.", "red"],
         ["Billing model", 100, "USD Starter, Team, Business, extra operator seats, manager/commercial seats, setup service pricing, checkout flow, invoice lifecycle, payment state simulator, adoption health monitor, provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, renewal decision pack, idempotency, signature verification, tenant mapping, retry rules, plan changes, access locks, audit events, pilot pitch packaging, customer feedback buying signals, ROI payback story, proposal export handoff, objection playbook proof paths, proposal acceptance tracking, buyer decision closeout, invoice request handoff, kickoff activation handoff, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "green"],
         ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker, buyer decision room, pilot invoice request pack, pilot payment state simulator, pilot kickoff control pack, pilot adoption health monitor, closeout PDF render workflow, payment provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, attachment download audit evidence pack, pilot renewal decision pack, closeout archive attachment register, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, and rule impact simulator.", "green"],
@@ -74605,12 +75030,26 @@
 
     if (action === "toggle-rooms") {
       state.roomsOpen = !state.roomsOpen;
+      state.adminToolsOpen = false;
       render();
       return;
     }
 
     if (action === "close-rooms") {
       state.roomsOpen = false;
+      render();
+      return;
+    }
+
+    if (action === "toggle-admin-tools") {
+      state.adminToolsOpen = !state.adminToolsOpen;
+      state.roomsOpen = false;
+      render();
+      return;
+    }
+
+    if (action === "close-admin-tools") {
+      state.adminToolsOpen = false;
       render();
       return;
     }
@@ -74635,6 +75074,7 @@
       state.quickSearchOpen = false;
       state.quickSearch = "";
       state.roomsOpen = false;
+      state.adminToolsOpen = false;
       state.roomMemory = loadRoomMemory(null);
       persistSession(null);
       render();
@@ -74642,6 +75082,8 @@
     }
     if (action === "open-quick-search") {
       state.quickSearchOpen = true;
+      state.roomsOpen = false;
+      state.adminToolsOpen = false;
       render();
       return;
     }
@@ -74784,6 +75226,11 @@
       render();
       return;
     }
+    if (event.key === "Escape" && state.adminToolsOpen) {
+      state.adminToolsOpen = false;
+      render();
+      return;
+    }
     if (event.key === "Enter" && state.quickSearchOpen && event.target.matches?.("[data-quick-search-input]")) {
       event.preventDefault();
       openQuickSearchFirstResult();
@@ -74798,6 +75245,8 @@
     if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k" && state.user) {
       event.preventDefault();
       state.quickSearchOpen = true;
+      state.roomsOpen = false;
+      state.adminToolsOpen = false;
       render();
     }
   });

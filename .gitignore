@@ -1,0 +1,9 @@
+analysis/
+source-excels/
+*.xlsx
+*.xls
+*.csv
+*.log
+node_modules/
+.DS_Store
+Thumbs.db
