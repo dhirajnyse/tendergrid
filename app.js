@@ -1,10 +1,10 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v285";
-  const BUILD_LABEL = "Header build badge";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=285";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=285";
+  const BUILD_VERSION = "v289";
+  const BUILD_LABEL = "Simplicity compass";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=289";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=289";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1799,6 +1799,47 @@
     return `${text.slice(0, maxLength - 3).trim()}...`;
   }
 
+  function showTransientNotice(message) {
+    document.querySelector(".app-toast")?.remove();
+    const toast = document.createElement("div");
+    toast.className = "app-toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add("is-visible"));
+    window.setTimeout(() => {
+      toast.classList.remove("is-visible");
+      window.setTimeout(() => toast.remove(), 220);
+    }, 2200);
+  }
+
+  function copyTextToClipboard(text, message = "Copied.") {
+    if (!text) return;
+    const fallbackCopy = () => {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      textarea.setAttribute("readonly", "");
+      textarea.style.position = "fixed";
+      textarea.style.left = "-9999px";
+      textarea.style.top = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+        showTransientNotice(message);
+      } catch (error) {
+        showTransientNotice("Copy blocked by browser.");
+      } finally {
+        textarea.remove();
+      }
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => showTransientNotice(message)).catch(fallbackCopy);
+      return;
+    }
+    fallbackCopy();
+  }
+
   function normalize(value) {
     return String(value ?? "").trim().toLowerCase();
   }
@@ -3037,7 +3078,11 @@
             </span>
           </button>
           <div class="status-strip">
-            <span class="status-pill build-version-pill" title="${escapeHtml(BUILD_LABEL)}">Build ${escapeHtml(BUILD_VERSION)}</span>
+            ${
+              canAdmin()
+                ? `<button class="status-pill build-version-pill build-version-btn" type="button" data-action="open-build-phase" title="Open ${escapeHtml(BUILD_VERSION)} build tracker">Build ${escapeHtml(BUILD_VERSION)}</button>`
+                : `<span class="status-pill build-version-pill" title="${escapeHtml(BUILD_LABEL)}">Build ${escapeHtml(BUILD_VERSION)}</span>`
+            }
             <span class="status-pill is-live">Live demo</span>
           </div>
           <div class="topbar-actions">
@@ -6329,6 +6374,136 @@
     `;
   }
 
+  function buildCommandBriefSlip(model, autopilot) {
+    const firstSignal = autopilot.signals[0];
+    const firstRecord = firstSignal?.record;
+    const nextRoom =
+      autopilot.missionCode === "RESCUE"
+        ? "Reminders"
+        : autopilot.missionCode === "DECIDE"
+          ? "Bid Desk"
+          : autopilot.missionCode === "CLEAN"
+            ? "Weekly Review"
+            : "Reports";
+    const tone = autopilot.nowCount
+      ? "red"
+      : autopilot.delegateCount
+        ? "amber"
+        : autopilot.decideCount
+          ? "blue"
+          : "green";
+    const owner = firstRecord?.owner || (firstRecord?.type === "Project" ? "Operations" : "Commercial");
+    const date = firstRecord?.endDate ? formatDate(firstRecord.endDate) : firstSignal?.dueText || "Set date";
+    const proof = firstRecord?.sourceSheet || firstRecord?.sourceWorkbook || firstRecord?.agreementNo || "Add proof path";
+    const firstMove = firstRecord?.title || "No urgent record";
+    const valueShield = formatCompactMoney(autopilot.protectedValue);
+    const clientLine = firstRecord?.client ? `Client: ${firstRecord.client}.` : "Client: confirm the account before wider circulation.";
+    const copyText = [
+      `${BRAND_NAME} boardroom brief - ${BUILD_VERSION}`,
+      `Say first: ${autopilot.missionTitle}. Recover the work that can change the next meeting outcome.`,
+      `Why now: ${autopilot.nowCount} do-now moves, ${model.reminders.overdue} overdue follow-ups, and ${model.evidenceGaps.length} evidence gaps need one management handoff.`,
+      `First move: ${firstMove}.`,
+      clientLine,
+      `Open: ${simpleRoomLabel(nextRoom)}. Owner: ${owner}. Date: ${date}. Proof: ${proof}.`,
+      `Privacy line: ${valueShield} stays in management rooms; frontline users receive action, status, date, and proof only.`,
+      `Close: one owner, one date, one evidence note, and one next room before routine tracker updates.`,
+    ].join("\n");
+
+    return {
+      tone,
+      nextRoom,
+      copyText,
+      title: "Say first, protect value, move owner, close clean",
+      note: `${autopilot.nowCount} do-now moves, ${model.reminders.overdue} overdue follow-ups, and ${model.evidenceGaps.length} evidence gaps are converted into one boardroom-ready handoff.`,
+      chips: [
+        ["Say first", autopilot.missionTitle, firstSignal?.action || "Start with the strongest pressure."],
+        ["Protect", `${valueShield} guarded`, "Keep commercial context in management rooms."],
+        ["Move", `${simpleRoomLabel(nextRoom)} / ${owner}`, firstRecord?.owner ? "Accountability is already visible." : "Confirm before broad updates."],
+        ["Close", date, proof === "Add proof path" ? "Attach evidence before closeout." : `Proof: ${proof}`],
+      ],
+    };
+  }
+
+  function renderCommandBriefSlip(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const encodedCopy = encodeURIComponent(slip.copyText);
+    return `
+      <section class="command-brief-slip tone-${escapeHtml(slip.tone)}" aria-label="Boardroom command brief">
+        <div class="command-brief-copy">
+          <span class="metric-label">Boardroom brief</span>
+          <h3>${escapeHtml(slip.title)}</h3>
+          <p>${escapeHtml(slip.note)}</p>
+        </div>
+        <div class="command-brief-slip-grid">
+          ${slip.chips
+            .map(
+              ([label, value, note]) => `
+                <article class="command-brief-slip-chip">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(value, 34))}</strong>
+                  <small>${escapeHtml(compactText(note, 76))}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="command-brief-slip-actions">
+          <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy boardroom brief</button>
+          <button class="ghost-btn" type="button" data-view="${escapeHtml(slip.nextRoom)}">Open ${escapeHtml(simpleRoomLabel(slip.nextRoom))}</button>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandSimplicityCompass(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const encodedCopy = encodeURIComponent(slip.copyText);
+    const firstSignal = autopilot.signals[0];
+    const firstRecord = firstSignal?.record;
+    const nextRoom = slip.nextRoom;
+    const owner = firstRecord?.owner || (firstRecord?.type === "Project" ? "Operations" : "Commercial");
+    const date = firstRecord?.endDate ? formatDate(firstRecord.endDate) : firstSignal?.dueText || "Set date";
+    const firstMove = firstRecord?.title || "No urgent record";
+    const compassCards = [
+      ["Run", autopilot.missionTitle, `${autopilot.nowCount} do-now moves stay first.`, slip.tone],
+      ["Protect", `${formatCompactMoney(autopilot.protectedValue)} guarded`, "Commercial context stays in management rooms.", "blue"],
+      ["Move", owner, compactText(firstMove, 76), firstRecord?.owner ? "green" : "amber"],
+      ["Scale", "Country-ready", "Local currency, role names, and proof rules can change without adding screen noise.", "green"],
+    ];
+
+    return `
+      <section class="command-simplicity-compass tone-${escapeHtml(slip.tone)}" aria-label="Simplicity compass">
+        <article class="command-simplicity-lead">
+          <span class="metric-label">Simplicity compass</span>
+          <h3>One screen, one first move, one protected handoff.</h3>
+          <p>${escapeHtml(compactText(slip.note, 160))}</p>
+          <div class="command-simplicity-actions">
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy boardroom brief</button>
+            <button class="ghost-btn" type="button" data-view="${escapeHtml(nextRoom)}">Open ${escapeHtml(simpleRoomLabel(nextRoom))}</button>
+          </div>
+        </article>
+        <div class="command-simplicity-grid">
+          ${compassCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-simplicity-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(value, 44))}</strong>
+                  <small>${escapeHtml(compactText(note, 92))}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+        <article class="command-simplicity-close">
+          <span>Close clean</span>
+          <strong>${escapeHtml(compactText(date, 44))}</strong>
+          <small>Leave with owner, date, proof, and next room before routine updates.</small>
+        </article>
+      </section>
+    `;
+  }
+
   function renderCommandFocusRooms(model) {
     const preferredRooms = ["Advisor", "Weekly Review", "Reminders", "Reports", "Bid Desk", "Calendar"];
     const cardsByView = new Map(model.moduleCards.map((card) => [card.view, card]));
@@ -6584,9 +6759,7 @@
           ${renderInsightKpi("Evidence health", `${model.evidenceScore}%`, `${model.documents.sourceCoverage}% source coverage after gap penalty`)}
         </div>
 
-        ${renderCommandTodayMission(model, autopilot)}
-
-        ${renderCommandDecisionLine(model, autopilot)}
+        ${renderCommandSimplicityCompass(model, autopilot)}
 
         <details class="command-playbook-fold">
           <summary>
@@ -25061,11 +25234,11 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v285 Header Build Badge",
-      phase: "Header build badge",
+      version: "v289 Simplicity Compass",
+      phase: "Simplicity compass",
       lane: "Static product prototype on GitHub Pages",
-      pace: "266 meaningful versions since rebrand",
-      summary: "The active build version is now visible in the top shell, and the PursuitDesk logo/brand works as a home action back to Command for faster testing.",
+      pace: "270 meaningful versions since rebrand",
+      summary: "Command Center now replaces three visible operating blocks with one Simplicity Compass: run, protect, move, scale, and copy the boardroom handoff.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
         ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, Simple Buyer Review Pack, Simple Rooms Navigator, Navigation Preference Memory, Buyer Review Send Receipt, Buyer Receipt Reply Tracker, Navigation Preference Controls, Pilot First-Week Pulse, First-Week Proof Inbox, First-Week Review Pack, Review Pack Send Receipt, Kickoff Proof Handoff Emails, Kickoff Send Receipt, Kickoff Proof Outcome Receipt, Pilot Reply-to-Kickoff Bridge, Role Navigation Presets, Preset-to-Access Policy Handoff, Preset Policy Apply Receipt, Preset Grant Approval Queue, Grant Approval Follow-up Tasks, Grant Task Execution Receipt, Review Receipt Reply Outcome, Review Outcome Follow-up Tasks, Kickoff Outcome Follow-up Tasks, Pilot Handoff Sheet, and Pilot Kickoff Confirmation are live in demo form.", "teal"],
@@ -25124,7 +25297,10 @@
         ["v282 command decision line", 100, "Command Center now adds a single Decision Line and folds the longer 15-minute flow and handoff script by default, keeping the first screen simpler.", "teal"],
         ["v283 command focus mode", 100, "Command Center now puts the highest-value rooms into a compact Focus Mode and folds the full Module Cockpit so daily users see fewer cards first.", "teal"],
         ["v284 admin tools tray", 100, "Pilot Pitch, Membership Model, and Build Phase now move into one admin tray, preserving admin speed while keeping the daily operating header cleaner.", "green"],
-        ["v285 header build badge", 100, "The top shell now shows the current build version while the brand/logo acts as a Command home button, making every test pass easier to identify and reset.", "blue"],
+        ["v286 build badge shortcut", 100, "The top build badge now opens the Build Phase tracker for admins, and the logo remains a Command home action for quick test resets.", "blue"],
+        ["v287 copy-ready brief", 100, "Command Center now turns the current mission into a copy-ready management brief with room, owner, date, proof, privacy, and next action for meeting handoff.", "teal"],
+        ["v288 boardroom brief", 100, "Command Center now reframes the copy-ready note into a boardroom-ready story with say-first, protect, move, close, and buyer-safe handoff language.", "green"],
+        ["v289 simplicity compass", 100, "Command Center now collapses Today Mission, Decision Line, and Boardroom Brief into one compact compass with run, protect, move, scale, and copy-ready handoff actions.", "teal"],
         ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, rule impact simulator, customer demo replay recorder, proposal proof composer, rule change audit trail, demo-to-pilot conversion board, proposal redaction approval gate, rule reopen review queue, pilot close probability simulator, buyer-safe proposal export, rule reopen outcome replay, pilot close outcome memory, proposal send audit receipt, rule reopen outcome memory, pilot outcome forecast tuner, proposal send follow-up tracker, decision memory influence switchboard, pilot follow-up reply memory, founder close command script, memory influence audit diff, pilot reply pattern library, founder close outcome receipt, memory diff release notes, pattern-to-demo coach, receipt-to-renewal signal, release note approval board, demo coach replay score, renewal signal replay board, buyer-safe changelog publisher, coach-to-close learning publisher, and renewal-to-invoice trust publisher are mapped, but the real private repo and real staging environment are not created yet.", "red"],
         ["Billing model", 100, "USD Starter, Team, Business, extra operator seats, manager/commercial seats, setup service pricing, checkout flow, invoice lifecycle, payment state simulator, adoption health monitor, provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, renewal decision pack, idempotency, signature verification, tenant mapping, retry rules, plan changes, access locks, audit events, pilot pitch packaging, customer feedback buying signals, ROI payback story, proposal export handoff, objection playbook proof paths, proposal acceptance tracking, buyer decision closeout, invoice request handoff, kickoff activation handoff, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "green"],
         ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker, buyer decision room, pilot invoice request pack, pilot payment state simulator, pilot kickoff control pack, pilot adoption health monitor, closeout PDF render workflow, payment provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, attachment download audit evidence pack, pilot renewal decision pack, closeout archive attachment register, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, and rule impact simulator.", "green"],
@@ -25492,6 +25668,40 @@
     `;
   }
 
+  function renderBuildReleaseHandoff(tracker) {
+    const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
+    const releaseCards = [
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now reduces three visible decision surfaces into one Simplicity Compass for run, protect, move, scale, and copy handoff.", "blue"],
+      ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
+      ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
+      ["Smoke check", "Logo home, build badge, Simplicity Compass, copy brief, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+    ];
+    return `
+      <section class="build-release-handoff">
+        <div class="info-head">
+          <div>
+            <span class="metric-label">Release handoff</span>
+            <h3>What to publish next</h3>
+          </div>
+          <span>${escapeHtml(tracker.version)}</span>
+        </div>
+        <div class="build-release-grid">
+          ${releaseCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="build-release-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
   function renderBuildPhasePage() {
     const commandModel = buildCommandCenterModel();
     const tracker = buildProductBuildTracker();
@@ -25517,6 +25727,7 @@
             <small>${doneCount} done / ${activeCount} active / ${mostlyDoneCount} mostly done</small>
           </div>
         </section>
+        ${renderBuildReleaseHandoff(tracker)}
         ${renderProductBuildTracker(tracker)}
         ${renderBuildPhaseArtifactSections(commandModel)}
       </section>
@@ -75034,6 +75245,23 @@
 
     if (action === "go-home") {
       openView("Command");
+      return;
+    }
+
+    if (action === "open-build-phase") {
+      openView("Build Phase");
+      return;
+    }
+
+    if (action === "copy-command-brief") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      copyTextToClipboard(text, "Meeting brief copied.");
       return;
     }
 
