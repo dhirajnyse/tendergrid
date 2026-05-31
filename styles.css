@@ -3977,6 +3977,167 @@ textarea:disabled {
   width: 100%;
 }
 
+.serenity-launch-card {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.5fr);
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(42, 142, 119, 0.28);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(224, 243, 236, 0.95), rgba(255, 255, 255, 0.96));
+  box-shadow: var(--shadow-soft);
+}
+
+.serenity-launch-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.serenity-launch-main h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+.serenity-launch-main p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.serenity-launch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.serenity-launch-actions .secondary-btn,
+.serenity-launch-actions .ghost-btn {
+  min-height: 38px;
+}
+
+.serenity-launch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.serenity-launch-tile {
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(18, 122, 101, 0.2);
+  border-left: 4px solid var(--signal-green);
+  background: var(--signal-green-bg);
+}
+
+.serenity-launch-tile span {
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.serenity-launch-tile strong {
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.18;
+}
+
+.serenity-launch-tile small {
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.serenity-launch-tile.tone-red {
+  border-color: var(--signal-red-border);
+  border-left-color: var(--signal-red);
+  background: var(--signal-red-bg);
+}
+
+.serenity-launch-tile.tone-amber {
+  border-color: var(--signal-amber-border);
+  border-left-color: var(--signal-amber);
+  background: var(--signal-amber-bg);
+}
+
+.serenity-launch-tile.tone-blue {
+  border-color: var(--signal-blue-border);
+  border-left-color: var(--signal-blue);
+  background: var(--signal-blue-bg);
+}
+
+.serenity-launch-tile.tone-green,
+.serenity-launch-tile.tone-teal {
+  border-color: var(--signal-green-border);
+  border-left-color: var(--signal-green);
+  background: var(--signal-green-bg);
+}
+
+.command-calm-detail-fold {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+}
+
+.command-calm-detail-fold > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.command-calm-detail-fold > summary::-webkit-details-marker {
+  display: none;
+}
+
+.command-calm-detail-fold > summary span {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.command-calm-detail-fold > summary strong {
+  color: var(--ink);
+}
+
+.command-calm-detail-fold > summary small {
+  color: var(--muted);
+}
+
+.command-calm-detail-fold > summary b {
+  flex: 0 0 auto;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--teal-dark);
+  background: var(--panel);
+}
+
+.command-calm-detail-fold[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.command-calm-detail-fold-body {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
 .calm-handoff-panel.tone-red {
   border-left-color: #c43b33;
 }
@@ -4540,6 +4701,14 @@ body.quiet-focus-mode .command-room-cockpit-fold {
 }
 
 @media (max-width: 1040px) {
+  .serenity-launch-card {
+    grid-template-columns: 1fr;
+  }
+
+  .serenity-launch-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .calm-handoff-panel {
     grid-template-columns: 1fr;
   }
@@ -4589,6 +4758,20 @@ body.quiet-focus-mode .command-room-cockpit-fold {
 }
 
 @media (max-width: 540px) {
+  .serenity-launch-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .serenity-launch-actions .secondary-btn,
+  .serenity-launch-actions .ghost-btn {
+    width: 100%;
+  }
+
+  .command-calm-detail-fold > summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .calm-handoff-fields {
     grid-template-columns: 1fr;
   }
