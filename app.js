@@ -1,10 +1,10 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v296";
-  const BUILD_LABEL = "Serenity launch card";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=296";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=296";
+  const BUILD_VERSION = "v298";
+  const BUILD_LABEL = "Calm intelligence rail";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=298";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=298";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -6415,6 +6415,10 @@
     return {
       tone,
       nextRoom,
+      record: firstRecord,
+      owner,
+      date,
+      proof,
       copyText,
       title: "Say first, protect value, move owner, close clean",
       note: `${autopilot.nowCount} do-now moves, ${model.reminders.overdue} overdue follow-ups, and ${model.evidenceGaps.length} evidence gaps are converted into one boardroom-ready handoff.`,
@@ -6547,6 +6551,59 @@
             )
             .join("")}
         </div>
+      </section>
+    `;
+  }
+
+  function renderCommandCalmIntelligenceRail(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || model.openRecords[0] || model.records[0] || {};
+    const totalTasks = model.reminders?.tasks?.length || 0;
+    const laterCount = Math.max(0, totalTasks - (autopilot?.nowCount || 0));
+    const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const proofReady = slip.proof && slip.proof !== "Add proof path" ? "Proof path visible" : "Proof still guided";
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const items = [
+      [
+        "Do first",
+        compactText(firstSignal.action || autopilot.missionTitle || "Start with the clearest signal", 54),
+        record.title ? compactText(record.title, 74) : "One action opens the day.",
+        slip.tone,
+      ],
+      [
+        "Let wait",
+        `${laterCount} routine moves`,
+        "Fold work that does not need the first meeting minute.",
+        laterCount ? "green" : "teal",
+      ],
+      [
+        "Keep private",
+        `${protectedValue} guarded`,
+        `Management context stays protected; ${owner} sees the next action.`,
+        "blue",
+      ],
+      [
+        "Scale calmly",
+        "Role-safe / country-ready",
+        `${proofReady}. USD membership now, local record values later.`,
+        "green",
+      ],
+    ];
+
+    return `
+      <section class="calm-intelligence-rail" aria-label="Calm intelligence rail">
+        ${items
+          .map(
+            ([label, value, note, tone]) => `
+              <article class="calm-intelligence-pill tone-${escapeHtml(tone)}">
+                <span>${escapeHtml(label)}</span>
+                <strong>${escapeHtml(value)}</strong>
+                <small>${escapeHtml(note)}</small>
+              </article>
+            `
+          )
+          .join("")}
       </section>
     `;
   }
@@ -7177,6 +7234,7 @@
         ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : ""}
         ${state.serenityMode && !state.quietFocus ? renderCommandSerenityGuide(model, autopilot) : ""}
         ${state.quietFocus ? "" : renderCommandSerenityLaunchCard(model, autopilot)}
+        ${state.quietFocus ? "" : renderCommandCalmIntelligenceRail(model, autopilot)}
         ${
           state.quietFocus
             ? ""
@@ -25670,12 +25728,14 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v296 Serenity Launch Card",
-      phase: "Serenity launch card",
+      version: "v298 Calm Intelligence Rail",
+      phase: "Calm intelligence rail",
       lane: "Static product prototype on GitHub Pages",
-      pace: "277 meaningful versions since rebrand",
-      summary: "Command Center now keeps the daily screen peaceful with one serenity launch card, while detailed handoff and Peace Path guidance stay folded until the team needs them.",
+      pace: "279 meaningful versions since rebrand",
+      summary: "Command Center now adds a quiet intelligence rail that separates do-now, let-wait, privacy, and scale signals without expanding the first-screen workload.",
       tracks: [
+        ["v298 calm intelligence rail", 100, "Command Center now shows a low-noise rail for do-first, let-wait, keep-private, and scale-ready guidance so the morning decision feels smarter without becoming heavier.", "green"],
+        ["v297 soft serenity polish", 100, "Serenity Launch now feels calmer and more premium with softer glass, equal-height tiles, lighter borders, and quieter copy hierarchy for the daily first screen.", "green"],
         ["v296 serenity launch card", 100, "Command Center now starts from one calm launch surface with next room, owner, proof, and global-ready posture, while the detailed calm handoff and Peace Path stay folded to protect first-screen simplicity.", "green"],
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
         ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, Simple Buyer Review Pack, Simple Rooms Navigator, Navigation Preference Memory, Buyer Review Send Receipt, Buyer Receipt Reply Tracker, Navigation Preference Controls, Pilot First-Week Pulse, First-Week Proof Inbox, First-Week Review Pack, Review Pack Send Receipt, Kickoff Proof Handoff Emails, Kickoff Send Receipt, Kickoff Proof Outcome Receipt, Pilot Reply-to-Kickoff Bridge, Role Navigation Presets, Preset-to-Access Policy Handoff, Preset Policy Apply Receipt, Preset Grant Approval Queue, Grant Approval Follow-up Tasks, Grant Task Execution Receipt, Review Receipt Reply Outcome, Review Outcome Follow-up Tasks, Kickoff Outcome Follow-up Tasks, Pilot Handoff Sheet, and Pilot Kickoff Confirmation are live in demo form.", "teal"],
@@ -26114,10 +26174,10 @@
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now opens with one Serenity Launch Card and folds the deeper handoff details for a calmer first screen.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now adds a quiet rail for do-first, let-wait, keep-private, and scale-ready guidance without making the first screen busier.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Serenity Launch, folded details, Quiet mode, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Serenity Launch, Calm Intelligence Rail, Quiet mode, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

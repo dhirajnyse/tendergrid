@@ -462,6 +462,8 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v290 adds Global Launch Lens: Command Center now shows country-neutral pricing, environment separation, role privacy, and AI-readiness in one compact strip for future multi-country rollout.
 - v292 adds Quiet Focus Mode: Command Center now has a calm toggle that softens the workspace, folds secondary detail, and surfaces one record, one owner, one date, and one proof path for peaceful review.
 - v293 adds Serenity Workspace Mode: a small top switch softens the workspace and adds a calm Command guide for one screen, one record, one owner, one date, and one proof without adding navigation.
+- v298 adds Calm Intelligence Rail: Command Center now shows a quiet do-first, let-wait, keep-private, and scale-ready rail so the first screen becomes smarter without becoming heavier.
+- v297 adds Soft Serenity Polish: Serenity Launch now has softer glass, lighter borders, equal-height tiles, and a calmer premium first-screen rhythm.
 - v296 adds Serenity Launch Card: Command Center now opens with one calm next-move strip for room, owner, proof, and global readiness while the detailed handoff and Peace Path stay folded.
 - v295 adds Calm Handoff Receipt: Command Center now replaces another visible guidance strip with one copy-ready meeting line plus room, owner, date, proof, and the remaining Peace Path route.
 - v294 adds Peace Path Guidance: Command Center replaces two secondary strips with one calm start-move-close route so the first screen feels quieter while owner, date, proof, and next room stay visible.
