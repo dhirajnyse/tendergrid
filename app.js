@@ -1,10 +1,10 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v294";
-  const BUILD_LABEL = "Peace path guidance";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=294";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=294";
+  const BUILD_VERSION = "v295";
+  const BUILD_LABEL = "Calm handoff receipt";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=295";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=295";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -6458,10 +6458,56 @@
     `;
   }
 
+  function renderCommandCalmHandoff(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0];
+    const record = firstSignal?.record || model.openRecords[0] || model.records[0] || {};
+    const route = slip.nextRoom;
+    const routeLabel = simpleRoomLabel(route);
+    const owner = record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const date = record.endDate ? formatDate(record.endDate) : firstSignal?.dueText || "Set one calm date";
+    const proof = record.sourceSheet || record.sourceWorkbook || record.agreementNo || record.category || "Attach one proof";
+    const handoffLine = `${autopilot.missionTitle}. Open ${routeLabel}, keep ${owner} accountable, close with ${date}, and bring ${proof}.`;
+    const encodedCopy = encodeURIComponent(handoffLine);
+    const fields = [
+      ["Room", routeLabel, "Open only the next useful room."],
+      ["Owner", owner, record.owner ? "Already accountable." : "Confirm before the update."],
+      ["Date", date, firstSignal?.dueText || "One control date."],
+      ["Proof", proof, "One trusted source keeps it calm."],
+    ];
+
+    return `
+      <section class="calm-handoff-panel tone-${escapeHtml(slip.tone)}" aria-label="Calm handoff receipt">
+        <article class="calm-handoff-line">
+          <span class="metric-label">Calm handoff</span>
+          <strong>${escapeHtml(compactText(handoffLine, 150))}</strong>
+          <p>One sentence for the next meeting, with room, owner, date, and proof already shaped.</p>
+        </article>
+        <div class="calm-handoff-fields">
+          ${fields
+            .map(
+              ([label, value, note]) => `
+                <article class="calm-handoff-field">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(value, 36))}</strong>
+                  <small>${escapeHtml(compactText(note, 76))}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="calm-handoff-actions">
+          <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy line</button>
+          <button class="ghost-btn" type="button" data-view="${escapeHtml(route)}">Open ${escapeHtml(routeLabel)}</button>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandSimplicityCompass(model, autopilot) {
     const slip = buildCommandBriefSlip(model, autopilot);
     const encodedCopy = encodeURIComponent(slip.copyText);
-    const firstSignal = autopilot.signals[0];
+    const firstSignal = autopilot?.signals?.[0];
     const firstRecord = firstSignal?.record;
     const nextRoom = slip.nextRoom;
     const owner = firstRecord?.owner || (firstRecord?.type === "Project" ? "Operations" : "Commercial");
@@ -6567,7 +6613,7 @@
   function renderCommandCalmOperatingRhythm(model, autopilot) {
     const pressureRatio = model.reminders.tasks.length ? model.reminders.overdue / model.reminders.tasks.length : 0;
     const pressureScore = Math.max(0, 100 - Math.round(pressureRatio * 100));
-    const firstSignal = autopilot.signals[0];
+    const firstSignal = autopilot?.signals?.[0];
     const firstRecord = firstSignal?.record;
     const firstOwner = firstRecord?.owner || (firstRecord?.type === "Project" ? "Operations" : "Commercial");
     const firstDate = firstRecord?.endDate ? formatDate(firstRecord.endDate) : firstSignal?.dueText || "Set date";
@@ -7083,7 +7129,7 @@
 
         ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : ""}
         ${state.serenityMode && !state.quietFocus ? renderCommandSerenityGuide(model, autopilot) : ""}
-        ${state.quietFocus ? "" : renderCommandSimplicityCompass(model, autopilot)}
+        ${state.quietFocus ? "" : renderCommandCalmHandoff(model, autopilot)}
         ${state.quietFocus ? "" : renderCommandPeacePath(model, autopilot)}
 
         <details class="command-playbook-fold">
@@ -25559,11 +25605,11 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v294 Peace Path Guidance",
-      phase: "Peace path guidance",
+      version: "v295 Calm Handoff Receipt",
+      phase: "Calm handoff receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "275 meaningful versions since rebrand",
-      summary: "Command Center now replaces two secondary strips with one peaceful route that tells the user where to start, what to move, and how to close with owner, date, and proof.",
+      pace: "276 meaningful versions since rebrand",
+      summary: "Command Center now replaces another visible guidance strip with one copy-ready calm handoff line, keeping room, owner, date, proof, and Peace Path visible without adding clutter.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
         ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, Simple Buyer Review Pack, Simple Rooms Navigator, Navigation Preference Memory, Buyer Review Send Receipt, Buyer Receipt Reply Tracker, Navigation Preference Controls, Pilot First-Week Pulse, First-Week Proof Inbox, First-Week Review Pack, Review Pack Send Receipt, Kickoff Proof Handoff Emails, Kickoff Send Receipt, Kickoff Proof Outcome Receipt, Pilot Reply-to-Kickoff Bridge, Role Navigation Presets, Preset-to-Access Policy Handoff, Preset Policy Apply Receipt, Preset Grant Approval Queue, Grant Approval Follow-up Tasks, Grant Task Execution Receipt, Review Receipt Reply Outcome, Review Outcome Follow-up Tasks, Kickoff Outcome Follow-up Tasks, Pilot Handoff Sheet, and Pilot Kickoff Confirmation are live in demo form.", "teal"],
@@ -25629,6 +25675,7 @@
         ["v290 global launch lens", 100, "Command Center now adds one compact global-readiness strip for country-neutral pricing, environment separation, role privacy, and future AI workflows without adding more navigation.", "green"],
         ["v291 calm command rhythm", 100, "Command Center now adds one quiet operating rhythm for begin, simplify, protect, and close, making the first screen feel calmer without hiding urgent work.", "teal"],
         ["v292 quiet focus mode", 100, "Command Center now has a calm toggle that softens the workspace, hides secondary detail, and shows one record, one owner, one date, and one proof path for peaceful review.", "green"],
+        ["v295 calm handoff receipt", 100, "Command Center now replaces another visible guidance strip with one copy-ready calm handoff line plus room, owner, date, proof, and the remaining Peace Path route.", "teal"],
         ["v294 peace path guidance", 100, "Command Center now replaces two secondary strips with one peaceful route that shows where to start, what to move, and how to close with owner, date, and proof.", "green"],
         ["v293 serenity workspace mode", 100, "A small Serenity switch now softens the whole workspace and adds a calm Command guide for one screen, one record, one owner, one date, and one proof without adding navigation.", "teal"],
         ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, rule impact simulator, customer demo replay recorder, proposal proof composer, rule change audit trail, demo-to-pilot conversion board, proposal redaction approval gate, rule reopen review queue, pilot close probability simulator, buyer-safe proposal export, rule reopen outcome replay, pilot close outcome memory, proposal send audit receipt, rule reopen outcome memory, pilot outcome forecast tuner, proposal send follow-up tracker, decision memory influence switchboard, pilot follow-up reply memory, founder close command script, memory influence audit diff, pilot reply pattern library, founder close outcome receipt, memory diff release notes, pattern-to-demo coach, receipt-to-renewal signal, release note approval board, demo coach replay score, renewal signal replay board, buyer-safe changelog publisher, coach-to-close learning publisher, and renewal-to-invoice trust publisher are mapped, but the real private repo and real staging environment are not created yet.", "red"],
@@ -26001,10 +26048,10 @@
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now uses one Peace Path to guide start, move, and close while removing two secondary first-screen strips.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now uses a calm handoff receipt plus Peace Path, giving one copy-ready meeting line while reducing visible guidance layers.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Serenity pill, Peace Path, Quiet mode, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Calm Handoff, Peace Path, Quiet mode, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

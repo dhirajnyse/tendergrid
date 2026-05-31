@@ -224,6 +224,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - PursuitDesk now includes v290 Global Launch Lens so Command Center shows country, environment, role, and AI readiness in one small strip without adding more navigation.
 - PursuitDesk now includes v292 Quiet Focus Mode so Command Center can switch into a calmer owner-date-proof view without adding more navigation or visual noise.
 - PursuitDesk now includes v293 Serenity Workspace Mode so any user can soften the whole workspace for calmer review, with a small top switch and a Command guide that keeps one screen, one record, one owner, one date, and one proof in focus.
+- PursuitDesk now includes v295 Calm Handoff Receipt so Command Center replaces another visible guidance strip with one copy-ready meeting line plus room, owner, date, proof, and Peace Path.
 - PursuitDesk now includes v294 Peace Path Guidance so Command Center replaces two secondary strips with one calm start-move-close route, keeping owner, date, and proof visible without adding navigation.
 - PursuitDesk now includes v291 Calm Command Rhythm so Command Center adds a quiet begin, simplify, protect, and close strip that keeps urgent work visible without making the UI noisy.
 - Closeout now includes a v159 SLA and Escalation Clock with archive ageing, overdue lanes, due-now warnings, reviewer nudges, owner actions, management closeout lines, and downloadable SLA JSON.
@@ -461,6 +462,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v290 adds Global Launch Lens: Command Center now shows country-neutral pricing, environment separation, role privacy, and AI-readiness in one compact strip for future multi-country rollout.
 - v292 adds Quiet Focus Mode: Command Center now has a calm toggle that softens the workspace, folds secondary detail, and surfaces one record, one owner, one date, and one proof path for peaceful review.
 - v293 adds Serenity Workspace Mode: a small top switch softens the workspace and adds a calm Command guide for one screen, one record, one owner, one date, and one proof without adding navigation.
+- v295 adds Calm Handoff Receipt: Command Center now replaces another visible guidance strip with one copy-ready meeting line plus room, owner, date, proof, and the remaining Peace Path route.
 - v294 adds Peace Path Guidance: Command Center replaces two secondary strips with one calm start-move-close route so the first screen feels quieter while owner, date, proof, and next room stay visible.
 - v291 adds Calm Command Rhythm: Command Center now gives a peaceful four-step operating rhythm with a quiet score, protected value, and clean closeout handoff.
 - v288 adds Boardroom Brief: Command Center reframes the copy-ready handoff into a founder-style meeting story with say-first, protect, move, close, privacy, next room, and a copied toast for buyer or management prep.
