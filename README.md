@@ -19,6 +19,9 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v302 One Move Dock simplifies the Command Center first screen by replacing the visible full Peace Path block with one light mission-room-owner-date-proof dock while keeping the full path folded for deeper review.
+- v301 Stillness Bar keeps Serenity mode calm with one quiet route-owner-date-proof rail instead of another full Command Center block.
+- v300 Peace Path simplifies the Command Center into one calm start-open-confirm-prove-protect capsule, with deeper handoff details folded below for quiet daily use.
 - Admin-only Pilot Readiness Checklist inside Command Center tracks first-company launch score, readiness lanes, launch sequence, decision gates, blockers, users, access, data, backend, billing, and feedback checks.
 - Admin-only SaaS Conversion Sprint inside Command Center maps the bridge from static demo to production MVP with API groups, database objects, sprint sequence, repo blueprint, production gates, and engineering handoff notes.
 - Admin-only Production Security Model inside Command Center maps identity/session controls, tenant isolation, permission gates, commercial-data privacy, audit retention, backups, monitoring, live-data gates, and access matrix rules.
@@ -462,6 +465,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v290 adds Global Launch Lens: Command Center now shows country-neutral pricing, environment separation, role privacy, and AI-readiness in one compact strip for future multi-country rollout.
 - v292 adds Quiet Focus Mode: Command Center now has a calm toggle that softens the workspace, folds secondary detail, and surfaces one record, one owner, one date, and one proof path for peaceful review.
 - v293 adds Serenity Workspace Mode: a small top switch softens the workspace and adds a calm Command guide for one screen, one record, one owner, one date, and one proof without adding navigation.
+- v299 adds Serenity Brief: Command Center now folds the calm rail into one executive brief for say-first, next-room, owner, proof, and privacy control so the first screen becomes simpler again.
 - v298 adds Calm Intelligence Rail: Command Center now shows a quiet do-first, let-wait, keep-private, and scale-ready rail so the first screen becomes smarter without becoming heavier.
 - v297 adds Soft Serenity Polish: Serenity Launch now has softer glass, lighter borders, equal-height tiles, and a calmer premium first-screen rhythm.
 - v296 adds Serenity Launch Card: Command Center now opens with one calm next-move strip for room, owner, proof, and global readiness while the detailed handoff and Peace Path stay folded.

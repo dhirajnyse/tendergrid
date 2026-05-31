@@ -1,10 +1,10 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v298";
-  const BUILD_LABEL = "Calm intelligence rail";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=298";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=298";
+  const BUILD_VERSION = "v302";
+  const BUILD_LABEL = "One Move Dock";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=302";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=302";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -6508,53 +6508,6 @@
     `;
   }
 
-  function renderCommandSerenityLaunchCard(model, autopilot) {
-    const slip = buildCommandBriefSlip(model, autopilot);
-    const record = slip.record || model.openRecords[0] || model.records[0] || {};
-    const owner = record.owner || (record.type === "Project" ? "Operations" : "Commercial");
-    const dueText = record.endDate
-      ? formatDate(record.endDate)
-      : slip.date || "Set one calm date";
-    const proof = record.sourceSheet || record.sourceWorkbook || record.agreementNo || record.category || "Attach one proof";
-    const protectedValue = formatCompactMoney(autopilot.protectedValue || 0);
-    const nextRoomLabel = simpleRoomLabel(slip.nextRoom);
-    const copyText = `${autopilot.missionTitle}. Open ${nextRoomLabel}. Owner ${owner}. Date ${dueText}. Proof ${proof}. Keep ${protectedValue} private.`;
-    const cards = [
-      ["Next room", nextRoomLabel, "Open only the room that moves today.", slip.tone],
-      ["Owner", owner, record.owner ? "Accountability is already visible." : "Confirm gently before the meeting.", record.owner ? "green" : "amber"],
-      ["Proof", proof, proof === "Attach one proof" ? "Bring one trusted source." : "Evidence path is ready.", proof === "Attach one proof" ? "amber" : "blue"],
-      ["Global calm", "Role-safe", "USD billing, local values later, AI-ready signals.", "green"],
-    ];
-
-    return `
-      <section class="serenity-launch-card tone-${escapeHtml(slip.tone)}">
-        <div class="serenity-launch-main">
-          <span class="metric-label">Serenity launch</span>
-          <h3>One calm next move, ready for every market.</h3>
-          <p>Keep the first screen peaceful: open one room, confirm one owner, carry one date, attach one proof, and keep commercial context guarded.</p>
-          <div class="serenity-launch-actions">
-            <button class="secondary-btn" type="button" data-view="${escapeHtml(slip.nextRoom)}">Open next room</button>
-            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodeURIComponent(copyText))}">Copy calm line</button>
-            <button class="ghost-btn quiet-focus-btn ${state.quietFocus ? "active" : ""}" type="button" data-action="toggle-quiet-focus">Quiet mode</button>
-          </div>
-        </div>
-        <div class="serenity-launch-grid">
-          ${cards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="serenity-launch-tile tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(value)}</strong>
-                  <small>${escapeHtml(note)}</small>
-                </article>
-              `
-            )
-            .join("")}
-        </div>
-      </section>
-    `;
-  }
-
   function renderCommandCalmIntelligenceRail(model, autopilot) {
     const slip = buildCommandBriefSlip(model, autopilot);
     const firstSignal = autopilot?.signals?.[0] || {};
@@ -6604,6 +6557,124 @@
             `
           )
           .join("")}
+      </section>
+    `;
+  }
+
+  function renderCommandPeacePathCapsule(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || model.openRecords[0] || model.records[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const date = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set one calm date");
+    const proof = slip.proof && slip.proof !== "Add proof path" ? slip.proof : record.sourceSheet || record.sourceWorkbook || "Bring one evidence source";
+    const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const missionTitle = autopilot?.missionTitle || "Recover the red work first";
+    const focusTitle = record.title || firstSignal.action || "One next move";
+    const confirmTone = record.owner && date && !String(date).toLowerCase().includes("set") && !String(date).toLowerCase().includes("confirm") ? "green" : "amber";
+    const proofTone = proof === "Bring one evidence source" ? "amber" : "blue";
+    const peaceLine = `${missionTitle}. Open ${routeLabel}. Confirm ${owner}. Date ${date}. Proof ${proof}. Keep ${protectedValue} guarded.`;
+    const steps = [
+      ["01", "Start", compactText(missionTitle, 46), compactText(focusTitle, 72), slip.tone],
+      ["02", "Open", routeLabel, "Only the room that moves today.", "blue"],
+      ["03", "Confirm", owner, compactText(date, 58), confirmTone],
+      ["04", "Prove", compactText(proof, 42), "One trusted source before close.", proofTone],
+      ["05", "Protect", `${protectedValue} guarded`, "Commercial context stays controlled.", "green"],
+    ];
+
+    return `
+      <section class="peace-path-capsule tone-${escapeHtml(slip.tone)}" aria-label="Peace Path">
+        <article class="peace-path-capsule-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Peace Path</span>
+          <h3>Start calm. Move one thing. Close clean.</h3>
+          <p>One route for every morning: open the right room, confirm owner, set date, attach proof, and leave commercial context protected.</p>
+          <div class="peace-path-capsule-actions">
+            <button class="secondary-btn" type="button" data-view="${escapeHtml(route)}">Open ${escapeHtml(routeLabel)}</button>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodeURIComponent(peaceLine))}">Copy Peace Path</button>
+            <button class="ghost-btn quiet-focus-btn ${state.quietFocus ? "active" : ""}" type="button" data-action="toggle-quiet-focus">${state.quietFocus ? "Exit quiet mode" : "Quiet mode"}</button>
+          </div>
+        </article>
+        <div class="peace-path-capsule-grid">
+          ${steps
+            .map(
+              ([number, label, value, note, tone]) => `
+                <article class="peace-path-capsule-step tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(number)} / ${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandOneMoveDock(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || model.openRecords[0] || model.records[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const due = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set one calm date");
+    const proof =
+      slip.proof && slip.proof !== "Add proof path"
+        ? slip.proof
+        : record.sourceSheet || record.sourceWorkbook || "Bring one evidence source";
+    const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const recordTitle = record.title || firstSignal.action || "One next move";
+    const recordLine = [record.reference, record.client].filter(Boolean).join(" / ") || "Workspace signal";
+    const dueText = String(due || "");
+    const proofText = String(proof || "");
+    const copyLine = `${autopilot.missionTitle}. Open ${routeLabel}. Owner ${owner}. Date ${due}. Proof ${proof}. Keep ${protectedValue} guarded.`;
+    const chips = [
+      ["Room", routeLabel, "Open only the room that moves today.", "green"],
+      ["Owner", owner, record.owner ? "Already accountable." : "Confirm before broad updates.", record.owner ? "green" : "amber"],
+      [
+        "Date",
+        compactText(dueText, 38),
+        dueText.toLowerCase().includes("set") ? "Needs one control date." : "Control date is visible.",
+        dueText.toLowerCase().includes("set") ? "amber" : "blue",
+      ],
+      [
+        "Proof",
+        compactText(proofText, 38),
+        `${protectedValue} stays guarded.`,
+        proofText === "Bring one evidence source" ? "amber" : "green",
+      ],
+    ];
+
+    return `
+      <section class="one-move-dock tone-${escapeHtml(slip.tone)}" aria-label="One move dock">
+        <article class="one-move-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} One Move</span>
+          <h3>${escapeHtml(autopilot.missionTitle)}</h3>
+          <p>
+            <strong>${escapeHtml(compactText(recordTitle, 86))}</strong>
+            <span>${escapeHtml(compactText(recordLine, 72))}</span>
+          </p>
+          <div class="one-move-actions">
+            <button class="secondary-btn" type="button" data-view="${escapeHtml(route)}">Open ${escapeHtml(routeLabel)}</button>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodeURIComponent(copyLine))}">Copy calm line</button>
+          </div>
+        </article>
+        <div class="one-move-grid">
+          ${chips
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="one-move-chip tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
       </section>
     `;
   }
@@ -6914,58 +6985,37 @@
     `;
   }
 
-  function renderCommandSerenityGuide(model, autopilot) {
-    const firstSignal = autopilot?.signals?.[0];
-    const record = firstSignal?.record || model.openRecords[0] || model.records[0] || {};
-    const owner = record.owner || (record.type === "Project" ? "Operations" : "Commercial");
-    const due = record.endDate ? formatDate(record.endDate) : firstSignal?.dueText || "Set one calm date";
-    const proof = record.sourceSheet || record.category || "Attach one proof source";
-    const title = record.title || "Choose the first useful record";
-    const reference = record.reference || "Pick one visible record, not the full backlog";
-    const serenityCards = [
-      {
-        tone: "green",
-        label: "Breathe",
-        title: "One screen first",
-        note: "Start with Command, then open only the room that reduces pressure.",
-      },
-      {
-        tone: "blue",
-        label: "Choose",
-        title,
-        note: reference,
-      },
-      {
-        tone: "green",
-        label: "Own",
-        title: owner,
-        note: `Close with ${due}.`,
-      },
-      {
-        tone: "amber",
-        label: "Prove",
-        title: proof,
-        note: "Evidence keeps the work peaceful and trusted.",
-      },
+  function renderCommandStillnessBar(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || model.openRecords[0] || model.records[0] || {};
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const due = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set date");
+    const proof = slip.proof && slip.proof !== "Add proof path" ? slip.proof : record.sourceSheet || record.sourceWorkbook || "Proof path";
+    const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const nextRoom = simpleRoomLabel(slip.nextRoom || "Reminders");
+    const stillnessItems = [
+      ["One screen", nextRoom, "Open only the room that moves today.", "green"],
+      ["One owner", owner, "Accountability stays visible.", "green"],
+      ["One date", compactText(due, 36), "No meeting leaves dateless.", String(due).toLowerCase().includes("set") ? "amber" : "blue"],
+      ["One proof", compactText(proof, 36), `${protectedValue} stays guarded.`, proof === "Proof path" ? "amber" : "green"],
     ];
 
     return `
-      <section class="serenity-guide" aria-label="Serenity workspace mode">
-        <div class="serenity-guide-head">
-          <div>
-            <span class="metric-label">Serenity workspace</span>
-            <h3>Make the next move feel calm, clear, and complete.</h3>
-          </div>
-          <span>One screen / one record / one proof</span>
+      <section class="stillness-bar" aria-label="Serenity stillness bar">
+        <div class="stillness-bar-title">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Stillness</span>
+          <strong>One calm line before action.</strong>
+          <small>Serenity mode stays quiet: route, owner, date, proof, then move.</small>
         </div>
-        <div class="serenity-guide-grid">
-          ${serenityCards
+        <div class="stillness-bar-grid">
+          ${stillnessItems
             .map(
-              (card) => `
-                <article class="serenity-guide-card tone-${escapeHtml(card.tone)}">
-                  <span>${escapeHtml(card.label)}</span>
-                  <strong>${escapeHtml(compactText(card.title, 58))}</strong>
-                  <small>${escapeHtml(compactText(card.note, 92))}</small>
+              ([label, value, note, tone]) => `
+                <article class="stillness-chip tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <small>${escapeHtml(note)}</small>
                 </article>
               `
             )
@@ -7232,9 +7282,8 @@
         </div>
 
         ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : ""}
-        ${state.serenityMode && !state.quietFocus ? renderCommandSerenityGuide(model, autopilot) : ""}
-        ${state.quietFocus ? "" : renderCommandSerenityLaunchCard(model, autopilot)}
-        ${state.quietFocus ? "" : renderCommandCalmIntelligenceRail(model, autopilot)}
+        ${state.serenityMode && !state.quietFocus ? renderCommandStillnessBar(model, autopilot) : ""}
+        ${state.quietFocus ? "" : renderCommandOneMoveDock(model, autopilot)}
         ${
           state.quietFocus
             ? ""
@@ -7248,6 +7297,7 @@
                   <b>Details</b>
                 </summary>
                 <div class="command-calm-detail-fold-body">
+                  ${renderCommandPeacePathCapsule(model, autopilot)}
                   ${renderCommandCalmHandoff(model, autopilot)}
                   ${renderCommandPeacePath(model, autopilot)}
                 </div>
@@ -25728,12 +25778,16 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v298 Calm Intelligence Rail",
-      phase: "Calm intelligence rail",
+      version: "v302 One Move Dock",
+      phase: "One Move Dock",
       lane: "Static product prototype on GitHub Pages",
-      pace: "279 meaningful versions since rebrand",
-      summary: "Command Center now adds a quiet intelligence rail that separates do-now, let-wait, privacy, and scale signals without expanding the first-screen workload.",
+      pace: "283 meaningful versions since rebrand",
+      summary: "Command Center now opens with one calm dock for mission, room, owner, date, and proof while the complete Peace Path stays folded for deeper review.",
       tracks: [
+        ["v302 one move dock", 100, "Command Center now replaces the visible full Peace Path block with one light One Move Dock, keeping the first screen calmer while the complete route stays folded for review.", "green"],
+        ["v301 stillness bar", 100, "Serenity mode now uses one slim Stillness Bar for route, owner, date, and proof, keeping the first screen calmer while preserving the daily operating handoff.", "green"],
+        ["v300 peace path", 100, "Command Center now consolidates Serenity Launch and Serenity Brief into one compact Peace Path capsule: start, open, confirm, prove, and protect, reducing first-screen noise while keeping the deeper handoff folded.", "green"],
+        ["v299 serenity brief", 100, "Command Center now replaces the visible calm rail with one executive serenity brief so the daily screen gives a single copy-ready decision path without adding more visual weight.", "green"],
         ["v298 calm intelligence rail", 100, "Command Center now shows a low-noise rail for do-first, let-wait, keep-private, and scale-ready guidance so the morning decision feels smarter without becoming heavier.", "green"],
         ["v297 soft serenity polish", 100, "Serenity Launch now feels calmer and more premium with softer glass, equal-height tiles, lighter borders, and quieter copy hierarchy for the daily first screen.", "green"],
         ["v296 serenity launch card", 100, "Command Center now starts from one calm launch surface with next room, owner, proof, and global-ready posture, while the detailed calm handoff and Peace Path stay folded to protect first-screen simplicity.", "green"],
@@ -26174,10 +26228,10 @@
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now adds a quiet rail for do-first, let-wait, keep-private, and scale-ready guidance without making the first screen busier.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now uses one light One Move Dock for mission, room, owner, date, and proof while the full Peace Path stays folded.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Serenity Launch, Calm Intelligence Rail, Quiet mode, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, One Move Dock, folded Peace Path, Stillness Bar, Quiet mode, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
