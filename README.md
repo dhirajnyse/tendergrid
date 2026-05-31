@@ -221,6 +221,11 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - PursuitDesk now includes v286 Build Badge Shortcut so admin users can click the top build badge to open Build Phase, while the PursuitDesk logo/brand remains the Command home action.
 - PursuitDesk now includes v288 Boardroom Brief so Command Center can copy a meeting-ready story with say-first, protected value, owner movement, closeout, privacy, and next action.
 - PursuitDesk now includes v289 Simplicity Compass so Command Center collapses mission, decision, and boardroom handoff into one calm strip with run, protect, move, scale, and copy-ready brief actions.
+- PursuitDesk now includes v290 Global Launch Lens so Command Center shows country, environment, role, and AI readiness in one small strip without adding more navigation.
+- PursuitDesk now includes v292 Quiet Focus Mode so Command Center can switch into a calmer owner-date-proof view without adding more navigation or visual noise.
+- PursuitDesk now includes v293 Serenity Workspace Mode so any user can soften the whole workspace for calmer review, with a small top switch and a Command guide that keeps one screen, one record, one owner, one date, and one proof in focus.
+- PursuitDesk now includes v294 Peace Path Guidance so Command Center replaces two secondary strips with one calm start-move-close route, keeping owner, date, and proof visible without adding navigation.
+- PursuitDesk now includes v291 Calm Command Rhythm so Command Center adds a quiet begin, simplify, protect, and close strip that keeps urgent work visible without making the UI noisy.
 - Closeout now includes a v159 SLA and Escalation Clock with archive ageing, overdue lanes, due-now warnings, reviewer nudges, owner actions, management closeout lines, and downloadable SLA JSON.
 - Closeout now includes a v162 Closeout Exception Approval Queue that turns SLA pressure into approve, hold, defer, reopen, or reject decisions with approver roles, owner actions, management notes, and downloadable exception JSON.
 - Closeout now includes a v165 Closeout Exception Evidence Bundle that turns exception decisions into proof requests, named evidence files, owner reminders, release notes, management lines, and downloadable evidence JSON.
@@ -453,6 +458,11 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - v283 adds Command Focus Mode: the Command Center now shows four highest-value operating rooms first and folds the full Module Cockpit behind one clean summary.
 - v284 adds Admin Tools Tray: Pilot Pitch, Membership Model, and Build Phase are grouped into a compact admin-only menu so the main header keeps daily work first.
 - v289 adds Simplicity Compass: Command Center replaces three visible decision blocks with one compact surface that keeps next-room action and copy-ready boardroom handoff while reducing first-screen noise.
+- v290 adds Global Launch Lens: Command Center now shows country-neutral pricing, environment separation, role privacy, and AI-readiness in one compact strip for future multi-country rollout.
+- v292 adds Quiet Focus Mode: Command Center now has a calm toggle that softens the workspace, folds secondary detail, and surfaces one record, one owner, one date, and one proof path for peaceful review.
+- v293 adds Serenity Workspace Mode: a small top switch softens the workspace and adds a calm Command guide for one screen, one record, one owner, one date, and one proof without adding navigation.
+- v294 adds Peace Path Guidance: Command Center replaces two secondary strips with one calm start-move-close route so the first screen feels quieter while owner, date, proof, and next room stay visible.
+- v291 adds Calm Command Rhythm: Command Center now gives a peaceful four-step operating rhythm with a quiet score, protected value, and clean closeout handoff.
 - v288 adds Boardroom Brief: Command Center reframes the copy-ready handoff into a founder-style meeting story with say-first, protect, move, close, privacy, next room, and a copied toast for buyer or management prep.
 - v286 adds Build Badge Shortcut: the top build badge now opens the admin Build Phase tracker, and the Build Phase page includes a release handoff with commit line, publish path, and smoke checks.
 - v285 adds Header Build Badge: the top shell now shows the active build version during testing, and clicking the PursuitDesk logo/brand opens the Command home view.

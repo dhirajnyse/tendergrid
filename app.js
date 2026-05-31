@@ -1,10 +1,10 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v289";
-  const BUILD_LABEL = "Simplicity compass";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=289";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=289";
+  const BUILD_VERSION = "v294";
+  const BUILD_LABEL = "Peace path guidance";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=294";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=294";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -627,6 +627,8 @@
     tableDensity: "Comfortable",
     trackerMode: "Sheet",
     detailCollapsed: false,
+    quietFocus: false,
+    serenityMode: false,
     importText: "",
     importPreview: null,
     importMessage: "",
@@ -3083,6 +3085,7 @@
                 ? `<button class="status-pill build-version-pill build-version-btn" type="button" data-action="open-build-phase" title="Open ${escapeHtml(BUILD_VERSION)} build tracker">Build ${escapeHtml(BUILD_VERSION)}</button>`
                 : `<span class="status-pill build-version-pill" title="${escapeHtml(BUILD_LABEL)}">Build ${escapeHtml(BUILD_VERSION)}</span>`
             }
+            <button class="status-pill serenity-mode-pill ${state.serenityMode ? "active" : ""}" type="button" data-action="toggle-serenity-mode" title="${state.serenityMode ? "Serenity mode is softening the workspace" : "Soften the workspace for calm review"}">${state.serenityMode ? "Serenity on" : "Serenity"}</button>
             <span class="status-pill is-live">Live demo</span>
           </div>
           <div class="topbar-actions">
@@ -6253,7 +6256,7 @@
   }
 
   function renderCommandTodayMission(model, autopilot) {
-    const firstSignal = autopilot.signals[0];
+    const firstSignal = autopilot?.signals?.[0];
     const firstRecord = firstSignal?.record;
     const missionTone = autopilot.nowCount
       ? "red"
@@ -6304,7 +6307,7 @@
   }
 
   function renderCommandDecisionLine(model, autopilot) {
-    const firstSignal = autopilot.signals[0];
+    const firstSignal = autopilot?.signals?.[0];
     const firstRecord = firstSignal?.record;
     const nextRoom =
       autopilot.missionCode === "RESCUE"
@@ -6375,7 +6378,7 @@
   }
 
   function buildCommandBriefSlip(model, autopilot) {
-    const firstSignal = autopilot.signals[0];
+    const firstSignal = autopilot?.signals?.[0];
     const firstRecord = firstSignal?.record;
     const nextRoom =
       autopilot.missionCode === "RESCUE"
@@ -6500,6 +6503,324 @@
           <strong>${escapeHtml(compactText(date, 44))}</strong>
           <small>Leave with owner, date, proof, and next room before routine updates.</small>
         </article>
+      </section>
+    `;
+  }
+
+  function renderCommandGlobalLaunchLens(model, autopilot) {
+    const protectedRecords = model.records.filter((record) => record.value || record.agreementNo || record.negotiations?.length).length;
+    const readyRecords = model.records.filter((record) => record.reference && record.client && record.title && record.status && (record.endDate || record.startDate)).length;
+    const readyScore = Math.round((readyRecords / Math.max(model.records.length, 1)) * 100);
+    const cards = [
+      {
+        tone: "green",
+        label: "Country ready",
+        title: "USD membership, local work",
+        note: "Membership stays globally priced while tender and project values can later use each company's currency.",
+      },
+      {
+        tone: "blue",
+        label: "Environment ready",
+        title: "Demo, pilot, production",
+        note: "The same room map can later point to separate tenant databases, staging, and country environments.",
+      },
+      {
+        tone: "green",
+        label: "Role ready",
+        title: `${protectedRecords} protected rows`,
+        note: "Frontline users keep movement fields; managers open value, billing, proof, and forecast rooms.",
+      },
+      {
+        tone: autopilot.nowCount ? "amber" : "green",
+        label: "AI ready",
+        title: `${autopilot.nowCount} first moves`,
+        note: "Signals are already shaped as action, owner, date, proof, and room, ready for future AI workflows.",
+      },
+    ];
+
+    return `
+      <section class="command-launch-lens" aria-label="Global launch lens">
+        <div class="command-launch-head">
+          <div>
+            <span class="metric-label">Global launch lens</span>
+            <h3>Keep the product simple enough to travel.</h3>
+          </div>
+          <span>${readyScore}% data-ready</span>
+        </div>
+        <div class="command-launch-grid">
+          ${cards
+            .map(
+              (card) => `
+                <article class="command-launch-card tone-${escapeHtml(card.tone)}">
+                  <span>${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(card.title)}</strong>
+                  <small>${escapeHtml(card.note)}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandCalmOperatingRhythm(model, autopilot) {
+    const pressureRatio = model.reminders.tasks.length ? model.reminders.overdue / model.reminders.tasks.length : 0;
+    const pressureScore = Math.max(0, 100 - Math.round(pressureRatio * 100));
+    const firstSignal = autopilot.signals[0];
+    const firstRecord = firstSignal?.record;
+    const firstOwner = firstRecord?.owner || (firstRecord?.type === "Project" ? "Operations" : "Commercial");
+    const firstDate = firstRecord?.endDate ? formatDate(firstRecord.endDate) : firstSignal?.dueText || "Set date";
+    const calmScore = Math.round(
+      model.healthScore * 0.24 +
+        model.evidenceScore * 0.28 +
+        pressureScore * 0.24 +
+        (autopilot.nowCount ? 84 : 96) * 0.24
+    );
+    const cards = [
+      {
+        tone: "green",
+        label: "Begin",
+        title: "Command first",
+        note: "One peaceful starting point before rooms, reports, admin tools, or customer conversations.",
+      },
+      {
+        tone: "blue",
+        label: "Simplify",
+        title: "Only open what moves",
+        note: "Daily users see the main rooms first; specialist work stays tucked away until needed.",
+      },
+      {
+        tone: "green",
+        label: "Protect",
+        title: `${formatCompactMoney(autopilot.protectedValue)} guarded`,
+        note: "Commercial context stays in management rooms while frontline teams receive clean actions.",
+      },
+      {
+        tone: model.reminders.overdue ? "amber" : "green",
+        label: "Close",
+        title: `${firstOwner} / ${firstDate}`,
+        note: "Every review should finish with one owner, one date, one proof, and one next room.",
+      },
+    ];
+
+    return `
+      <section class="command-calm-rhythm" aria-label="Calm operating rhythm">
+        <div class="command-calm-head">
+          <div>
+            <span class="metric-label">Calm operating rhythm</span>
+            <h3>Make the workspace feel quiet even when the work is urgent.</h3>
+          </div>
+          <span>${calmScore}% quiet score</span>
+        </div>
+        <div class="command-calm-grid">
+          ${cards
+            .map(
+              (card) => `
+                <article class="command-calm-card tone-${escapeHtml(card.tone)}">
+                  <span>${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(card.title)}</strong>
+                  <small>${escapeHtml(card.note)}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandPeacePath(model, autopilot) {
+    const firstSignal = autopilot?.signals?.[0];
+    const record = firstSignal?.record || model.openRecords[0] || model.records[0] || {};
+    const route =
+      autopilot?.missionCode === "RESCUE"
+        ? "Reminders"
+        : autopilot?.missionCode === "DECIDE"
+          ? "Bid Desk"
+          : autopilot?.missionCode === "CLEAN"
+            ? "Weekly Review"
+            : "Reports";
+    const owner = record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const due = record.endDate ? formatDate(record.endDate) : firstSignal?.dueText || "Set one calm date";
+    const proof = record.sourceSheet || record.sourceWorkbook || record.category || "Attach one proof source";
+    const title = record.title || "Choose the first useful record";
+    const reference = record.reference || record.client || "Workspace record";
+    const allowedTones = new Set(["red", "amber", "blue", "green", "teal"]);
+    const moveTone = allowedTones.has(firstSignal?.tone) ? firstSignal.tone : model.reminders.overdue ? "red" : "green";
+    const cards = [
+      {
+        tone: "green",
+        label: "Start",
+        title: "Command first",
+        note: "Begin with one calm screen before opening more rooms.",
+      },
+      {
+        tone: moveTone,
+        label: "Move",
+        title,
+        note: `${reference} / ${simpleRoomLabel(route)}`,
+      },
+      {
+        tone: "blue",
+        label: "Own",
+        title: owner,
+        note: `Leave with ${due}.`,
+      },
+      {
+        tone: "amber",
+        label: "Prove",
+        title: proof,
+        note: "One trusted source keeps the handoff clean.",
+      },
+    ];
+
+    return `
+      <section class="peace-path-panel" aria-label="Peace path guidance">
+        <div class="peace-path-head">
+          <div>
+            <span class="metric-label">Peace path</span>
+            <h3>One peaceful route for the next useful move.</h3>
+          </div>
+          <span>Start / move / close</span>
+        </div>
+        <div class="peace-path-grid">
+          ${cards
+            .map(
+              (card) => `
+                <article class="peace-path-card tone-${escapeHtml(card.tone)}">
+                  <span>${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(compactText(card.title, 58))}</strong>
+                  <small>${escapeHtml(compactText(card.note, 94))}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="peace-path-actions">
+          <button class="secondary-btn" type="button" data-view="Autopilot">Open autopilot</button>
+          <button class="ghost-btn" type="button" data-view="${escapeHtml(route)}">Open ${escapeHtml(simpleRoomLabel(route))}</button>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandQuietFocusDeck(model, autopilot) {
+    const firstSignal = autopilot?.signals?.[0];
+    const record = firstSignal?.record || model.openRecords[0] || model.records[0] || {};
+    const title = record.title || "Open the first active record";
+    const owner = record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const due = record.endDate ? formatDate(record.endDate) : firstSignal?.dueText || "Set a control date";
+    const proof = record.sourceSheet || record.category || "Attach source proof";
+    const reference = record.reference || record.type || "Workspace record";
+    const focusSteps = [
+      {
+        tone: "red",
+        label: "Record",
+        title,
+        note: reference,
+      },
+      {
+        tone: "green",
+        label: "Owner",
+        title: owner,
+        note: "One accountable person before the meeting ends.",
+      },
+      {
+        tone: "blue",
+        label: "Date",
+        title: due,
+        note: "No open work leaves review without a next date.",
+      },
+      {
+        tone: "amber",
+        label: "Proof",
+        title: proof,
+        note: "One source keeps the action calm and auditable.",
+      },
+    ];
+
+    return `
+      <section class="quiet-focus-deck" aria-label="Quiet focus mode">
+        <div class="quiet-focus-lead">
+          <span class="metric-label">Quiet focus mode</span>
+          <h3>One calm path for the next ten minutes.</h3>
+          <p>Keep the screen peaceful: open one record, confirm one owner, set one date, and attach one proof.</p>
+        </div>
+        <div class="quiet-focus-steps">
+          ${focusSteps
+            .map(
+              (step) => `
+                <article class="quiet-focus-step tone-${escapeHtml(step.tone)}">
+                  <span>${escapeHtml(step.label)}</span>
+                  <strong>${escapeHtml(compactText(step.title, 58))}</strong>
+                  <small>${escapeHtml(compactText(step.note, 88))}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandSerenityGuide(model, autopilot) {
+    const firstSignal = autopilot?.signals?.[0];
+    const record = firstSignal?.record || model.openRecords[0] || model.records[0] || {};
+    const owner = record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const due = record.endDate ? formatDate(record.endDate) : firstSignal?.dueText || "Set one calm date";
+    const proof = record.sourceSheet || record.category || "Attach one proof source";
+    const title = record.title || "Choose the first useful record";
+    const reference = record.reference || "Pick one visible record, not the full backlog";
+    const serenityCards = [
+      {
+        tone: "green",
+        label: "Breathe",
+        title: "One screen first",
+        note: "Start with Command, then open only the room that reduces pressure.",
+      },
+      {
+        tone: "blue",
+        label: "Choose",
+        title,
+        note: reference,
+      },
+      {
+        tone: "green",
+        label: "Own",
+        title: owner,
+        note: `Close with ${due}.`,
+      },
+      {
+        tone: "amber",
+        label: "Prove",
+        title: proof,
+        note: "Evidence keeps the work peaceful and trusted.",
+      },
+    ];
+
+    return `
+      <section class="serenity-guide" aria-label="Serenity workspace mode">
+        <div class="serenity-guide-head">
+          <div>
+            <span class="metric-label">Serenity workspace</span>
+            <h3>Make the next move feel calm, clear, and complete.</h3>
+          </div>
+          <span>One screen / one record / one proof</span>
+        </div>
+        <div class="serenity-guide-grid">
+          ${serenityCards
+            .map(
+              (card) => `
+                <article class="serenity-guide-card tone-${escapeHtml(card.tone)}">
+                  <span>${escapeHtml(card.label)}</span>
+                  <strong>${escapeHtml(compactText(card.title, 58))}</strong>
+                  <small>${escapeHtml(compactText(card.note, 92))}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
       </section>
     `;
   }
@@ -6742,6 +7063,7 @@
               <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
               <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
               <button class="ghost-btn" type="button" data-view="Documents">Review evidence gaps</button>
+              <button class="ghost-btn quiet-focus-btn ${state.quietFocus ? "active" : ""}" type="button" data-action="toggle-quiet-focus">${state.quietFocus ? "Exit quiet mode" : "Quiet mode"}</button>
             </div>
           </div>
           <div class="score-ring command-score" style="--score: ${model.healthScore}">
@@ -6759,7 +7081,10 @@
           ${renderInsightKpi("Evidence health", `${model.evidenceScore}%`, `${model.documents.sourceCoverage}% source coverage after gap penalty`)}
         </div>
 
-        ${renderCommandSimplicityCompass(model, autopilot)}
+        ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : ""}
+        ${state.serenityMode && !state.quietFocus ? renderCommandSerenityGuide(model, autopilot) : ""}
+        ${state.quietFocus ? "" : renderCommandSimplicityCompass(model, autopilot)}
+        ${state.quietFocus ? "" : renderCommandPeacePath(model, autopilot)}
 
         <details class="command-playbook-fold">
           <summary>
@@ -25234,11 +25559,11 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v289 Simplicity Compass",
-      phase: "Simplicity compass",
+      version: "v294 Peace Path Guidance",
+      phase: "Peace path guidance",
       lane: "Static product prototype on GitHub Pages",
-      pace: "270 meaningful versions since rebrand",
-      summary: "Command Center now replaces three visible operating blocks with one Simplicity Compass: run, protect, move, scale, and copy the boardroom handoff.",
+      pace: "275 meaningful versions since rebrand",
+      summary: "Command Center now replaces two secondary strips with one peaceful route that tells the user where to start, what to move, and how to close with owner, date, and proof.",
       tracks: [
         ["Product concept", 100, "Name, brand, positioning, and module direction are established.", "green"],
         ["Static prototype", 100, "Trackers, insights, management rooms, membership, admin controls, schema room, backend plan, import lab, pilot cockpit, SaaS bridge, security model, billing blueprint, migration pack, feedback room, repo scaffold, test packs, backend tickets, hosting runbook, customer success desk, backend repo starter pack, launch control center, production alpha plan, private repo kickoff, issue export, API contract pack, seed fixture pack, private repo creation guide, staging smoke script, backend fixture export, first backend sprint checklist, staging deployment checklist, backend route skeleton map, database migration blueprint, auth tenant guard blueprint, backend test command pack, production backend repo file pack, API error/audit envelope pack, CI workflow file blueprint, private repo first commit builder, backend issue body exporter, branch protection release checklist, first backend file content export, private repo setup script draft, GitHub labels/milestones import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, admin-only Build Phase workspace, Closeout archive control, Closeout export packet, Lessons Learned Intelligence, Archive Permission Gate, Closeout Reopen Workflow, Closeout Approval Memory, Archive Retention Calendar, Pilot Sales Package, Pilot Pitch One-Pager, Customer Feedback Form Pack, Pilot ROI Calculator, Closeout SLA Clock, Pilot Proposal Export Pack, Customer Objection Playbook, Closeout Exception Approval Queue, Pilot Proposal Acceptance Tracker, Buyer Decision Room, Closeout Exception Evidence Bundle, Pilot Invoice Request Pack, Pilot Kickoff Control Pack, Closeout Evidence PDF Cover Sheet, Pilot Payment State Simulator, Pilot Adoption Health Monitor, Closeout PDF Render Workflow, Payment Provider Webhook Blueprint, Pilot Renewal Decision Pack, Closeout Archive Attachment Register, Webhook Test Evidence Pack, Pilot Expansion Quote Builder, Attachment Download Audit Evidence Pack, and Webhook Evidence Runner Checklist, Webhook Runner Operator Console, Download Permission Test Matrix, Webhook Failure Incident Playbook, Expansion Approval Memory, Download Approval Review Board, Webhook Incident Customer Notice Pack, Expansion Invoice Acceptance Pack, Pursuit Autopilot Brain, Pursuit Time Machine, Pursuit Win Lab, Pursuit Decision Twin, Decision Twin Approval Ledger, Win Lab Task Dispatch, Pursuit Twin Outcome Replay, Twin Decision Inbox, Dispatch Evidence Closeout, Replay Learning Memory, Header Navigation Guardrail, Decision SLA Autopilot, Proof-to-Response Library, Learning Rule Approvals, Famous Founder Demo Mode, Proof Library Search, Rule Impact Simulator, Customer Demo Replay Recorder, Proposal Proof Composer, Rule Change Audit Trail, Demo-to-Pilot Conversion Board, Proposal Redaction Approval Gate, Rule Reopen Review Queue, Pilot Close Probability Simulator, Buyer-Safe Proposal Export, Rule Reopen Outcome Replay, Pilot Close Outcome Memory, Proposal Send Audit Receipt, Rule Reopen Outcome Memory, Pilot Outcome Forecast Tuner, Proposal Send Follow-up Tracker, Decision Memory Influence Switchboard, Pilot Follow-up Reply Memory, Founder Close Command Script, Memory Influence Audit Diff, Pilot Reply Pattern Library, Founder Close Outcome Receipt, Memory Diff Release Notes, Pattern-to-Demo Coach, Receipt-to-Renewal Signal, Release Note Approval Board, Demo Coach Replay Score, Renewal Signal Replay Board, Buyer-Safe Changelog Publisher, Coach-to-Close Learning Publisher, Renewal-to-Invoice Trust Publisher, Customer Changelog Reaction Tracker, Founder Script Outcome Tracker, Invoice Outcome Memory, Sponsor Reply Outcome Memory, Invoice Reply Evidence Memory, Finance-to-Success Handoff Memory, Sponsor Reply Playbook Publisher, Invoice Evidence Playbook Publisher, Success Handoff Playbook Publisher, Sponsor Playbook Outcome Tracker, Invoice Playbook Outcome Tracker, Success Playbook Outcome Tracker, Playbook Outcome Control Board, Outcome-to-Renewal Control Bridge, Playbook Outcome Renewal Map, Outcome-to-Expansion Proposal Router, Renewal Evidence Approval Gate, Simple Buyer Review Pack, Simple Rooms Navigator, Navigation Preference Memory, Buyer Review Send Receipt, Buyer Receipt Reply Tracker, Navigation Preference Controls, Pilot First-Week Pulse, First-Week Proof Inbox, First-Week Review Pack, Review Pack Send Receipt, Kickoff Proof Handoff Emails, Kickoff Send Receipt, Kickoff Proof Outcome Receipt, Pilot Reply-to-Kickoff Bridge, Role Navigation Presets, Preset-to-Access Policy Handoff, Preset Policy Apply Receipt, Preset Grant Approval Queue, Grant Approval Follow-up Tasks, Grant Task Execution Receipt, Review Receipt Reply Outcome, Review Outcome Follow-up Tasks, Kickoff Outcome Follow-up Tasks, Pilot Handoff Sheet, and Pilot Kickoff Confirmation are live in demo form.", "teal"],
@@ -25301,6 +25626,11 @@
         ["v287 copy-ready brief", 100, "Command Center now turns the current mission into a copy-ready management brief with room, owner, date, proof, privacy, and next action for meeting handoff.", "teal"],
         ["v288 boardroom brief", 100, "Command Center now reframes the copy-ready note into a boardroom-ready story with say-first, protect, move, close, and buyer-safe handoff language.", "green"],
         ["v289 simplicity compass", 100, "Command Center now collapses Today Mission, Decision Line, and Boardroom Brief into one compact compass with run, protect, move, scale, and copy-ready handoff actions.", "teal"],
+        ["v290 global launch lens", 100, "Command Center now adds one compact global-readiness strip for country-neutral pricing, environment separation, role privacy, and future AI workflows without adding more navigation.", "green"],
+        ["v291 calm command rhythm", 100, "Command Center now adds one quiet operating rhythm for begin, simplify, protect, and close, making the first screen feel calmer without hiding urgent work.", "teal"],
+        ["v292 quiet focus mode", 100, "Command Center now has a calm toggle that softens the workspace, hides secondary detail, and shows one record, one owner, one date, and one proof path for peaceful review.", "green"],
+        ["v294 peace path guidance", 100, "Command Center now replaces two secondary strips with one peaceful route that shows where to start, what to move, and how to close with owner, date, and proof.", "green"],
+        ["v293 serenity workspace mode", 100, "A small Serenity switch now softens the whole workspace and adds a calm Command guide for one screen, one record, one owner, one date, and one proof without adding navigation.", "teal"],
         ["Production backend", 100, "Repo structure, folders, setup commands, migrations, API groups, environment matrix, sprint backlog, security tests, billing tests, migration tests, feedback persistence, backend MVP tickets, hosting runbook, success desk, issue groups, launch gates, alpha milestones, branch workflow, seed package, CI gates, labels, milestones, issue bodies, endpoint contracts, route tests, migration fixtures, GitHub creation steps, staging smoke paths, fixture export contract, sprint-zero checklist, staging deployment checklist, backend route skeleton, database migration blueprint, auth guards, tenant guards, access middleware, test commands, CI jobs, artifacts, first commit files, workflow files, env examples, copy order, file ownership, safe error middleware, audit writer, denial helpers, route-envelope tests, GitHub Actions workflow files, branch protection, release-gate artifacts, repo shell files, API starter files, package starter files, first-commit examples, copy-ready backend issue bodies, required status checks, protected environments, release owner matrix, release ritual, rollback playbook, paste-ready starter file contents, private repo setup script commands, GitHub taxonomy import, first backend commit QA checklist, opening-day runbook, repo decision memo, backend alpha risk register, opening-day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker pack, buyer decision room pack, closeout exception evidence bundle pack, pilot invoice request pack, pilot payment state simulator pack, pilot kickoff control pack, pilot adoption health monitor pack, closeout PDF render workflow pack, payment provider webhook blueprint pack, pilot renewal decision pack, closeout archive attachment register pack, webhook test evidence pack, pilot expansion quote builder, and attachment download audit evidence pack, and webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, rule impact simulator, customer demo replay recorder, proposal proof composer, rule change audit trail, demo-to-pilot conversion board, proposal redaction approval gate, rule reopen review queue, pilot close probability simulator, buyer-safe proposal export, rule reopen outcome replay, pilot close outcome memory, proposal send audit receipt, rule reopen outcome memory, pilot outcome forecast tuner, proposal send follow-up tracker, decision memory influence switchboard, pilot follow-up reply memory, founder close command script, memory influence audit diff, pilot reply pattern library, founder close outcome receipt, memory diff release notes, pattern-to-demo coach, receipt-to-renewal signal, release note approval board, demo coach replay score, renewal signal replay board, buyer-safe changelog publisher, coach-to-close learning publisher, and renewal-to-invoice trust publisher are mapped, but the real private repo and real staging environment are not created yet.", "red"],
         ["Billing model", 100, "USD Starter, Team, Business, extra operator seats, manager/commercial seats, setup service pricing, checkout flow, invoice lifecycle, payment state simulator, adoption health monitor, provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, webhook failure incident playbook, expansion approval memory, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, renewal decision pack, idempotency, signature verification, tenant mapping, retry rules, plan changes, access locks, audit events, pilot pitch packaging, customer feedback buying signals, ROI payback story, proposal export handoff, objection playbook proof paths, proposal acceptance tracking, buyer decision closeout, invoice request handoff, kickoff activation handoff, billing tests, backend billing tickets, hosting handoff, renewal/expansion thinking, repo package boundary, launch billing review, alpha test-mode limits, billing/feedback issue templates, billing API contract, billing seed cases, billing secrets, billing smoke checks, billing fixture expectations, sprint-zero billing shell, staging test-mode billing secrets, billing route skeleton, billing membership migration file, billing CI command proof, and billing package file targets are now mapped.", "green"],
         ["Pilot readiness", 100, "Pilot checklist now connects feedback capture, feedback persistence, backend repository, MVP tickets, migrations, migration files, seed order, restore gates, security tests, auth guards, tenant isolation, section access, denied audit proof, billing tests, access, security, billing, hosting, monitoring, backup, deployment, onboarding, adoption, customer success, repo handoff, launch control gates, alpha exit gates, repo kickoff gates, GitHub issue acceptance tests, API contract tests, seed fixture checks, private repo setup gates, staging smoke proof, fixture export proof, sprint-zero acceptance gates, staging go/no-go gates, backend route tests, CI artifacts, release command proof, production repo file pack, safe error/audit envelope proof, required workflow checks, branch-protection gates, protected environments, release ritual, rollback playbook, first backend file content export, private repo setup script draft, GitHub taxonomy import pack, first backend commit QA checklist, private repo opening-day runbook, production backend repo decision memo, backend alpha risk register, backend opening day evidence pack, private repo execution checklist, backend alpha control board, private repo day-one script, backend repo proof exporter, GitHub repo opening packet, backend alpha issue import kit, first PR body builder, repo evidence folder writer, private repo command runner pack, backend PR review gate matrix, evidence artifact status board, private repo handoff email pack, first backend PR review comment pack, private repo evidence closeout pack, backend repo day meeting pack, private repo reply capture board, evidence closeout PDF export plan, backend meeting minutes exporter, reviewer decision email pack, pilot proposal acceptance tracker, buyer decision room, pilot invoice request pack, pilot payment state simulator, pilot kickoff control pack, pilot adoption health monitor, closeout PDF render workflow, payment provider webhook blueprint, webhook test evidence pack, webhook evidence runner checklist, webhook runner operator console, download permission test matrix, download approval review board, webhook incident customer notice pack, expansion invoice acceptance pack, pilot expansion quote builder, attachment download audit evidence pack, pilot renewal decision pack, closeout archive attachment register, pursuit autopilot brain, pursuit time machine, pursuit win lab, pursuit decision twin, decision twin approval ledger, win lab task dispatch, pursuit twin outcome replay, twin decision inbox, dispatch evidence closeout, replay learning memory, header navigation guardrails, decision SLA autopilot, proof-to-response library, learning rule approvals, founder demo mode, proof library search, and rule impact simulator.", "green"],
@@ -25671,10 +26001,10 @@
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now reduces three visible decision surfaces into one Simplicity Compass for run, protect, move, scale, and copy handoff.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now uses one Peace Path to guide start, move, and close while removing two secondary first-screen strips.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Simplicity Compass, copy brief, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Serenity pill, Peace Path, Quiet mode, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -75006,6 +75336,8 @@
   }
 
   function render() {
+    document.body.classList.toggle("serenity-mode", Boolean(state.user && state.serenityMode));
+    document.body.classList.toggle("quiet-focus-mode", Boolean(state.user && state.quietFocus && state.view === "Command"));
     if (!state.user) {
       renderLogin();
     } else {
@@ -75250,6 +75582,20 @@
 
     if (action === "open-build-phase") {
       openView("Build Phase");
+      return;
+    }
+
+    if (action === "toggle-quiet-focus") {
+      state.quietFocus = !state.quietFocus;
+      showTransientNotice(state.quietFocus ? "Quiet focus mode on." : "Quiet focus mode off.");
+      render();
+      return;
+    }
+
+    if (action === "toggle-serenity-mode") {
+      state.serenityMode = !state.serenityMode;
+      showTransientNotice(state.serenityMode ? "Serenity mode on." : "Serenity mode off.");
+      render();
       return;
     }
 
