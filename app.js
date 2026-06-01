@@ -1,13 +1,15 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v302";
-  const BUILD_LABEL = "One Move Dock";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=302";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=302";
+const BUILD_VERSION = "v313";
+const BUILD_LABEL = "Quiet Focus Memory";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
   const STORE_KEY = "pursuitDesk:data:v1";
-  const SESSION_KEY = "pursuitDesk:session:v1";
-  const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
+const SESSION_KEY = "pursuitDesk:session:v1";
+const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
+const UI_PREFS_KEY = "pursuitDesk:uiPrefs:v1";
+const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
   const ROOM_MEMORY_LIMIT = 6;
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
   const STATUS_OPTIONS = [
@@ -602,6 +604,8 @@
 
   const app = document.getElementById("app");
   const initialUser = loadSession();
+  const initialUiPrefs = loadUiPrefs();
+  const initialCommandMemory = loadCommandMemory();
   const state = {
     data: loadData(),
     user: initialUser,
@@ -627,8 +631,9 @@
     tableDensity: "Comfortable",
     trackerMode: "Sheet",
     detailCollapsed: false,
-    quietFocus: false,
-    serenityMode: false,
+    quietFocus: Boolean(initialUiPrefs.quietFocus),
+    serenityMode: Boolean(initialUiPrefs.serenityMode),
+    commandMemory: initialCommandMemory,
     importText: "",
     importPreview: null,
     importMessage: "",
@@ -794,6 +799,56 @@
       return;
     }
     localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+  }
+
+  function loadUiPrefs() {
+    try {
+      const saved = localStorage.getItem(UI_PREFS_KEY);
+      if (!saved) return {};
+      const parsed = JSON.parse(saved);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (error) {
+      try {
+        localStorage.removeItem(UI_PREFS_KEY);
+      } catch (cleanupError) {}
+      return {};
+    }
+  }
+
+  function persistUiPrefs(nextPrefs = {}) {
+    try {
+      localStorage.setItem(UI_PREFS_KEY, JSON.stringify(nextPrefs));
+    } catch (error) {}
+  }
+
+  function loadCommandMemory() {
+    try {
+      const saved = localStorage.getItem(COMMAND_MEMORY_KEY);
+      if (!saved) return {};
+      const parsed = JSON.parse(saved);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (error) {
+      try {
+        localStorage.removeItem(COMMAND_MEMORY_KEY);
+      } catch (cleanupError) {}
+      return {};
+    }
+  }
+
+  function persistCommandMemory(nextMemory = {}) {
+    try {
+      localStorage.setItem(COMMAND_MEMORY_KEY, JSON.stringify(nextMemory));
+    } catch (error) {}
+  }
+
+  function isSameLocalDay(isoValue) {
+    if (!isoValue) return false;
+    const parsed = new Date(isoValue);
+    if (Number.isNaN(parsed.getTime())) return false;
+    const today = new Date();
+    return parsed.getFullYear() === today.getFullYear()
+      && parsed.getMonth() === today.getMonth()
+      && parsed.getDate() === today.getDate();
   }
 
   function readRoomMemoryStore() {
@@ -3085,6 +3140,7 @@
                 ? `<button class="status-pill build-version-pill build-version-btn" type="button" data-action="open-build-phase" title="Open ${escapeHtml(BUILD_VERSION)} build tracker">Build ${escapeHtml(BUILD_VERSION)}</button>`
                 : `<span class="status-pill build-version-pill" title="${escapeHtml(BUILD_LABEL)}">Build ${escapeHtml(BUILD_VERSION)}</span>`
             }
+            ${state.quietFocus ? `<span class="status-pill focus-mode-pill" title="Quiet Focus will stay on until you switch it off">Focus on</span>` : ""}
             <button class="status-pill serenity-mode-pill ${state.serenityMode ? "active" : ""}" type="button" data-action="toggle-serenity-mode" title="${state.serenityMode ? "Serenity mode is softening the workspace" : "Soften the workspace for calm review"}">${state.serenityMode ? "Serenity on" : "Serenity"}</button>
             <span class="status-pill is-live">Live demo</span>
           </div>
@@ -6397,17 +6453,30 @@
           : "green";
     const owner = firstRecord?.owner || (firstRecord?.type === "Project" ? "Operations" : "Commercial");
     const date = firstRecord?.endDate ? formatDate(firstRecord.endDate) : firstSignal?.dueText || "Set date";
-    const proof = firstRecord?.sourceSheet || firstRecord?.sourceWorkbook || firstRecord?.agreementNo || "Add proof path";
-    const firstMove = firstRecord?.title || "No urgent record";
-    const valueShield = formatCompactMoney(autopilot.protectedValue);
-    const clientLine = firstRecord?.client ? `Client: ${firstRecord.client}.` : "Client: confirm the account before wider circulation.";
+  const proof = firstRecord?.sourceSheet || firstRecord?.sourceWorkbook || firstRecord?.agreementNo || "Add proof path";
+  const firstMove = firstRecord?.title || "No urgent record";
+  const valueShield = formatCompactMoney(autopilot.protectedValue);
+  const roomLabel = simpleRoomLabel(nextRoom);
+  const clientLine = firstRecord?.client ? `Client: ${firstRecord.client}.` : "Client: confirm the account before wider circulation.";
+  const receiptSeed = String(firstRecord?.reference || firstRecord?.agreementNo || firstRecord?.title || nextRoom || "MOVE")
+    .replace(/[^a-z0-9]/gi, "")
+    .slice(-6)
+    .toUpperCase();
+  const receiptId = `${BUILD_VERSION.toUpperCase()}-${receiptSeed || "MOVE"}`;
+  const receiptLine = `${receiptId}: ${roomLabel} / ${owner} / ${date} / ${proof}`;
+  const safeLine = "Share-safe: no value detail, one room, one owner, one date, and one proof.";
+  const calmLine = `${receiptId}. ${autopilot.missionTitle}. Open ${roomLabel}. Owner ${owner}. Date ${date}. Proof ${proof}. Keep ${valueShield} guarded.`;
+  const pathLine = `Breathe: open ${roomLabel}. Own: ${owner}. Close: ${date} / ${proof}.`;
     const copyText = [
       `${BRAND_NAME} boardroom brief - ${BUILD_VERSION}`,
+      `Receipt: ${receiptLine}`,
+      "Morning flow: breathe, open one room, confirm one owner, close with one date and one proof; commercial context stays guarded.",
+      `Calm route: ${pathLine}`,
       `Say first: ${autopilot.missionTitle}. Recover the work that can change the next meeting outcome.`,
       `Why now: ${autopilot.nowCount} do-now moves, ${model.reminders.overdue} overdue follow-ups, and ${model.evidenceGaps.length} evidence gaps need one management handoff.`,
       `First move: ${firstMove}.`,
       clientLine,
-      `Open: ${simpleRoomLabel(nextRoom)}. Owner: ${owner}. Date: ${date}. Proof: ${proof}.`,
+      `Open: ${roomLabel}. Owner: ${owner}. Date: ${date}. Proof: ${proof}.`,
       `Privacy line: ${valueShield} stays in management rooms; frontline users receive action, status, date, and proof only.`,
       `Close: one owner, one date, one evidence note, and one next room before routine tracker updates.`,
     ].join("\n");
@@ -6418,17 +6487,221 @@
       record: firstRecord,
       owner,
       date,
-      proof,
-      copyText,
+    proof,
+    pathLine,
+    calmLine,
+    receiptId,
+    receiptLine,
+    safeLine,
+    copyText,
       title: "Say first, protect value, move owner, close clean",
       note: `${autopilot.nowCount} do-now moves, ${model.reminders.overdue} overdue follow-ups, and ${model.evidenceGaps.length} evidence gaps are converted into one boardroom-ready handoff.`,
       chips: [
         ["Say first", autopilot.missionTitle, firstSignal?.action || "Start with the strongest pressure."],
         ["Protect", `${valueShield} guarded`, "Keep commercial context in management rooms."],
-        ["Move", `${simpleRoomLabel(nextRoom)} / ${owner}`, firstRecord?.owner ? "Accountability is already visible." : "Confirm before broad updates."],
+        ["Move", `${roomLabel} / ${owner}`, firstRecord?.owner ? "Accountability is already visible." : "Confirm before broad updates."],
         ["Close", date, proof === "Add proof path" ? "Attach evidence before closeout." : `Proof: ${proof}`],
       ],
     };
+  }
+
+  function renderCommandMorningFlowStrip(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || model.openRecords[0] || model.records[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const date = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set date");
+    const proof = slip.proof && slip.proof !== "Add proof path" ? slip.proof : record.sourceSheet || record.sourceWorkbook || "Add one proof";
+    const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const recordTitle = record.title || firstSignal.action || autopilot?.missionTitle || "One visible move";
+    const dateText = String(date || "Set date");
+    const proofText = String(proof || "Add one proof");
+    const closeNeedsWork =
+      dateText.toLowerCase().includes("set") ||
+      dateText.toLowerCase().includes("no date") ||
+      proofText.toLowerCase().includes("add one proof") ||
+      proofText.toLowerCase().includes("add proof");
+    const copyLine = `Morning flow: breathe, open ${routeLabel}, confirm ${owner}, date ${dateText}, proof ${proofText}. Keep ${protectedValue} guarded.`;
+    const cards = [
+      ["01", "Breathe", compactText(recordTitle, 48), "Start with the work that changes the next meeting.", slip.tone],
+      ["02", "Open", routeLabel, "Open one room, then stop wandering.", "green"],
+      ["03", "Own", owner, record.owner ? "Accountability is visible." : "Confirm one accountable person.", record.owner ? "green" : "amber"],
+      ["04", "Close", `${compactText(dateText, 22)} / ${compactText(proofText, 28)}`, `${protectedValue} stays guarded.`, closeNeedsWork ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="morning-flow-strip tone-${escapeHtml(slip.tone)}" aria-label="Morning Flow">
+        <article class="morning-flow-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Morning Flow</span>
+          <h3>Breathe. Move. Close.</h3>
+          <p>One calm route before any room opens: one move, one room, one owner, one date, and one proof.</p>
+          <div class="morning-flow-actions">
+            <button class="secondary-btn" type="button" data-view="${escapeHtml(route)}">Open ${escapeHtml(routeLabel)}</button>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodeURIComponent(copyLine))}">Copy flow</button>
+          </div>
+        </article>
+        <div class="morning-flow-steps">
+          ${cards
+            .map(
+              ([step, label, value, note, tone]) => `
+                <article class="morning-flow-step tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(step)} / ${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandCalmCloseBar(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || model.openRecords[0] || model.records[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const date = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set date");
+    const proof = slip.proof && slip.proof !== "Add proof path" ? slip.proof : record.sourceSheet || record.sourceWorkbook || "Add proof";
+    const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const recordTitle = record.title || firstSignal.action || autopilot?.missionTitle || "One next move";
+    const closeLine = `${autopilot?.missionTitle || "Move one item"}. Open ${routeLabel}. Owner ${owner}. Date ${date}. Proof ${proof}. Keep ${protectedValue} guarded.`;
+    const chips = [
+      ["Room", routeLabel, "green"],
+      ["Owner", owner, record.owner ? "green" : "amber"],
+      ["Date", date, String(date).toLowerCase().includes("set") || String(date).toLowerCase().includes("no date") ? "amber" : "blue"],
+      ["Proof", proof, String(proof).toLowerCase().includes("add") ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="calm-close-bar tone-${escapeHtml(slip.tone)}" aria-label="Calm close line">
+        <article class="calm-close-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Calm Close</span>
+          <h3>${escapeHtml(compactText(recordTitle, 72))}</h3>
+          <p>${escapeHtml(compactText(closeLine, 170))}</p>
+          <div class="calm-close-actions">
+            <button class="secondary-btn" type="button" data-view="${escapeHtml(route)}">Open ${escapeHtml(routeLabel)}</button>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodeURIComponent(closeLine))}">Copy close line</button>
+          </div>
+        </article>
+        <div class="calm-close-grid">
+          ${chips
+            .map(
+              ([label, value, tone]) => `
+                <article class="calm-close-chip tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(value, 36))}</strong>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandZenStart(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || model.openRecords[0] || model.records[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const ownerSource = slip.owner || record.owner || "";
+    const owner = ownerSource || (record.type === "Project" ? "Operations" : "Commercial");
+    const dateSource = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "");
+    const date = dateSource || "Set date";
+    const proofSource = slip.proof && slip.proof !== "Add proof path" ? slip.proof : record.sourceSheet || record.sourceWorkbook || "";
+    const proof = proofSource || "Add proof";
+    const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const recordTitle = record.title || firstSignal.action || autopilot?.missionTitle || "One next move";
+    const dateNeedsWork = String(date).toLowerCase().includes("set") || String(date).toLowerCase().includes("no date");
+    const proofNeedsWork = String(proof).toLowerCase().includes("add");
+    const ownerReady = Boolean(ownerSource);
+    const pathStepsReady = [routeLabel, ownerReady, !dateNeedsWork, !proofNeedsWork].filter(Boolean).length;
+    const copiedToday = isSameLocalDay(state.commandMemory?.copiedAt);
+    const headline = copiedToday ? "One calm line is already in hand." : pathStepsReady === 4 ? "One calm path is ready." : "One calm path before action.";
+    const closeLine = `${autopilot?.missionTitle || "Move one item"}. ${pathStepsReady}/4 ready: open ${routeLabel}, owner ${owner}, date ${date}, proof ${proof}. Keep ${protectedValue} guarded.`;
+    const memoryNote = copiedToday ? "Copied today. Use it in the next review." : "Copy once, then move.";
+    const cards = [
+      ["One room", routeLabel, "Open only the room that moves today.", "green"],
+      ["One owner", owner, ownerReady ? "Accountability is visible." : "Confirm one accountable owner.", ownerReady ? "green" : "amber"],
+      ["One date", compactText(date, 30), dateNeedsWork ? "Set one control date before handoff." : "Control date is visible.", dateNeedsWork ? "amber" : "blue"],
+      ["One proof", compactText(proof, 30), proofNeedsWork ? "Attach one trusted source." : "Evidence path is ready.", proofNeedsWork ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="zen-start-panel tone-${escapeHtml(slip.tone)}" aria-label="Zen start">
+        <article class="zen-start-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Calm Line</span>
+          <h3>${escapeHtml(headline)}</h3>
+          <p>${escapeHtml(compactText(copiedToday ? closeLine : `${recordTitle}. ${closeLine}`, 190))}</p>
+          <div class="zen-start-actions">
+            <button class="secondary-btn" type="button" data-view="${escapeHtml(route)}">Open ${escapeHtml(routeLabel)}</button>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodeURIComponent(closeLine))}">Copy calm line</button>
+            <small class="zen-start-memory">${escapeHtml(memoryNote)}</small>
+          </div>
+        </article>
+        <div class="zen-start-grid">
+          ${cards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="zen-start-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandFocusPromise(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || model.openRecords[0] || model.records[0] || {};
+    const routeLabel = simpleRoomLabel(slip.nextRoom || "Reminders");
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const date = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set date");
+    const proof = slip.proof && slip.proof !== "Add proof path" ? slip.proof : record.sourceSheet || record.sourceWorkbook || "Add one proof";
+    const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const recordTitle = record.title || firstSignal.action || "One visible move";
+    const cards = [
+      ["Visible move", compactText(recordTitle, 52), "Reference, client, owner, status, date, and proof stay operational.", "green"],
+      ["Next room", routeLabel, "Open only the room that moves today.", "green"],
+      ["Private by design", `${protectedValue} guarded`, "Commercial context stays in management rooms and reports.", "blue"],
+      ["Close condition", `${compactText(date, 22)} / ${compactText(proof, 24)}`, "One date and one proof before deeper review.", proof === "Add one proof" ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="focus-promise-strip tone-${escapeHtml(slip.tone)}" aria-label="Focus promise">
+        <article class="focus-promise-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} focus promise</span>
+          <h3>One visible move. Everything else stays folded.</h3>
+          <p>Tracker users get action, owner, date, and proof. Management rooms keep commercial context, decisions, and deeper evidence.</p>
+        </article>
+        <div class="focus-promise-grid">
+          ${cards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="focus-promise-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
   }
 
   function renderCommandBriefSlip(model, autopilot) {
@@ -6630,7 +6903,7 @@
     const recordLine = [record.reference, record.client].filter(Boolean).join(" / ") || "Workspace signal";
     const dueText = String(due || "");
     const proofText = String(proof || "");
-    const copyLine = `${autopilot.missionTitle}. Open ${routeLabel}. Owner ${owner}. Date ${due}. Proof ${proof}. Keep ${protectedValue} guarded.`;
+    const copyLine = slip.calmLine || `${autopilot.missionTitle}. Open ${routeLabel}. Owner ${owner}. Date ${due}. Proof ${proof}. Keep ${protectedValue} guarded.`;
     const chips = [
       ["Room", routeLabel, "Open only the room that moves today.", "green"],
       ["Owner", owner, record.owner ? "Already accountable." : "Confirm before broad updates.", record.owner ? "green" : "amber"],
@@ -6647,6 +6920,19 @@
         proofText === "Bring one evidence source" ? "amber" : "green",
       ],
     ];
+    const needsDate = dueText.toLowerCase().includes("set") || dueText.toLowerCase().includes("no date");
+    const needsProof = proofText === "Bring one evidence source" || proofText.toLowerCase().includes("add proof");
+    const calmSteps = [
+      ["01", "Breathe", "Open one room", routeLabel, "green"],
+      ["02", "Own", "Keep one owner", owner, record.owner ? "green" : "amber"],
+      [
+        "03",
+        "Close",
+        "Date and proof",
+        `${compactText(dueText, 22)} / ${compactText(proofText, 24)}`,
+        needsDate || needsProof ? "amber" : "blue",
+      ],
+    ];
 
     return `
       <section class="one-move-dock tone-${escapeHtml(slip.tone)}" aria-label="One move dock">
@@ -6660,6 +6946,23 @@
           <div class="one-move-actions">
             <button class="secondary-btn" type="button" data-view="${escapeHtml(route)}">Open ${escapeHtml(routeLabel)}</button>
             <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodeURIComponent(copyLine))}">Copy calm line</button>
+          </div>
+          <div class="one-move-receipt" aria-label="One calm receipt">
+            <span>${escapeHtml(slip.receiptId)}</span>
+            <small>${escapeHtml(compactText(slip.receiptLine, 112))}</small>
+          </div>
+          <div class="three-step-path" aria-label="Three step calm path">
+            ${calmSteps
+              .map(
+                ([number, label, title, detail, tone]) => `
+                  <article class="three-step-path-step tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(number)} / ${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(title)}</strong>
+                    <small>${escapeHtml(compactText(detail, 42))}</small>
+                  </article>
+                `
+              )
+              .join("")}
           </div>
         </article>
         <div class="one-move-grid">
@@ -6964,9 +7267,9 @@
     return `
       <section class="quiet-focus-deck" aria-label="Quiet focus mode">
         <div class="quiet-focus-lead">
-          <span class="metric-label">Quiet focus mode</span>
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Quiet Focus Memory</span>
           <h3>One calm path for the next ten minutes.</h3>
-          <p>Keep the screen peaceful: open one record, confirm one owner, set one date, and attach one proof.</p>
+          <p>Keep the screen peaceful: open one record, confirm one owner, set one date, and attach one proof. This focus stays remembered until you switch it off.</p>
         </div>
         <div class="quiet-focus-steps">
           ${focusSteps
@@ -6993,12 +7296,19 @@
     const due = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set date");
     const proof = slip.proof && slip.proof !== "Add proof path" ? slip.proof : record.sourceSheet || record.sourceWorkbook || "Proof path";
     const protectedValue = formatCompactMoney(autopilot?.protectedValue || 0);
-    const nextRoom = simpleRoomLabel(slip.nextRoom || "Reminders");
+    const nextRoomView = slip.nextRoom || "Reminders";
+    const nextRoom = simpleRoomLabel(nextRoomView);
+    const calmLine = slip.calmLine || `${autopilot.missionTitle}. Open ${nextRoom}. Owner ${owner}. Date ${due}. Proof ${proof}. Keep ${protectedValue} guarded.`;
     const stillnessItems = [
       ["One screen", nextRoom, "Open only the room that moves today.", "green"],
       ["One owner", owner, "Accountability stays visible.", "green"],
       ["One date", compactText(due, 36), "No meeting leaves dateless.", String(due).toLowerCase().includes("set") ? "amber" : "blue"],
       ["One proof", compactText(proof, 36), `${protectedValue} stays guarded.`, proof === "Proof path" ? "amber" : "green"],
+    ];
+    const stillnessPath = [
+      ["Breathe", `Open ${nextRoom}`],
+      ["Own", owner],
+      ["Close", `${compactText(due, 24)} / ${compactText(proof, 24)}`],
     ];
 
     return `
@@ -7007,6 +7317,27 @@
           <span class="metric-label">${escapeHtml(BUILD_VERSION)} Stillness</span>
           <strong>One calm line before action.</strong>
           <small>Serenity mode stays quiet: route, owner, date, proof, then move.</small>
+          <p class="stillness-line">${escapeHtml(compactText(calmLine, 176))}</p>
+          <div class="stillness-actions">
+            <button class="secondary-btn" type="button" data-view="${escapeHtml(nextRoomView)}">Open ${escapeHtml(nextRoom)}</button>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodeURIComponent(calmLine))}">Copy calm line</button>
+          </div>
+          <div class="stillness-receipt">
+            <span>${escapeHtml(slip.receiptId)}</span>
+            <small>${escapeHtml(slip.safeLine)}</small>
+          </div>
+          <div class="stillness-path" aria-label="Three step calm path">
+            ${stillnessPath
+              .map(
+                ([label, detail]) => `
+                  <span>
+                    <strong>${escapeHtml(label)}</strong>
+                    <small>${escapeHtml(compactText(detail, 42))}</small>
+                  </span>
+                `,
+              )
+              .join("")}
+          </div>
         </div>
         <div class="stillness-bar-grid">
           ${stillnessItems
@@ -7281,9 +7612,7 @@
           ${renderInsightKpi("Evidence health", `${model.evidenceScore}%`, `${model.documents.sourceCoverage}% source coverage after gap penalty`)}
         </div>
 
-        ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : ""}
-        ${state.serenityMode && !state.quietFocus ? renderCommandStillnessBar(model, autopilot) : ""}
-        ${state.quietFocus ? "" : renderCommandOneMoveDock(model, autopilot)}
+        ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : state.serenityMode ? renderCommandStillnessBar(model, autopilot) : renderCommandZenStart(model, autopilot)}
         ${
           state.quietFocus
             ? ""
@@ -25778,12 +26107,23 @@
 
   function buildProductBuildTracker() {
     return {
-      version: "v302 One Move Dock",
-      phase: "One Move Dock",
+      version: "v313 Quiet Focus Memory",
+      phase: "Quiet Focus Memory",
       lane: "Static product prototype on GitHub Pages",
-      pace: "283 meaningful versions since rebrand",
-      summary: "Command Center now opens with one calm dock for mission, room, owner, date, and proof while the complete Peace Path stays folded for deeper review.",
+      pace: "294 meaningful versions since rebrand",
+      summary: "Quiet Focus now stays remembered across sessions and appears only as a tiny Focus on signal, keeping Command Center peaceful without adding another panel.",
       tracks: [
+        ["v313 quiet focus memory", 100, "Quiet Focus now persists in browser preferences and shows a small Focus on badge only while active, keeping Command Center calm without adding another page or panel.", "green"],
+        ["v312 calm line memory", 100, "Copy calm line now records today's operating handoff in browser memory, letting Command Center show whether the calm line is already copied while keeping the daily first screen light.", "green"],
+        ["v311 one calm path", 100, "Command Center now scores the route, owner, date, and proof path in one calm operating strip, while Serenity preference is remembered across sessions so the workspace stays quiet when the user chooses it.", "green"],
+        ["v310 zen start", 100, "Command Center now replaces the normal two-strip guidance stack with one calm Zen Start handoff, preserving route, owner, date, proof, privacy, and copy-ready flow in a single surface.", "green"],
+        ["v309 calm close bar", 100, "Command Center now uses one compact close line after Morning Flow instead of a second large next-move surface, reducing first-screen height while keeping route, owner, date, proof, and privacy intact.", "green"],
+        ["v308 morning flow", 100, "Command Center now uses a compact Morning Flow strip so the first screen shows breathe, open, own, and close without adding another visible operating layer.", "green"],
+        ["v307 focus promise", 100, "Command Center now has one compact Focus Promise strip showing visible move, next room, owner/date/proof, and the privacy boundary before deeper handoff details.", "green"],
+        ["v306 three step calm path", 100, "The One Move Dock and Serenity Stillness Bar now show a tiny Breathe, Own, Close path so users know the next action without reading the full handoff.", "green"],
+        ["v305 one calm receipt", 100, "The One Move Dock and Serenity Stillness Bar now show a share-safe receipt ID, receipt path, and privacy line for quiet accountability without another large panel.", "green"],
+        ["v304 serenity handoff receipt", 100, "Serenity mode now shows the calm handoff line with Open room and Copy calm line actions, keeping quiet review practical without adding another panel.", "green"],
+        ["v303 serenity single dock", 100, "Serenity mode now replaces the One Move Dock with one quiet Stillness Bar instead of stacking both, keeping the first screen calmer while normal mode keeps daily mission guidance.", "green"],
         ["v302 one move dock", 100, "Command Center now replaces the visible full Peace Path block with one light One Move Dock, keeping the first screen calmer while the complete route stays folded for review.", "green"],
         ["v301 stillness bar", 100, "Serenity mode now uses one slim Stillness Bar for route, owner, date, and proof, keeping the first screen calmer while preserving the daily operating handoff.", "green"],
         ["v300 peace path", 100, "Command Center now consolidates Serenity Launch and Serenity Brief into one compact Peace Path capsule: start, open, confirm, prove, and protect, reducing first-screen noise while keeping the deeper handoff folded.", "green"],
@@ -26228,10 +26568,10 @@
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now uses one light One Move Dock for mission, room, owner, date, and proof while the full Peace Path stays folded.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Quiet Focus now stays remembered across refreshes and shows a small Focus on badge only when active, keeping the first screen calm without another control surface.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, One Move Dock, folded Peace Path, Stillness Bar, Quiet mode, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus on badge, Quiet Focus memory, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -75814,6 +76154,7 @@
 
     if (action === "toggle-quiet-focus") {
       state.quietFocus = !state.quietFocus;
+      persistUiPrefs({ ...loadUiPrefs(), quietFocus: state.quietFocus });
       showTransientNotice(state.quietFocus ? "Quiet focus mode on." : "Quiet focus mode off.");
       render();
       return;
@@ -75821,6 +76162,7 @@
 
     if (action === "toggle-serenity-mode") {
       state.serenityMode = !state.serenityMode;
+      persistUiPrefs({ ...loadUiPrefs(), serenityMode: state.serenityMode });
       showTransientNotice(state.serenityMode ? "Serenity mode on." : "Serenity mode off.");
       render();
       return;
@@ -75834,7 +76176,16 @@
       } catch (error) {
         text = encoded;
       }
-      copyTextToClipboard(text, "Meeting brief copied.");
+      if (text) {
+        state.commandMemory = {
+          text,
+          copiedAt: new Date().toISOString(),
+          build: BUILD_VERSION,
+          view: state.view || "Command",
+        };
+        persistCommandMemory(state.commandMemory);
+      }
+      copyTextToClipboard(text, "Calm line copied and remembered.");
       return;
     }
 

@@ -19,6 +19,17 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v313 Quiet Focus Memory keeps Quiet Focus on across refreshes and shows only a small Focus on badge when active, so the first screen can stay peaceful without more visible controls.
+- v312 Calm Line Memory remembers when the daily calm line is copied, so Command Center shows the handoff is already in hand without adding another page or panel.
+- v311 One Calm Path turns Command Center into a single route-owner-date-proof readiness strip and remembers Serenity mode so the daily workspace stays calm across sessions.
+- v310 Zen Start merges Morning Flow and Calm Close into one first-screen handoff so Command Center starts with a single route-owner-date-proof decision surface instead of stacked guidance.
+- v309 Calm Close Bar replaces the normal Command Center One Move Dock with one compact close line so the first screen keeps room, owner, date, proof, and privacy without another large operating surface.
+- v308 Morning Flow replaces the visible Focus Promise strip with one compact breathe/open/own/close route, keeping Command Center calmer while preserving owner, date, proof, and privacy guardrails.
+- v307 Focus Promise adds a compact first-screen promise for one visible move, guarded commercial context, next room, date, and proof before the team opens deeper rooms.
+- v306 Three Step Calm Path turns the Command handoff into Breathe, Own, Close while preserving the calm receipt and folded Peace Path.
+- v305 One Calm Receipt adds a receipt ID and share-safe receipt path to the One Move Dock and Serenity Stillness Bar, so quiet handoffs can be copied and referenced without exposing commercial detail.
+- v304 Serenity Handoff Receipt keeps Serenity mode to one Stillness Bar while adding the same copy-ready handoff line and Open/Copy actions for quiet meetings.
+- v303 Serenity Single Dock removes duplicate calm guidance by showing Stillness only in Serenity mode and One Move Dock in normal Command Center mode.
 - v302 One Move Dock simplifies the Command Center first screen by replacing the visible full Peace Path block with one light mission-room-owner-date-proof dock while keeping the full path folded for deeper review.
 - v301 Stillness Bar keeps Serenity mode calm with one quiet route-owner-date-proof rail instead of another full Command Center block.
 - v300 Peace Path simplifies the Command Center into one calm start-open-confirm-prove-protect capsule, with deeper handoff details folded below for quiet daily use.
