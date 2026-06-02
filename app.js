@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v316";
-  const BUILD_LABEL = "Calm Verdict";
+  const BUILD_VERSION = "v317";
+  const BUILD_LABEL = "Decision Receipt";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
   const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
   const STORE_KEY = "pursuitDesk:data:v1";
@@ -7734,6 +7734,63 @@ const state = {
     `;
   }
 
+  function renderCommandDecisionReceipt(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || (model.openRecords || [])[0] || (model.records || [])[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const ownerSource = slip.owner || record.owner || "";
+    const owner = ownerSource || (record.type === "Project" ? "Operations" : "Commercial");
+    const dateSource = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "");
+    const date = dateSource || "Set one calm date";
+    const proofSource =
+      slip.proof && slip.proof !== "Add proof path"
+        ? slip.proof
+        : record.sourceSheet || record.sourceWorkbook || "";
+    const proof = proofSource || "Bring one evidence source";
+    const client = record.client || record.businessUnit || "Current account";
+    const reference = record.reference || record.agreementNo || slip.receiptId || BUILD_VERSION.toUpperCase();
+    const title = record.title || firstSignal.title || firstSignal.action || "First priority record";
+    const privateValue = formatCompactMoney(autopilot?.protectedValue || 0);
+    const decisionState = `${routeLabel} handoff`;
+    const privacyLine = `${privateValue} stays in management rooms; tracker users see action, owner, date, and proof only.`;
+    const receiptLine = `${slip.receiptId || BUILD_VERSION.toUpperCase()}. Decision receipt: ${decisionState}. ${compactText(title, 72)} / ${compactText(client, 36)} / owner ${owner} / date ${date} / proof ${proof}. ${privacyLine}`;
+    const encodedCopy = encodeURIComponent(receiptLine);
+    const dateNeedsWork = String(date).toLowerCase().includes("set") || String(date).toLowerCase().includes("no date");
+    const proofNeedsWork = String(proof).toLowerCase().includes("bring") || String(proof).toLowerCase().includes("add");
+    const cards = [
+      ["Decision", decisionState, compactText(title, 58), "green"],
+      ["Owner", owner, compactText(client, 44), ownerSource ? "green" : "amber"],
+      ["Control", compactText(date, 34), compactText(proof, 48), dateNeedsWork || proofNeedsWork ? "amber" : "blue"],
+      ["Privacy", "Value shield on", privacyLine, "green"],
+    ];
+
+    return `
+      <section class="command-decision-receipt" aria-label="Decision receipt">
+        <article class="command-decision-receipt-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Decision Receipt</span>
+          <strong>${escapeHtml(compactText(reference, 36))}</strong>
+          <small>Audit-ready without turning the Command screen into a report.</small>
+          <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy receipt</button>
+        </article>
+        <div class="command-decision-receipt-grid">
+          ${cards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-decision-receipt-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(value, 44))}</strong>
+                  <small>${escapeHtml(compactText(note, 82))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -7802,6 +7859,7 @@ const state = {
         ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : state.serenityMode ? renderCommandStillnessBar(model, autopilot) : renderCommandZenStart(model, autopilot)}
         ${renderCommandCalmProgress(model, autopilot)}
         ${renderCommandCalmVerdict(model, autopilot)}
+        ${renderCommandDecisionReceipt(model, autopilot)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26297,12 +26355,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v316 Calm Verdict",
-      phase: "Calm Verdict",
+      version: "v317 Decision Receipt",
+      phase: "Decision Receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "297 meaningful versions since rebrand",
-      summary: "Command Center now explains why the calm first move matters: reason, privacy boundary, and success condition stay visible in one copy-ready strip.",
+      pace: "298 meaningful versions since rebrand",
+      summary: "Command Center now gives the calm first move a compact audit-ready receipt: decision, owner, control date, proof, and privacy boundary stay copyable without adding another room.",
       tracks: [
+        ["v317 decision receipt", 100, "Command Center now adds a compact Decision Receipt after Calm Verdict, showing the decision, owner, control date, proof, and privacy boundary in one copy-ready audit strip.", "green"],
         ["v316 calm verdict", 100, "Command Center now adds one compact Calm Verdict after the progress strip, turning the first move into a reason, privacy boundary, and success condition without adding another room.", "green"],
         ["v315 calm progress", 100, "Command Center now lets the team mark room, owner, date, and proof as done on one quiet strip, remembering progress across refreshes while keeping the first screen calm.", "green"],
         ["v314 last calm copy", 100, "The last copied calm line now returns as a small Command receipt with copy-again and clear controls, so one meeting handoff stays reusable without adding another panel.", "green"],
@@ -26761,10 +26820,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now explains the reason behind the calm first move, its privacy boundary, and the success condition in one copy-ready verdict without adding another room.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns the first move into a Decision Receipt with route, owner, date, proof, and privacy boundary in one compact audit strip.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Calm Progress, Calm Verdict copy, Done marks, Reset, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Calm Progress, Calm Verdict, Decision Receipt copy, Done marks, Reset, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
