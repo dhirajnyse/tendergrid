@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-const BUILD_VERSION = "v313";
-const BUILD_LABEL = "Quiet Focus Memory";
+const BUILD_VERSION = "v315";
+const BUILD_LABEL = "Calm Progress";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
   const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
   const STORE_KEY = "pursuitDesk:data:v1";
@@ -10,6 +10,7 @@ const SESSION_KEY = "pursuitDesk:session:v1";
 const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
 const UI_PREFS_KEY = "pursuitDesk:uiPrefs:v1";
 const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
+const PEACE_PROGRESS_KEY = "pursuitDesk:peaceProgress:v1";
   const ROOM_MEMORY_LIMIT = 6;
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
   const STATUS_OPTIONS = [
@@ -603,10 +604,11 @@ const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
   ];
 
   const app = document.getElementById("app");
-  const initialUser = loadSession();
-  const initialUiPrefs = loadUiPrefs();
-  const initialCommandMemory = loadCommandMemory();
-  const state = {
+const initialUser = loadSession();
+const initialUiPrefs = loadUiPrefs();
+const initialCommandMemory = loadCommandMemory();
+const initialPeaceProgress = loadPeaceProgress();
+const state = {
     data: loadData(),
     user: initialUser,
     view: "Command",
@@ -631,10 +633,11 @@ const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
     tableDensity: "Comfortable",
     trackerMode: "Sheet",
     detailCollapsed: false,
-    quietFocus: Boolean(initialUiPrefs.quietFocus),
-    serenityMode: Boolean(initialUiPrefs.serenityMode),
-    commandMemory: initialCommandMemory,
-    importText: "",
+  quietFocus: Boolean(initialUiPrefs.quietFocus),
+  serenityMode: Boolean(initialUiPrefs.serenityMode),
+  commandMemory: initialCommandMemory,
+  peaceProgress: initialPeaceProgress,
+  importText: "",
     importPreview: null,
     importMessage: "",
     previewAdmin: null,
@@ -838,6 +841,26 @@ const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
   function persistCommandMemory(nextMemory = {}) {
     try {
       localStorage.setItem(COMMAND_MEMORY_KEY, JSON.stringify(nextMemory));
+    } catch (error) {}
+  }
+
+  function loadPeaceProgress() {
+    try {
+      const saved = localStorage.getItem(PEACE_PROGRESS_KEY);
+      if (!saved) return {};
+      const parsed = JSON.parse(saved);
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch (error) {
+      try {
+        localStorage.removeItem(PEACE_PROGRESS_KEY);
+      } catch (cleanupError) {}
+      return {};
+    }
+  }
+
+  function persistPeaceProgress(nextProgress = {}) {
+    try {
+      localStorage.setItem(PEACE_PROGRESS_KEY, JSON.stringify(nextProgress));
     } catch (error) {}
   }
 
@@ -7580,6 +7603,119 @@ const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
     `;
   }
 
+  function renderCommandCalmProgress(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || (model.openRecords || [])[0] || (model.records || [])[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const due = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set one calm date");
+    const proof =
+      slip.proof && slip.proof !== "Add proof path"
+        ? slip.proof
+        : record.sourceSheet || record.sourceWorkbook || "Bring one evidence source";
+    const dueText = String(due || "");
+    const proofText = String(proof || "");
+    const progress = state.peaceProgress || {};
+    const needsDate = dueText.toLowerCase().includes("set") || dueText.toLowerCase().includes("no date");
+    const needsProof = proofText === "Bring one evidence source" || proofText.toLowerCase().includes("add proof");
+    const steps = [
+      { key: "room", tone: "green", label: "Room", title: routeLabel, note: "Open one room only." },
+      {
+        key: "owner",
+        tone: record.owner ? "green" : "amber",
+        label: "Owner",
+        title: owner,
+        note: record.owner ? "Accountability visible." : "Confirm accountability.",
+      },
+      {
+        key: "date",
+        tone: needsDate ? "amber" : "blue",
+        label: "Date",
+        title: compactText(dueText, 34),
+        note: needsDate ? "Set one calm date." : "Control date visible.",
+      },
+      {
+        key: "proof",
+        tone: needsProof ? "amber" : "green",
+        label: "Proof",
+        title: compactText(proofText, 34),
+        note: needsProof ? "Attach one trusted source." : "Evidence path ready.",
+      },
+    ];
+    const complete = steps.filter((step) => progress[step.key]).length;
+    const status = complete === steps.length ? "Ready to move calmly" : `${complete}/${steps.length} confirmed`;
+    const resetButton = complete
+      ? `<button class="ghost-btn" type="button" data-action="reset-calm-progress">Reset</button>`
+      : "";
+
+    return `
+      <section class="calm-progress-strip" aria-label="Calm progress">
+        <div class="calm-progress-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Calm Progress</span>
+          <strong>${escapeHtml(status)}</strong>
+          <small>Tap each piece only when it is true. The first screen stays quiet while the handoff becomes real.</small>
+        </div>
+        <div class="calm-progress-steps">
+          ${steps
+            .map(
+              (step) => `
+                <button
+                  class="calm-progress-step tone-${escapeHtml(step.tone)} ${progress[step.key] ? "done" : ""}"
+                  type="button"
+                  data-action="toggle-calm-progress"
+                  data-step="${escapeHtml(step.key)}"
+                  aria-pressed="${progress[step.key] ? "true" : "false"}"
+                >
+                  <span>${escapeHtml(step.label)}</span>
+                  <strong>${escapeHtml(step.title)}</strong>
+                  <small>${escapeHtml(step.note)}</small>
+                </button>
+              `
+            )
+            .join("")}
+        </div>
+        <div class="calm-progress-actions">
+          ${resetButton}
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandMemoryReceipt() {
+    const memory = state.commandMemory || {};
+    if (!memory.text) return "";
+
+    let savedAt = "saved";
+    if (memory.copiedAt) {
+      const parsed = new Date(memory.copiedAt);
+      if (!Number.isNaN(parsed.getTime())) {
+        savedAt = parsed.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      }
+    }
+
+    const source = simpleRoomLabel(memory.view || "Command");
+    return `
+      <section class="command-memory-receipt" aria-label="Last copied calm line">
+        <div class="command-memory-copy">
+          <span class="metric-label">${escapeHtml(memory.build || BUILD_VERSION)} last calm copy</span>
+          <strong>${escapeHtml(compactText(memory.text, 170))}</strong>
+          <small>Saved ${escapeHtml(savedAt)} from ${escapeHtml(source)}.</small>
+        </div>
+        <div class="command-memory-actions">
+          <button class="ghost-btn" type="button" data-action="copy-command-memory">Copy again</button>
+          <button class="ghost-btn" type="button" data-action="clear-command-memory">Clear</button>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
     const autopilot = buildPursuitAutopilotModel();
@@ -7613,6 +7749,8 @@ const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
         </div>
 
         ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : state.serenityMode ? renderCommandStillnessBar(model, autopilot) : renderCommandZenStart(model, autopilot)}
+        ${renderCommandCalmProgress(model, autopilot)}
+        ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
             ? ""
@@ -26107,12 +26245,14 @@ const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
 
   function buildProductBuildTracker() {
     return {
-      version: "v313 Quiet Focus Memory",
-      phase: "Quiet Focus Memory",
+      version: "v315 Calm Progress",
+      phase: "Calm Progress",
       lane: "Static product prototype on GitHub Pages",
-      pace: "294 meaningful versions since rebrand",
-      summary: "Quiet Focus now stays remembered across sessions and appears only as a tiny Focus on signal, keeping Command Center peaceful without adding another panel.",
+      pace: "296 meaningful versions since rebrand",
+      summary: "Command Center now remembers four quiet confirmations - room, owner, date, and proof - so daily readiness becomes visible without adding another room.",
       tracks: [
+        ["v315 calm progress", 100, "Command Center now lets the team mark room, owner, date, and proof as done on one quiet strip, remembering progress across refreshes while keeping the first screen calm.", "green"],
+        ["v314 last calm copy", 100, "The last copied calm line now returns as a small Command receipt with copy-again and clear controls, so one meeting handoff stays reusable without adding another panel.", "green"],
         ["v313 quiet focus memory", 100, "Quiet Focus now persists in browser preferences and shows a small Focus on badge only while active, keeping Command Center calm without adding another page or panel.", "green"],
         ["v312 calm line memory", 100, "Copy calm line now records today's operating handoff in browser memory, letting Command Center show whether the calm line is already copied while keeping the daily first screen light.", "green"],
         ["v311 one calm path", 100, "Command Center now scores the route, owner, date, and proof path in one calm operating strip, while Serenity preference is remembered across sessions so the workspace stays quiet when the user chooses it.", "green"],
@@ -26568,10 +26708,10 @@ const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Quiet Focus now stays remembered across refreshes and shows a small Focus on badge only when active, keeping the first screen calm without another control surface.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now remembers room, owner, date, and proof confirmations in one quiet strip, so readiness is visible without adding another screen.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus on badge, Quiet Focus memory, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Calm Progress strip, Done marks, Reset, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -76186,6 +76326,46 @@ const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
         persistCommandMemory(state.commandMemory);
       }
       copyTextToClipboard(text, "Calm line copied and remembered.");
+      return;
+    }
+
+    if (action === "copy-command-memory") {
+      const text = state.commandMemory?.text || "";
+      if (!text) {
+        showTransientNotice("No calm line saved yet.");
+        return;
+      }
+      copyTextToClipboard(text, "Saved calm line copied again.");
+      return;
+    }
+
+    if (action === "clear-command-memory") {
+      state.commandMemory = {};
+      persistCommandMemory({});
+      showTransientNotice("Saved calm line cleared.");
+      render();
+      return;
+    }
+
+    if (action === "toggle-calm-progress") {
+      const step = button.dataset.step;
+      const validSteps = new Set(["room", "owner", "date", "proof"]);
+      if (!validSteps.has(step)) return;
+      state.peaceProgress = {
+        ...(state.peaceProgress || {}),
+        [step]: !(state.peaceProgress || {})[step],
+      };
+      persistPeaceProgress(state.peaceProgress);
+      showTransientNotice(state.peaceProgress[step] ? "Calm progress marked." : "Calm progress reopened.");
+      render();
+      return;
+    }
+
+    if (action === "reset-calm-progress") {
+      state.peaceProgress = {};
+      persistPeaceProgress(state.peaceProgress);
+      showTransientNotice("Calm progress reset.");
+      render();
       return;
     }
 

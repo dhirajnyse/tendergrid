@@ -19,6 +19,8 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v315 Calm Progress remembers room, owner, date, and proof confirmations on the Command screen, giving the team one quiet readiness strip without another workspace surface.
+- v314 Last Calm Copy surfaces the remembered calm line as a small Command receipt with copy-again and clear controls, keeping the meeting handoff reusable without expanding navigation.
 - v313 Quiet Focus Memory keeps Quiet Focus on across refreshes and shows only a small Focus on badge when active, so the first screen can stay peaceful without more visible controls.
 - v312 Calm Line Memory remembers when the daily calm line is copied, so Command Center shows the handoff is already in hand without adding another page or panel.
 - v311 One Calm Path turns Command Center into a single route-owner-date-proof readiness strip and remembers Serenity mode so the daily workspace stays calm across sessions.
