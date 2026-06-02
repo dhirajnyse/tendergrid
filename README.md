@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v318 Serenity Compass adds a folded operate/review/sell path under Command Center so the daily screen stays calm while the next route is still one click away.
 - v317 Decision Receipt adds a compact audit-ready receipt for the first move: decision, owner, control date/proof, and privacy boundary remain copyable without expanding the Command Center.
 - v316 Calm Verdict explains the reason, privacy boundary, and success condition behind the calm first move, with a copy-ready verdict on the Command screen.
 - v315 Calm Progress remembers room, owner, date, and proof confirmations on the Command screen, giving the team one quiet readiness strip without another workspace surface.

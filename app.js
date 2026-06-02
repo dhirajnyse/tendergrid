@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v317";
-  const BUILD_LABEL = "Decision Receipt";
+  const BUILD_VERSION = "v318";
+  const BUILD_LABEL = "Serenity Compass";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
   const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
   const STORE_KEY = "pursuitDesk:data:v1";
@@ -7791,6 +7791,65 @@ const state = {
     `;
   }
 
+  function renderCommandSerenityCompass(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || (model.openRecords || [])[0] || (model.records || [])[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const ownerSource = slip.owner || record.owner || "";
+    const owner = ownerSource || (record.type === "Project" ? "Operations" : "Commercial");
+    const dateSource = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "");
+    const date = dateSource || "Set one calm date";
+    const proofSource =
+      slip.proof && slip.proof !== "Add proof path"
+        ? slip.proof
+        : record.sourceSheet || record.sourceWorkbook || "";
+    const proof = proofSource || "Bring one evidence source";
+    const client = record.client || record.businessUnit || "Current account";
+    const title = record.title || firstSignal.title || firstSignal.action || "First priority record";
+    const compassLine = `${BRAND_NAME} ${BUILD_VERSION} Serenity Compass: ${compactText(title, 70)}. Operate in ${routeLabel}, review in Weekly Review, or sell from Pilot Pitch. Owner ${owner}; date ${date}; proof ${proof}; commercial context stays guarded.`;
+    const encodedCopy = encodeURIComponent(compassLine);
+    const footerLine = `${compactText(client, 48)} / owner ${owner} / proof ${compactText(proof, 44)}`;
+    const cards = [
+      ["Operate", `Open ${routeLabel}`, `${compactText(title, 54)} stays with ${owner}.`, route, "green"],
+      ["Review", "Say it in one line", `Use ${compactText(String(date || ""), 30)} and ${compactText(String(proof || ""), 34)} as the calm meeting close.`, "Weekly Review", "blue"],
+      ["Sell", "Show the buyer path", "Turn the same proof into a buyer-safe Pilot Pitch without exposing commercial rooms.", "Pilot Pitch", "amber"],
+    ];
+
+    return `
+      <details class="command-serenity-compass" aria-label="Serenity compass">
+        <summary>
+          <span class="command-serenity-summary-main">
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Serenity Compass</span>
+            <strong>Choose one path, then let the screen breathe.</strong>
+            <small>${escapeHtml(compactText(compassLine, 150))}</small>
+          </span>
+          <b>${escapeHtml(routeLabel)}</b>
+        </summary>
+        <div class="command-serenity-compass-body">
+          <div class="command-serenity-compass-grid">
+            ${cards
+              .map(
+                ([label, value, note, view, tone]) => `
+                  <button class="command-serenity-card tone-${escapeHtml(tone)}" type="button" data-view="${escapeHtml(view)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <small>${escapeHtml(note)}</small>
+                  </button>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="command-serenity-compass-actions">
+            <small>${escapeHtml(footerLine)}</small>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy compass</button>
+          </div>
+        </div>
+      </details>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -7860,6 +7919,7 @@ const state = {
         ${renderCommandCalmProgress(model, autopilot)}
         ${renderCommandCalmVerdict(model, autopilot)}
         ${renderCommandDecisionReceipt(model, autopilot)}
+        ${renderCommandSerenityCompass(model, autopilot)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26355,12 +26415,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v317 Decision Receipt",
-      phase: "Decision Receipt",
+      version: "v318 Serenity Compass",
+      phase: "Serenity Compass",
       lane: "Static product prototype on GitHub Pages",
-      pace: "298 meaningful versions since rebrand",
-      summary: "Command Center now gives the calm first move a compact audit-ready receipt: decision, owner, control date, proof, and privacy boundary stay copyable without adding another room.",
+      pace: "299 meaningful versions since rebrand",
+      summary: "Command Center now folds operate, review, and sell choices into one Serenity Compass after the Decision Receipt, keeping the daily screen calm while the next path stays one click away.",
       tracks: [
+        ["v318 serenity compass", 100, "Command Center now folds Operate, Review, and Sell into one Serenity Compass after the Decision Receipt, keeping the daily screen calm while the next path stays one click away.", "green"],
         ["v317 decision receipt", 100, "Command Center now adds a compact Decision Receipt after Calm Verdict, showing the decision, owner, control date, proof, and privacy boundary in one copy-ready audit strip.", "green"],
         ["v316 calm verdict", 100, "Command Center now adds one compact Calm Verdict after the progress strip, turning the first move into a reason, privacy boundary, and success condition without adding another room.", "green"],
         ["v315 calm progress", 100, "Command Center now lets the team mark room, owner, date, and proof as done on one quiet strip, remembering progress across refreshes while keeping the first screen calm.", "green"],
@@ -26820,10 +26881,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns the first move into a Decision Receipt with route, owner, date, proof, and privacy boundary in one compact audit strip.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now folds operate, review, and sell into one Serenity Compass below the Decision Receipt, keeping the first screen peaceful while the next path stays obvious.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Calm Progress, Calm Verdict, Decision Receipt copy, Done marks, Reset, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Calm Progress, Calm Verdict, Decision Receipt copy, Serenity Compass path, Done marks, Reset, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

@@ -1,4 +1,4 @@
-PursuitDesk v287 copy-ready brief upload steps
+PursuitDesk v284 admin tools tray upload steps
 
 1. Open this GitHub page:
    https://github.com/dhirajnyse/tendergrid
@@ -23,12 +23,12 @@ PursuitDesk v287 copy-ready brief upload steps
    Do not upload analysis, source-excels, node_modules, log files, or old project folders.
 
 4. Commit message:
-   PursuitDesk v287 copy-ready brief
+   PursuitDesk v284 admin tools tray
 
 5. Wait one or two minutes, then open:
    https://dhirajnyse.github.io/tendergrid/
 
-6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, URL fallback routes, Quick Switcher memory, Command Focus Mode, the Admin Tools tray, a top build-version badge, clickable PursuitDesk logo/brand home action, the build badge shortcut into Build Phase, and a copy-ready Command Center meeting brief.
+6. If the old page appears, press Ctrl + F5 once. This version includes cache-busting file links, URL fallback routes, Quick Switcher memory, Command Focus Mode, and the new Admin Tools tray. After upload, open Command and confirm daily navigation is cleaner, then open Admin Tools and verify Pilot Pitch, Membership Model, and Build Phase open from the tray.
 
 Demo login:
 admin@pursuitdesk.app
