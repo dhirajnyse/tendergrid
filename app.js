@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-const BUILD_VERSION = "v315";
-const BUILD_LABEL = "Calm Progress";
+  const BUILD_VERSION = "v316";
+  const BUILD_LABEL = "Calm Verdict";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
   const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
   const STORE_KEY = "pursuitDesk:data:v1";
@@ -7683,6 +7683,57 @@ const state = {
     `;
   }
 
+  function renderCommandCalmVerdict(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const record = slip.record || firstSignal.record || (model.openRecords || [])[0] || (model.records || [])[0] || {};
+    const route = slip.nextRoom || "Reminders";
+    const routeLabel = simpleRoomLabel(route);
+    const owner = slip.owner || record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+    const due = slip.date || record.dueDisplay || record.endDateDisplay || (record.endDate ? formatDate(record.endDate) : "Set one calm date");
+    const proof =
+      slip.proof && slip.proof !== "Add proof path"
+        ? slip.proof
+        : record.sourceSheet || record.sourceWorkbook || "Bring one evidence source";
+    const title = record.title || firstSignal.title || "First priority record";
+    const client = record.client || record.businessUnit || "Current account";
+    const lateText =
+      typeof firstSignal.daysLate === "number"
+        ? `${firstSignal.daysLate} days late`
+        : record.dueSignal || "needs movement";
+    const verdictLine = `${compactText(title, 72)} is the calm first move: open ${routeLabel}, confirm ${owner}, keep commercial context guarded, and close with ${compactText(proof, 44)}.`;
+    const encodedCopy = encodeURIComponent(verdictLine);
+    const verdictCards = [
+      ["Reason", compactText(title, 48), `${compactText(client, 36)} / ${compactText(lateText, 28)}`, "green"],
+      ["Privacy", "Commercial context stays guarded", "Frontline users see the action, not sensitive value.", "blue"],
+      ["Success", `${routeLabel} -> ${compactText(String(due || ""), 28)} -> proof`, `Close with ${compactText(String(proof || ""), 34)}.`, "green"],
+    ];
+
+    return `
+      <section class="command-calm-verdict" aria-label="Calm verdict">
+        <div class="command-calm-verdict-lead">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Calm Verdict</span>
+          <strong>Why this one move matters.</strong>
+          <small>${escapeHtml(verdictLine)}</small>
+          <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy verdict</button>
+        </div>
+        <div class="command-calm-verdict-cards">
+          ${verdictCards
+            .map(
+              ([label, titleText, note, tone]) => `
+                <article class="command-calm-verdict-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(titleText)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -7750,6 +7801,7 @@ const state = {
 
         ${state.quietFocus ? renderCommandQuietFocusDeck(model, autopilot) : state.serenityMode ? renderCommandStillnessBar(model, autopilot) : renderCommandZenStart(model, autopilot)}
         ${renderCommandCalmProgress(model, autopilot)}
+        ${renderCommandCalmVerdict(model, autopilot)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26245,12 +26297,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v315 Calm Progress",
-      phase: "Calm Progress",
+      version: "v316 Calm Verdict",
+      phase: "Calm Verdict",
       lane: "Static product prototype on GitHub Pages",
-      pace: "296 meaningful versions since rebrand",
-      summary: "Command Center now remembers four quiet confirmations - room, owner, date, and proof - so daily readiness becomes visible without adding another room.",
+      pace: "297 meaningful versions since rebrand",
+      summary: "Command Center now explains why the calm first move matters: reason, privacy boundary, and success condition stay visible in one copy-ready strip.",
       tracks: [
+        ["v316 calm verdict", 100, "Command Center now adds one compact Calm Verdict after the progress strip, turning the first move into a reason, privacy boundary, and success condition without adding another room.", "green"],
         ["v315 calm progress", 100, "Command Center now lets the team mark room, owner, date, and proof as done on one quiet strip, remembering progress across refreshes while keeping the first screen calm.", "green"],
         ["v314 last calm copy", 100, "The last copied calm line now returns as a small Command receipt with copy-again and clear controls, so one meeting handoff stays reusable without adding another panel.", "green"],
         ["v313 quiet focus memory", 100, "Quiet Focus now persists in browser preferences and shows a small Focus on badge only while active, keeping Command Center calm without adding another page or panel.", "green"],
@@ -26708,10 +26761,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now remembers room, owner, date, and proof confirmations in one quiet strip, so readiness is visible without adding another screen.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now explains the reason behind the calm first move, its privacy boundary, and the success condition in one copy-ready verdict without adding another room.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Calm Progress strip, Done marks, Reset, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Calm Progress, Calm Verdict copy, Done marks, Reset, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
