@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v318";
-  const BUILD_LABEL = "Serenity Compass";
+const BUILD_VERSION = "v319";
+const BUILD_LABEL = "Serenity Handrail";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
   const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
   const STORE_KEY = "pursuitDesk:data:v1";
@@ -7808,26 +7808,48 @@ const state = {
     const proof = proofSource || "Bring one evidence source";
     const client = record.client || record.businessUnit || "Current account";
     const title = record.title || firstSignal.title || firstSignal.action || "First priority record";
-    const compassLine = `${BRAND_NAME} ${BUILD_VERSION} Serenity Compass: ${compactText(title, 70)}. Operate in ${routeLabel}, review in Weekly Review, or sell from Pilot Pitch. Owner ${owner}; date ${date}; proof ${proof}; commercial context stays guarded.`;
-    const encodedCopy = encodeURIComponent(compassLine);
-    const footerLine = `${compactText(client, 48)} / owner ${owner} / proof ${compactText(proof, 44)}`;
     const cards = [
       ["Operate", `Open ${routeLabel}`, `${compactText(title, 54)} stays with ${owner}.`, route, "green"],
       ["Review", "Say it in one line", `Use ${compactText(String(date || ""), 30)} and ${compactText(String(proof || ""), 34)} as the calm meeting close.`, "Weekly Review", "blue"],
       ["Sell", "Show the buyer path", "Turn the same proof into a buyer-safe Pilot Pitch without exposing commercial rooms.", "Pilot Pitch", "amber"],
     ];
+    const hasHotAction = Number(autopilot?.nowCount || 0) > 0 || /reminder|risk|calendar/i.test(routeLabel);
+    const recommendedIndex = hasHotAction ? 0 : Number(autopilot?.doNowCount || 0) > 0 ? 1 : 2;
+    const recommendedCard = cards[recommendedIndex] || cards[0];
+    const [recommendedLabel, recommendedValue, recommendedNote, , recommendedTone] = recommendedCard;
+    const footerLine = `${compactText(client, 48)} / owner ${owner} / proof ${compactText(proof, 44)}`;
+    const handrailLine = `Start with ${recommendedLabel}: ${recommendedValue}. Confirm owner ${owner}, date ${date}, and proof ${proof}. Then stop adding noise.`;
+    const compassLine = `${BRAND_NAME} ${BUILD_VERSION} Serenity Handrail: ${compactText(title, 70)}. ${handrailLine} Commercial context stays guarded.`;
+    const encodedCopy = encodeURIComponent(`${compassLine} ${footerLine}.`);
 
     return `
-      <details class="command-serenity-compass" aria-label="Serenity compass">
+      <details class="command-serenity-compass" aria-label="Serenity handrail">
         <summary>
           <span class="command-serenity-summary-main">
-            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Serenity Compass</span>
-            <strong>Choose one path, then let the screen breathe.</strong>
-            <small>${escapeHtml(compactText(compassLine, 150))}</small>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Serenity Handrail</span>
+            <strong>Follow one handrail, then let the screen breathe.</strong>
+            <small>${escapeHtml(compactText(handrailLine, 150))}</small>
           </span>
-          <b>${escapeHtml(routeLabel)}</b>
+          <b>Recommended: ${escapeHtml(recommendedLabel)}</b>
         </summary>
         <div class="command-serenity-compass-body">
+          <div class="command-serenity-handrail" aria-label="Recommended calm handrail">
+            <article class="command-serenity-handrail-card tone-${escapeHtml(recommendedTone)}">
+              <span>Start</span>
+              <strong>${escapeHtml(recommendedValue)}</strong>
+              <small>${escapeHtml(recommendedNote)}</small>
+            </article>
+            <article class="command-serenity-handrail-card tone-green">
+              <span>Confirm</span>
+              <strong>${escapeHtml(owner)}</strong>
+              <small>${escapeHtml(date)}</small>
+            </article>
+            <article class="command-serenity-handrail-card tone-blue">
+              <span>Close</span>
+              <strong>${escapeHtml(proof)}</strong>
+              <small>Copy once, then move.</small>
+            </article>
+          </div>
           <div class="command-serenity-compass-grid">
             ${cards
               .map(
@@ -7843,7 +7865,7 @@ const state = {
           </div>
           <div class="command-serenity-compass-actions">
             <small>${escapeHtml(footerLine)}</small>
-            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy compass</button>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy handrail</button>
           </div>
         </div>
       </details>
@@ -26415,12 +26437,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v318 Serenity Compass",
-      phase: "Serenity Compass",
+      version: "v319 Serenity Handrail",
+      phase: "Serenity Handrail",
       lane: "Static product prototype on GitHub Pages",
-      pace: "299 meaningful versions since rebrand",
-      summary: "Command Center now folds operate, review, and sell choices into one Serenity Compass after the Decision Receipt, keeping the daily screen calm while the next path stays one click away.",
+      pace: "300 meaningful versions since rebrand",
+      summary: "Command Center now turns the folded compass into a Start / Confirm / Close handrail so the next move is guided without adding another large surface.",
       tracks: [
+        ["v319 serenity handrail", 100, "Command Center now recommends one calm path: start in the right room, confirm one owner, and close with one date and one proof without adding another large surface.", "green"],
         ["v318 serenity compass", 100, "Command Center now folds Operate, Review, and Sell into one Serenity Compass after the Decision Receipt, keeping the daily screen calm while the next path stays one click away.", "green"],
         ["v317 decision receipt", 100, "Command Center now adds a compact Decision Receipt after Calm Verdict, showing the decision, owner, control date, proof, and privacy boundary in one copy-ready audit strip.", "green"],
         ["v316 calm verdict", 100, "Command Center now adds one compact Calm Verdict after the progress strip, turning the first move into a reason, privacy boundary, and success condition without adding another room.", "green"],
@@ -26881,10 +26904,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now folds operate, review, and sell into one Serenity Compass below the Decision Receipt, keeping the first screen peaceful while the next path stays obvious.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns the folded compass into one Start / Confirm / Close handrail: one room, one owner, one date, and one proof.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Calm Progress, Calm Verdict, Decision Receipt copy, Serenity Compass path, Done marks, Reset, Serenity memory, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
