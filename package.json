@@ -1,7 +1,8 @@
 {
-  "name": "heavyster",
-  "version": "1.0.0",
+  "name": "tendergrid-pursuitdesk",
+  "version": "3.19.0",
   "private": true,
+  "description": "PursuitDesk static workspace for EOI, tender, and project tracking.",
   "type": "module",
   "scripts": {
     "check": "node scripts/static-check.mjs",

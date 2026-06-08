@@ -19,8 +19,10 @@ const types = {
 const server = createServer(async (request, response) => {
   try {
     const rawPath = decodeURIComponent((request.url || "/").split("?")[0]);
-    const safePath = normalize(rawPath).replace(/^([.][.][\\/])+/, "");
-    const target = resolve(join(root, safePath === "/" ? "index.html" : safePath));
+    const safePath = rawPath === "/"
+      ? "index.html"
+      : normalize(rawPath).replace(/^([.][.][\\/])+/, "").replace(/^[\\/]+/, "");
+    const target = resolve(join(root, safePath));
 
     if (!target.startsWith(root)) {
       response.writeHead(403, { "Content-Type": "text/plain; charset=utf-8" });
@@ -38,5 +40,5 @@ const server = createServer(async (request, response) => {
 });
 
 server.listen(port, host, () => {
-  console.log(`Heavyster listening at http://${host}:${port}/`);
+  console.log(`PursuitDesk listening at http://${host}:${port}/`);
 });

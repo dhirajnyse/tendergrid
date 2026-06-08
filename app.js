@@ -1,16 +1,16 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-const BUILD_VERSION = "v319";
-const BUILD_LABEL = "Serenity Handrail";
+  const BUILD_VERSION = "v319";
+  const BUILD_LABEL = "Serenity Handrail";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
   const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
   const STORE_KEY = "pursuitDesk:data:v1";
-const SESSION_KEY = "pursuitDesk:session:v1";
-const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
-const UI_PREFS_KEY = "pursuitDesk:uiPrefs:v1";
-const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
-const PEACE_PROGRESS_KEY = "pursuitDesk:peaceProgress:v1";
+  const SESSION_KEY = "pursuitDesk:session:v1";
+  const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
+  const UI_PREFS_KEY = "pursuitDesk:uiPrefs:v1";
+  const COMMAND_MEMORY_KEY = "pursuitDesk:commandMemory:v1";
+  const PEACE_PROGRESS_KEY = "pursuitDesk:peaceProgress:v1";
   const ROOM_MEMORY_LIMIT = 6;
   const TYPE_OPTIONS = ["EOI", "Tender", "Project"];
   const STATUS_OPTIONS = [

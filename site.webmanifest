@@ -1,11 +1,11 @@
 {
-  "name": "Heavyster",
-  "short_name": "Heavyster",
-  "description": "Heavy equipment rental listing SaaS for verified suppliers and direct enquiries.",
+  "name": "PursuitDesk",
+  "short_name": "PursuitDesk",
+  "description": "Tender and opportunity workspace for EOI, tender, project, and pursuit tracking.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f4f1e8",
-  "theme_color": "#252a31",
+  "background_color": "#f6f8f5",
+  "theme_color": "#1f6f5f",
   "icons": [
     {
       "src": "assets/favicon.svg",
