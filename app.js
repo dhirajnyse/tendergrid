@@ -1,8 +1,10 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v319";
-  const BUILD_LABEL = "Serenity Handrail";
+  const BUILD_VERSION = "v320";
+  const BUILD_LABEL = "Continuity Guard";
+  const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
+  const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
   const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
   const STORE_KEY = "pursuitDesk:data:v1";
@@ -7872,6 +7874,44 @@ const state = {
     `;
   }
 
+  function renderCommandContinuityGuard() {
+    const shortSha = RECOVERY_BASELINE_SHA.slice(0, 7);
+    const guardLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: baseline ${shortSha} is recovered, checked, pushed, and ready to build forward. Keep using npm.cmd run check, serve on 127.0.0.1:4177, and commit only after the Command Center opens cleanly.`;
+    const guardCards = [
+      ["Baseline", shortSha, RECOVERY_BASELINE_LABEL, "green"],
+      ["Health check", "Pass", "npm.cmd run check protects brand, data, routes, and v320 tokens.", "blue"],
+      ["Run path", "4177", "Local static server starts at http://127.0.0.1:4177/.", "amber"],
+      ["Next move", "Build forward", "Continue from this clean GitHub-synced state before changing product scope.", "green"],
+    ];
+
+    return `
+      <section class="command-continuity-guard" aria-label="Continuity guard">
+        <div class="command-continuity-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Continuity Guard</span>
+          <strong>Recovered, checked, pushed, and ready for the next build.</strong>
+          <small>${escapeHtml(guardLine)}</small>
+        </div>
+        <div class="command-continuity-grid">
+          ${guardCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-continuity-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-continuity-actions">
+          <small>Guardrail stays visible until the next production-safe milestone replaces it.</small>
+          <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-message="Continuity line copied." data-copy-text="${escapeHtml(encodeURIComponent(guardLine))}">Copy continuity line</button>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -7942,6 +7982,7 @@ const state = {
         ${renderCommandCalmVerdict(model, autopilot)}
         ${renderCommandDecisionReceipt(model, autopilot)}
         ${renderCommandSerenityCompass(model, autopilot)}
+        ${renderCommandContinuityGuard()}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26437,12 +26478,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v319 Serenity Handrail",
-      phase: "Serenity Handrail",
+      version: "v320 Continuity Guard",
+      phase: "Continuity Guard",
       lane: "Static product prototype on GitHub Pages",
-      pace: "300 meaningful versions since rebrand",
-      summary: "Command Center now turns the folded compass into a Start / Confirm / Close handrail so the next move is guided without adding another large surface.",
+      pace: "301 meaningful versions since rebrand",
+      summary: "Command Center now carries the recovered GitHub baseline, health check, local run path, and next-safe-build guidance in one compact continuity guard.",
       tracks: [
+        ["v320 continuity guard", 100, "Command Center now records the recovered GitHub baseline, confirms the health check and local run path, and gives one copy-ready continuity line before the next build starts.", "green"],
         ["v319 serenity handrail", 100, "Command Center now recommends one calm path: start in the right room, confirm one owner, and close with one date and one proof without adding another large surface.", "green"],
         ["v318 serenity compass", 100, "Command Center now folds Operate, Review, and Sell into one Serenity Compass after the Decision Receipt, keeping the daily screen calm while the next path stays one click away.", "green"],
         ["v317 decision receipt", 100, "Command Center now adds a compact Decision Receipt after Calm Verdict, showing the decision, owner, control date, proof, and privacy boundary in one copy-ready audit strip.", "green"],
@@ -26904,10 +26946,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns the folded compass into one Start / Confirm / Close handrail: one room, one owner, one date, and one proof.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now shows the recovered baseline, health check, run path, and next-safe-build line so the project can move forward without losing the source of truth.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -76521,7 +76563,7 @@ const state = {
         };
         persistCommandMemory(state.commandMemory);
       }
-      copyTextToClipboard(text, "Calm line copied and remembered.");
+      copyTextToClipboard(text, button.dataset.copyMessage || "Calm line copied and remembered.");
       return;
     }
 

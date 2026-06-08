@@ -5485,6 +5485,105 @@ body.quiet-focus-mode .focus-mode-pill {
   background: linear-gradient(135deg, #fffafa, var(--red-soft));
 }
 
+.command-continuity-guard {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(49, 101, 158, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfdff, rgba(236, 246, 255, 0.92));
+  box-shadow: 0 12px 28px rgba(21, 46, 74, 0.055);
+}
+
+.command-continuity-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-continuity-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-continuity-head small {
+  max-width: 980px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-continuity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.command-continuity-card {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 92px;
+  padding: 12px;
+  border: 1px solid rgba(49, 101, 158, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-continuity-card span {
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-continuity-card strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+}
+
+.command-continuity-card small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-continuity-card.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-continuity-card.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-continuity-card.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-continuity-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-continuity-actions small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -6160,6 +6259,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
     justify-self: start;
   }
 
+  .command-continuity-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .quiet-focus-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -6244,11 +6347,13 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   }
 
   .command-serenity-handrail,
-  .command-serenity-compass-grid {
+  .command-serenity-compass-grid,
+  .command-continuity-grid {
     grid-template-columns: 1fr;
   }
 
-  .command-serenity-compass-actions .ghost-btn {
+  .command-serenity-compass-actions .ghost-btn,
+  .command-continuity-actions .ghost-btn {
     width: 100%;
   }
 
