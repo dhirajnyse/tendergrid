@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v321";
-  const BUILD_LABEL = "World Demo Script";
+  const BUILD_VERSION = "v322";
+  const BUILD_LABEL = "Pilot Close Packet";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -7963,6 +7963,78 @@ const state = {
     `;
   }
 
+  function renderCommandPilotClosePacket(model) {
+    const pitch = buildPilotPitchModel();
+    const company = pitch.company || {};
+    const membership = pitch.membership || {};
+    const proposal = pitch.proposalPack || {};
+    const roi = pitch.roiPack || {};
+    const feedback = pitch.feedbackPack || {};
+    const topAccount = model.portfolio?.topAccounts?.[0] || model.portfolio?.accounts?.[0] || null;
+    const sponsorName = topAccount?.label || company.name || "first sponsor";
+    const planLabel = membership.label || "Team Workspace";
+    const seats = membership.seats || 15;
+    const monthlyCost = Number(roi.monthlyPlanCost || membership.monthly || 0);
+    const monthlyBenefit = Number(roi.monthlyBenefit || 0);
+    const roiMultiple = roi.roiMultiple || "1.0";
+    const paybackMonths = roi.paybackMonths || 1;
+    const pilotAsk = `Confirm one workbook, one admin, ${seats} users, and the weekly review meeting.`;
+    const closeLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: propose a ${planLabel} 30-day pilot for ${sponsorName}. Ask for ${pilotAsk} Use ${model.openRecords.length} open records, ${model.reminders.tasks.length} actions, ${model.evidenceScore}% evidence health, and ${roiMultiple}x value case as the close proof.`;
+    const sponsorNote = [
+      `Subject: ${BRAND_NAME} 30-day pilot close packet - ${company.name || "workspace"}`,
+      "",
+      `Hi ${sponsorName},`,
+      "",
+      `The clean next step is a controlled ${planLabel} pilot for one live tender/project workbook.`,
+      "",
+      `Pilot ask: ${pilotAsk}`,
+      `Proof already visible: ${model.openRecords.length} open records, ${model.reminders.tasks.length} routed actions, ${model.evidenceScore}% evidence health, and ${model.documents.sourceCoverage}% source coverage.`,
+      monthlyCost ? `Commercial frame: ${formatBilling(monthlyCost, company)}/month plus setup/import, with a ${roiMultiple}x monthly value case and ${paybackMonths}-month payback target.` : `Commercial frame: start with the recommended package and keep setup/import separately approved.`,
+      "",
+      "Decision gate: after 30 days, renew, upgrade, pause, or move to production backend scope based on adoption and management proof.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const closeCards = [
+      ["Pilot ask", planLabel, `${seats} users / one workbook / 30 days`, "green"],
+      ["Value case", `${roiMultiple}x`, monthlyBenefit ? `${formatBilling(monthlyBenefit, company)} monthly control value` : "ROI proof from Pilot Pitch", "teal"],
+      ["Proof", `${model.evidenceScore}%`, `${model.openRecords.length} open records / ${model.reminders.tasks.length} actions`, "blue"],
+      ["Decision gate", "Day 30", `${paybackMonths} month payback target / ${feedback.score || 0}% feedback signal`, "amber"],
+    ];
+
+    return `
+      <section class="command-pilot-close-packet" aria-label="Pilot close packet">
+        <div class="command-pilot-close-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Pilot Close Packet</span>
+          <strong>Turn the demo into a controlled 30-day sponsor ask.</strong>
+          <small>${escapeHtml(closeLine)}</small>
+        </div>
+        <div class="command-pilot-close-grid">
+          ${closeCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-pilot-close-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-pilot-close-actions">
+          <small>${escapeHtml(proposal.proposalId || "Pilot proposal pack is ready inside Pilot Pitch.")}</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open Pilot Pitch</button>
+            <button class="ghost-btn" type="button" data-view="Membership">Open pricing</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Pilot close note copied." data-copy-text="${escapeHtml(encodeURIComponent(sponsorNote))}">Copy sponsor note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8035,6 +8107,7 @@ const state = {
         ${renderCommandSerenityCompass(model, autopilot)}
         ${renderCommandContinuityGuard()}
         ${renderCommandWorldDemoScript(model, autopilot)}
+        ${renderCommandPilotClosePacket(model)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26530,12 +26603,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v321 World Demo Script",
-      phase: "World Demo Script",
+      version: "v322 Pilot Close Packet",
+      phase: "Pilot Close Packet",
       lane: "Static product prototype on GitHub Pages",
-      pace: "302 meaningful versions since rebrand",
-      summary: "Command Center now turns the recovered baseline and live operating metrics into a four-beat demo script for trust, desk control, evidence proof, and pilot close.",
+      pace: "303 meaningful versions since rebrand",
+      summary: "Command Center now turns the demo story into a sponsor-ready pilot close packet with package, proof, value case, decision gate, and copy-ready note.",
       tracks: [
+        ["v322 pilot close packet", 100, "Command Center now summarizes the recommended pilot ask, value proof, evidence health, and day-30 decision gate while copying a sponsor-ready close note from the live Pilot Pitch model.", "green"],
         ["v321 world demo script", 100, "Command Center now turns the recovered baseline, open work, captured value, evidence health, and routed actions into one copy-ready demo story for buyers and internal sponsors.", "green"],
         ["v320 continuity guard", 100, "Command Center now records the recovered GitHub baseline, confirms the health check and local run path, and gives one copy-ready continuity line before the next build starts.", "green"],
         ["v319 serenity handrail", 100, "Command Center now recommends one calm path: start in the right room, confirm one owner, and close with one date and one proof without adding another large surface.", "green"],
@@ -26999,10 +27073,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns recovery proof and live metrics into a four-beat buyer-ready demo script.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns the buyer demo into a sponsor-ready 30-day pilot close packet.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
