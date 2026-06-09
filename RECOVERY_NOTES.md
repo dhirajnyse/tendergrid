@@ -20,3 +20,4 @@ Recovery cleanup in this copy:
 - v320 adds a Command Center Continuity Guard so the recovered baseline, health check, run path, and next-safe-build line stay visible inside the product.
 - v321 adds a World Demo Script so the recovered baseline, live records, captured value, evidence health, and routed actions can be shown as one copy-ready buyer story.
 - v322 adds a Pilot Close Packet so Command Center can convert the demo story into a sponsor-ready pilot ask, value case, decision gate, and copy-ready close note.
+- v323 adds a Pilot Launch Board so an accepted sponsor ask turns into kickoff, workbook, access, owner, proof, and day-30 renewal control.

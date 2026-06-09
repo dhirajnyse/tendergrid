@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v322";
-  const BUILD_LABEL = "Pilot Close Packet";
+  const BUILD_VERSION = "v323";
+  const BUILD_LABEL = "Pilot Launch Board";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -7963,8 +7963,7 @@ const state = {
     `;
   }
 
-  function renderCommandPilotClosePacket(model) {
-    const pitch = buildPilotPitchModel();
+  function renderCommandPilotClosePacket(model, pitch = buildPilotPitchModel()) {
     const company = pitch.company || {};
     const membership = pitch.membership || {};
     const proposal = pitch.proposalPack || {};
@@ -8035,6 +8034,113 @@ const state = {
     `;
   }
 
+  function renderCommandPilotLaunchBoard(model, pitch = buildPilotPitchModel()) {
+    const company = pitch.company || {};
+    const membership = pitch.membership || {};
+    const kickoff = pitch.kickoffControlPack || {};
+    const setupLanes = Array.isArray(kickoff.setupLanes) ? kickoff.setupLanes : [];
+    const ownerRows = Array.isArray(kickoff.ownerChecklist) ? kickoff.ownerChecklist : [];
+    const dayOneRows = Array.isArray(kickoff.dayOneRunbook) ? kickoff.dayOneRunbook : [];
+    const adoptionRows = Array.isArray(kickoff.adoptionRhythm) ? kickoff.adoptionRhythm : [];
+    const workbookLane = setupLanes.find((lane) => /workbook/i.test(lane.label || "")) || {};
+    const accessLane = setupLanes.find((lane) => /access/i.test(lane.label || "")) || {};
+    const reviewLane = setupLanes.find((lane) => /review/i.test(lane.label || "")) || {};
+    const kickoffDate = kickoff.kickoffDate || "Day 1";
+    const renewalGate = kickoff.renewalGateDate || "Day 30";
+    const launchId = kickoff.kickoffId || `PD-LAUNCH-${BUILD_VERSION.toUpperCase()}`;
+    const launchLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: once the sponsor accepts, open launch ${launchId}, receive the workbook by ${workbookLane.date || kickoffDate}, invite ${membership.seats || 15} users, protect the access split, and run the first review by ${reviewLane.date || renewalGate}.`;
+    const launchNote = [
+      `Subject: ${BRAND_NAME} pilot launch board - ${company.name || "workspace"}`,
+      "",
+      `Hi ${company.name || "team"},`,
+      "",
+      `The pilot close is ready to become launch ${launchId}.`,
+      "",
+      `Kickoff: ${kickoffDate}`,
+      `Workbook handoff: ${workbookLane.date || "before kickoff"} / ${workbookLane.note || "Confirm the first source workbook before user invites."}`,
+      `Access split: ${accessLane.value || "Roles locked"} / ${accessLane.note || "Operators use tracker rooms while management rooms stay controlled."}`,
+      `First review: ${reviewLane.date || "Day 7"} / ${reviewLane.note || "Use Command, Advisor, Weekly Review, and Reports as the first proof loop."}`,
+      `Day-30 gate: ${renewalGate}`,
+      "",
+      "Please confirm the admin owner, workbook owner, operations champion, management reviewer, and renewal approver before activation.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const launchCards = [
+      ["Kickoff", kickoffDate, launchId, "green"],
+      ["Workbook", workbookLane.date || "Before launch", workbookLane.value || `${model.records.length} records ready`, "blue"],
+      ["Access", `${membership.seats || 15} seats`, accessLane.value || "Role split", "teal"],
+      ["Review gate", renewalGate, `${model.reminders.tasks.length} actions / ${model.evidenceScore}% evidence`, "amber"],
+    ];
+    const ownerChips = ownerRows.slice(0, 4);
+    const runbookRows = dayOneRows.slice(0, 4);
+    const adoptionChip = adoptionRows[2] || adoptionRows[0] || null;
+
+    return `
+      <section class="command-pilot-launch-board" aria-label="Pilot launch board">
+        <div class="command-pilot-launch-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Pilot Launch Board</span>
+          <strong>After yes, make day one visible before anything drifts.</strong>
+          <small>${escapeHtml(launchLine)}</small>
+        </div>
+        <div class="command-pilot-launch-grid">
+          ${launchCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-pilot-launch-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-pilot-launch-owners">
+          ${ownerChips
+            .map(
+              ([role, owner, due, output, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(role)}</span>
+                  <strong>${escapeHtml(owner)}</strong>
+                  <small>${escapeHtml(due)} / ${escapeHtml(output)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-pilot-launch-actions">
+          <small>${escapeHtml(adoptionChip ? `${adoptionChip[0]} ${adoptionChip[1]}: ${adoptionChip[2]}` : "First proof: login, row movement, review, and privacy protection.")}</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open kickoff pack</button>
+            <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Pilot launch note copied." data-copy-text="${escapeHtml(encodeURIComponent(launchNote))}">Copy launch note</button>
+          </div>
+        </div>
+        ${
+          runbookRows.length
+            ? `
+              <div class="command-pilot-launch-runbook">
+                ${runbookRows
+                  .map(
+                    ([step, title, note, tone]) => `
+                      <article class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(step)}</span>
+                        <strong>${escapeHtml(title)}</strong>
+                        <small>${escapeHtml(note)}</small>
+                      </article>
+                    `,
+                  )
+                  .join("")}
+              </div>
+            `
+            : ""
+        }
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8071,6 +8177,7 @@ const state = {
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
     const autopilot = buildPursuitAutopilotModel();
+    const pilotPitch = buildPilotPitchModel();
     return `
       <section class="command-center">
         <section class="command-console">
@@ -8107,7 +8214,8 @@ const state = {
         ${renderCommandSerenityCompass(model, autopilot)}
         ${renderCommandContinuityGuard()}
         ${renderCommandWorldDemoScript(model, autopilot)}
-        ${renderCommandPilotClosePacket(model)}
+        ${renderCommandPilotClosePacket(model, pilotPitch)}
+        ${renderCommandPilotLaunchBoard(model, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26603,12 +26711,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v322 Pilot Close Packet",
-      phase: "Pilot Close Packet",
+      version: "v323 Pilot Launch Board",
+      phase: "Pilot Launch Board",
       lane: "Static product prototype on GitHub Pages",
-      pace: "303 meaningful versions since rebrand",
-      summary: "Command Center now turns the demo story into a sponsor-ready pilot close packet with package, proof, value case, decision gate, and copy-ready note.",
+      pace: "304 meaningful versions since rebrand",
+      summary: "Command Center now carries the post-yes launch board: kickoff date, workbook handoff, access split, owner checklist, first review proof, and copy-ready launch note.",
       tracks: [
+        ["v323 pilot launch board", 100, "Command Center now turns an accepted pilot into day-one launch control, showing kickoff, workbook handoff, user access, owner checklist, first review proof, and a copy-ready launch note.", "green"],
         ["v322 pilot close packet", 100, "Command Center now summarizes the recommended pilot ask, value proof, evidence health, and day-30 decision gate while copying a sponsor-ready close note from the live Pilot Pitch model.", "green"],
         ["v321 world demo script", 100, "Command Center now turns the recovered baseline, open work, captured value, evidence health, and routed actions into one copy-ready demo story for buyers and internal sponsors.", "green"],
         ["v320 continuity guard", 100, "Command Center now records the recovered GitHub baseline, confirms the health check and local run path, and gives one copy-ready continuity line before the next build starts.", "green"],
@@ -27073,10 +27182,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns the buyer demo into a sponsor-ready 30-day pilot close packet.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns a sponsor yes into a visible day-one pilot launch board.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

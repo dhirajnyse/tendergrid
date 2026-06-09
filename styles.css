@@ -5813,6 +5813,147 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-pilot-launch-board {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfffe, rgba(237, 250, 247, 0.94));
+  box-shadow: 0 12px 28px rgba(13, 92, 78, 0.055);
+}
+
+.command-pilot-launch-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-pilot-launch-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-pilot-launch-head small {
+  max-width: 1040px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-pilot-launch-grid,
+.command-pilot-launch-owners,
+.command-pilot-launch-runbook {
+  display: grid;
+  gap: 8px;
+}
+
+.command-pilot-launch-grid {
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-pilot-launch-owners {
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-pilot-launch-runbook {
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-pilot-launch-card,
+.command-pilot-launch-owners article,
+.command-pilot-launch-runbook article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 102px;
+  padding: 12px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-pilot-launch-card span,
+.command-pilot-launch-owners article span,
+.command-pilot-launch-runbook article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-pilot-launch-card strong,
+.command-pilot-launch-owners article strong,
+.command-pilot-launch-runbook article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-pilot-launch-card small,
+.command-pilot-launch-owners article small,
+.command-pilot-launch-runbook article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-pilot-launch-card.tone-green,
+.command-pilot-launch-owners article.tone-green,
+.command-pilot-launch-runbook article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-pilot-launch-card.tone-teal,
+.command-pilot-launch-owners article.tone-teal,
+.command-pilot-launch-runbook article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-pilot-launch-card.tone-blue,
+.command-pilot-launch-owners article.tone-blue,
+.command-pilot-launch-runbook article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-pilot-launch-card.tone-amber,
+.command-pilot-launch-owners article.tone-amber,
+.command-pilot-launch-runbook article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-pilot-launch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-pilot-launch-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-pilot-launch-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -6490,7 +6631,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
 
   .command-continuity-grid,
   .command-world-demo-grid,
-  .command-pilot-close-grid {
+  .command-pilot-close-grid,
+  .command-pilot-launch-grid,
+  .command-pilot-launch-owners,
+  .command-pilot-launch-runbook {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -6581,7 +6725,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-serenity-compass-grid,
   .command-continuity-grid,
   .command-world-demo-grid,
-  .command-pilot-close-grid {
+  .command-pilot-close-grid,
+  .command-pilot-launch-grid,
+  .command-pilot-launch-owners,
+  .command-pilot-launch-runbook {
     grid-template-columns: 1fr;
   }
 
@@ -6590,12 +6737,15 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-world-demo-actions .ghost-btn,
   .command-world-demo-actions .secondary-btn,
   .command-pilot-close-actions .ghost-btn,
-  .command-pilot-close-actions .secondary-btn {
+  .command-pilot-close-actions .secondary-btn,
+  .command-pilot-launch-actions .ghost-btn,
+  .command-pilot-launch-actions .secondary-btn {
     width: 100%;
   }
 
   .command-world-demo-actions div,
-  .command-pilot-close-actions div {
+  .command-pilot-close-actions div,
+  .command-pilot-launch-actions div {
     width: 100%;
   }
 
