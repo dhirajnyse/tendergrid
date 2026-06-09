@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v323";
-  const BUILD_LABEL = "Pilot Launch Board";
+  const BUILD_VERSION = "v324";
+  const BUILD_LABEL = "Learning Loop Board";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -8141,6 +8141,104 @@ const state = {
     `;
   }
 
+  function renderCommandLearningLoopBoard(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const company = pitch.company || {};
+    const twinLearningItems = Array.isArray(twin.learningItems) ? twin.learningItems : [];
+    const localSignalCount =
+      model.reminders.tasks.length +
+      model.documents.totalGaps +
+      model.contractGaps.length +
+      autopilot.nowCount +
+      autopilot.delegateCount +
+      autopilot.decideCount;
+    const approvedRuleCount = twinLearningItems.length;
+    const publisherScore = Number(publisher.score) || 0;
+    const twinScore = Number(twin.learningScore) || 0;
+    const loopScore = Math.max(
+      1,
+      Math.min(100, Math.round(twinScore * 0.42 + publisherScore * 0.34 + model.evidenceScore * 0.24)),
+    );
+    const reusablePatterns = Math.max(0, (Number(publisher.founderReady) || 0) + (Number(publisher.replyMemory) || 0) + (Number(publisher.forecastTests) || 0));
+    const privacyLocks = Math.max(1, (Number(publisher.retiredRoutes) || 0) + model.evidenceGaps.length + model.contractGaps.length);
+    const crossOrgLift = Number(publisher.netCloseLift) || 0;
+    const loopLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${localSignalCount} local signals become tenant-approved learning before any anonymized pattern can improve another organization. Loop score ${loopScore}%, ${approvedRuleCount} rules, ${reusablePatterns} reusable patterns, privacy locks on.`;
+    const learningNote = [
+      `Subject: ${BRAND_NAME} closed-loop learning lane - ${company.name || state.data.company.name || "workspace"}`,
+      "",
+      "The platform is ready to learn from real work without leaking client data.",
+      "",
+      `Local signals: ${localSignalCount}`,
+      `Decision Twin memory: ${twinScore}% / ${approvedRuleCount} rules`,
+      `Coach-to-close publisher: ${publisherScore}% / ${reusablePatterns} reusable patterns`,
+      `Privacy locks: ${privacyLocks}`,
+      `Network lift candidate: ${crossOrgLift >= 0 ? "+" : ""}${crossOrgLift}`,
+      "",
+      "Operating rule: every learning move stays inside the tenant first, then management approves it, then privacy filters remove client names, values, documents, and commercial context before an anonymized pattern can help other workspaces.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const loopCards = [
+      ["Observe", `${localSignalCount} signals`, `${model.openRecords.length} open records feed actions, gaps, and outcomes.`, "teal"],
+      ["Score", `${loopScore}%`, `${twinScore}% Decision Twin memory with ${model.evidenceScore}% evidence health.`, "blue"],
+      ["Approve", `${approvedRuleCount} rules`, "Tenant management approves what can influence guidance.", "green"],
+      ["Share", `${reusablePatterns} patterns`, "Only anonymized playbooks can cross organizations.", "amber"],
+    ];
+    const learningLanes = [
+      ["Local tenant loop", "Actions, replies, delays, proof, and outcomes stay inside the organization first.", `${autopilot.nowCount} do-now / ${autopilot.delegateCount} delegate / ${autopilot.decideCount} decide`, "teal"],
+      ["Approval gate", "Admin and management decide which rules can influence Advisor, forecasts, and scripts.", `${approvedRuleCount} candidate rules`, "green"],
+      ["Privacy filter", "Client names, commercial values, files, emails, and project details are stripped before reuse.", `${privacyLocks} locks active`, "blue"],
+      ["Network playbook", "Shared learning becomes aggregate guidance that improves other tenants without exposing the source.", `${crossOrgLift >= 0 ? "+" : ""}${crossOrgLift} lift candidate`, "amber"],
+    ];
+
+    return `
+      <section class="command-learning-loop-board" aria-label="Learning loop board">
+        <div class="command-learning-loop-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Learning Loop Board</span>
+          <strong>Turn every action into governed learning, then scale only the safe pattern.</strong>
+          <small>${escapeHtml(loopLine)}</small>
+        </div>
+        <div class="command-learning-loop-grid">
+          ${loopCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-learning-loop-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-learning-loop-lanes">
+          ${learningLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-learning-loop-actions">
+          <small>Closed loop: observe work, score impact, approve influence, strip private data, then reuse only the anonymized lesson.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Decision Twin">Open Decision Twin</button>
+            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open learning publisher</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Learning loop note copied." data-copy-text="${escapeHtml(encodeURIComponent(learningNote))}">Copy learning note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8216,6 +8314,7 @@ const state = {
         ${renderCommandWorldDemoScript(model, autopilot)}
         ${renderCommandPilotClosePacket(model, pilotPitch)}
         ${renderCommandPilotLaunchBoard(model, pilotPitch)}
+        ${renderCommandLearningLoopBoard(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26711,12 +26810,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v323 Pilot Launch Board",
-      phase: "Pilot Launch Board",
+      version: "v324 Learning Loop Board",
+      phase: "Learning Loop Board",
       lane: "Static product prototype on GitHub Pages",
-      pace: "304 meaningful versions since rebrand",
-      summary: "Command Center now carries the post-yes launch board: kickoff date, workbook handoff, access split, owner checklist, first review proof, and copy-ready launch note.",
+      pace: "305 meaningful versions since rebrand",
+      summary: "Command Center now makes the closed-loop AI path visible: local actions become tenant-approved learning, privacy filters remove sensitive data, and only anonymized patterns can improve other organizations.",
       tracks: [
+        ["v324 learning loop board", 100, "Command Center now shows how local signals, Decision Twin memory, approved rules, privacy locks, and anonymized playbooks turn organizational work into governed cross-tenant learning.", "green"],
         ["v323 pilot launch board", 100, "Command Center now turns an accepted pilot into day-one launch control, showing kickoff, workbook handoff, user access, owner checklist, first review proof, and a copy-ready launch note.", "green"],
         ["v322 pilot close packet", 100, "Command Center now summarizes the recommended pilot ask, value proof, evidence health, and day-30 decision gate while copying a sponsor-ready close note from the live Pilot Pitch model.", "green"],
         ["v321 world demo script", 100, "Command Center now turns the recovered baseline, open work, captured value, evidence health, and routed actions into one copy-ready demo story for buyers and internal sponsors.", "green"],
@@ -27182,10 +27282,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns a sponsor yes into a visible day-one pilot launch board.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now makes the closed-loop AI learning path visible with tenant approval, privacy filtering, and anonymized playbook reuse.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v324 Learning Loop Board makes the closed-loop AI path visible with local signals, Decision Twin memory, tenant approval, privacy filters, and anonymized playbook sharing across organizations.
 - v323 Pilot Launch Board turns a sponsor yes into day-one launch control with kickoff date, workbook handoff, access split, owner checklist, first review proof, and copy-ready launch note.
 - v322 Pilot Close Packet turns the buyer demo into a sponsor-ready 30-day pilot ask with package, proof, value case, decision gate, and copy-ready close note.
 - v321 World Demo Script turns the recovered baseline and live Command Center metrics into a four-beat buyer-ready story: recover trust, run the desk, prove the data, and close the pilot.

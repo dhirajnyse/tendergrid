@@ -5954,6 +5954,127 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-learning-loop-board {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(49, 101, 158, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfdff, rgba(239, 247, 252, 0.95));
+  box-shadow: 0 12px 28px rgba(38, 75, 114, 0.055);
+}
+
+.command-learning-loop-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-learning-loop-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-learning-loop-head small {
+  max-width: 1080px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-learning-loop-grid,
+.command-learning-loop-lanes {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-learning-loop-card,
+.command-learning-loop-lanes article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid rgba(49, 101, 158, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-learning-loop-card span,
+.command-learning-loop-lanes article span {
+  color: var(--blue-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-learning-loop-card strong,
+.command-learning-loop-lanes article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-learning-loop-card small,
+.command-learning-loop-lanes article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-learning-loop-card.tone-green,
+.command-learning-loop-lanes article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-learning-loop-card.tone-teal,
+.command-learning-loop-lanes article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-learning-loop-card.tone-blue,
+.command-learning-loop-lanes article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-learning-loop-card.tone-amber,
+.command-learning-loop-lanes article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-learning-loop-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-learning-loop-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-learning-loop-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -6634,7 +6755,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-close-grid,
   .command-pilot-launch-grid,
   .command-pilot-launch-owners,
-  .command-pilot-launch-runbook {
+  .command-pilot-launch-runbook,
+  .command-learning-loop-grid,
+  .command-learning-loop-lanes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -6728,7 +6851,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-close-grid,
   .command-pilot-launch-grid,
   .command-pilot-launch-owners,
-  .command-pilot-launch-runbook {
+  .command-pilot-launch-runbook,
+  .command-learning-loop-grid,
+  .command-learning-loop-lanes {
     grid-template-columns: 1fr;
   }
 
@@ -6739,13 +6864,16 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-close-actions .ghost-btn,
   .command-pilot-close-actions .secondary-btn,
   .command-pilot-launch-actions .ghost-btn,
-  .command-pilot-launch-actions .secondary-btn {
+  .command-pilot-launch-actions .secondary-btn,
+  .command-learning-loop-actions .ghost-btn,
+  .command-learning-loop-actions .secondary-btn {
     width: 100%;
   }
 
   .command-world-demo-actions div,
   .command-pilot-close-actions div,
-  .command-pilot-launch-actions div {
+  .command-pilot-launch-actions div,
+  .command-learning-loop-actions div {
     width: 100%;
   }
 
