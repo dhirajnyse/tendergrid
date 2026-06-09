@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v320";
-  const BUILD_LABEL = "Continuity Guard";
+  const BUILD_VERSION = "v321";
+  const BUILD_LABEL = "World Demo Script";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -7879,7 +7879,7 @@ const state = {
     const guardLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: baseline ${shortSha} is recovered, checked, pushed, and ready to build forward. Keep using npm.cmd run check, serve on 127.0.0.1:4177, and commit only after the Command Center opens cleanly.`;
     const guardCards = [
       ["Baseline", shortSha, RECOVERY_BASELINE_LABEL, "green"],
-      ["Health check", "Pass", "npm.cmd run check protects brand, data, routes, and v320 tokens.", "blue"],
+      ["Health check", "Pass", `npm.cmd run check protects brand, data, routes, and ${BUILD_VERSION} tokens.`, "blue"],
       ["Run path", "4177", "Local static server starts at http://127.0.0.1:4177/.", "amber"],
       ["Next move", "Build forward", "Continue from this clean GitHub-synced state before changing product scope.", "green"],
     ];
@@ -7907,6 +7907,57 @@ const state = {
         <div class="command-continuity-actions">
           <small>Guardrail stays visible until the next production-safe milestone replaces it.</small>
           <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-message="Continuity line copied." data-copy-text="${escapeHtml(encodeURIComponent(guardLine))}">Copy continuity line</button>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandWorldDemoScript(model, autopilot) {
+    const shortSha = RECOVERY_BASELINE_SHA.slice(0, 7);
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstMove = firstSignal.action || firstSignal.title || firstTask.action || "Open the first priority room";
+    const openCount = model.openRecords.length;
+    const actionCount = model.reminders.tasks.length;
+    const overdueCount = model.reminders.overdue;
+    const totalValue = formatCompactMoney(model.totalValue);
+    const sourceCoverage = model.documents.sourceCoverage;
+    const evidenceGaps = model.documents.totalGaps;
+    const demoLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: recover trust from baseline ${shortSha}, show ${openCount} open records and ${totalValue} captured value, prove ${model.evidenceScore}% evidence health with ${sourceCoverage}% source coverage, then close the pilot with ${actionCount} routed actions. First move: ${compactText(firstMove, 90)}.`;
+    const demoCards = [
+      ["Beat 1", "Recover trust", `Baseline ${shortSha}`, "Open with the clean GitHub-synced recovery state before any feature promise.", "green"],
+      ["Beat 2", "Run the desk", `${openCount} open`, `${totalValue} tracked across live tender and project records.`, "teal"],
+      ["Beat 3", "Prove the data", `${model.evidenceScore}%`, `${sourceCoverage}% source coverage with ${evidenceGaps} visible evidence gaps.`, "blue"],
+      ["Beat 4", "Close the pilot", `${actionCount} actions`, `${overdueCount} overdue follow-ups are already routed into the operating rooms.`, "amber"],
+    ];
+
+    return `
+      <section class="command-world-demo-script" aria-label="World demo script">
+        <div class="command-world-demo-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} World Demo Script</span>
+          <strong>One product story: recover trust, run the desk, prove the data, close the pilot.</strong>
+          <small>${escapeHtml(demoLine)}</small>
+        </div>
+        <div class="command-world-demo-grid">
+          ${demoCards
+            .map(
+              ([label, title, value, note, tone]) => `
+                <article class="command-world-demo-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(title)}</strong>
+                  <b>${escapeHtml(value)}</b>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-world-demo-actions">
+          <small>${escapeHtml(compactText(firstMove, 120))}</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open pilot pitch</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="World demo script copied." data-copy-text="${escapeHtml(encodeURIComponent(demoLine))}">Copy world script</button>
+          </div>
         </div>
       </section>
     `;
@@ -7983,6 +8034,7 @@ const state = {
         ${renderCommandDecisionReceipt(model, autopilot)}
         ${renderCommandSerenityCompass(model, autopilot)}
         ${renderCommandContinuityGuard()}
+        ${renderCommandWorldDemoScript(model, autopilot)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26478,12 +26530,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v320 Continuity Guard",
-      phase: "Continuity Guard",
+      version: "v321 World Demo Script",
+      phase: "World Demo Script",
       lane: "Static product prototype on GitHub Pages",
-      pace: "301 meaningful versions since rebrand",
-      summary: "Command Center now carries the recovered GitHub baseline, health check, local run path, and next-safe-build guidance in one compact continuity guard.",
+      pace: "302 meaningful versions since rebrand",
+      summary: "Command Center now turns the recovered baseline and live operating metrics into a four-beat demo script for trust, desk control, evidence proof, and pilot close.",
       tracks: [
+        ["v321 world demo script", 100, "Command Center now turns the recovered baseline, open work, captured value, evidence health, and routed actions into one copy-ready demo story for buyers and internal sponsors.", "green"],
         ["v320 continuity guard", 100, "Command Center now records the recovered GitHub baseline, confirms the health check and local run path, and gives one copy-ready continuity line before the next build starts.", "green"],
         ["v319 serenity handrail", 100, "Command Center now recommends one calm path: start in the right room, confirm one owner, and close with one date and one proof without adding another large surface.", "green"],
         ["v318 serenity compass", 100, "Command Center now folds Operate, Review, and Sell into one Serenity Compass after the Decision Receipt, keeping the daily screen calm while the next path stays one click away.", "green"],
@@ -26946,10 +26999,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now shows the recovered baseline, health check, run path, and next-safe-build line so the project can move forward without losing the source of truth.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns recovery proof and live metrics into a four-beat buyer-ready demo script.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

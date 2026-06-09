@@ -18,3 +18,4 @@ Recovery cleanup in this copy:
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
 - v320 adds a Command Center Continuity Guard so the recovered baseline, health check, run path, and next-safe-build line stay visible inside the product.
+- v321 adds a World Demo Script so the recovered baseline, live records, captured value, evidence health, and routed actions can be shown as one copy-ready buyer story.

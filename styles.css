@@ -5584,6 +5584,124 @@ body.quiet-focus-mode .focus-mode-pill {
   line-height: 1.35;
 }
 
+.command-world-demo-script {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfffe, rgba(239, 250, 247, 0.92));
+  box-shadow: 0 12px 28px rgba(13, 92, 78, 0.055);
+}
+
+.command-world-demo-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-world-demo-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-world-demo-head small {
+  max-width: 1040px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-world-demo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.command-world-demo-card {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 118px;
+  padding: 12px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-world-demo-card span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-world-demo-card strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+}
+
+.command-world-demo-card b {
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.05;
+}
+
+.command-world-demo-card small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-world-demo-card.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-world-demo-card.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-world-demo-card.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-world-demo-card.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-world-demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-world-demo-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-world-demo-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -6259,7 +6377,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
     justify-self: start;
   }
 
-  .command-continuity-grid {
+  .command-continuity-grid,
+  .command-world-demo-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -6348,12 +6467,19 @@ body.quiet-focus-mode .command-room-cockpit-fold {
 
   .command-serenity-handrail,
   .command-serenity-compass-grid,
-  .command-continuity-grid {
+  .command-continuity-grid,
+  .command-world-demo-grid {
     grid-template-columns: 1fr;
   }
 
   .command-serenity-compass-actions .ghost-btn,
-  .command-continuity-actions .ghost-btn {
+  .command-continuity-actions .ghost-btn,
+  .command-world-demo-actions .ghost-btn,
+  .command-world-demo-actions .secondary-btn {
+    width: 100%;
+  }
+
+  .command-world-demo-actions div {
     width: 100%;
   }
 

@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v321 World Demo Script turns the recovered baseline and live Command Center metrics into a four-beat buyer-ready story: recover trust, run the desk, prove the data, and close the pilot.
 - v320 Continuity Guard records the recovered GitHub baseline, health check, local run path, and next-safe-build line directly in Command Center so the project can move forward without losing the source of truth.
 - v319 Serenity Handrail turns the folded Command Center compass into a Start / Confirm / Close handrail so teams get one guided next move without another large screen.
 - v318 Serenity Compass adds a folded operate/review/sell path under Command Center so the daily screen stays calm while the next route is still one click away.

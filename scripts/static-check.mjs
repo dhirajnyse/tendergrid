@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=320"), "index.html is missing the v320 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=320"), "index.html is missing the v320 data cache token.");
-assert(index.includes("app.js?v=320"), "index.html is missing the v320 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=320"), "index.html is missing the v320 icon cache token.");
+assert(index.includes("styles.css?v=321"), "index.html is missing the v321 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=321"), "index.html is missing the v321 data cache token.");
+assert(index.includes("app.js?v=321"), "index.html is missing the v321 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=321"), "index.html is missing the v321 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,8 +80,8 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v320";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Continuity Guard";'), "app.js has the wrong build label.");
+assert(app.includes('const BUILD_VERSION = "v321";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "World Demo Script";'), "app.js has the wrong build label.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -96,11 +96,13 @@ assert(app.includes("function renderPursuitWinLabPage"), "app.js is missing Purs
 assert(app.includes("function renderPursuitDecisionTwinPage"), "app.js is missing Pursuit Decision Twin rendering.");
 assert(app.includes("renderCommandSerenityCompass"), "app.js is missing the Serenity Handrail render path.");
 assert(app.includes("renderCommandContinuityGuard"), "app.js is missing the Continuity Guard render path.");
+assert(app.includes("renderCommandWorldDemoScript"), "app.js is missing the World Demo Script render path.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
 assert(css.includes(".command-serenity-handrail"), "styles.css is missing Serenity Handrail styles.");
 assert(css.includes(".command-continuity-guard"), "styles.css is missing Continuity Guard styles.");
+assert(css.includes(".command-world-demo-script"), "styles.css is missing World Demo Script styles.");
 assert(css.includes("letter-spacing: 0"), "styles.css should keep letter spacing neutral.");
 assert(!/letter-spacing:\s*-/i.test(css), "styles.css contains negative letter spacing.");
 
