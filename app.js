@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v325";
-  const BUILD_LABEL = "Outcome Feedback Engine";
+  const BUILD_VERSION = "v326";
+  const BUILD_LABEL = "Adaptive Policy Simulator";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -8346,6 +8346,128 @@ const state = {
     `;
   }
 
+  function renderCommandAdaptivePolicySimulator(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const publisherScore = Number(publisher.score) || 0;
+    const policyCandidates =
+      (Number(twin.ruleImpactPromotions) || 0) +
+      (Number(twin.ruleImpactRetests) || 0) +
+      (Number(twin.influenceEnabledGuidance) || 0) +
+      (Number(publisher.forecastTests) || 0);
+    const policyHolds =
+      (Number(twin.ruleImpactBlocked) || 0) +
+      (Number(twin.influenceHeld) || 0) +
+      (Number(twin.releaseHeldOrBlocked) || 0) +
+      model.evidenceGaps.length;
+    const possibleLift = Math.max(0, (Number(twin.ruleImpactLift) || 0) + Math.max(0, Number(publisher.netCloseLift) || 0));
+    const privacyRiskPressure = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(model.evidenceGaps.length * 7 + model.contractGaps.length * 6 + (Number(twin.ruleImpactBlocked) || 0) * 12 + (Number(publisher.retiredRoutes) || 0) * 10),
+      ),
+    );
+    const privacyGuardScore = Math.max(0, 100 - privacyRiskPressure);
+    const simulationScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          (Number(twin.ruleImpactScore) || 0) * 0.28 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.2 +
+            model.evidenceScore * 0.18 +
+            publisherScore * 0.16 +
+            privacyGuardScore * 0.18,
+        ),
+      ),
+    );
+    const advisorAfter = Math.min(100, Math.max(0, Math.round(model.advisor.advisorScore + possibleLift * 0.45 - privacyRiskPressure * 0.08)));
+    const reportAfter = Math.min(100, Math.max(0, Math.round(model.weeklyReview.reviewScore + possibleLift * 0.35 - model.evidenceGaps.length * 0.5)));
+    const pilotAfter = Math.min(100, Math.max(0, Math.round(publisherScore + possibleLift * 0.5 - (Number(publisher.retiredRoutes) || 0) * 4)));
+    const testReady = Math.max(0, (Number(twin.ruleImpactPromotions) || 0) + (Number(twin.influenceEnabledGuidance) || 0) + (Number(publisher.forecastTests) || 0));
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const simulatorLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: simulate ${policyCandidates} candidate policies before live guidance changes. Score ${simulationScore}%, possible lift +${possibleLift}, Advisor ${advisorAfter}%, Reports ${reportAfter}%, Pilot Pitch ${pilotAfter}%, privacy guard ${privacyGuardScore}%.`;
+    const simulatorNote = [
+      `Subject: ${BRAND_NAME} adaptive policy simulation - ${state.data.company.name}`,
+      "",
+      "The next reinforcement rule should be tested before it reaches live guidance.",
+      "",
+      `Simulation score: ${simulationScore}%`,
+      `Candidate policies: ${policyCandidates}`,
+      `Test-ready policies: ${testReady}`,
+      `Held or blocked policies: ${policyHolds}`,
+      `Advisor after simulation: ${advisorAfter}%`,
+      `Reports after simulation: ${reportAfter}%`,
+      `Pilot Pitch after simulation: ${pilotAfter}%`,
+      `Privacy guard: ${privacyGuardScore}%`,
+      `First live signal to protect: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Policy rule: simulate impact, prove evidence, check privacy exposure, require approval, then release only the safest tested guidance.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const policyCards = [
+      ["Simulate", `${policyCandidates} policies`, "Promotion, retest, influence, and forecast-test candidates stay in simulation first.", "teal"],
+      ["Impact", `+${possibleLift}`, `Advisor ${advisorAfter}%, Reports ${reportAfter}%, Pilot Pitch ${pilotAfter}% after simulated lift.`, "blue"],
+      ["Privacy", `${privacyGuardScore}%`, `${privacyRiskPressure}% risk pressure must clear before tenant or network reuse.`, "green"],
+      ["Decision", `${testReady} ready`, `${policyHolds} held until proof, owner, privacy, or audit gates close.`, "amber"],
+    ];
+    const policyLanes = [
+      ["Advisor guidance", "Would the rule change what operators are told to do first?", `${advisorAfter}% simulated`, "teal"],
+      ["Reports proof", "Would management reporting become clearer without hiding weak evidence?", `${reportAfter}% simulated`, "blue"],
+      ["Pilot Pitch", "Would the rule improve sponsor close language without unsafe overfitting?", `${pilotAfter}% simulated`, "green"],
+      ["Privacy risk", "Would frontline, buyer, or network reuse expose private commercial context?", `${privacyGuardScore}% guard`, "amber"],
+    ];
+
+    return `
+      <section class="command-adaptive-policy-simulator" aria-label="Adaptive policy simulator">
+        <div class="command-adaptive-policy-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Adaptive Policy Simulator</span>
+          <strong>Test reinforcement policy before it touches live guidance.</strong>
+          <small>${escapeHtml(simulatorLine)}</small>
+        </div>
+        <div class="command-adaptive-policy-grid">
+          ${policyCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-adaptive-policy-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-adaptive-policy-lanes">
+          ${policyLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-adaptive-policy-actions">
+          <small>Release rule: no adaptive policy reaches live guidance until simulation, evidence, privacy, approval, and audit all pass.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Decision Twin">Open simulator</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open Advisor impact</button>
+            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open Pilot Pitch impact</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Adaptive policy note copied." data-copy-text="${escapeHtml(encodeURIComponent(simulatorNote))}">Copy policy note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8423,6 +8545,7 @@ const state = {
         ${renderCommandPilotLaunchBoard(model, pilotPitch)}
         ${renderCommandLearningLoopBoard(model, autopilot, pilotPitch)}
         ${renderCommandOutcomeFeedbackEngine(model, autopilot, pilotPitch)}
+        ${renderCommandAdaptivePolicySimulator(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26918,12 +27041,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v325 Outcome Feedback Engine",
-      phase: "Outcome Feedback Engine",
+      version: "v326 Adaptive Policy Simulator",
+      phase: "Adaptive Policy Simulator",
       lane: "Static product prototype on GitHub Pages",
-      pace: "306 meaningful versions since rebrand",
-      summary: "Command Center now gives the closed-loop AI path a reward signal: actual outcomes are captured, replayed against prediction, scored, approved, privacy-filtered, and only then reinforced.",
+      pace: "307 meaningful versions since rebrand",
+      summary: "Command Center now tests reinforcement policy before live guidance changes, showing simulated impact across Advisor, Reports, Pilot Pitch, and privacy risk.",
       tracks: [
+        ["v326 adaptive policy simulator", 100, "Command Center now simulates candidate reinforcement policies across Advisor, Reports, Pilot Pitch, and privacy guardrails before approved guidance reaches live rooms.", "green"],
         ["v325 outcome feedback engine", 100, "Command Center now captures outcome events, compares predicted lift with actual lift, scores reward quality, and shows which approved privacy-safe paths can reinforce future guidance.", "green"],
         ["v324 learning loop board", 100, "Command Center now shows how local signals, Decision Twin memory, approved rules, privacy locks, and anonymized playbooks turn organizational work into governed cross-tenant learning.", "green"],
         ["v323 pilot launch board", 100, "Command Center now turns an accepted pilot into day-one launch control, showing kickoff, workbook handoff, user access, owner checklist, first review proof, and a copy-ready launch note.", "green"],
@@ -27391,10 +27515,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now gives the learning loop an outcome reward signal before guidance is reinforced.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now simulates adaptive policy impact before any reinforcement reaches live guidance.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
