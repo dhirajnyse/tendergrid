@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=329"), "index.html is missing the v329 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=329"), "index.html is missing the v329 data cache token.");
-assert(index.includes("app.js?v=329"), "index.html is missing the v329 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=329"), "index.html is missing the v329 icon cache token.");
+assert(index.includes("styles.css?v=330"), "index.html is missing the v330 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=330"), "index.html is missing the v330 data cache token.");
+assert(index.includes("app.js?v=330"), "index.html is missing the v330 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=330"), "index.html is missing the v330 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,8 +80,8 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v329";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Network Influence Shadow Replay";'), "app.js has the wrong build label.");
+assert(app.includes('const BUILD_VERSION = "v330";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Tenant Influence Activation Switchboard";'), "app.js has the wrong build label.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -105,6 +105,7 @@ assert(app.includes("renderCommandAdaptivePolicySimulator"), "app.js is missing 
 assert(app.includes("renderCommandTenantLearningFirewall"), "app.js is missing the Tenant Learning Firewall render path.");
 assert(app.includes("renderCommandFederatedPatternTrustLedger"), "app.js is missing the Federated Pattern Trust Ledger render path.");
 assert(app.includes("renderCommandNetworkInfluenceShadowReplay"), "app.js is missing the Network Influence Shadow Replay render path.");
+assert(app.includes("renderCommandTenantInfluenceActivationSwitchboard"), "app.js is missing the Tenant Influence Activation Switchboard render path.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -119,6 +120,7 @@ assert(css.includes(".command-adaptive-policy-simulator"), "styles.css is missin
 assert(css.includes(".command-tenant-learning-firewall"), "styles.css is missing Tenant Learning Firewall styles.");
 assert(css.includes(".command-federated-trust-ledger"), "styles.css is missing Federated Pattern Trust Ledger styles.");
 assert(css.includes(".command-network-shadow-replay"), "styles.css is missing Network Influence Shadow Replay styles.");
+assert(css.includes(".command-tenant-influence-switchboard"), "styles.css is missing Tenant Influence Activation Switchboard styles.");
 assert(css.includes("letter-spacing: 0"), "styles.css should keep letter spacing neutral.");
 assert(!/letter-spacing:\s*-/i.test(css), "styles.css contains negative letter spacing.");
 

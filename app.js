@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v329";
-  const BUILD_LABEL = "Network Influence Shadow Replay";
+  const BUILD_VERSION = "v330";
+  const BUILD_LABEL = "Tenant Influence Activation Switchboard";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -8868,6 +8868,152 @@ const state = {
     `;
   }
 
+  function renderCommandTenantInfluenceActivationSwitchboard(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const replayFit = Math.max(0, Math.min(100, Math.round(((matchedReplay + partialReplay * 0.55) / Math.max(1, replayRows.length)) * 100)));
+    const trustedPatterns = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.founderReady) || 0) +
+        (Number(publisher.replyMemory) || 0),
+    );
+    const privacyPressure = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceGaps.length * 6 +
+            model.contractGaps.length * 7 +
+            (Number(twin.ruleImpactBlocked) || 0) * 10 +
+            (Number(twin.changelogBlocked) || 0) * 12 +
+            (Number(publisher.retiredRoutes) || 0) * 10,
+        ),
+      ),
+    );
+    const shadowFit = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.22 +
+            replayFit * 0.18 +
+            (Number(twin.learningScore) || 0) * 0.16 +
+            (Number(twin.ruleImpactScore) || 0) * 0.16 +
+            (Number(publisher.score) || 0) * 0.14 +
+            Math.max(0, 100 - privacyPressure) * 0.14,
+        ),
+      ),
+    );
+    const activationCandidates = Math.max(0, Math.min(trustedPatterns, Math.round((trustedPatterns * shadowFit) / 100)));
+    const advisorSwitches = Math.max(0, Math.min(activationCandidates, Math.ceil(activationCandidates * 0.4)));
+    const reportSwitches = Math.max(0, Math.min(activationCandidates - advisorSwitches, Math.ceil(activationCandidates * 0.3)));
+    const pilotSwitches = Math.max(0, activationCandidates - advisorSwitches - reportSwitches);
+    const heldSwitches = Math.max(
+      0,
+      trustedPatterns - activationCandidates + (Number(twin.influenceHeld) || 0) + model.evidenceGaps.length + model.contractGaps.length,
+    );
+    const rollbackLocks = Math.max(1, heldSwitches + (Number(twin.ruleImpactBlocked) || 0) + (Number(publisher.retiredRoutes) || 0));
+    const switchboardScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          shadowFit * 0.28 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.22 +
+            model.evidenceScore * 0.18 +
+            (Number(publisher.score) || 0) * 0.14 +
+            Math.max(0, 100 - rollbackLocks * 3) * 0.18,
+        ),
+      ),
+    );
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const switchLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${activationCandidates} shadow-proven patterns are ready for tenant-controlled activation. Advisor ${advisorSwitches}, Reports ${reportSwitches}, Pilot Pitch ${pilotSwitches}, held ${heldSwitches}, rollback locks ${rollbackLocks}.`;
+    const switchNote = [
+      `Subject: ${BRAND_NAME} tenant influence activation switchboard - ${state.data.company.name}`,
+      "",
+      "Network learning is now tenant-controlled before it becomes live guidance.",
+      "",
+      `Switchboard score: ${switchboardScore}%`,
+      `Shadow-proven activation candidates: ${activationCandidates}`,
+      `Advisor switches: ${advisorSwitches}`,
+      `Reports switches: ${reportSwitches}`,
+      `Pilot Pitch switches: ${pilotSwitches}`,
+      `Held switches: ${heldSwitches}`,
+      `Rollback locks: ${rollbackLocks}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Activation rule: each guidance surface needs tenant opt-in, evidence, owner, privacy state, rollback lock, and audit trail before any network learning becomes live.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const switchCards = [
+      ["Switchboard", `${switchboardScore}%`, `${activationCandidates} shadow-proven patterns wait for tenant opt-in.`, "blue"],
+      ["Advisor", `${advisorSwitches} switches`, "Only local-fit guidance can enter frontline next-action recommendations.", "teal"],
+      ["Reports", `${reportSwitches} switches`, "Management reporting gets influence only after proof and privacy are visible.", "green"],
+      ["Pilot Pitch", `${pilotSwitches} switches`, `${heldSwitches} held with ${rollbackLocks} rollback locks before buyer-facing use.`, "amber"],
+    ];
+    const switchLanes = [
+      ["Advisor opt-in", "Turn on only guidance that improves local next action without exposing commercial context.", `${advisorSwitches} ready`, "teal"],
+      ["Reports opt-in", "Allow aggregate proof and health movement into management reporting after evidence review.", `${reportSwitches} ready`, "green"],
+      ["Pilot Pitch opt-in", "Buyer-facing language must pass privacy, proof, and sponsor-safety gates before use.", `${pilotSwitches} ready`, "blue"],
+      ["Rollback and hold", "Every held switch keeps a rollback reason and becomes warning memory instead of live influence.", `${rollbackLocks} locks`, "amber"],
+    ];
+
+    return `
+      <section class="command-tenant-influence-switchboard" aria-label="Tenant influence activation switchboard">
+        <div class="command-tenant-influence-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Tenant Influence Activation Switchboard</span>
+          <strong>Let tenants decide which shadow-proven network guidance can go live.</strong>
+          <small>${escapeHtml(switchLine)}</small>
+        </div>
+        <div class="command-tenant-influence-grid">
+          ${switchCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-tenant-influence-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-tenant-influence-lanes">
+          ${switchLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-tenant-influence-actions">
+          <small>Live rule: no network influence reaches Advisor, Reports, or Pilot Pitch until the tenant switch, rollback lock, and audit trail are visible.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open Advisor switches</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open report switches</button>
+            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open Pilot Pitch switches</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Activation switchboard note copied." data-copy-text="${escapeHtml(encodeURIComponent(switchNote))}">Copy switchboard note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8949,6 +9095,7 @@ const state = {
         ${renderCommandTenantLearningFirewall(model, autopilot, pilotPitch)}
         ${renderCommandFederatedPatternTrustLedger(model, autopilot, pilotPitch)}
         ${renderCommandNetworkInfluenceShadowReplay(model, autopilot, pilotPitch)}
+        ${renderCommandTenantInfluenceActivationSwitchboard(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -27444,12 +27591,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v329 Network Influence Shadow Replay",
-      phase: "Network Influence Shadow Replay",
+      version: "v330 Tenant Influence Activation Switchboard",
+      phase: "Tenant Influence Activation Switchboard",
       lane: "Static product prototype on GitHub Pages",
-      pace: "310 meaningful versions since rebrand",
-      summary: "Command Center now tests trusted network patterns in tenant shadow mode before any live Advisor, Reports, or Pilot Pitch influence.",
+      pace: "311 meaningful versions since rebrand",
+      summary: "Command Center now gives tenants explicit switches for shadow-proven network influence across Advisor, Reports, and Pilot Pitch.",
       tracks: [
+        ["v330 tenant influence activation switchboard", 100, "Command Center now lets tenants choose which shadow-proven network patterns can influence Advisor, Reports, or Pilot Pitch, with rollback locks and audit-ready holds.", "green"],
         ["v329 network influence shadow replay", 100, "Command Center now replays trusted federated patterns against local tenant signals first, showing fit, predicted lift, activation candidates, held influence, and privacy pressure.", "green"],
         ["v328 federated pattern trust ledger", 100, "Command Center now gives approved anonymized patterns a trust ledger before they can influence other organizations, with proof count, replay fit, promotion, retest, and anti-pattern memory.", "green"],
         ["v327 tenant learning firewall", 100, "Command Center now separates tenant-private signals, approval gates, anonymized candidates, and never-share exports before cross-organization learning can reuse a pattern.", "green"],
@@ -27921,10 +28069,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now shadow-replays network learning before tenant activation.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now gives tenants explicit control over live network influence.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

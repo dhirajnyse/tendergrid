@@ -27,3 +27,4 @@ Recovery cleanup in this copy:
 - v327 adds a Tenant Learning Firewall so tenant-private signals, approvals, anonymized candidates, and never-share rules are visible before cross-organization learning.
 - v328 adds a Federated Pattern Trust Ledger so approved anonymized lessons show proof count, trust score, promotion, retest, and anti-pattern status before helping another organization.
 - v329 adds a Network Influence Shadow Replay so trusted network patterns are tested against local tenant signals, fit, lift, privacy pressure, and approval before live influence.
+- v330 adds a Tenant Influence Activation Switchboard so tenants control which shadow-proven network patterns can influence Advisor, Reports, or Pilot Pitch.

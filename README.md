@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v330 Tenant Influence Activation Switchboard gives tenants explicit opt-in switches for shadow-proven network influence across Advisor, Reports, and Pilot Pitch.
 - v329 Network Influence Shadow Replay tests trusted federated patterns against local tenant signals before any live Advisor, Reports, or Pilot Pitch influence.
 - v328 Federated Pattern Trust Ledger scores approved anonymized patterns before cross-organization use, separating promotion-ready lessons, retest memory, and protected anti-patterns.
 - v327 Tenant Learning Firewall makes cross-organization learning safe by separating tenant-private signals, approval gates, anonymized candidates, and never-share data.
