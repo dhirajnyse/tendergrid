@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v327 Tenant Learning Firewall makes cross-organization learning safe by separating tenant-private signals, approval gates, anonymized candidates, and never-share data.
 - v326 Adaptive Policy Simulator tests reinforcement policy before it reaches live guidance, showing simulated Advisor, Reports, Pilot Pitch, and privacy-risk impact.
 - v325 Outcome Feedback Engine gives the closed-loop AI path a reward signal by comparing predicted vs actual outcomes, scoring reinforcement quality, and gating approved privacy-safe guidance.
 - v324 Learning Loop Board makes the closed-loop AI path visible with local signals, Decision Twin memory, tenant approval, privacy filters, and anonymized playbook sharing across organizations.

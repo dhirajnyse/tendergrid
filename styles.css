@@ -6317,6 +6317,127 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-tenant-learning-firewall {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(49, 101, 158, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfdff, rgba(241, 247, 255, 0.96));
+  box-shadow: 0 12px 28px rgba(31, 73, 121, 0.055);
+}
+
+.command-tenant-firewall-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-tenant-firewall-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-tenant-firewall-head small {
+  max-width: 1080px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-tenant-firewall-grid,
+.command-tenant-firewall-lanes {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-tenant-firewall-card,
+.command-tenant-firewall-lanes article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid rgba(49, 101, 158, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-tenant-firewall-card span,
+.command-tenant-firewall-lanes article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-tenant-firewall-card strong,
+.command-tenant-firewall-lanes article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-tenant-firewall-card small,
+.command-tenant-firewall-lanes article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-tenant-firewall-card.tone-green,
+.command-tenant-firewall-lanes article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-tenant-firewall-card.tone-teal,
+.command-tenant-firewall-lanes article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-tenant-firewall-card.tone-blue,
+.command-tenant-firewall-lanes article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-tenant-firewall-card.tone-amber,
+.command-tenant-firewall-lanes article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-tenant-firewall-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-tenant-firewall-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-tenant-firewall-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -7003,7 +7124,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-outcome-feedback-grid,
   .command-outcome-feedback-lanes,
   .command-adaptive-policy-grid,
-  .command-adaptive-policy-lanes {
+  .command-adaptive-policy-lanes,
+  .command-tenant-firewall-grid,
+  .command-tenant-firewall-lanes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -7103,7 +7226,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-outcome-feedback-grid,
   .command-outcome-feedback-lanes,
   .command-adaptive-policy-grid,
-  .command-adaptive-policy-lanes {
+  .command-adaptive-policy-lanes,
+  .command-tenant-firewall-grid,
+  .command-tenant-firewall-lanes {
     grid-template-columns: 1fr;
   }
 
@@ -7120,7 +7245,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-outcome-feedback-actions .ghost-btn,
   .command-outcome-feedback-actions .secondary-btn,
   .command-adaptive-policy-actions .ghost-btn,
-  .command-adaptive-policy-actions .secondary-btn {
+  .command-adaptive-policy-actions .secondary-btn,
+  .command-tenant-firewall-actions .ghost-btn,
+  .command-tenant-firewall-actions .secondary-btn {
     width: 100%;
   }
 
@@ -7129,7 +7256,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-launch-actions div,
   .command-learning-loop-actions div,
   .command-outcome-feedback-actions div,
-  .command-adaptive-policy-actions div {
+  .command-adaptive-policy-actions div,
+  .command-tenant-firewall-actions div {
     width: 100%;
   }
 

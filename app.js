@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v326";
-  const BUILD_LABEL = "Adaptive Policy Simulator";
+  const BUILD_VERSION = "v327";
+  const BUILD_LABEL = "Tenant Learning Firewall";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -8468,6 +8468,134 @@ const state = {
     `;
   }
 
+  function renderCommandTenantLearningFirewall(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const publisherRows = Array.isArray(publisher.rows) ? publisher.rows : [];
+    const tenantPrivateSignals =
+      model.openRecords.length +
+      model.evidenceGaps.length +
+      model.contractGaps.length +
+      model.documents.totalGaps +
+      model.reminders.tasks.length +
+      autopilot.signals.length;
+    const approvalGated = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.testOnlyLearningRules) || 0) +
+        (Number(twin.influenceEnabledGuidance) || 0) +
+        (Number(publisher.founderReady) || 0),
+    );
+    const anonymizedCandidates = Math.max(
+      0,
+      (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.replyMemory) || 0) +
+        (Number(publisher.forecastTests) || 0),
+    );
+    const blockedExports = Math.max(
+      1,
+      model.evidenceGaps.length +
+        model.contractGaps.length +
+        (Number(twin.releaseHeldOrBlocked) || 0) +
+        (Number(twin.changelogHeld) || 0) +
+        (Number(twin.changelogBlocked) || 0) +
+        (Number(twin.sponsorOutcomeBlockedFollowUps) || 0) +
+        (Number(publisher.retiredRoutes) || 0),
+    );
+    const firewallScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.24 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.2 +
+            (Number(twin.buyerSafeChangelogPublisherScore) || 0) * 0.18 +
+            (Number(publisher.score) || 0) * 0.16 +
+            Math.max(0, 100 - blockedExports * 4) * 0.22,
+        ),
+      ),
+    );
+    const protectedValue = formatCompactMoney(autopilot.protectedValue || model.totalValue);
+    const firstPattern = publisherRows[0] || {};
+    const exportLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${tenantPrivateSignals} tenant-private signals stay inside the organization, ${approvalGated} learning items require approval, ${anonymizedCandidates} candidates can become anonymized patterns, and ${blockedExports} exports are blocked until privacy gates close.`;
+    const firewallNote = [
+      `Subject: ${BRAND_NAME} tenant learning firewall - ${state.data.company.name}`,
+      "",
+      "The closed-loop AI path is ready to learn without leaking tenant context.",
+      "",
+      `Firewall score: ${firewallScore}%`,
+      `Tenant-private signals: ${tenantPrivateSignals}`,
+      `Approval-gated learning: ${approvalGated}`,
+      `Anonymized pattern candidates: ${anonymizedCandidates}`,
+      `Blocked exports: ${blockedExports}`,
+      `Protected value: ${protectedValue}`,
+      `First reusable pattern: ${firstPattern.learningLane || firstPattern.founderScript || "No pattern released yet."}`,
+      "",
+      "Firewall rule: client names, values, files, invoices, raw replies, tenant ids, and user identity stay local. Other organizations can benefit only from approved, anonymized trigger, proof type, outcome pattern, and confidence.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const firewallCards = [
+      ["Private", `${tenantPrivateSignals} signals`, `${protectedValue} remains tenant-locked until safe rules are proven.`, "teal"],
+      ["Approval", `${approvalGated} gates`, "Tenant management approves every rule before it influences guidance.", "blue"],
+      ["Anonymize", `${anonymizedCandidates} candidates`, "Only trigger, proof type, outcome pattern, and confidence can cross.", "green"],
+      ["Block", `${blockedExports} exports`, "Weak proof, held releases, retired routes, and raw client context stop here.", "amber"],
+    ];
+    const firewallLanes = [
+      ["Tenant-private memory", "Client names, values, documents, invoices, raw workbook rows, and user identities never leave.", `${tenantPrivateSignals} local signals`, "teal"],
+      ["Approval gate", "Admin state, reviewer, evidence, and audit trail must be visible before any guidance changes.", `${approvalGated} approvals`, "blue"],
+      ["Anonymization gate", "Strip tenant identifiers and keep only generalized trigger, proof type, outcome, and confidence.", `${anonymizedCandidates} candidates`, "green"],
+      ["Network firewall", "Weak proof, held releases, blocked playbooks, and retired routes cannot improve other tenants.", `${blockedExports} blocked`, "amber"],
+    ];
+
+    return `
+      <section class="command-tenant-learning-firewall" aria-label="Tenant learning firewall">
+        <div class="command-tenant-firewall-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Tenant Learning Firewall</span>
+          <strong>Let the system learn across organizations only after privacy, approval, and anonymization pass.</strong>
+          <small>${escapeHtml(exportLine)}</small>
+        </div>
+        <div class="command-tenant-firewall-grid">
+          ${firewallCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-tenant-firewall-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-tenant-firewall-lanes">
+          ${firewallLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-tenant-firewall-actions">
+          <small>Learning rule: tenant memory stays private, approvals are explicit, anonymized patterns are the only network output, and blocked data never leaves.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Decision Twin">Open Decision Twin</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Tenant firewall note copied." data-copy-text="${escapeHtml(encodeURIComponent(firewallNote))}">Copy firewall note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8546,6 +8674,7 @@ const state = {
         ${renderCommandLearningLoopBoard(model, autopilot, pilotPitch)}
         ${renderCommandOutcomeFeedbackEngine(model, autopilot, pilotPitch)}
         ${renderCommandAdaptivePolicySimulator(model, autopilot, pilotPitch)}
+        ${renderCommandTenantLearningFirewall(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -27041,12 +27170,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v326 Adaptive Policy Simulator",
-      phase: "Adaptive Policy Simulator",
+      version: "v327 Tenant Learning Firewall",
+      phase: "Tenant Learning Firewall",
       lane: "Static product prototype on GitHub Pages",
-      pace: "307 meaningful versions since rebrand",
-      summary: "Command Center now tests reinforcement policy before live guidance changes, showing simulated impact across Advisor, Reports, Pilot Pitch, and privacy risk.",
+      pace: "308 meaningful versions since rebrand",
+      summary: "Command Center now makes the tenant learning boundary explicit: private signals stay local, approved rules are gated, only anonymized patterns can cross, and blocked exports never leave.",
       tracks: [
+        ["v327 tenant learning firewall", 100, "Command Center now separates tenant-private signals, approval gates, anonymized candidates, and never-share exports before cross-organization learning can reuse a pattern.", "green"],
         ["v326 adaptive policy simulator", 100, "Command Center now simulates candidate reinforcement policies across Advisor, Reports, Pilot Pitch, and privacy guardrails before approved guidance reaches live rooms.", "green"],
         ["v325 outcome feedback engine", 100, "Command Center now captures outcome events, compares predicted lift with actual lift, scores reward quality, and shows which approved privacy-safe paths can reinforce future guidance.", "green"],
         ["v324 learning loop board", 100, "Command Center now shows how local signals, Decision Twin memory, approved rules, privacy locks, and anonymized playbooks turn organizational work into governed cross-tenant learning.", "green"],
@@ -27515,10 +27645,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now simulates adaptive policy impact before any reinforcement reaches live guidance.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now makes tenant-safe learning visible before any cross-organization reuse.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
