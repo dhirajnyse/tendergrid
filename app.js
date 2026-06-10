@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v324";
-  const BUILD_LABEL = "Learning Loop Board";
+  const BUILD_VERSION = "v325";
+  const BUILD_LABEL = "Outcome Feedback Engine";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -8239,6 +8239,113 @@ const state = {
     `;
   }
 
+  function renderCommandOutcomeFeedbackEngine(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const publisherRows = Array.isArray(publisher.rows) ? publisher.rows : [];
+    const closedGoodRecords = model.records.filter((record) => ["Awarded", "Completed"].includes(record.status));
+    const closedStopRecords = model.records.filter((record) => ["Cancelled", "Regret"].includes(record.status));
+    const closedTotal = closedGoodRecords.length + closedStopRecords.length;
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const predictedLift = Number(twin.expectedReplayLift) || 0;
+    const actualLift = Number(twin.actualReplayLift) || 0;
+    const liftVariance = Math.abs(Number(twin.varianceLift) || predictedLift - actualLift);
+    const forecastFit = Math.max(0, Math.min(100, 100 - Math.round(liftVariance * 2.6)));
+    const publisherScore = Number(publisher.score) || 0;
+    const outcomeScore = Number(twin.sponsorPlaybookOutcomeTrackerScore) || 0;
+    const rewardScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(model.evidenceScore * 0.24 + (Number(twin.replayScore) || 0) * 0.22 + forecastFit * 0.18 + publisherScore * 0.18 + outcomeScore * 0.18),
+      ),
+    );
+    const feedbackEvents = Math.max(1, replayRows.length + publisherRows.length + closedTotal + model.reminders.tasks.length);
+    const reinforcementReady = Math.max(0, (Number(twin.approvedLearningRules) || 0) + (Number(twin.influenceEnabledGuidance) || 0) + (Number(publisher.founderReady) || 0));
+    const blockedSignals = Math.max(0, weakReplay + (Number(twin.sponsorOutcomeBlockedFollowUps) || 0) + model.evidenceGaps.length);
+    const privacyFilters = Math.max(1, blockedSignals + model.contractGaps.length + (Number(publisher.retiredRoutes) || 0));
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const rewardLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${feedbackEvents} feedback events compare predicted lift ${predictedLift} with actual lift ${actualLift}, score reward at ${rewardScore}%, and release only ${reinforcementReady} approved reinforcement paths through ${privacyFilters} privacy filters.`;
+    const feedbackNote = [
+      `Subject: ${BRAND_NAME} outcome feedback engine - ${state.data.company.name}`,
+      "",
+      "The closed loop now has a reward signal.",
+      "",
+      `Feedback events: ${feedbackEvents}`,
+      `Replay fit: ${forecastFit}% / matched ${matchedReplay} / partial ${partialReplay} / blocked ${weakReplay}`,
+      `Reward score: ${rewardScore}%`,
+      `Approved reinforcement paths: ${reinforcementReady}`,
+      `Privacy filters: ${privacyFilters}`,
+      `First signal: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Rule: actual outcomes can improve guidance only after proof exists, the tenant approves influence, and private commercial context is stripped before any anonymized pattern is reused.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const feedbackCards = [
+      ["Capture", `${feedbackEvents} events`, `${closedGoodRecords.length} won/completed and ${closedStopRecords.length} stopped outcomes feed the loop.`, "teal"],
+      ["Compare", `${forecastFit}% fit`, `Predicted lift ${predictedLift} vs actual lift ${actualLift}; ${matchedReplay} replay rows matched.`, "blue"],
+      ["Reward", `${rewardScore}%`, `${model.evidenceScore}% evidence health and ${outcomeScore}% outcome tracker score shape the reward.`, "green"],
+      ["Reinforce", `${reinforcementReady} paths`, `${privacyFilters} filters block weak, private, or unapproved reuse.`, "amber"],
+    ];
+    const feedbackLanes = [
+      ["Outcome capture", "Record status movement, owner proof, date proof, and whether the action actually moved the pursuit.", `${closedTotal} closed outcomes`, "teal"],
+      ["Prediction replay", "Compare what Decision Twin expected against what the records later proved.", `${matchedReplay} matched / ${partialReplay} partial`, "blue"],
+      ["Reward signal", "Promote patterns that improved proof, confidence, close path, or delivery control; hold weak repeats.", `${rewardScore}% reward`, "green"],
+      ["Policy update", "Reinforcement reaches Advisor, Reports, and Pilot Pitch only through approved influence switches.", `${reinforcementReady} approved`, "amber"],
+    ];
+
+    return `
+      <section class="command-outcome-feedback-engine" aria-label="Outcome feedback engine">
+        <div class="command-outcome-feedback-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Outcome Feedback Engine</span>
+          <strong>Give the learning loop a reward signal before the system reinforces anything.</strong>
+          <small>${escapeHtml(rewardLine)}</small>
+        </div>
+        <div class="command-outcome-feedback-grid">
+          ${feedbackCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-outcome-feedback-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-outcome-feedback-lanes">
+          ${feedbackLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-outcome-feedback-actions">
+          <small>Reinforcement rule: no outcome changes live guidance until the result is proven, approved, privacy-filtered, and auditable.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Decision Twin">Open replay</button>
+            <button class="ghost-btn" type="button" data-view="Weekly Review">Open review proof</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open outcome report</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Outcome feedback note copied." data-copy-text="${escapeHtml(encodeURIComponent(feedbackNote))}">Copy feedback note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8315,6 +8422,7 @@ const state = {
         ${renderCommandPilotClosePacket(model, pilotPitch)}
         ${renderCommandPilotLaunchBoard(model, pilotPitch)}
         ${renderCommandLearningLoopBoard(model, autopilot, pilotPitch)}
+        ${renderCommandOutcomeFeedbackEngine(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -26810,12 +26918,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v324 Learning Loop Board",
-      phase: "Learning Loop Board",
+      version: "v325 Outcome Feedback Engine",
+      phase: "Outcome Feedback Engine",
       lane: "Static product prototype on GitHub Pages",
-      pace: "305 meaningful versions since rebrand",
-      summary: "Command Center now makes the closed-loop AI path visible: local actions become tenant-approved learning, privacy filters remove sensitive data, and only anonymized patterns can improve other organizations.",
+      pace: "306 meaningful versions since rebrand",
+      summary: "Command Center now gives the closed-loop AI path a reward signal: actual outcomes are captured, replayed against prediction, scored, approved, privacy-filtered, and only then reinforced.",
       tracks: [
+        ["v325 outcome feedback engine", 100, "Command Center now captures outcome events, compares predicted lift with actual lift, scores reward quality, and shows which approved privacy-safe paths can reinforce future guidance.", "green"],
         ["v324 learning loop board", 100, "Command Center now shows how local signals, Decision Twin memory, approved rules, privacy locks, and anonymized playbooks turn organizational work into governed cross-tenant learning.", "green"],
         ["v323 pilot launch board", 100, "Command Center now turns an accepted pilot into day-one launch control, showing kickoff, workbook handoff, user access, owner checklist, first review proof, and a copy-ready launch note.", "green"],
         ["v322 pilot close packet", 100, "Command Center now summarizes the recommended pilot ask, value proof, evidence health, and day-30 decision gate while copying a sponsor-ready close note from the live Pilot Pitch model.", "green"],
@@ -27282,10 +27391,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now makes the closed-loop AI learning path visible with tenant approval, privacy filtering, and anonymized playbook reuse.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now gives the learning loop an outcome reward signal before guidance is reinforced.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

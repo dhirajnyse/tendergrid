@@ -6075,6 +6075,127 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-outcome-feedback-engine {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(40, 131, 74, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfefc, rgba(241, 250, 244, 0.95));
+  box-shadow: 0 12px 28px rgba(35, 94, 58, 0.055);
+}
+
+.command-outcome-feedback-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-outcome-feedback-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-outcome-feedback-head small {
+  max-width: 1080px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-outcome-feedback-grid,
+.command-outcome-feedback-lanes {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-outcome-feedback-card,
+.command-outcome-feedback-lanes article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid rgba(40, 131, 74, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-outcome-feedback-card span,
+.command-outcome-feedback-lanes article span {
+  color: var(--green-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-outcome-feedback-card strong,
+.command-outcome-feedback-lanes article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-outcome-feedback-card small,
+.command-outcome-feedback-lanes article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-outcome-feedback-card.tone-green,
+.command-outcome-feedback-lanes article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-outcome-feedback-card.tone-teal,
+.command-outcome-feedback-lanes article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-outcome-feedback-card.tone-blue,
+.command-outcome-feedback-lanes article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-outcome-feedback-card.tone-amber,
+.command-outcome-feedback-lanes article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-outcome-feedback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-outcome-feedback-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-outcome-feedback-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -6757,7 +6878,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-launch-owners,
   .command-pilot-launch-runbook,
   .command-learning-loop-grid,
-  .command-learning-loop-lanes {
+  .command-learning-loop-lanes,
+  .command-outcome-feedback-grid,
+  .command-outcome-feedback-lanes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -6853,7 +6976,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-launch-owners,
   .command-pilot-launch-runbook,
   .command-learning-loop-grid,
-  .command-learning-loop-lanes {
+  .command-learning-loop-lanes,
+  .command-outcome-feedback-grid,
+  .command-outcome-feedback-lanes {
     grid-template-columns: 1fr;
   }
 
@@ -6866,14 +6991,17 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-launch-actions .ghost-btn,
   .command-pilot-launch-actions .secondary-btn,
   .command-learning-loop-actions .ghost-btn,
-  .command-learning-loop-actions .secondary-btn {
+  .command-learning-loop-actions .secondary-btn,
+  .command-outcome-feedback-actions .ghost-btn,
+  .command-outcome-feedback-actions .secondary-btn {
     width: 100%;
   }
 
   .command-world-demo-actions div,
   .command-pilot-close-actions div,
   .command-pilot-launch-actions div,
-  .command-learning-loop-actions div {
+  .command-learning-loop-actions div,
+  .command-outcome-feedback-actions div {
     width: 100%;
   }
 
