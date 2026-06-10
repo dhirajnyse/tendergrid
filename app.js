@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v328";
-  const BUILD_LABEL = "Federated Pattern Trust Ledger";
+  const BUILD_VERSION = "v329";
+  const BUILD_LABEL = "Network Influence Shadow Replay";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -8730,6 +8730,144 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkInfluenceShadowReplay(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const publisherRows = Array.isArray(publisher.rows) ? publisher.rows : [];
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const learningItems = Array.isArray(twin.learningItems) ? twin.learningItems : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const replayFit = Math.max(0, Math.min(100, Math.round(((matchedReplay + partialReplay * 0.55) / Math.max(1, replayRows.length)) * 100)));
+    const trustedPatterns = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.founderReady) || 0) +
+        (Number(publisher.replyMemory) || 0),
+    );
+    const localReplaySet = Math.max(1, model.openRecords.length + model.reminders.tasks.length + model.evidenceGaps.length + autopilot.signals.length);
+    const privacyPressure = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceGaps.length * 6 +
+            model.contractGaps.length * 7 +
+            (Number(twin.ruleImpactBlocked) || 0) * 10 +
+            (Number(twin.changelogBlocked) || 0) * 12 +
+            (Number(publisher.retiredRoutes) || 0) * 10,
+        ),
+      ),
+    );
+    const shadowFit = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.22 +
+            replayFit * 0.18 +
+            (Number(twin.learningScore) || 0) * 0.16 +
+            (Number(twin.ruleImpactScore) || 0) * 0.16 +
+            (Number(publisher.score) || 0) * 0.14 +
+            Math.max(0, 100 - privacyPressure) * 0.14,
+        ),
+      ),
+    );
+    const activationCandidates = Math.max(0, Math.min(trustedPatterns, Math.round((trustedPatterns * shadowFit) / 100)));
+    const heldInfluence = Math.max(
+      0,
+      trustedPatterns - activationCandidates + (Number(twin.testOnlyLearningRules) || 0) + (Number(publisher.forecastTests) || 0) + model.evidenceGaps.length,
+    );
+    const predictedLift = Math.max(
+      0,
+      Math.round((Number(twin.ruleImpactLift) || 0) + Math.max(0, Number(publisher.netCloseLift) || 0) + activationCandidates * 0.6),
+    );
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const firstPattern = publisherRows[0] || learningItems[0] || {};
+    const shadowLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: replay ${trustedPatterns} federated patterns against ${localReplaySet} local signals before live influence. Fit ${shadowFit}%, predicted lift +${predictedLift}, activate ${activationCandidates}, hold ${heldInfluence}, privacy pressure ${privacyPressure}%.`;
+    const shadowNote = [
+      `Subject: ${BRAND_NAME} network influence shadow replay - ${state.data.company.name}`,
+      "",
+      "Federated learning is ready to prove itself locally before it changes tenant guidance.",
+      "",
+      `Trusted patterns tested: ${trustedPatterns}`,
+      `Local replay signals: ${localReplaySet}`,
+      `Shadow fit: ${shadowFit}%`,
+      `Predicted lift: +${predictedLift}`,
+      `Activation candidates: ${activationCandidates}`,
+      `Held influence: ${heldInfluence}`,
+      `Privacy pressure: ${privacyPressure}%`,
+      `First local signal: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      `First federated pattern: ${firstPattern.learningLane || firstPattern.scenario || firstPattern.founderScript || "No pattern released yet."}`,
+      "",
+      "Shadow rule: a network pattern must improve local fit in simulation, keep privacy pressure low, show rollback, and receive tenant approval before it can influence live Advisor, Reports, or Pilot Pitch guidance.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const shadowCards = [
+      ["Replay", `${localReplaySet} signals`, `${trustedPatterns} trusted patterns are tested without changing live guidance.`, "teal"],
+      ["Fit", `${shadowFit}%`, `${replayFit}% replay fit and ${model.evidenceScore}% evidence health shape local fit.`, "blue"],
+      ["Lift", `+${predictedLift}`, `${activationCandidates} candidates can move from shadow to tenant-approved activation.`, "green"],
+      ["Hold", `${heldInfluence}`, `${privacyPressure}% privacy pressure keeps weak or risky influence out of live rooms.`, "amber"],
+    ];
+    const shadowLanes = [
+      ["Federated input", "Only trusted, anonymized patterns from the ledger enter this tenant replay.", `${trustedPatterns} patterns`, "teal"],
+      ["Local shadow run", "Replay against local open work, reminders, evidence gaps, and autopilot signals without writing live guidance.", `${localReplaySet} signals`, "blue"],
+      ["Tenant activation", "Patterns activate only after fit, approval, privacy, and rollback are visible.", `${activationCandidates} ready`, "green"],
+      ["Rollback memory", "Held influence becomes local warning memory and never becomes cross-tenant advice.", `${heldInfluence} held`, "amber"],
+    ];
+
+    return `
+      <section class="command-network-shadow-replay" aria-label="Network influence shadow replay">
+        <div class="command-network-shadow-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Influence Shadow Replay</span>
+          <strong>Test global learning locally before it changes tenant guidance.</strong>
+          <small>${escapeHtml(shadowLine)}</small>
+        </div>
+        <div class="command-network-shadow-grid">
+          ${shadowCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-shadow-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-shadow-lanes">
+          ${shadowLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-shadow-actions">
+          <small>Activation rule: network learning runs in shadow first, then tenant approval decides whether Advisor, Reports, or Pilot Pitch can use it.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Decision Twin">Open replay source</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open Advisor fit</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open proof report</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open approval gate</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Shadow replay note copied." data-copy-text="${escapeHtml(encodeURIComponent(shadowNote))}">Copy shadow note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8810,6 +8948,7 @@ const state = {
         ${renderCommandAdaptivePolicySimulator(model, autopilot, pilotPitch)}
         ${renderCommandTenantLearningFirewall(model, autopilot, pilotPitch)}
         ${renderCommandFederatedPatternTrustLedger(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkInfluenceShadowReplay(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -27305,12 +27444,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v328 Federated Pattern Trust Ledger",
-      phase: "Federated Pattern Trust Ledger",
+      version: "v329 Network Influence Shadow Replay",
+      phase: "Network Influence Shadow Replay",
       lane: "Static product prototype on GitHub Pages",
-      pace: "309 meaningful versions since rebrand",
-      summary: "Command Center now scores anonymized learning patterns before federation, showing source proof, trust score, promotion, retest, and anti-pattern memory.",
+      pace: "310 meaningful versions since rebrand",
+      summary: "Command Center now tests trusted network patterns in tenant shadow mode before any live Advisor, Reports, or Pilot Pitch influence.",
       tracks: [
+        ["v329 network influence shadow replay", 100, "Command Center now replays trusted federated patterns against local tenant signals first, showing fit, predicted lift, activation candidates, held influence, and privacy pressure.", "green"],
         ["v328 federated pattern trust ledger", 100, "Command Center now gives approved anonymized patterns a trust ledger before they can influence other organizations, with proof count, replay fit, promotion, retest, and anti-pattern memory.", "green"],
         ["v327 tenant learning firewall", 100, "Command Center now separates tenant-private signals, approval gates, anonymized candidates, and never-share exports before cross-organization learning can reuse a pattern.", "green"],
         ["v326 adaptive policy simulator", 100, "Command Center now simulates candidate reinforcement policies across Advisor, Reports, Pilot Pitch, and privacy guardrails before approved guidance reaches live rooms.", "green"],
@@ -27781,10 +27921,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now scores anonymized patterns before they can influence another organization.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now shadow-replays network learning before tenant activation.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
