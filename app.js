@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v330";
-  const BUILD_LABEL = "Tenant Influence Activation Switchboard";
+  const BUILD_VERSION = "v331";
+  const BUILD_LABEL = "Activation Outcome Learner";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -9014,6 +9014,149 @@ const state = {
     `;
   }
 
+  function renderCommandActivationOutcomeLearner(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const closedGoodRecords = model.records.filter((record) => ["Awarded", "Completed"].includes(record.status));
+    const closedStopRecords = model.records.filter((record) => ["Cancelled", "Regret"].includes(record.status));
+    const closedTotal = closedGoodRecords.length + closedStopRecords.length;
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const activatedGuidance = Math.max(
+      0,
+      (Number(twin.influenceEnabledGuidance) || 0) + (Number(twin.ruleImpactPromotions) || 0) + (Number(publisher.founderReady) || 0) + matchedReplay,
+    );
+    const observedOutcomes = Math.max(1, closedTotal + matchedReplay + partialReplay + (Number(publisher.replyMemory) || 0));
+    const outcomeCoverage = Math.max(0, Math.min(100, Math.round((observedOutcomes / Math.max(1, activatedGuidance + observedOutcomes)) * 100)));
+    const positiveOutcomeSignals = Math.max(
+      0,
+      closedGoodRecords.length + matchedReplay + (Number(twin.ruleImpactPromotions) || 0) + (Number(publisher.replyMemory) || 0),
+    );
+    const weakOutcomeSignals = Math.max(
+      0,
+      closedStopRecords.length + weakReplay + (Number(twin.ruleImpactBlocked) || 0) + (Number(publisher.retiredRoutes) || 0),
+    );
+    const rewardConfidence = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.22 +
+            outcomeCoverage * 0.2 +
+            (Number(twin.sponsorPlaybookOutcomeTrackerScore) || 0) * 0.18 +
+            (Number(twin.replayScore) || 0) * 0.16 +
+            (Number(publisher.score) || 0) * 0.14 +
+            Math.max(0, 100 - weakOutcomeSignals * 5) * 0.1,
+        ),
+      ),
+    );
+    const learningCandidates = Math.max(0, Math.min(activatedGuidance + positiveOutcomeSignals, Math.round(((activatedGuidance + positiveOutcomeSignals) * rewardConfidence) / 100)));
+    const tenantOnlyCorrections = Math.max(1, weakOutcomeSignals + model.evidenceGaps.length + model.contractGaps.length + (Number(twin.changelogHeld) || 0));
+    const anonymizedReady = Math.max(
+      0,
+      Math.min(
+        learningCandidates,
+        Math.round(learningCandidates * (model.evidenceScore / 100)) - model.contractGaps.length - (Number(publisher.retiredRoutes) || 0),
+      ),
+    );
+    const rollbackLearning = Math.max(1, tenantOnlyCorrections + (Number(twin.influenceHeld) || 0) + (Number(twin.ruleImpactBlocked) || 0));
+    const learnerScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          rewardConfidence * 0.3 +
+            outcomeCoverage * 0.2 +
+            model.evidenceScore * 0.18 +
+            Math.max(0, 100 - rollbackLearning * 3) * 0.16 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.16,
+        ),
+      ),
+    );
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = closedGoodRecords[0] || closedStopRecords[0] || firstSignal.record || model.openRecords[0] || {};
+    const learnerLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${activatedGuidance} activated guidance paths produced ${observedOutcomes} observed outcomes. Learner score ${learnerScore}%, reward confidence ${rewardConfidence}%, anonymized-ready ${anonymizedReady}, tenant-only corrections ${tenantOnlyCorrections}, rollback learning ${rollbackLearning}.`;
+    const learnerNote = [
+      `Subject: ${BRAND_NAME} activation outcome learner - ${state.data.company.name}`,
+      "",
+      "Tenant-approved influence now has an outcome learner before the network reuses any lesson.",
+      "",
+      `Learner score: ${learnerScore}%`,
+      `Activated guidance paths: ${activatedGuidance}`,
+      `Observed outcomes: ${observedOutcomes}`,
+      `Outcome coverage: ${outcomeCoverage}%`,
+      `Reward confidence: ${rewardConfidence}%`,
+      `Anonymized-ready lessons: ${anonymizedReady}`,
+      `Tenant-only corrections: ${tenantOnlyCorrections}`,
+      `Rollback learning queue: ${rollbackLearning}`,
+      `First outcome record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstRecord.status || firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Learning rule: live guidance can improve only after the tenant sees the measured outcome, weak routes stay tenant-only, private context is stripped, and management approves any anonymized promotion.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const learnerCards = [
+      ["Activate", `${activatedGuidance} paths`, "Only tenant-approved switches are eligible for measurement.", "blue"],
+      ["Observe", `${observedOutcomes} outcomes`, `${closedGoodRecords.length} won/completed and ${closedStopRecords.length} stopped records anchor the reward signal.`, "teal"],
+      ["Learn", `${rewardConfidence}%`, `${learningCandidates} lessons qualify for local reinforcement review.`, "green"],
+      ["Protect", `${rollbackLearning} locks`, `${tenantOnlyCorrections} corrections stay tenant-only until proof and privacy gates close.`, "amber"],
+    ];
+    const learnerLanes = [
+      ["Tenant delta", "Compare activated guidance against real movement in records, dates, owners, and evidence.", `${outcomeCoverage}% covered`, "teal"],
+      ["Reward ledger", "Promote guidance that improved close path, proof quality, sponsor confidence, or delivery control.", `${rewardConfidence}% confidence`, "green"],
+      ["Anonymized promotion", "Only aggregate lessons with proof and stripped commercial context can help another tenant.", `${anonymizedReady} ready`, "blue"],
+      ["Rollback memory", "Weak or risky paths become warning memory, not network guidance.", `${rollbackLearning} queued`, "amber"],
+    ];
+
+    return `
+      <section class="command-activation-outcome-learner" aria-label="Activation outcome learner">
+        <div class="command-activation-outcome-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Activation Outcome Learner</span>
+          <strong>Measure what happened after tenant-approved guidance went live.</strong>
+          <small>${escapeHtml(learnerLine)}</small>
+        </div>
+        <div class="command-activation-outcome-grid">
+          ${learnerCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-activation-outcome-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-activation-outcome-lanes">
+          ${learnerLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-activation-outcome-actions">
+          <small>Closed loop rule: tenant-approved influence is measured locally first, then weak routes roll back and only anonymized proven lessons can graduate.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Reports">Open outcome report</button>
+            <button class="ghost-btn" type="button" data-view="Weekly Review">Open proof review</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open promotion gates</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Activation learner note copied." data-copy-text="${escapeHtml(encodeURIComponent(learnerNote))}">Copy learner note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -9096,6 +9239,7 @@ const state = {
         ${renderCommandFederatedPatternTrustLedger(model, autopilot, pilotPitch)}
         ${renderCommandNetworkInfluenceShadowReplay(model, autopilot, pilotPitch)}
         ${renderCommandTenantInfluenceActivationSwitchboard(model, autopilot, pilotPitch)}
+        ${renderCommandActivationOutcomeLearner(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -27591,12 +27735,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v330 Tenant Influence Activation Switchboard",
-      phase: "Tenant Influence Activation Switchboard",
+      version: "v331 Activation Outcome Learner",
+      phase: "Activation Outcome Learner",
       lane: "Static product prototype on GitHub Pages",
-      pace: "311 meaningful versions since rebrand",
-      summary: "Command Center now gives tenants explicit switches for shadow-proven network influence across Advisor, Reports, and Pilot Pitch.",
+      pace: "312 meaningful versions since rebrand",
+      summary: "Command Center now measures tenant-approved guidance after activation, separating proven anonymized lessons from tenant-only corrections and rollback memory.",
       tracks: [
+        ["v331 activation outcome learner", 100, "Command Center now measures what happened after tenant-approved guidance went live, showing reward confidence, anonymized-ready lessons, tenant-only corrections, and rollback learning.", "green"],
         ["v330 tenant influence activation switchboard", 100, "Command Center now lets tenants choose which shadow-proven network patterns can influence Advisor, Reports, or Pilot Pitch, with rollback locks and audit-ready holds.", "green"],
         ["v329 network influence shadow replay", 100, "Command Center now replays trusted federated patterns against local tenant signals first, showing fit, predicted lift, activation candidates, held influence, and privacy pressure.", "green"],
         ["v328 federated pattern trust ledger", 100, "Command Center now gives approved anonymized patterns a trust ledger before they can influence other organizations, with proof count, replay fit, promotion, retest, and anti-pattern memory.", "green"],
@@ -28069,10 +28214,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now gives tenants explicit control over live network influence.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now measures live tenant-approved guidance before any lesson can graduate.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
