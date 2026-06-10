@@ -25,3 +25,4 @@ Recovery cleanup in this copy:
 - v325 adds an Outcome Feedback Engine so actual results are compared with prediction, scored as reward signals, approved, privacy-filtered, and reinforced only when safe.
 - v326 adds an Adaptive Policy Simulator so reinforcement rules are tested across Advisor, Reports, Pilot Pitch, and privacy risk before live guidance changes.
 - v327 adds a Tenant Learning Firewall so tenant-private signals, approvals, anonymized candidates, and never-share rules are visible before cross-organization learning.
+- v328 adds a Federated Pattern Trust Ledger so approved anonymized lessons show proof count, trust score, promotion, retest, and anti-pattern status before helping another organization.

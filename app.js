@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v327";
-  const BUILD_LABEL = "Tenant Learning Firewall";
+  const BUILD_VERSION = "v328";
+  const BUILD_LABEL = "Federated Pattern Trust Ledger";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -8596,6 +8596,140 @@ const state = {
     `;
   }
 
+  function renderCommandFederatedPatternTrustLedger(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const publisherRows = Array.isArray(publisher.rows) ? publisher.rows : [];
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const learningItems = Array.isArray(twin.learningItems) ? twin.learningItems : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const replayFit = Math.max(0, Math.min(100, Math.round(((matchedReplay * 1 + partialReplay * 0.55) / Math.max(1, replayRows.length)) * 100)));
+    const sourceProofs = Math.max(1, replayRows.length + learningItems.length + publisherRows.length + model.records.filter((record) => ["Awarded", "Completed"].includes(record.status)).length);
+    const privacyHolds =
+      model.evidenceGaps.length +
+      model.contractGaps.length +
+      (Number(twin.releaseHeldOrBlocked) || 0) +
+      (Number(twin.changelogHeld) || 0) +
+      (Number(twin.changelogBlocked) || 0) +
+      (Number(publisher.retiredRoutes) || 0);
+    const promotionReady = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.founderReady) || 0) +
+        (Number(publisher.replyMemory) || 0),
+    );
+    const retestQueue = Math.max(
+      0,
+      (Number(twin.testOnlyLearningRules) || 0) +
+        (Number(twin.ruleImpactRetests) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        partialReplay,
+    );
+    const antiPatternCount = Math.max(
+      0,
+      (Number(twin.ruleReopenMemoryAntiPattern) || 0) +
+        (Number(twin.ruleImpactBlocked) || 0) +
+        (Number(twin.sponsorOutcomeBlockedFollowUps) || 0) +
+        (Number(publisher.retiredRoutes) || 0),
+    );
+    const trustScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.2 +
+            replayFit * 0.18 +
+            (Number(twin.learningScore) || 0) * 0.18 +
+            (Number(twin.ruleImpactScore) || 0) * 0.16 +
+            (Number(publisher.score) || 0) * 0.14 +
+            Math.max(0, 100 - privacyHolds * 3) * 0.14,
+        ),
+      ),
+    );
+    const networkReady = Math.max(0, Math.min(promotionReady, Math.round((promotionReady * trustScore) / 100)));
+    const firstPattern = publisherRows[0] || learningItems[0] || {};
+    const ledgerLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${sourceProofs} proofs feed the federated ledger, ${networkReady} anonymized patterns are trusted for cross-organization guidance, ${retestQueue} stay in retest, and ${antiPatternCount} are retained only as anti-pattern memory.`;
+    const ledgerNote = [
+      `Subject: ${BRAND_NAME} federated pattern trust ledger - ${state.data.company.name}`,
+      "",
+      "The learning network now has a trust ledger before any anonymized pattern influences another organization.",
+      "",
+      `Trust score: ${trustScore}%`,
+      `Source proofs: ${sourceProofs}`,
+      `Network-ready patterns: ${networkReady}`,
+      `Retest queue: ${retestQueue}`,
+      `Anti-pattern memory: ${antiPatternCount}`,
+      `Privacy holds: ${privacyHolds}`,
+      `First pattern: ${firstPattern.learningLane || firstPattern.scenario || firstPattern.founderScript || "No pattern released yet."}`,
+      "",
+      "Ledger rule: every shared lesson must show proof count, outcome fit, privacy grade, approval state, and rollback reason. No raw tenant data crosses the network boundary.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const trustCards = [
+      ["Trust score", `${trustScore}%`, `${replayFit}% replay fit with ${sourceProofs} proof sources behind the ledger.`, "blue"],
+      ["Promote", `${networkReady} patterns`, "Approved, anonymized, buyer-safe lessons can influence future guidance.", "green"],
+      ["Retest", `${retestQueue} queued`, "Warm patterns stay simulated until more outcome proof arrives.", "amber"],
+      ["Protect", `${antiPatternCount} anti-patterns`, "Failed or risky routes become warnings, not shared recommendations.", "teal"],
+    ];
+    const ledgerRows = [
+      ["Evidence-backed", `${sourceProofs} proofs`, "Source proof, outcome replay, and published learning rows are counted before any network use.", "blue"],
+      ["Federation-ready", `${networkReady} trusted`, "Only approved and anonymized lessons can become shared guidance for other workspaces.", "green"],
+      ["Retest memory", `${retestQueue} retest`, "Forecast-test and partial replay rows stay in simulation until actual movement confirms them.", "amber"],
+      ["Anti-pattern memory", `${antiPatternCount} protected`, "Blocked follow-ups, retired routes, and risky reopen memory warn the network without leaking context.", "teal"],
+    ];
+
+    return `
+      <section class="command-federated-trust-ledger" aria-label="Federated pattern trust ledger">
+        <div class="command-federated-trust-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Federated Pattern Trust Ledger</span>
+          <strong>Score every anonymized lesson before it can help another organization.</strong>
+          <small>${escapeHtml(ledgerLine)}</small>
+        </div>
+        <div class="command-federated-trust-grid">
+          ${trustCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-federated-trust-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-federated-trust-lanes">
+          ${ledgerRows
+            .map(
+              ([label, proof, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-federated-trust-actions">
+          <small>Federation rule: share the pattern, never the tenant; promote only when proof, approval, anonymization, trust score, and rollback are visible.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Decision Twin">Open trust source</button>
+            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open publisher</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open approval gate</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open proof report</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Federated trust note copied." data-copy-text="${escapeHtml(encodeURIComponent(ledgerNote))}">Copy trust note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -8675,6 +8809,7 @@ const state = {
         ${renderCommandOutcomeFeedbackEngine(model, autopilot, pilotPitch)}
         ${renderCommandAdaptivePolicySimulator(model, autopilot, pilotPitch)}
         ${renderCommandTenantLearningFirewall(model, autopilot, pilotPitch)}
+        ${renderCommandFederatedPatternTrustLedger(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -27170,12 +27305,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v327 Tenant Learning Firewall",
-      phase: "Tenant Learning Firewall",
+      version: "v328 Federated Pattern Trust Ledger",
+      phase: "Federated Pattern Trust Ledger",
       lane: "Static product prototype on GitHub Pages",
-      pace: "308 meaningful versions since rebrand",
-      summary: "Command Center now makes the tenant learning boundary explicit: private signals stay local, approved rules are gated, only anonymized patterns can cross, and blocked exports never leave.",
+      pace: "309 meaningful versions since rebrand",
+      summary: "Command Center now scores anonymized learning patterns before federation, showing source proof, trust score, promotion, retest, and anti-pattern memory.",
       tracks: [
+        ["v328 federated pattern trust ledger", 100, "Command Center now gives approved anonymized patterns a trust ledger before they can influence other organizations, with proof count, replay fit, promotion, retest, and anti-pattern memory.", "green"],
         ["v327 tenant learning firewall", 100, "Command Center now separates tenant-private signals, approval gates, anonymized candidates, and never-share exports before cross-organization learning can reuse a pattern.", "green"],
         ["v326 adaptive policy simulator", 100, "Command Center now simulates candidate reinforcement policies across Advisor, Reports, Pilot Pitch, and privacy guardrails before approved guidance reaches live rooms.", "green"],
         ["v325 outcome feedback engine", 100, "Command Center now captures outcome events, compares predicted lift with actual lift, scores reward quality, and shows which approved privacy-safe paths can reinforce future guidance.", "green"],
@@ -27645,10 +27781,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now makes tenant-safe learning visible before any cross-organization reuse.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now scores anonymized patterns before they can influence another organization.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
