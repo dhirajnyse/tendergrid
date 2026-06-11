@@ -30,3 +30,4 @@ Recovery cleanup in this copy:
 - v330 adds a Tenant Influence Activation Switchboard so tenants control which shadow-proven network patterns can influence Advisor, Reports, or Pilot Pitch.
 - v331 adds an Activation Outcome Learner so tenant-approved guidance is measured locally before proven anonymized lessons can help another organization.
 - v332 adds a Network Benefit Router so proven anonymized lessons are routed to fit-matched tenant lanes while private source context stays blocked.
+- v333 adds a Network Reciprocity Ledger so contribution, returned value, fairness debt, dividend-ready lessons, and private holds are visible before the network scales.

@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v332";
-  const BUILD_LABEL = "Network Benefit Router";
+  const BUILD_VERSION = "v333";
+  const BUILD_LABEL = "Network Reciprocity Ledger";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -9302,6 +9302,139 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkReciprocityLedger(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const contributionProofs = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.ruleImpactPromotions) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.replyMemory) || 0) +
+        matchedReplay,
+    );
+    const receivedBenefits = Math.max(
+      0,
+      (Number(twin.influenceEnabledGuidance) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        partialReplay +
+        Math.round(model.advisor.advisorScore / 20),
+    );
+    const reciprocityBalance = Math.max(0, Math.min(100, 100 - Math.abs(contributionProofs - receivedBenefits) * 4));
+    const sourceCredit = Math.max(0, Math.round(contributionProofs * model.evidenceScore / 100));
+    const returnCredit = Math.max(0, Math.round(receivedBenefits * ((Number(twin.replayScore) || 0) || model.evidenceScore) / 100));
+    const privateHolds = Math.max(
+      1,
+      model.evidenceGaps.length +
+        model.contractGaps.length +
+        weakReplay +
+        (Number(twin.releaseHeldOrBlocked) || 0) +
+        (Number(publisher.retiredRoutes) || 0),
+    );
+    const fairnessDebt = Math.max(0, contributionProofs - receivedBenefits - 1) + Math.max(0, privateHolds - sourceCredit);
+    const dividendReady = Math.max(0, Math.min(sourceCredit + returnCredit, Math.round((sourceCredit + returnCredit) * reciprocityBalance / 100)));
+    const ledgerScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          reciprocityBalance * 0.28 +
+            model.evidenceScore * 0.2 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.18 +
+            (Number(publisher.score) || 0) * 0.16 +
+            Math.max(0, 100 - privateHolds * 4) * 0.1 +
+            Math.max(0, 100 - fairnessDebt * 5) * 0.08,
+        ),
+      ),
+    );
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const ledgerLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: contribution ${contributionProofs}, returned benefits ${receivedBenefits}, reciprocity balance ${reciprocityBalance}%, dividend-ready ${dividendReady}, private holds ${privateHolds}, fairness debt ${fairnessDebt}.`;
+    const ledgerNote = [
+      `Subject: ${BRAND_NAME} network reciprocity ledger - ${state.data.company.name}`,
+      "",
+      "The learning network now has a fairness ledger.",
+      "",
+      `Ledger score: ${ledgerScore}%`,
+      `Contribution proofs: ${contributionProofs}`,
+      `Received benefits: ${receivedBenefits}`,
+      `Reciprocity balance: ${reciprocityBalance}%`,
+      `Source credit: ${sourceCredit}`,
+      `Return credit: ${returnCredit}`,
+      `Dividend-ready lessons: ${dividendReady}`,
+      `Private holds: ${privateHolds}`,
+      `Fairness debt: ${fairnessDebt}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Reciprocity rule: every tenant can benefit from the network, but source credit, return value, privacy holds, and fairness debt must stay visible before the loop scales.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const ledgerCards = [
+      ["Contribution", `${contributionProofs} proofs`, `${sourceCredit} source credits come from approved, measured, privacy-safe lessons.`, "green"],
+      ["Return", `${receivedBenefits} benefits`, `${returnCredit} return credits show what the tenant receives back from the network.`, "teal"],
+      ["Balance", `${reciprocityBalance}%`, `${fairnessDebt} fairness debt items stay visible until value exchange is healthier.`, "blue"],
+      ["Dividend", `${dividendReady} ready`, `${privateHolds} private holds keep the ledger fair without exposing source context.`, "amber"],
+    ];
+    const ledgerLanes = [
+      ["Source credit", "Reward tenants for measured lessons they safely contribute to the network.", `${sourceCredit} credits`, "green"],
+      ["Return value", "Show the guidance, proof, and speed improvements the tenant receives back.", `${returnCredit} credits`, "teal"],
+      ["Fairness debt", "Flag imbalance when one tenant gives much more than it receives or when fit is weak.", `${fairnessDebt} open`, "amber"],
+      ["Privacy promise", "No credit entry exposes source identity, buyer names, commercial values, documents, or client context.", `${privateHolds} holds`, "blue"],
+    ];
+
+    return `
+      <section class="command-network-reciprocity-ledger" aria-label="Network reciprocity ledger">
+        <div class="command-network-reciprocity-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Reciprocity Ledger</span>
+          <strong>Make cross-tenant learning fair, visible, and worth joining.</strong>
+          <small>${escapeHtml(ledgerLine)}</small>
+        </div>
+        <div class="command-network-reciprocity-grid">
+          ${ledgerCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-reciprocity-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-reciprocity-lanes">
+          ${ledgerLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-reciprocity-actions">
+          <small>Reciprocity rule: tenants should see both the value they contribute and the value returned, while private source context stays invisible.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Governance">Open fairness ledger</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open reciprocity report</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open returned guidance</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Reciprocity ledger note copied." data-copy-text="${escapeHtml(encodeURIComponent(ledgerNote))}">Copy ledger note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -9386,6 +9519,7 @@ const state = {
         ${renderCommandTenantInfluenceActivationSwitchboard(model, autopilot, pilotPitch)}
         ${renderCommandActivationOutcomeLearner(model, autopilot, pilotPitch)}
         ${renderCommandNetworkBenefitRouter(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkReciprocityLedger(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -27881,12 +28015,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v332 Network Benefit Router",
-      phase: "Network Benefit Router",
+      version: "v333 Network Reciprocity Ledger",
+      phase: "Network Reciprocity Ledger",
       lane: "Static product prototype on GitHub Pages",
-      pace: "313 meaningful versions since rebrand",
-      summary: "Command Center now routes proven anonymized lessons to fit-matched tenant lanes while keeping source identity, private holds, and weak routes blocked.",
+      pace: "314 meaningful versions since rebrand",
+      summary: "Command Center now tracks cross-tenant contribution, returned value, fairness debt, dividend-ready lessons, and privacy holds so the network benefit loop stays reciprocal.",
       tracks: [
+        ["v333 network reciprocity ledger", 100, "Command Center now shows contribution proofs, returned benefits, source credit, return credit, dividend-ready lessons, fairness debt, and private holds before the network scales.", "green"],
         ["v332 network benefit router", 100, "Command Center now routes proven anonymized lessons to fit-matched tenant lanes, showing benefit fit, privacy budget, private holds, and fairness checks before network reuse.", "green"],
         ["v331 activation outcome learner", 100, "Command Center now measures what happened after tenant-approved guidance went live, showing reward confidence, anonymized-ready lessons, tenant-only corrections, and rollback learning.", "green"],
         ["v330 tenant influence activation switchboard", 100, "Command Center now lets tenants choose which shadow-proven network patterns can influence Advisor, Reports, or Pilot Pitch, with rollback locks and audit-ready holds.", "green"],
@@ -28361,10 +28496,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now routes proven learning as anonymized benefit packages.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now makes the network learning economy reciprocal and auditable.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
