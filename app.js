@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v336";
-  const BUILD_LABEL = "Network Reinforcement Policy Governor";
+  const BUILD_VERSION = "v337";
+  const BUILD_LABEL = "Network Reinforcement Drift Sentinel";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -9999,6 +9999,224 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkReinforcementDriftSentinel(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const earnedCredits = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.ruleImpactPromotions) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.replyMemory) || 0) +
+        matchedReplay,
+    );
+    const returnedCredits = Math.max(
+      0,
+      (Number(twin.influenceEnabledGuidance) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        partialReplay +
+        Math.round(model.weeklyReview.reviewScore / 20),
+    );
+    const dividendPool = Math.max(1, earnedCredits + returnedCredits);
+    const privacyHolds = Math.max(
+      1,
+      model.evidenceGaps.length +
+        model.contractGaps.length +
+        weakReplay +
+        (Number(twin.releaseHeldOrBlocked) || 0) +
+        (Number(twin.changelogBlocked) || 0) +
+        (Number(publisher.retiredRoutes) || 0),
+    );
+    const fairnessReserve = Math.max(1, Math.ceil(Math.abs(earnedCredits - returnedCredits) / 2) + (Number(twin.ruleImpactRetests) || 0));
+    const dividendReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.22 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.2 +
+            (Number(twin.replayScore) || 0) * 0.18 +
+            (Number(publisher.score) || 0) * 0.16 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.14 +
+            Math.max(0, 100 - fairnessReserve * 4) * 0.1,
+        ),
+      ),
+    );
+    const allocatedDividends = Math.max(0, Math.min(dividendPool, Math.round(dividendPool * dividendReadiness / 100)));
+    const heldDividends = Math.max(0, dividendPool - allocatedDividends + privacyHolds + fairnessReserve);
+    const predictedLift = Math.max(
+      1,
+      Math.round(
+        ((Number(twin.replayScore) || 0) * 0.28 +
+          (Number(twin.ruleImpactScore) || 0) * 0.2 +
+          (Number(publisher.score) || 0) * 0.18 +
+          model.evidenceScore * 0.18 +
+          model.advisor.advisorScore * 0.16) /
+          10,
+      ),
+    );
+    const actualLift = Math.max(
+      0,
+      Math.round(
+        matchedReplay * 2.8 +
+          partialReplay * 1.5 +
+          Math.max(0, model.actionScore - 40) / 8 +
+          Math.max(0, model.weeklyReview.reviewScore - 55) / 9 +
+          Math.max(0, model.evidenceScore - 60) / 10 +
+          (Number(publisher.replyMemory) || 0) * 1.4 -
+          weakReplay * 1.2,
+      ),
+    );
+    const liftVariance = actualLift - predictedLift;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.3 +
+            (matchedReplay ? Math.min(100, (matchedReplay / Math.max(1, replayRows.length)) * 100) : 42) * 0.22 +
+            model.weeklyReview.reviewScore * 0.18 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.16 +
+            Math.max(0, 100 - fairnessReserve * 4) * 0.14,
+        ),
+      ),
+    );
+    const verificationRate = Math.max(0, Math.min(100, proofCoverage + liftVariance * 3 + matchedReplay * 4 - weakReplay * 6 - privacyHolds * 2));
+    const verifiedDividends = Math.max(0, Math.min(allocatedDividends, Math.round(allocatedDividends * verificationRate / 100)));
+    const retestDividends = Math.max(0, Math.min(allocatedDividends - verifiedDividends, partialReplay + fairnessReserve + Math.max(0, predictedLift - actualLift)));
+    const retiredDividends = Math.max(0, Math.min(heldDividends, weakReplay + (Number(twin.ruleImpactBlocked) || 0) + (Number(publisher.retiredRoutes) || 0)));
+    const policyCandidates = Math.max(
+      1,
+      verifiedDividends +
+        (Number(twin.ruleImpactPromotions) || 0) +
+        (Number(twin.influenceEnabledGuidance) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        matchedReplay,
+    );
+    const guardrailPressure = Math.max(1, privacyHolds + fairnessReserve + retestDividends + retiredDividends + weakReplay + model.contractGaps.length);
+    const policyReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          verificationRate * 0.26 +
+            proofCoverage * 0.22 +
+            model.healthScore * 0.18 +
+            (Number(twin.ruleImpactScore) || 0) * 0.16 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.1 +
+            Math.max(0, 100 - guardrailPressure * 4) * 0.08,
+        ),
+      ),
+    );
+    const governedPolicies = Math.max(0, Math.min(policyCandidates, Math.round(policyCandidates * policyReadiness / 100)));
+    const localRing = Math.max(0, Math.min(governedPolicies, Math.ceil(governedPolicies * 0.42)));
+    const canaryRing = Math.max(0, Math.min(governedPolicies - localRing, Math.ceil(governedPolicies * 0.3)));
+    const networkRing = Math.max(0, governedPolicies - localRing - canaryRing);
+    const observeOnly = Math.max(0, policyCandidates - governedPolicies + retestDividends);
+    const rollbackLocks = Math.max(1, retiredDividends + (Number(twin.ruleImpactBlocked) || 0) + (Number(publisher.retiredRoutes) || 0) + Math.max(0, -liftVariance));
+    const liftDecay = Math.max(0, predictedLift - actualLift);
+    const tenantFitDrift = Math.max(
+      0,
+      Math.round(partialReplay * 2 + weakReplay * 3 + Math.max(0, 82 - proofCoverage) / 10 + model.contractGaps.length + fairnessReserve / 2),
+    );
+    const privacyDrift = Math.max(0, Math.round(privacyHolds + model.evidenceGaps.length / 2 + (Number(publisher.retiredRoutes) || 0)));
+    const exposureWeight = localRing + canaryRing * 2 + networkRing * 3;
+    const canaryAlerts = Math.max(0, Math.ceil((liftDecay + tenantFitDrift + privacyDrift + rollbackLocks + observeOnly) / 4));
+    const freezePolicies = Math.max(0, Math.min(governedPolicies, Math.ceil((canaryAlerts + retiredDividends + weakReplay + Math.max(0, -liftVariance)) / 2)));
+    const retunePolicies = Math.max(0, Math.min(Math.max(0, governedPolicies - freezePolicies), retestDividends + partialReplay + Math.ceil(liftDecay / 2)));
+    const stablePolicies = Math.max(0, governedPolicies - freezePolicies - retunePolicies);
+    const driftLoad = Math.max(0, liftDecay * 6 + tenantFitDrift * 4 + privacyDrift * 3 + canaryAlerts * 4 + Math.max(0, exposureWeight - stablePolicies * 2));
+    const sentinelScore = Math.max(1, Math.min(100, Math.round(100 - driftLoad + Math.min(20, stablePolicies * 3) + Math.min(10, matchedReplay * 2))));
+    const driftState = sentinelScore >= 82 ? "Stable" : sentinelScore >= 64 ? "Watch" : "Freeze";
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const sentinelLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: drift state ${driftState}, score ${sentinelScore}%. Stable ${stablePolicies}, retune ${retunePolicies}, freeze ${freezePolicies}, alerts ${canaryAlerts}, lift decay ${liftDecay}, tenant-fit drift ${tenantFitDrift}.`;
+    const sentinelNote = [
+      `Subject: ${BRAND_NAME} reinforcement drift sentinel - ${state.data.company.name}`,
+      "",
+      "Governed reinforcement now has a drift watch before scaled influence continues.",
+      "",
+      `Sentinel score: ${sentinelScore}%`,
+      `Drift state: ${driftState}`,
+      `Governed policies: ${governedPolicies}`,
+      `Stable policies: ${stablePolicies}`,
+      `Retune policies: ${retunePolicies}`,
+      `Freeze policies: ${freezePolicies}`,
+      `Canary alerts: ${canaryAlerts}`,
+      `Lift decay: ${liftDecay}`,
+      `Tenant-fit drift: ${tenantFitDrift}`,
+      `Privacy drift: ${privacyDrift}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Sentinel rule: any policy that loses lift, fit, privacy safety, or fairness confidence stops scaling and moves to retune or freeze memory.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const sentinelCards = [
+      ["Sentinel", `${sentinelScore}%`, `${driftState} state across lift, tenant fit, privacy, and canary pressure.`, sentinelScore >= 82 ? "green" : sentinelScore >= 64 ? "blue" : "amber"],
+      ["Stable", `${stablePolicies} policies`, "Stable policies can continue in their approved rollout ring.", "green"],
+      ["Retune", `${retunePolicies} policies`, "Partial drift returns to controlled replay before wider influence.", "teal"],
+      ["Freeze", `${freezePolicies} policies`, `${canaryAlerts} alerts and ${rollbackLocks} rollback locks shape the freeze lane.`, "amber"],
+    ];
+    const sentinelLanes = [
+      ["Lift watch", "Compare predicted and actual lift after policy influence starts moving users.", `${liftDecay} decay`, liftDecay ? "amber" : "green"],
+      ["Tenant-fit watch", "Detect when a once-safe pattern no longer fits the receiving tenant conditions.", `${tenantFitDrift} drift`, tenantFitDrift > 5 ? "amber" : "blue"],
+      ["Privacy watch", "Stop scaling when private holds, weak routes, or source-sensitive pressure grows.", `${privacyDrift} pressure`, privacyDrift > 6 ? "amber" : "teal"],
+      ["Freeze memory", "Record the stop rule so the network learns what not to repeat.", `${freezePolicies} freeze`, freezePolicies ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="command-network-drift-sentinel" aria-label="Network reinforcement drift sentinel">
+        <div class="command-network-drift-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Reinforcement Drift Sentinel</span>
+          <strong>Watch reinforcement policies for drift before they keep scaling.</strong>
+          <small>${escapeHtml(sentinelLine)}</small>
+        </div>
+        <div class="command-network-drift-grid">
+          ${sentinelCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-drift-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-drift-lanes">
+          ${sentinelLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-drift-actions">
+          <small>Sentinel rule: reinforcement is allowed to keep learning only while lift, fit, privacy, and rollback evidence stay healthy.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Reports">Open drift report</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open freeze lane</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open stable guidance</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Drift sentinel note copied." data-copy-text="${escapeHtml(encodeURIComponent(sentinelNote))}">Copy sentinel note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -10087,6 +10305,7 @@ const state = {
         ${renderCommandNetworkLearningDividendAllocator(model, autopilot, pilotPitch)}
         ${renderCommandNetworkOutcomeDividendVerifier(model, autopilot, pilotPitch)}
         ${renderCommandNetworkReinforcementPolicyGovernor(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkReinforcementDriftSentinel(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -28582,12 +28801,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v336 Network Reinforcement Policy Governor",
-      phase: "Network Reinforcement Policy Governor",
+      version: "v337 Network Reinforcement Drift Sentinel",
+      phase: "Network Reinforcement Drift Sentinel",
       lane: "Static product prototype on GitHub Pages",
-      pace: "317 meaningful versions since rebrand",
-      summary: "Command Center now moves verified learning through governed rollout rings with observe-only lanes and rollback locks before it can influence the network.",
+      pace: "318 meaningful versions since rebrand",
+      summary: "Command Center now watches governed reinforcement for lift decay, tenant-fit drift, privacy pressure, and freeze or retune decisions before network influence keeps scaling.",
       tracks: [
+        ["v337 network reinforcement drift sentinel", 100, "Command Center now monitors governed reinforcement policies for lift decay, tenant-fit drift, privacy pressure, canary alerts, and freeze or retune decisions before scaled influence continues.", "green"],
         ["v336 network reinforcement policy governor", 100, "Command Center now promotes verified learning through local, canary, and network rollout rings while keeping weak or risky policies observe-only or rollback-locked.", "green"],
         ["v335 network outcome dividend verifier", 100, "Command Center now verifies learning dividends against observed local lift, keeping proven guidance active while routing weak or privacy-heavy dividends to retest or retirement memory.", "green"],
         ["v334 network learning dividend allocator", 100, "Command Center now allocates earned network learning value into priority guidance, benchmark insights, early warnings, and playbook upgrades while holding privacy or fairness-blocked dividends.", "green"],
@@ -29066,10 +29286,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now governs how verified learning safely becomes reinforcement policy.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now watches reinforcement for drift before scaled influence continues.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

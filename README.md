@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v337 Network Reinforcement Drift Sentinel watches governed policies for lift decay, tenant-fit drift, privacy pressure, canary alerts, and freeze or retune decisions.
 - v336 Network Reinforcement Policy Governor moves verified learning through local, canary, and network rollout rings with observe-only lanes and rollback locks.
 - v335 Network Outcome Dividend Verifier checks whether returned learning dividends created measurable lift, then keeps, retests, or retires each network lesson.
 - v334 Network Learning Dividend Allocator converts earned network credits into privacy-safe priority guidance, benchmark insights, early warnings, and playbook upgrades.
