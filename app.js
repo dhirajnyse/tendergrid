@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v335";
-  const BUILD_LABEL = "Network Outcome Dividend Verifier";
+  const BUILD_VERSION = "v336";
+  const BUILD_LABEL = "Network Reinforcement Policy Governor";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -9783,6 +9783,222 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkReinforcementPolicyGovernor(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const earnedCredits = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.ruleImpactPromotions) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.replyMemory) || 0) +
+        matchedReplay,
+    );
+    const returnedCredits = Math.max(
+      0,
+      (Number(twin.influenceEnabledGuidance) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        partialReplay +
+        Math.round(model.weeklyReview.reviewScore / 20),
+    );
+    const dividendPool = Math.max(1, earnedCredits + returnedCredits);
+    const privacyHolds = Math.max(
+      1,
+      model.evidenceGaps.length +
+        model.contractGaps.length +
+        weakReplay +
+        (Number(twin.releaseHeldOrBlocked) || 0) +
+        (Number(twin.changelogBlocked) || 0) +
+        (Number(publisher.retiredRoutes) || 0),
+    );
+    const fairnessReserve = Math.max(1, Math.ceil(Math.abs(earnedCredits - returnedCredits) / 2) + (Number(twin.ruleImpactRetests) || 0));
+    const dividendReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.22 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.2 +
+            (Number(twin.replayScore) || 0) * 0.18 +
+            (Number(publisher.score) || 0) * 0.16 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.14 +
+            Math.max(0, 100 - fairnessReserve * 4) * 0.1,
+        ),
+      ),
+    );
+    const allocatedDividends = Math.max(0, Math.min(dividendPool, Math.round(dividendPool * dividendReadiness / 100)));
+    const heldDividends = Math.max(0, dividendPool - allocatedDividends + privacyHolds + fairnessReserve);
+    const predictedLift = Math.max(
+      1,
+      Math.round(
+        ((Number(twin.replayScore) || 0) * 0.28 +
+          (Number(twin.ruleImpactScore) || 0) * 0.2 +
+          (Number(publisher.score) || 0) * 0.18 +
+          model.evidenceScore * 0.18 +
+          model.advisor.advisorScore * 0.16) /
+          10,
+      ),
+    );
+    const actualLift = Math.max(
+      0,
+      Math.round(
+        matchedReplay * 2.8 +
+          partialReplay * 1.5 +
+          Math.max(0, model.actionScore - 40) / 8 +
+          Math.max(0, model.weeklyReview.reviewScore - 55) / 9 +
+          Math.max(0, model.evidenceScore - 60) / 10 +
+          (Number(publisher.replyMemory) || 0) * 1.4 -
+          weakReplay * 1.2,
+      ),
+    );
+    const liftVariance = actualLift - predictedLift;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.3 +
+            (matchedReplay ? Math.min(100, (matchedReplay / Math.max(1, replayRows.length)) * 100) : 42) * 0.22 +
+            model.weeklyReview.reviewScore * 0.18 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.16 +
+            Math.max(0, 100 - fairnessReserve * 4) * 0.14,
+        ),
+      ),
+    );
+    const verificationRate = Math.max(0, Math.min(100, proofCoverage + liftVariance * 3 + matchedReplay * 4 - weakReplay * 6 - privacyHolds * 2));
+    const verifiedDividends = Math.max(0, Math.min(allocatedDividends, Math.round(allocatedDividends * verificationRate / 100)));
+    const retestDividends = Math.max(0, Math.min(allocatedDividends - verifiedDividends, partialReplay + fairnessReserve + Math.max(0, predictedLift - actualLift)));
+    const retiredDividends = Math.max(0, Math.min(heldDividends, weakReplay + (Number(twin.ruleImpactBlocked) || 0) + (Number(publisher.retiredRoutes) || 0)));
+    const policyCandidates = Math.max(
+      1,
+      verifiedDividends +
+        (Number(twin.ruleImpactPromotions) || 0) +
+        (Number(twin.influenceEnabledGuidance) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        matchedReplay,
+    );
+    const guardrailPressure = Math.max(1, privacyHolds + fairnessReserve + retestDividends + retiredDividends + weakReplay + model.contractGaps.length);
+    const policyReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          verificationRate * 0.26 +
+            proofCoverage * 0.22 +
+            model.healthScore * 0.18 +
+            (Number(twin.ruleImpactScore) || 0) * 0.16 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.1 +
+            Math.max(0, 100 - guardrailPressure * 4) * 0.08,
+        ),
+      ),
+    );
+    const governedPolicies = Math.max(0, Math.min(policyCandidates, Math.round(policyCandidates * policyReadiness / 100)));
+    const localRing = Math.max(0, Math.min(governedPolicies, Math.ceil(governedPolicies * 0.42)));
+    const canaryRing = Math.max(0, Math.min(governedPolicies - localRing, Math.ceil(governedPolicies * 0.3)));
+    const networkRing = Math.max(0, governedPolicies - localRing - canaryRing);
+    const observeOnly = Math.max(0, policyCandidates - governedPolicies + retestDividends);
+    const rollbackLocks = Math.max(1, retiredDividends + (Number(twin.ruleImpactBlocked) || 0) + (Number(publisher.retiredRoutes) || 0) + Math.max(0, -liftVariance));
+    const governorScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          policyReadiness * 0.3 +
+            verificationRate * 0.22 +
+            model.evidenceScore * 0.16 +
+            Math.max(0, 100 - rollbackLocks * 5) * 0.16 +
+            Math.max(0, 100 - observeOnly * 4) * 0.16,
+        ),
+      ),
+    );
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const governorLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${governedPolicies} policies are governed from ${policyCandidates} candidates. Ring 0 local ${localRing}, Ring 1 canary ${canaryRing}, Ring 2 network ${networkRing}, observe-only ${observeOnly}, rollback locks ${rollbackLocks}.`;
+    const governorNote = [
+      `Subject: ${BRAND_NAME} reinforcement policy governor - ${state.data.company.name}`,
+      "",
+      "Verified learning can now move through governed rollout rings instead of silently changing guidance.",
+      "",
+      `Governor score: ${governorScore}%`,
+      `Policy readiness: ${policyReadiness}%`,
+      `Policy candidates: ${policyCandidates}`,
+      `Governed policies: ${governedPolicies}`,
+      `Ring 0 local policies: ${localRing}`,
+      `Ring 1 canary policies: ${canaryRing}`,
+      `Ring 2 network policies: ${networkRing}`,
+      `Observe-only policies: ${observeOnly}`,
+      `Rollback locks: ${rollbackLocks}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Governor rule: verified dividends may influence users only through staged rollout, proof monitoring, tenant-fit checks, and instant rollback memory.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const governorCards = [
+      ["Governor", `${governorScore}%`, `${policyReadiness}% readiness after verification, proof, privacy, and rollback gates.`, "blue"],
+      ["Promote", `${governedPolicies} policies`, `${policyCandidates} candidates are considered for controlled reinforcement.`, "green"],
+      ["Canary", `${canaryRing} policies`, "Fit-matched tenants receive limited influence before network rollout.", "teal"],
+      ["Locks", `${rollbackLocks} locks`, `${observeOnly} observe-only policies stay visible until proof improves.`, "amber"],
+    ];
+    const governorLanes = [
+      ["Ring 0 local", "Keep the policy inside the source tenant until repeat proof stays strong.", `${localRing} policies`, "green"],
+      ["Ring 1 canary", "Expose guidance to fit-matched tenants with monitoring and easy rollback.", `${canaryRing} policies`, "teal"],
+      ["Ring 2 network", "Promote only high-confidence policy guidance into broader anonymized reuse.", `${networkRing} policies`, "blue"],
+      ["Rollback memory", "Weak lift, privacy pressure, or fairness debt freezes influence and records the stop rule.", `${rollbackLocks} locks`, "amber"],
+    ];
+
+    return `
+      <section class="command-network-policy-governor" aria-label="Network reinforcement policy governor">
+        <div class="command-network-policy-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Reinforcement Policy Governor</span>
+          <strong>Move verified learning through rollout rings before it influences the network.</strong>
+          <small>${escapeHtml(governorLine)}</small>
+        </div>
+        <div class="command-network-policy-grid">
+          ${governorCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-policy-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-policy-lanes">
+          ${governorLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-policy-actions">
+          <small>Policy rule: reinforcement earns scale only by passing staged rollout, tenant-fit monitoring, privacy gates, and rollback locks.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Governance">Open policy gates</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open local ring</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open canary report</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Policy governor note copied." data-copy-text="${escapeHtml(encodeURIComponent(governorNote))}">Copy governor note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -9870,6 +10086,7 @@ const state = {
         ${renderCommandNetworkReciprocityLedger(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningDividendAllocator(model, autopilot, pilotPitch)}
         ${renderCommandNetworkOutcomeDividendVerifier(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkReinforcementPolicyGovernor(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -28365,12 +28582,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v335 Network Outcome Dividend Verifier",
-      phase: "Network Outcome Dividend Verifier",
+      version: "v336 Network Reinforcement Policy Governor",
+      phase: "Network Reinforcement Policy Governor",
       lane: "Static product prototype on GitHub Pages",
-      pace: "316 meaningful versions since rebrand",
-      summary: "Command Center now verifies whether returned learning dividends created measurable lift, then keeps, retests, or retires each network lesson.",
+      pace: "317 meaningful versions since rebrand",
+      summary: "Command Center now moves verified learning through governed rollout rings with observe-only lanes and rollback locks before it can influence the network.",
       tracks: [
+        ["v336 network reinforcement policy governor", 100, "Command Center now promotes verified learning through local, canary, and network rollout rings while keeping weak or risky policies observe-only or rollback-locked.", "green"],
         ["v335 network outcome dividend verifier", 100, "Command Center now verifies learning dividends against observed local lift, keeping proven guidance active while routing weak or privacy-heavy dividends to retest or retirement memory.", "green"],
         ["v334 network learning dividend allocator", 100, "Command Center now allocates earned network learning value into priority guidance, benchmark insights, early warnings, and playbook upgrades while holding privacy or fairness-blocked dividends.", "green"],
         ["v333 network reciprocity ledger", 100, "Command Center now shows contribution proofs, returned benefits, source credit, return credit, dividend-ready lessons, fairness debt, and private holds before the network scales.", "green"],
@@ -28848,10 +29066,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now closes the loop by verifying which learning dividends actually created lift.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now governs how verified learning safely becomes reinforcement policy.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

@@ -33,3 +33,4 @@ Recovery cleanup in this copy:
 - v333 adds a Network Reciprocity Ledger so contribution, returned value, fairness debt, dividend-ready lessons, and private holds are visible before the network scales.
 - v334 adds a Network Learning Dividend Allocator so earned network credits return as privacy-safe guidance, benchmarks, warnings, and playbook upgrades.
 - v335 adds a Network Outcome Dividend Verifier so returned learning dividends must prove measurable lift before they stay active.
+- v336 adds a Network Reinforcement Policy Governor so verified learning moves through rollout rings, observe-only lanes, and rollback locks before network influence scales.

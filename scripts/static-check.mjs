@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=335"), "index.html is missing the v335 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=335"), "index.html is missing the v335 data cache token.");
-assert(index.includes("app.js?v=335"), "index.html is missing the v335 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=335"), "index.html is missing the v335 icon cache token.");
+assert(index.includes("styles.css?v=336"), "index.html is missing the v336 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=336"), "index.html is missing the v336 data cache token.");
+assert(index.includes("app.js?v=336"), "index.html is missing the v336 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=336"), "index.html is missing the v336 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,8 +80,8 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v335";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Network Outcome Dividend Verifier";'), "app.js has the wrong build label.");
+assert(app.includes('const BUILD_VERSION = "v336";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Network Reinforcement Policy Governor";'), "app.js has the wrong build label.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -111,6 +111,7 @@ assert(app.includes("renderCommandNetworkBenefitRouter"), "app.js is missing the
 assert(app.includes("renderCommandNetworkReciprocityLedger"), "app.js is missing the Network Reciprocity Ledger render path.");
 assert(app.includes("renderCommandNetworkLearningDividendAllocator"), "app.js is missing the Network Learning Dividend Allocator render path.");
 assert(app.includes("renderCommandNetworkOutcomeDividendVerifier"), "app.js is missing the Network Outcome Dividend Verifier render path.");
+assert(app.includes("renderCommandNetworkReinforcementPolicyGovernor"), "app.js is missing the Network Reinforcement Policy Governor render path.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -131,6 +132,7 @@ assert(css.includes(".command-network-benefit-router"), "styles.css is missing N
 assert(css.includes(".command-network-reciprocity-ledger"), "styles.css is missing Network Reciprocity Ledger styles.");
 assert(css.includes(".command-network-dividend-allocator"), "styles.css is missing Network Learning Dividend Allocator styles.");
 assert(css.includes(".command-network-outcome-verifier"), "styles.css is missing Network Outcome Dividend Verifier styles.");
+assert(css.includes(".command-network-policy-governor"), "styles.css is missing Network Reinforcement Policy Governor styles.");
 assert(css.includes("letter-spacing: 0"), "styles.css should keep letter spacing neutral.");
 assert(!/letter-spacing:\s*-/i.test(css), "styles.css contains negative letter spacing.");
 
