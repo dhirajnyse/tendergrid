@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v340";
-  const BUILD_LABEL = "Network Learning Safety Council";
+  const BUILD_VERSION = "v341";
+  const BUILD_LABEL = "Network Learning License Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -11026,6 +11026,162 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkLearningLicenseGate(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const influenceGuidance = Number(twin.influenceEnabledGuidance) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const privacyHolds = Math.max(
+      1,
+      model.evidenceGaps.length + model.contractGaps.length + weakReplay + releaseHeld + retiredRoutes + (Number(twin.changelogBlocked) || 0),
+    );
+    const replayFit = replayRows.length ? Math.round((matchedReplay / Math.max(1, replayRows.length)) * 100) : 42;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.32 +
+            replayFit * 0.2 +
+            model.weeklyReview.reviewScore * 0.18 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.14 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.1 +
+            Math.max(0, model.healthScore) * 0.06,
+        ),
+      ),
+    );
+    const networkEligible = Math.max(
+      0,
+      promotedRules + influenceGuidance + forecastTests + matchedReplay + Math.max(0, Math.floor((proofCoverage - 70) / 12)),
+    );
+    const tenantOnlyEligible = Math.max(0, partialReplay + retestRules + model.contractGaps.length + Math.ceil(privacyHolds / 2));
+    const antiPatternHolds = Math.max(0, blockedRules + retiredRoutes + weakReplay + Math.ceil(Math.max(0, 70 - proofCoverage) / 15));
+    const consentRequired = Math.max(1, networkEligible + tenantOnlyEligible + Math.ceil(privacyHolds / 2));
+    const consentCaptured = Math.max(
+      0,
+      Math.min(
+        consentRequired,
+        matchedReplay + approvedRules + Math.ceil(model.weeklyReview.reviewScore / 25) + Math.max(0, Math.floor((model.evidenceScore - 55) / 15)),
+      ),
+    );
+    const fairnessReviews = Math.max(0, Math.ceil((Math.abs(approvedRules - promotedRules) + retestRules + tenantOnlyEligible + model.contractGaps.length) / 4));
+    const revocationLocks = Math.max(0, antiPatternHolds + Math.ceil((privacyHolds + fairnessReviews) / 5));
+    const expiryReviews = Math.max(1, Math.ceil((networkEligible + tenantOnlyEligible + privacyHolds) / 5));
+    const licenseReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.24 +
+            model.evidenceScore * 0.18 +
+            (consentCaptured / Math.max(1, consentRequired)) * 100 * 0.2 +
+            Math.max(0, 100 - privacyHolds * 6) * 0.14 +
+            Math.max(0, 100 - revocationLocks * 7) * 0.12 +
+            Math.max(0, 100 - fairnessReviews * 6) * 0.12,
+        ),
+      ),
+    );
+    const licenseCandidates = Math.max(1, networkEligible + tenantOnlyEligible);
+    const activeLicenses = Math.max(0, Math.min(licenseCandidates, Math.round(licenseCandidates * licenseReadiness / 100)));
+    const networkLicenses = Math.max(0, Math.min(activeLicenses, networkEligible));
+    const tenantOnlyLicenses = Math.max(0, Math.min(activeLicenses - networkLicenses, tenantOnlyEligible));
+    const scopedLicenses = Math.max(0, networkLicenses + tenantOnlyLicenses);
+    const exportPaused = Math.max(0, licenseCandidates - activeLicenses + revocationLocks + expiryReviews - Math.ceil(proofCoverage / 25));
+    const auditReceipts = Math.max(1, activeLicenses + consentCaptured + expiryReviews + revocationLocks + fairnessReviews);
+    const licenseState = licenseReadiness >= 82 ? "Licensed" : licenseReadiness >= 64 ? "Consent review" : "Hold reuse";
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const licenseLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: license state ${licenseState}, score ${licenseReadiness}%. Active ${activeLicenses}, network ${networkLicenses}, tenant-only ${tenantOnlyLicenses}, consent ${consentCaptured}/${consentRequired}, expiry reviews ${expiryReviews}, revocation locks ${revocationLocks}, audit receipts ${auditReceipts}.`;
+    const licenseNote = [
+      `Subject: ${BRAND_NAME} learning license gate - ${state.data.company.name}`,
+      "",
+      "Safety-approved learning now needs an explicit license before reuse across organizations.",
+      "",
+      `License score: ${licenseReadiness}%`,
+      `License state: ${licenseState}`,
+      `Active licenses: ${activeLicenses}`,
+      `Network licenses: ${networkLicenses}`,
+      `Tenant-only licenses: ${tenantOnlyLicenses}`,
+      `Consent captured: ${consentCaptured}/${consentRequired}`,
+      `Expiry reviews: ${expiryReviews}`,
+      `Revocation locks: ${revocationLocks}`,
+      `Audit receipts: ${auditReceipts}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "License rule: approved learning can be reused only inside an explicit scope with source consent, expiry, revocation, and audit receipts.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const licenseCards = [
+      ["License gate", `${licenseReadiness}%`, `${licenseState} across consent, proof, privacy, revocation, and fairness checks.`, licenseReadiness >= 82 ? "green" : licenseReadiness >= 64 ? "blue" : "amber"],
+      ["Active", `${activeLicenses}`, `${scopedLicenses} scoped licenses are ready across network and tenant-only lanes.`, "green"],
+      ["Consent", `${consentCaptured}/${consentRequired}`, "Source organizations keep control before learning is reused elsewhere.", "teal"],
+      ["Locks", `${revocationLocks}`, `${exportPaused} exports stay paused until expiry, revocation, or review clears.`, "amber"],
+    ];
+    const licenseLanes = [
+      ["Network license", "Allow anonymized learning to help other organizations only within approved scope.", `${networkLicenses} active`, "green"],
+      ["Tenant-only license", "Keep useful but context-specific learning inside the source organization.", `${tenantOnlyLicenses} active`, "teal"],
+      ["Expiry review", "Force time-bound review so old learning cannot silently keep influencing users.", `${expiryReviews} reviews`, "blue"],
+      ["Revocation lock", "Stop reuse immediately when consent, proof, privacy, or fairness changes.", `${revocationLocks} locks`, revocationLocks ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="command-network-license-gate" aria-label="Network learning license gate">
+        <div class="command-network-license-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Learning License Gate</span>
+          <strong>License safe learning before it can be reused across organizations.</strong>
+          <small>${escapeHtml(licenseLine)}</small>
+        </div>
+        <div class="command-network-license-grid">
+          ${licenseCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-license-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-license-lanes">
+          ${licenseLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-license-actions">
+          <small>License rule: learning reuse requires explicit scope, consent receipt, expiry review, revocation path, and audit trail.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Governance">Open license gate</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open license audit</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open licensed guidance</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="License gate note copied." data-copy-text="${escapeHtml(encodeURIComponent(licenseNote))}">Copy license note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -11118,6 +11274,7 @@ const state = {
         ${renderCommandNetworkRetuneExperimentOrchestrator(model, autopilot, pilotPitch)}
         ${renderCommandNetworkRetuneOutcomeLearner(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningSafetyCouncil(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkLearningLicenseGate(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -29613,12 +29770,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v340 Network Learning Safety Council",
-      phase: "Network Learning Safety Council",
+      version: "v341 Network Learning License Gate",
+      phase: "Network Learning License Gate",
       lane: "Static product prototype on GitHub Pages",
-      pace: "321 meaningful versions since rebrand",
-      summary: "Command Center now governs outcome-proven learning through a safety council that approves network guidance, keeps tenant-only lessons local, records anti-pattern memory, and holds exports for privacy or fairness review.",
+      pace: "322 meaningful versions since rebrand",
+      summary: "Command Center now licenses safety-approved learning with explicit reuse scope, source consent, expiry reviews, revocation locks, and audit receipts before cross-organization guidance can activate.",
       tracks: [
+        ["v341 network learning license gate", 100, "Command Center now licenses safety-approved learning with explicit reuse scope, source consent, expiry reviews, revocation locks, and audit receipts before cross-organization guidance can activate.", "green"],
         ["v340 network learning safety council", 100, "Command Center now governs outcome-proven learning through a safety council that approves network guidance, keeps tenant-only lessons local, records anti-pattern memory, and holds exports for privacy or fairness review.", "green"],
         ["v339 network retune outcome learner", 100, "Command Center now measures retune experiment outcomes and separates repaired policies into promote, extend, freeze-again, cross-tenant-ready, tenant-only, and proof-debt lanes before learning re-enters the network.", "green"],
         ["v338 network retune experiment orchestrator", 100, "Command Center now turns drift signals into governed retune experiments with lift repair, fit recalibration, privacy tightening, rollback proof, safe-return candidates, and frozen-until-proof locks.", "green"],
@@ -30101,10 +30259,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now governs which outcome-proven learning can become network guidance.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now licenses safety-approved learning before cross-organization reuse.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
