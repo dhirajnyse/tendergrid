@@ -29,3 +29,4 @@ Recovery cleanup in this copy:
 - v329 adds a Network Influence Shadow Replay so trusted network patterns are tested against local tenant signals, fit, lift, privacy pressure, and approval before live influence.
 - v330 adds a Tenant Influence Activation Switchboard so tenants control which shadow-proven network patterns can influence Advisor, Reports, or Pilot Pitch.
 - v331 adds an Activation Outcome Learner so tenant-approved guidance is measured locally before proven anonymized lessons can help another organization.
+- v332 adds a Network Benefit Router so proven anonymized lessons are routed to fit-matched tenant lanes while private source context stays blocked.

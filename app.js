@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v331";
-  const BUILD_LABEL = "Activation Outcome Learner";
+  const BUILD_VERSION = "v332";
+  const BUILD_LABEL = "Network Benefit Router";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -9157,6 +9157,151 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkBenefitRouter(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const provenLessons = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.ruleImpactPromotions) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(publisher.founderReady) || 0) +
+        matchedReplay,
+    );
+    const eligibleTenants = Math.max(
+      1,
+      Math.min(
+        12,
+        Math.round(
+          ((Number(twin.changelogPublishReady) || 0) +
+            (Number(publisher.forecastTests) || 0) +
+            (Number(publisher.replyMemory) || 0) +
+            partialReplay +
+            model.openRecords.length) /
+            2,
+        ),
+      ),
+    );
+    const benefitFit = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.22 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.2 +
+            (Number(twin.replayScore) || 0) * 0.18 +
+            (Number(publisher.score) || 0) * 0.16 +
+            Math.max(0, 100 - weakReplay * 8) * 0.12 +
+            Math.max(0, 100 - model.contractGaps.length * 7) * 0.12,
+        ),
+      ),
+    );
+    const routedBenefits = Math.max(0, Math.min(provenLessons, Math.round((provenLessons * benefitFit) / 100)));
+    const tenantMatches = Math.max(0, Math.min(eligibleTenants, Math.ceil((eligibleTenants * benefitFit) / 100)));
+    const privateHolds = Math.max(
+      1,
+      model.evidenceGaps.length +
+        model.contractGaps.length +
+        weakReplay +
+        (Number(twin.releaseHeldOrBlocked) || 0) +
+        (Number(twin.changelogBlocked) || 0) +
+        (Number(publisher.retiredRoutes) || 0),
+    );
+    const fairnessChecks = Math.max(1, tenantMatches + partialReplay + model.documents.totalGaps + (Number(twin.ruleImpactRetests) || 0));
+    const privacyBudget = Math.max(0, Math.min(100, 100 - privateHolds * 5 - model.contractGaps.length * 4));
+    const routerScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(benefitFit * 0.3 + privacyBudget * 0.22 + model.evidenceScore * 0.18 + Math.max(0, 100 - fairnessChecks * 3) * 0.14 + (Number(twin.ruleImpactScore) || 0) * 0.16),
+      ),
+    );
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const routerLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${routedBenefits} proven lessons can route to ${tenantMatches} fit-matched tenant lanes. Router score ${routerScore}%, benefit fit ${benefitFit}%, privacy budget ${privacyBudget}%, private holds ${privateHolds}, fairness checks ${fairnessChecks}.`;
+    const routerNote = [
+      `Subject: ${BRAND_NAME} network benefit router - ${state.data.company.name}`,
+      "",
+      "The network can now route proven lessons without exposing the source tenant.",
+      "",
+      `Router score: ${routerScore}%`,
+      `Proven lessons: ${provenLessons}`,
+      `Routed benefits: ${routedBenefits}`,
+      `Eligible tenant lanes: ${eligibleTenants}`,
+      `Fit-matched lanes: ${tenantMatches}`,
+      `Privacy budget: ${privacyBudget}%`,
+      `Private holds: ${privateHolds}`,
+      `Fairness checks: ${fairnessChecks}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Routing rule: a lesson can help another organization only when the source identity is stripped, the receiving tenant fit is clear, fairness checks pass, and private holds stay blocked.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const routerCards = [
+      ["Proven", `${provenLessons} lessons`, "Only approved, measured, and replay-fit lessons enter the routing pool.", "green"],
+      ["Matched", `${tenantMatches} lanes`, `${eligibleTenants} eligible tenant lanes are checked for fit before benefit routing.`, "teal"],
+      ["Budget", `${privacyBudget}%`, `${privateHolds} private holds keep tenant identity, values, and commercial context out.`, "blue"],
+      ["Fairness", `${fairnessChecks} checks`, `${routedBenefits} benefits can route only after fit and fairness gates pass.`, "amber"],
+    ];
+    const routerLanes = [
+      ["Source protection", "Strip tenant identity, values, documents, and client context before any network reuse.", `${privateHolds} holds`, "blue"],
+      ["Receiver fit", "Route only to tenants with similar work patterns, evidence gaps, timing pressure, or sponsor stage.", `${tenantMatches} matched`, "teal"],
+      ["Benefit package", "Send the lesson as aggregate next-action guidance, not as another tenant's record.", `${routedBenefits} ready`, "green"],
+      ["Fairness guard", "Prevent overfitting to one tenant and keep weak or unbalanced routes in retest.", `${fairnessChecks} checks`, "amber"],
+    ];
+
+    return `
+      <section class="command-network-benefit-router" aria-label="Network benefit router">
+        <div class="command-network-benefit-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Benefit Router</span>
+          <strong>Route proven learning to the tenants who can benefit without exposing the source.</strong>
+          <small>${escapeHtml(routerLine)}</small>
+        </div>
+        <div class="command-network-benefit-grid">
+          ${routerCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-benefit-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-benefit-lanes">
+          ${routerLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-benefit-actions">
+          <small>Network rule: proven lessons travel as anonymized benefit packages, while source identity and weak routes stay blocked.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Governance">Open routing gates</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open benefit report</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open matched guidance</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Benefit router note copied." data-copy-text="${escapeHtml(encodeURIComponent(routerNote))}">Copy router note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -9240,6 +9385,7 @@ const state = {
         ${renderCommandNetworkInfluenceShadowReplay(model, autopilot, pilotPitch)}
         ${renderCommandTenantInfluenceActivationSwitchboard(model, autopilot, pilotPitch)}
         ${renderCommandActivationOutcomeLearner(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkBenefitRouter(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -27735,12 +27881,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v331 Activation Outcome Learner",
-      phase: "Activation Outcome Learner",
+      version: "v332 Network Benefit Router",
+      phase: "Network Benefit Router",
       lane: "Static product prototype on GitHub Pages",
-      pace: "312 meaningful versions since rebrand",
-      summary: "Command Center now measures tenant-approved guidance after activation, separating proven anonymized lessons from tenant-only corrections and rollback memory.",
+      pace: "313 meaningful versions since rebrand",
+      summary: "Command Center now routes proven anonymized lessons to fit-matched tenant lanes while keeping source identity, private holds, and weak routes blocked.",
       tracks: [
+        ["v332 network benefit router", 100, "Command Center now routes proven anonymized lessons to fit-matched tenant lanes, showing benefit fit, privacy budget, private holds, and fairness checks before network reuse.", "green"],
         ["v331 activation outcome learner", 100, "Command Center now measures what happened after tenant-approved guidance went live, showing reward confidence, anonymized-ready lessons, tenant-only corrections, and rollback learning.", "green"],
         ["v330 tenant influence activation switchboard", 100, "Command Center now lets tenants choose which shadow-proven network patterns can influence Advisor, Reports, or Pilot Pitch, with rollback locks and audit-ready holds.", "green"],
         ["v329 network influence shadow replay", 100, "Command Center now replays trusted federated patterns against local tenant signals first, showing fit, predicted lift, activation candidates, held influence, and privacy pressure.", "green"],
@@ -28214,10 +28361,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now measures live tenant-approved guidance before any lesson can graduate.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now routes proven learning as anonymized benefit packages.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

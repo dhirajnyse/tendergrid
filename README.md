@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v332 Network Benefit Router routes proven anonymized lessons to fit-matched tenant lanes while keeping source identity, private holds, and weak routes blocked.
 - v331 Activation Outcome Learner measures tenant-approved guidance after activation, separating proven anonymized lessons from tenant-only corrections and rollback memory.
 - v330 Tenant Influence Activation Switchboard gives tenants explicit opt-in switches for shadow-proven network influence across Advisor, Reports, and Pilot Pitch.
 - v329 Network Influence Shadow Replay tests trusted federated patterns against local tenant signals before any live Advisor, Reports, or Pilot Pitch influence.
