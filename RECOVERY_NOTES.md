@@ -32,3 +32,4 @@ Recovery cleanup in this copy:
 - v332 adds a Network Benefit Router so proven anonymized lessons are routed to fit-matched tenant lanes while private source context stays blocked.
 - v333 adds a Network Reciprocity Ledger so contribution, returned value, fairness debt, dividend-ready lessons, and private holds are visible before the network scales.
 - v334 adds a Network Learning Dividend Allocator so earned network credits return as privacy-safe guidance, benchmarks, warnings, and playbook upgrades.
+- v335 adds a Network Outcome Dividend Verifier so returned learning dividends must prove measurable lift before they stay active.

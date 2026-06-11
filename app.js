@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v334";
-  const BUILD_LABEL = "Network Learning Dividend Allocator";
+  const BUILD_VERSION = "v335";
+  const BUILD_LABEL = "Network Outcome Dividend Verifier";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -9586,6 +9586,203 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkOutcomeDividendVerifier(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const earnedCredits = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.ruleImpactPromotions) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.replyMemory) || 0) +
+        matchedReplay,
+    );
+    const returnedCredits = Math.max(
+      0,
+      (Number(twin.influenceEnabledGuidance) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        partialReplay +
+        Math.round(model.weeklyReview.reviewScore / 20),
+    );
+    const dividendPool = Math.max(1, earnedCredits + returnedCredits);
+    const privacyHolds = Math.max(
+      1,
+      model.evidenceGaps.length +
+        model.contractGaps.length +
+        weakReplay +
+        (Number(twin.releaseHeldOrBlocked) || 0) +
+        (Number(twin.changelogBlocked) || 0) +
+        (Number(publisher.retiredRoutes) || 0),
+    );
+    const fairnessReserve = Math.max(1, Math.ceil(Math.abs(earnedCredits - returnedCredits) / 2) + (Number(twin.ruleImpactRetests) || 0));
+    const dividendReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.22 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.2 +
+            (Number(twin.replayScore) || 0) * 0.18 +
+            (Number(publisher.score) || 0) * 0.16 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.14 +
+            Math.max(0, 100 - fairnessReserve * 4) * 0.1,
+        ),
+      ),
+    );
+    const allocatedDividends = Math.max(0, Math.min(dividendPool, Math.round(dividendPool * dividendReadiness / 100)));
+    const heldDividends = Math.max(0, dividendPool - allocatedDividends + privacyHolds + fairnessReserve);
+    const observedOutcomes = Math.max(
+      1,
+      matchedReplay +
+        partialReplay +
+        (Number(publisher.replyMemory) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        Math.round(model.weeklyReview.actionRegister.length / 4) +
+        Math.round(model.reminders.tasks.length / 45),
+    );
+    const predictedLift = Math.max(
+      1,
+      Math.round(
+        ((Number(twin.replayScore) || 0) * 0.28 +
+          (Number(twin.ruleImpactScore) || 0) * 0.2 +
+          (Number(publisher.score) || 0) * 0.18 +
+          model.evidenceScore * 0.18 +
+          model.advisor.advisorScore * 0.16) /
+          10,
+      ),
+    );
+    const actualLift = Math.max(
+      0,
+      Math.round(
+        matchedReplay * 2.8 +
+          partialReplay * 1.5 +
+          Math.max(0, model.actionScore - 40) / 8 +
+          Math.max(0, model.weeklyReview.reviewScore - 55) / 9 +
+          Math.max(0, model.evidenceScore - 60) / 10 +
+          (Number(publisher.replyMemory) || 0) * 1.4 -
+          weakReplay * 1.2,
+      ),
+    );
+    const liftVariance = actualLift - predictedLift;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.3 +
+            (matchedReplay ? Math.min(100, (matchedReplay / Math.max(1, replayRows.length)) * 100) : 42) * 0.22 +
+            model.weeklyReview.reviewScore * 0.18 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.16 +
+            Math.max(0, 100 - fairnessReserve * 4) * 0.14,
+        ),
+      ),
+    );
+    const verificationRate = Math.max(0, Math.min(100, proofCoverage + liftVariance * 3 + matchedReplay * 4 - weakReplay * 6 - privacyHolds * 2));
+    const verifiedDividends = Math.max(0, Math.min(allocatedDividends, Math.round(allocatedDividends * verificationRate / 100)));
+    const retestDividends = Math.max(0, Math.min(allocatedDividends - verifiedDividends, partialReplay + fairnessReserve + Math.max(0, predictedLift - actualLift)));
+    const retiredDividends = Math.max(0, Math.min(heldDividends, weakReplay + (Number(twin.ruleImpactBlocked) || 0) + (Number(publisher.retiredRoutes) || 0)));
+    const verifierScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.3 +
+            model.healthScore * 0.18 +
+            (Number(twin.replayScore) || 0) * 0.18 +
+            Math.max(0, 100 - Math.abs(liftVariance) * 6) * 0.18 +
+            Math.max(0, 100 - retestDividends * 4 - retiredDividends * 5) * 0.16,
+        ),
+      ),
+    );
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const verifierLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${verifiedDividends} dividends are verified from ${allocatedDividends} allocated. Predicted lift +${predictedLift}, actual lift +${actualLift}, variance ${liftVariance >= 0 ? "+" : ""}${liftVariance}, retest ${retestDividends}, retire ${retiredDividends}.`;
+    const verifierNote = [
+      `Subject: ${BRAND_NAME} network outcome dividend verifier - ${state.data.company.name}`,
+      "",
+      "The network learning loop now verifies whether returned dividends created measurable lift before they keep influencing work.",
+      "",
+      `Verifier score: ${verifierScore}%`,
+      `Observed outcomes: ${observedOutcomes}`,
+      `Proof coverage: ${proofCoverage}%`,
+      `Allocated dividends: ${allocatedDividends}`,
+      `Verified dividends: ${verifiedDividends}`,
+      `Predicted lift: +${predictedLift}`,
+      `Actual lift: +${actualLift}`,
+      `Lift variance: ${liftVariance >= 0 ? "+" : ""}${liftVariance}`,
+      `Retest dividends: ${retestDividends}`,
+      `Retired dividends: ${retiredDividends}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Verifier rule: only dividends with measured local lift stay active; weak, private, or unfair dividends move to retest or retirement memory.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const verifierCards = [
+      ["Verifier", `${verifierScore}%`, `${proofCoverage}% proof coverage across replay, review, privacy, and fairness gates.`, "blue"],
+      ["Lift", `+${actualLift}`, `Predicted +${predictedLift}; variance ${liftVariance >= 0 ? "+" : ""}${liftVariance}.`, liftVariance >= 0 ? "green" : "amber"],
+      ["Keep", `${verifiedDividends} dividends`, "Verified dividends can keep influencing Advisor, Reports, and Pilot Pitch.", "teal"],
+      ["Retest", `${retestDividends + retiredDividends} held`, `${retestDividends} retest and ${retiredDividends} retire before network reuse.`, "amber"],
+    ];
+    const verifierLanes = [
+      ["Keep active", "Measured lift keeps the dividend eligible for local guidance and future anonymized reuse.", `${verifiedDividends} verified`, "green"],
+      ["Retest", "Partial proof or lift shortfall moves the dividend back into controlled replay.", `${retestDividends} retest`, "blue"],
+      ["Retire", "Weak or privacy-heavy routes become anti-pattern memory and stop influencing users.", `${retiredDividends} retired`, "amber"],
+      ["Next proof", "The next local record must show owner, date, proof, and outcome before the loop learns again.", `${observedOutcomes} outcomes`, "teal"],
+    ];
+
+    return `
+      <section class="command-network-outcome-verifier" aria-label="Network outcome dividend verifier">
+        <div class="command-network-outcome-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Outcome Dividend Verifier</span>
+          <strong>Keep only the network dividends that prove measurable lift.</strong>
+          <small>${escapeHtml(verifierLine)}</small>
+        </div>
+        <div class="command-network-outcome-grid">
+          ${verifierCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-outcome-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-outcome-lanes">
+          ${verifierLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-outcome-actions">
+          <small>Verifier rule: the network may suggest, but local outcome proof decides what stays active, what retests, and what retires.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open verified guidance</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open lift report</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open retest queue</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Outcome verifier note copied." data-copy-text="${escapeHtml(encodeURIComponent(verifierNote))}">Copy verifier note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -9672,6 +9869,7 @@ const state = {
         ${renderCommandNetworkBenefitRouter(model, autopilot, pilotPitch)}
         ${renderCommandNetworkReciprocityLedger(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningDividendAllocator(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkOutcomeDividendVerifier(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -28167,12 +28365,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v334 Network Learning Dividend Allocator",
-      phase: "Network Learning Dividend Allocator",
+      version: "v335 Network Outcome Dividend Verifier",
+      phase: "Network Outcome Dividend Verifier",
       lane: "Static product prototype on GitHub Pages",
-      pace: "315 meaningful versions since rebrand",
-      summary: "Command Center now converts earned network credits into privacy-safe learning dividends: priority guidance, benchmark insights, early warnings, and playbook upgrades.",
+      pace: "316 meaningful versions since rebrand",
+      summary: "Command Center now verifies whether returned learning dividends created measurable lift, then keeps, retests, or retires each network lesson.",
       tracks: [
+        ["v335 network outcome dividend verifier", 100, "Command Center now verifies learning dividends against observed local lift, keeping proven guidance active while routing weak or privacy-heavy dividends to retest or retirement memory.", "green"],
         ["v334 network learning dividend allocator", 100, "Command Center now allocates earned network learning value into priority guidance, benchmark insights, early warnings, and playbook upgrades while holding privacy or fairness-blocked dividends.", "green"],
         ["v333 network reciprocity ledger", 100, "Command Center now shows contribution proofs, returned benefits, source credit, return credit, dividend-ready lessons, fairness debt, and private holds before the network scales.", "green"],
         ["v332 network benefit router", 100, "Command Center now routes proven anonymized lessons to fit-matched tenant lanes, showing benefit fit, privacy budget, private holds, and fairness checks before network reuse.", "green"],
@@ -28649,10 +28848,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now returns earned network value as governed learning dividends.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now closes the loop by verifying which learning dividends actually created lift.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

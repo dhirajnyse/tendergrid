@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v335 Network Outcome Dividend Verifier checks whether returned learning dividends created measurable lift, then keeps, retests, or retires each network lesson.
 - v334 Network Learning Dividend Allocator converts earned network credits into privacy-safe priority guidance, benchmark insights, early warnings, and playbook upgrades.
 - v333 Network Reciprocity Ledger tracks contribution proofs, returned benefits, source credit, return credit, fairness debt, dividend-ready lessons, and private holds.
 - v332 Network Benefit Router routes proven anonymized lessons to fit-matched tenant lanes while keeping source identity, private holds, and weak routes blocked.
