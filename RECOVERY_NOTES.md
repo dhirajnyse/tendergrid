@@ -35,3 +35,4 @@ Recovery cleanup in this copy:
 - v335 adds a Network Outcome Dividend Verifier so returned learning dividends must prove measurable lift before they stay active.
 - v336 adds a Network Reinforcement Policy Governor so verified learning moves through rollout rings, observe-only lanes, and rollback locks before network influence scales.
 - v337 adds a Network Reinforcement Drift Sentinel so governed policies are watched for lift decay, tenant-fit drift, privacy pressure, and freeze or retune decisions.
+- v338 adds a Network Retune Experiment Orchestrator so drift signals become controlled repair experiments before reinforcement policies are promoted again.
