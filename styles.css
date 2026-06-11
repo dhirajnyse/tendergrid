@@ -7164,6 +7164,127 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-network-dividend-allocator {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(40, 131, 74, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfefc, rgba(240, 249, 243, 0.96));
+  box-shadow: 0 12px 28px rgba(30, 105, 72, 0.055);
+}
+
+.command-network-dividend-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-network-dividend-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-network-dividend-head small {
+  max-width: 1080px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-network-dividend-grid,
+.command-network-dividend-lanes {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-network-dividend-card,
+.command-network-dividend-lanes article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid rgba(40, 131, 74, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-network-dividend-card span,
+.command-network-dividend-lanes article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-network-dividend-card strong,
+.command-network-dividend-lanes article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-network-dividend-card small,
+.command-network-dividend-lanes article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-network-dividend-card.tone-green,
+.command-network-dividend-lanes article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-network-dividend-card.tone-teal,
+.command-network-dividend-lanes article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-network-dividend-card.tone-blue,
+.command-network-dividend-lanes article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-network-dividend-card.tone-amber,
+.command-network-dividend-lanes article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-network-dividend-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-network-dividend-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-network-dividend-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -7864,7 +7985,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-benefit-grid,
   .command-network-benefit-lanes,
   .command-network-reciprocity-grid,
-  .command-network-reciprocity-lanes {
+  .command-network-reciprocity-lanes,
+  .command-network-dividend-grid,
+  .command-network-dividend-lanes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -7978,7 +8101,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-benefit-grid,
   .command-network-benefit-lanes,
   .command-network-reciprocity-grid,
-  .command-network-reciprocity-lanes {
+  .command-network-reciprocity-lanes,
+  .command-network-dividend-grid,
+  .command-network-dividend-lanes {
     grid-template-columns: 1fr;
   }
 
@@ -8009,7 +8134,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-benefit-actions .ghost-btn,
   .command-network-benefit-actions .secondary-btn,
   .command-network-reciprocity-actions .ghost-btn,
-  .command-network-reciprocity-actions .secondary-btn {
+  .command-network-reciprocity-actions .secondary-btn,
+  .command-network-dividend-actions .ghost-btn,
+  .command-network-dividend-actions .secondary-btn {
     width: 100%;
   }
 
@@ -8025,7 +8152,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-influence-actions div,
   .command-activation-outcome-actions div,
   .command-network-benefit-actions div,
-  .command-network-reciprocity-actions div {
+  .command-network-reciprocity-actions div,
+  .command-network-dividend-actions div {
     width: 100%;
   }
 

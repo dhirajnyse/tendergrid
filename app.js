@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v333";
-  const BUILD_LABEL = "Network Reciprocity Ledger";
+  const BUILD_VERSION = "v334";
+  const BUILD_LABEL = "Network Learning Dividend Allocator";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -9435,6 +9435,157 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkLearningDividendAllocator(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const earnedCredits = Math.max(
+      0,
+      (Number(twin.approvedLearningRules) || 0) +
+        (Number(twin.ruleImpactPromotions) || 0) +
+        (Number(twin.changelogPublishReady) || 0) +
+        (Number(publisher.replyMemory) || 0) +
+        matchedReplay,
+    );
+    const returnedCredits = Math.max(
+      0,
+      (Number(twin.influenceEnabledGuidance) || 0) +
+        (Number(twin.releaseBuyerSafe) || 0) +
+        (Number(publisher.forecastTests) || 0) +
+        partialReplay +
+        Math.round(model.weeklyReview.reviewScore / 20),
+    );
+    const dividendPool = Math.max(1, earnedCredits + returnedCredits);
+    const privacyHolds = Math.max(
+      1,
+      model.evidenceGaps.length +
+        model.contractGaps.length +
+        weakReplay +
+        (Number(twin.releaseHeldOrBlocked) || 0) +
+        (Number(twin.changelogBlocked) || 0) +
+        (Number(publisher.retiredRoutes) || 0),
+    );
+    const fairnessReserve = Math.max(1, Math.ceil(Math.abs(earnedCredits - returnedCredits) / 2) + (Number(twin.ruleImpactRetests) || 0));
+    const dividendReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.22 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.2 +
+            (Number(twin.replayScore) || 0) * 0.18 +
+            (Number(publisher.score) || 0) * 0.16 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.14 +
+            Math.max(0, 100 - fairnessReserve * 4) * 0.1,
+        ),
+      ),
+    );
+    const allocatedDividends = Math.max(0, Math.min(dividendPool, Math.round(dividendPool * dividendReadiness / 100)));
+    const priorityGuidance = Math.max(0, Math.ceil(allocatedDividends * 0.32));
+    const benchmarkInsights = Math.max(0, Math.ceil(allocatedDividends * 0.26));
+    const earlyWarnings = Math.max(0, Math.ceil(allocatedDividends * 0.22));
+    const playbookUpgrades = Math.max(0, Math.max(allocatedDividends - priorityGuidance - benchmarkInsights - earlyWarnings, 0));
+    const heldDividends = Math.max(0, dividendPool - allocatedDividends + privacyHolds + fairnessReserve);
+    const allocatorScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          dividendReadiness * 0.3 +
+            model.evidenceScore * 0.2 +
+            (Number(twin.ruleImpactScore) || 0) * 0.18 +
+            Math.max(0, 100 - heldDividends * 3) * 0.16 +
+            (Number(publisher.score) || 0) * 0.16,
+        ),
+      ),
+    );
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const dividendLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${allocatedDividends} learning dividends are ready from ${dividendPool} credits. Priority guidance ${priorityGuidance}, benchmark insights ${benchmarkInsights}, early warnings ${earlyWarnings}, playbook upgrades ${playbookUpgrades}, held ${heldDividends}.`;
+    const dividendNote = [
+      `Subject: ${BRAND_NAME} network learning dividend allocator - ${state.data.company.name}`,
+      "",
+      "The network can now return earned learning value as governed operating dividends.",
+      "",
+      `Allocator score: ${allocatorScore}%`,
+      `Dividend readiness: ${dividendReadiness}%`,
+      `Earned credits: ${earnedCredits}`,
+      `Returned credits: ${returnedCredits}`,
+      `Allocated dividends: ${allocatedDividends}`,
+      `Priority guidance: ${priorityGuidance}`,
+      `Benchmark insights: ${benchmarkInsights}`,
+      `Early warnings: ${earlyWarnings}`,
+      `Playbook upgrades: ${playbookUpgrades}`,
+      `Held dividends: ${heldDividends}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Dividend rule: returned learning value must improve the tenant's work without revealing source tenants, buyer identities, commercial values, or weak routes.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const dividendCards = [
+      ["Pool", `${dividendPool} credits`, `${earnedCredits} earned and ${returnedCredits} returned credits form the dividend pool.`, "blue"],
+      ["Ready", `${allocatedDividends} dividends`, `${dividendReadiness}% readiness after proof, privacy, and fairness gates.`, "green"],
+      ["Allocated", `${priorityGuidance + benchmarkInsights} insights`, "Priority guidance and benchmark insight return first.", "teal"],
+      ["Held", `${heldDividends} held`, `${privacyHolds} privacy holds and ${fairnessReserve} reserve checks stay visible.`, "amber"],
+    ];
+    const dividendLanes = [
+      ["Priority guidance", "Return the strongest anonymized lesson into Advisor next-action recommendations.", `${priorityGuidance} ready`, "green"],
+      ["Benchmark insight", "Show aggregate timing, evidence, and owner patterns without exposing another tenant.", `${benchmarkInsights} ready`, "blue"],
+      ["Early warning", "Warn the tenant when a similar pattern failed elsewhere, without naming the source.", `${earlyWarnings} ready`, "amber"],
+      ["Playbook upgrade", "Improve Pilot Pitch and review scripts only after proof and tenant fit are clear.", `${playbookUpgrades} ready`, "teal"],
+    ];
+
+    return `
+      <section class="command-network-dividend-allocator" aria-label="Network learning dividend allocator">
+        <div class="command-network-dividend-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Learning Dividend Allocator</span>
+          <strong>Return network value as privacy-safe operating dividends.</strong>
+          <small>${escapeHtml(dividendLine)}</small>
+        </div>
+        <div class="command-network-dividend-grid">
+          ${dividendCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-dividend-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-dividend-lanes">
+          ${dividendLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-dividend-actions">
+          <small>Dividend rule: return useful learning to the tenant as guidance, benchmarks, warnings, and playbooks, while private source context stays blocked.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open dividend guidance</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open benchmark insight</button>
+            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open playbook upgrades</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Learning dividend note copied." data-copy-text="${escapeHtml(encodeURIComponent(dividendNote))}">Copy dividend note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -9520,6 +9671,7 @@ const state = {
         ${renderCommandActivationOutcomeLearner(model, autopilot, pilotPitch)}
         ${renderCommandNetworkBenefitRouter(model, autopilot, pilotPitch)}
         ${renderCommandNetworkReciprocityLedger(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkLearningDividendAllocator(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -28015,12 +28167,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v333 Network Reciprocity Ledger",
-      phase: "Network Reciprocity Ledger",
+      version: "v334 Network Learning Dividend Allocator",
+      phase: "Network Learning Dividend Allocator",
       lane: "Static product prototype on GitHub Pages",
-      pace: "314 meaningful versions since rebrand",
-      summary: "Command Center now tracks cross-tenant contribution, returned value, fairness debt, dividend-ready lessons, and privacy holds so the network benefit loop stays reciprocal.",
+      pace: "315 meaningful versions since rebrand",
+      summary: "Command Center now converts earned network credits into privacy-safe learning dividends: priority guidance, benchmark insights, early warnings, and playbook upgrades.",
       tracks: [
+        ["v334 network learning dividend allocator", 100, "Command Center now allocates earned network learning value into priority guidance, benchmark insights, early warnings, and playbook upgrades while holding privacy or fairness-blocked dividends.", "green"],
         ["v333 network reciprocity ledger", 100, "Command Center now shows contribution proofs, returned benefits, source credit, return credit, dividend-ready lessons, fairness debt, and private holds before the network scales.", "green"],
         ["v332 network benefit router", 100, "Command Center now routes proven anonymized lessons to fit-matched tenant lanes, showing benefit fit, privacy budget, private holds, and fairness checks before network reuse.", "green"],
         ["v331 activation outcome learner", 100, "Command Center now measures what happened after tenant-approved guidance went live, showing reward confidence, anonymized-ready lessons, tenant-only corrections, and rollback learning.", "green"],
@@ -28496,10 +28649,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now makes the network learning economy reciprocal and auditable.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now returns earned network value as governed learning dividends.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
