@@ -36,3 +36,4 @@ Recovery cleanup in this copy:
 - v336 adds a Network Reinforcement Policy Governor so verified learning moves through rollout rings, observe-only lanes, and rollback locks before network influence scales.
 - v337 adds a Network Reinforcement Drift Sentinel so governed policies are watched for lift decay, tenant-fit drift, privacy pressure, and freeze or retune decisions.
 - v338 adds a Network Retune Experiment Orchestrator so drift signals become controlled repair experiments before reinforcement policies are promoted again.
+- v339 adds a Network Retune Outcome Learner so repair experiments produce outcome memory before policies can rejoin the learning network.

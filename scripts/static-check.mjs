@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=338"), "index.html is missing the v338 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=338"), "index.html is missing the v338 data cache token.");
-assert(index.includes("app.js?v=338"), "index.html is missing the v338 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=338"), "index.html is missing the v338 icon cache token.");
+assert(index.includes("styles.css?v=339"), "index.html is missing the v339 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=339"), "index.html is missing the v339 data cache token.");
+assert(index.includes("app.js?v=339"), "index.html is missing the v339 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=339"), "index.html is missing the v339 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,8 +80,8 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v338";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Network Retune Experiment Orchestrator";'), "app.js has the wrong build label.");
+assert(app.includes('const BUILD_VERSION = "v339";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Network Retune Outcome Learner";'), "app.js has the wrong build label.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -114,6 +114,7 @@ assert(app.includes("renderCommandNetworkOutcomeDividendVerifier"), "app.js is m
 assert(app.includes("renderCommandNetworkReinforcementPolicyGovernor"), "app.js is missing the Network Reinforcement Policy Governor render path.");
 assert(app.includes("renderCommandNetworkReinforcementDriftSentinel"), "app.js is missing the Network Reinforcement Drift Sentinel render path.");
 assert(app.includes("renderCommandNetworkRetuneExperimentOrchestrator"), "app.js is missing the Network Retune Experiment Orchestrator render path.");
+assert(app.includes("renderCommandNetworkRetuneOutcomeLearner"), "app.js is missing the Network Retune Outcome Learner render path.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -137,6 +138,7 @@ assert(css.includes(".command-network-outcome-verifier"), "styles.css is missing
 assert(css.includes(".command-network-policy-governor"), "styles.css is missing Network Reinforcement Policy Governor styles.");
 assert(css.includes(".command-network-drift-sentinel"), "styles.css is missing Network Reinforcement Drift Sentinel styles.");
 assert(css.includes(".command-network-retune-orchestrator"), "styles.css is missing Network Retune Experiment Orchestrator styles.");
+assert(css.includes(".command-network-retune-outcome-learner"), "styles.css is missing Network Retune Outcome Learner styles.");
 assert(css.includes("letter-spacing: 0"), "styles.css should keep letter spacing neutral.");
 assert(!/letter-spacing:\s*-/i.test(css), "styles.css contains negative letter spacing.");
 
