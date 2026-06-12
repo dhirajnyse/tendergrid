@@ -44,3 +44,4 @@ Recovery cleanup in this copy:
 - v344 adds a Network Learning Clearinghouse so contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital reconcile before network value moves.
 - v345 adds a Network Learning Trust Market so cleared learning capital becomes governed pattern listings, benchmark signals, buyer-fit guidance, safety escrow, and market receipts while private evidence stays protected.
 - v346 adds a Network Learning Demand Router so trusted market patterns route into tenant demand only when fit, urgency, privacy safety, owner accountability, and outcome feedback are visible.
+- v347 adds a Network Outcome Exchange so routed learning is priced by movement, adoption, rejection, promotion, retune, and retirement evidence before it can reinforce the network.

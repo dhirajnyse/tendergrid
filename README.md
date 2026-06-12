@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v347 Network Outcome Exchange prices routed learning by movement receipts, adoption receipts, rejection receipts, promotion lots, retune lots, and retirement evidence before reinforcement.
 - v346 Network Learning Demand Router routes trusted market patterns toward tenant demand with fit scoring, urgency queues, privacy gates, and outcome feedback loops.
 - v345 Network Learning Trust Market packages cleared learning capital into trust-weighted pattern listings, benchmark signals, safety escrow, buyer-fit guidance, and market receipts without exposing tenant-private evidence.
 - v344 Network Learning Clearinghouse reconciles network learning value across contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital.

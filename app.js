@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v346";
-  const BUILD_LABEL = "Network Learning Demand Router";
+  const BUILD_VERSION = "v347";
+  const BUILD_LABEL = "Network Outcome Exchange";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -12215,6 +12215,223 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkOutcomeExchange(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
+    const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
+    const records = Array.isArray(model.records) ? model.records : [];
+    const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
+    const dueWatchSignals = signals.filter((item) => item.days !== null && item.days <= 30).length;
+    const highValueSignals = signals.filter((item) => item.highValue).length;
+    const missingOwnerDemand = openRecords.filter((record) => !String(record.owner || "").trim()).length;
+    const noDateDemand = openRecords.filter((record) => recordDueDays(record) === null).length;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.34 +
+            model.weeklyReview.reviewScore * 0.18 +
+            model.actionScore * 0.16 +
+            (replayRows.length ? (matchedReplay / Math.max(1, replayRows.length)) * 100 : 42) * 0.16 +
+            Math.max(0, 100 - model.evidenceGaps.length * 5) * 0.08 +
+            Math.max(0, 100 - model.contractGaps.length * 6) * 0.08,
+        ),
+      ),
+    );
+    const trustedListings = Math.max(
+      1,
+      Math.min(28, approvedRules + promotedRules + matchedReplay + forecastTests + Math.ceil(proofCoverage / 18)),
+    );
+    const tenantDemandSignals = Math.max(
+      1,
+      openRecords.length + signals.length + actionRegister.length + model.reminders.tasks.length + highValueSignals + dueWatchSignals,
+    );
+    const routeCandidates = Math.max(1, Math.min(42, trustedListings + Math.ceil(tenantDemandSignals / 8) + Math.ceil(model.healthScore / 18)));
+    const privacyBlocks = Math.max(
+      0,
+      model.evidenceGaps.length + model.contractGaps.length + weakReplay + blockedRules + retestRules + releaseHeld + retiredRoutes,
+    );
+    const privacySafeRoutes = Math.max(0, routeCandidates - Math.ceil(privacyBlocks / 3));
+    const urgentDemandRoutes = Math.max(
+      0,
+      Math.min(routeCandidates, urgentSignals + model.reminders.overdue + Math.ceil(dueWatchSignals / 5) + Math.ceil(noDateDemand / 8)),
+    );
+    const highFitRoutes = Math.max(
+      0,
+      Math.min(
+        routeCandidates,
+        matchedReplay + promotedRules + Math.ceil(model.weeklyReview.reviewScore / 20) + Math.ceil(model.actionScore / 22) + highValueSignals,
+      ),
+    );
+    const feedbackLoops = Math.max(
+      1,
+      Math.min(24, Math.ceil(actionRegister.length / 3) + Math.ceil(signals.length / 7) + matchedReplay + Math.ceil(proofCoverage / 25)),
+    );
+    const routedDemand = Math.max(0, Math.min(routeCandidates, highFitRoutes + urgentDemandRoutes + Math.ceil(privacySafeRoutes / 2)));
+    const demandFit = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.2 +
+            model.weeklyReview.reviewScore * 0.16 +
+            model.actionScore * 0.14 +
+            Math.min(100, trustedListings * 5) * 0.14 +
+            Math.min(100, routedDemand * 6) * 0.16 +
+            Math.max(0, 100 - privacyBlocks * 3) * 0.12 +
+            Math.max(0, 100 - missingOwnerDemand * 2) * 0.08,
+        ),
+      ),
+    );
+    const closedProofRecords = records.filter((record) => {
+      if (!isClosedRecord(record)) return false;
+      return /won|award|complete|completed|closed|done|submitted|delivered/i.test(String(record.status || record.stage || record.outcome || ""));
+    }).length;
+    const movementReceipts = Math.max(
+      1,
+      Math.min(36, feedbackLoops + Math.ceil(actionRegister.length / 4) + Math.ceil(model.weeklyReview.reviewScore / 20) + Math.ceil(closedProofRecords / 4)),
+    );
+    const adoptionReceipts = Math.max(0, Math.min(24, Math.ceil(routedDemand / 2) + matchedReplay + Math.ceil(model.actionScore / 30)));
+    const rejectionReceipts = Math.max(
+      0,
+      Math.min(18, weakReplay + blockedRules + retestRules + retiredRoutes + Math.ceil(privacyBlocks / 8)),
+    );
+    const openValue = sumAmounts(openRecords);
+    const valueSignals = Math.max(1, Math.min(48, highValueSignals + Math.ceil(openValue / 50000000) + Math.ceil(model.healthScore / 20)));
+    const pricedOutcomes = Math.max(
+      1,
+      Math.min(36, Math.ceil((movementReceipts + adoptionReceipts + valueSignals + routedDemand) / 2) - Math.ceil(rejectionReceipts / 3)),
+    );
+    const promoteLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, promotedRules + matchedReplay + Math.ceil((demandFit + proofCoverage) / 30)),
+    );
+    const retuneLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, retestRules + partialReplay + Math.ceil(Math.max(0, 76 - demandFit) / 8) + Math.ceil(rejectionReceipts / 4)),
+    );
+    const retireLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, blockedRules + retiredRoutes + Math.ceil(weakReplay / 2) + Math.ceil(privacyBlocks / 12)),
+    );
+    const exchangeReceipts = Math.max(1, movementReceipts + adoptionReceipts + rejectionReceipts + pricedOutcomes + promoteLots + retuneLots + retireLots);
+    const exchangeValueCredits = Math.max(1, pricedOutcomes * 3 + promoteLots * 5 + adoptionReceipts * 2 - retireLots * 2);
+    const exchangeScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          demandFit * 0.2 +
+            proofCoverage * 0.18 +
+            Math.min(100, movementReceipts * 5) * 0.16 +
+            Math.min(100, pricedOutcomes * 4) * 0.14 +
+            Math.min(100, promoteLots * 8) * 0.12 +
+            Math.max(0, 100 - rejectionReceipts * 4) * 0.12 +
+            Math.max(0, 100 - retireLots * 6) * 0.08,
+        ),
+      ),
+    );
+    const exchangeState = exchangeScore >= 82 ? "Clear outcome value" : exchangeScore >= 64 ? "Price with review" : "Hold outcome exchange";
+    const firstSignal = signals[0] || {};
+    const firstRecord = firstSignal.record || openRecords[0] || {};
+    const exchangeId = `${BUILD_VERSION.toUpperCase()}-OEX-${String(exchangeReceipts).padStart(3, "0")}`;
+    const exchangeLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: exchange state ${exchangeState}, score ${exchangeScore}%. Priced ${pricedOutcomes}, promote ${promoteLots}, retune ${retuneLots}, retire ${retireLots}, receipts ${exchangeReceipts}, value ${exchangeValueCredits} credits.`;
+    const exchangeNote = [
+      `Subject: ${BRAND_NAME} network outcome exchange - ${state.data.company.name}`,
+      "",
+      "Routed recommendations now convert into priced outcome lots before learning is promoted, retuned, retired, or reinvested.",
+      "",
+      `Exchange id: ${exchangeId}`,
+      `Exchange score: ${exchangeScore}%`,
+      `Exchange state: ${exchangeState}`,
+      `Movement receipts: ${movementReceipts}`,
+      `Adoption receipts: ${adoptionReceipts}`,
+      `Rejection receipts: ${rejectionReceipts}`,
+      `Priced outcomes: ${pricedOutcomes}`,
+      `Promote lots: ${promoteLots}`,
+      `Retune lots: ${retuneLots}`,
+      `Retire lots: ${retireLots}`,
+      `Outcome value credits: ${exchangeValueCredits}`,
+      `First outcome record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Outcome exchange rule: demand-routed learning cannot reinforce the network until movement, adoption, rejection, pricing, and retirement evidence reconcile.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const exchangeCards = [
+      ["Outcome exchange", `${exchangeScore}%`, `${exchangeState} across movement, adoption, pricing, promotion, retune, and retirement evidence.`, exchangeScore >= 82 ? "green" : exchangeScore >= 64 ? "blue" : "amber"],
+      ["Priced outcomes", `${pricedOutcomes}`, `${movementReceipts} movement receipts and ${adoptionReceipts} adoption receipts enter value pricing.`, "blue"],
+      ["Promote", `${promoteLots}`, `${trustedListings} trusted listings can earn stronger distribution when outcome value is proven.`, "green"],
+      ["Retune / retire", `${retuneLots}/${retireLots}`, `${rejectionReceipts} rejection receipts keep weak routes out of reinforcement.`, retireLots ? "amber" : "teal"],
+    ];
+    const exchangeLanes = [
+      ["Outcome receipts", "Collect movement, adoption, rejection, and closed-record proof before pricing the lesson.", `${movementReceipts} movement`, "teal"],
+      ["Value pricing", "Convert observed lift into learning value credits without exposing tenant-private evidence.", `${exchangeValueCredits} credits`, "blue"],
+      ["Promote lots", "Push proven routes toward wider distribution only after outcome receipts agree.", `${promoteLots} lots`, "green"],
+      ["Retune or retire", "Weak, risky, or rejected outcomes move to retune experiments or retirement memory.", `${retuneLots + retireLots} lots`, retuneLots + retireLots ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="command-network-outcome-exchange" aria-label="Network outcome exchange">
+        <div class="command-network-outcome-exchange-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Outcome Exchange</span>
+          <strong>Price routed learning by observed outcomes before promotion, retune, retirement, or reinvestment.</strong>
+          <small>${escapeHtml(exchangeLine)}</small>
+        </div>
+        <div class="command-network-outcome-exchange-grid">
+          ${exchangeCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-outcome-exchange-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-outcome-exchange-lanes">
+          ${exchangeLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-outcome-exchange-actions">
+          <small>Outcome exchange rule: movement, adoption, rejection, pricing, and retirement evidence must reconcile before learning reinforces the network.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Reports">Open outcome exchange</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open value pricing</button>
+            <button class="ghost-btn" type="button" data-view="Autopilot">Open retune queue</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Outcome exchange note copied." data-copy-text="${escapeHtml(encodeURIComponent(exchangeNote))}">Copy exchange note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -12313,6 +12530,7 @@ const state = {
         ${renderCommandNetworkLearningClearinghouse(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningTrustMarket(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningDemandRouter(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkOutcomeExchange(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -30808,12 +31026,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v346 Network Learning Demand Router",
-      phase: "Network Learning Demand Router",
+      version: "v347 Network Outcome Exchange",
+      phase: "Network Outcome Exchange",
       lane: "Static product prototype on GitHub Pages",
-      pace: "327 meaningful versions since rebrand",
-      summary: "Command Center now routes trusted market patterns toward tenant demand with fit scoring, urgency queues, privacy gates, and outcome feedback loops.",
+      pace: "328 meaningful versions since rebrand",
+      summary: "Command Center now prices routed learning by observed movement, adoption, rejection, promotion, retune, and retirement evidence before reinforcement.",
       tracks: [
+        ["v347 network outcome exchange", 100, "Command Center now prices routed learning by observed movement, adoption, rejection, promotion, retune, and retirement evidence before reinforcement.", "green"],
         ["v346 network learning demand router", 100, "Command Center now routes trusted market patterns toward tenant demand with fit scoring, urgency queues, privacy gates, and outcome feedback loops.", "green"],
         ["v345 network learning trust market", 100, "Command Center now packages cleared learning capital into trust-weighted pattern listings, benchmark signals, buyer-fit guidance, safety escrow, and market receipts.", "green"],
         ["v344 network learning clearinghouse", 100, "Command Center now reconciles network learning value across contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital.", "green"],
@@ -31302,10 +31521,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now routes trusted market patterns into tenant demand queues.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now prices routed learning by observed outcome value.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
