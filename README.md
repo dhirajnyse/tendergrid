@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v345 Network Learning Trust Market packages cleared learning capital into trust-weighted pattern listings, benchmark signals, safety escrow, buyer-fit guidance, and market receipts without exposing tenant-private evidence.
 - v344 Network Learning Clearinghouse reconciles network learning value across contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital.
 - v343 Network Learning Settlement Console converts royalty credits into controlled settlement statements with payout readiness, dispute windows, reinvestment allocation, revocation adjustments, locked credits, and receipts.
 - v342 Network Learning Royalty Ledger tracks source dividends, network reinvestment, fair-share reserves, held credits, revocation clawbacks, and audit receipts for licensed learning value.

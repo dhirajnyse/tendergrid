@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v344";
-  const BUILD_LABEL = "Network Learning Clearinghouse";
+  const BUILD_VERSION = "v345";
+  const BUILD_LABEL = "Network Learning Trust Market";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -11801,6 +11801,254 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkLearningTrustMarket(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const influenceGuidance = Number(twin.influenceEnabledGuidance) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const privacyHolds = Math.max(
+      1,
+      model.evidenceGaps.length + model.contractGaps.length + weakReplay + releaseHeld + retiredRoutes + (Number(twin.changelogBlocked) || 0),
+    );
+    const replayFit = replayRows.length ? Math.round((matchedReplay / Math.max(1, replayRows.length)) * 100) : 42;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.32 +
+            replayFit * 0.2 +
+            model.weeklyReview.reviewScore * 0.18 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.14 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.1 +
+            Math.max(0, model.healthScore) * 0.06,
+        ),
+      ),
+    );
+    const networkEligible = Math.max(
+      0,
+      promotedRules + influenceGuidance + forecastTests + matchedReplay + Math.max(0, Math.floor((proofCoverage - 70) / 12)),
+    );
+    const tenantOnlyEligible = Math.max(0, partialReplay + retestRules + model.contractGaps.length + Math.ceil(privacyHolds / 2));
+    const antiPatternHolds = Math.max(0, blockedRules + retiredRoutes + weakReplay + Math.ceil(Math.max(0, 70 - proofCoverage) / 15));
+    const consentRequired = Math.max(1, networkEligible + tenantOnlyEligible + Math.ceil(privacyHolds / 2));
+    const consentCaptured = Math.max(
+      0,
+      Math.min(
+        consentRequired,
+        matchedReplay + approvedRules + Math.ceil(model.weeklyReview.reviewScore / 25) + Math.max(0, Math.floor((model.evidenceScore - 55) / 15)),
+      ),
+    );
+    const fairnessReviews = Math.max(0, Math.ceil((Math.abs(approvedRules - promotedRules) + retestRules + tenantOnlyEligible + model.contractGaps.length) / 4));
+    const revocationLocks = Math.max(0, antiPatternHolds + Math.ceil((privacyHolds + fairnessReviews) / 5));
+    const expiryReviews = Math.max(1, Math.ceil((networkEligible + tenantOnlyEligible + privacyHolds) / 5));
+    const licenseReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.24 +
+            model.evidenceScore * 0.18 +
+            (consentCaptured / Math.max(1, consentRequired)) * 100 * 0.2 +
+            Math.max(0, 100 - privacyHolds * 6) * 0.14 +
+            Math.max(0, 100 - revocationLocks * 7) * 0.12 +
+            Math.max(0, 100 - fairnessReviews * 6) * 0.12,
+        ),
+      ),
+    );
+    const licenseCandidates = Math.max(1, networkEligible + tenantOnlyEligible);
+    const activeLicenses = Math.max(0, Math.min(licenseCandidates, Math.round(licenseCandidates * licenseReadiness / 100)));
+    const networkLicenses = Math.max(0, Math.min(activeLicenses, networkEligible));
+    const tenantOnlyLicenses = Math.max(0, Math.min(activeLicenses - networkLicenses, tenantOnlyEligible));
+    const auditReceipts = Math.max(1, activeLicenses + consentCaptured + expiryReviews + revocationLocks + fairnessReviews);
+    const sourceCredits = Math.max(0, networkLicenses * 3 + matchedReplay + approvedRules + promotedRules);
+    const receiverValueCredits = Math.max(0, networkLicenses * 5 + influenceGuidance + forecastTests + Math.ceil(model.actionScore / 20));
+    const grossRoyaltyCredits = Math.max(1, sourceCredits + receiverValueCredits);
+    const fairShareReserve = Math.max(0, Math.ceil((tenantOnlyLicenses + fairnessReviews + privacyHolds + partialReplay) / 2));
+    const revocationClawback = Math.max(0, revocationLocks + weakReplay + blockedRules + retiredRoutes);
+    const distributableCredits = Math.max(0, Math.round(grossRoyaltyCredits * licenseReadiness / 100) - fairShareReserve - revocationClawback);
+    const sourceDividends = Math.max(0, Math.min(distributableCredits, sourceCredits + Math.ceil(consentCaptured / 2)));
+    const networkReinvestment = Math.max(0, distributableCredits - sourceDividends);
+    const heldCredits = Math.max(0, grossRoyaltyCredits - distributableCredits + fairShareReserve + revocationClawback);
+    const royaltyScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          licenseReadiness * 0.24 +
+            proofCoverage * 0.18 +
+            Math.max(0, 100 - heldCredits * 3) * 0.18 +
+            Math.max(0, 100 - fairShareReserve * 5) * 0.14 +
+            Math.max(0, 100 - revocationClawback * 7) * 0.14 +
+            Math.min(100, auditReceipts * 8) * 0.12,
+        ),
+      ),
+    );
+    const disputeWindows = Math.max(0, fairnessReviews + Math.ceil(fairShareReserve / 6) + Math.ceil(revocationClawback / 8));
+    const payoutReadyCredits = Math.max(0, sourceDividends - disputeWindows * 2);
+    const reinvestmentApproved = Math.max(0, networkReinvestment - Math.ceil(privacyHolds / 2));
+    const adjustmentQueue = Math.max(0, revocationClawback + Math.ceil(heldCredits / 20) + Math.ceil(privacyHolds / 3));
+    const statementBacklog = Math.max(1, activeLicenses + expiryReviews + disputeWindows + Math.ceil(grossRoyaltyCredits / 12));
+    const settlementReceipts = Math.max(1, auditReceipts + statementBacklog + disputeWindows + adjustmentQueue);
+    const lockedSettlementCredits = Math.max(0, heldCredits + fairShareReserve + revocationClawback);
+    const settlementCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          (settlementReceipts / Math.max(1, settlementReceipts + statementBacklog + disputeWindows + adjustmentQueue)) * 100,
+        ),
+      ),
+    );
+    const settlementScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          royaltyScore * 0.22 +
+            licenseReadiness * 0.16 +
+            settlementCoverage * 0.18 +
+            Math.max(0, 100 - disputeWindows * 9) * 0.15 +
+            Math.max(0, 100 - adjustmentQueue * 4) * 0.15 +
+            Math.max(0, 100 - heldCredits * 2) * 0.14,
+        ),
+      ),
+    );
+    const contributorOrgs = Math.max(1, Math.min(12, Math.ceil((sourceCredits + consentCaptured + matchedReplay) / 6)));
+    const beneficiaryOrgs = Math.max(1, Math.min(16, Math.ceil((receiverValueCredits + networkLicenses + influenceGuidance + forecastTests) / 7)));
+    const privateOrgHolds = Math.max(0, privacyHolds + tenantOnlyLicenses + Math.ceil(heldCredits / 18));
+    const disputedOrgRoutes = Math.max(0, disputeWindows + fairnessReviews + Math.ceil(adjustmentQueue / 6));
+    const clearedRoutes = Math.max(0, activeLicenses + networkLicenses + Math.ceil((payoutReadyCredits + reinvestmentApproved) / 5) - disputedOrgRoutes);
+    const learningCapital = Math.max(0, reinvestmentApproved + Math.ceil(proofCoverage / 12) + Math.ceil(settlementScore / 16));
+    const clearingReceipts = Math.max(1, settlementReceipts + contributorOrgs + beneficiaryOrgs + privateOrgHolds + disputedOrgRoutes);
+    const exchangeBalance = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          settlementScore * 0.22 +
+            proofCoverage * 0.16 +
+            Math.max(0, 100 - privateOrgHolds * 3) * 0.16 +
+            Math.max(0, 100 - disputedOrgRoutes * 6) * 0.16 +
+            Math.min(100, clearedRoutes * 10) * 0.14 +
+            Math.min(100, learningCapital * 8) * 0.16,
+        ),
+      ),
+    );
+    const trustedListings = Math.max(1, Math.min(24, clearedRoutes + Math.ceil(learningCapital / 3) + Math.ceil(proofCoverage / 18)));
+    const benchmarkSignals = Math.max(1, Math.min(32, beneficiaryOrgs * 2 + matchedReplay + Math.ceil(receiverValueCredits / 10)));
+    const safetyEscrow = Math.max(0, privateOrgHolds + disputedOrgRoutes + revocationLocks + Math.ceil(lockedSettlementCredits / 18));
+    const buyerFitGuidance = Math.max(0, Math.min(trustedListings + benchmarkSignals, networkLicenses + influenceGuidance + Math.ceil(exchangeBalance / 14)));
+    const marketReceipts = Math.max(1, clearingReceipts + trustedListings + benchmarkSignals + safetyEscrow + buyerFitGuidance);
+    const marketLiquidity = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          exchangeBalance * 0.22 +
+            settlementScore * 0.14 +
+            proofCoverage * 0.14 +
+            Math.min(100, trustedListings * 6) * 0.16 +
+            Math.min(100, buyerFitGuidance * 7) * 0.14 +
+            Math.max(0, 100 - safetyEscrow * 2) * 0.2,
+        ),
+      ),
+    );
+    const marketState = marketLiquidity >= 82 ? "Open trust market" : marketLiquidity >= 64 ? "Curated review" : "Hold listings";
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const marketId = `${BUILD_VERSION.toUpperCase()}-MKT-${String(marketReceipts).padStart(3, "0")}`;
+    const marketLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: market state ${marketState}, trust ${marketLiquidity}%. Listings ${trustedListings}, benchmarks ${benchmarkSignals}, buyer-fit ${buyerFitGuidance}, safety escrow ${safetyEscrow}, learning capital ${learningCapital}, receipts ${marketReceipts}.`;
+    const marketNote = [
+      `Subject: ${BRAND_NAME} learning trust market - ${state.data.company.name}`,
+      "",
+      "Cleared learning capital is now packaged into trust-weighted market signals without exposing tenant-private evidence.",
+      "",
+      `Market id: ${marketId}`,
+      `Trust score: ${marketLiquidity}%`,
+      `Market state: ${marketState}`,
+      `Trusted listings: ${trustedListings}`,
+      `Benchmark signals: ${benchmarkSignals}`,
+      `Buyer-fit guidance: ${buyerFitGuidance}`,
+      `Safety escrow: ${safetyEscrow}`,
+      `Learning capital: ${learningCapital}`,
+      `Market receipts: ${marketReceipts}`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Trust market rule: no pattern, benchmark, or buyer-fit guidance becomes discoverable until clearing receipts, privacy escrow, license scope, and outcome proof agree.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const marketCards = [
+      ["Trust market", `${marketLiquidity}%`, `${marketState} across listings, benchmarks, fit, safety escrow, and receipts.`, marketLiquidity >= 82 ? "green" : marketLiquidity >= 64 ? "blue" : "amber"],
+      ["Listings", `${trustedListings}`, `${learningCapital} capital credits back governed reusable patterns.`, "green"],
+      ["Benchmarks", `${benchmarkSignals}`, `${beneficiaryOrgs} beneficiary organizations shape anonymized market signals.`, "teal"],
+      ["Escrow", `${safetyEscrow}`, "Private holds, disputes, and revocation pressure stay out of the market.", safetyEscrow ? "amber" : "green"],
+    ];
+    const marketLanes = [
+      ["Pattern listings", "Cleared, trust-weighted learning patterns that can be reused without source evidence.", `${trustedListings} listings`, "green"],
+      ["Benchmark signals", "Aggregated fit, timing, and risk signals for buyer guidance.", `${benchmarkSignals} signals`, "teal"],
+      ["Buyer-fit guidance", "Market guidance only appears when tenant fit and safety receipts agree.", `${buyerFitGuidance} routes`, "blue"],
+      ["Safety escrow", "Private evidence, disputed routes, and revocation risk stay locked.", `${safetyEscrow} holds`, safetyEscrow ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="command-network-trust-market" aria-label="Network learning trust market">
+        <div class="command-network-trust-market-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Learning Trust Market</span>
+          <strong>Package cleared learning into governed listings, benchmarks, buyer-fit guidance, and safety escrow.</strong>
+          <small>${escapeHtml(marketLine)}</small>
+        </div>
+        <div class="command-network-trust-market-grid">
+          ${marketCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-trust-market-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-trust-market-lanes">
+          ${marketLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-trust-market-actions">
+          <small>Trust market rule: discoverable patterns, benchmark signals, and buyer-fit guidance need clearing receipts, privacy escrow, license scope, and outcome proof.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Reports">Open trust market</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open listing review</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open buyer-fit guidance</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Trust market note copied." data-copy-text="${escapeHtml(encodeURIComponent(marketNote))}">Copy market note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -11897,6 +12145,7 @@ const state = {
         ${renderCommandNetworkLearningRoyaltyLedger(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningSettlementConsole(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningClearinghouse(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkLearningTrustMarket(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -30392,12 +30641,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v344 Network Learning Clearinghouse",
-      phase: "Network Learning Clearinghouse",
+      version: "v345 Network Learning Trust Market",
+      phase: "Network Learning Trust Market",
       lane: "Static product prototype on GitHub Pages",
-      pace: "325 meaningful versions since rebrand",
-      summary: "Command Center now reconciles network learning value across contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital.",
+      pace: "326 meaningful versions since rebrand",
+      summary: "Command Center now packages cleared learning capital into trust-weighted pattern listings, benchmark signals, buyer-fit guidance, safety escrow, and market receipts.",
       tracks: [
+        ["v345 network learning trust market", 100, "Command Center now packages cleared learning capital into trust-weighted pattern listings, benchmark signals, buyer-fit guidance, safety escrow, and market receipts.", "green"],
         ["v344 network learning clearinghouse", 100, "Command Center now reconciles network learning value across contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital.", "green"],
         ["v343 network learning settlement console", 100, "Command Center now converts royalty credits into controlled settlement statements with payout readiness, dispute windows, reinvestment allocation, revocation adjustments, locked credits, and receipts.", "green"],
         ["v342 network learning royalty ledger", 100, "Command Center now tracks value returned from licensed network learning with source dividends, network reinvestment, fair-share reserves, held credits, revocation clawbacks, and audit receipts.", "green"],
@@ -30884,10 +31134,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now reconciles cross-organization learning value before it becomes shared capital.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now packages cleared learning into trust-weighted market listings.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
