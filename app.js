@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v345";
-  const BUILD_LABEL = "Network Learning Trust Market";
+  const BUILD_VERSION = "v346";
+  const BUILD_LABEL = "Network Learning Demand Router";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -12049,6 +12049,172 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkLearningDemandRouter(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
+    const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
+    const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
+    const dueWatchSignals = signals.filter((item) => item.days !== null && item.days <= 30).length;
+    const highValueSignals = signals.filter((item) => item.highValue).length;
+    const missingOwnerDemand = openRecords.filter((record) => !String(record.owner || "").trim()).length;
+    const noDateDemand = openRecords.filter((record) => recordDueDays(record) === null).length;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.34 +
+            model.weeklyReview.reviewScore * 0.18 +
+            model.actionScore * 0.16 +
+            (replayRows.length ? (matchedReplay / Math.max(1, replayRows.length)) * 100 : 42) * 0.16 +
+            Math.max(0, 100 - model.evidenceGaps.length * 5) * 0.08 +
+            Math.max(0, 100 - model.contractGaps.length * 6) * 0.08,
+        ),
+      ),
+    );
+    const trustedListings = Math.max(
+      1,
+      Math.min(28, approvedRules + promotedRules + matchedReplay + forecastTests + Math.ceil(proofCoverage / 18)),
+    );
+    const tenantDemandSignals = Math.max(
+      1,
+      openRecords.length + signals.length + actionRegister.length + model.reminders.tasks.length + highValueSignals + dueWatchSignals,
+    );
+    const routeCandidates = Math.max(1, Math.min(42, trustedListings + Math.ceil(tenantDemandSignals / 8) + Math.ceil(model.healthScore / 18)));
+    const privacyBlocks = Math.max(
+      0,
+      model.evidenceGaps.length + model.contractGaps.length + weakReplay + blockedRules + retestRules + releaseHeld + retiredRoutes,
+    );
+    const privacySafeRoutes = Math.max(0, routeCandidates - Math.ceil(privacyBlocks / 3));
+    const urgentDemandRoutes = Math.max(
+      0,
+      Math.min(routeCandidates, urgentSignals + model.reminders.overdue + Math.ceil(dueWatchSignals / 5) + Math.ceil(noDateDemand / 8)),
+    );
+    const highFitRoutes = Math.max(
+      0,
+      Math.min(
+        routeCandidates,
+        matchedReplay + promotedRules + Math.ceil(model.weeklyReview.reviewScore / 20) + Math.ceil(model.actionScore / 22) + highValueSignals,
+      ),
+    );
+    const feedbackLoops = Math.max(
+      1,
+      Math.min(24, Math.ceil(actionRegister.length / 3) + Math.ceil(signals.length / 7) + matchedReplay + Math.ceil(proofCoverage / 25)),
+    );
+    const routedDemand = Math.max(0, Math.min(routeCandidates, highFitRoutes + urgentDemandRoutes + Math.ceil(privacySafeRoutes / 2)));
+    const demandFit = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.2 +
+            model.weeklyReview.reviewScore * 0.16 +
+            model.actionScore * 0.14 +
+            Math.min(100, trustedListings * 5) * 0.14 +
+            Math.min(100, routedDemand * 6) * 0.16 +
+            Math.max(0, 100 - privacyBlocks * 3) * 0.12 +
+            Math.max(0, 100 - missingOwnerDemand * 2) * 0.08,
+        ),
+      ),
+    );
+    const routerState = demandFit >= 82 ? "Route demand now" : demandFit >= 64 ? "Curate demand routes" : "Hold demand routing";
+    const firstSignal = signals[0] || {};
+    const firstRecord = firstSignal.record || openRecords[0] || {};
+    const routerId = `${BUILD_VERSION.toUpperCase()}-DMR-${String(routeCandidates + feedbackLoops).padStart(3, "0")}`;
+    const routerLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: router state ${routerState}, fit ${demandFit}%. Candidates ${routeCandidates}, routed ${routedDemand}, urgent ${urgentDemandRoutes}, privacy-safe ${privacySafeRoutes}, feedback loops ${feedbackLoops}.`;
+    const routerNote = [
+      `Subject: ${BRAND_NAME} network demand router - ${state.data.company.name}`,
+      "",
+      "Trusted market listings now route toward tenant demand only when fit, urgency, privacy safety, and feedback capture agree.",
+      "",
+      `Router id: ${routerId}`,
+      `Demand fit: ${demandFit}%`,
+      `Router state: ${routerState}`,
+      `Trusted listings: ${trustedListings}`,
+      `Route candidates: ${routeCandidates}`,
+      `Routed demand: ${routedDemand}`,
+      `Urgent demand routes: ${urgentDemandRoutes}`,
+      `Privacy-safe routes: ${privacySafeRoutes}`,
+      `Feedback loops: ${feedbackLoops}`,
+      `First demand record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Demand routing rule: no trusted pattern reaches a tenant workflow until fit, urgency, privacy safety, owner accountability, and outcome feedback are visible.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const routerCards = [
+      ["Demand router", `${demandFit}%`, `${routerState} across fit, urgency, privacy safety, and feedback capture.`, demandFit >= 82 ? "green" : demandFit >= 64 ? "blue" : "amber"],
+      ["Routed demand", `${routedDemand}`, `${routeCandidates} candidate routes connect trusted market signals to live work.`, "blue"],
+      ["Urgent routes", `${urgentDemandRoutes}`, `${model.reminders.overdue} overdue follow-ups and ${dueWatchSignals} due-watch signals shape priority.`, urgentDemandRoutes ? "amber" : "green"],
+      ["Feedback loops", `${feedbackLoops}`, "Every routed recommendation needs outcome memory before it can reinforce the network.", "teal"],
+    ];
+    const routerLanes = [
+      ["Fit queue", "Trusted listings match live tenant demand by proof, value, owner, and replay similarity.", `${highFitRoutes} high-fit`, "green"],
+      ["Urgency queue", "Red, overdue, no-date, and due-watch work receives the first safe routing window.", `${urgentDemandRoutes} urgent`, "amber"],
+      ["Privacy gate", "Routes stay blocked when evidence gaps, contract gaps, weak replay, or retired rules carry risk.", `${privacySafeRoutes} safe`, privacySafeRoutes >= routedDemand ? "green" : "amber"],
+      ["Outcome feedback", "Routed recommendations must return adoption, movement, or rejection evidence before reinforcement.", `${feedbackLoops} loops`, "teal"],
+    ];
+
+    return `
+      <section class="command-network-demand-router" aria-label="Network learning demand router">
+        <div class="command-network-demand-router-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Learning Demand Router</span>
+          <strong>Route trusted market patterns toward real tenant demand with fit, urgency, privacy, and feedback controls.</strong>
+          <small>${escapeHtml(routerLine)}</small>
+        </div>
+        <div class="command-network-demand-router-grid">
+          ${routerCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-demand-router-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-demand-router-lanes">
+          ${routerLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-demand-router-actions">
+          <small>Demand routing rule: fit, urgency, privacy safety, owner accountability, and outcome feedback must agree before a trusted pattern enters tenant workflow.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open demand router</button>
+            <button class="ghost-btn" type="button" data-view="Weekly Review">Open urgency queue</button>
+            <button class="ghost-btn" type="button" data-view="Autopilot">Open feedback loops</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Demand router note copied." data-copy-text="${escapeHtml(encodeURIComponent(routerNote))}">Copy router note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -12146,6 +12312,7 @@ const state = {
         ${renderCommandNetworkLearningSettlementConsole(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningClearinghouse(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningTrustMarket(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkLearningDemandRouter(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -30641,12 +30808,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v345 Network Learning Trust Market",
-      phase: "Network Learning Trust Market",
+      version: "v346 Network Learning Demand Router",
+      phase: "Network Learning Demand Router",
       lane: "Static product prototype on GitHub Pages",
-      pace: "326 meaningful versions since rebrand",
-      summary: "Command Center now packages cleared learning capital into trust-weighted pattern listings, benchmark signals, buyer-fit guidance, safety escrow, and market receipts.",
+      pace: "327 meaningful versions since rebrand",
+      summary: "Command Center now routes trusted market patterns toward tenant demand with fit scoring, urgency queues, privacy gates, and outcome feedback loops.",
       tracks: [
+        ["v346 network learning demand router", 100, "Command Center now routes trusted market patterns toward tenant demand with fit scoring, urgency queues, privacy gates, and outcome feedback loops.", "green"],
         ["v345 network learning trust market", 100, "Command Center now packages cleared learning capital into trust-weighted pattern listings, benchmark signals, buyer-fit guidance, safety escrow, and market receipts.", "green"],
         ["v344 network learning clearinghouse", 100, "Command Center now reconciles network learning value across contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital.", "green"],
         ["v343 network learning settlement console", 100, "Command Center now converts royalty credits into controlled settlement statements with payout readiness, dispute windows, reinvestment allocation, revocation adjustments, locked credits, and receipts.", "green"],
@@ -31134,10 +31302,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now packages cleared learning into trust-weighted market listings.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now routes trusted market patterns into tenant demand queues.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

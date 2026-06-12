@@ -43,3 +43,4 @@ Recovery cleanup in this copy:
 - v343 adds a Network Learning Settlement Console so royalty credits become controlled statements with payout readiness, dispute windows, reinvestment allocation, revocation adjustments, locked credits, and settlement receipts.
 - v344 adds a Network Learning Clearinghouse so contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital reconcile before network value moves.
 - v345 adds a Network Learning Trust Market so cleared learning capital becomes governed pattern listings, benchmark signals, buyer-fit guidance, safety escrow, and market receipts while private evidence stays protected.
+- v346 adds a Network Learning Demand Router so trusted market patterns route into tenant demand only when fit, urgency, privacy safety, owner accountability, and outcome feedback are visible.
