@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v342";
-  const BUILD_LABEL = "Network Learning Royalty Ledger";
+  const BUILD_VERSION = "v343";
+  const BUILD_LABEL = "Network Learning Settlement Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -11358,6 +11358,217 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkLearningSettlementConsole(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const influenceGuidance = Number(twin.influenceEnabledGuidance) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const privacyHolds = Math.max(
+      1,
+      model.evidenceGaps.length + model.contractGaps.length + weakReplay + releaseHeld + retiredRoutes + (Number(twin.changelogBlocked) || 0),
+    );
+    const replayFit = replayRows.length ? Math.round((matchedReplay / Math.max(1, replayRows.length)) * 100) : 42;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.32 +
+            replayFit * 0.2 +
+            model.weeklyReview.reviewScore * 0.18 +
+            (Number(twin.influenceAuditDiffScore) || 0) * 0.14 +
+            Math.max(0, 100 - privacyHolds * 5) * 0.1 +
+            Math.max(0, model.healthScore) * 0.06,
+        ),
+      ),
+    );
+    const networkEligible = Math.max(
+      0,
+      promotedRules + influenceGuidance + forecastTests + matchedReplay + Math.max(0, Math.floor((proofCoverage - 70) / 12)),
+    );
+    const tenantOnlyEligible = Math.max(0, partialReplay + retestRules + model.contractGaps.length + Math.ceil(privacyHolds / 2));
+    const antiPatternHolds = Math.max(0, blockedRules + retiredRoutes + weakReplay + Math.ceil(Math.max(0, 70 - proofCoverage) / 15));
+    const consentRequired = Math.max(1, networkEligible + tenantOnlyEligible + Math.ceil(privacyHolds / 2));
+    const consentCaptured = Math.max(
+      0,
+      Math.min(
+        consentRequired,
+        matchedReplay + approvedRules + Math.ceil(model.weeklyReview.reviewScore / 25) + Math.max(0, Math.floor((model.evidenceScore - 55) / 15)),
+      ),
+    );
+    const fairnessReviews = Math.max(0, Math.ceil((Math.abs(approvedRules - promotedRules) + retestRules + tenantOnlyEligible + model.contractGaps.length) / 4));
+    const revocationLocks = Math.max(0, antiPatternHolds + Math.ceil((privacyHolds + fairnessReviews) / 5));
+    const expiryReviews = Math.max(1, Math.ceil((networkEligible + tenantOnlyEligible + privacyHolds) / 5));
+    const licenseReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.24 +
+            model.evidenceScore * 0.18 +
+            (consentCaptured / Math.max(1, consentRequired)) * 100 * 0.2 +
+            Math.max(0, 100 - privacyHolds * 6) * 0.14 +
+            Math.max(0, 100 - revocationLocks * 7) * 0.12 +
+            Math.max(0, 100 - fairnessReviews * 6) * 0.12,
+        ),
+      ),
+    );
+    const licenseCandidates = Math.max(1, networkEligible + tenantOnlyEligible);
+    const activeLicenses = Math.max(0, Math.min(licenseCandidates, Math.round(licenseCandidates * licenseReadiness / 100)));
+    const networkLicenses = Math.max(0, Math.min(activeLicenses, networkEligible));
+    const tenantOnlyLicenses = Math.max(0, Math.min(activeLicenses - networkLicenses, tenantOnlyEligible));
+    const auditReceipts = Math.max(1, activeLicenses + consentCaptured + expiryReviews + revocationLocks + fairnessReviews);
+    const sourceCredits = Math.max(0, networkLicenses * 3 + matchedReplay + approvedRules + promotedRules);
+    const receiverValueCredits = Math.max(0, networkLicenses * 5 + influenceGuidance + forecastTests + Math.ceil(model.actionScore / 20));
+    const grossRoyaltyCredits = Math.max(1, sourceCredits + receiverValueCredits);
+    const fairShareReserve = Math.max(0, Math.ceil((tenantOnlyLicenses + fairnessReviews + privacyHolds + partialReplay) / 2));
+    const revocationClawback = Math.max(0, revocationLocks + weakReplay + blockedRules + retiredRoutes);
+    const distributableCredits = Math.max(0, Math.round(grossRoyaltyCredits * licenseReadiness / 100) - fairShareReserve - revocationClawback);
+    const sourceDividends = Math.max(0, Math.min(distributableCredits, sourceCredits + Math.ceil(consentCaptured / 2)));
+    const networkReinvestment = Math.max(0, distributableCredits - sourceDividends);
+    const heldCredits = Math.max(0, grossRoyaltyCredits - distributableCredits + fairShareReserve + revocationClawback);
+    const royaltyScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          licenseReadiness * 0.24 +
+            proofCoverage * 0.18 +
+            Math.max(0, 100 - heldCredits * 3) * 0.18 +
+            Math.max(0, 100 - fairShareReserve * 5) * 0.14 +
+            Math.max(0, 100 - revocationClawback * 7) * 0.14 +
+            Math.min(100, auditReceipts * 8) * 0.12,
+        ),
+      ),
+    );
+    const disputeWindows = Math.max(0, fairnessReviews + Math.ceil(fairShareReserve / 6) + Math.ceil(revocationClawback / 8));
+    const payoutReadyCredits = Math.max(0, sourceDividends - disputeWindows * 2);
+    const reinvestmentApproved = Math.max(0, networkReinvestment - Math.ceil(privacyHolds / 2));
+    const adjustmentQueue = Math.max(0, revocationClawback + Math.ceil(heldCredits / 20) + Math.ceil(privacyHolds / 3));
+    const statementBacklog = Math.max(1, activeLicenses + expiryReviews + disputeWindows + Math.ceil(grossRoyaltyCredits / 12));
+    const settlementReceipts = Math.max(1, auditReceipts + statementBacklog + disputeWindows + adjustmentQueue);
+    const lockedSettlementCredits = Math.max(0, heldCredits + fairShareReserve + revocationClawback);
+    const approvedSettlementCredits = Math.max(0, payoutReadyCredits + reinvestmentApproved);
+    const settlementWindowDays = Math.max(7, Math.min(30, 7 + disputeWindows * 3 + expiryReviews));
+    const settlementCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          (settlementReceipts / Math.max(1, settlementReceipts + statementBacklog + disputeWindows + adjustmentQueue)) * 100,
+        ),
+      ),
+    );
+    const settlementScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          royaltyScore * 0.22 +
+            licenseReadiness * 0.16 +
+            settlementCoverage * 0.18 +
+            Math.max(0, 100 - disputeWindows * 9) * 0.15 +
+            Math.max(0, 100 - adjustmentQueue * 4) * 0.15 +
+            Math.max(0, 100 - heldCredits * 2) * 0.14,
+        ),
+      ),
+    );
+    const settlementState = settlementScore >= 82 ? "Ready to settle" : settlementScore >= 64 ? "Dispute review" : "Hold settlement";
+    const firstSignal = autopilot.signals[0] || {};
+    const firstRecord = firstSignal.record || model.openRecords[0] || {};
+    const settlementId = `${BUILD_VERSION.toUpperCase()}-SET-${String(settlementReceipts).padStart(3, "0")}`;
+    const settlementLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: settlement state ${settlementState}, score ${settlementScore}%. Payable ${payoutReadyCredits}, reinvest ${reinvestmentApproved}, disputes ${disputeWindows}, adjustments ${adjustmentQueue}, locked ${lockedSettlementCredits}, receipts ${settlementReceipts}.`;
+    const settlementNote = [
+      `Subject: ${BRAND_NAME} learning settlement console - ${state.data.company.name}`,
+      "",
+      "Licensed learning value now moves through settlement control before payout or reinvestment.",
+      "",
+      `Settlement id: ${settlementId}`,
+      `Settlement score: ${settlementScore}%`,
+      `Settlement state: ${settlementState}`,
+      `Payable source credits: ${payoutReadyCredits}`,
+      `Approved reinvestment: ${reinvestmentApproved}`,
+      `Dispute windows: ${disputeWindows}`,
+      `Adjustment queue: ${adjustmentQueue}`,
+      `Locked credits: ${lockedSettlementCredits}`,
+      `Settlement receipts: ${settlementReceipts}`,
+      `Dispute window: ${settlementWindowDays} days`,
+      `First protected record: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
+      "",
+      "Settlement rule: no learning value moves until statement, dispute, payout, reinvestment, and clawback evidence agree.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const settlementCards = [
+      ["Settlement", `${settlementScore}%`, `${settlementState} across statement, dispute, payout, reinvestment, and clawback controls.`, settlementScore >= 82 ? "green" : settlementScore >= 64 ? "blue" : "amber"],
+      ["Statements", `${statementBacklog}`, `${settlementReceipts} receipts anchor the settlement packet.`, "blue"],
+      ["Payable", `${payoutReadyCredits}`, `${sourceDividends} dividend credits pass through dispute and reserve checks.`, "green"],
+      ["Locked", `${lockedSettlementCredits}`, `${adjustmentQueue} adjustments keep risky value out of movement.`, "amber"],
+    ];
+    const settlementLanes = [
+      ["Source payout", "Move verified credits back to source organizations after dispute windows close.", `${payoutReadyCredits} credits`, "green"],
+      ["Network reinvestment", "Fund safer shared playbooks, monitoring, and model checks from approved value.", `${reinvestmentApproved} credits`, "teal"],
+      ["Dispute window", "Keep a visible window before settlement so source or receiver organizations can challenge value movement.", `${settlementWindowDays} days`, "blue"],
+      ["Revocation adjustment", "Apply clawbacks and held-credit corrections before anything settles.", `${adjustmentQueue} open`, adjustmentQueue ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="command-network-settlement-console" aria-label="Network learning settlement console">
+        <div class="command-network-settlement-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Learning Settlement Console</span>
+          <strong>Turn licensed learning royalties into controlled settlement statements.</strong>
+          <small>${escapeHtml(settlementLine)}</small>
+        </div>
+        <div class="command-network-settlement-grid">
+          ${settlementCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-settlement-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-settlement-lanes">
+          ${settlementLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-settlement-actions">
+          <small>Settlement rule: statements, disputes, payouts, reinvestment, and revocation adjustments must reconcile before value moves.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Reports">Open settlement console</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open dispute window</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open payout guidance</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Settlement note copied." data-copy-text="${escapeHtml(encodeURIComponent(settlementNote))}">Copy settlement note</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -11452,6 +11663,7 @@ const state = {
         ${renderCommandNetworkLearningSafetyCouncil(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningLicenseGate(model, autopilot, pilotPitch)}
         ${renderCommandNetworkLearningRoyaltyLedger(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkLearningSettlementConsole(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -29947,12 +30159,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v342 Network Learning Royalty Ledger",
-      phase: "Network Learning Royalty Ledger",
+      version: "v343 Network Learning Settlement Console",
+      phase: "Network Learning Settlement Console",
       lane: "Static product prototype on GitHub Pages",
-      pace: "323 meaningful versions since rebrand",
-      summary: "Command Center now tracks value returned from licensed network learning with source dividends, network reinvestment, fair-share reserves, held credits, revocation clawbacks, and audit receipts.",
+      pace: "324 meaningful versions since rebrand",
+      summary: "Command Center now turns licensed learning royalties into settlement-ready statements with payout readiness, dispute windows, reinvestment allocation, revocation adjustments, locked credits, and receipts.",
       tracks: [
+        ["v343 network learning settlement console", 100, "Command Center now converts royalty credits into controlled settlement statements with payout readiness, dispute windows, reinvestment allocation, revocation adjustments, locked credits, and receipts.", "green"],
         ["v342 network learning royalty ledger", 100, "Command Center now tracks value returned from licensed network learning with source dividends, network reinvestment, fair-share reserves, held credits, revocation clawbacks, and audit receipts.", "green"],
         ["v341 network learning license gate", 100, "Command Center now licenses safety-approved learning with explicit reuse scope, source consent, expiry reviews, revocation locks, and audit receipts before cross-organization guidance can activate.", "green"],
         ["v340 network learning safety council", 100, "Command Center now governs outcome-proven learning through a safety council that approves network guidance, keeps tenant-only lessons local, records anti-pattern memory, and holds exports for privacy or fairness review.", "green"],
@@ -30437,10 +30650,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now tracks value returned from licensed network learning.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now settles licensed learning value before payout or reinvestment.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
