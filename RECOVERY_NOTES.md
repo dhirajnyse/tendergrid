@@ -39,3 +39,4 @@ Recovery cleanup in this copy:
 - v339 adds a Network Retune Outcome Learner so repair experiments produce outcome memory before policies can rejoin the learning network.
 - v340 adds a Network Learning Safety Council so outcome-proven learning is governed before it becomes network guidance, tenant-only memory, or anti-pattern memory.
 - v341 adds a Network Learning License Gate so safety-approved learning needs explicit scope, source consent, expiry, revocation, and audit receipts before cross-organization reuse.
+- v342 adds a Network Learning Royalty Ledger so licensed learning value can return to source organizations through dividends, reinvestment, fair-share reserves, held credits, and revocation-aware accounting.

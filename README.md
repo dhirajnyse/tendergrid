@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v342 Network Learning Royalty Ledger tracks source dividends, network reinvestment, fair-share reserves, held credits, revocation clawbacks, and audit receipts for licensed learning value.
 - v341 Network Learning License Gate adds explicit reuse scope, source consent, expiry reviews, revocation locks, and audit receipts before cross-organization learning activates.
 - v340 Network Learning Safety Council governs outcome-proven learning before it becomes network guidance, tenant-only memory, or anti-pattern memory.
 - v339 Network Retune Outcome Learner measures retune experiment results before repaired policies are promoted, extended, or frozen again.
