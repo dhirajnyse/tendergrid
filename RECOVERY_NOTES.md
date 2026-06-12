@@ -41,3 +41,4 @@ Recovery cleanup in this copy:
 - v341 adds a Network Learning License Gate so safety-approved learning needs explicit scope, source consent, expiry, revocation, and audit receipts before cross-organization reuse.
 - v342 adds a Network Learning Royalty Ledger so licensed learning value can return to source organizations through dividends, reinvestment, fair-share reserves, held credits, and revocation-aware accounting.
 - v343 adds a Network Learning Settlement Console so royalty credits become controlled statements with payout readiness, dispute windows, reinvestment allocation, revocation adjustments, locked credits, and settlement receipts.
+- v344 adds a Network Learning Clearinghouse so contributor organizations, beneficiary organizations, private holds, disputed routes, cleared routes, and shared learning capital reconcile before network value moves.
