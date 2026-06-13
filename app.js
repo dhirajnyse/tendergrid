@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v354";
-  const BUILD_LABEL = "Closed-Loop Learning Control Room";
+  const BUILD_VERSION = "v355";
+  const BUILD_LABEL = "Learning Flywheel Evidence Board";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -14236,6 +14236,201 @@ const state = {
     `;
   }
 
+  function renderCommandLearningFlywheelEvidenceBoard(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
+    const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
+    const records = Array.isArray(model.records) ? model.records : [];
+    const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const highValueSignals = signals.filter((item) => item.highValue).length;
+    const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
+    const dueSignals = signals.filter((item) => item.days !== null && item.days <= 30).length;
+    const closedProofRecords = records.filter((record) => {
+      if (!isClosedRecord(record)) return false;
+      return /won|award|complete|completed|closed|done|submitted|delivered/i.test(String(record.status || record.stage || record.outcome || ""));
+    }).length;
+    const actionEvidence = Math.max(
+      1,
+      Math.min(180, model.reminders.tasks.length + actionRegister.length + signals.length + Math.ceil(openRecords.length / 2)),
+    );
+    const outcomeEvidence = Math.max(
+      1,
+      Math.min(90, matchedReplay + promotedRules + closedProofRecords + forecastTests + Math.ceil(model.evidenceScore / 10)),
+    );
+    const evidenceDepth = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.26 +
+            model.weeklyReview.reviewScore * 0.16 +
+            model.actionScore * 0.14 +
+            Math.min(100, actionEvidence * 0.75) * 0.12 +
+            Math.min(100, outcomeEvidence * 2.4) * 0.16 +
+            Math.max(0, 100 - model.evidenceGaps.length * 6) * 0.08 +
+            Math.max(0, 100 - model.contractGaps.length * 7) * 0.08,
+        ),
+      ),
+    );
+    const proofRisk = Math.max(0, model.evidenceGaps.length + model.contractGaps.length + weakReplay + blockedRules + releaseHeld + retiredRoutes);
+    const compoundingLessons = Math.max(
+      0,
+      Math.min(42, matchedReplay + approvedRules + promotedRules + Math.ceil(evidenceDepth / 16) + Math.ceil(highValueSignals / 2) - Math.ceil(proofRisk / 4)),
+    );
+    const tenantOnlyEvidence = Math.max(
+      1,
+      Math.min(42, model.contractGaps.length + urgentSignals + Math.ceil(model.evidenceGaps.length / 2) + Math.ceil(openRecords.length / 9)),
+    );
+    const retuneEvidence = Math.max(
+      0,
+      Math.min(42, retestRules + partialReplay + weakReplay + Math.ceil(Math.max(0, 82 - evidenceDepth) / 6) + Math.ceil(model.reminders.overdue / 5)),
+    );
+    const holdEvidence = Math.max(
+      0,
+      Math.min(42, blockedRules + releaseHeld + retiredRoutes + Math.ceil(proofRisk / 3) + Math.ceil(Math.max(0, 78 - model.evidenceScore) / 8)),
+    );
+    const dividendEvidence = Math.max(
+      0,
+      Math.min(42, promotedRules + matchedReplay + Math.ceil(outcomeEvidence / 5) + Math.ceil(evidenceDepth / 20) - Math.ceil(holdEvidence / 5)),
+    );
+    const flywheelMomentum = Math.max(
+      1,
+      Math.min(100, Math.round((compoundingLessons + dividendEvidence + outcomeEvidence + dueSignals - holdEvidence * 0.5) * 1.55)),
+    );
+    const flywheelScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          evidenceDepth * 0.34 +
+            flywheelMomentum * 0.18 +
+            model.healthScore * 0.14 +
+            Math.min(100, compoundingLessons * 5) * 0.14 +
+            Math.min(100, dividendEvidence * 5) * 0.08 +
+            Math.max(0, 100 - retuneEvidence * 3) * 0.06 +
+            Math.max(0, 100 - holdEvidence * 4) * 0.06,
+        ),
+      ),
+    );
+    const flywheelState = flywheelScore >= 84 ? "Evidence flywheel can compound" : flywheelScore >= 66 ? "Evidence flywheel is governed" : "Evidence flywheel needs repair";
+    const firstReference = signals[0]?.record || openRecords[0] || records[0] || {};
+    const boardId = `${BUILD_VERSION.toUpperCase()}-LFB-${String(actionEvidence + outcomeEvidence).padStart(3, "0")}`;
+    const boardLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${flywheelState}, score ${flywheelScore}%. Actions ${actionEvidence}, proof ${outcomeEvidence}, compound ${compoundingLessons}, tenant ${tenantOnlyEvidence}, retune ${retuneEvidence}, holds ${holdEvidence}.`;
+    const boardPacket = [
+      `Subject: ${BRAND_NAME} learning flywheel evidence board - ${state.data.company.name}`,
+      "",
+      "The closed loop now shows which evidence can compound safely, which lessons stay tenant-local, and which signals need retune or proof hold before reuse.",
+      "",
+      `Evidence board id: ${boardId}`,
+      `Flywheel state: ${flywheelState}`,
+      `Flywheel score: ${flywheelScore}%`,
+      `Evidence depth: ${evidenceDepth}%`,
+      `Flywheel momentum: ${flywheelMomentum}%`,
+      `Action evidence: ${actionEvidence}`,
+      `Outcome evidence: ${outcomeEvidence}`,
+      `Compounding lessons: ${compoundingLessons}`,
+      `Tenant-only evidence: ${tenantOnlyEvidence}`,
+      `Retune evidence: ${retuneEvidence}`,
+      `Dividend evidence: ${dividendEvidence}`,
+      `Proof holds: ${holdEvidence}`,
+      `First evidence reference: ${compactText(firstReference.reference || firstReference.title || "No evidence reference", 84)}`,
+      "",
+      "Evidence rule: a lesson can compound only when action receipt, outcome proof, privacy scope, retune state, and benefit evidence are all visible.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const evidenceCards = [
+      ["Flywheel score", `${flywheelScore}%`, `${flywheelState} with ${evidenceDepth}% evidence depth.`, flywheelScore >= 84 ? "green" : flywheelScore >= 66 ? "blue" : "amber"],
+      ["Action evidence", `${actionEvidence}`, `${model.reminders.tasks.length} reminders, ${actionRegister.length} review actions, ${signals.length} active signals.`, "teal"],
+      ["Outcome proof", `${outcomeEvidence}`, `${matchedReplay} matched replays, ${closedProofRecords} closed proofs, ${promotedRules} promotions.`, "blue"],
+      ["Compounding lessons", `${compoundingLessons}`, `${dividendEvidence} dividend lessons and ${holdEvidence} proof holds shape reuse.`, holdEvidence ? "amber" : "green"],
+    ];
+    const evidenceLanes = [
+      ["Action receipt", "User moves, reminders, reviews, and signal changes enter the flywheel.", `${actionEvidence} receipts`, "teal"],
+      ["Outcome proof", "Closed records, matched replay, and promoted rules prove lift.", `${outcomeEvidence} proofs`, "blue"],
+      ["Compound", "Strong lessons can improve future guidance and playbooks.", `${compoundingLessons} lessons`, compoundingLessons ? "green" : "blue"],
+      ["Retune", "Weak, partial, or stale signals go back into experiment repair.", `${retuneEvidence} items`, retuneEvidence ? "amber" : "teal"],
+      ["Hold", "Evidence, privacy, fairness, or release gaps stop unsafe compounding.", `${holdEvidence} holds`, holdEvidence ? "amber" : "green"],
+    ];
+    const evidenceProofs = [
+      ["Tenant memory", `${tenantOnlyEvidence} locked`, "Context-rich or private lessons stay local unless explicitly approved.", tenantOnlyEvidence ? "blue" : "green"],
+      ["Dividend proof", `${dividendEvidence} lessons`, "Value-positive lessons can return as benchmark, warning, or playbook dividends.", dividendEvidence ? "teal" : "blue"],
+      ["Proof risk", `${proofRisk} signals`, "Gaps, weak replay, blocks, and retired routes reduce compounding permission.", proofRisk ? "amber" : "green"],
+      ["Momentum", `${flywheelMomentum}%`, "Evidence momentum rises when action receipts convert into outcome proof.", flywheelMomentum >= 76 ? "green" : "blue"],
+    ];
+
+    return `
+      <section class="command-learning-flywheel-evidence-board" aria-label="Learning flywheel evidence board">
+        <div class="command-learning-flywheel-evidence-board-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Learning Flywheel Evidence Board</span>
+          <strong>Show which evidence can compound, and which learning must wait.</strong>
+          <small>${escapeHtml(boardLine)}</small>
+        </div>
+        <div class="command-learning-flywheel-evidence-board-grid">
+          ${evidenceCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-learning-flywheel-evidence-board-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-learning-flywheel-evidence-board-lanes">
+          ${evidenceLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-learning-flywheel-evidence-board-proofs">
+          ${evidenceProofs
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-learning-flywheel-evidence-board-actions">
+          <small>Evidence rule: action receipt, outcome proof, privacy scope, retune state, and benefit evidence must be visible before a lesson can compound.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Reports">Open evidence proof</button>
+            <button class="ghost-btn" type="button" data-view="Weekly Review">Open action receipts</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open retune evidence</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Learning flywheel evidence board copied." data-copy-text="${escapeHtml(encodeURIComponent(boardPacket))}">Copy evidence board</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -14342,6 +14537,7 @@ const state = {
         ${renderCommandNetworkReleaseOutcomeMonitor(model, autopilot, pilotPitch)}
         ${renderCommandNetworkOutcomeLearningGovernor(model, autopilot, pilotPitch)}
         ${renderCommandClosedLoopLearningControlRoom(model, autopilot, pilotPitch)}
+        ${renderCommandLearningFlywheelEvidenceBoard(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -32837,12 +33033,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v354 Closed-Loop Learning Control Room",
-      phase: "Closed-Loop Learning Control Room",
+      version: "v355 Learning Flywheel Evidence Board",
+      phase: "Learning Flywheel Evidence Board",
       lane: "Static product prototype on GitHub Pages",
-      pace: "335 meaningful versions since rebrand",
-      summary: "Command Center now turns user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse into one governed closed-learning loop.",
+      pace: "336 meaningful versions since rebrand",
+      summary: "Command Center now shows which action evidence can compound, which proof stays tenant-local, which lessons need retune, and which evidence is held before reuse.",
       tracks: [
+        ["v355 learning flywheel evidence board", 100, "Command Center now shows which action evidence can compound, which proof stays tenant-local, which lessons need retune, and which evidence is held before reuse.", "green"],
         ["v354 closed-loop learning control room", 100, "Command Center now turns user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse into one governed closed-learning loop.", "green"],
         ["v353 network outcome learning governor", 100, "Command Center now governs measured outcomes into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds.", "green"],
         ["v352 network release outcome monitor", 100, "Command Center now measures released decisions for movement proof, adoption proof, lift proof, hold/rework signals, and learning returns.", "green"],
@@ -33339,10 +33536,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now closes the loop between action, proof, governance, retune, tenant memory, and network reuse.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now shows which evidence can safely compound and which lessons must wait.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

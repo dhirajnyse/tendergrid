@@ -9767,6 +9767,144 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-learning-flywheel-evidence-board {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(49, 101, 158, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfdff, rgba(231, 241, 253, 0.96));
+  box-shadow: 0 12px 28px rgba(49, 101, 158, 0.055);
+}
+
+.command-learning-flywheel-evidence-board-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-learning-flywheel-evidence-board-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-learning-flywheel-evidence-board-head small {
+  max-width: 1080px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-learning-flywheel-evidence-board-grid,
+.command-learning-flywheel-evidence-board-lanes,
+.command-learning-flywheel-evidence-board-proofs {
+  display: grid;
+  gap: 8px;
+}
+
+.command-learning-flywheel-evidence-board-grid,
+.command-learning-flywheel-evidence-board-proofs {
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-learning-flywheel-evidence-board-lanes {
+  grid-template-columns: repeat(5, minmax(132px, 1fr));
+}
+
+.command-learning-flywheel-evidence-board-card,
+.command-learning-flywheel-evidence-board-lanes article,
+.command-learning-flywheel-evidence-board-proofs article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid rgba(49, 101, 158, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-learning-flywheel-evidence-board-card span,
+.command-learning-flywheel-evidence-board-lanes article span,
+.command-learning-flywheel-evidence-board-proofs article span {
+  color: var(--blue-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-learning-flywheel-evidence-board-card strong,
+.command-learning-flywheel-evidence-board-lanes article strong,
+.command-learning-flywheel-evidence-board-proofs article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-learning-flywheel-evidence-board-card small,
+.command-learning-flywheel-evidence-board-lanes article small,
+.command-learning-flywheel-evidence-board-proofs article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-learning-flywheel-evidence-board-card.tone-green,
+.command-learning-flywheel-evidence-board-lanes article.tone-green,
+.command-learning-flywheel-evidence-board-proofs article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-learning-flywheel-evidence-board-card.tone-teal,
+.command-learning-flywheel-evidence-board-lanes article.tone-teal,
+.command-learning-flywheel-evidence-board-proofs article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-learning-flywheel-evidence-board-card.tone-blue,
+.command-learning-flywheel-evidence-board-lanes article.tone-blue,
+.command-learning-flywheel-evidence-board-proofs article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-learning-flywheel-evidence-board-card.tone-amber,
+.command-learning-flywheel-evidence-board-lanes article.tone-amber,
+.command-learning-flywheel-evidence-board-proofs article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-learning-flywheel-evidence-board-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-learning-flywheel-evidence-board-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-learning-flywheel-evidence-board-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -10510,7 +10648,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-outcome-learning-governor-lanes,
   .command-closed-loop-learning-control-room-grid,
   .command-closed-loop-learning-control-room-stages,
-  .command-closed-loop-learning-control-room-rules {
+  .command-closed-loop-learning-control-room-rules,
+  .command-learning-flywheel-evidence-board-grid,
+  .command-learning-flywheel-evidence-board-lanes,
+  .command-learning-flywheel-evidence-board-proofs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -10667,7 +10808,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-outcome-learning-governor-lanes,
   .command-closed-loop-learning-control-room-grid,
   .command-closed-loop-learning-control-room-stages,
-  .command-closed-loop-learning-control-room-rules {
+  .command-closed-loop-learning-control-room-rules,
+  .command-learning-flywheel-evidence-board-grid,
+  .command-learning-flywheel-evidence-board-lanes,
+  .command-learning-flywheel-evidence-board-proofs {
     grid-template-columns: 1fr;
   }
 
@@ -10740,7 +10884,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-outcome-learning-governor-actions .ghost-btn,
   .command-network-outcome-learning-governor-actions .secondary-btn,
   .command-closed-loop-learning-control-room-actions .ghost-btn,
-  .command-closed-loop-learning-control-room-actions .secondary-btn {
+  .command-closed-loop-learning-control-room-actions .secondary-btn,
+  .command-learning-flywheel-evidence-board-actions .ghost-btn,
+  .command-learning-flywheel-evidence-board-actions .secondary-btn {
     width: 100%;
   }
 
@@ -10777,7 +10923,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-decision-release-gate-actions div,
   .command-network-release-outcome-monitor-actions div,
   .command-network-outcome-learning-governor-actions div,
-  .command-closed-loop-learning-control-room-actions div {
+  .command-closed-loop-learning-control-room-actions div,
+  .command-learning-flywheel-evidence-board-actions div {
     width: 100%;
   }
 
