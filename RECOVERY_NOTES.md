@@ -46,3 +46,4 @@ Recovery cleanup in this copy:
 - v346 adds a Network Learning Demand Router so trusted market patterns route into tenant demand only when fit, urgency, privacy safety, owner accountability, and outcome feedback are visible.
 - v347 adds a Network Outcome Exchange so routed learning is priced by movement, adoption, rejection, promotion, retune, and retirement evidence before it can reinforce the network.
 - v348 adds a Network Value Governor so priced outcome value moves only after source credit, reinvestment, retune funding, safety reserve, and market dividend allocations reconcile.
+- v349 adds a Network Value Audit Trail so every governed source credit, reinvestment, retune, reserve, and dividend movement keeps an audit receipt before network value is treated as complete.

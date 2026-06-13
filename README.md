@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v349 Network Value Audit Trail records governed value movement as audit receipts across source credit, network reinvestment, model-retune funding, safety reserve, and market dividend review.
 - v348 Network Value Governor governs priced outcome value across source credit, network reinvestment, model-retune budget, safety reserve, and market dividend lanes.
 - v347 Network Outcome Exchange prices routed learning by movement receipts, adoption receipts, rejection receipts, promotion lots, retune lots, and retirement evidence before reinforcement.
 - v346 Network Learning Demand Router routes trusted market patterns toward tenant demand with fit scoring, urgency queues, privacy gates, and outcome feedback loops.

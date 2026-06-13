@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v348";
-  const BUILD_LABEL = "Network Value Governor";
+  const BUILD_VERSION = "v349";
+  const BUILD_LABEL = "Network Value Audit Trail";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -12681,6 +12681,242 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkValueAuditTrail(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
+    const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
+    const records = Array.isArray(model.records) ? model.records : [];
+    const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const dueWatchSignals = signals.filter((item) => item.days !== null && item.days <= 30).length;
+    const highValueSignals = signals.filter((item) => item.highValue).length;
+    const missingOwnerDemand = openRecords.filter((record) => !String(record.owner || "").trim()).length;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.34 +
+            model.weeklyReview.reviewScore * 0.18 +
+            model.actionScore * 0.16 +
+            (replayRows.length ? (matchedReplay / Math.max(1, replayRows.length)) * 100 : 42) * 0.16 +
+            Math.max(0, 100 - model.evidenceGaps.length * 5) * 0.08 +
+            Math.max(0, 100 - model.contractGaps.length * 6) * 0.08,
+        ),
+      ),
+    );
+    const trustedListings = Math.max(
+      1,
+      Math.min(28, approvedRules + promotedRules + matchedReplay + forecastTests + Math.ceil(proofCoverage / 18)),
+    );
+    const tenantDemandSignals = Math.max(
+      1,
+      openRecords.length + signals.length + actionRegister.length + model.reminders.tasks.length + highValueSignals + dueWatchSignals,
+    );
+    const routeCandidates = Math.max(1, Math.min(42, trustedListings + Math.ceil(tenantDemandSignals / 8) + Math.ceil(model.healthScore / 18)));
+    const privacyBlocks = Math.max(
+      0,
+      model.evidenceGaps.length + model.contractGaps.length + weakReplay + blockedRules + retestRules + releaseHeld + retiredRoutes,
+    );
+    const privacySafeRoutes = Math.max(0, routeCandidates - Math.ceil(privacyBlocks / 3));
+    const highFitRoutes = Math.max(
+      0,
+      Math.min(
+        routeCandidates,
+        matchedReplay + promotedRules + Math.ceil(model.weeklyReview.reviewScore / 20) + Math.ceil(model.actionScore / 22) + highValueSignals,
+      ),
+    );
+    const feedbackLoops = Math.max(
+      1,
+      Math.min(24, Math.ceil(actionRegister.length / 3) + Math.ceil(signals.length / 7) + matchedReplay + Math.ceil(proofCoverage / 25)),
+    );
+    const routedDemand = Math.max(0, Math.min(routeCandidates, highFitRoutes + Math.ceil(privacySafeRoutes / 2)));
+    const demandFit = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.22 +
+            model.weeklyReview.reviewScore * 0.16 +
+            model.actionScore * 0.14 +
+            Math.min(100, trustedListings * 5) * 0.14 +
+            Math.min(100, routedDemand * 6) * 0.16 +
+            Math.max(0, 100 - privacyBlocks * 3) * 0.1 +
+            Math.max(0, 100 - missingOwnerDemand * 2) * 0.08,
+        ),
+      ),
+    );
+    const closedProofRecords = records.filter((record) => {
+      if (!isClosedRecord(record)) return false;
+      return /won|award|complete|completed|closed|done|submitted|delivered/i.test(String(record.status || record.stage || record.outcome || ""));
+    }).length;
+    const movementReceipts = Math.max(
+      1,
+      Math.min(36, feedbackLoops + Math.ceil(actionRegister.length / 4) + Math.ceil(model.weeklyReview.reviewScore / 20) + Math.ceil(closedProofRecords / 4)),
+    );
+    const adoptionReceipts = Math.max(0, Math.min(24, Math.ceil(routedDemand / 2) + matchedReplay + Math.ceil(model.actionScore / 30)));
+    const rejectionReceipts = Math.max(
+      0,
+      Math.min(18, weakReplay + blockedRules + retestRules + retiredRoutes + Math.ceil(privacyBlocks / 8)),
+    );
+    const openValue = sumAmounts(openRecords);
+    const valueSignals = Math.max(1, Math.min(48, highValueSignals + Math.ceil(openValue / 50000000) + Math.ceil(model.healthScore / 20)));
+    const pricedOutcomes = Math.max(
+      1,
+      Math.min(36, Math.ceil((movementReceipts + adoptionReceipts + valueSignals + routedDemand) / 2) - Math.ceil(rejectionReceipts / 3)),
+    );
+    const promoteLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, promotedRules + matchedReplay + Math.ceil((demandFit + proofCoverage) / 30)),
+    );
+    const retuneLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, retestRules + partialReplay + Math.ceil(Math.max(0, 76 - demandFit) / 8) + Math.ceil(rejectionReceipts / 4)),
+    );
+    const retireLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, blockedRules + retiredRoutes + Math.ceil(weakReplay / 2) + Math.ceil(privacyBlocks / 12)),
+    );
+    const exchangeValueCredits = Math.max(1, pricedOutcomes * 3 + promoteLots * 5 + adoptionReceipts * 2 - retireLots * 2);
+    const valuePool = Math.max(1, exchangeValueCredits + Math.ceil(pricedOutcomes / 2) + promoteLots + Math.ceil(adoptionReceipts / 2));
+    const sourceCredit = Math.max(0, Math.min(valuePool, Math.round(valuePool * 0.28) + Math.ceil(adoptionReceipts / 3)));
+    const reinvestmentBudget = Math.max(
+      0,
+      Math.min(valuePool - sourceCredit, Math.round(valuePool * 0.24) + Math.ceil(movementReceipts / 4)),
+    );
+    const retuneBudget = Math.max(
+      0,
+      Math.min(valuePool - sourceCredit - reinvestmentBudget, retuneLots * 3 + Math.ceil(rejectionReceipts / 2) + Math.ceil(privacyBlocks / 8)),
+    );
+    const safetyReserve = Math.max(
+      1,
+      Math.min(valuePool - sourceCredit - reinvestmentBudget - retuneBudget, retireLots * 3 + Math.ceil(privacyBlocks / 5) + Math.ceil(rejectionReceipts / 3)),
+    );
+    const marketDividend = Math.max(0, valuePool - sourceCredit - reinvestmentBudget - retuneBudget - safetyReserve);
+    const governedValue = sourceCredit + reinvestmentBudget + retuneBudget + safetyReserve + marketDividend;
+    const auditReceipts = Math.max(
+      1,
+      movementReceipts + adoptionReceipts + rejectionReceipts + pricedOutcomes + promoteLots + retuneLots + retireLots + governedValue,
+    );
+    const sourceReceiptCount = Math.max(1, sourceCredit + adoptionReceipts + Math.ceil(promoteLots / 2));
+    const reinvestReceiptCount = Math.max(1, reinvestmentBudget + movementReceipts + Math.ceil(feedbackLoops / 2));
+    const retuneReceiptCount = Math.max(1, retuneBudget + retuneLots + retestRules + partialReplay);
+    const reserveReceiptCount = Math.max(1, safetyReserve + retireLots + rejectionReceipts + Math.ceil(privacyBlocks / 2));
+    const dividendReceiptCount = Math.max(0, marketDividend + Math.ceil(promoteLots / 2) + Math.ceil(adoptionReceipts / 4));
+    const reviewedReceipts = sourceReceiptCount + reinvestReceiptCount + retuneReceiptCount + reserveReceiptCount + dividendReceiptCount;
+    const auditCompleteness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.2 +
+            demandFit * 0.14 +
+            Math.min(100, auditReceipts * 2) * 0.16 +
+            Math.min(100, sourceReceiptCount * 4) * 0.1 +
+            Math.min(100, reinvestReceiptCount * 4) * 0.1 +
+            Math.min(100, retuneReceiptCount * 5) * 0.1 +
+            Math.min(100, reserveReceiptCount * 5) * 0.1 +
+            Math.max(0, 100 - privacyBlocks * 3) * 0.1,
+        ),
+      ),
+    );
+    const auditState = auditCompleteness >= 84 ? "Board-ready trail" : auditCompleteness >= 66 ? "Review trail gaps" : "Hold value trail";
+    const latestRecord = signals[0]?.record || openRecords[0] || {};
+    const trailId = `${BUILD_VERSION.toUpperCase()}-VAT-${String(reviewedReceipts).padStart(3, "0")}`;
+    const auditLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: trail state ${auditState}, completeness ${auditCompleteness}%. Source ${sourceReceiptCount}, reinvest ${reinvestReceiptCount}, retune ${retuneReceiptCount}, reserve ${reserveReceiptCount}, dividend ${dividendReceiptCount}.`;
+    const auditPacket = [
+      `Subject: ${BRAND_NAME} network value audit trail - ${state.data.company.name}`,
+      "",
+      "Governed value now leaves a receipt trail before it becomes reusable learning or market dividend.",
+      "",
+      `Trail id: ${trailId}`,
+      `Audit state: ${auditState}`,
+      `Audit completeness: ${auditCompleteness}%`,
+      `Value pool: ${valuePool}`,
+      `Governed value: ${governedValue}`,
+      `Source receipts: ${sourceReceiptCount}`,
+      `Reinvestment receipts: ${reinvestReceiptCount}`,
+      `Retune receipts: ${retuneReceiptCount}`,
+      `Safety reserve receipts: ${reserveReceiptCount}`,
+      `Dividend receipts: ${dividendReceiptCount}`,
+      `First value reference: ${compactText(latestRecord.reference || latestRecord.title || "No active value reference", 84)}`,
+      "",
+      "Audit rule: no network value movement is considered complete until its allocation, owner, reason, proof, and review lane are visible.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const auditCards = [
+      ["Audit trail", `${auditCompleteness}%`, `${auditState} with ${reviewedReceipts} reviewed receipt signals.`, auditCompleteness >= 84 ? "green" : auditCompleteness >= 66 ? "blue" : "amber"],
+      ["Value pool", `${valuePool}`, `${governedValue} governed credits mapped to auditable lanes.`, "teal"],
+      ["Proof receipts", `${auditReceipts}`, `${movementReceipts} movement, ${adoptionReceipts} adoption, ${rejectionReceipts} rejection receipts.`, "green"],
+      ["Held review", `${reserveReceiptCount}`, `${privacyBlocks} privacy or fairness pressure signals stay visible.`, reserveReceiptCount > 8 ? "amber" : "blue"],
+    ];
+    const auditLanes = [
+      ["Source credit", "Contributor value has source, reason, proof, and approved pattern reference.", `${sourceReceiptCount} receipts`, "green"],
+      ["Reinvestment", "Shared learning spend is tied to movement proof and future operating benefit.", `${reinvestReceiptCount} receipts`, "teal"],
+      ["Retune", "Model repair spend carries rejected routes, replay proof, and safe-return evidence.", `${retuneReceiptCount} receipts`, "blue"],
+      ["Safety reserve", "Privacy, fairness, rejection, and retirement pressure remain held with review evidence.", `${reserveReceiptCount} receipts`, "amber"],
+      ["Dividend review", "Released value keeps board-review visibility before becoming network dividend.", `${dividendReceiptCount} receipts`, dividendReceiptCount ? "green" : "blue"],
+    ];
+
+    return `
+      <section class="command-network-value-audit-trail" aria-label="Network value audit trail">
+        <div class="command-network-value-audit-trail-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Value Audit Trail</span>
+          <strong>Turn every governed value movement into an auditable receipt trail.</strong>
+          <small>${escapeHtml(auditLine)}</small>
+        </div>
+        <div class="command-network-value-audit-trail-grid">
+          ${auditCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-value-audit-trail-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-value-audit-trail-lanes">
+          ${auditLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-value-audit-trail-actions">
+          <small>Audit rule: allocation, owner, reason, proof, and review lane stay visible before network value is treated as complete.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Reports">Open audit trail</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open governance proof</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open retune review</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Value audit packet copied." data-copy-text="${escapeHtml(encodeURIComponent(auditPacket))}">Copy audit packet</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -12781,6 +13017,7 @@ const state = {
         ${renderCommandNetworkLearningDemandRouter(model, autopilot, pilotPitch)}
         ${renderCommandNetworkOutcomeExchange(model, autopilot, pilotPitch)}
         ${renderCommandNetworkValueGovernor(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkValueAuditTrail(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -31276,12 +31513,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v348 Network Value Governor",
-      phase: "Network Value Governor",
+      version: "v349 Network Value Audit Trail",
+      phase: "Network Value Audit Trail",
       lane: "Static product prototype on GitHub Pages",
-      pace: "329 meaningful versions since rebrand",
-      summary: "Command Center now governs priced outcome value across source credit, network reinvestment, model-retune budget, safety reserve, and market dividend lanes.",
+      pace: "330 meaningful versions since rebrand",
+      summary: "Command Center now records governed value movement as audit receipts across source credit, network reinvestment, model-retune funding, safety reserve, and market dividend review.",
       tracks: [
+        ["v349 network value audit trail", 100, "Command Center now records governed value movement as audit receipts across source credit, network reinvestment, model-retune funding, safety reserve, and market dividend review.", "green"],
         ["v348 network value governor", 100, "Command Center now governs priced outcome value across source credit, network reinvestment, model-retune budget, safety reserve, and market dividend lanes.", "green"],
         ["v347 network outcome exchange", 100, "Command Center now prices routed learning by observed movement, adoption, rejection, promotion, retune, and retirement evidence before reinforcement.", "green"],
         ["v346 network learning demand router", 100, "Command Center now routes trusted market patterns toward tenant demand with fit scoring, urgency queues, privacy gates, and outcome feedback loops.", "green"],
@@ -31772,10 +32010,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now allocates priced outcome value before it moves.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns governed value movement into audit receipts.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
