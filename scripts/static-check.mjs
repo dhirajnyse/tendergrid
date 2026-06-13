@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=349"), "index.html is missing the v349 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=349"), "index.html is missing the v349 data cache token.");
-assert(index.includes("app.js?v=349"), "index.html is missing the v349 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=349"), "index.html is missing the v349 icon cache token.");
+assert(index.includes("styles.css?v=350"), "index.html is missing the v350 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=350"), "index.html is missing the v350 data cache token.");
+assert(index.includes("app.js?v=350"), "index.html is missing the v350 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=350"), "index.html is missing the v350 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,8 +80,8 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v349";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Network Value Audit Trail";'), "app.js has the wrong build label.");
+assert(app.includes('const BUILD_VERSION = "v350";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Network Value Review Board";'), "app.js has the wrong build label.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -125,6 +125,7 @@ assert(app.includes("renderCommandNetworkLearningDemandRouter"), "app.js is miss
 assert(app.includes("renderCommandNetworkOutcomeExchange"), "app.js is missing the Network Outcome Exchange render path.");
 assert(app.includes("renderCommandNetworkValueGovernor"), "app.js is missing the Network Value Governor render path.");
 assert(app.includes("renderCommandNetworkValueAuditTrail"), "app.js is missing the Network Value Audit Trail render path.");
+assert(app.includes("renderCommandNetworkValueReviewBoard"), "app.js is missing the Network Value Review Board render path.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -159,6 +160,7 @@ assert(css.includes(".command-network-demand-router"), "styles.css is missing Ne
 assert(css.includes(".command-network-outcome-exchange"), "styles.css is missing Network Outcome Exchange styles.");
 assert(css.includes(".command-network-value-governor"), "styles.css is missing Network Value Governor styles.");
 assert(css.includes(".command-network-value-audit-trail"), "styles.css is missing Network Value Audit Trail styles.");
+assert(css.includes(".command-network-value-review-board"), "styles.css is missing Network Value Review Board styles.");
 assert(css.includes("letter-spacing: 0"), "styles.css should keep letter spacing neutral.");
 assert(!/letter-spacing:\s*-/i.test(css), "styles.css contains negative letter spacing.");
 
