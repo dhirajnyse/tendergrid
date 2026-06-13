@@ -8858,6 +8858,134 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-network-value-governor {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfffe, rgba(230, 248, 244, 0.96));
+  box-shadow: 0 12px 28px rgba(42, 142, 119, 0.055);
+}
+
+.command-network-value-governor-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-network-value-governor-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-network-value-governor-head small {
+  max-width: 1080px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-network-value-governor-grid,
+.command-network-value-governor-lanes {
+  display: grid;
+  gap: 8px;
+}
+
+.command-network-value-governor-grid {
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-network-value-governor-lanes {
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+}
+
+.command-network-value-governor-card,
+.command-network-value-governor-lanes article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-network-value-governor-card span,
+.command-network-value-governor-lanes article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-network-value-governor-card strong,
+.command-network-value-governor-lanes article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-network-value-governor-card small,
+.command-network-value-governor-lanes article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-network-value-governor-card.tone-green,
+.command-network-value-governor-lanes article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-network-value-governor-card.tone-teal,
+.command-network-value-governor-lanes article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-network-value-governor-card.tone-blue,
+.command-network-value-governor-lanes article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-network-value-governor-card.tone-amber,
+.command-network-value-governor-lanes article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-network-value-governor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-network-value-governor-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-network-value-governor-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -9586,7 +9714,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-demand-router-grid,
   .command-network-demand-router-lanes,
   .command-network-outcome-exchange-grid,
-  .command-network-outcome-exchange-lanes {
+  .command-network-outcome-exchange-lanes,
+  .command-network-value-governor-grid,
+  .command-network-value-governor-lanes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -9728,7 +9858,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-demand-router-grid,
   .command-network-demand-router-lanes,
   .command-network-outcome-exchange-grid,
-  .command-network-outcome-exchange-lanes {
+  .command-network-outcome-exchange-lanes,
+  .command-network-value-governor-grid,
+  .command-network-value-governor-lanes {
     grid-template-columns: 1fr;
   }
 
@@ -9787,7 +9919,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-demand-router-actions .ghost-btn,
   .command-network-demand-router-actions .secondary-btn,
   .command-network-outcome-exchange-actions .ghost-btn,
-  .command-network-outcome-exchange-actions .secondary-btn {
+  .command-network-outcome-exchange-actions .secondary-btn,
+  .command-network-value-governor-actions .ghost-btn,
+  .command-network-value-governor-actions .secondary-btn {
     width: 100%;
   }
 
@@ -9817,7 +9951,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-clearinghouse-actions div,
   .command-network-trust-market-actions div,
   .command-network-demand-router-actions div,
-  .command-network-outcome-exchange-actions div {
+  .command-network-outcome-exchange-actions div,
+  .command-network-value-governor-actions div {
     width: 100%;
   }
 

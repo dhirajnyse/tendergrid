@@ -45,3 +45,4 @@ Recovery cleanup in this copy:
 - v345 adds a Network Learning Trust Market so cleared learning capital becomes governed pattern listings, benchmark signals, buyer-fit guidance, safety escrow, and market receipts while private evidence stays protected.
 - v346 adds a Network Learning Demand Router so trusted market patterns route into tenant demand only when fit, urgency, privacy safety, owner accountability, and outcome feedback are visible.
 - v347 adds a Network Outcome Exchange so routed learning is priced by movement, adoption, rejection, promotion, retune, and retirement evidence before it can reinforce the network.
+- v348 adds a Network Value Governor so priced outcome value moves only after source credit, reinvestment, retune funding, safety reserve, and market dividend allocations reconcile.
