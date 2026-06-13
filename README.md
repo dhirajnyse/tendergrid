@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v351 Network Decision Release Gate turns board decisions into release gates with evidence locks, owner/date locks, rollback watch, and feedback measurement.
 - v350 Network Value Review Board turns audited value movement into leadership decisions across approve, hold, release, retune, and dividend-review lanes.
 - v349 Network Value Audit Trail records governed value movement as audit receipts across source credit, network reinvestment, model-retune funding, safety reserve, and market dividend review.
 - v348 Network Value Governor governs priced outcome value across source credit, network reinvestment, model-retune budget, safety reserve, and market dividend lanes.
