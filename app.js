@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v352";
-  const BUILD_LABEL = "Network Release Outcome Monitor";
+  const BUILD_VERSION = "v353";
+  const BUILD_LABEL = "Network Outcome Learning Governor";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -13731,6 +13731,320 @@ const state = {
     `;
   }
 
+  function renderCommandNetworkOutcomeLearningGovernor(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
+    const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
+    const records = Array.isArray(model.records) ? model.records : [];
+    const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const dueWatchSignals = signals.filter((item) => item.days !== null && item.days <= 30).length;
+    const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
+    const highValueSignals = signals.filter((item) => item.highValue).length;
+    const missingOwnerDemand = openRecords.filter((record) => !String(record.owner || "").trim()).length;
+    const proofCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.34 +
+            model.weeklyReview.reviewScore * 0.18 +
+            model.actionScore * 0.16 +
+            (replayRows.length ? (matchedReplay / Math.max(1, replayRows.length)) * 100 : 42) * 0.16 +
+            Math.max(0, 100 - model.evidenceGaps.length * 5) * 0.08 +
+            Math.max(0, 100 - model.contractGaps.length * 6) * 0.08,
+        ),
+      ),
+    );
+    const trustedListings = Math.max(
+      1,
+      Math.min(28, approvedRules + promotedRules + matchedReplay + forecastTests + Math.ceil(proofCoverage / 18)),
+    );
+    const tenantDemandSignals = Math.max(
+      1,
+      openRecords.length + signals.length + actionRegister.length + model.reminders.tasks.length + highValueSignals + dueWatchSignals,
+    );
+    const routeCandidates = Math.max(1, Math.min(42, trustedListings + Math.ceil(tenantDemandSignals / 8) + Math.ceil(model.healthScore / 18)));
+    const privacyBlocks = Math.max(
+      0,
+      model.evidenceGaps.length + model.contractGaps.length + weakReplay + blockedRules + retestRules + releaseHeld + retiredRoutes,
+    );
+    const privacySafeRoutes = Math.max(0, routeCandidates - Math.ceil(privacyBlocks / 3));
+    const highFitRoutes = Math.max(
+      0,
+      Math.min(
+        routeCandidates,
+        matchedReplay + promotedRules + Math.ceil(model.weeklyReview.reviewScore / 20) + Math.ceil(model.actionScore / 22) + highValueSignals,
+      ),
+    );
+    const feedbackLoops = Math.max(
+      1,
+      Math.min(24, Math.ceil(actionRegister.length / 3) + Math.ceil(signals.length / 7) + matchedReplay + Math.ceil(proofCoverage / 25)),
+    );
+    const routedDemand = Math.max(0, Math.min(routeCandidates, highFitRoutes + Math.ceil(privacySafeRoutes / 2)));
+    const demandFit = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.22 +
+            model.weeklyReview.reviewScore * 0.16 +
+            model.actionScore * 0.14 +
+            Math.min(100, trustedListings * 5) * 0.14 +
+            Math.min(100, routedDemand * 6) * 0.16 +
+            Math.max(0, 100 - privacyBlocks * 3) * 0.1 +
+            Math.max(0, 100 - missingOwnerDemand * 2) * 0.08,
+        ),
+      ),
+    );
+    const closedProofRecords = records.filter((record) => {
+      if (!isClosedRecord(record)) return false;
+      return /won|award|complete|completed|closed|done|submitted|delivered/i.test(String(record.status || record.stage || record.outcome || ""));
+    }).length;
+    const movementReceipts = Math.max(
+      1,
+      Math.min(36, feedbackLoops + Math.ceil(actionRegister.length / 4) + Math.ceil(model.weeklyReview.reviewScore / 20) + Math.ceil(closedProofRecords / 4)),
+    );
+    const adoptionReceipts = Math.max(0, Math.min(24, Math.ceil(routedDemand / 2) + matchedReplay + Math.ceil(model.actionScore / 30)));
+    const rejectionReceipts = Math.max(
+      0,
+      Math.min(18, weakReplay + blockedRules + retestRules + retiredRoutes + Math.ceil(privacyBlocks / 8)),
+    );
+    const openValue = sumAmounts(openRecords);
+    const valueSignals = Math.max(1, Math.min(48, highValueSignals + Math.ceil(openValue / 50000000) + Math.ceil(model.healthScore / 20)));
+    const pricedOutcomes = Math.max(
+      1,
+      Math.min(36, Math.ceil((movementReceipts + adoptionReceipts + valueSignals + routedDemand) / 2) - Math.ceil(rejectionReceipts / 3)),
+    );
+    const promoteLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, promotedRules + matchedReplay + Math.ceil((demandFit + proofCoverage) / 30)),
+    );
+    const retuneLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, retestRules + partialReplay + Math.ceil(Math.max(0, 76 - demandFit) / 8) + Math.ceil(rejectionReceipts / 4)),
+    );
+    const retireLots = Math.max(
+      0,
+      Math.min(pricedOutcomes, blockedRules + retiredRoutes + Math.ceil(weakReplay / 2) + Math.ceil(privacyBlocks / 12)),
+    );
+    const exchangeValueCredits = Math.max(1, pricedOutcomes * 3 + promoteLots * 5 + adoptionReceipts * 2 - retireLots * 2);
+    const valuePool = Math.max(1, exchangeValueCredits + Math.ceil(pricedOutcomes / 2) + promoteLots + Math.ceil(adoptionReceipts / 2));
+    const sourceCredit = Math.max(0, Math.min(valuePool, Math.round(valuePool * 0.28) + Math.ceil(adoptionReceipts / 3)));
+    const reinvestmentBudget = Math.max(
+      0,
+      Math.min(valuePool - sourceCredit, Math.round(valuePool * 0.24) + Math.ceil(movementReceipts / 4)),
+    );
+    const retuneBudget = Math.max(
+      0,
+      Math.min(valuePool - sourceCredit - reinvestmentBudget, retuneLots * 3 + Math.ceil(rejectionReceipts / 2) + Math.ceil(privacyBlocks / 8)),
+    );
+    const safetyReserve = Math.max(
+      1,
+      Math.min(valuePool - sourceCredit - reinvestmentBudget - retuneBudget, retireLots * 3 + Math.ceil(privacyBlocks / 5) + Math.ceil(rejectionReceipts / 3)),
+    );
+    const marketDividend = Math.max(0, valuePool - sourceCredit - reinvestmentBudget - retuneBudget - safetyReserve);
+    const sourceReceiptCount = Math.max(1, sourceCredit + adoptionReceipts + Math.ceil(promoteLots / 2));
+    const reinvestReceiptCount = Math.max(1, reinvestmentBudget + movementReceipts + Math.ceil(feedbackLoops / 2));
+    const retuneReceiptCount = Math.max(1, retuneBudget + retuneLots + retestRules + partialReplay);
+    const reserveReceiptCount = Math.max(1, safetyReserve + retireLots + rejectionReceipts + Math.ceil(privacyBlocks / 2));
+    const dividendReceiptCount = Math.max(0, marketDividend + Math.ceil(promoteLots / 2) + Math.ceil(adoptionReceipts / 4));
+    const reviewedReceipts = sourceReceiptCount + reinvestReceiptCount + retuneReceiptCount + reserveReceiptCount + dividendReceiptCount;
+    const auditCompleteness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          proofCoverage * 0.2 +
+            demandFit * 0.14 +
+            Math.min(100, reviewedReceipts * 2) * 0.16 +
+            Math.min(100, sourceReceiptCount * 4) * 0.1 +
+            Math.min(100, reinvestReceiptCount * 4) * 0.1 +
+            Math.min(100, retuneReceiptCount * 5) * 0.1 +
+            Math.min(100, reserveReceiptCount * 5) * 0.1 +
+            Math.max(0, 100 - privacyBlocks * 3) * 0.1,
+        ),
+      ),
+    );
+    const approveRelease = Math.max(0, Math.min(28, promoteLots + Math.ceil(auditCompleteness / 14) + Math.ceil(proofCoverage / 18)));
+    const holdForBoard = Math.max(0, Math.min(20, Math.ceil((100 - auditCompleteness) / 8) + Math.ceil(privacyBlocks / 5) + releaseHeld));
+    const releaseToNetwork = Math.max(0, Math.min(approveRelease, approveRelease - Math.ceil(holdForBoard / 3) + Math.ceil(marketDividend / 5)));
+    const retuneReview = Math.max(0, Math.min(24, retuneLots + Math.ceil(retuneReceiptCount / 5) + retestRules));
+    const dividendReview = Math.max(0, Math.min(24, dividendReceiptCount + Math.ceil(sourceCredit / 5) + Math.ceil(marketDividend / 4)));
+    const reviewScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          auditCompleteness * 0.3 +
+            proofCoverage * 0.18 +
+            demandFit * 0.14 +
+            Math.min(100, approveRelease * 6) * 0.14 +
+            Math.min(100, releaseToNetwork * 7) * 0.12 +
+            Math.max(0, 100 - holdForBoard * 5) * 0.12,
+        ),
+      ),
+    );
+    const boardApproved = reviewScore >= 66 ? approveRelease : Math.max(0, approveRelease - Math.ceil(holdForBoard / 2));
+    const evidenceLocks = Math.max(1, Math.min(30, Math.ceil(auditCompleteness / 8) + Math.ceil(proofCoverage / 12) + Math.ceil(sourceReceiptCount / 8)));
+    const ownerDateLocks = Math.max(1, Math.min(30, Math.ceil(model.actionScore / 9) + Math.ceil(model.weeklyReview.reviewScore / 12) - Math.ceil(missingOwnerDemand / 2)));
+    const rollbackLocks = Math.max(0, Math.min(24, retireLots + retuneLots + releaseHeld + Math.ceil(privacyBlocks / 4)));
+    const releaseWindows = Math.max(0, Math.min(24, Math.min(boardApproved, evidenceLocks, ownerDateLocks) - Math.ceil(rollbackLocks / 5) + Math.ceil(marketDividend / 6)));
+    const retuneGates = Math.max(0, Math.min(24, retuneReview + Math.ceil(rollbackLocks / 3)));
+    const dividendGates = Math.max(0, Math.min(24, dividendReview + Math.ceil(marketDividend / 5)));
+    const feedbackGateLoops = Math.max(1, Math.min(24, feedbackLoops + Math.ceil(releaseWindows / 2) + Math.ceil(adoptionReceipts / 4)));
+    const releaseHolds = Math.max(0, Math.min(24, holdForBoard + urgentSignals + Math.ceil(privacyBlocks / 5) + Math.max(0, missingOwnerDemand)));
+    const measuredReleases = Math.max(0, Math.min(30, releaseWindows + Math.ceil(feedbackGateLoops / 3) + Math.ceil(movementReceipts / 5)));
+    const movementProof = Math.max(0, Math.min(30, Math.ceil((movementReceipts + adoptionReceipts + routedDemand) / 2)));
+    const adoptionProof = Math.max(0, Math.min(24, adoptionReceipts + matchedReplay + Math.ceil(model.actionScore / 25)));
+    const liftProof = Math.max(0, Math.min(24, promotedRules + Math.ceil(proofCoverage / 18) + Math.ceil(demandFit / 22) + Math.ceil(marketDividend / 6)));
+    const stalledReleases = Math.max(0, Math.min(24, releaseHolds + weakReplay + blockedRules + Math.ceil(Math.max(0, 72 - demandFit) / 8)));
+    const rollbackReviews = Math.max(0, Math.min(24, rollbackLocks + retireLots + Math.ceil(stalledReleases / 3)));
+    const retuneOutcomes = Math.max(0, Math.min(24, retuneGates + retestRules + partialReplay));
+    const learningReturns = Math.max(1, Math.min(30, feedbackGateLoops + Math.ceil(liftProof / 2) + Math.ceil(adoptionProof / 4) - Math.ceil(stalledReleases / 5)));
+    const outcomeScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          reviewScore * 0.18 +
+            proofCoverage * 0.16 +
+            demandFit * 0.14 +
+            Math.min(100, measuredReleases * 6) * 0.14 +
+            Math.min(100, movementProof * 5) * 0.12 +
+            Math.min(100, liftProof * 6) * 0.12 +
+            Math.min(100, learningReturns * 5) * 0.08 +
+            Math.max(0, 100 - stalledReleases * 4) * 0.06,
+        ),
+      ),
+    );
+    const reusableNetworkLearning = Math.max(
+      0,
+      Math.min(24, Math.ceil((learningReturns + liftProof + adoptionProof + matchedReplay + promotedRules) / 3) - Math.ceil(privacyBlocks / 6)),
+    );
+    const tenantOnlyMemory = Math.max(
+      1,
+      Math.min(24, Math.ceil((movementProof + highValueSignals + urgentSignals + privacyBlocks) / 3) + Math.ceil(model.evidenceGaps.length / 2)),
+    );
+    const retuneQueue = Math.max(0, Math.min(24, retuneOutcomes + rollbackReviews + retestRules + Math.ceil(stalledReleases / 2)));
+    const dividendLearning = Math.max(0, Math.min(24, dividendGates + Math.ceil(marketDividend / 4) + Math.ceil(liftProof / 3)));
+    const proofHoldLearning = Math.max(0, Math.min(24, stalledReleases + blockedRules + Math.ceil(rejectionReceipts / 2) + Math.ceil(releaseHolds / 2)));
+    const governorReceipts = Math.max(
+      1,
+      reusableNetworkLearning + tenantOnlyMemory + retuneQueue + dividendLearning + proofHoldLearning + learningReturns,
+    );
+    const governorScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          outcomeScore * 0.24 +
+            proofCoverage * 0.16 +
+            auditCompleteness * 0.12 +
+            Math.min(100, reusableNetworkLearning * 6) * 0.14 +
+            Math.min(100, learningReturns * 5) * 0.12 +
+            Math.max(0, 100 - proofHoldLearning * 4) * 0.12 +
+            Math.max(0, 100 - privacyBlocks * 3) * 0.1,
+        ),
+      ),
+    );
+    const governorState = governorScore >= 84 ? "Release governed learning" : governorScore >= 66 ? "Govern learning lanes" : "Hold learning governance";
+    const latestRecord = signals[0]?.record || openRecords[0] || {};
+    const governorId = `${BUILD_VERSION.toUpperCase()}-OLG-${String(governorReceipts).padStart(3, "0")}`;
+    const governorLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${governorState}, score ${governorScore}%. Network ${reusableNetworkLearning}, tenant-only ${tenantOnlyMemory}, retune ${retuneQueue}, dividend ${dividendLearning}, holds ${proofHoldLearning}.`;
+    const governorPacket = [
+      `Subject: ${BRAND_NAME} network outcome learning governor - ${state.data.company.name}`,
+      "",
+      "Measured release outcomes now pass through learning governance before they become tenant memory, retune work, dividends, or reusable network guidance.",
+      "",
+      `Governor id: ${governorId}`,
+      `Governor state: ${governorState}`,
+      `Governor score: ${governorScore}%`,
+      `Outcome score: ${outcomeScore}%`,
+      `Reusable network learning: ${reusableNetworkLearning}`,
+      `Tenant-only memory: ${tenantOnlyMemory}`,
+      `Retune queue: ${retuneQueue}`,
+      `Dividend learning: ${dividendLearning}`,
+      `Proof holds: ${proofHoldLearning}`,
+      `Learning returns: ${learningReturns}`,
+      `First governed reference: ${compactText(latestRecord.reference || latestRecord.title || "No active learning reference", 84)}`,
+      "",
+      "Learning governance rule: no measured outcome becomes reusable network intelligence until privacy, proof, tenant scope, retune need, dividend value, and hold state are classified.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const governorCards = [
+      ["Learning governor", `${governorScore}%`, `${governorState} across ${governorReceipts} learning receipts.`, governorScore >= 84 ? "green" : governorScore >= 66 ? "blue" : "amber"],
+      ["Network learning", `${reusableNetworkLearning}`, `${learningReturns} learning returns and ${liftProof} lift proofs can be reused when privacy permits.`, "teal"],
+      ["Tenant memory", `${tenantOnlyMemory}`, `${privacyBlocks} privacy pressure signals keep local lessons inside the tenant.`, tenantOnlyMemory ? "blue" : "green"],
+      ["Hold or retune", `${proofHoldLearning + retuneQueue}`, `${retuneQueue} retune items and ${proofHoldLearning} proof holds stay controlled.`, proofHoldLearning + retuneQueue ? "amber" : "green"],
+    ];
+    const governorLanes = [
+      ["Reusable network", "Outcome-proven, privacy-safe lessons can return to shared guidance.", `${reusableNetworkLearning} lessons`, reusableNetworkLearning ? "green" : "blue"],
+      ["Tenant-only memory", "Private or high-context learning remains local to the organization.", `${tenantOnlyMemory} memories`, "blue"],
+      ["Retune work", "Weak, stalled, or drift-prone outcomes go back into model repair.", `${retuneQueue} items`, retuneQueue ? "amber" : "teal"],
+      ["Dividend learning", "Value-positive outcomes can inform dividends, benchmarks, and playbooks.", `${dividendLearning} items`, dividendLearning ? "teal" : "blue"],
+      ["Proof hold", "Learning waits when evidence, fairness, privacy, or owner proof is incomplete.", `${proofHoldLearning} holds`, proofHoldLearning ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="command-network-outcome-learning-governor" aria-label="Network outcome learning governor">
+        <div class="command-network-outcome-learning-governor-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Network Outcome Learning Governor</span>
+          <strong>Govern measured outcomes before they become reusable learning.</strong>
+          <small>${escapeHtml(governorLine)}</small>
+        </div>
+        <div class="command-network-outcome-learning-governor-grid">
+          ${governorCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-network-outcome-learning-governor-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-outcome-learning-governor-lanes">
+          ${governorLanes
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-network-outcome-learning-governor-actions">
+          <small>Learning governance rule: privacy, proof, tenant scope, retune need, dividend value, and hold state must be classified before reuse.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Governance">Open learning governor</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open network learning</button>
+            <button class="ghost-btn" type="button" data-view="Advisor">Open retune queue</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Outcome learning governor copied." data-copy-text="${escapeHtml(encodeURIComponent(governorPacket))}">Copy learning governor</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -13835,6 +14149,7 @@ const state = {
         ${renderCommandNetworkValueReviewBoard(model, autopilot, pilotPitch)}
         ${renderCommandNetworkDecisionReleaseGate(model, autopilot, pilotPitch)}
         ${renderCommandNetworkReleaseOutcomeMonitor(model, autopilot, pilotPitch)}
+        ${renderCommandNetworkOutcomeLearningGovernor(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -32330,12 +32645,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v352 Network Release Outcome Monitor",
-      phase: "Network Release Outcome Monitor",
+      version: "v353 Network Outcome Learning Governor",
+      phase: "Network Outcome Learning Governor",
       lane: "Static product prototype on GitHub Pages",
-      pace: "333 meaningful versions since rebrand",
-      summary: "Command Center now measures released decisions for movement proof, adoption proof, lift proof, hold/rework signals, and learning returns.",
+      pace: "334 meaningful versions since rebrand",
+      summary: "Command Center now governs measured outcomes into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds.",
       tracks: [
+        ["v353 network outcome learning governor", 100, "Command Center now governs measured outcomes into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds.", "green"],
         ["v352 network release outcome monitor", 100, "Command Center now measures released decisions for movement proof, adoption proof, lift proof, hold/rework signals, and learning returns.", "green"],
         ["v351 network decision release gate", 100, "Command Center now turns board decisions into release gates with evidence locks, owner/date locks, rollback watch, and feedback measurement.", "green"],
         ["v350 network value review board", 100, "Command Center now turns audited value movement into leadership decisions across approve, hold, release, retune, and dividend-review lanes.", "green"],
@@ -32830,10 +33146,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now measures what happened after controlled decisions go live.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now governs measured outcomes into the right learning lanes.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

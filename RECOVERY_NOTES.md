@@ -50,3 +50,4 @@ Recovery cleanup in this copy:
 - v350 adds a Network Value Review Board so audited value movement becomes approve, hold, release, retune, or dividend-review decisions before network value leaves leadership control.
 - v351 adds a Network Decision Release Gate so board decisions need evidence locks, owner/date locks, rollback watch, and feedback measurement before live network influence moves.
 - v352 adds a Network Release Outcome Monitor so live releases are measured for movement, adoption, lift, hold/rework, rollback, retune, dividend, and learning-return signals.
+- v353 adds a Network Outcome Learning Governor so measured outcomes are classified into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds before reuse.

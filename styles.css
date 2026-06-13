@@ -9498,6 +9498,134 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-network-outcome-learning-governor {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(40, 131, 74, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfefc, rgba(232, 248, 237, 0.96));
+  box-shadow: 0 12px 28px rgba(40, 131, 74, 0.055);
+}
+
+.command-network-outcome-learning-governor-head {
+  display: grid;
+  gap: 5px;
+}
+
+.command-network-outcome-learning-governor-head strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.command-network-outcome-learning-governor-head small {
+  max-width: 1080px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-network-outcome-learning-governor-grid,
+.command-network-outcome-learning-governor-lanes {
+  display: grid;
+  gap: 8px;
+}
+
+.command-network-outcome-learning-governor-grid {
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-network-outcome-learning-governor-lanes {
+  grid-template-columns: repeat(5, minmax(140px, 1fr));
+}
+
+.command-network-outcome-learning-governor-card,
+.command-network-outcome-learning-governor-lanes article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 104px;
+  padding: 12px;
+  border: 1px solid rgba(40, 131, 74, 0.24);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-network-outcome-learning-governor-card span,
+.command-network-outcome-learning-governor-lanes article span {
+  color: var(--green-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-network-outcome-learning-governor-card strong,
+.command-network-outcome-learning-governor-lanes article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-network-outcome-learning-governor-card small,
+.command-network-outcome-learning-governor-lanes article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-network-outcome-learning-governor-card.tone-green,
+.command-network-outcome-learning-governor-lanes article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-network-outcome-learning-governor-card.tone-teal,
+.command-network-outcome-learning-governor-lanes article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-network-outcome-learning-governor-card.tone-blue,
+.command-network-outcome-learning-governor-lanes article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-network-outcome-learning-governor-card.tone-amber,
+.command-network-outcome-learning-governor-lanes article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-network-outcome-learning-governor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-network-outcome-learning-governor-actions small {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-network-outcome-learning-governor-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -10236,7 +10364,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-decision-release-gate-grid,
   .command-network-decision-release-gate-lanes,
   .command-network-release-outcome-monitor-grid,
-  .command-network-release-outcome-monitor-lanes {
+  .command-network-release-outcome-monitor-lanes,
+  .command-network-outcome-learning-governor-grid,
+  .command-network-outcome-learning-governor-lanes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -10388,7 +10518,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-decision-release-gate-grid,
   .command-network-decision-release-gate-lanes,
   .command-network-release-outcome-monitor-grid,
-  .command-network-release-outcome-monitor-lanes {
+  .command-network-release-outcome-monitor-lanes,
+  .command-network-outcome-learning-governor-grid,
+  .command-network-outcome-learning-governor-lanes {
     grid-template-columns: 1fr;
   }
 
@@ -10457,7 +10589,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-decision-release-gate-actions .ghost-btn,
   .command-network-decision-release-gate-actions .secondary-btn,
   .command-network-release-outcome-monitor-actions .ghost-btn,
-  .command-network-release-outcome-monitor-actions .secondary-btn {
+  .command-network-release-outcome-monitor-actions .secondary-btn,
+  .command-network-outcome-learning-governor-actions .ghost-btn,
+  .command-network-outcome-learning-governor-actions .secondary-btn {
     width: 100%;
   }
 
@@ -10492,7 +10626,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-value-audit-trail-actions div,
   .command-network-value-review-board-actions div,
   .command-network-decision-release-gate-actions div,
-  .command-network-release-outcome-monitor-actions div {
+  .command-network-release-outcome-monitor-actions div,
+  .command-network-outcome-learning-governor-actions div {
     width: 100%;
   }
 
