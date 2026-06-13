@@ -51,3 +51,4 @@ Recovery cleanup in this copy:
 - v351 adds a Network Decision Release Gate so board decisions need evidence locks, owner/date locks, rollback watch, and feedback measurement before live network influence moves.
 - v352 adds a Network Release Outcome Monitor so live releases are measured for movement, adoption, lift, hold/rework, rollback, retune, dividend, and learning-return signals.
 - v353 adds a Network Outcome Learning Governor so measured outcomes are classified into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds before reuse.
+- v354 adds a Closed-Loop Learning Control Room so user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse stay in one governed learning loop.

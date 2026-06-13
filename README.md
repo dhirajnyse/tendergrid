@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v354 Closed-Loop Learning Control Room turns user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse into one governed learning loop.
 - v353 Network Outcome Learning Governor governs measured outcomes into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds.
 - v352 Network Release Outcome Monitor measures released decisions for movement proof, adoption proof, lift proof, hold/rework signals, and learning returns.
 - v351 Network Decision Release Gate turns board decisions into release gates with evidence locks, owner/date locks, rollback watch, and feedback measurement.

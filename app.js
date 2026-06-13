@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v353";
-  const BUILD_LABEL = "Network Outcome Learning Governor";
+  const BUILD_VERSION = "v354";
+  const BUILD_LABEL = "Closed-Loop Learning Control Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -14045,6 +14045,197 @@ const state = {
     `;
   }
 
+  function renderCommandClosedLoopLearningControlRoom(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const forecastTests = Number(publisher.forecastTests) || 0;
+    const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
+    const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
+    const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const highValueSignals = signals.filter((item) => item.highValue).length;
+    const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
+    const datedSignals = signals.filter((item) => item.days !== null).length;
+    const userActionReceipts = Math.max(
+      1,
+      Math.min(160, model.reminders.tasks.length + actionRegister.length + signals.length + Math.ceil(openRecords.length / 2)),
+    );
+    const outcomeProofReceipts = Math.max(
+      1,
+      Math.min(72, matchedReplay + promotedRules + forecastTests + Math.ceil(model.evidenceScore / 12) + Math.ceil(model.weeklyReview.reviewScore / 18)),
+    );
+    const privacyHolds = Math.max(0, model.contractGaps.length + blockedRules + releaseHeld + retiredRoutes + Math.ceil(model.evidenceGaps.length / 2));
+    const staleLoopPressure = Math.max(0, model.reminders.overdue + model.evidenceGaps.length + weakReplay + blockedRules + Math.ceil(urgentSignals / 2));
+    const feedbackCoverage = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.actionScore * 0.2 +
+            model.evidenceScore * 0.18 +
+            model.weeklyReview.reviewScore * 0.18 +
+            Math.min(100, userActionReceipts * 0.8) * 0.14 +
+            Math.min(100, outcomeProofReceipts * 3) * 0.14 +
+            Math.max(0, 100 - staleLoopPressure * 3) * 0.1 +
+            Math.max(0, 100 - privacyHolds * 4) * 0.06,
+        ),
+      ),
+    );
+    const reuseReady = Math.max(
+      0,
+      Math.min(36, matchedReplay + approvedRules + promotedRules + Math.ceil(feedbackCoverage / 18) + Math.ceil(highValueSignals / 2) - Math.ceil(privacyHolds / 3)),
+    );
+    const retuneReady = Math.max(
+      0,
+      Math.min(36, retestRules + partialReplay + weakReplay + Math.ceil(Math.max(0, 78 - feedbackCoverage) / 6) + Math.ceil(staleLoopPressure / 4)),
+    );
+    const tenantMemory = Math.max(
+      1,
+      Math.min(42, privacyHolds + urgentSignals + Math.ceil(openRecords.length / 8) + Math.ceil(model.evidenceGaps.length / 2)),
+    );
+    const proofHolds = Math.max(
+      0,
+      Math.min(36, blockedRules + releaseHeld + Math.ceil(staleLoopPressure / 3) + Math.ceil(Math.max(0, 74 - model.evidenceScore) / 8)),
+    );
+    const networkDividends = Math.max(
+      0,
+      Math.min(36, promotedRules + matchedReplay + Math.ceil(outcomeProofReceipts / 5) + Math.ceil(feedbackCoverage / 20) - Math.ceil(proofHolds / 5)),
+    );
+    const loopVelocity = Math.max(
+      1,
+      Math.min(100, Math.round((reuseReady + retuneReady + tenantMemory + networkDividends + outcomeProofReceipts) * 1.7)),
+    );
+    const controlScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          feedbackCoverage * 0.34 +
+            loopVelocity * 0.18 +
+            model.healthScore * 0.14 +
+            Math.min(100, reuseReady * 5) * 0.12 +
+            Math.min(100, networkDividends * 5) * 0.08 +
+            Math.max(0, 100 - proofHolds * 4) * 0.08 +
+            Math.max(0, 100 - privacyHolds * 4) * 0.06,
+        ),
+      ),
+    );
+    const controlState = controlScore >= 84 ? "Closed loop is scaling" : controlScore >= 66 ? "Closed loop is governed" : "Closed loop needs proof";
+    const firstSignal = signals[0]?.record || openRecords[0] || {};
+    const controlId = `${BUILD_VERSION.toUpperCase()}-CLR-${String(userActionReceipts + outcomeProofReceipts).padStart(3, "0")}`;
+    const controlLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${controlState}, score ${controlScore}%. Actions ${userActionReceipts}, proof ${outcomeProofReceipts}, reuse ${reuseReady}, retune ${retuneReady}, tenant memory ${tenantMemory}, holds ${proofHolds}.`;
+    const controlPacket = [
+      `Subject: ${BRAND_NAME} closed-loop learning control room - ${state.data.company.name}`,
+      "",
+      "Every user action now has a governed route into outcome proof, retune, tenant memory, dividend learning, or reusable network guidance.",
+      "",
+      `Control room id: ${controlId}`,
+      `Control state: ${controlState}`,
+      `Control score: ${controlScore}%`,
+      `Feedback coverage: ${feedbackCoverage}%`,
+      `Loop velocity: ${loopVelocity}%`,
+      `User action receipts: ${userActionReceipts}`,
+      `Outcome proof receipts: ${outcomeProofReceipts}`,
+      `Reuse-ready learning: ${reuseReady}`,
+      `Retune-ready learning: ${retuneReady}`,
+      `Tenant memory locks: ${tenantMemory}`,
+      `Network dividend lessons: ${networkDividends}`,
+      `Proof holds: ${proofHolds}`,
+      `First loop reference: ${compactText(firstSignal.reference || firstSignal.title || "No active loop reference", 84)}`,
+      "",
+      "Closed-loop rule: an action cannot train the shared network unless outcome proof, privacy scope, tenant consent, retune status, and benefit routing are visible.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const controlCards = [
+      ["Loop control", `${controlScore}%`, `${controlState} with ${feedbackCoverage}% feedback coverage.`, controlScore >= 84 ? "green" : controlScore >= 66 ? "blue" : "amber"],
+      ["Action receipts", `${userActionReceipts}`, `${model.reminders.tasks.length} reminders and ${actionRegister.length} review actions feed the loop.`, "teal"],
+      ["Outcome proof", `${outcomeProofReceipts}`, `${matchedReplay} matched replays, ${promotedRules} promoted rules, and ${datedSignals} dated signals.`, "blue"],
+      ["Learning routes", `${reuseReady + retuneReady + tenantMemory + networkDividends}`, `${reuseReady} reuse, ${retuneReady} retune, ${tenantMemory} tenant memory, ${networkDividends} dividend.`, proofHolds ? "amber" : "green"],
+    ];
+    const loopStages = [
+      ["1. Capture", "User activity becomes receipt-backed learning input.", `${userActionReceipts} receipts`, "teal"],
+      ["2. Measure", "Outcome proof checks whether guidance moved work.", `${outcomeProofReceipts} proofs`, "blue"],
+      ["3. Govern", "Privacy, evidence, and owner/date gaps hold weak learning back.", `${privacyHolds} holds`, privacyHolds ? "amber" : "green"],
+      ["4. Improve", "Retune items repair weak patterns before reuse.", `${retuneReady} retune`, retuneReady ? "amber" : "teal"],
+      ["5. Reuse", "Approved lessons return as guidance, dividends, or tenant memory.", `${reuseReady + networkDividends} returns`, reuseReady + networkDividends ? "green" : "blue"],
+    ];
+    const controlRules = [
+      ["Privacy scope", `${tenantMemory} tenant locks`, "Private context stays local unless approved for network-safe reuse.", tenantMemory ? "blue" : "green"],
+      ["Retune queue", `${retuneReady} items`, "Weak or drifting lessons return to experiments before they influence another team.", retuneReady ? "amber" : "teal"],
+      ["Proof hold", `${proofHolds} holds`, "No shared learning is released while evidence, fairness, or owner proof is thin.", proofHolds ? "amber" : "green"],
+      ["Dividend route", `${networkDividends} lessons`, "Value-positive learning can return as playbooks, benchmarks, or early warnings.", networkDividends ? "teal" : "blue"],
+    ];
+
+    return `
+      <section class="command-closed-loop-learning-control-room" aria-label="Closed-loop learning control room">
+        <div class="command-closed-loop-learning-control-room-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Closed-Loop Learning Control Room</span>
+          <strong>Turn every action into governed learning, without losing tenant control.</strong>
+          <small>${escapeHtml(controlLine)}</small>
+        </div>
+        <div class="command-closed-loop-learning-control-room-grid">
+          ${controlCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="command-closed-loop-learning-control-room-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-closed-loop-learning-control-room-stages">
+          ${loopStages
+            .map(
+              ([label, note, proof, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(proof)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-closed-loop-learning-control-room-rules">
+          ${controlRules
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-closed-loop-learning-control-room-actions">
+          <small>Closed-loop rule: action receipts, outcome proof, privacy scope, tenant consent, retune status, and benefit routing stay visible before learning is reused.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Weekly Review">Open action receipts</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open outcome proof</button>
+            <button class="ghost-btn" type="button" data-view="Governance">Open loop controls</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Closed-loop control room copied." data-copy-text="${escapeHtml(encodeURIComponent(controlPacket))}">Copy control room</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -14150,6 +14341,7 @@ const state = {
         ${renderCommandNetworkDecisionReleaseGate(model, autopilot, pilotPitch)}
         ${renderCommandNetworkReleaseOutcomeMonitor(model, autopilot, pilotPitch)}
         ${renderCommandNetworkOutcomeLearningGovernor(model, autopilot, pilotPitch)}
+        ${renderCommandClosedLoopLearningControlRoom(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -32645,12 +32837,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v353 Network Outcome Learning Governor",
-      phase: "Network Outcome Learning Governor",
+      version: "v354 Closed-Loop Learning Control Room",
+      phase: "Closed-Loop Learning Control Room",
       lane: "Static product prototype on GitHub Pages",
-      pace: "334 meaningful versions since rebrand",
-      summary: "Command Center now governs measured outcomes into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds.",
+      pace: "335 meaningful versions since rebrand",
+      summary: "Command Center now turns user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse into one governed closed-learning loop.",
       tracks: [
+        ["v354 closed-loop learning control room", 100, "Command Center now turns user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse into one governed closed-learning loop.", "green"],
         ["v353 network outcome learning governor", 100, "Command Center now governs measured outcomes into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds.", "green"],
         ["v352 network release outcome monitor", 100, "Command Center now measures released decisions for movement proof, adoption proof, lift proof, hold/rework signals, and learning returns.", "green"],
         ["v351 network decision release gate", 100, "Command Center now turns board decisions into release gates with evidence locks, owner/date locks, rollback watch, and feedback measurement.", "green"],
@@ -33146,10 +33339,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now governs measured outcomes into the right learning lanes.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now closes the loop between action, proof, governance, retune, tenant memory, and network reuse.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
