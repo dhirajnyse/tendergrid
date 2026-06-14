@@ -10062,6 +10062,164 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-global-launch-serenity-console {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(190px, 0.5fr);
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(49, 101, 158, 0.22);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(239, 248, 244, 0.94)),
+    linear-gradient(90deg, rgba(42, 142, 119, 0.08), rgba(49, 101, 158, 0.08));
+  box-shadow: 0 12px 28px rgba(19, 54, 45, 0.05);
+}
+
+.command-global-launch-serenity-console-hero {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+}
+
+.command-global-launch-serenity-console-hero strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.18;
+}
+
+.command-global-launch-serenity-console-hero small {
+  max-width: 980px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-global-launch-serenity-console-score {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 150px;
+  padding: 12px;
+  border: 1px solid rgba(40, 131, 74, 0.22);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.command-global-launch-serenity-console-score .score-ring {
+  width: 112px;
+  height: 112px;
+}
+
+.command-global-launch-serenity-console-score p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.command-global-launch-serenity-console-grid,
+.command-global-launch-serenity-console-runway {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 8px;
+}
+
+.command-global-launch-serenity-console-grid {
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-global-launch-serenity-console-runway {
+  grid-template-columns: repeat(5, minmax(132px, 1fr));
+}
+
+.command-global-launch-serenity-console-grid article,
+.command-global-launch-serenity-console-runway article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 96px;
+  padding: 12px;
+  border: 1px solid rgba(49, 101, 158, 0.22);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-global-launch-serenity-console-grid article span,
+.command-global-launch-serenity-console-runway article span {
+  color: var(--blue-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-global-launch-serenity-console-grid article strong,
+.command-global-launch-serenity-console-runway article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-global-launch-serenity-console-grid article small,
+.command-global-launch-serenity-console-runway article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-global-launch-serenity-console-grid article.tone-green,
+.command-global-launch-serenity-console-runway article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-global-launch-serenity-console-grid article.tone-teal,
+.command-global-launch-serenity-console-runway article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-global-launch-serenity-console-grid article.tone-blue,
+.command-global-launch-serenity-console-runway article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-global-launch-serenity-console-grid article.tone-amber,
+.command-global-launch-serenity-console-runway article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-global-launch-serenity-console-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-global-launch-serenity-console-actions small {
+  max-width: 700px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-global-launch-serenity-console-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -10709,7 +10867,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
     grid-template-columns: 1fr;
   }
 
-  .command-serenity-experiment-prioritizer {
+  .command-serenity-experiment-prioritizer,
+  .command-global-launch-serenity-console {
     grid-template-columns: 1fr;
   }
 
@@ -10814,7 +10973,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-learning-flywheel-evidence-board-lanes,
   .command-learning-flywheel-evidence-board-proofs,
   .command-serenity-experiment-prioritizer-grid,
-  .command-serenity-experiment-prioritizer-steps {
+  .command-serenity-experiment-prioritizer-steps,
+  .command-global-launch-serenity-console-grid,
+  .command-global-launch-serenity-console-runway {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -10976,7 +11137,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-learning-flywheel-evidence-board-lanes,
   .command-learning-flywheel-evidence-board-proofs,
   .command-serenity-experiment-prioritizer-grid,
-  .command-serenity-experiment-prioritizer-steps {
+  .command-serenity-experiment-prioritizer-steps,
+  .command-global-launch-serenity-console-grid,
+  .command-global-launch-serenity-console-runway {
     grid-template-columns: 1fr;
   }
 
@@ -11053,7 +11216,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-learning-flywheel-evidence-board-actions .ghost-btn,
   .command-learning-flywheel-evidence-board-actions .secondary-btn,
   .command-serenity-experiment-prioritizer-actions .ghost-btn,
-  .command-serenity-experiment-prioritizer-actions .secondary-btn {
+  .command-serenity-experiment-prioritizer-actions .secondary-btn,
+  .command-global-launch-serenity-console-actions .ghost-btn,
+  .command-global-launch-serenity-console-actions .secondary-btn {
     width: 100%;
   }
 
@@ -11092,7 +11257,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-outcome-learning-governor-actions div,
   .command-closed-loop-learning-control-room-actions div,
   .command-learning-flywheel-evidence-board-actions div,
-  .command-serenity-experiment-prioritizer-actions div {
+  .command-serenity-experiment-prioritizer-actions div,
+  .command-global-launch-serenity-console-actions div {
     width: 100%;
   }
 

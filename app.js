@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v356";
-  const BUILD_LABEL = "Serenity Experiment Prioritizer";
+  const BUILD_VERSION = "v357";
+  const BUILD_LABEL = "Global Launch Serenity Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -14062,7 +14062,6 @@ const state = {
     const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
     const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
     const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
-    const highValueSignals = signals.filter((item) => item.highValue).length;
     const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
     const datedSignals = signals.filter((item) => item.days !== null).length;
     const userActionReceipts = Math.max(
@@ -14605,6 +14604,226 @@ const state = {
     `;
   }
 
+  function renderCommandGlobalLaunchSerenityConsole(model, autopilot, pitch = buildPilotPitchModel()) {
+    const records = Array.isArray(model.records) ? model.records : [];
+    const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
+    const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
+    const users = Array.isArray(state.data.users) ? state.data.users : [];
+    const twin = buildPursuitDecisionTwinModel();
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const currencies = Array.from(new Set(records.map((record) => String(record.currency || "").trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b));
+    const recordText = (record) =>
+      [record.title, record.client, record.clientGroup, record.category, record.sourceSheet, record.currency]
+        .map((value) => String(value || "").toLowerCase())
+        .join(" ");
+    const qatarRecords = records.filter((record) => recordText(record).includes("qatar"));
+    const digitalRecords = records.filter((record) => recordText(record).includes("digital") || recordText(record).includes("telecom"));
+    const usdRecords = records.filter((record) => String(record.currency || "").toUpperCase() === "USD");
+    const uaeRecords = records.filter((record) => !qatarRecords.includes(record) && (String(record.currency || "").toUpperCase() === "AED" || /adnoc|borouge|abu dhabi|onshore|offshore|gas|refining/.test(recordText(record))));
+    const marketLanes = [
+      {
+        label: "UAE core",
+        records: uaeRecords,
+        proof: `${uaeRecords.length} records`,
+        note: "Primary operating market stays the controlled baseline.",
+        tone: uaeRecords.length ? "green" : "blue",
+      },
+      {
+        label: "Qatar shadow",
+        records: qatarRecords,
+        proof: `${qatarRecords.length} signals`,
+        note: "Branch-specific demand can shadow the core before launch.",
+        tone: qatarRecords.length ? "teal" : "blue",
+      },
+      {
+        label: "USD lane",
+        records: usdRecords,
+        proof: `${usdRecords.length} records`,
+        note: "Multi-currency work receives a separate pricing watch.",
+        tone: usdRecords.length ? "blue" : "green",
+      },
+      {
+        label: "Digital lane",
+        records: digitalRecords,
+        proof: `${digitalRecords.length} records`,
+        note: "Digital and telecom work can test a lighter playbook.",
+        tone: digitalRecords.length ? "teal" : "blue",
+      },
+    ];
+    const activeMarkets = marketLanes.filter((lane) => lane.records.length).length || 1;
+    const highValueSignals = signals.filter((item) => item.highValue).length;
+    const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
+    const sourceCoverage = Number(model.documents?.sourceCoverage) || 0;
+    const proofPressure = Math.max(0, model.evidenceGaps.length + model.contractGaps.length + blockedRules + releaseHeld + retiredRoutes);
+    const learningProof = Math.max(1, matchedReplay + promotedRules + approvedRules + Math.ceil(model.evidenceScore / 18));
+    const environmentReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.healthScore * 0.18 +
+            model.governance.governanceScore * 0.18 +
+            model.importStudio.importScore * 0.14 +
+            model.contractScore * 0.14 +
+            sourceCoverage * 0.12 +
+            Math.min(100, users.length * 24) * 0.1 +
+            Math.max(0, 100 - proofPressure * 4) * 0.08 +
+            Math.max(0, 100 - urgentSignals * 3) * 0.06,
+        ),
+      ),
+    );
+    const localizationReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          Math.min(100, currencies.length * 38) * 0.26 +
+            Math.min(100, activeMarkets * 28) * 0.24 +
+            model.evidenceScore * 0.18 +
+            model.actionScore * 0.12 +
+            Math.max(0, 100 - model.contractGaps.length * 6) * 0.1 +
+            Math.max(0, 100 - weakReplay * 7) * 0.1,
+        ),
+      ),
+    );
+    const aiGuardrailReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.2 +
+            model.weeklyReview.reviewScore * 0.16 +
+            Math.min(100, learningProof * 7) * 0.18 +
+            Math.max(0, 100 - proofPressure * 5) * 0.18 +
+            Math.max(0, 100 - weakReplay * 6 - partialReplay * 3) * 0.16 +
+            Math.max(0, 100 - releaseHeld * 8) * 0.12,
+        ),
+      ),
+    );
+    const launchReadiness = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(environmentReadiness * 0.34 + localizationReadiness * 0.26 + aiGuardrailReadiness * 0.26 + Math.max(0, 100 - urgentSignals * 3) * 0.14),
+      ),
+    );
+    const launchState = launchReadiness >= 84 ? "Global launch lane is calm" : launchReadiness >= 66 ? "Pilot one market first" : "Hold expansion until proof is calmer";
+    const firstMarket = qatarRecords.length ? "Qatar shadow after UAE core" : usdRecords.length ? "USD pricing shadow after UAE core" : "UAE core";
+    const environmentLane = environmentReadiness >= 82 ? "Core, staging, and country vault" : "Core plus staging proof";
+    const localizationProof = `${currencies.length ? currencies.join(", ") : state.data.company.currency || "AED"} / en-GB dates`;
+    const aiGuardrail = aiGuardrailReadiness >= 82 ? "Tenant-safe learning can observe" : "AI learning stays observe-only";
+    const nextMove =
+      launchReadiness >= 84
+        ? "Prepare the first country pilot packet with one owner, one value proof, and one rollback note."
+        : localizationReadiness < environmentReadiness
+          ? "Close currency, date, and local wording proof before adding another country."
+          : environmentReadiness < aiGuardrailReadiness
+            ? "Separate staging, production, audit, and country-vault proof before launch."
+            : "Keep AI learning observe-only until evidence, privacy, and weak replay are calmer.";
+    const holdLine = proofPressure || releaseHeld || weakReplay ? "Do not scale country guidance until proof, replay, and privacy holds are clear." : "Scale only the calm lane with visible proof.";
+    const runwayId = `${BUILD_VERSION.toUpperCase()}-GLS-${String(activeMarkets + currencies.length + learningProof + proofPressure).padStart(3, "0")}`;
+    const protectedValue = formatCompactMoney(sumAmounts(openRecords));
+    const launchLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${launchState}, score ${launchReadiness}%. First market ${firstMarket}. Environment ${environmentLane}. Guardrail ${aiGuardrail}.`;
+    const launchPacket = [
+      `Subject: ${BRAND_NAME} global launch serenity console - ${state.data.company.name}`,
+      "",
+      "The expansion path is reduced to one launch lane: first market, environment boundary, localization proof, AI guardrail, and hold line.",
+      "",
+      `Runway id: ${runwayId}`,
+      `Launch state: ${launchState}`,
+      `Launch readiness: ${launchReadiness}%`,
+      `First market: ${firstMarket}`,
+      `Environment lane: ${environmentLane}`,
+      `Localization proof: ${localizationProof}`,
+      `AI guardrail: ${aiGuardrail}`,
+      `Active markets: ${activeMarkets}`,
+      `Open value under watch: ${protectedValue}`,
+      `Next move: ${nextMove}`,
+      `Hold line: ${holdLine}`,
+      "",
+      "Launch rule: one country, one environment lane, one localization proof, one AI guardrail, and one rollback note before expansion becomes global.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const launchCards = [
+      ["First market", firstMarket, `${activeMarkets} active market lanes from ${records.length} records.`, launchReadiness >= 84 ? "green" : "teal"],
+      ["Environment", environmentLane, `${environmentReadiness}% readiness across governance, import, contracts, access, and source proof.`, environmentReadiness >= 82 ? "green" : "blue"],
+      ["Localization", localizationProof, `${localizationReadiness}% readiness across market, currency, dates, and commercial proof.`, localizationReadiness >= 78 ? "green" : "amber"],
+      ["AI guardrail", aiGuardrail, `${aiGuardrailReadiness}% readiness with ${learningProof} learning proofs and ${proofPressure} proof pressure.`, aiGuardrailReadiness >= 82 ? "green" : "amber"],
+    ];
+    const runwaySteps = [
+      ["One country", firstMarket, "Start where records, value, and owner rhythm are visible.", "teal"],
+      ["One environment", environmentLane, "Separate demo, staging, production, audit, and country data lanes.", "blue"],
+      ["One proof", localizationProof, "Confirm currency, date language, source coverage, and local handoff.", localizationReadiness >= 78 ? "green" : "amber"],
+      ["One guardrail", aiGuardrail, "Observe learning first; promote only tenant-safe outcomes.", aiGuardrailReadiness >= 82 ? "green" : "amber"],
+      ["One hold", holdLine, "Expansion waits when proof, privacy, or replay is not calm.", holdLine.startsWith("Do not") ? "amber" : "green"],
+    ];
+
+    return `
+      <section class="command-global-launch-serenity-console" aria-label="Global launch serenity console">
+        <div class="command-global-launch-serenity-console-hero">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Global Launch Serenity Console</span>
+          <strong>${escapeHtml(launchState)}</strong>
+          <small>${escapeHtml(launchLine)}</small>
+        </div>
+        <div class="command-global-launch-serenity-console-score">
+          <div class="score-ring" style="--score: ${launchReadiness}">
+            <div>
+              <strong>${launchReadiness}</strong>
+              <span>Launch</span>
+            </div>
+          </div>
+          <p>${escapeHtml(runwayId)} / ${escapeHtml(protectedValue)} open value watched</p>
+        </div>
+        <div class="command-global-launch-serenity-console-grid">
+          ${launchCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-global-launch-serenity-console-runway">
+          ${runwaySteps
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-global-launch-serenity-console-actions">
+          <small>Launch rule: one country, one environment lane, one localization proof, one AI guardrail, one rollback note.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            <button class="ghost-btn" type="button" data-view="Import">Open import proof</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open launch proof</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Global launch lane copied." data-copy-text="${escapeHtml(encodeURIComponent(launchPacket))}">Copy launch lane</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -14713,6 +14932,7 @@ const state = {
         ${renderCommandClosedLoopLearningControlRoom(model, autopilot, pilotPitch)}
         ${renderCommandLearningFlywheelEvidenceBoard(model, autopilot, pilotPitch)}
         ${renderCommandSerenityExperimentPrioritizer(model, autopilot, pilotPitch)}
+        ${renderCommandGlobalLaunchSerenityConsole(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -33208,12 +33428,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v356 Serenity Experiment Prioritizer",
-      phase: "Serenity Experiment Prioritizer",
+      version: "v357 Global Launch Serenity Console",
+      phase: "Global Launch Serenity Console",
       lane: "Static product prototype on GitHub Pages",
-      pace: "337 meaningful versions since rebrand",
-      summary: "Command Center now reduces the learning loop to one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.",
+      pace: "338 meaningful versions since rebrand",
+      summary: "Command Center now reduces global rollout into one first market, one environment lane, one localization proof, one AI guardrail, and one hold line.",
       tracks: [
+        ["v357 global launch serenity console", 100, "Command Center now reduces global rollout into one first market, one environment lane, one localization proof, one AI guardrail, and one hold line.", "green"],
         ["v356 serenity experiment prioritizer", 100, "Command Center now reduces the learning loop to one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.", "green"],
         ["v355 learning flywheel evidence board", 100, "Command Center now shows which action evidence can compound, which proof stays tenant-local, which lessons need retune, and which evidence is held before reuse.", "green"],
         ["v354 closed-loop learning control room", 100, "Command Center now turns user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse into one governed closed-learning loop.", "green"],
@@ -33712,10 +33933,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now simplifies the AI loop into one experiment, one proof, one reuse path, and one hold line.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now simplifies global rollout into one market, one environment lane, one localization proof, one AI guardrail, and one hold line.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
