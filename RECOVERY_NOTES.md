@@ -55,3 +55,4 @@ Recovery cleanup in this copy:
 - v355 adds a Learning Flywheel Evidence Board so action evidence, outcome proof, tenant-local memory, retune items, dividend lessons, and proof holds are visible before learning compounds.
 - v356 adds a Serenity Experiment Prioritizer so the complex learning loop becomes one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.
 - v357 adds a Global Launch Serenity Console so multi-country rollout becomes one first market, one environment lane, one localization proof, one AI guardrail, and one hold line.
+- v358 adds a Global Launch Runtime Guard so the closed-loop high-value signal path is restored and statically checked before the global launch console renders.

@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v357";
-  const BUILD_LABEL = "Global Launch Serenity Console";
+  const BUILD_VERSION = "v358";
+  const BUILD_LABEL = "Global Launch Runtime Guard";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -12066,9 +12066,9 @@ const state = {
     const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
     const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
     const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const highValueSignals = signals.filter((item) => item.highValue).length;
     const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
     const dueWatchSignals = signals.filter((item) => item.days !== null && item.days <= 30).length;
-    const highValueSignals = signals.filter((item) => item.highValue).length;
     const missingOwnerDemand = openRecords.filter((record) => !String(record.owner || "").trim()).length;
     const noDateDemand = openRecords.filter((record) => recordDueDays(record) === null).length;
     const proofCoverage = Math.max(
@@ -14062,6 +14062,7 @@ const state = {
     const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
     const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
     const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const highValueSignals = signals.filter((item) => item.highValue).length;
     const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
     const datedSignals = signals.filter((item) => item.days !== null).length;
     const userActionReceipts = Math.max(
@@ -14253,7 +14254,6 @@ const state = {
     const openRecords = Array.isArray(model.openRecords) ? model.openRecords : [];
     const records = Array.isArray(model.records) ? model.records : [];
     const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
-    const highValueSignals = signals.filter((item) => item.highValue).length;
     const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
     const dueSignals = signals.filter((item) => item.days !== null && item.days <= 30).length;
     const closedProofRecords = records.filter((record) => {
@@ -14660,7 +14660,6 @@ const state = {
       },
     ];
     const activeMarkets = marketLanes.filter((lane) => lane.records.length).length || 1;
-    const highValueSignals = signals.filter((item) => item.highValue).length;
     const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
     const sourceCoverage = Number(model.documents?.sourceCoverage) || 0;
     const proofPressure = Math.max(0, model.evidenceGaps.length + model.contractGaps.length + blockedRules + releaseHeld + retiredRoutes);
@@ -33428,12 +33427,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v357 Global Launch Serenity Console",
-      phase: "Global Launch Serenity Console",
+      version: "v358 Global Launch Runtime Guard",
+      phase: "Global Launch Runtime Guard",
       lane: "Static product prototype on GitHub Pages",
-      pace: "338 meaningful versions since rebrand",
-      summary: "Command Center now reduces global rollout into one first market, one environment lane, one localization proof, one AI guardrail, and one hold line.",
+      pace: "339 meaningful versions since rebrand",
+      summary: "Command Center now keeps the global launch console safe by guarding the closed-loop high-value signal path before render.",
       tracks: [
+        ["v358 global launch runtime guard", 100, "Command Center now keeps the global launch console safe by restoring and checking the closed-loop high-value signal path before render.", "green"],
         ["v357 global launch serenity console", 100, "Command Center now reduces global rollout into one first market, one environment lane, one localization proof, one AI guardrail, and one hold line.", "green"],
         ["v356 serenity experiment prioritizer", 100, "Command Center now reduces the learning loop to one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.", "green"],
         ["v355 learning flywheel evidence board", 100, "Command Center now shows which action evidence can compound, which proof stays tenant-local, which lessons need retune, and which evidence is held before reuse.", "green"],
@@ -33933,7 +33933,7 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now simplifies global rollout into one market, one environment lane, one localization proof, one AI guardrail, and one hold line.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now protects the global launch console with a closed-loop high-value signal guard.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
