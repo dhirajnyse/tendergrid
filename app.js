@@ -1,8 +1,8 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v355";
-  const BUILD_LABEL = "Learning Flywheel Evidence Board";
+  const BUILD_VERSION = "v356";
+  const BUILD_LABEL = "Serenity Experiment Prioritizer";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
   const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
@@ -14431,6 +14431,180 @@ const state = {
     `;
   }
 
+  function renderCommandSerenityExperimentPrioritizer(model, autopilot, pitch = buildPilotPitchModel()) {
+    const twin = buildPursuitDecisionTwinModel();
+    const publisher = pitch.coachToCloseLearningPublisher || {};
+    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
+    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
+    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
+    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
+    const approvedRules = Number(twin.approvedLearningRules) || 0;
+    const promotedRules = Number(twin.ruleImpactPromotions) || 0;
+    const blockedRules = Number(twin.ruleImpactBlocked) || 0;
+    const retestRules = Number(twin.ruleImpactRetests) || 0;
+    const releaseHeld = Number(twin.releaseHeldOrBlocked) || 0;
+    const retiredRoutes = Number(publisher.retiredRoutes) || 0;
+    const signals = Array.isArray(autopilot.signals) ? autopilot.signals : [];
+    const actionRegister = Array.isArray(model.weeklyReview?.actionRegister) ? model.weeklyReview.actionRegister : [];
+    const urgentSignals = signals.filter((item) => item.tone === "red" || (item.days !== null && item.days < 0)).length;
+    const highValueSignals = signals.filter((item) => item.highValue).length;
+    const firstSignal = signals[0]?.record || model.openRecords[0] || {};
+    const proofPressure = Math.max(0, model.evidenceGaps.length + model.contractGaps.length + blockedRules + releaseHeld + retiredRoutes);
+    const learningProof = Math.max(1, matchedReplay + promotedRules + approvedRules + Math.ceil(model.evidenceScore / 18));
+    const retunePressure = Math.max(0, weakReplay + partialReplay + retestRules + Math.ceil(Math.max(0, 78 - model.evidenceScore) / 8));
+    const ownerPressure = Math.max(0, model.reminders.overdue + urgentSignals + Math.ceil(actionRegister.length / 12));
+    const calmConfidence = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.healthScore * 0.2 +
+            model.evidenceScore * 0.22 +
+            model.actionScore * 0.18 +
+            model.weeklyReview.reviewScore * 0.14 +
+            Math.min(100, learningProof * 6) * 0.12 +
+            Math.max(0, 100 - proofPressure * 5) * 0.08 +
+            Math.max(0, 100 - retunePressure * 4) * 0.06,
+        ),
+      ),
+    );
+    const experimentCandidates = [
+      {
+        lane: "Proof cleanup",
+        score: proofPressure * 8 + Math.max(0, 84 - model.evidenceScore),
+        move: "Close the thinnest evidence or commercial gap before learning moves forward.",
+        proof: `${model.evidenceGaps.length} evidence gaps / ${model.contractGaps.length} commercial gaps`,
+        view: "Documents",
+        tone: proofPressure ? "amber" : "green",
+      },
+      {
+        lane: "Owner/date recovery",
+        score: ownerPressure * 7 + Math.max(0, 78 - model.actionScore),
+        move: "Clear one overdue owner/date action so the loop has accountable movement.",
+        proof: `${model.reminders.overdue} overdue / ${urgentSignals} urgent signals`,
+        view: "Weekly Review",
+        tone: ownerPressure ? "amber" : "teal",
+      },
+      {
+        lane: "Weak-learning retune",
+        score: retunePressure * 9 + retestRules * 5,
+        move: "Retune one weak or partial learning signal before it influences the next team.",
+        proof: `${retunePressure} retune pressure / ${weakReplay} weak replay`,
+        view: "Advisor",
+        tone: retunePressure ? "blue" : "green",
+      },
+      {
+        lane: "Safe compounding",
+        score: learningProof * 6 + highValueSignals * 4 - proofPressure * 5,
+        move: "Promote one outcome-proven lesson only when tenant scope and proof are clear.",
+        proof: `${learningProof} learning proofs / ${highValueSignals} high-value signals`,
+        view: "Reports",
+        tone: calmConfidence >= 78 ? "green" : "blue",
+      },
+    ];
+    const priorityExperiment = experimentCandidates
+      .slice()
+      .sort((a, b) => b.score - a.score)[0];
+    const nextProof = proofPressure ? "Evidence and privacy proof first" : retunePressure ? "Retune proof first" : "Outcome lift proof first";
+    const safeReuse = calmConfidence >= 78 && proofPressure <= 3 ? "Reusable with guardrail" : "Observe before reuse";
+    const holdLine = proofPressure + retunePressure + releaseHeld ? "Hold weak learning until proof is visible" : "Keep calm loop open";
+    const serenityScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(calmConfidence * 0.46 + Math.max(0, 100 - ownerPressure * 4) * 0.18 + Math.max(0, 100 - proofPressure * 5) * 0.2 + Math.max(0, 100 - retunePressure * 4) * 0.16),
+      ),
+    );
+    const serenityState = serenityScore >= 84 ? "Calm experiment path is clear" : serenityScore >= 66 ? "Run one governed experiment" : "Simplify before scaling";
+    const experimentId = `${BUILD_VERSION.toUpperCase()}-SEP-${String(learningProof + proofPressure + retunePressure).padStart(3, "0")}`;
+    const reference = compactText(firstSignal.reference || firstSignal.title || "No active experiment reference", 84);
+    const prioritizerLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${serenityState}, score ${serenityScore}%. Next experiment: ${priorityExperiment.lane}. ${priorityExperiment.move}`;
+    const prioritizerPacket = [
+      `Subject: ${BRAND_NAME} serenity experiment prioritizer - ${state.data.company.name}`,
+      "",
+      "The complex learning loop is reduced to one calm experiment, one proof to watch, one safe reuse path, and one hold line.",
+      "",
+      `Experiment id: ${experimentId}`,
+      `Serenity state: ${serenityState}`,
+      `Serenity score: ${serenityScore}%`,
+      `Priority experiment: ${priorityExperiment.lane}`,
+      `Experiment move: ${priorityExperiment.move}`,
+      `Proof to watch: ${nextProof}`,
+      `Safe reuse: ${safeReuse}`,
+      `Hold line: ${holdLine}`,
+      `Reference: ${reference}`,
+      "",
+      "Serenity rule: one visible experiment beats five hidden dashboards. Run the smallest proof loop first, then scale only the learning that stays calm, explainable, and tenant-safe.",
+      "",
+      "Regards,",
+      "PursuitDesk team",
+    ].join("\n");
+    const serenityCards = [
+      ["One experiment", priorityExperiment.lane, priorityExperiment.move, priorityExperiment.tone],
+      ["One proof", nextProof, priorityExperiment.proof, proofPressure ? "amber" : "blue"],
+      ["One reuse path", safeReuse, `${learningProof} proofs with ${calmConfidence}% confidence.`, safeReuse === "Reusable with guardrail" ? "green" : "blue"],
+      ["One hold line", holdLine, `${proofPressure} proof pressure / ${retunePressure} retune pressure.`, holdLine.includes("Hold") ? "amber" : "green"],
+    ];
+    const serenitySteps = [
+      ["Breathe", "Open one room only.", priorityExperiment.view, "teal"],
+      ["Prove", "Capture one receipt.", nextProof, "blue"],
+      ["Learn", "Retune or reuse calmly.", safeReuse, calmConfidence >= 78 ? "green" : "amber"],
+    ];
+
+    return `
+      <section class="command-serenity-experiment-prioritizer" aria-label="Serenity experiment prioritizer">
+        <div class="command-serenity-experiment-prioritizer-hero">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Serenity Experiment Prioritizer</span>
+          <strong>${escapeHtml(serenityState)}</strong>
+          <small>${escapeHtml(prioritizerLine)}</small>
+        </div>
+        <div class="command-serenity-experiment-prioritizer-score">
+          <div class="score-ring" style="--score: ${serenityScore}">
+            <div>
+              <strong>${serenityScore}</strong>
+              <span>Calm</span>
+            </div>
+          </div>
+          <p>${escapeHtml(reference)}</p>
+        </div>
+        <div class="command-serenity-experiment-prioritizer-grid">
+          ${serenityCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-serenity-experiment-prioritizer-steps">
+          ${serenitySteps
+            .map(
+              ([label, note, value, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-serenity-experiment-prioritizer-actions">
+          <small>Serenity rule: one visible experiment, one proof, one reuse path, one hold line.</small>
+          <div>
+            <button class="ghost-btn" type="button" data-view="${escapeHtml(priorityExperiment.view)}">Open experiment</button>
+            <button class="ghost-btn" type="button" data-view="Reports">Open proof</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Serenity experiment copied." data-copy-text="${escapeHtml(encodeURIComponent(prioritizerPacket))}">Copy experiment</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -14538,6 +14712,7 @@ const state = {
         ${renderCommandNetworkOutcomeLearningGovernor(model, autopilot, pilotPitch)}
         ${renderCommandClosedLoopLearningControlRoom(model, autopilot, pilotPitch)}
         ${renderCommandLearningFlywheelEvidenceBoard(model, autopilot, pilotPitch)}
+        ${renderCommandSerenityExperimentPrioritizer(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -33033,12 +33208,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v355 Learning Flywheel Evidence Board",
-      phase: "Learning Flywheel Evidence Board",
+      version: "v356 Serenity Experiment Prioritizer",
+      phase: "Serenity Experiment Prioritizer",
       lane: "Static product prototype on GitHub Pages",
-      pace: "336 meaningful versions since rebrand",
-      summary: "Command Center now shows which action evidence can compound, which proof stays tenant-local, which lessons need retune, and which evidence is held before reuse.",
+      pace: "337 meaningful versions since rebrand",
+      summary: "Command Center now reduces the learning loop to one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.",
       tracks: [
+        ["v356 serenity experiment prioritizer", 100, "Command Center now reduces the learning loop to one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.", "green"],
         ["v355 learning flywheel evidence board", 100, "Command Center now shows which action evidence can compound, which proof stays tenant-local, which lessons need retune, and which evidence is held before reuse.", "green"],
         ["v354 closed-loop learning control room", 100, "Command Center now turns user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse into one governed closed-learning loop.", "green"],
         ["v353 network outcome learning governor", 100, "Command Center now governs measured outcomes into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds.", "green"],
@@ -33536,10 +33712,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now shows which evidence can safely compound and which lessons must wait.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now simplifies the AI loop into one experiment, one proof, one reuse path, and one hold line.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

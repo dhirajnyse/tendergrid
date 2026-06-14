@@ -53,3 +53,4 @@ Recovery cleanup in this copy:
 - v353 adds a Network Outcome Learning Governor so measured outcomes are classified into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds before reuse.
 - v354 adds a Closed-Loop Learning Control Room so user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse stay in one governed learning loop.
 - v355 adds a Learning Flywheel Evidence Board so action evidence, outcome proof, tenant-local memory, retune items, dividend lessons, and proof holds are visible before learning compounds.
+- v356 adds a Serenity Experiment Prioritizer so the complex learning loop becomes one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.

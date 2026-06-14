@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v356 Serenity Experiment Prioritizer reduces the learning loop to one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.
 - v355 Learning Flywheel Evidence Board shows which action evidence can compound, which proof stays tenant-local, which lessons need retune, and which evidence is held before reuse.
 - v354 Closed-Loop Learning Control Room turns user actions, outcome proof, privacy scope, retune work, tenant memory, and network reuse into one governed learning loop.
 - v353 Network Outcome Learning Governor governs measured outcomes into reusable network learning, tenant-only memory, retune work, dividend learning, or proof holds.

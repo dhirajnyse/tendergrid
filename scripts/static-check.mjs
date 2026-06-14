@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=355"), "index.html is missing the v355 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=355"), "index.html is missing the v355 data cache token.");
-assert(index.includes("app.js?v=355"), "index.html is missing the v355 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=355"), "index.html is missing the v355 icon cache token.");
+assert(index.includes("styles.css?v=356"), "index.html is missing the v356 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=356"), "index.html is missing the v356 data cache token.");
+assert(index.includes("app.js?v=356"), "index.html is missing the v356 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=356"), "index.html is missing the v356 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,8 +80,8 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v355";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Learning Flywheel Evidence Board";'), "app.js has the wrong build label.");
+assert(app.includes('const BUILD_VERSION = "v356";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Serenity Experiment Prioritizer";'), "app.js has the wrong build label.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -131,6 +131,7 @@ assert(app.includes("renderCommandNetworkReleaseOutcomeMonitor"), "app.js is mis
 assert(app.includes("renderCommandNetworkOutcomeLearningGovernor"), "app.js is missing the Network Outcome Learning Governor render path.");
 assert(app.includes("renderCommandClosedLoopLearningControlRoom"), "app.js is missing the Closed-Loop Learning Control Room render path.");
 assert(app.includes("renderCommandLearningFlywheelEvidenceBoard"), "app.js is missing the Learning Flywheel Evidence Board render path.");
+assert(app.includes("renderCommandSerenityExperimentPrioritizer"), "app.js is missing the Serenity Experiment Prioritizer render path.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -171,6 +172,7 @@ assert(css.includes(".command-network-release-outcome-monitor"), "styles.css is 
 assert(css.includes(".command-network-outcome-learning-governor"), "styles.css is missing Network Outcome Learning Governor styles.");
 assert(css.includes(".command-closed-loop-learning-control-room"), "styles.css is missing Closed-Loop Learning Control Room styles.");
 assert(css.includes(".command-learning-flywheel-evidence-board"), "styles.css is missing Learning Flywheel Evidence Board styles.");
+assert(css.includes(".command-serenity-experiment-prioritizer"), "styles.css is missing Serenity Experiment Prioritizer styles.");
 assert(css.includes("letter-spacing: 0"), "styles.css should keep letter spacing neutral.");
 assert(!/letter-spacing:\s*-/i.test(css), "styles.css contains negative letter spacing.");
 

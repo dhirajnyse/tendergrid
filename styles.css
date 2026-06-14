@@ -9905,6 +9905,163 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-serenity-experiment-prioritizer {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(180px, 0.5fr);
+  gap: 10px;
+  margin-top: 10px;
+  padding: 14px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, #fbfffe, rgba(238, 249, 245, 0.98));
+  box-shadow: 0 12px 28px rgba(42, 142, 119, 0.05);
+}
+
+.command-serenity-experiment-prioritizer-hero {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+}
+
+.command-serenity-experiment-prioritizer-hero strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.18;
+}
+
+.command-serenity-experiment-prioritizer-hero small {
+  max-width: 980px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-serenity-experiment-prioritizer-score {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 150px;
+  padding: 12px;
+  border: 1px solid rgba(42, 142, 119, 0.22);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.command-serenity-experiment-prioritizer-score .score-ring {
+  width: 112px;
+  height: 112px;
+}
+
+.command-serenity-experiment-prioritizer-score p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.command-serenity-experiment-prioritizer-grid,
+.command-serenity-experiment-prioritizer-steps {
+  display: grid;
+  gap: 8px;
+}
+
+.command-serenity-experiment-prioritizer-grid {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.command-serenity-experiment-prioritizer-steps {
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+}
+
+.command-serenity-experiment-prioritizer-grid article,
+.command-serenity-experiment-prioritizer-steps article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 96px;
+  padding: 12px;
+  border: 1px solid rgba(42, 142, 119, 0.23);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-serenity-experiment-prioritizer-grid article span,
+.command-serenity-experiment-prioritizer-steps article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-serenity-experiment-prioritizer-grid article strong,
+.command-serenity-experiment-prioritizer-steps article strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.16;
+}
+
+.command-serenity-experiment-prioritizer-grid article small,
+.command-serenity-experiment-prioritizer-steps article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-serenity-experiment-prioritizer-grid article.tone-green,
+.command-serenity-experiment-prioritizer-steps article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-serenity-experiment-prioritizer-grid article.tone-teal,
+.command-serenity-experiment-prioritizer-steps article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-serenity-experiment-prioritizer-grid article.tone-blue,
+.command-serenity-experiment-prioritizer-steps article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-serenity-experiment-prioritizer-grid article.tone-amber,
+.command-serenity-experiment-prioritizer-steps article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-serenity-experiment-prioritizer-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.command-serenity-experiment-prioritizer-actions small {
+  max-width: 680px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-serenity-experiment-prioritizer-actions div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -10552,6 +10709,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
     grid-template-columns: 1fr;
   }
 
+  .command-serenity-experiment-prioritizer {
+    grid-template-columns: 1fr;
+  }
+
   .command-memory-actions {
     justify-content: flex-start;
   }
@@ -10651,7 +10812,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-closed-loop-learning-control-room-rules,
   .command-learning-flywheel-evidence-board-grid,
   .command-learning-flywheel-evidence-board-lanes,
-  .command-learning-flywheel-evidence-board-proofs {
+  .command-learning-flywheel-evidence-board-proofs,
+  .command-serenity-experiment-prioritizer-grid,
+  .command-serenity-experiment-prioritizer-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -10811,7 +10974,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-closed-loop-learning-control-room-rules,
   .command-learning-flywheel-evidence-board-grid,
   .command-learning-flywheel-evidence-board-lanes,
-  .command-learning-flywheel-evidence-board-proofs {
+  .command-learning-flywheel-evidence-board-proofs,
+  .command-serenity-experiment-prioritizer-grid,
+  .command-serenity-experiment-prioritizer-steps {
     grid-template-columns: 1fr;
   }
 
@@ -10886,7 +11051,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-closed-loop-learning-control-room-actions .ghost-btn,
   .command-closed-loop-learning-control-room-actions .secondary-btn,
   .command-learning-flywheel-evidence-board-actions .ghost-btn,
-  .command-learning-flywheel-evidence-board-actions .secondary-btn {
+  .command-learning-flywheel-evidence-board-actions .secondary-btn,
+  .command-serenity-experiment-prioritizer-actions .ghost-btn,
+  .command-serenity-experiment-prioritizer-actions .secondary-btn {
     width: 100%;
   }
 
@@ -10924,7 +11091,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-network-release-outcome-monitor-actions div,
   .command-network-outcome-learning-governor-actions div,
   .command-closed-loop-learning-control-room-actions div,
-  .command-learning-flywheel-evidence-board-actions div {
+  .command-learning-flywheel-evidence-board-actions div,
+  .command-serenity-experiment-prioritizer-actions div {
     width: 100%;
   }
 
