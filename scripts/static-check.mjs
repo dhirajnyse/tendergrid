@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=358"), "index.html is missing the v358 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=358"), "index.html is missing the v358 data cache token.");
-assert(index.includes("app.js?v=358"), "index.html is missing the v358 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=358"), "index.html is missing the v358 icon cache token.");
+assert(index.includes("styles.css?v=359"), "index.html is missing the v359 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=359"), "index.html is missing the v359 data cache token.");
+assert(index.includes("app.js?v=359"), "index.html is missing the v359 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=359"), "index.html is missing the v359 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,8 +80,8 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v358";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Global Launch Runtime Guard";'), "app.js has the wrong build label.");
+assert(app.includes('const BUILD_VERSION = "v359";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Learning Signal Runtime Guard";'), "app.js has the wrong build label.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -142,6 +142,14 @@ const closedLoopBlock = closedLoopStart >= 0 && closedLoopEnd > closedLoopStart 
 assert(
   closedLoopBlock.includes("const highValueSignals = signals.filter((item) => item.highValue).length;"),
   "Closed-Loop Learning Control Room is missing its high-value signal guard.",
+);
+
+const flywheelStart = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard");
+const flywheelEnd = app.indexOf("function renderCommandSerenityExperimentPrioritizer", flywheelStart);
+const flywheelBlock = flywheelStart >= 0 && flywheelEnd > flywheelStart ? app.slice(flywheelStart, flywheelEnd) : "";
+assert(
+  flywheelBlock.includes("const highValueSignals = signals.filter((item) => item.highValue).length;"),
+  "Learning Flywheel Evidence Board is missing its high-value signal guard.",
 );
 
 assert(css.includes(".command-serenity-handrail"), "styles.css is missing Serenity Handrail styles.");

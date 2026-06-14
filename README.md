@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v359 Learning Signal Runtime Guard protects both closed-loop and learning-flywheel high-value signal paths before render.
 - v358 Global Launch Runtime Guard protects the global launch console by restoring and checking the closed-loop high-value signal path before render.
 - v357 Global Launch Serenity Console reduces global rollout to one first market, one environment lane, one localization proof, one AI guardrail, and one hold line.
 - v356 Serenity Experiment Prioritizer reduces the learning loop to one calm experiment, one proof to watch, one reuse path, and one hold line before scaling.
