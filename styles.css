@@ -5051,6 +5051,90 @@ body.quiet-focus-mode .focus-mode-pill {
   color: var(--muted);
 }
 
+.command-memory-seed {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid rgba(49, 101, 158, 0.18);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(251, 253, 255, 0.98), rgba(239, 247, 252, 0.78));
+}
+
+.command-memory-seed-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-memory-seed-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.command-memory-seed-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-memory-seed-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.command-memory-seed-grid article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 82px;
+  padding: 10px;
+  border: 1px solid rgba(49, 101, 158, 0.18);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-memory-seed-grid article span {
+  color: var(--blue-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-memory-seed-grid article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-memory-seed-grid article small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-memory-seed-grid article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-memory-seed-grid article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-memory-seed-grid article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -11067,6 +11151,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .command-memory-seed-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .zen-start-panel {
     grid-template-columns: 1fr;
   }
@@ -11280,6 +11368,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   }
 
   .calm-close-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .command-memory-seed-grid {
     grid-template-columns: 1fr;
   }
 

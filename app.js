@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v362";
-  const BUILD_LABEL = "Pilot Story Runtime Guard";
+  const BUILD_VERSION = "v363";
+  const BUILD_LABEL = "Outcome Memory Seed";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=362";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=362";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=363";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=363";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -14977,6 +14977,65 @@ const state = {
     `;
   }
 
+  function extractOutcomeMemoryField(text, patterns, fallback) {
+    const source = String(text || "");
+    for (const pattern of patterns) {
+      const match = source.match(pattern);
+      if (match && match[1]) {
+        const value = match[1].replace(/\s+/g, " ").replace(/[.;,\s]+$/g, "").trim();
+        if (value) return compactText(value, 56);
+      }
+    }
+    return fallback;
+  }
+
+  function buildCommandOutcomeMemorySeed(memory = {}) {
+    const text = String(memory.text || "");
+    const source = simpleRoomLabel(memory.view || "Command");
+    const route = extractOutcomeMemoryField(
+      text,
+      [/\bOpen\s+([^.;,\n]+?)(?:[.;,]|$)/i, /\broom\s+([^.;,\n]+?)(?:[.;,]|$)/i],
+      source,
+    );
+    const owner = extractOutcomeMemoryField(
+      text,
+      [/\bowner\s+([^.;,\n]+?)(?:[.;,]|$)/i, /\bConfirm\s+owner\s+([^.;,\n]+?)(?:[.;,]|$)/i],
+      "Owner to confirm",
+    );
+    const date = extractOutcomeMemoryField(
+      text,
+      [/\bdate\s+([^.;,\n]+?)(?:[.;,]|$)/i, /\bby\s+([^.;,\n]+?)(?:[.;,]|$)/i],
+      "Date to confirm",
+    );
+    const proof = extractOutcomeMemoryField(
+      text,
+      [/\bproof\s+([^.;\n]+?)(?:[.;]|$)/i, /\bevidence\s+([^.;\n]+?)(?:[.;]|$)/i],
+      "Proof to capture",
+    );
+    const privacyReady = /privacy|private|guard|guarded|protected|management rooms|frontline/i.test(text);
+    const ownerReady = !/confirm|to confirm|set/i.test(owner);
+    const dateReady = !/confirm|set|no date|to confirm/i.test(date);
+    const proofReady = !/capture|add proof|bring one|to capture/i.test(proof);
+    const routeReady = Boolean(route && route !== "Command");
+    const score = Math.max(20, Math.min(100, [routeReady, ownerReady, dateReady, proofReady, privacyReady].filter(Boolean).length * 20));
+    const stateLabel = score >= 80 ? "Learning-ready" : score >= 60 ? "Outcome-needed" : "Proof-needed";
+    const feedbackQuestion =
+      score >= 80
+        ? "Did this move create visible progress before the next review?"
+        : proofReady
+          ? "What outcome did the owner create after this proof?"
+          : "Which proof must be captured before this becomes reusable learning?";
+    const privacy = privacyReady ? "Privacy boundary captured" : "Add privacy boundary";
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Outcome Memory Seed: ${stateLabel}, ${score}%. Route ${route}. Owner ${owner}. Date ${date}. Proof ${proof}. ${privacy}. Feedback: ${feedbackQuestion}`;
+    const cards = [
+      ["Route", route, "The room that should move next.", routeReady ? "green" : "amber"],
+      ["Owner/date", `${owner} / ${date}`, "Accountability and control timing.", ownerReady && dateReady ? "green" : "amber"],
+      ["Proof", proof, "Evidence required before learning reuse.", proofReady ? "blue" : "amber"],
+      ["Feedback", `${score}% ${stateLabel}`, feedbackQuestion, score >= 80 ? "green" : score >= 60 ? "blue" : "amber"],
+    ];
+    return { cards, copyText, date, feedbackQuestion, owner, privacy, proof, route, score, stateLabel };
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -14995,14 +15054,36 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
+    const seed = buildCommandOutcomeMemorySeed(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
           <span class="metric-label">${escapeHtml(memory.build || BUILD_VERSION)} last calm copy</span>
           <strong>${escapeHtml(compactText(memory.text, 170))}</strong>
           <small>Saved ${escapeHtml(savedAt)} from ${escapeHtml(source)}.</small>
+          <div class="command-memory-seed" aria-label="Outcome memory seed">
+            <div class="command-memory-seed-head">
+              <span class="metric-label">${escapeHtml(BUILD_VERSION)} Outcome Memory Seed</span>
+              <strong>${escapeHtml(seed.stateLabel)} / ${seed.score}%</strong>
+              <small>${escapeHtml(seed.copyText)}</small>
+            </div>
+            <div class="command-memory-seed-grid">
+              ${seed.cards
+                .map(
+                  ([label, value, note, tone]) => `
+                    <article class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(compactText(String(value), 54))}</strong>
+                      <small>${escapeHtml(note)}</small>
+                    </article>
+                  `,
+                )
+                .join("")}
+            </div>
+          </div>
         </div>
         <div class="command-memory-actions">
+          <button class="ghost-btn" type="button" data-action="copy-command-seed" data-copy-text="${escapeHtml(encodeURIComponent(seed.copyText))}">Copy seed</button>
           <button class="ghost-btn" type="button" data-action="copy-command-memory">Copy again</button>
           <button class="ghost-btn" type="button" data-action="clear-command-memory">Clear</button>
         </div>
@@ -33545,12 +33626,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v362 Pilot Story Runtime Guard",
-      phase: "Pilot Story Runtime Guard",
+      version: "v363 Outcome Memory Seed",
+      phase: "Outcome Memory Seed",
       lane: "Static product prototype on GitHub Pages",
-      pace: "343 meaningful versions since rebrand",
-      summary: "Command Center now guards the folded sponsor story by restoring the Pilot Close ROI model before render.",
+      pace: "344 meaningful versions since rebrand",
+      summary: "Command Center now turns every copied calm line into a learning-ready outcome memory seed with route, owner, date, proof, privacy, and feedback posture.",
       tracks: [
+        ["v363 outcome memory seed", 100, "Command Center now turns every copied calm line into a learning-ready outcome memory seed with route, owner, date, proof, privacy, and feedback posture.", "green"],
         ["v362 pilot story runtime guard", 100, "Command Center now guards the folded sponsor story by restoring the Pilot Close ROI model before render.", "green"],
         ["v361 pilot story fold", 100, "Command Center now folds the recovery, demo, sponsor close, and day-one launch narrative into one calm expandable sponsor story.", "green"],
         ["v360 serenity network fold", 100, "Command Center now folds the advanced AI learning, value, release, and global launch controls into one calm expandable network surface.", "green"],
@@ -34055,10 +34137,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now keeps the folded sponsor story runtime-safe before render.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Copied calm lines now become learning-ready outcome seeds without adding another screen.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -83664,15 +83746,34 @@ const state = {
         text = encoded;
       }
       if (text) {
+        const copiedAt = new Date().toISOString();
+        const view = state.view || "Command";
         state.commandMemory = {
           text,
-          copiedAt: new Date().toISOString(),
+          copiedAt,
           build: BUILD_VERSION,
-          view: state.view || "Command",
+          view,
+          seed: buildCommandOutcomeMemorySeed({ text, copiedAt, build: BUILD_VERSION, view }),
         };
         persistCommandMemory(state.commandMemory);
       }
       copyTextToClipboard(text, button.dataset.copyMessage || "Calm line copied and remembered.");
+      return;
+    }
+
+    if (action === "copy-command-seed") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+        text = seed.copyText || "";
+      }
+      copyTextToClipboard(text, "Outcome memory seed copied.");
       return;
     }
 
