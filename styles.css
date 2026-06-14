@@ -5954,6 +5954,131 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-pilot-story-fold {
+  margin-top: 10px;
+  border: 1px solid rgba(49, 101, 158, 0.22);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(239, 247, 252, 0.92));
+  box-shadow: 0 12px 28px rgba(38, 75, 114, 0.055);
+  overflow: hidden;
+}
+
+.command-pilot-story-fold > summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 76px;
+  padding: 14px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.command-pilot-story-fold > summary::-webkit-details-marker {
+  display: none;
+}
+
+.command-pilot-story-fold > summary span {
+  display: grid;
+  gap: 5px;
+}
+
+.command-pilot-story-fold > summary strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.18;
+}
+
+.command-pilot-story-fold > summary small {
+  max-width: 980px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-pilot-story-fold > summary b {
+  padding: 8px 12px;
+  border: 1px solid rgba(49, 101, 158, 0.22);
+  border-radius: 999px;
+  color: var(--blue-dark);
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.command-pilot-story-fold[open] > summary b {
+  color: #fff;
+  background: var(--blue);
+}
+
+.command-pilot-story-fold-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 8px;
+  padding: 0 14px 14px;
+}
+
+.command-pilot-story-fold-summary article {
+  display: grid;
+  gap: 5px;
+  min-height: 96px;
+  padding: 12px;
+  border: 1px solid rgba(49, 101, 158, 0.22);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-pilot-story-fold-summary article span {
+  color: var(--blue-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-pilot-story-fold-summary article strong {
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.16;
+}
+
+.command-pilot-story-fold-summary article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-pilot-story-fold-summary article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-pilot-story-fold-summary article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-pilot-story-fold-summary article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-pilot-story-fold-summary article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-pilot-story-fold-body {
+  display: grid;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
 .command-learning-loop-board {
   display: grid;
   gap: 10px;
@@ -11031,6 +11156,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-launch-grid,
   .command-pilot-launch-owners,
   .command-pilot-launch-runbook,
+  .command-pilot-story-fold-summary,
   .command-learning-loop-grid,
   .command-learning-loop-lanes,
   .command-outcome-feedback-grid,
@@ -11196,6 +11322,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-pilot-launch-grid,
   .command-pilot-launch-owners,
   .command-pilot-launch-runbook,
+  .command-pilot-story-fold-summary,
   .command-learning-loop-grid,
   .command-learning-loop-lanes,
   .command-outcome-feedback-grid,
@@ -11276,6 +11403,15 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   }
 
   .command-learning-network-fold > summary b {
+    justify-self: start;
+  }
+
+  .command-pilot-story-fold > summary {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .command-pilot-story-fold > summary b {
     justify-self: start;
   }
 

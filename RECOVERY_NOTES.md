@@ -58,3 +58,4 @@ Recovery cleanup in this copy:
 - v358 adds a Global Launch Runtime Guard so the closed-loop high-value signal path is restored and statically checked before the global launch console renders.
 - v359 adds a Learning Signal Runtime Guard so both closed-loop and learning-flywheel high-value signal paths are restored and statically checked before render.
 - v360 adds a Serenity Network Fold so advanced AI learning, value, release, and global launch controls stay available inside one calm expandable Command Center surface.
+- v361 adds a Pilot Story Fold so recovery, demo, sponsor close, and day-one launch proof stay available inside one calm expandable sponsor story.

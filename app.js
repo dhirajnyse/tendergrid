@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v360";
-  const BUILD_LABEL = "Serenity Network Fold";
+  const BUILD_VERSION = "v361";
+  const BUILD_LABEL = "Pilot Story Fold";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=360";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=360";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=361";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=361";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -7967,7 +7967,6 @@ const state = {
     const company = pitch.company || {};
     const membership = pitch.membership || {};
     const proposal = pitch.proposalPack || {};
-    const roi = pitch.roiPack || {};
     const feedback = pitch.feedbackPack || {};
     const topAccount = model.portfolio?.topAccounts?.[0] || model.portfolio?.accounts?.[0] || null;
     const sponsorName = topAccount?.label || company.name || "first sponsor";
@@ -8138,6 +8137,80 @@ const state = {
             : ""
         }
       </section>
+    `;
+  }
+
+  function renderCommandPilotStoryFold(model, autopilot, pitch = buildPilotPitchModel()) {
+    const company = pitch.company || {};
+    const membership = pitch.membership || {};
+    const roi = pitch.roiPack || {};
+    const feedback = pitch.feedbackPack || {};
+    const kickoff = pitch.kickoffControlPack || {};
+    const setupLanes = Array.isArray(kickoff.setupLanes) ? kickoff.setupLanes : [];
+    const workbookLane = setupLanes.find((lane) => /workbook/i.test(lane.label || "")) || {};
+    const reviewLane = setupLanes.find((lane) => /review/i.test(lane.label || "")) || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstMove = firstSignal.action || firstSignal.title || model.priorityTasks?.[0]?.action || "Open the first priority room";
+    const storySections = [
+      renderCommandContinuityGuard(),
+      renderCommandWorldDemoScript(model, autopilot),
+      renderCommandPilotClosePacket(model, pitch),
+      renderCommandPilotLaunchBoard(model, pitch),
+    ];
+    const feedbackScore = Number(feedback.score || 0);
+    const readinessScore = Math.max(
+      1,
+      Math.min(
+        100,
+        Math.round(
+          model.evidenceScore * 0.26 +
+            model.documents.sourceCoverage * 0.18 +
+            Math.min(model.openRecords.length, 24) * 1.25 +
+            Math.min(model.reminders.tasks.length, 34) * 0.78 +
+            feedbackScore * 0.16,
+        ),
+      ),
+    );
+    const readinessState =
+      readinessScore >= 84 ? "Sponsor story is board-ready" : readinessScore >= 66 ? "Sponsor story is guided" : "Sponsor story needs one proof";
+    const pilotAsk = `${membership.seats || 15} users / one workbook / 30 days`;
+    const launchGate = reviewLane.date || kickoff.renewalGateDate || "Day 30";
+    const sponsor = company.name || model.portfolio?.topAccounts?.[0]?.label || "first sponsor";
+    const storyLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: recovery, demo, close, and launch proof stay folded into one sponsor story. ${readinessState}, readiness ${readinessScore}%. First move: ${compactText(firstMove, 96)}.`;
+    const storyCards = [
+      ["Sponsor", compactText(sponsor, 40), `${pilotAsk}.`, "green"],
+      ["Readiness", `${readinessScore}%`, `${model.openRecords.length} open records, ${model.evidenceScore}% evidence health.`, readinessScore >= 84 ? "green" : readinessScore >= 66 ? "blue" : "amber"],
+      ["Launch gate", launchGate, workbookLane.date ? `Workbook by ${workbookLane.date}.` : "Confirm workbook before invites.", "blue"],
+      ["Hidden detail", `${storySections.length} panels`, "Recovery, demo, sponsor close, and day-one launch stay available on demand.", "teal"],
+    ];
+
+    return `
+      <details class="command-pilot-story-fold">
+        <summary>
+          <span>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Sponsor story</span>
+            <strong>Open recovery, demo, close, and launch proof</strong>
+            <small>${escapeHtml(storyLine)}</small>
+          </span>
+          <b>Open</b>
+        </summary>
+        <div class="command-pilot-story-fold-summary">
+          ${storyCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-pilot-story-fold-body">
+          ${storySections.join("")}
+        </div>
+      </details>
     `;
   }
 
@@ -14975,10 +15048,7 @@ const state = {
         ${renderCommandCalmVerdict(model, autopilot)}
         ${renderCommandDecisionReceipt(model, autopilot)}
         ${renderCommandSerenityCompass(model, autopilot)}
-        ${renderCommandContinuityGuard()}
-        ${renderCommandWorldDemoScript(model, autopilot)}
-        ${renderCommandPilotClosePacket(model, pilotPitch)}
-        ${renderCommandPilotLaunchBoard(model, pilotPitch)}
+        ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
@@ -33475,12 +33545,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v360 Serenity Network Fold",
-      phase: "Serenity Network Fold",
+      version: "v361 Pilot Story Fold",
+      phase: "Pilot Story Fold",
       lane: "Static product prototype on GitHub Pages",
-      pace: "341 meaningful versions since rebrand",
-      summary: "Command Center now folds the advanced AI learning, value, release, and global launch controls into one calm expandable network surface.",
+      pace: "342 meaningful versions since rebrand",
+      summary: "Command Center now folds the recovery, demo, sponsor close, and day-one launch narrative into one calm expandable sponsor story.",
       tracks: [
+        ["v361 pilot story fold", 100, "Command Center now folds the recovery, demo, sponsor close, and day-one launch narrative into one calm expandable sponsor story.", "green"],
         ["v360 serenity network fold", 100, "Command Center now folds the advanced AI learning, value, release, and global launch controls into one calm expandable network surface.", "green"],
         ["v359 learning signal runtime guard", 100, "Command Center now guards both closed-loop and learning-flywheel high-value signal paths before render.", "green"],
         ["v358 global launch runtime guard", 100, "Command Center now keeps the global launch console safe by restoring and checking the closed-loop high-value signal path before render.", "green"],
@@ -33983,10 +34054,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now keeps the advanced AI network folded until the team needs it.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now keeps the sponsor/demo/launch story folded until the team needs it.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Pilot Story Fold, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v361 Pilot Story Fold keeps the Command Center calmer by folding recovery, demo, sponsor close, and day-one launch proof into one expandable sponsor story.
 - v360 Serenity Network Fold keeps the Command Center calmer by folding advanced AI learning, value, release, and global launch controls into one expandable surface.
 - v359 Learning Signal Runtime Guard protects both closed-loop and learning-flywheel high-value signal paths before render.
 - v358 Global Launch Runtime Guard protects the global launch console by restoring and checking the closed-loop high-value signal path before render.
