@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v359";
-  const BUILD_LABEL = "Learning Signal Runtime Guard";
+  const BUILD_VERSION = "v360";
+  const BUILD_LABEL = "Serenity Network Fold";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=311";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=311";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=360";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=360";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -14824,6 +14824,86 @@ const state = {
     `;
   }
 
+  function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
+    const networkSections = [
+      renderCommandLearningLoopBoard(model, autopilot, pilotPitch),
+      renderCommandOutcomeFeedbackEngine(model, autopilot, pilotPitch),
+      renderCommandAdaptivePolicySimulator(model, autopilot, pilotPitch),
+      renderCommandTenantLearningFirewall(model, autopilot, pilotPitch),
+      renderCommandFederatedPatternTrustLedger(model, autopilot, pilotPitch),
+      renderCommandNetworkInfluenceShadowReplay(model, autopilot, pilotPitch),
+      renderCommandTenantInfluenceActivationSwitchboard(model, autopilot, pilotPitch),
+      renderCommandActivationOutcomeLearner(model, autopilot, pilotPitch),
+      renderCommandNetworkBenefitRouter(model, autopilot, pilotPitch),
+      renderCommandNetworkReciprocityLedger(model, autopilot, pilotPitch),
+      renderCommandNetworkLearningDividendAllocator(model, autopilot, pilotPitch),
+      renderCommandNetworkOutcomeDividendVerifier(model, autopilot, pilotPitch),
+      renderCommandNetworkReinforcementPolicyGovernor(model, autopilot, pilotPitch),
+      renderCommandNetworkReinforcementDriftSentinel(model, autopilot, pilotPitch),
+      renderCommandNetworkRetuneExperimentOrchestrator(model, autopilot, pilotPitch),
+      renderCommandNetworkRetuneOutcomeLearner(model, autopilot, pilotPitch),
+      renderCommandNetworkLearningSafetyCouncil(model, autopilot, pilotPitch),
+      renderCommandNetworkLearningLicenseGate(model, autopilot, pilotPitch),
+      renderCommandNetworkLearningRoyaltyLedger(model, autopilot, pilotPitch),
+      renderCommandNetworkLearningSettlementConsole(model, autopilot, pilotPitch),
+      renderCommandNetworkLearningClearinghouse(model, autopilot, pilotPitch),
+      renderCommandNetworkLearningTrustMarket(model, autopilot, pilotPitch),
+      renderCommandNetworkLearningDemandRouter(model, autopilot, pilotPitch),
+      renderCommandNetworkOutcomeExchange(model, autopilot, pilotPitch),
+      renderCommandNetworkValueGovernor(model, autopilot, pilotPitch),
+      renderCommandNetworkValueAuditTrail(model, autopilot, pilotPitch),
+      renderCommandNetworkValueReviewBoard(model, autopilot, pilotPitch),
+      renderCommandNetworkDecisionReleaseGate(model, autopilot, pilotPitch),
+      renderCommandNetworkReleaseOutcomeMonitor(model, autopilot, pilotPitch),
+      renderCommandNetworkOutcomeLearningGovernor(model, autopilot, pilotPitch),
+      renderCommandClosedLoopLearningControlRoom(model, autopilot, pilotPitch),
+      renderCommandLearningFlywheelEvidenceBoard(model, autopilot, pilotPitch),
+      renderCommandSerenityExperimentPrioritizer(model, autopilot, pilotPitch),
+      renderCommandGlobalLaunchSerenityConsole(model, autopilot, pilotPitch),
+    ];
+    const readinessScore = Math.max(
+      1,
+      Math.min(100, Math.round(model.evidenceScore * 0.34 + model.actionScore * 0.24 + model.contractScore * 0.18 + model.weeklyReview.reviewScore * 0.14 + Math.max(0, 100 - model.evidenceGaps.length * 4) * 0.1)),
+    );
+    const foldState = readinessScore >= 84 ? "Learning network is calm" : readinessScore >= 66 ? "Learning network is governed" : "Learning network needs one proof";
+    const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open one proof lane before expanding the learning network.";
+    const foldLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${networkSections.length} advanced learning surfaces stay folded until needed. ${foldState}, score ${readinessScore}%.`;
+    const summaryCards = [
+      ["Calm score", `${readinessScore}%`, `${foldState} across evidence, action, contract, and review health.`, readinessScore >= 84 ? "green" : readinessScore >= 66 ? "blue" : "amber"],
+      ["Hidden power", `${networkSections.length} panels`, "Advanced AI, tenant safety, value, release, outcome, and launch controls remain available on demand.", "teal"],
+      ["One move", "Proof first", compactText(firstMove, 112), "blue"],
+    ];
+
+    return `
+      <details class="command-learning-network-fold">
+        <summary>
+          <span>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Calm AI network</span>
+            <strong>Open governed learning, value, release, and global launch controls</strong>
+            <small>${escapeHtml(foldLine)}</small>
+          </span>
+          <b>Open</b>
+        </summary>
+        <div class="command-learning-network-fold-summary">
+          ${summaryCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-learning-network-fold-body">
+          ${networkSections.join("")}
+        </div>
+      </details>
+    `;
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -14899,40 +14979,7 @@ const state = {
         ${renderCommandWorldDemoScript(model, autopilot)}
         ${renderCommandPilotClosePacket(model, pilotPitch)}
         ${renderCommandPilotLaunchBoard(model, pilotPitch)}
-        ${renderCommandLearningLoopBoard(model, autopilot, pilotPitch)}
-        ${renderCommandOutcomeFeedbackEngine(model, autopilot, pilotPitch)}
-        ${renderCommandAdaptivePolicySimulator(model, autopilot, pilotPitch)}
-        ${renderCommandTenantLearningFirewall(model, autopilot, pilotPitch)}
-        ${renderCommandFederatedPatternTrustLedger(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkInfluenceShadowReplay(model, autopilot, pilotPitch)}
-        ${renderCommandTenantInfluenceActivationSwitchboard(model, autopilot, pilotPitch)}
-        ${renderCommandActivationOutcomeLearner(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkBenefitRouter(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkReciprocityLedger(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkLearningDividendAllocator(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkOutcomeDividendVerifier(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkReinforcementPolicyGovernor(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkReinforcementDriftSentinel(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkRetuneExperimentOrchestrator(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkRetuneOutcomeLearner(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkLearningSafetyCouncil(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkLearningLicenseGate(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkLearningRoyaltyLedger(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkLearningSettlementConsole(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkLearningClearinghouse(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkLearningTrustMarket(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkLearningDemandRouter(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkOutcomeExchange(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkValueGovernor(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkValueAuditTrail(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkValueReviewBoard(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkDecisionReleaseGate(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkReleaseOutcomeMonitor(model, autopilot, pilotPitch)}
-        ${renderCommandNetworkOutcomeLearningGovernor(model, autopilot, pilotPitch)}
-        ${renderCommandClosedLoopLearningControlRoom(model, autopilot, pilotPitch)}
-        ${renderCommandLearningFlywheelEvidenceBoard(model, autopilot, pilotPitch)}
-        ${renderCommandSerenityExperimentPrioritizer(model, autopilot, pilotPitch)}
-        ${renderCommandGlobalLaunchSerenityConsole(model, autopilot, pilotPitch)}
+        ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
         ${
           state.quietFocus
@@ -33428,12 +33475,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v359 Learning Signal Runtime Guard",
-      phase: "Learning Signal Runtime Guard",
+      version: "v360 Serenity Network Fold",
+      phase: "Serenity Network Fold",
       lane: "Static product prototype on GitHub Pages",
-      pace: "340 meaningful versions since rebrand",
-      summary: "Command Center now guards both closed-loop and learning-flywheel high-value signal paths before render.",
+      pace: "341 meaningful versions since rebrand",
+      summary: "Command Center now folds the advanced AI learning, value, release, and global launch controls into one calm expandable network surface.",
       tracks: [
+        ["v360 serenity network fold", 100, "Command Center now folds the advanced AI learning, value, release, and global launch controls into one calm expandable network surface.", "green"],
         ["v359 learning signal runtime guard", 100, "Command Center now guards both closed-loop and learning-flywheel high-value signal paths before render.", "green"],
         ["v358 global launch runtime guard", 100, "Command Center now keeps the global launch console safe by restoring and checking the closed-loop high-value signal path before render.", "green"],
         ["v357 global launch serenity console", 100, "Command Center now reduces global rollout into one first market, one environment lane, one localization proof, one AI guardrail, and one hold line.", "green"],
@@ -33935,10 +33983,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now protects closed-loop and learning-flywheel signal math before render.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now keeps the advanced AI network folded until the team needs it.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">

@@ -10220,6 +10220,131 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-learning-network-fold {
+  margin-top: 10px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(238, 249, 245, 0.94));
+  box-shadow: 0 12px 28px rgba(19, 54, 45, 0.055);
+  overflow: hidden;
+}
+
+.command-learning-network-fold > summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  min-height: 76px;
+  padding: 14px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.command-learning-network-fold > summary::-webkit-details-marker {
+  display: none;
+}
+
+.command-learning-network-fold > summary span {
+  display: grid;
+  gap: 5px;
+}
+
+.command-learning-network-fold > summary strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.18;
+}
+
+.command-learning-network-fold > summary small {
+  max-width: 980px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.command-learning-network-fold > summary b {
+  padding: 8px 12px;
+  border: 1px solid rgba(42, 142, 119, 0.24);
+  border-radius: 999px;
+  color: var(--teal-dark);
+  background: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  font-weight: 950;
+}
+
+.command-learning-network-fold[open] > summary b {
+  color: #fff;
+  background: var(--teal);
+}
+
+.command-learning-network-fold-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(160px, 1fr));
+  gap: 8px;
+  padding: 0 14px 14px;
+}
+
+.command-learning-network-fold-summary article {
+  display: grid;
+  gap: 5px;
+  min-height: 96px;
+  padding: 12px;
+  border: 1px solid rgba(42, 142, 119, 0.23);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-learning-network-fold-summary article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-learning-network-fold-summary article strong {
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.16;
+}
+
+.command-learning-network-fold-summary article small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-learning-network-fold-summary article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-learning-network-fold-summary article.tone-teal {
+  border-color: rgba(42, 142, 119, 0.28);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfffe, var(--teal-soft));
+}
+
+.command-learning-network-fold-summary article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-learning-network-fold-summary article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-learning-network-fold-body {
+  display: grid;
+  gap: 10px;
+  padding: 0 14px 14px;
+}
+
 .command-serenity-compass-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(150px, 1fr));
@@ -10975,7 +11100,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-serenity-experiment-prioritizer-grid,
   .command-serenity-experiment-prioritizer-steps,
   .command-global-launch-serenity-console-grid,
-  .command-global-launch-serenity-console-runway {
+  .command-global-launch-serenity-console-runway,
+  .command-learning-network-fold-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -11139,8 +11265,18 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-serenity-experiment-prioritizer-grid,
   .command-serenity-experiment-prioritizer-steps,
   .command-global-launch-serenity-console-grid,
-  .command-global-launch-serenity-console-runway {
+  .command-global-launch-serenity-console-runway,
+  .command-learning-network-fold-summary {
     grid-template-columns: 1fr;
+  }
+
+  .command-learning-network-fold > summary {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .command-learning-network-fold > summary b {
+    justify-self: start;
   }
 
   .command-serenity-compass-actions .ghost-btn,
