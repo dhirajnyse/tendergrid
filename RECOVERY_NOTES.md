@@ -83,3 +83,4 @@ Recovery cleanup in this copy:
 - v383 adds a Second Country Expansion Gate so second-country rollout stays locked until first-country proof, localization delta, residency, and rollback readiness are visible.
 - v384 adds a Country Transfer Delta Map so outcome, wording, residency, and rollback differences are compared before any second-country learning transfer can launch.
 - v385 adds a Transfer Readiness Score so country transfer deltas collapse into one score, one answer, and one controlled next move.
+- v386 adds a Transfer Action Packet so the readiness score becomes one owner, one date, one proof, and one guardrail before second-country movement.

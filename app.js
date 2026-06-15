@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v385";
-  const BUILD_LABEL = "Transfer Readiness Score";
+  const BUILD_VERSION = "v386";
+  const BUILD_LABEL = "Transfer Action Packet";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=385";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=385";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=386";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=386";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -16719,6 +16719,104 @@ const state = {
     return { cards, choices, copyText, nextAction, oneAnswer, readinessDecision, readinessScore, riskSignal, scoreId, scoreState, scoredAt: savedScore.scoredAt || null, scoredLabel, tone, transferReady };
   }
 
+  function buildCommandTransferActionPacket(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, learningLedger = {}, learningSafetyReceipt = {}, globalLearningPassport = {}, marketFitGate = {}, countryLaunchReceipt = {}, secondCountryExpansionGate = {}, countryTransferDeltaMap = {}, transferReadinessScore = {}, memory = {}) {
+    const savedPacket = memory.approval?.transferActionPacket || {};
+    const packetId = savedPacket.packetId || `${transferReadinessScore.scoreId || countryTransferDeltaMap.mapId || BUILD_VERSION.toUpperCase()}-TAP`;
+    const readyToOpen = transferReadinessScore.scoreState === "Ready to transfer" && transferReadinessScore.readinessDecision === "Approve transfer score";
+    const localizeFirst = transferReadinessScore.scoreState === "Localize first" || transferReadinessScore.readinessDecision === "Localize before transfer";
+    const archived = transferReadinessScore.scoreState === "Archived safely" || transferReadinessScore.readinessDecision === "Archive safely";
+    const actionDecision =
+      savedPacket.actionDecision ||
+      (readyToOpen
+        ? "Open transfer packet"
+        : localizeFirst
+          ? "Localize packet"
+          : archived
+            ? "Archive packet"
+            : "Hold packet");
+    const packedAt = savedPacket.packedAt
+      ? new Date(savedPacket.packedAt)
+      : null;
+    const packedLabel = packedAt && !Number.isNaN(packedAt.getTime())
+      ? packedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Packet not issued";
+    const packetState =
+      actionDecision === "Open transfer packet" && readyToOpen
+        ? "Packet ready"
+        : actionDecision === "Open transfer packet"
+          ? "Packet blocked"
+          : actionDecision === "Localize packet"
+            ? "Localization packet"
+            : actionDecision === "Archive packet"
+              ? "Packet archived"
+              : "Packet held";
+    const tone =
+      packetState === "Packet ready"
+        ? "green"
+        : packetState === "Localization packet"
+          ? "blue"
+          : "amber";
+    const ownerLane =
+      packetState === "Packet ready"
+        ? seed.owner || "Transfer owner"
+        : packetState === "Localization packet"
+          ? "Localization owner"
+          : packetState === "Packet archived"
+            ? "Audit owner"
+            : "Transfer owner hold";
+    const dateLane =
+      packetState === "Packet ready"
+        ? transferReadinessScore.scoredLabel || "Ready now"
+        : packetState === "Localization packet"
+          ? reviewCue.reviewBy || "Next localization review"
+          : packetState === "Packet archived"
+            ? packedLabel
+            : "Date held";
+    const proofLane =
+      packetState === "Packet ready"
+        ? "Score + delta proof"
+        : packetState === "Localization packet"
+          ? "Wording proof"
+          : packetState === "Packet archived"
+            ? "Archive note"
+            : "Readiness proof gap";
+    const guardrail =
+      packetState === "Packet ready"
+        ? "One-country canary"
+        : packetState === "Localization packet"
+          ? "No launch before wording"
+          : packetState === "Packet archived"
+            ? "No transfer"
+            : "Launch blocked";
+    const nextAction =
+      packetState === "Packet ready"
+        ? "Issue one action packet with owner, date, proof, and guardrail before the second-country transfer moves."
+        : packetState === "Localization packet"
+          ? "Send one localization packet to close wording and consent proof before transfer approval."
+          : packetState === "Packet archived"
+            ? "Archive the transfer path and keep the packet as audit memory."
+            : "Hold the action packet until the readiness score gives a safe transfer answer.";
+    const choices = [
+      ["Open transfer packet", "Open", "Issue the owner-date-proof-guardrail packet only when the score is ready.", "green"],
+      ["Hold packet", "Hold", "Keep the transfer action packet blocked.", "amber"],
+      ["Localize packet", "Localize", "Create a localization packet before transfer.", "blue"],
+      ["Archive packet", "Archive", "Close the packet and retain audit memory.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Transfer Action Packet ${packetId}: ${packetState}. Decision ${actionDecision}. Owner ${ownerLane}. Date ${dateLane}. Proof ${proofLane}. Guardrail ${guardrail}. Next: ${nextAction}`;
+    const cards = [
+      ["Owner", ownerLane, transferReadinessScore.oneAnswer || "Score answer required.", tone],
+      ["Date", dateLane, packedLabel, packetState === "Packet ready" ? "green" : tone],
+      ["Proof", proofLane, transferReadinessScore.riskSignal || "Risk signal required.", packetState === "Localization packet" ? "blue" : tone],
+      ["Guardrail", guardrail, countryTransferDeltaMap.mapState || "Transfer map required.", packetState === "Packet ready" ? "green" : "amber"],
+    ];
+    return { actionDecision, cards, choices, copyText, dateLane, guardrail, nextAction, ownerLane, packetId, packetState, packedAt: savedPacket.packedAt || null, packedLabel, proofLane, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -16743,7 +16841,8 @@ const state = {
     const secondCountryExpansionGate = buildCommandSecondCountryExpansionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, memory);
     const countryTransferDeltaMap = buildCommandCountryTransferDeltaMap(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, memory);
     const transferReadinessScore = buildCommandTransferReadinessScore(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, memory);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferReadinessScore };
+    const transferActionPacket = buildCommandTransferActionPacket(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, memory);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferActionPacket, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -16764,7 +16863,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferActionPacket, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -17399,6 +17498,36 @@ const state = {
                                                             )
                                                             .join("")}
                                                           <button class="ghost-btn" type="button" data-action="copy-command-transfer-readiness" data-copy-text="${escapeHtml(encodeURIComponent(transferReadinessScore.copyText))}">Copy readiness score</button>
+                                                        </div>
+                                                        <div class="command-transfer-action-packet tone-${escapeHtml(transferActionPacket.tone)}" aria-label="Transfer action packet">
+                                                          <div class="command-transfer-action-head">
+                                                            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Transfer Action Packet</span>
+                                                            <strong>${escapeHtml(transferActionPacket.packetState)} / ${escapeHtml(compactText(transferActionPacket.packetId, 46))}</strong>
+                                                            <small>${escapeHtml(transferActionPacket.nextAction)}</small>
+                                                          </div>
+                                                          <div class="command-transfer-action-grid">
+                                                            ${transferActionPacket.cards
+                                                              .map(
+                                                                ([label, value, note, tone]) => `
+                                                                  <article class="tone-${escapeHtml(tone)}">
+                                                                    <span>${escapeHtml(label)}</span>
+                                                                    <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                                    <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                                  </article>
+                                                                `,
+                                                              )
+                                                              .join("")}
+                                                          </div>
+                                                          <div class="command-transfer-action-actions">
+                                                            ${transferActionPacket.choices
+                                                              .map(
+                                                                ([actionDecision, label, note, tone]) => `
+                                                                  <button class="ghost-btn ${transferActionPacket.actionDecision === actionDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-transfer-action-packet" data-action-decision="${escapeHtml(actionDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                                                `,
+                                                              )
+                                                              .join("")}
+                                                            <button class="ghost-btn" type="button" data-action="copy-command-transfer-action" data-copy-text="${escapeHtml(encodeURIComponent(transferActionPacket.copyText))}">Copy action packet</button>
+                                                          </div>
                                                         </div>
                                                       </div>
                                                     </div>
@@ -35968,12 +36097,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v385 Transfer Readiness Score",
-      phase: "Transfer Readiness Score",
+      version: "v386 Transfer Action Packet",
+      phase: "Transfer Action Packet",
       lane: "Static product prototype on GitHub Pages",
-      pace: "366 meaningful versions since rebrand",
-      summary: "Command Center now turns country transfer deltas into one readiness score, one answer, and one controlled next move.",
+      pace: "367 meaningful versions since rebrand",
+      summary: "Command Center now turns a transfer readiness score into one owner, one date, one proof, and one guardrail before movement.",
       tracks: [
+        ["v386 transfer action packet", 100, "Command Center now turns a transfer readiness score into one owner, one date, one proof, and one guardrail before movement.", "green"],
         ["v385 transfer readiness score", 100, "Command Center now turns country transfer deltas into one readiness score, one answer, and one controlled next move.", "green"],
         ["v384 country transfer delta map", 100, "Command Center now maps outcome, wording, residency, and rollback deltas before any second-country learning transfer can launch.", "green"],
         ["v383 second country expansion gate", 100, "Command Center now keeps second-country expansion locked until first-country proof, localization delta, residency, and rollback readiness are visible.", "green"],
@@ -36501,10 +36631,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every second-country transfer now receives one readiness score, one answer, and one controlled next move.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every second-country transfer now receives one owner, one date, one proof, and one guardrail before movement.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -86237,6 +86367,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86364,6 +86495,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -86409,6 +86541,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86466,6 +86599,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -86511,6 +86645,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86568,6 +86703,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -86613,6 +86749,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86670,6 +86807,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -86715,6 +86853,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86772,6 +86911,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -86817,6 +86957,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86874,6 +87015,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -86919,6 +87061,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86976,6 +87119,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -87021,6 +87165,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87078,6 +87223,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -87123,6 +87269,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87180,6 +87327,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
@@ -87229,6 +87377,10 @@ const state = {
         ...memoryForGraduation,
         approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap },
       });
+      const transferActionPacket = buildCommandTransferActionPacket(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, {
+        ...memoryForGraduation,
+        approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -87257,6 +87409,7 @@ const state = {
           secondCountryExpansionGate,
           countryTransferDeltaMap,
           transferReadinessScore,
+          transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87314,6 +87467,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLedger);
@@ -87345,6 +87499,7 @@ const state = {
           secondCountryExpansionGate: chain.secondCountryExpansionGate,
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87387,6 +87542,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForSafety);
@@ -87418,6 +87574,7 @@ const state = {
           secondCountryExpansionGate: chain.secondCountryExpansionGate,
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87459,6 +87616,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPassport);
@@ -87490,6 +87648,7 @@ const state = {
           secondCountryExpansionGate: chain.secondCountryExpansionGate,
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87530,6 +87689,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForMarket);
@@ -87561,6 +87721,7 @@ const state = {
           secondCountryExpansionGate: chain.secondCountryExpansionGate,
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87600,6 +87761,7 @@ const state = {
           secondCountryExpansionGate: null,
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForCountry);
@@ -87631,6 +87793,7 @@ const state = {
           secondCountryExpansionGate: chain.secondCountryExpansionGate,
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87669,6 +87832,7 @@ const state = {
           secondCountryExpansionGate: { expansionDecision, reviewedAt, build: BUILD_VERSION },
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForExpansion);
@@ -87700,6 +87864,7 @@ const state = {
           secondCountryExpansionGate: chain.secondCountryExpansionGate,
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87737,6 +87902,7 @@ const state = {
           ...existingApproval,
           countryTransferDeltaMap: { transferDecision, mappedAt, build: BUILD_VERSION },
           transferReadinessScore: null,
+          transferActionPacket: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForTransfer);
@@ -87768,6 +87934,7 @@ const state = {
           secondCountryExpansionGate: chain.secondCountryExpansionGate,
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87804,6 +87971,7 @@ const state = {
         approval: {
           ...existingApproval,
           transferReadinessScore: { readinessDecision, scoredAt, build: BUILD_VERSION },
+          transferActionPacket: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReadiness);
@@ -87835,6 +88003,7 @@ const state = {
           secondCountryExpansionGate: chain.secondCountryExpansionGate,
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87855,6 +88024,74 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).transferReadinessScore.copyText || "";
       }
       copyTextToClipboard(text, "Transfer readiness score copied.");
+      return;
+    }
+
+    if (action === "set-command-transfer-action-packet") {
+      const actionDecision = button.dataset.actionDecision || "Hold packet";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before issuing the transfer action packet.");
+        return;
+      }
+      const packedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForPacket = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          transferActionPacket: { actionDecision, packedAt, build: BUILD_VERSION },
+        },
+      };
+      const chain = buildCommandMemoryLearningChain(memoryForPacket);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed: chain.seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt: chain.releaseReceipt,
+          reviewCue: chain.reviewCue,
+          evidenceLens: chain.evidenceLens,
+          confidenceRibbon: chain.historyRibbon,
+          observationOutcome: chain.outcomeSlot,
+          proofAttachmentCue: chain.proofCue,
+          proofReviewGate: chain.reviewGate,
+          reuseReadinessLock: chain.reuseLock,
+          guidanceInfluencePreview: chain.influencePreview,
+          localInfluenceFeedbackPulse: chain.feedbackPulse,
+          localGuidanceActivationGate: chain.activationGate,
+          localGuidanceCanaryMonitor: chain.canaryMonitor,
+          localCanaryGraduationGate: chain.graduationGate,
+          learningLedger: chain.learningLedger,
+          learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
+          countryLaunchReceipt: chain.countryLaunchReceipt,
+          secondCountryExpansionGate: chain.secondCountryExpansionGate,
+          countryTransferDeltaMap: chain.countryTransferDeltaMap,
+          transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${actionDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-transfer-action") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).transferActionPacket.copyText || "";
+      }
+      copyTextToClipboard(text, "Transfer action packet copied.");
       return;
     }
 
@@ -88166,4 +88403,3 @@ const state = {
 
   render();
 })();
-

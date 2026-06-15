@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=385"), "index.html is missing the v385 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=385"), "index.html is missing the v385 data cache token.");
-assert(index.includes("app.js?v=385"), "index.html is missing the v385 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=385"), "index.html is missing the v385 icon cache token.");
+assert(index.includes("styles.css?v=386"), "index.html is missing the v386 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=386"), "index.html is missing the v386 data cache token.");
+assert(index.includes("app.js?v=386"), "index.html is missing the v386 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=386"), "index.html is missing the v386 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v385";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Transfer Readiness Score";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=385'), "app.js is missing the v385 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=385'), "app.js is missing the v385 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v386";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Transfer Action Packet";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=386'), "app.js is missing the v386 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=386'), "app.js is missing the v386 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -160,6 +160,7 @@ assert(app.includes("buildCommandCountryLaunchReceipt"), "app.js is missing the 
 assert(app.includes("buildCommandSecondCountryExpansionGate"), "app.js is missing the Second Country Expansion Gate model.");
 assert(app.includes("buildCommandCountryTransferDeltaMap"), "app.js is missing the Country Transfer Delta Map model.");
 assert(app.includes("buildCommandTransferReadinessScore"), "app.js is missing the Transfer Readiness Score model.");
+assert(app.includes("buildCommandTransferActionPacket"), "app.js is missing the Transfer Action Packet model.");
 assert(app.includes("buildCommandMemoryLearningChain"), "app.js is missing the Command Memory Learning Chain helper.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
@@ -202,6 +203,8 @@ assert(app.includes('action === "set-command-transfer-delta-map"'), "app.js is m
 assert(app.includes('action === "copy-command-transfer-delta"'), "app.js is missing the Country Transfer Delta Map copy action.");
 assert(app.includes('action === "set-command-transfer-readiness-score"'), "app.js is missing the Transfer Readiness Score decision action.");
 assert(app.includes('action === "copy-command-transfer-readiness"'), "app.js is missing the Transfer Readiness Score copy action.");
+assert(app.includes('action === "set-command-transfer-action-packet"'), "app.js is missing the Transfer Action Packet decision action.");
+assert(app.includes('action === "copy-command-transfer-action"'), "app.js is missing the Transfer Action Packet copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -320,6 +323,10 @@ assert(
   approvalBlock.includes("transferReadinessScore"),
   "Learning Approval Lane should persist the Transfer Readiness Score.",
 );
+assert(
+  approvalBlock.includes("transferActionPacket"),
+  "Learning Approval Lane should persist the Transfer Action Packet.",
+);
 
 assert(css.includes(".command-reuse-readiness-lock"), "styles.css is missing the Learning Reuse Readiness Lock panel.");
 assert(css.includes(".command-reuse-readiness-grid"), "styles.css is missing the Learning Reuse Readiness Lock grid.");
@@ -349,6 +356,8 @@ assert(css.includes(".command-transfer-delta-map"), "styles.css is missing the C
 assert(css.includes(".command-transfer-delta-grid"), "styles.css is missing the Country Transfer Delta Map grid.");
 assert(css.includes(".command-transfer-readiness-score"), "styles.css is missing the Transfer Readiness Score panel.");
 assert(css.includes(".command-transfer-readiness-grid"), "styles.css is missing the Transfer Readiness Score grid.");
+assert(css.includes(".command-transfer-action-packet"), "styles.css is missing the Transfer Action Packet panel.");
+assert(css.includes(".command-transfer-action-grid"), "styles.css is missing the Transfer Action Packet grid.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);
