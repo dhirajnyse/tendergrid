@@ -7850,6 +7850,118 @@ body.quiet-focus-mode .focus-mode-pill {
   background: var(--teal);
 }
 
+.command-transfer-trust-gate {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(226, 244, 238, 0.9));
+}
+
+.command-transfer-trust-gate.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-transfer-trust-gate.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-transfer-trust-gate.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-transfer-trust-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-transfer-trust-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-transfer-trust-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-transfer-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.command-transfer-trust-grid article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 84px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-transfer-trust-grid article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-transfer-trust-grid article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-transfer-trust-grid article small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-transfer-trust-grid article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-transfer-trust-grid article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-transfer-trust-grid article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-transfer-trust-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command-transfer-trust-actions .ghost-btn.active {
+  border-color: rgba(13, 111, 97, 0.44);
+  color: #ffffff;
+  background: var(--teal);
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -13891,7 +14003,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-transfer-readiness-grid,
   .command-transfer-action-grid,
   .command-transfer-launch-grid,
-  .command-transfer-outcome-grid {
+  .command-transfer-outcome-grid,
+  .command-transfer-trust-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -14136,7 +14249,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-transfer-readiness-grid,
   .command-transfer-action-grid,
   .command-transfer-launch-grid,
-  .command-transfer-outcome-grid {
+  .command-transfer-outcome-grid,
+  .command-transfer-trust-grid {
     grid-template-columns: 1fr;
   }
 
@@ -14165,7 +14279,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-transfer-readiness-actions .ghost-btn,
   .command-transfer-action-actions .ghost-btn,
   .command-transfer-launch-actions .ghost-btn,
-  .command-transfer-outcome-actions .ghost-btn {
+  .command-transfer-outcome-actions .ghost-btn,
+  .command-transfer-trust-actions .ghost-btn {
     width: 100%;
   }
 
@@ -14193,7 +14308,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-transfer-readiness-score,
   .command-transfer-action-packet,
   .command-transfer-launch-receipt,
-  .command-transfer-outcome-monitor {
+  .command-transfer-outcome-monitor,
+  .command-transfer-trust-gate {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -14228,6 +14344,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-transfer-action-head,
   .command-transfer-launch-head,
   .command-transfer-outcome-head,
+  .command-transfer-trust-head,
   .command-learning-approval-grid,
   .command-learning-release-grid,
   .command-learning-review-grid,
@@ -14253,6 +14370,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-transfer-action-grid,
   .command-transfer-launch-grid,
   .command-transfer-outcome-grid,
+  .command-transfer-trust-grid,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -14277,7 +14395,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-transfer-readiness-actions,
   .command-transfer-action-actions,
   .command-transfer-launch-actions,
-  .command-transfer-outcome-actions {
+  .command-transfer-outcome-actions,
+  .command-transfer-trust-actions {
     margin-right: 10px;
     margin-left: 10px;
   }
