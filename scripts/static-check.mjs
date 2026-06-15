@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=369"), "index.html is missing the v369 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=369"), "index.html is missing the v369 data cache token.");
-assert(index.includes("app.js?v=369"), "index.html is missing the v369 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=369"), "index.html is missing the v369 icon cache token.");
+assert(index.includes("styles.css?v=370"), "index.html is missing the v370 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=370"), "index.html is missing the v370 data cache token.");
+assert(index.includes("app.js?v=370"), "index.html is missing the v370 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=370"), "index.html is missing the v370 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v369";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Observation Outcome Slot";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=369'), "app.js is missing the v369 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=369'), "app.js is missing the v369 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v370";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Outcome Proof Attachment Cue";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=370'), "app.js is missing the v370 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=370'), "app.js is missing the v370 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -144,6 +144,7 @@ assert(app.includes("buildCommandLearningReviewCue"), "app.js is missing the Lea
 assert(app.includes("buildCommandEvidenceConfidenceLens"), "app.js is missing the Evidence Confidence Lens model.");
 assert(app.includes("buildCommandConfidenceHistoryRibbon"), "app.js is missing the Confidence History Ribbon model.");
 assert(app.includes("buildCommandObservationOutcomeSlot"), "app.js is missing the Observation Outcome Slot model.");
+assert(app.includes("buildCommandOutcomeProofAttachmentCue"), "app.js is missing the Outcome Proof Attachment Cue model.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
 assert(app.includes('action === "copy-command-learning-approval"'), "app.js is missing the Learning Approval Lane copy action.");
@@ -153,6 +154,8 @@ assert(app.includes('action === "copy-command-evidence-confidence"'), "app.js is
 assert(app.includes('action === "copy-command-confidence-history"'), "app.js is missing the Confidence History Ribbon copy action.");
 assert(app.includes('action === "set-command-observation-outcome"'), "app.js is missing the Observation Outcome Slot decision action.");
 assert(app.includes('action === "copy-command-observation-outcome"'), "app.js is missing the Observation Outcome Slot copy action.");
+assert(app.includes('action === "set-command-outcome-proof-cue"'), "app.js is missing the Outcome Proof Attachment Cue status action.");
+assert(app.includes('action === "copy-command-outcome-proof"'), "app.js is missing the Outcome Proof Attachment Cue copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -207,6 +210,10 @@ assert(
   approvalBlock.includes("observationOutcome"),
   "Learning Approval Lane should persist the Observation Outcome Slot.",
 );
+assert(
+  approvalBlock.includes("proofAttachmentCue"),
+  "Learning Approval Lane should persist the Outcome Proof Attachment Cue.",
+);
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);
@@ -237,6 +244,7 @@ assert(css.includes(".command-learning-review-cue"), "styles.css is missing Lear
 assert(css.includes(".command-evidence-confidence-lens"), "styles.css is missing Evidence Confidence Lens styles.");
 assert(css.includes(".command-confidence-history-ribbon"), "styles.css is missing Confidence History Ribbon styles.");
 assert(css.includes(".command-observation-outcome-slot"), "styles.css is missing Observation Outcome Slot styles.");
+assert(css.includes(".command-outcome-proof-cue"), "styles.css is missing Outcome Proof Attachment Cue styles.");
 assert(css.includes(".command-learning-loop-board"), "styles.css is missing Learning Loop Board styles.");
 assert(css.includes(".command-outcome-feedback-engine"), "styles.css is missing Outcome Feedback Engine styles.");
 assert(css.includes(".command-adaptive-policy-simulator"), "styles.css is missing Adaptive Policy Simulator styles.");

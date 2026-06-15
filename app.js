@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v369";
-  const BUILD_LABEL = "Observation Outcome Slot";
+  const BUILD_VERSION = "v370";
+  const BUILD_LABEL = "Outcome Proof Attachment Cue";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=369";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=369";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=370";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=370";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15321,6 +15321,80 @@ const state = {
     return { cards, choices, copyText, nextAction, observedAt: savedOutcome.observedAt || null, observedLabel, outcome, outcomeState, slotId, tone };
   }
 
+  function buildCommandOutcomeProofAttachmentCue(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, memory = {}) {
+    const savedCue = memory.approval?.proofAttachmentCue || {};
+    const cueId = savedCue.cueId || `${outcomeSlot.slotId || historyRibbon.ribbonId || BUILD_VERSION.toUpperCase()}-PRF`;
+    const outcome = outcomeSlot.outcome || memory.approval?.observationOutcome?.outcome || "Waiting for confidence";
+    const proofStatus =
+      savedCue.proofStatus ||
+      (outcome === "Observed lift"
+        ? "Need document"
+        : outcome === "No movement"
+          ? "Retune note"
+          : outcome === "Still watching"
+            ? "Watch proof"
+            : "Waiting outcome");
+    const attachedAt = savedCue.attachedAt
+      ? new Date(savedCue.attachedAt)
+      : null;
+    const attachedLabel = attachedAt && !Number.isNaN(attachedAt.getTime())
+      ? attachedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "No proof status yet";
+    const cueState =
+      proofStatus === "Proof attached"
+        ? "Learning review ready"
+        : proofStatus === "Need document"
+          ? "Proof request open"
+          : proofStatus === "Retune note"
+            ? "Retune evidence"
+            : proofStatus === "Watch proof"
+              ? "Observation proof open"
+              : "Waiting outcome";
+    const tone =
+      proofStatus === "Proof attached"
+        ? "green"
+        : proofStatus === "Retune note" || proofStatus === "Waiting outcome"
+          ? "amber"
+          : "blue";
+    const proofAsk =
+      outcome === "Observed lift"
+        ? `Attach ${seed.proof || "visible movement proof"} before this becomes reusable learning.`
+        : outcome === "No movement"
+          ? "Capture why the move did not create progress before retuning guidance."
+          : outcome === "Still watching"
+            ? "Keep owner observation and proof request open until the review date."
+            : "Mark an observed outcome first, then attach the right proof.";
+    const nextAction =
+      proofStatus === "Proof attached"
+        ? "Review for tenant-approved learning before any wider reuse."
+        : proofStatus === "Need document"
+          ? "Ask the owner to attach source proof before closing the loop."
+          : proofStatus === "Retune note"
+            ? "Send the lesson to retune with the no-move evidence."
+            : proofStatus === "Watch proof"
+              ? "Keep the proof cue open until movement is visible."
+              : "Choose an outcome before proof attachment starts.";
+    const due = reviewCue.reviewBy || releaseReceipt.reviewDate || seed.date || "Next review";
+    const choices = [
+      ["Proof attached", "Attached", "Mark the evidence as ready for learning review.", "green"],
+      ["Need document", "Need proof", "Ask the owner for the source proof.", "blue"],
+      ["Retune note", "Retune note", "Record why guidance needs adjustment.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Outcome Proof Attachment Cue ${cueId}: ${cueState}. Outcome ${outcome}. Proof ${proofStatus}. Owner ${seed.owner || "Owner to confirm"}. Due ${due}. Ask: ${proofAsk} Next: ${nextAction}`;
+    const cards = [
+      ["Proof state", proofStatus, attachedLabel, tone],
+      ["Evidence ask", proofAsk, "The loop learns only from attached proof.", tone],
+      ["Due", due, reviewCue.watchSignal || outcomeSlot.nextAction || "Keep one review moment visible.", "blue"],
+      ["Learning route", approvalLane.boundary || "Tenant-only until proof is reviewed.", nextAction, proofStatus === "Proof attached" ? "green" : "amber"],
+    ];
+    return { attachedAt: savedCue.attachedAt || null, attachedLabel, cards, choices, copyText, cueId, cueState, due, nextAction, proofAsk, proofStatus, tone };
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -15346,6 +15420,7 @@ const state = {
     const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memory);
     const historyRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memory);
     const outcomeSlot = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, memory);
+    const proofCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -15516,6 +15591,36 @@ const state = {
                             )
                             .join("")}
                           <button class="ghost-btn" type="button" data-action="copy-command-observation-outcome" data-copy-text="${escapeHtml(encodeURIComponent(outcomeSlot.copyText))}">Copy outcome</button>
+                        </div>
+                        <div class="command-outcome-proof-cue tone-${escapeHtml(proofCue.tone)}" aria-label="Outcome proof attachment cue">
+                          <div class="command-outcome-proof-head">
+                            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Outcome Proof Attachment Cue</span>
+                            <strong>${escapeHtml(proofCue.cueState)} / ${escapeHtml(proofCue.cueId)}</strong>
+                            <small>${escapeHtml(proofCue.nextAction)}</small>
+                          </div>
+                          <div class="command-outcome-proof-grid">
+                            ${proofCue.cards
+                              .map(
+                                ([label, value, note, tone]) => `
+                                  <article class="tone-${escapeHtml(tone)}">
+                                    <span>${escapeHtml(label)}</span>
+                                    <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                    <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                  </article>
+                                `,
+                              )
+                              .join("")}
+                          </div>
+                          <div class="command-outcome-proof-actions">
+                            ${proofCue.choices
+                              .map(
+                                ([proofStatus, label, note, tone]) => `
+                                  <button class="ghost-btn ${proofCue.proofStatus === proofStatus ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-outcome-proof-cue" data-proof-status="${escapeHtml(proofStatus)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                `,
+                              )
+                              .join("")}
+                            <button class="ghost-btn" type="button" data-action="copy-command-outcome-proof" data-copy-text="${escapeHtml(encodeURIComponent(proofCue.copyText))}">Copy proof cue</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -34069,12 +34174,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v369 Observation Outcome Slot",
-      phase: "Observation Outcome Slot",
+      version: "v370 Outcome Proof Attachment Cue",
+      phase: "Outcome Proof Attachment Cue",
       lane: "Static product prototype on GitHub Pages",
-      pace: "350 meaningful versions since rebrand",
-      summary: "Command Center now gives every ready learning signal a simple outcome slot for lift seen, still watching, or no movement.",
+      pace: "351 meaningful versions since rebrand",
+      summary: "Command Center now asks every observed learning outcome for proof, document follow-up, or retune evidence before the loop closes.",
       tracks: [
+        ["v370 outcome proof attachment cue", 100, "Command Center now asks each observed learning outcome for attached proof, source document follow-up, or retune evidence before learning closes.", "green"],
         ["v369 observation outcome slot", 100, "Command Center now lets teams mark the first observed outcome after confidence as lift seen, still watching, or no movement, with a copy-ready outcome handoff.", "green"],
         ["v368 confidence history ribbon", 100, "Command Center now shows the learning journey as a four-step ribbon: seed, decision, release, and confidence, with a copy-ready history handoff.", "green"],
         ["v367 evidence confidence lens", 100, "Command Center now scores each learning release across decision, owner, proof, review, and privacy so teams know whether to observe, hold, or keep private.", "green"],
@@ -34586,10 +34692,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every ready learning signal now has a simple outcome slot after observation.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every observed learning outcome now asks for the right proof before the loop can close.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -84260,6 +84366,10 @@ const state = {
         ...state.commandMemory,
         approval: { decision, decidedAt, build: BUILD_VERSION },
       });
+      const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, {
+        ...state.commandMemory,
+        approval: { decision, decidedAt, build: BUILD_VERSION, observationOutcome },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84274,6 +84384,7 @@ const state = {
           evidenceLens,
           confidenceRibbon,
           observationOutcome,
+          proofAttachmentCue,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84385,6 +84496,7 @@ const state = {
         approval: {
           ...existingApproval,
           observationOutcome: { outcome, observedAt, build: BUILD_VERSION },
+          proofAttachmentCue: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -84394,6 +84506,7 @@ const state = {
       const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memoryForOutcome);
       const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memoryForOutcome);
       const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, memoryForOutcome);
+      const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, memoryForOutcome);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84406,6 +84519,7 @@ const state = {
           evidenceLens,
           confidenceRibbon,
           observationOutcome,
+          proofAttachmentCue,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84432,6 +84546,72 @@ const state = {
         text = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, state.commandMemory || {}).copyText || "";
       }
       copyTextToClipboard(text, "Observation outcome copied.");
+      return;
+    }
+
+    if (action === "set-command-outcome-proof-cue") {
+      const proofStatus = button.dataset.proofStatus || "Need document";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before attaching proof.");
+        return;
+      }
+      const attachedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForProof = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          proofAttachmentCue: { proofStatus, attachedAt, build: BUILD_VERSION },
+        },
+      };
+      const seed = buildCommandOutcomeMemorySeed(memoryForProof);
+      const approvalLane = buildCommandLearningApprovalLane(seed, memoryForProof);
+      const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, memoryForProof);
+      const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, memoryForProof);
+      const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memoryForProof);
+      const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memoryForProof);
+      const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, memoryForProof);
+      const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, memoryForProof);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt,
+          reviewCue,
+          evidenceLens,
+          confidenceRibbon,
+          observationOutcome,
+          proofAttachmentCue,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${proofStatus} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-outcome-proof") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+        const approvalLane = buildCommandLearningApprovalLane(seed, state.commandMemory || {});
+        const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, state.commandMemory || {});
+        const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, state.commandMemory || {});
+        const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, state.commandMemory || {});
+        const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, state.commandMemory || {});
+        const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, state.commandMemory || {});
+        text = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, state.commandMemory || {}).copyText || "";
+      }
+      copyTextToClipboard(text, "Outcome proof cue copied.");
       return;
     }
 

@@ -67,3 +67,4 @@ Recovery cleanup in this copy:
 - v367 adds an Evidence Confidence Lens so every learning release shows whether its decision, owner, proof, review, and privacy signals are ready, weak, private, or waiting.
 - v368 adds a Confidence History Ribbon so each learning signal shows its seed, decision, release, and confidence checkpoints in one compact history.
 - v369 adds an Observation Outcome Slot so each ready learning signal can record lift seen, still watching, or no movement after observation.
+- v370 adds an Outcome Proof Attachment Cue so each observed learning outcome asks for proof, document follow-up, or retune evidence before the loop closes.
