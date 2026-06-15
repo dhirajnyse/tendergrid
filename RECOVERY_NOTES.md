@@ -73,3 +73,4 @@ Recovery cleanup in this copy:
 - v373 adds a Local Guidance Influence Preview so approved learning can show exactly which local product surfaces may preview it before live guidance changes.
 - v374 adds a Local Influence Feedback Pulse so previewed guidance can be kept, retuned, promoted locally, or held before activation.
 - v375 adds a Local Guidance Activation Gate so previewed learning must pass observe-only, tenant-local canary, retune, or hold activation before live guidance changes.
+- v376 adds a Local Guidance Canary Monitor so every tenant-local canary watches lift, friction, rollback, and next review before broader reuse.
