@@ -6288,6 +6288,116 @@ body.quiet-focus-mode .focus-mode-pill {
   background: var(--teal);
 }
 
+.command-guidance-activation-gate {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(239, 250, 246, 0.92));
+}
+
+.command-guidance-activation-gate.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-activation-gate.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-activation-gate.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-activation-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-guidance-activation-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.command-guidance-activation-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-guidance-activation-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.command-guidance-activation-grid article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 84px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-guidance-activation-grid article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-guidance-activation-grid article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-guidance-activation-grid article small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-guidance-activation-grid article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-activation-grid article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-activation-grid article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-activation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command-guidance-activation-actions .ghost-btn.active {
+  border-color: rgba(13, 111, 97, 0.44);
+  color: #ffffff;
+  background: var(--teal);
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -12315,7 +12425,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-proof-review-grid,
   .command-reuse-readiness-grid,
   .command-influence-preview-grid,
-  .command-influence-feedback-grid {
+  .command-influence-feedback-grid,
+  .command-guidance-activation-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -12546,7 +12657,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-proof-review-grid,
   .command-reuse-readiness-grid,
   .command-influence-preview-grid,
-  .command-influence-feedback-grid {
+  .command-influence-feedback-grid,
+  .command-guidance-activation-grid {
     grid-template-columns: 1fr;
   }
 
@@ -12561,7 +12673,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-proof-review-actions .ghost-btn,
   .command-reuse-readiness-actions .ghost-btn,
   .command-influence-preview-actions .ghost-btn,
-  .command-influence-feedback-actions .ghost-btn {
+  .command-influence-feedback-actions .ghost-btn,
+  .command-guidance-activation-actions .ghost-btn {
     width: 100%;
   }
 

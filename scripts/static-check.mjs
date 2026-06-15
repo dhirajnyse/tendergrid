@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=374"), "index.html is missing the v374 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=374"), "index.html is missing the v374 data cache token.");
-assert(index.includes("app.js?v=374"), "index.html is missing the v374 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=374"), "index.html is missing the v374 icon cache token.");
+assert(index.includes("styles.css?v=375"), "index.html is missing the v375 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=375"), "index.html is missing the v375 data cache token.");
+assert(index.includes("app.js?v=375"), "index.html is missing the v375 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=375"), "index.html is missing the v375 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v374";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Local Influence Feedback Pulse";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=374'), "app.js is missing the v374 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=374'), "app.js is missing the v374 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v375";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Local Guidance Activation Gate";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=375'), "app.js is missing the v375 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=375'), "app.js is missing the v375 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -149,6 +149,7 @@ assert(app.includes("buildCommandProofReviewDecisionGate"), "app.js is missing t
 assert(app.includes("buildCommandLearningReuseReadinessLock"), "app.js is missing the Learning Reuse Readiness Lock model.");
 assert(app.includes("buildCommandLocalGuidanceInfluencePreview"), "app.js is missing the Local Guidance Influence Preview model.");
 assert(app.includes("buildCommandLocalInfluenceFeedbackPulse"), "app.js is missing the Local Influence Feedback Pulse model.");
+assert(app.includes("buildCommandLocalGuidanceActivationGate"), "app.js is missing the Local Guidance Activation Gate model.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
 assert(app.includes('action === "copy-command-learning-approval"'), "app.js is missing the Learning Approval Lane copy action.");
@@ -168,6 +169,8 @@ assert(app.includes('action === "set-command-guidance-influence-preview"'), "app
 assert(app.includes('action === "copy-command-influence-preview"'), "app.js is missing the Local Guidance Influence Preview copy action.");
 assert(app.includes('action === "set-command-influence-feedback-pulse"'), "app.js is missing the Local Influence Feedback Pulse decision action.");
 assert(app.includes('action === "copy-command-influence-feedback"'), "app.js is missing the Local Influence Feedback Pulse copy action.");
+assert(app.includes('action === "set-command-guidance-activation-gate"'), "app.js is missing the Local Guidance Activation Gate decision action.");
+assert(app.includes('action === "copy-command-guidance-activation"'), "app.js is missing the Local Guidance Activation Gate copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -242,6 +245,10 @@ assert(
   approvalBlock.includes("localInfluenceFeedbackPulse"),
   "Learning Approval Lane should persist the Local Influence Feedback Pulse.",
 );
+assert(
+  approvalBlock.includes("localGuidanceActivationGate"),
+  "Learning Approval Lane should persist the Local Guidance Activation Gate.",
+);
 
 assert(css.includes(".command-reuse-readiness-lock"), "styles.css is missing the Learning Reuse Readiness Lock panel.");
 assert(css.includes(".command-reuse-readiness-grid"), "styles.css is missing the Learning Reuse Readiness Lock grid.");
@@ -249,6 +256,8 @@ assert(css.includes(".command-influence-preview"), "styles.css is missing the Lo
 assert(css.includes(".command-influence-preview-grid"), "styles.css is missing the Local Guidance Influence Preview grid.");
 assert(css.includes(".command-influence-feedback-pulse"), "styles.css is missing the Local Influence Feedback Pulse panel.");
 assert(css.includes(".command-influence-feedback-grid"), "styles.css is missing the Local Influence Feedback Pulse grid.");
+assert(css.includes(".command-guidance-activation-gate"), "styles.css is missing the Local Guidance Activation Gate panel.");
+assert(css.includes(".command-guidance-activation-grid"), "styles.css is missing the Local Guidance Activation Gate grid.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);
