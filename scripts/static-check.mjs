@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=382"), "index.html is missing the v382 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=382"), "index.html is missing the v382 data cache token.");
-assert(index.includes("app.js?v=382"), "index.html is missing the v382 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=382"), "index.html is missing the v382 icon cache token.");
+assert(index.includes("styles.css?v=383"), "index.html is missing the v383 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=383"), "index.html is missing the v383 data cache token.");
+assert(index.includes("app.js?v=383"), "index.html is missing the v383 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=383"), "index.html is missing the v383 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v382";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Country Launch Receipt";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=382'), "app.js is missing the v382 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=382'), "app.js is missing the v382 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v383";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Second Country Expansion Gate";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=383'), "app.js is missing the v383 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=383'), "app.js is missing the v383 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -157,6 +157,7 @@ assert(app.includes("buildCommandLearningSafetyReceipt"), "app.js is missing the
 assert(app.includes("buildCommandGlobalLearningPassport"), "app.js is missing the Global Learning Passport model.");
 assert(app.includes("buildCommandMarketFitGate"), "app.js is missing the Market Fit Gate model.");
 assert(app.includes("buildCommandCountryLaunchReceipt"), "app.js is missing the Country Launch Receipt model.");
+assert(app.includes("buildCommandSecondCountryExpansionGate"), "app.js is missing the Second Country Expansion Gate model.");
 assert(app.includes("buildCommandMemoryLearningChain"), "app.js is missing the Command Memory Learning Chain helper.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
@@ -193,6 +194,8 @@ assert(app.includes('action === "set-command-market-fit-gate"'), "app.js is miss
 assert(app.includes('action === "copy-command-market-fit"'), "app.js is missing the Market Fit Gate copy action.");
 assert(app.includes('action === "set-command-country-launch-receipt"'), "app.js is missing the Country Launch Receipt decision action.");
 assert(app.includes('action === "copy-command-country-launch"'), "app.js is missing the Country Launch Receipt copy action.");
+assert(app.includes('action === "set-command-second-country-expansion-gate"'), "app.js is missing the Second Country Expansion Gate decision action.");
+assert(app.includes('action === "copy-command-second-country"'), "app.js is missing the Second Country Expansion Gate copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -299,6 +302,10 @@ assert(
   approvalBlock.includes("countryLaunchReceipt"),
   "Learning Approval Lane should persist the Country Launch Receipt.",
 );
+assert(
+  approvalBlock.includes("secondCountryExpansionGate"),
+  "Learning Approval Lane should persist the Second Country Expansion Gate.",
+);
 
 assert(css.includes(".command-reuse-readiness-lock"), "styles.css is missing the Learning Reuse Readiness Lock panel.");
 assert(css.includes(".command-reuse-readiness-grid"), "styles.css is missing the Learning Reuse Readiness Lock grid.");
@@ -322,6 +329,8 @@ assert(css.includes(".command-market-fit-gate"), "styles.css is missing the Mark
 assert(css.includes(".command-market-fit-grid"), "styles.css is missing the Market Fit Gate grid.");
 assert(css.includes(".command-country-launch-receipt"), "styles.css is missing the Country Launch Receipt panel.");
 assert(css.includes(".command-country-launch-grid"), "styles.css is missing the Country Launch Receipt grid.");
+assert(css.includes(".command-second-country-expansion-gate"), "styles.css is missing the Second Country Expansion Gate panel.");
+assert(css.includes(".command-second-country-grid"), "styles.css is missing the Second Country Expansion Gate grid.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);

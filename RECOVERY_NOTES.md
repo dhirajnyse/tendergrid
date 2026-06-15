@@ -80,3 +80,4 @@ Recovery cleanup in this copy:
 - v380 adds a Global Learning Passport so safety-cleared lessons carry jurisdiction, export, consent, and revocation rules before global travel.
 - v381 adds a Market Fit Gate so global-passported learning can open only one first-market canary after localization, residency, consent, and launch rules are visible.
 - v382 adds a Country Launch Receipt so first-country rollout carries environment, proof, and second-country expansion locks before global learning scales.
+- v383 adds a Second Country Expansion Gate so second-country rollout stays locked until first-country proof, localization delta, residency, and rollback readiness are visible.
