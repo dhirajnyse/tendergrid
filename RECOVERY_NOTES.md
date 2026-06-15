@@ -65,3 +65,4 @@ Recovery cleanup in this copy:
 - v365 adds a Learning Release Receipt so each learning approval decision carries a receipt ID, scope, review date, and rollback posture before reuse.
 - v366 adds a Learning Review Cue so every learning release has one next-review owner, watch signal, close rule, and copy-ready cue.
 - v367 adds an Evidence Confidence Lens so every learning release shows whether its decision, owner, proof, review, and privacy signals are ready, weak, private, or waiting.
+- v368 adds a Confidence History Ribbon so each learning signal shows its seed, decision, release, and confidence checkpoints in one compact history.

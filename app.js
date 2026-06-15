@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v367";
-  const BUILD_LABEL = "Evidence Confidence Lens";
+  const BUILD_VERSION = "v368";
+  const BUILD_LABEL = "Confidence History Ribbon";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=367";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=367";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=368";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=368";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15228,6 +15228,42 @@ const state = {
     return { cards, copyText, lensId, lensState, nextMove, score, tone };
   }
 
+  function buildCommandConfidenceHistoryRibbon(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, memory = {}) {
+    const savedRibbon = memory.approval?.confidenceRibbon || {};
+    const decision = approvalLane.activeDecision || memory.approval?.decision || "Outcome proof needed";
+    const explicitDecision = Boolean(approvalLane.savedDecision || memory.approval?.decision);
+    const ribbonId = savedRibbon.ribbonId || `${evidenceLens.lensId || reviewCue.cueId || releaseReceipt.receiptId || BUILD_VERSION.toUpperCase()}-HIS`;
+    const releaseReady = Boolean(releaseReceipt.releaseState && releaseReceipt.releaseState !== "Draft");
+    const confidenceReady = evidenceLens.lensState === "Evidence confident";
+    const privateHold = decision === "Private hold";
+    const steps = [
+      ["Seed", seed.stateLabel || "Seed waiting", `${seed.score || 0}%`, seed.score >= 80 ? "green" : seed.score >= 60 ? "blue" : "amber"],
+      ["Decision", explicitDecision ? decision : "Waiting", explicitDecision ? "selected" : "pending", explicitDecision ? approvalLane.activeTone || "green" : "amber"],
+      ["Release", releaseReceipt.releaseState || "Draft", releaseReady ? "ready" : "draft", releaseReady ? (privateHold ? "amber" : "green") : "blue"],
+      ["Confidence", evidenceLens.lensState || "Waiting", `${evidenceLens.score || 0}%`, confidenceReady ? "green" : privateHold ? "amber" : "blue"],
+    ];
+    const completed = steps.filter(([, , detail]) => detail !== "pending" && detail !== "draft" && detail !== "0%").length;
+    const ribbonState =
+      privateHold
+        ? "Private timeline"
+        : confidenceReady
+          ? "Ready to observe"
+          : explicitDecision
+            ? "Decision recorded"
+            : "Waiting decision";
+    const tone = confidenceReady ? "green" : privateHold ? "amber" : "blue";
+    const nextCheckpoint =
+      privateHold
+        ? "Keep the signal local until privacy clears."
+        : confidenceReady
+          ? "Observe the next outcome and preserve the proof trail."
+          : explicitDecision
+            ? "Close the proof gap before broader learning."
+            : "Select the learning decision before release.";
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Confidence History Ribbon ${ribbonId}: ${ribbonState}. ${completed}/4 checkpoints visible. Seed ${seed.stateLabel || "Seed waiting"} ${seed.score || 0}%. Decision ${explicitDecision ? decision : "waiting"}. Release ${releaseReceipt.releaseState || "Draft"}. Confidence ${evidenceLens.lensState || "Waiting"} ${evidenceLens.score || 0}%. Next: ${nextCheckpoint}`;
+    return { completed, copyText, nextCheckpoint, ribbonId, ribbonState, steps, tone };
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -15251,6 +15287,7 @@ const state = {
     const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, memory);
     const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, memory);
     const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memory);
+    const historyRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -15370,6 +15407,29 @@ const state = {
                     </div>
                     <div class="command-evidence-confidence-actions">
                       <button class="ghost-btn" type="button" data-action="copy-command-evidence-confidence" data-copy-text="${escapeHtml(encodeURIComponent(evidenceLens.copyText))}">Copy confidence</button>
+                    </div>
+                    <div class="command-confidence-history-ribbon tone-${escapeHtml(historyRibbon.tone)}" aria-label="Confidence history ribbon">
+                      <div class="command-confidence-history-head">
+                        <span class="metric-label">${escapeHtml(BUILD_VERSION)} Confidence History Ribbon</span>
+                        <strong>${escapeHtml(historyRibbon.ribbonState)} / ${historyRibbon.completed}/4</strong>
+                        <small>${escapeHtml(historyRibbon.nextCheckpoint)}</small>
+                      </div>
+                      <div class="command-confidence-history-steps">
+                        ${historyRibbon.steps
+                          .map(
+                            ([label, value, detail, tone]) => `
+                              <article class="tone-${escapeHtml(tone)}">
+                                <span>${escapeHtml(label)}</span>
+                                <strong>${escapeHtml(compactText(String(value), 42))}</strong>
+                                <small>${escapeHtml(compactText(String(detail), 48))}</small>
+                              </article>
+                            `,
+                          )
+                          .join("")}
+                      </div>
+                      <div class="command-confidence-history-actions">
+                        <button class="ghost-btn" type="button" data-action="copy-command-confidence-history" data-copy-text="${escapeHtml(encodeURIComponent(historyRibbon.copyText))}">Copy history</button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -33921,12 +33981,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v367 Evidence Confidence Lens",
-      phase: "Evidence Confidence Lens",
+      version: "v368 Confidence History Ribbon",
+      phase: "Confidence History Ribbon",
       lane: "Static product prototype on GitHub Pages",
-      pace: "348 meaningful versions since rebrand",
-      summary: "Command Center now gives every learning release an evidence confidence lens that separates ready, weak, private, and waiting signals.",
+      pace: "349 meaningful versions since rebrand",
+      summary: "Command Center now gives every learning signal a compact confidence history from seed to decision to release to confidence.",
       tracks: [
+        ["v368 confidence history ribbon", 100, "Command Center now shows the learning journey as a four-step ribbon: seed, decision, release, and confidence, with a copy-ready history handoff.", "green"],
         ["v367 evidence confidence lens", 100, "Command Center now scores each learning release across decision, owner, proof, review, and privacy so teams know whether to observe, hold, or keep private.", "green"],
         ["v366 learning review cue", 100, "Command Center now gives every learning release a next-review cue with owner, review date, watch signal, close rule, and copy-ready review handoff.", "green"],
         ["v365 learning release receipt", 100, "Command Center now turns every learning approval decision into a copy-ready release receipt with receipt ID, scope, review date, and rollback posture.", "green"],
@@ -34436,10 +34497,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every learning release now shows whether evidence is ready, weak, private, or waiting.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every learning signal now shows its seed, decision, release, and confidence path.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -84102,6 +84163,10 @@ const state = {
         ...state.commandMemory,
         approval: { decision, decidedAt, build: BUILD_VERSION },
       });
+      const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, {
+        ...state.commandMemory,
+        approval: { decision, decidedAt, build: BUILD_VERSION },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84114,6 +84179,7 @@ const state = {
           releaseReceipt,
           reviewCue,
           evidenceLens,
+          confidenceRibbon,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84189,6 +84255,26 @@ const state = {
         text = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, state.commandMemory || {}).copyText || "";
       }
       copyTextToClipboard(text, "Evidence confidence copied.");
+      return;
+    }
+
+    if (action === "copy-command-confidence-history") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+        const approvalLane = buildCommandLearningApprovalLane(seed, state.commandMemory || {});
+        const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, state.commandMemory || {});
+        const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, state.commandMemory || {});
+        const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, state.commandMemory || {});
+        text = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, state.commandMemory || {}).copyText || "";
+      }
+      copyTextToClipboard(text, "Confidence history copied.");
       return;
     }
 
