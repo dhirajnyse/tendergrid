@@ -76,3 +76,4 @@ Recovery cleanup in this copy:
 - v376 adds a Local Guidance Canary Monitor so every tenant-local canary watches lift, friction, rollback, and next review before broader reuse.
 - v377 adds a Local Canary Graduation Gate so monitored canaries can graduate, keep watching, retune, or rollback with tenant proof intact.
 - v378 adds a Learning Ledger so graduated lessons become tenant memory, anonymized reusable candidates, retune memory, or private holds with proof and guardrails visible.
+- v379 adds a Learning Safety Receipt so reusable candidates carry proof, privacy, consent, and rollback seals before cross-tenant benefit.

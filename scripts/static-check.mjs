@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=378"), "index.html is missing the v378 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=378"), "index.html is missing the v378 data cache token.");
-assert(index.includes("app.js?v=378"), "index.html is missing the v378 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=378"), "index.html is missing the v378 icon cache token.");
+assert(index.includes("styles.css?v=379"), "index.html is missing the v379 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=379"), "index.html is missing the v379 data cache token.");
+assert(index.includes("app.js?v=379"), "index.html is missing the v379 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=379"), "index.html is missing the v379 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v378";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Learning Ledger";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=378'), "app.js is missing the v378 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=378'), "app.js is missing the v378 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v379";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Learning Safety Receipt";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=379'), "app.js is missing the v379 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=379'), "app.js is missing the v379 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -153,6 +153,7 @@ assert(app.includes("buildCommandLocalGuidanceActivationGate"), "app.js is missi
 assert(app.includes("buildCommandLocalGuidanceCanaryMonitor"), "app.js is missing the Local Guidance Canary Monitor model.");
 assert(app.includes("buildCommandLocalCanaryGraduationGate"), "app.js is missing the Local Canary Graduation Gate model.");
 assert(app.includes("buildCommandLearningLedger"), "app.js is missing the Learning Ledger model.");
+assert(app.includes("buildCommandLearningSafetyReceipt"), "app.js is missing the Learning Safety Receipt model.");
 assert(app.includes("buildCommandMemoryLearningChain"), "app.js is missing the Command Memory Learning Chain helper.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
@@ -181,6 +182,8 @@ assert(app.includes('action === "set-command-canary-graduation-gate"'), "app.js 
 assert(app.includes('action === "copy-command-canary-graduation"'), "app.js is missing the Local Canary Graduation Gate copy action.");
 assert(app.includes('action === "set-command-learning-ledger"'), "app.js is missing the Learning Ledger decision action.");
 assert(app.includes('action === "copy-command-learning-ledger"'), "app.js is missing the Learning Ledger copy action.");
+assert(app.includes('action === "set-command-learning-safety-receipt"'), "app.js is missing the Learning Safety Receipt decision action.");
+assert(app.includes('action === "copy-command-learning-safety"'), "app.js is missing the Learning Safety Receipt copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -271,6 +274,10 @@ assert(
   approvalBlock.includes("learningLedger"),
   "Learning Approval Lane should persist the Learning Ledger.",
 );
+assert(
+  approvalBlock.includes("learningSafetyReceipt"),
+  "Learning Approval Lane should persist the Learning Safety Receipt.",
+);
 
 assert(css.includes(".command-reuse-readiness-lock"), "styles.css is missing the Learning Reuse Readiness Lock panel.");
 assert(css.includes(".command-reuse-readiness-grid"), "styles.css is missing the Learning Reuse Readiness Lock grid.");
@@ -286,6 +293,8 @@ assert(css.includes(".command-canary-graduation-gate"), "styles.css is missing t
 assert(css.includes(".command-canary-graduation-grid"), "styles.css is missing the Local Canary Graduation Gate grid.");
 assert(css.includes(".command-learning-ledger"), "styles.css is missing the Learning Ledger panel.");
 assert(css.includes(".command-learning-ledger-grid"), "styles.css is missing the Learning Ledger grid.");
+assert(css.includes(".command-learning-safety-receipt"), "styles.css is missing the Learning Safety Receipt panel.");
+assert(css.includes(".command-learning-safety-grid"), "styles.css is missing the Learning Safety Receipt grid.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);
