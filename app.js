@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v386";
-  const BUILD_LABEL = "Transfer Action Packet";
+  const BUILD_VERSION = "v387";
+  const BUILD_LABEL = "Transfer Launch Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=386";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=386";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=387";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=387";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -16817,6 +16817,102 @@ const state = {
     return { actionDecision, cards, choices, copyText, dateLane, guardrail, nextAction, ownerLane, packetId, packetState, packedAt: savedPacket.packedAt || null, packedLabel, proofLane, tone };
   }
 
+  function buildCommandTransferLaunchReceipt(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, learningLedger = {}, learningSafetyReceipt = {}, globalLearningPassport = {}, marketFitGate = {}, countryLaunchReceipt = {}, secondCountryExpansionGate = {}, countryTransferDeltaMap = {}, transferReadinessScore = {}, transferActionPacket = {}, memory = {}) {
+    const savedReceipt = memory.approval?.transferLaunchReceipt || {};
+    const receiptId = savedReceipt.receiptId || `${transferActionPacket.packetId || transferReadinessScore.scoreId || BUILD_VERSION.toUpperCase()}-TLR`;
+    const packetReady = transferActionPacket.packetState === "Packet ready" && transferActionPacket.actionDecision === "Open transfer packet";
+    const localizationPacket = transferActionPacket.packetState === "Localization packet" || transferActionPacket.actionDecision === "Localize packet";
+    const archivedPacket = transferActionPacket.packetState === "Packet archived" || transferActionPacket.actionDecision === "Archive packet";
+    const launchDecision =
+      savedReceipt.launchDecision ||
+      (packetReady
+        ? "Issue launch receipt"
+        : localizationPacket
+          ? "Issue localization receipt"
+          : archivedPacket
+            ? "Archive receipt"
+            : "Hold receipt");
+    const issuedAt = savedReceipt.issuedAt
+      ? new Date(savedReceipt.issuedAt)
+      : null;
+    const issuedLabel = issuedAt && !Number.isNaN(issuedAt.getTime())
+      ? issuedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Receipt not issued";
+    const receiptState =
+      launchDecision === "Issue launch receipt" && packetReady
+        ? "Launch receipt ready"
+        : launchDecision === "Issue launch receipt"
+          ? "Receipt blocked"
+          : launchDecision === "Issue localization receipt"
+            ? "Localization receipt"
+            : launchDecision === "Archive receipt"
+              ? "Receipt archived"
+              : "Receipt held";
+    const tone =
+      receiptState === "Launch receipt ready"
+        ? "green"
+        : receiptState === "Localization receipt"
+          ? "blue"
+          : "amber";
+    const launchWindow =
+      receiptState === "Launch receipt ready"
+        ? "One transfer window"
+        : receiptState === "Localization receipt"
+          ? "Localization window"
+          : receiptState === "Receipt archived"
+            ? "No launch window"
+            : "Window held";
+    const movementRule =
+      receiptState === "Launch receipt ready"
+        ? "Move only after receipt"
+        : receiptState === "Localization receipt"
+          ? "Translate before movement"
+          : receiptState === "Receipt archived"
+            ? "No movement"
+            : "Movement blocked";
+    const proofSeal =
+      receiptState === "Launch receipt ready"
+        ? "Packet proof sealed"
+        : receiptState === "Localization receipt"
+          ? "Wording proof pending"
+          : receiptState === "Receipt archived"
+            ? "Archive proof"
+            : "Proof seal waiting";
+    const rollbackSeal =
+      receiptState === "Launch receipt ready"
+        ? "Rollback owner sealed"
+        : receiptState === "Receipt archived"
+          ? "Rollback not needed"
+          : "Rollback hold";
+    const nextAction =
+      receiptState === "Launch receipt ready"
+        ? "Share one launch receipt before any second-country movement starts."
+        : receiptState === "Localization receipt"
+          ? "Use the receipt to finish local wording, consent, and proof before movement."
+          : receiptState === "Receipt archived"
+            ? "Keep the launch receipt archived with no movement authorized."
+            : "Hold the launch receipt until the action packet is safe to issue.";
+    const choices = [
+      ["Issue launch receipt", "Issue", "Issue only when the transfer action packet is ready.", "green"],
+      ["Hold receipt", "Hold", "Keep second-country movement blocked.", "amber"],
+      ["Issue localization receipt", "Localize", "Receipt the localization work before movement.", "blue"],
+      ["Archive receipt", "Archive", "Close the launch path and retain the audit note.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Transfer Launch Receipt ${receiptId}: ${receiptState}. Decision ${launchDecision}. Window ${launchWindow}. Movement ${movementRule}. Proof ${proofSeal}. Rollback ${rollbackSeal}. Next: ${nextAction}`;
+    const cards = [
+      ["Window", launchWindow, transferActionPacket.dateLane || "Launch date waits for packet proof.", tone],
+      ["Movement", movementRule, transferActionPacket.guardrail || "Guardrail required before movement.", receiptState === "Launch receipt ready" ? "green" : tone],
+      ["Proof", proofSeal, transferActionPacket.proofLane || "Proof lane required.", receiptState === "Localization receipt" ? "blue" : tone],
+      ["Rollback", rollbackSeal, transferActionPacket.ownerLane || "Owner lane required.", receiptState === "Launch receipt ready" ? "green" : "amber"],
+    ];
+    return { cards, choices, copyText, issuedAt: savedReceipt.issuedAt || null, issuedLabel, launchDecision, launchWindow, movementRule, nextAction, proofSeal, receiptId, receiptState, rollbackSeal, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -16842,7 +16938,8 @@ const state = {
     const countryTransferDeltaMap = buildCommandCountryTransferDeltaMap(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, memory);
     const transferReadinessScore = buildCommandTransferReadinessScore(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, memory);
     const transferActionPacket = buildCommandTransferActionPacket(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, memory);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferActionPacket, transferReadinessScore };
+    const transferLaunchReceipt = buildCommandTransferLaunchReceipt(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, memory);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferActionPacket, transferLaunchReceipt, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -16863,7 +16960,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferActionPacket, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferActionPacket, transferLaunchReceipt, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -17527,6 +17624,36 @@ const state = {
                                                               )
                                                               .join("")}
                                                             <button class="ghost-btn" type="button" data-action="copy-command-transfer-action" data-copy-text="${escapeHtml(encodeURIComponent(transferActionPacket.copyText))}">Copy action packet</button>
+                                                          </div>
+                                                          <div class="command-transfer-launch-receipt tone-${escapeHtml(transferLaunchReceipt.tone)}" aria-label="Transfer launch receipt">
+                                                            <div class="command-transfer-launch-head">
+                                                              <span class="metric-label">${escapeHtml(BUILD_VERSION)} Transfer Launch Receipt</span>
+                                                              <strong>${escapeHtml(transferLaunchReceipt.receiptState)} / ${escapeHtml(compactText(transferLaunchReceipt.receiptId, 46))}</strong>
+                                                              <small>${escapeHtml(transferLaunchReceipt.nextAction)}</small>
+                                                            </div>
+                                                            <div class="command-transfer-launch-grid">
+                                                              ${transferLaunchReceipt.cards
+                                                                .map(
+                                                                  ([label, value, note, tone]) => `
+                                                                    <article class="tone-${escapeHtml(tone)}">
+                                                                      <span>${escapeHtml(label)}</span>
+                                                                      <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                                      <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                                    </article>
+                                                                  `,
+                                                                )
+                                                                .join("")}
+                                                            </div>
+                                                            <div class="command-transfer-launch-actions">
+                                                              ${transferLaunchReceipt.choices
+                                                                .map(
+                                                                  ([launchDecision, label, note, tone]) => `
+                                                                    <button class="ghost-btn ${transferLaunchReceipt.launchDecision === launchDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-transfer-launch-receipt" data-launch-decision="${escapeHtml(launchDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                                                  `,
+                                                                )
+                                                                .join("")}
+                                                              <button class="ghost-btn" type="button" data-action="copy-command-transfer-launch" data-copy-text="${escapeHtml(encodeURIComponent(transferLaunchReceipt.copyText))}">Copy launch receipt</button>
+                                                            </div>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -36097,12 +36224,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v386 Transfer Action Packet",
-      phase: "Transfer Action Packet",
+      version: "v387 Transfer Launch Receipt",
+      phase: "Transfer Launch Receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "367 meaningful versions since rebrand",
-      summary: "Command Center now turns a transfer readiness score into one owner, one date, one proof, and one guardrail before movement.",
+      pace: "368 meaningful versions since rebrand",
+      summary: "Command Center now turns the transfer action packet into a launch receipt before any second-country movement.",
       tracks: [
+        ["v387 transfer launch receipt", 100, "Command Center now turns the transfer action packet into a launch receipt before any second-country movement.", "green"],
         ["v386 transfer action packet", 100, "Command Center now turns a transfer readiness score into one owner, one date, one proof, and one guardrail before movement.", "green"],
         ["v385 transfer readiness score", 100, "Command Center now turns country transfer deltas into one readiness score, one answer, and one controlled next move.", "green"],
         ["v384 country transfer delta map", 100, "Command Center now maps outcome, wording, residency, and rollback deltas before any second-country learning transfer can launch.", "green"],
@@ -36631,10 +36759,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every second-country transfer now receives one owner, one date, one proof, and one guardrail before movement.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every second-country transfer now receives one launch receipt before movement.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -86368,6 +86496,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86496,6 +86625,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -86542,6 +86672,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86600,6 +86731,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -86646,6 +86778,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86704,6 +86837,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -86750,6 +86884,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86808,6 +86943,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -86854,6 +86990,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86912,6 +87049,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -86958,6 +87096,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87016,6 +87155,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -87062,6 +87202,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87120,6 +87261,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -87166,6 +87308,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87224,6 +87367,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -87270,6 +87414,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87328,6 +87473,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
@@ -87381,6 +87527,10 @@ const state = {
         ...memoryForGraduation,
         approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore },
       });
+      const transferLaunchReceipt = buildCommandTransferLaunchReceipt(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, {
+        ...memoryForGraduation,
+        approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -87410,6 +87560,7 @@ const state = {
           countryTransferDeltaMap,
           transferReadinessScore,
           transferActionPacket,
+          transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87468,6 +87619,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLedger);
@@ -87500,6 +87652,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87543,6 +87696,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForSafety);
@@ -87575,6 +87729,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87617,6 +87772,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPassport);
@@ -87649,6 +87805,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87690,6 +87847,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForMarket);
@@ -87722,6 +87880,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87762,6 +87921,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForCountry);
@@ -87794,6 +87954,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87833,6 +87994,7 @@ const state = {
           countryTransferDeltaMap: null,
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForExpansion);
@@ -87865,6 +88027,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87903,6 +88066,7 @@ const state = {
           countryTransferDeltaMap: { transferDecision, mappedAt, build: BUILD_VERSION },
           transferReadinessScore: null,
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForTransfer);
@@ -87935,6 +88099,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87972,6 +88137,7 @@ const state = {
           ...existingApproval,
           transferReadinessScore: { readinessDecision, scoredAt, build: BUILD_VERSION },
           transferActionPacket: null,
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReadiness);
@@ -88004,6 +88170,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88040,6 +88207,7 @@ const state = {
         approval: {
           ...existingApproval,
           transferActionPacket: { actionDecision, packedAt, build: BUILD_VERSION },
+          transferLaunchReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPacket);
@@ -88072,6 +88240,7 @@ const state = {
           countryTransferDeltaMap: chain.countryTransferDeltaMap,
           transferReadinessScore: chain.transferReadinessScore,
           transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88092,6 +88261,75 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).transferActionPacket.copyText || "";
       }
       copyTextToClipboard(text, "Transfer action packet copied.");
+      return;
+    }
+
+    if (action === "set-command-transfer-launch-receipt") {
+      const launchDecision = button.dataset.launchDecision || "Hold receipt";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before issuing the transfer launch receipt.");
+        return;
+      }
+      const issuedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForLaunch = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          transferLaunchReceipt: { launchDecision, issuedAt, build: BUILD_VERSION },
+        },
+      };
+      const chain = buildCommandMemoryLearningChain(memoryForLaunch);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed: chain.seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt: chain.releaseReceipt,
+          reviewCue: chain.reviewCue,
+          evidenceLens: chain.evidenceLens,
+          confidenceRibbon: chain.historyRibbon,
+          observationOutcome: chain.outcomeSlot,
+          proofAttachmentCue: chain.proofCue,
+          proofReviewGate: chain.reviewGate,
+          reuseReadinessLock: chain.reuseLock,
+          guidanceInfluencePreview: chain.influencePreview,
+          localInfluenceFeedbackPulse: chain.feedbackPulse,
+          localGuidanceActivationGate: chain.activationGate,
+          localGuidanceCanaryMonitor: chain.canaryMonitor,
+          localCanaryGraduationGate: chain.graduationGate,
+          learningLedger: chain.learningLedger,
+          learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
+          countryLaunchReceipt: chain.countryLaunchReceipt,
+          secondCountryExpansionGate: chain.secondCountryExpansionGate,
+          countryTransferDeltaMap: chain.countryTransferDeltaMap,
+          transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${launchDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-transfer-launch") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).transferLaunchReceipt.copyText || "";
+      }
+      copyTextToClipboard(text, "Transfer launch receipt copied.");
       return;
     }
 
