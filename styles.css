@@ -339,7 +339,7 @@ body.quiet-focus-mode .focus-mode-pill {
   max-width: 720px;
   margin: 0;
   color: var(--ink);
-  font-size: clamp(40px, 6vw, 68px);
+  font-size: 64px;
   line-height: 0.98;
 }
 
@@ -5953,6 +5953,116 @@ body.quiet-focus-mode .focus-mode-pill {
 }
 
 .command-proof-review-actions .ghost-btn.active {
+  border-color: rgba(13, 111, 97, 0.44);
+  color: #ffffff;
+  background: var(--teal);
+}
+
+.command-reuse-readiness-lock {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(42, 142, 119, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 255, 253, 0.98), rgba(241, 250, 247, 0.9));
+}
+
+.command-reuse-readiness-lock.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-reuse-readiness-lock.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-reuse-readiness-lock.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-reuse-readiness-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-reuse-readiness-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.command-reuse-readiness-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-reuse-readiness-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.command-reuse-readiness-grid article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 84px;
+  padding: 10px;
+  border: 1px solid rgba(42, 142, 119, 0.16);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-reuse-readiness-grid article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-reuse-readiness-grid article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-reuse-readiness-grid article small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-reuse-readiness-grid article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-reuse-readiness-grid article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-reuse-readiness-grid article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-reuse-readiness-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command-reuse-readiness-actions .ghost-btn.active {
   border-color: rgba(13, 111, 97, 0.44);
   color: #ffffff;
   background: var(--teal);
@@ -11982,7 +12092,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-confidence-history-steps,
   .command-observation-outcome-grid,
   .command-outcome-proof-grid,
-  .command-proof-review-grid {
+  .command-proof-review-grid,
+  .command-reuse-readiness-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -12210,7 +12321,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-confidence-history-steps,
   .command-observation-outcome-grid,
   .command-outcome-proof-grid,
-  .command-proof-review-grid {
+  .command-proof-review-grid,
+  .command-reuse-readiness-grid {
     grid-template-columns: 1fr;
   }
 
@@ -12222,7 +12334,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-confidence-history-actions .ghost-btn,
   .command-observation-outcome-actions .ghost-btn,
   .command-outcome-proof-actions .ghost-btn,
-  .command-proof-review-actions .ghost-btn {
+  .command-proof-review-actions .ghost-btn,
+  .command-reuse-readiness-actions .ghost-btn {
     width: 100%;
   }
 
@@ -54221,11 +54334,18 @@ tr.selected-row td:first-child {
 
 @media (max-width: 760px) {
   .login-page {
+    display: block;
+    width: 100vw;
+    max-width: 100vw;
+    overflow: hidden;
     padding: 12px;
   }
 
   .login-panel {
+    width: calc(100vw - 24px);
+    max-width: calc(100vw - 24px);
     min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .login-copy,
@@ -54250,6 +54370,46 @@ tr.selected-row td:first-child {
   .pricing-band,
   .main {
     padding: 18px;
+  }
+
+  .login-copy,
+  .login-form-wrap {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .login-copy h1 {
+    max-width: 100%;
+    font-size: 32px;
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+  }
+
+  .login-copy p {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .login-kicker,
+  .panel-label,
+  .company-pill,
+  .status-pill {
+    max-width: 100%;
+    white-space: normal;
+    text-align: left;
+  }
+
+  .login-signal-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    max-width: 100%;
+  }
+
+  .login-stats {
+    grid-template-columns: 1fr;
+    max-width: 100%;
   }
 
   .topbar-actions .user-pill {
@@ -54386,7 +54546,7 @@ tr.selected-row td:first-child {
   }
 
   .login-copy h1 {
-    font-size: 38px;
+    font-size: 32px;
   }
 
   .workspace-title h1 {

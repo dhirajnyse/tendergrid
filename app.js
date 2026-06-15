@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v371";
-  const BUILD_LABEL = "Proof Review Decision Gate";
+  const BUILD_VERSION = "v372";
+  const BUILD_LABEL = "Learning Reuse Readiness Lock";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=371";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=371";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=372";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=372";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15480,6 +15480,94 @@ const state = {
     return { cards, choices, copyText, gateId, gateState, nextAction, readyForReview, reviewDecision, reviewedAt: savedGate.reviewedAt || null, reviewedLabel, scope, tone };
   }
 
+  function buildCommandLearningReuseReadinessLock(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, memory = {}) {
+    const savedLock = memory.approval?.reuseReadinessLock || {};
+    const lockId = savedLock.lockId || `${reviewGate.gateId || proofCue.cueId || outcomeSlot.slotId || BUILD_VERSION.toUpperCase()}-RUL`;
+    const reviewDecision = reviewGate.reviewDecision || "Keep observing";
+    const reviewAccepted = reviewDecision === "Accept learning";
+    const tenantHeld = reviewDecision === "Tenant-only hold";
+    const retuneRouted = reviewDecision === "Send retune";
+    const proofAttached = proofCue.proofStatus === "Proof attached";
+    const privacyReady = Boolean(seed.privacyReady && approvalLane.activeDecision !== "Private hold");
+    const governanceReady = Boolean(reviewAccepted && proofAttached && reviewGate.gateState === "Learning accepted");
+    const scopeReady = Boolean(reviewAccepted && /Tenant-approved|local learning/i.test(reviewGate.scope || approvalLane.boundary || ""));
+    const reuseDecision =
+      savedLock.reuseDecision ||
+      (reviewAccepted
+        ? "Locks pending"
+        : tenantHeld
+          ? "Tenant-only lock"
+          : retuneRouted
+            ? "Retune lock"
+            : proofAttached
+              ? "Await proof review"
+              : "Await review");
+    const lockedAt = savedLock.lockedAt
+      ? new Date(savedLock.lockedAt)
+      : null;
+    const lockedLabel = lockedAt && !Number.isNaN(lockedAt.getTime())
+      ? lockedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Not locked yet";
+    const lockState =
+      reuseDecision === "Ready for local reuse" && privacyReady && governanceReady && scopeReady
+        ? "Reuse ready"
+        : reuseDecision === "Ready for local reuse"
+          ? "Governance hold"
+          : reuseDecision === "Tenant-only lock"
+            ? "Tenant locked"
+            : reuseDecision === "Retune lock"
+              ? "Retune locked"
+              : reuseDecision === "Governance hold"
+                ? "Governance hold"
+                : reuseDecision === "Locks pending"
+                  ? "Locks pending"
+                  : reuseDecision === "Await proof review"
+                    ? "Await proof review"
+                    : "Await review";
+    const tone =
+      lockState === "Reuse ready"
+        ? "green"
+        : lockState === "Tenant locked" || lockState === "Await proof review"
+          ? "blue"
+          : "amber";
+    const privacyLock = privacyReady ? "Privacy locked" : "Privacy hold";
+    const governanceLock = governanceReady ? "Review accepted" : reviewAccepted ? "Check review locks" : "Review pending";
+    const scopeLock = scopeReady ? "Tenant-local reuse" : tenantHeld ? "Tenant-only memory" : retuneRouted ? "Retune only" : "No reuse yet";
+    const nextAction =
+      lockState === "Reuse ready"
+        ? "Reuse only inside this tenant until network governance clears."
+        : lockState === "Tenant locked"
+          ? "Store as tenant memory and block wider influence."
+          : lockState === "Retune locked"
+            ? "Keep locked while guidance is retuned."
+            : lockState === "Governance hold"
+              ? "Review privacy, proof, and scope before any reuse."
+              : lockState === "Locks pending"
+                ? "Choose a lock before accepted proof influences guidance."
+                : lockState === "Await proof review"
+                  ? "Accept, tenant-hold, or retune the proof before reuse."
+                  : "Finish outcome proof and review before reuse readiness.";
+    const choices = [
+      ["Ready for local reuse", "Ready", "Allow tenant-approved local guidance reuse only.", "green"],
+      ["Tenant-only lock", "Tenant lock", "Keep the learning private to this organization.", "blue"],
+      ["Governance hold", "Gov hold", "Hold until privacy, proof, and scope are reviewed.", "amber"],
+      ["Retune lock", "Retune lock", "Keep this signal out of reuse while guidance is adjusted.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Learning Reuse Readiness Lock ${lockId}: ${lockState}. Decision ${reuseDecision}. Review ${reviewDecision}. Privacy ${privacyLock}. Governance ${governanceLock}. Scope ${scopeLock}. Next: ${nextAction}`;
+    const cards = [
+      ["Privacy", privacyLock, seed.privacy || "Privacy boundary must be explicit.", privacyReady ? "green" : "amber"],
+      ["Governance", governanceLock, reviewGate.scope || "Proof review must be accepted or held.", governanceReady ? "green" : "blue"],
+      ["Scope", scopeLock, approvalLane.boundary || "Reuse scope stays tenant-controlled.", scopeReady ? "green" : tenantHeld ? "blue" : "amber"],
+      ["State", lockState, lockedLabel, tone],
+    ];
+    return { cards, choices, copyText, governanceLock, governanceReady, lockId, lockState, lockedAt: savedLock.lockedAt || null, lockedLabel, nextAction, privacyLock, privacyReady, reuseDecision, scopeLock, scopeReady, tone };
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -15507,6 +15595,7 @@ const state = {
     const outcomeSlot = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, memory);
     const proofCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, memory);
     const reviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, memory);
+    const reuseLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -15735,6 +15824,36 @@ const state = {
                                 )
                                 .join("")}
                               <button class="ghost-btn" type="button" data-action="copy-command-proof-review" data-copy-text="${escapeHtml(encodeURIComponent(reviewGate.copyText))}">Copy review</button>
+                            </div>
+                            <div class="command-reuse-readiness-lock tone-${escapeHtml(reuseLock.tone)}" aria-label="Learning reuse readiness lock">
+                              <div class="command-reuse-readiness-head">
+                                <span class="metric-label">${escapeHtml(BUILD_VERSION)} Learning Reuse Readiness Lock</span>
+                                <strong>${escapeHtml(reuseLock.lockState)} / ${escapeHtml(reuseLock.lockId)}</strong>
+                                <small>${escapeHtml(reuseLock.nextAction)}</small>
+                              </div>
+                              <div class="command-reuse-readiness-grid">
+                                ${reuseLock.cards
+                                  .map(
+                                    ([label, value, note, tone]) => `
+                                      <article class="tone-${escapeHtml(tone)}">
+                                        <span>${escapeHtml(label)}</span>
+                                        <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                        <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                      </article>
+                                    `,
+                                  )
+                                  .join("")}
+                              </div>
+                              <div class="command-reuse-readiness-actions">
+                                ${reuseLock.choices
+                                  .map(
+                                    ([reuseDecision, label, note, tone]) => `
+                                      <button class="ghost-btn ${reuseLock.reuseDecision === reuseDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-reuse-readiness-lock" data-reuse-decision="${escapeHtml(reuseDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                    `,
+                                  )
+                                  .join("")}
+                                <button class="ghost-btn" type="button" data-action="copy-command-reuse-lock" data-copy-text="${escapeHtml(encodeURIComponent(reuseLock.copyText))}">Copy lock</button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -34290,12 +34409,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v371 Proof Review Decision Gate",
-      phase: "Proof Review Decision Gate",
+      version: "v372 Learning Reuse Readiness Lock",
+      phase: "Learning Reuse Readiness Lock",
       lane: "Static product prototype on GitHub Pages",
-      pace: "352 meaningful versions since rebrand",
-      summary: "Command Center now reviews attached proof through accept, tenant-hold, or retune decisions before learning is reused.",
+      pace: "353 meaningful versions since rebrand",
+      summary: "Command Center now keeps accepted proof behind privacy, governance, and reuse-scope locks before it can influence guidance.",
       tracks: [
+        ["v372 learning reuse readiness lock", 100, "Command Center now requires accepted proof to pass privacy, governance, and tenant-scope locks before local guidance reuse.", "green"],
         ["v371 proof review decision gate", 100, "Command Center now turns attached proof into an explicit review decision: accept local learning, hold tenant-only, or route to retune.", "green"],
         ["v370 outcome proof attachment cue", 100, "Command Center now asks each observed learning outcome for attached proof, source document follow-up, or retune evidence before learning closes.", "green"],
         ["v369 observation outcome slot", 100, "Command Center now lets teams mark the first observed outcome after confidence as lift seen, still watching, or no movement, with a copy-ready outcome handoff.", "green"],
@@ -34809,10 +34929,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every attached proof now passes through an explicit review decision before learning is reused.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every accepted proof now passes through privacy, governance, and reuse-scope locks before it influences guidance.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -84491,6 +84611,10 @@ const state = {
         ...state.commandMemory,
         approval: { decision, decidedAt, build: BUILD_VERSION, observationOutcome, proofAttachmentCue },
       });
+      const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, {
+        ...state.commandMemory,
+        approval: { decision, decidedAt, build: BUILD_VERSION, observationOutcome, proofAttachmentCue, proofReviewGate },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84507,6 +84631,7 @@ const state = {
           observationOutcome,
           proofAttachmentCue,
           proofReviewGate,
+          reuseReadinessLock,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84620,6 +84745,7 @@ const state = {
           observationOutcome: { outcome, observedAt, build: BUILD_VERSION },
           proofAttachmentCue: null,
           proofReviewGate: null,
+          reuseReadinessLock: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -84631,6 +84757,7 @@ const state = {
       const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, memoryForOutcome);
       const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, memoryForOutcome);
       const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForOutcome);
+      const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForOutcome);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84645,6 +84772,7 @@ const state = {
           observationOutcome,
           proofAttachmentCue,
           proofReviewGate,
+          reuseReadinessLock,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84688,6 +84816,7 @@ const state = {
           ...existingApproval,
           proofAttachmentCue: { proofStatus, attachedAt, build: BUILD_VERSION },
           proofReviewGate: null,
+          reuseReadinessLock: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -84699,6 +84828,7 @@ const state = {
       const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, memoryForProof);
       const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, memoryForProof);
       const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForProof);
+      const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForProof);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84713,6 +84843,7 @@ const state = {
           observationOutcome,
           proofAttachmentCue,
           proofReviewGate,
+          reuseReadinessLock,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84756,6 +84887,7 @@ const state = {
         approval: {
           ...existingApproval,
           proofReviewGate: { reviewDecision, reviewedAt, build: BUILD_VERSION },
+          reuseReadinessLock: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -84767,6 +84899,7 @@ const state = {
       const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, memoryForReview);
       const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, memoryForReview);
       const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForReview);
+      const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForReview);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84781,6 +84914,7 @@ const state = {
           observationOutcome,
           proofAttachmentCue,
           proofReviewGate,
+          reuseReadinessLock,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84809,6 +84943,78 @@ const state = {
         text = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, state.commandMemory || {}).copyText || "";
       }
       copyTextToClipboard(text, "Proof review copied.");
+      return;
+    }
+
+    if (action === "set-command-reuse-readiness-lock") {
+      const reuseDecision = button.dataset.reuseDecision || "Governance hold";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before locking reuse readiness.");
+        return;
+      }
+      const lockedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForLock = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          reuseReadinessLock: { reuseDecision, lockedAt, build: BUILD_VERSION },
+        },
+      };
+      const seed = buildCommandOutcomeMemorySeed(memoryForLock);
+      const approvalLane = buildCommandLearningApprovalLane(seed, memoryForLock);
+      const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, memoryForLock);
+      const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, memoryForLock);
+      const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memoryForLock);
+      const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memoryForLock);
+      const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, memoryForLock);
+      const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, memoryForLock);
+      const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForLock);
+      const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForLock);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt,
+          reviewCue,
+          evidenceLens,
+          confidenceRibbon,
+          observationOutcome,
+          proofAttachmentCue,
+          proofReviewGate,
+          reuseReadinessLock,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${reuseDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-reuse-lock") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+        const approvalLane = buildCommandLearningApprovalLane(seed, state.commandMemory || {});
+        const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, state.commandMemory || {});
+        const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, state.commandMemory || {});
+        const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, state.commandMemory || {});
+        const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, state.commandMemory || {});
+        const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, state.commandMemory || {});
+        const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, state.commandMemory || {});
+        const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, state.commandMemory || {});
+        text = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, state.commandMemory || {}).copyText || "";
+      }
+      copyTextToClipboard(text, "Learning reuse readiness lock copied.");
       return;
     }
 

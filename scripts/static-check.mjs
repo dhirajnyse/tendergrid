@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=371"), "index.html is missing the v371 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=371"), "index.html is missing the v371 data cache token.");
-assert(index.includes("app.js?v=371"), "index.html is missing the v371 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=371"), "index.html is missing the v371 icon cache token.");
+assert(index.includes("styles.css?v=372"), "index.html is missing the v372 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=372"), "index.html is missing the v372 data cache token.");
+assert(index.includes("app.js?v=372"), "index.html is missing the v372 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=372"), "index.html is missing the v372 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v371";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Proof Review Decision Gate";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=371'), "app.js is missing the v371 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=371'), "app.js is missing the v371 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v372";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Learning Reuse Readiness Lock";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=372'), "app.js is missing the v372 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=372'), "app.js is missing the v372 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -146,6 +146,7 @@ assert(app.includes("buildCommandConfidenceHistoryRibbon"), "app.js is missing t
 assert(app.includes("buildCommandObservationOutcomeSlot"), "app.js is missing the Observation Outcome Slot model.");
 assert(app.includes("buildCommandOutcomeProofAttachmentCue"), "app.js is missing the Outcome Proof Attachment Cue model.");
 assert(app.includes("buildCommandProofReviewDecisionGate"), "app.js is missing the Proof Review Decision Gate model.");
+assert(app.includes("buildCommandLearningReuseReadinessLock"), "app.js is missing the Learning Reuse Readiness Lock model.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
 assert(app.includes('action === "copy-command-learning-approval"'), "app.js is missing the Learning Approval Lane copy action.");
@@ -159,6 +160,8 @@ assert(app.includes('action === "set-command-outcome-proof-cue"'), "app.js is mi
 assert(app.includes('action === "copy-command-outcome-proof"'), "app.js is missing the Outcome Proof Attachment Cue copy action.");
 assert(app.includes('action === "set-command-proof-review-gate"'), "app.js is missing the Proof Review Decision Gate decision action.");
 assert(app.includes('action === "copy-command-proof-review"'), "app.js is missing the Proof Review Decision Gate copy action.");
+assert(app.includes('action === "set-command-reuse-readiness-lock"'), "app.js is missing the Learning Reuse Readiness Lock decision action.");
+assert(app.includes('action === "copy-command-reuse-lock"'), "app.js is missing the Learning Reuse Readiness Lock copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -221,6 +224,13 @@ assert(
   approvalBlock.includes("proofReviewGate"),
   "Learning Approval Lane should persist the Proof Review Decision Gate.",
 );
+assert(
+  approvalBlock.includes("reuseReadinessLock"),
+  "Learning Approval Lane should persist the Learning Reuse Readiness Lock.",
+);
+
+assert(css.includes(".command-reuse-readiness-lock"), "styles.css is missing the Learning Reuse Readiness Lock panel.");
+assert(css.includes(".command-reuse-readiness-grid"), "styles.css is missing the Learning Reuse Readiness Lock grid.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);

@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v372 Learning Reuse Readiness Lock keeps accepted proof behind privacy, governance, and reuse-scope locks before it can influence guidance.
 - v371 Proof Review Decision Gate turns attached proof into an accept, tenant-hold, or retune decision before learning is reused.
 - v370 Outcome Proof Attachment Cue asks for the right proof after an observed learning outcome before the loop can close or retune.
 - v369 Observation Outcome Slot lets ready learning signals record lift seen, still watching, or no movement after observation with a copy-ready outcome handoff.
