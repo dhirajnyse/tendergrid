@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v384 Country Transfer Delta Map compares outcome, wording, residency, and rollback deltas before any second-country learning transfer can launch.
 - v383 Second Country Expansion Gate keeps second-country expansion locked until first-country proof, localization delta, residency, and rollback readiness are visible.
 - v382 Country Launch Receipt issues a first-country receipt with environment, proof, and second-country expansion locks before global learning scales.
 - v381 Market Fit Gate decides whether a global passport can open one first-market canary with localization, residency, consent, and launch rules visible.
