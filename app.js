@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v373";
-  const BUILD_LABEL = "Local Guidance Influence Preview";
+  const BUILD_VERSION = "v374";
+  const BUILD_LABEL = "Local Influence Feedback Pulse";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=373";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=373";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=374";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=374";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15640,6 +15640,82 @@ const state = {
     return { advisorSurface, cards, choices, copyText, guardrail, influenceDecision, nextAction, previewId, previewState, previewedAt: savedPreview.previewedAt || null, previewedLabel, reportsSurface, reviewSurface, tone };
   }
 
+  function buildCommandLocalInfluenceFeedbackPulse(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, memory = {}) {
+    const savedPulse = memory.approval?.localInfluenceFeedbackPulse || {};
+    const pulseId = savedPulse.pulseId || `${influencePreview.previewId || reuseLock.lockId || reviewGate.gateId || BUILD_VERSION.toUpperCase()}-IFP`;
+    const previewOpen = ["Preview ready", "Advisor preview", "Review preview"].includes(influencePreview.previewState);
+    const feedbackDecision =
+      savedPulse.feedbackDecision ||
+      (previewOpen ? "Keep preview" : "Hold learning");
+    const pulsedAt = savedPulse.pulsedAt
+      ? new Date(savedPulse.pulsedAt)
+      : null;
+    const pulsedLabel = pulsedAt && !Number.isNaN(pulsedAt.getTime())
+      ? pulsedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "No pulse yet";
+    const feedbackState =
+      !previewOpen || feedbackDecision === "Hold learning"
+        ? "Pulse held"
+        : feedbackDecision === "Retune guidance"
+          ? "Retune pulse"
+          : feedbackDecision === "Promote local playbook"
+            ? "Playbook candidate"
+            : "Pulse ready";
+    const tone =
+      feedbackState === "Pulse ready" || feedbackState === "Playbook candidate"
+        ? "green"
+        : feedbackState === "Retune pulse"
+          ? "blue"
+          : "amber";
+    const previewScope =
+      influencePreview.previewState === "Preview ready"
+        ? "Advisor, Review, Reports"
+        : influencePreview.previewState === "Advisor preview"
+          ? "Advisor only"
+          : influencePreview.previewState === "Review preview"
+            ? "Weekly Review only"
+            : "No preview surface";
+    const loopSignal =
+      feedbackState === "Playbook candidate"
+        ? "Candidate for tenant playbook"
+        : feedbackState === "Retune pulse"
+          ? "Retune before reuse"
+          : feedbackState === "Pulse ready"
+            ? "Keep observing preview"
+            : "No learning movement";
+    const guardrail =
+      previewOpen
+        ? "Pulse only, no automatic activation"
+        : influencePreview.guardrail || "Preview must open first";
+    const nextAction =
+      feedbackState === "Playbook candidate"
+        ? "Keep the signal local, collect one more outcome proof, then consider a tenant playbook update."
+        : feedbackState === "Retune pulse"
+          ? "Send the preview wording back for retune before any user-facing reuse."
+          : feedbackState === "Pulse ready"
+            ? "Let users feel the preview, watch the next outcome, and keep live guidance unchanged."
+            : "Hold the feedback loop until a preview surface is allowed.";
+    const choices = [
+      ["Keep preview", "Keep", "Keep previewing while outcomes are observed.", "green"],
+      ["Retune guidance", "Retune", "Send the preview back for wording or routing improvement.", "blue"],
+      ["Promote local playbook", "Promote", "Mark as a tenant-local playbook candidate after proof.", "green"],
+      ["Hold learning", "Hold", "Hold the signal before it influences any workflow.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Local Influence Feedback Pulse ${pulseId}: ${feedbackState}. Decision ${feedbackDecision}. Scope ${previewScope}. Signal ${loopSignal}. Guardrail ${guardrail}. Next: ${nextAction}`;
+    const cards = [
+      ["Pulse", feedbackState, feedbackDecision, tone],
+      ["Signal", loopSignal, seed.feedbackQuestion || "Outcome feedback to watch", tone],
+      ["Scope", previewScope, approvalLane.boundary || "Tenant boundary stays in control", previewOpen ? "green" : "amber"],
+      ["Guardrail", guardrail, pulsedLabel, tone],
+    ];
+    return { cards, choices, copyText, feedbackDecision, feedbackState, guardrail, loopSignal, nextAction, previewScope, pulseId, pulsedAt: savedPulse.pulsedAt || null, pulsedLabel, tone };
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -15669,6 +15745,7 @@ const state = {
     const reviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, memory);
     const reuseLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, memory);
     const influencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, memory);
+    const feedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -15955,6 +16032,36 @@ const state = {
                                     )
                                     .join("")}
                                   <button class="ghost-btn" type="button" data-action="copy-command-influence-preview" data-copy-text="${escapeHtml(encodeURIComponent(influencePreview.copyText))}">Copy preview</button>
+                                </div>
+                                <div class="command-influence-feedback-pulse tone-${escapeHtml(feedbackPulse.tone)}" aria-label="Local influence feedback pulse">
+                                  <div class="command-influence-feedback-head">
+                                    <span class="metric-label">${escapeHtml(BUILD_VERSION)} Local Influence Feedback Pulse</span>
+                                    <strong>${escapeHtml(feedbackPulse.feedbackState)} / ${escapeHtml(feedbackPulse.pulseId)}</strong>
+                                    <small>${escapeHtml(feedbackPulse.nextAction)}</small>
+                                  </div>
+                                  <div class="command-influence-feedback-grid">
+                                    ${feedbackPulse.cards
+                                      .map(
+                                        ([label, value, note, tone]) => `
+                                          <article class="tone-${escapeHtml(tone)}">
+                                            <span>${escapeHtml(label)}</span>
+                                            <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                            <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                          </article>
+                                        `,
+                                      )
+                                      .join("")}
+                                  </div>
+                                  <div class="command-influence-feedback-actions">
+                                    ${feedbackPulse.choices
+                                      .map(
+                                        ([feedbackDecision, label, note, tone]) => `
+                                          <button class="ghost-btn ${feedbackPulse.feedbackDecision === feedbackDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-influence-feedback-pulse" data-feedback-decision="${escapeHtml(feedbackDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                        `,
+                                      )
+                                      .join("")}
+                                    <button class="ghost-btn" type="button" data-action="copy-command-influence-feedback" data-copy-text="${escapeHtml(encodeURIComponent(feedbackPulse.copyText))}">Copy pulse</button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -34512,12 +34619,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v373 Local Guidance Influence Preview",
-      phase: "Local Guidance Influence Preview",
+      version: "v374 Local Influence Feedback Pulse",
+      phase: "Local Influence Feedback Pulse",
       lane: "Static product prototype on GitHub Pages",
-      pace: "354 meaningful versions since rebrand",
-      summary: "Command Center now previews exactly which local product surfaces may use approved learning before any live guidance changes.",
+      pace: "355 meaningful versions since rebrand",
+      summary: "Command Center now captures a feedback pulse on previewed local guidance before anything becomes a live guidance change.",
       tracks: [
+        ["v374 local influence feedback pulse", 100, "Command Center now lets previewed guidance be kept, retuned, promoted to a tenant-local playbook candidate, or held before activation.", "green"],
         ["v373 local guidance influence preview", 100, "Command Center now shows Advisor, Weekly Review, and Reports influence surfaces in preview mode before approved learning changes live guidance.", "green"],
         ["v372 learning reuse readiness lock", 100, "Command Center now requires accepted proof to pass privacy, governance, and tenant-scope locks before local guidance reuse.", "green"],
         ["v371 proof review decision gate", 100, "Command Center now turns attached proof into an explicit review decision: accept local learning, hold tenant-only, or route to retune.", "green"],
@@ -35033,10 +35141,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every approved learning signal now shows its local influence surfaces before live guidance changes.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every previewed learning signal now captures a keep, retune, promote-local, or hold pulse before live guidance changes.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -84723,6 +84831,10 @@ const state = {
         ...state.commandMemory,
         approval: { decision, decidedAt, build: BUILD_VERSION, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock },
       });
+      const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, {
+        ...state.commandMemory,
+        approval: { decision, decidedAt, build: BUILD_VERSION, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84741,6 +84853,7 @@ const state = {
           proofReviewGate,
           reuseReadinessLock,
           guidanceInfluencePreview,
+          localInfluenceFeedbackPulse,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84856,6 +84969,7 @@ const state = {
           proofReviewGate: null,
           reuseReadinessLock: null,
           guidanceInfluencePreview: null,
+          localInfluenceFeedbackPulse: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -84869,6 +84983,7 @@ const state = {
       const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForOutcome);
       const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForOutcome);
       const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, memoryForOutcome);
+      const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForOutcome);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84885,6 +85000,7 @@ const state = {
           proofReviewGate,
           reuseReadinessLock,
           guidanceInfluencePreview,
+          localInfluenceFeedbackPulse,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -84930,6 +85046,7 @@ const state = {
           proofReviewGate: null,
           reuseReadinessLock: null,
           guidanceInfluencePreview: null,
+          localInfluenceFeedbackPulse: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -84943,6 +85060,7 @@ const state = {
       const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForProof);
       const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForProof);
       const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, memoryForProof);
+      const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForProof);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -84959,6 +85077,7 @@ const state = {
           proofReviewGate,
           reuseReadinessLock,
           guidanceInfluencePreview,
+          localInfluenceFeedbackPulse,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85004,6 +85123,7 @@ const state = {
           proofReviewGate: { reviewDecision, reviewedAt, build: BUILD_VERSION },
           reuseReadinessLock: null,
           guidanceInfluencePreview: null,
+          localInfluenceFeedbackPulse: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -85017,6 +85137,7 @@ const state = {
       const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForReview);
       const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForReview);
       const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, memoryForReview);
+      const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForReview);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85033,6 +85154,7 @@ const state = {
           proofReviewGate,
           reuseReadinessLock,
           guidanceInfluencePreview,
+          localInfluenceFeedbackPulse,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85078,6 +85200,7 @@ const state = {
           ...existingApproval,
           reuseReadinessLock: { reuseDecision, lockedAt, build: BUILD_VERSION },
           guidanceInfluencePreview: null,
+          localInfluenceFeedbackPulse: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -85091,6 +85214,7 @@ const state = {
       const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForLock);
       const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForLock);
       const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, memoryForLock);
+      const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForLock);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85107,6 +85231,7 @@ const state = {
           proofReviewGate,
           reuseReadinessLock,
           guidanceInfluencePreview,
+          localInfluenceFeedbackPulse,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85152,6 +85277,7 @@ const state = {
         approval: {
           ...existingApproval,
           guidanceInfluencePreview: { influenceDecision, previewedAt, build: BUILD_VERSION },
+          localInfluenceFeedbackPulse: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -85165,6 +85291,7 @@ const state = {
       const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForPreview);
       const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForPreview);
       const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, memoryForPreview);
+      const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForPreview);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85181,6 +85308,7 @@ const state = {
           proofReviewGate,
           reuseReadinessLock,
           guidanceInfluencePreview,
+          localInfluenceFeedbackPulse,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85211,6 +85339,84 @@ const state = {
         text = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, state.commandMemory || {}).copyText || "";
       }
       copyTextToClipboard(text, "Local guidance influence preview copied.");
+      return;
+    }
+
+    if (action === "set-command-influence-feedback-pulse") {
+      const feedbackDecision = button.dataset.feedbackDecision || "Hold learning";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before pulsing influence feedback.");
+        return;
+      }
+      const pulsedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForPulse = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          localInfluenceFeedbackPulse: { feedbackDecision, pulsedAt, build: BUILD_VERSION },
+        },
+      };
+      const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
+      const approvalLane = buildCommandLearningApprovalLane(seed, memoryForPulse);
+      const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, memoryForPulse);
+      const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, memoryForPulse);
+      const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memoryForPulse);
+      const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memoryForPulse);
+      const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, memoryForPulse);
+      const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, memoryForPulse);
+      const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForPulse);
+      const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForPulse);
+      const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, memoryForPulse);
+      const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForPulse);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt,
+          reviewCue,
+          evidenceLens,
+          confidenceRibbon,
+          observationOutcome,
+          proofAttachmentCue,
+          proofReviewGate,
+          reuseReadinessLock,
+          guidanceInfluencePreview,
+          localInfluenceFeedbackPulse,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${feedbackDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-influence-feedback") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+        const approvalLane = buildCommandLearningApprovalLane(seed, state.commandMemory || {});
+        const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, state.commandMemory || {});
+        const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, state.commandMemory || {});
+        const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, state.commandMemory || {});
+        const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, state.commandMemory || {});
+        const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, state.commandMemory || {});
+        const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, state.commandMemory || {});
+        const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, state.commandMemory || {});
+        const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, state.commandMemory || {});
+        const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, state.commandMemory || {});
+        text = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, state.commandMemory || {}).copyText || "";
+      }
+      copyTextToClipboard(text, "Local influence feedback pulse copied.");
       return;
     }
 

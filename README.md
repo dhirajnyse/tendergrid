@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v374 Local Influence Feedback Pulse captures keep, retune, promote-local, or hold feedback on previewed guidance before any live activation.
 - v373 Local Guidance Influence Preview shows which approved learning surfaces can be previewed in Advisor, Weekly Review, and Reports before live guidance changes.
 - v372 Learning Reuse Readiness Lock keeps accepted proof behind privacy, governance, and reuse-scope locks before it can influence guidance.
 - v371 Proof Review Decision Gate turns attached proof into an accept, tenant-hold, or retune decision before learning is reused.

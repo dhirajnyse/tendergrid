@@ -71,3 +71,4 @@ Recovery cleanup in this copy:
 - v371 adds a Proof Review Decision Gate so attached proof must be accepted, held tenant-only, or routed to retune before learning is reused.
 - v372 adds a Learning Reuse Readiness Lock so accepted proof must clear privacy, governance, and reuse-scope locks before influencing guidance.
 - v373 adds a Local Guidance Influence Preview so approved learning can show exactly which local product surfaces may preview it before live guidance changes.
+- v374 adds a Local Influence Feedback Pulse so previewed guidance can be kept, retuned, promoted locally, or held before activation.
