@@ -78,3 +78,4 @@ Recovery cleanup in this copy:
 - v378 adds a Learning Ledger so graduated lessons become tenant memory, anonymized reusable candidates, retune memory, or private holds with proof and guardrails visible.
 - v379 adds a Learning Safety Receipt so reusable candidates carry proof, privacy, consent, and rollback seals before cross-tenant benefit.
 - v380 adds a Global Learning Passport so safety-cleared lessons carry jurisdiction, export, consent, and revocation rules before global travel.
+- v381 adds a Market Fit Gate so global-passported learning can open only one first-market canary after localization, residency, consent, and launch rules are visible.

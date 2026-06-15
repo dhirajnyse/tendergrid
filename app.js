@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v380";
-  const BUILD_LABEL = "Global Learning Passport";
+  const BUILD_VERSION = "v381";
+  const BUILD_LABEL = "Market Fit Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=380";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=380";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=381";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=381";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -16258,6 +16258,109 @@ const state = {
     return { cards, choices, consentWindow, copyText, exportClass, issuedAt: savedPassport.issuedAt || null, issuedLabel, jurisdiction, nextAction, passportDecision, passportId, passportState, revocationRule, safetyReady, tone };
   }
 
+  function buildCommandMarketFitGate(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, learningLedger = {}, learningSafetyReceipt = {}, globalLearningPassport = {}, memory = {}) {
+    const savedGate = memory.approval?.marketFitGate || {};
+    const gateId = savedGate.gateId || `${globalLearningPassport.passportId || learningSafetyReceipt.receiptId || BUILD_VERSION.toUpperCase()}-MFG`;
+    const passportReady =
+      globalLearningPassport.passportState === "Global passport ready" ||
+      (globalLearningPassport.passportDecision === "Issue global passport" && globalLearningPassport.safetyReady);
+    const consentReady = globalLearningPassport.consentWindow === "Consent active";
+    const exportReady = globalLearningPassport.exportClass === "Anonymized learning only";
+    const revoked = globalLearningPassport.passportDecision === "Revoke passport" || globalLearningPassport.passportState === "Passport revoked";
+    const marketDecision =
+      savedGate.marketDecision ||
+      (revoked
+        ? "Do not launch"
+        : passportReady && consentReady && exportReady
+          ? "Open first market"
+          : globalLearningPassport.passportState === "Consent renewal"
+            ? "Renew market consent"
+            : globalLearningPassport.passportState === "Tenant passport"
+              ? "Tenant-only market"
+              : "Regional review");
+    const reviewedAt = savedGate.reviewedAt
+      ? new Date(savedGate.reviewedAt)
+      : null;
+    const reviewedLabel = reviewedAt && !Number.isNaN(reviewedAt.getTime())
+      ? reviewedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Not reviewed yet";
+    const marketState =
+      marketDecision === "Open first market" && passportReady && consentReady && exportReady
+        ? "First market ready"
+        : marketDecision === "Open first market"
+          ? "Launch blocked"
+          : marketDecision === "Renew market consent"
+            ? "Market consent renewal"
+            : marketDecision === "Tenant-only market"
+              ? "Tenant market only"
+              : marketDecision === "Do not launch"
+                ? "Launch stopped"
+                : "Regional review";
+    const tone =
+      marketState === "First market ready"
+        ? "green"
+        : marketState === "Tenant market only" || marketState === "Market consent renewal"
+          ? "blue"
+          : "amber";
+    const marketLane =
+      marketState === "First market ready"
+        ? "First approved market"
+        : marketState === "Tenant market only"
+          ? "Home tenant only"
+          : marketState === "Launch stopped"
+            ? "No market launch"
+            : "Market review lane";
+    const localization =
+      marketState === "First market ready"
+        ? "Local wording review"
+        : marketState === "Market consent renewal"
+          ? "Consent wording"
+          : marketState === "Tenant market only"
+            ? "Tenant language only"
+            : "Localization hold";
+    const residency =
+      exportReady && !revoked
+        ? "No source data travels"
+        : marketState === "Tenant market only"
+          ? "Tenant data stays home"
+          : "Residency review";
+    const launchRule =
+      marketState === "First market ready"
+        ? "Open one market canary"
+        : marketState === "Launch stopped"
+          ? "Block launch"
+          : "No market activation";
+    const nextAction =
+      marketState === "First market ready"
+        ? "Open only one first-market canary, keep local wording reviewed, and measure outcome proof before any second market."
+        : marketState === "Market consent renewal"
+          ? "Renew local market consent and confirm wording before the passport influences any new environment."
+          : marketState === "Tenant market only"
+            ? "Keep the lesson inside the home tenant until global passport and market fit both clear."
+            : marketState === "Launch stopped"
+              ? "Do not launch this lesson in any market; keep it as private audit memory."
+              : "Hold launch until market review, localization, data residency, and consent are clear.";
+    const choices = [
+      ["Open first market", "Open", "Open one first-market canary only after passport, consent, and export rules are clear.", "green"],
+      ["Regional review", "Review", "Route to market, country, or environment review before launch.", "amber"],
+      ["Renew market consent", "Consent", "Renew consent and local wording before influence.", "blue"],
+      ["Do not launch", "Stop", "Block launch and keep the lesson as private audit memory.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Market Fit Gate ${gateId}: ${marketState}. Decision ${marketDecision}. Market ${marketLane}. Localization ${localization}. Residency ${residency}. Launch ${launchRule}. Next: ${nextAction}`;
+    const cards = [
+      ["Market", marketLane, globalLearningPassport.jurisdiction || "Jurisdiction must be clear.", tone],
+      ["Localization", localization, seed.route || "Local wording must be reviewed.", marketState === "First market ready" ? "green" : "blue"],
+      ["Residency", residency, globalLearningPassport.exportClass || "Export class must be known.", exportReady ? "green" : "amber"],
+      ["Launch", launchRule, reviewedLabel, marketState === "First market ready" ? "green" : tone],
+    ];
+    return { cards, choices, copyText, exportReady, gateId, launchRule, localization, marketDecision, marketLane, marketState, nextAction, passportReady, residency, reviewedAt: savedGate.reviewedAt || null, reviewedLabel, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -16277,7 +16380,8 @@ const state = {
     const learningLedger = buildCommandLearningLedger(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, memory);
     const learningSafetyReceipt = buildCommandLearningSafetyReceipt(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, memory);
     const globalLearningPassport = buildCommandGlobalLearningPassport(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, memory);
-    return { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed };
+    const marketFitGate = buildCommandMarketFitGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, memory);
+    return { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed };
   }
 
   function renderCommandMemoryReceipt() {
@@ -16298,7 +16402,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -16788,6 +16892,36 @@ const state = {
                                                   )
                                                   .join("")}
                                                 <button class="ghost-btn" type="button" data-action="copy-command-global-passport" data-copy-text="${escapeHtml(encodeURIComponent(globalLearningPassport.copyText))}">Copy passport</button>
+                                              </div>
+                                              <div class="command-market-fit-gate tone-${escapeHtml(marketFitGate.tone)}" aria-label="Market fit gate">
+                                                <div class="command-market-fit-head">
+                                                  <span class="metric-label">${escapeHtml(BUILD_VERSION)} Market Fit Gate</span>
+                                                  <strong>${escapeHtml(marketFitGate.marketState)} / ${escapeHtml(compactText(marketFitGate.gateId, 46))}</strong>
+                                                  <small>${escapeHtml(marketFitGate.nextAction)}</small>
+                                                </div>
+                                                <div class="command-market-fit-grid">
+                                                  ${marketFitGate.cards
+                                                    .map(
+                                                      ([label, value, note, tone]) => `
+                                                        <article class="tone-${escapeHtml(tone)}">
+                                                          <span>${escapeHtml(label)}</span>
+                                                          <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                          <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                        </article>
+                                                      `,
+                                                    )
+                                                    .join("")}
+                                                </div>
+                                                <div class="command-market-fit-actions">
+                                                  ${marketFitGate.choices
+                                                    .map(
+                                                      ([marketDecision, label, note, tone]) => `
+                                                        <button class="ghost-btn ${marketFitGate.marketDecision === marketDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-market-fit-gate" data-market-decision="${escapeHtml(marketDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                                      `,
+                                                    )
+                                                    .join("")}
+                                                  <button class="ghost-btn" type="button" data-action="copy-command-market-fit" data-copy-text="${escapeHtml(encodeURIComponent(marketFitGate.copyText))}">Copy market gate</button>
+                                                </div>
                                               </div>
                                             </div>
                                           </div>
@@ -35352,12 +35486,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v380 Global Learning Passport",
-      phase: "Global Learning Passport",
+      version: "v381 Market Fit Gate",
+      phase: "Market Fit Gate",
       lane: "Static product prototype on GitHub Pages",
-      pace: "361 meaningful versions since rebrand",
-      summary: "Command Center now decides whether safety-cleared lessons can travel globally with jurisdiction, export, consent, and revocation rules.",
+      pace: "362 meaningful versions since rebrand",
+      summary: "Command Center now decides whether a global-passported lesson can open one first-market canary with localization, residency, consent, and launch rules visible.",
       tracks: [
+        ["v381 market fit gate", 100, "Command Center now decides whether a global passport can open one first-market canary with localization, residency, consent, and launch rules visible.", "green"],
         ["v380 global learning passport", 100, "Command Center now gives safety-cleared lessons a jurisdiction, export, consent, and revocation passport before global travel.", "green"],
         ["v379 learning safety receipt", 100, "Command Center now gives reusable learning candidates proof, privacy, consent, and rollback seals before cross-organization benefit.", "green"],
         ["v378 learning ledger", 100, "Command Center now records learning custody, benefit path, proof guardrail, and next action after a local canary graduation decision.", "green"],
@@ -35880,10 +36015,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every safety-cleared lesson now gets a jurisdiction, export, consent, and revocation passport before global travel.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every global-passported lesson now gets a market, localization, residency, and launch gate before first-market activation.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -85608,6 +85743,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85730,6 +85869,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -85767,6 +85907,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85819,6 +85963,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -85856,6 +86001,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85908,6 +86057,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -85945,6 +86095,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85997,6 +86151,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -86034,6 +86189,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86086,6 +86245,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -86123,6 +86283,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86175,6 +86339,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -86212,6 +86377,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86264,6 +86433,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -86301,6 +86471,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86353,6 +86527,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -86390,6 +86565,10 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger: null,
+          learningSafetyReceipt: null,
+          globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86442,6 +86621,7 @@ const state = {
           learningLedger: null,
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
@@ -86471,6 +86651,10 @@ const state = {
         ...memoryForGraduation,
         approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt },
       });
+      const marketFitGate = buildCommandMarketFitGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, {
+        ...memoryForGraduation,
+        approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -86494,6 +86678,7 @@ const state = {
           learningLedger,
           learningSafetyReceipt,
           globalLearningPassport,
+          marketFitGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86546,6 +86731,7 @@ const state = {
           learningLedger: { ledgerDecision, recordedAt, build: BUILD_VERSION },
           learningSafetyReceipt: null,
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLedger);
@@ -86572,6 +86758,7 @@ const state = {
           learningLedger: chain.learningLedger,
           learningSafetyReceipt: chain.learningSafetyReceipt,
           globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86609,6 +86796,7 @@ const state = {
           ...existingApproval,
           learningSafetyReceipt: { receiptDecision, issuedAt, build: BUILD_VERSION },
           globalLearningPassport: null,
+          marketFitGate: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForSafety);
@@ -86635,6 +86823,7 @@ const state = {
           learningLedger: chain.learningLedger,
           learningSafetyReceipt: chain.learningSafetyReceipt,
           globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86671,6 +86860,7 @@ const state = {
         approval: {
           ...existingApproval,
           globalLearningPassport: { passportDecision, issuedAt, build: BUILD_VERSION },
+          marketFitGate: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPassport);
@@ -86697,6 +86887,7 @@ const state = {
           learningLedger: chain.learningLedger,
           learningSafetyReceipt: chain.learningSafetyReceipt,
           globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86717,6 +86908,69 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).globalLearningPassport.copyText || "";
       }
       copyTextToClipboard(text, "Global learning passport copied.");
+      return;
+    }
+
+    if (action === "set-command-market-fit-gate") {
+      const marketDecision = button.dataset.marketDecision || "Regional review";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before setting the market fit gate.");
+        return;
+      }
+      const reviewedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForMarket = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          marketFitGate: { marketDecision, reviewedAt, build: BUILD_VERSION },
+        },
+      };
+      const chain = buildCommandMemoryLearningChain(memoryForMarket);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed: chain.seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt: chain.releaseReceipt,
+          reviewCue: chain.reviewCue,
+          evidenceLens: chain.evidenceLens,
+          confidenceRibbon: chain.historyRibbon,
+          observationOutcome: chain.outcomeSlot,
+          proofAttachmentCue: chain.proofCue,
+          proofReviewGate: chain.reviewGate,
+          reuseReadinessLock: chain.reuseLock,
+          guidanceInfluencePreview: chain.influencePreview,
+          localInfluenceFeedbackPulse: chain.feedbackPulse,
+          localGuidanceActivationGate: chain.activationGate,
+          localGuidanceCanaryMonitor: chain.canaryMonitor,
+          localCanaryGraduationGate: chain.graduationGate,
+          learningLedger: chain.learningLedger,
+          learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${marketDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-market-fit") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).marketFitGate.copyText || "";
+      }
+      copyTextToClipboard(text, "Market fit gate copied.");
       return;
     }
 
