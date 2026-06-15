@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v379";
-  const BUILD_LABEL = "Learning Safety Receipt";
+  const BUILD_VERSION = "v380";
+  const BUILD_LABEL = "Global Learning Passport";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=379";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=379";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=380";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=380";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -16150,6 +16150,114 @@ const state = {
     return { cards, choices, consentReady, consentSeal, copyText, issuedAt: savedReceipt.issuedAt || null, issuedLabel, nextAction, privacyReady, privacySeal, proofReady, proofSeal, receiptDecision, receiptId, rollbackReady, rollbackSeal, safetyState, tone };
   }
 
+  function buildCommandGlobalLearningPassport(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, learningLedger = {}, learningSafetyReceipt = {}, memory = {}) {
+    const savedPassport = memory.approval?.globalLearningPassport || {};
+    const passportId = savedPassport.passportId || `${learningSafetyReceipt.receiptId || learningLedger.ledgerId || BUILD_VERSION.toUpperCase()}-GLP`;
+    const safetyReady =
+      learningSafetyReceipt.safetyState === "Safety receipt ready" ||
+      (learningSafetyReceipt.receiptDecision === "Issue safety receipt" &&
+        learningSafetyReceipt.proofReady &&
+        learningSafetyReceipt.privacyReady &&
+        learningSafetyReceipt.consentReady &&
+        learningSafetyReceipt.rollbackReady);
+    const privateHold =
+      learningLedger.ledgerDecision === "Private hold" ||
+      learningSafetyReceipt.receiptDecision === "Keep private" ||
+      learningSafetyReceipt.safetyState === "Private receipt";
+    const consentOpen = learningSafetyReceipt.receiptDecision === "Request consent" || !learningSafetyReceipt.consentReady;
+    const revoked = savedPassport.passportDecision === "Revoke passport";
+    const passportDecision =
+      savedPassport.passportDecision ||
+      (privateHold
+        ? "Tenant-only passport"
+        : safetyReady
+          ? "Issue global passport"
+          : consentOpen
+            ? "Renew consent"
+            : "Regional hold");
+    const issuedAt = savedPassport.issuedAt
+      ? new Date(savedPassport.issuedAt)
+      : null;
+    const issuedLabel = issuedAt && !Number.isNaN(issuedAt.getTime())
+      ? issuedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Not issued yet";
+    const passportState =
+      revoked
+        ? "Passport revoked"
+        : passportDecision === "Issue global passport" && safetyReady
+          ? "Global passport ready"
+          : passportDecision === "Issue global passport"
+            ? "Passport blocked"
+            : passportDecision === "Renew consent"
+              ? "Consent renewal"
+              : passportDecision === "Tenant-only passport"
+                ? "Tenant passport"
+                : "Regional hold";
+    const tone =
+      passportState === "Global passport ready"
+        ? "green"
+        : passportState === "Tenant passport" || passportState === "Consent renewal"
+          ? "blue"
+          : "amber";
+    const jurisdiction =
+      passportState === "Global passport ready"
+        ? "Global-ready pattern"
+        : passportState === "Tenant passport"
+          ? "Tenant boundary"
+          : passportState === "Consent renewal"
+            ? "Consent boundary"
+            : passportState === "Passport revoked"
+              ? "Travel revoked"
+              : "Regional review";
+    const exportClass =
+      passportState === "Global passport ready"
+        ? "Anonymized learning only"
+        : privateHold
+          ? "No export"
+          : "Review before export";
+    const consentWindow =
+      learningSafetyReceipt.consentReady && passportState !== "Consent renewal"
+        ? "Consent active"
+        : passportState === "Passport revoked"
+          ? "Consent withdrawn"
+          : "Consent renewal needed";
+    const revocationRule =
+      passportState === "Passport revoked"
+        ? "Revoke before influence"
+        : passportState === "Global passport ready"
+          ? "Revoke anytime before network activation"
+          : "No network activation";
+    const nextAction =
+      passportState === "Global passport ready"
+        ? "Let the lesson travel only as an anonymized global pattern, keep source proof local, and preserve one-click revocation before activation."
+        : passportState === "Consent renewal"
+          ? "Renew leadership consent before this learning passport can travel beyond the tenant."
+          : passportState === "Tenant passport"
+            ? "Keep the passport tenant-only and block cross-organization benefit routing."
+            : passportState === "Passport revoked"
+              ? "Keep the lesson private, stop network influence, and retain the receipt as audit memory."
+              : "Hold the passport until safety, consent, and regional review are clear.";
+    const choices = [
+      ["Issue global passport", "Issue", "Allow anonymized travel only after all safety seals are clear.", "green"],
+      ["Regional hold", "Regional hold", "Hold until regional, country, or environment rules are reviewed.", "amber"],
+      ["Renew consent", "Renew consent", "Ask leadership to renew the cross-organization consent window.", "blue"],
+      ["Revoke passport", "Revoke", "Revoke travel and keep the lesson private before network influence.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Global Learning Passport ${passportId}: ${passportState}. Decision ${passportDecision}. Jurisdiction ${jurisdiction}. Export ${exportClass}. Consent ${consentWindow}. Revocation ${revocationRule}. Next: ${nextAction}`;
+    const cards = [
+      ["Jurisdiction", jurisdiction, approvalLane.boundary || seed.privacy || "Tenant boundary controls learning travel.", tone],
+      ["Export", exportClass, learningLedger.guardrail || "Only anonymized learning may travel.", passportState === "Global passport ready" ? "green" : "amber"],
+      ["Consent", consentWindow, learningSafetyReceipt.consentSeal || "Consent must be explicit.", consentWindow === "Consent active" ? "green" : "blue"],
+      ["Revocation", revocationRule, issuedLabel, passportState === "Passport revoked" ? "amber" : tone],
+    ];
+    return { cards, choices, consentWindow, copyText, exportClass, issuedAt: savedPassport.issuedAt || null, issuedLabel, jurisdiction, nextAction, passportDecision, passportId, passportState, revocationRule, safetyReady, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -16168,7 +16276,8 @@ const state = {
     const graduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, memory);
     const learningLedger = buildCommandLearningLedger(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, memory);
     const learningSafetyReceipt = buildCommandLearningSafetyReceipt(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, memory);
-    return { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed };
+    const globalLearningPassport = buildCommandGlobalLearningPassport(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, memory);
+    return { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed };
   }
 
   function renderCommandMemoryReceipt() {
@@ -16189,7 +16298,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -16650,6 +16759,36 @@ const state = {
                                                 )
                                                 .join("")}
                                               <button class="ghost-btn" type="button" data-action="copy-command-learning-safety" data-copy-text="${escapeHtml(encodeURIComponent(learningSafetyReceipt.copyText))}">Copy receipt</button>
+                                            </div>
+                                            <div class="command-global-learning-passport tone-${escapeHtml(globalLearningPassport.tone)}" aria-label="Global learning passport">
+                                              <div class="command-global-passport-head">
+                                                <span class="metric-label">${escapeHtml(BUILD_VERSION)} Global Learning Passport</span>
+                                                <strong>${escapeHtml(globalLearningPassport.passportState)} / ${escapeHtml(compactText(globalLearningPassport.passportId, 46))}</strong>
+                                                <small>${escapeHtml(globalLearningPassport.nextAction)}</small>
+                                              </div>
+                                              <div class="command-global-passport-grid">
+                                                ${globalLearningPassport.cards
+                                                  .map(
+                                                    ([label, value, note, tone]) => `
+                                                      <article class="tone-${escapeHtml(tone)}">
+                                                        <span>${escapeHtml(label)}</span>
+                                                        <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                        <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                      </article>
+                                                    `,
+                                                  )
+                                                  .join("")}
+                                              </div>
+                                              <div class="command-global-passport-actions">
+                                                ${globalLearningPassport.choices
+                                                  .map(
+                                                    ([passportDecision, label, note, tone]) => `
+                                                      <button class="ghost-btn ${globalLearningPassport.passportDecision === passportDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-global-learning-passport" data-passport-decision="${escapeHtml(passportDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                                    `,
+                                                  )
+                                                  .join("")}
+                                                <button class="ghost-btn" type="button" data-action="copy-command-global-passport" data-copy-text="${escapeHtml(encodeURIComponent(globalLearningPassport.copyText))}">Copy passport</button>
+                                              </div>
                                             </div>
                                           </div>
                                         </div>
@@ -35213,12 +35352,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v379 Learning Safety Receipt",
-      phase: "Learning Safety Receipt",
+      version: "v380 Global Learning Passport",
+      phase: "Global Learning Passport",
       lane: "Static product prototype on GitHub Pages",
-      pace: "360 meaningful versions since rebrand",
-      summary: "Command Center now gives reusable learning candidates proof, privacy, consent, and rollback seals before any cross-organization benefit.",
+      pace: "361 meaningful versions since rebrand",
+      summary: "Command Center now decides whether safety-cleared lessons can travel globally with jurisdiction, export, consent, and revocation rules.",
       tracks: [
+        ["v380 global learning passport", 100, "Command Center now gives safety-cleared lessons a jurisdiction, export, consent, and revocation passport before global travel.", "green"],
         ["v379 learning safety receipt", 100, "Command Center now gives reusable learning candidates proof, privacy, consent, and rollback seals before cross-organization benefit.", "green"],
         ["v378 learning ledger", 100, "Command Center now records learning custody, benefit path, proof guardrail, and next action after a local canary graduation decision.", "green"],
         ["v377 local canary graduation gate", 100, "Command Center now decides whether monitored tenant-local canaries graduate to a playbook candidate, keep watching, retune, or rollback.", "green"],
@@ -35740,10 +35880,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every reusable learning candidate now gets proof, privacy, consent, and rollback seals before cross-organization benefit.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every safety-cleared lesson now gets a jurisdiction, export, consent, and revocation passport before global travel.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -85589,6 +85729,7 @@ const state = {
           localCanaryGraduationGate: null,
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -85677,6 +85818,7 @@ const state = {
           localCanaryGraduationGate: null,
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -85765,6 +85907,7 @@ const state = {
           localCanaryGraduationGate: null,
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -85853,6 +85996,7 @@ const state = {
           localCanaryGraduationGate: null,
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -85941,6 +86085,7 @@ const state = {
           localCanaryGraduationGate: null,
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -86029,6 +86174,7 @@ const state = {
           localCanaryGraduationGate: null,
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -86117,6 +86263,7 @@ const state = {
           localCanaryGraduationGate: null,
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -86205,6 +86352,7 @@ const state = {
           localCanaryGraduationGate: null,
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -86293,6 +86441,7 @@ const state = {
           localCanaryGraduationGate: { graduationDecision, graduatedAt, build: BUILD_VERSION },
           learningLedger: null,
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
@@ -86318,6 +86467,10 @@ const state = {
         ...memoryForGraduation,
         approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger },
       });
+      const globalLearningPassport = buildCommandGlobalLearningPassport(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, {
+        ...memoryForGraduation,
+        approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -86340,6 +86493,7 @@ const state = {
           localCanaryGraduationGate,
           learningLedger,
           learningSafetyReceipt,
+          globalLearningPassport,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86391,6 +86545,7 @@ const state = {
           ...existingApproval,
           learningLedger: { ledgerDecision, recordedAt, build: BUILD_VERSION },
           learningSafetyReceipt: null,
+          globalLearningPassport: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLedger);
@@ -86416,6 +86571,7 @@ const state = {
           localCanaryGraduationGate: chain.graduationGate,
           learningLedger: chain.learningLedger,
           learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86452,6 +86608,7 @@ const state = {
         approval: {
           ...existingApproval,
           learningSafetyReceipt: { receiptDecision, issuedAt, build: BUILD_VERSION },
+          globalLearningPassport: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForSafety);
@@ -86477,6 +86634,7 @@ const state = {
           localCanaryGraduationGate: chain.graduationGate,
           learningLedger: chain.learningLedger,
           learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86497,6 +86655,68 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).learningSafetyReceipt.copyText || "";
       }
       copyTextToClipboard(text, "Learning safety receipt copied.");
+      return;
+    }
+
+    if (action === "set-command-global-learning-passport") {
+      const passportDecision = button.dataset.passportDecision || "Regional hold";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before issuing the global learning passport.");
+        return;
+      }
+      const issuedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForPassport = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          globalLearningPassport: { passportDecision, issuedAt, build: BUILD_VERSION },
+        },
+      };
+      const chain = buildCommandMemoryLearningChain(memoryForPassport);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed: chain.seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt: chain.releaseReceipt,
+          reviewCue: chain.reviewCue,
+          evidenceLens: chain.evidenceLens,
+          confidenceRibbon: chain.historyRibbon,
+          observationOutcome: chain.outcomeSlot,
+          proofAttachmentCue: chain.proofCue,
+          proofReviewGate: chain.reviewGate,
+          reuseReadinessLock: chain.reuseLock,
+          guidanceInfluencePreview: chain.influencePreview,
+          localInfluenceFeedbackPulse: chain.feedbackPulse,
+          localGuidanceActivationGate: chain.activationGate,
+          localGuidanceCanaryMonitor: chain.canaryMonitor,
+          localCanaryGraduationGate: chain.graduationGate,
+          learningLedger: chain.learningLedger,
+          learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${passportDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-global-passport") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).globalLearningPassport.copyText || "";
+      }
+      copyTextToClipboard(text, "Global learning passport copied.");
       return;
     }
 

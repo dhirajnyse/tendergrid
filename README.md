@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v380 Global Learning Passport controls whether a safety-cleared lesson may travel globally with jurisdiction, export, consent, and revocation rules.
 - v379 Learning Safety Receipt gives reusable learning candidates proof, privacy, consent, and rollback seals before any cross-organization benefit.
 - v378 Learning Ledger records whether a graduated lesson stays tenant-local, becomes an anonymized reusable candidate, returns to retune, or stays private.
 - v377 Local Canary Graduation Gate decides whether a monitored canary graduates to tenant playbook, keeps watching, routes to retune, or rolls back.
