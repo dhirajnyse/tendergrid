@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v388 Transfer Outcome Monitor watches the first transfer outcome before any second-country learning is trusted wider.
 - v387 Transfer Launch Receipt converts the action packet into a receipt before any second-country movement.
 - v386 Transfer Action Packet converts the readiness score into one owner, one date, one proof, and one guardrail before second-country movement.
 - v385 Transfer Readiness Score turns country transfer deltas into one readiness score, one answer, and one controlled next move.
