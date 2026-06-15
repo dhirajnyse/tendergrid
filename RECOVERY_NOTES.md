@@ -61,3 +61,4 @@ Recovery cleanup in this copy:
 - v361 adds a Pilot Story Fold so recovery, demo, sponsor close, and day-one launch proof stay available inside one calm expandable sponsor story.
 - v362 adds a Pilot Story Runtime Guard so the Pilot Close ROI model is restored and statically checked before the folded sponsor story renders.
 - v363 adds an Outcome Memory Seed so every copied calm line becomes a learning-ready receipt with route, owner, date, proof, privacy, and feedback posture.
+- v364 adds a Learning Approval Lane so each copied outcome seed needs an explicit approve-to-observe, outcome-proof-needed, or private-hold decision before reuse.

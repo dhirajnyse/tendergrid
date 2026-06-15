@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v364 Learning Approval Lane lets every copied outcome seed be explicitly marked approve-to-observe, outcome-proof-needed, or private-hold before reuse.
 - v363 Outcome Memory Seed turns every copied calm line into a learning-ready receipt with route, owner, date, proof, privacy, and feedback posture.
 - v362 Pilot Story Runtime Guard protects the folded sponsor story by checking the Pilot Close ROI model before render.
 - v361 Pilot Story Fold keeps the Command Center calmer by folding recovery, demo, sponsor close, and day-one launch proof into one expandable sponsor story.

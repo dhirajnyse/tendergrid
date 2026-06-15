@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v363";
-  const BUILD_LABEL = "Outcome Memory Seed";
+  const BUILD_VERSION = "v364";
+  const BUILD_LABEL = "Learning Approval Lane";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=363";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=363";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=364";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=364";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15033,7 +15033,64 @@ const state = {
       ["Proof", proof, "Evidence required before learning reuse.", proofReady ? "blue" : "amber"],
       ["Feedback", `${score}% ${stateLabel}`, feedbackQuestion, score >= 80 ? "green" : score >= 60 ? "blue" : "amber"],
     ];
-    return { cards, copyText, date, feedbackQuestion, owner, privacy, proof, route, score, stateLabel };
+    return { cards, copyText, date, dateReady, feedbackQuestion, owner, ownerReady, privacy, privacyReady, proof, proofReady, route, routeReady, score, stateLabel };
+  }
+
+  function buildCommandLearningApprovalLane(seed = {}, memory = {}) {
+    const savedDecision = String(memory.approval?.decision || "").trim();
+    const recommendedDecision =
+      !seed.privacyReady
+        ? "Private hold"
+        : seed.score >= 80
+          ? "Approve to observe"
+          : seed.proofReady
+            ? "Outcome proof needed"
+            : "Proof hold";
+    const activeDecision = savedDecision || recommendedDecision;
+    const activeTone =
+      activeDecision === "Approve to observe"
+        ? "green"
+        : activeDecision === "Outcome proof needed"
+          ? "blue"
+          : "amber";
+    const boundary =
+      activeDecision === "Approve to observe"
+        ? "Tenant-approved observe-only reuse"
+        : activeDecision === "Private hold"
+          ? "Tenant-private, no network reuse"
+          : "Tenant-only until outcome proof";
+    const nextStep =
+      activeDecision === "Approve to observe"
+        ? "Watch the outcome before any reusable pattern is promoted."
+        : activeDecision === "Outcome proof needed"
+          ? "Capture the actual movement, reply, or evidence before approval."
+          : activeDecision === "Private hold"
+            ? "Keep the lesson local until the privacy boundary is explicit."
+            : "Attach proof before the seed can learn.";
+    let decidedAt = "Waiting for user confirmation";
+    if (memory.approval?.decidedAt) {
+      const parsedDecisionDate = new Date(memory.approval.decidedAt);
+      decidedAt = Number.isNaN(parsedDecisionDate.getTime())
+        ? "Selected"
+        : `Selected ${parsedDecisionDate.toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "short",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}`;
+    }
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Learning Approval Lane: ${activeDecision}. ${boundary}. Route ${seed.route}. Owner ${seed.owner}. Outcome question: ${seed.feedbackQuestion}.`;
+    const cards = [
+      ["Decision", activeDecision, savedDecision ? "User-selected learning posture." : "Recommended learning posture.", activeTone],
+      ["Boundary", boundary, "Explicit reuse scope before learning moves.", seed.privacyReady ? "green" : "amber"],
+      ["Next proof", nextStep, seed.feedbackQuestion, seed.score >= 80 ? "green" : "blue"],
+    ];
+    const decisions = [
+      ["Approve to observe", "Approve", "Observe inside tenant boundary before reuse.", seed.score >= 80 && seed.privacyReady ? "green" : "blue"],
+      ["Outcome proof needed", "Need proof", "Ask for measured outcome before approval.", "blue"],
+      ["Private hold", "Hold private", "Keep the lesson inside the organization.", "amber"],
+    ];
+    return { activeDecision, activeTone, boundary, cards, copyText, decidedAt, decisions, nextStep, recommendedDecision, savedDecision };
   }
 
   function renderCommandMemoryReceipt() {
@@ -15055,6 +15112,7 @@ const state = {
 
     const source = simpleRoomLabel(memory.view || "Command");
     const seed = buildCommandOutcomeMemorySeed(memory);
+    const approvalLane = buildCommandLearningApprovalLane(seed, memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -15079,6 +15137,36 @@ const state = {
                   `,
                 )
                 .join("")}
+            </div>
+            <div class="command-learning-approval-lane tone-${escapeHtml(approvalLane.activeTone)}" aria-label="Learning approval lane">
+              <div class="command-learning-approval-head">
+                <span class="metric-label">${escapeHtml(BUILD_VERSION)} Learning Approval Lane</span>
+                <strong>${escapeHtml(approvalLane.activeDecision)}</strong>
+                <small>${escapeHtml(approvalLane.boundary)}. ${escapeHtml(approvalLane.decidedAt)}.</small>
+              </div>
+              <div class="command-learning-approval-grid">
+                ${approvalLane.cards
+                  .map(
+                    ([label, value, note, tone]) => `
+                      <article class="tone-${escapeHtml(tone)}">
+                        <span>${escapeHtml(label)}</span>
+                        <strong>${escapeHtml(compactText(String(value), 62))}</strong>
+                        <small>${escapeHtml(compactText(note, 110))}</small>
+                      </article>
+                    `,
+                  )
+                  .join("")}
+              </div>
+              <div class="command-learning-approval-actions">
+                ${approvalLane.decisions
+                  .map(
+                    ([decision, label, note, tone]) => `
+                      <button class="ghost-btn ${approvalLane.activeDecision === decision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-learning-approval" data-learning-decision="${escapeHtml(decision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                    `,
+                  )
+                  .join("")}
+                <button class="secondary-btn" type="button" data-action="copy-command-learning-approval" data-copy-text="${escapeHtml(encodeURIComponent(approvalLane.copyText))}">Copy approval</button>
+              </div>
             </div>
           </div>
         </div>
@@ -33626,12 +33714,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v363 Outcome Memory Seed",
-      phase: "Outcome Memory Seed",
+      version: "v364 Learning Approval Lane",
+      phase: "Learning Approval Lane",
       lane: "Static product prototype on GitHub Pages",
-      pace: "344 meaningful versions since rebrand",
-      summary: "Command Center now turns every copied calm line into a learning-ready outcome memory seed with route, owner, date, proof, privacy, and feedback posture.",
+      pace: "345 meaningful versions since rebrand",
+      summary: "Command Center now lets every copied outcome seed move through an explicit learning approval lane before it can observe, wait for proof, or stay private.",
       tracks: [
+        ["v364 learning approval lane", 100, "Command Center now lets every copied outcome seed move through a user-controlled approval lane for observe-only reuse, outcome proof, or private hold.", "green"],
         ["v363 outcome memory seed", 100, "Command Center now turns every copied calm line into a learning-ready outcome memory seed with route, owner, date, proof, privacy, and feedback posture.", "green"],
         ["v362 pilot story runtime guard", 100, "Command Center now guards the folded sponsor story by restoring the Pilot Close ROI model before render.", "green"],
         ["v361 pilot story fold", 100, "Command Center now folds the recovery, demo, sponsor close, and day-one launch narrative into one calm expandable sponsor story.", "green"],
@@ -34137,10 +34226,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Copied calm lines now become learning-ready outcome seeds without adding another screen.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Copied outcome seeds now move through an explicit approve, proof, or private-hold lane before reuse.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -83754,10 +83843,12 @@ const state = {
           build: BUILD_VERSION,
           view,
           seed: buildCommandOutcomeMemorySeed({ text, copiedAt, build: BUILD_VERSION, view }),
+          approval: null,
         };
         persistCommandMemory(state.commandMemory);
       }
       copyTextToClipboard(text, button.dataset.copyMessage || "Calm line copied and remembered.");
+      render();
       return;
     }
 
@@ -83774,6 +83865,51 @@ const state = {
         text = seed.copyText || "";
       }
       copyTextToClipboard(text, "Outcome memory seed copied.");
+      return;
+    }
+
+    if (action === "set-command-learning-approval") {
+      const decision = button.dataset.learningDecision || "Outcome proof needed";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before approving learning.");
+        return;
+      }
+      const decidedAt = new Date().toISOString();
+      const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+      const approvalLane = buildCommandLearningApprovalLane(seed, {
+        ...state.commandMemory,
+        approval: { decision, decidedAt, build: BUILD_VERSION },
+      });
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed,
+        approval: {
+          decision,
+          decidedAt,
+          build: BUILD_VERSION,
+          copyText: approvalLane.copyText,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${decision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-learning-approval") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+        text = buildCommandLearningApprovalLane(seed, state.commandMemory || {}).copyText || "";
+      }
+      copyTextToClipboard(text, "Learning approval copied.");
       return;
     }
 
