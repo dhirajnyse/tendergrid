@@ -63,3 +63,4 @@ Recovery cleanup in this copy:
 - v363 adds an Outcome Memory Seed so every copied calm line becomes a learning-ready receipt with route, owner, date, proof, privacy, and feedback posture.
 - v364 adds a Learning Approval Lane so each copied outcome seed needs an explicit approve-to-observe, outcome-proof-needed, or private-hold decision before reuse.
 - v365 adds a Learning Release Receipt so each learning approval decision carries a receipt ID, scope, review date, and rollback posture before reuse.
+- v366 adds a Learning Review Cue so every learning release has one next-review owner, watch signal, close rule, and copy-ready cue.

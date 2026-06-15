@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v366 Learning Review Cue gives every learning release a next-review owner, watch signal, review date, close rule, and copy-ready cue.
 - v365 Learning Release Receipt turns each approval decision into a copy-ready receipt with learning scope, review date, and rollback posture.
 - v364 Learning Approval Lane lets every copied outcome seed be explicitly marked approve-to-observe, outcome-proof-needed, or private-hold before reuse.
 - v363 Outcome Memory Seed turns every copied calm line into a learning-ready receipt with route, owner, date, proof, privacy, and feedback posture.
