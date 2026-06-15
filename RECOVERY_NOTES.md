@@ -68,3 +68,4 @@ Recovery cleanup in this copy:
 - v368 adds a Confidence History Ribbon so each learning signal shows its seed, decision, release, and confidence checkpoints in one compact history.
 - v369 adds an Observation Outcome Slot so each ready learning signal can record lift seen, still watching, or no movement after observation.
 - v370 adds an Outcome Proof Attachment Cue so each observed learning outcome asks for proof, document follow-up, or retune evidence before the loop closes.
+- v371 adds a Proof Review Decision Gate so attached proof must be accepted, held tenant-only, or routed to retune before learning is reused.
