@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v377";
-  const BUILD_LABEL = "Local Canary Graduation Gate";
+  const BUILD_VERSION = "v378";
+  const BUILD_LABEL = "Learning Ledger";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=377";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=377";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=378";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=378";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15966,6 +15966,128 @@ const state = {
     return { cards, choices, copyText, graduatedAt: savedGate.graduatedAt || null, graduatedLabel, graduationDecision, graduationId, graduationScope, graduationState, nextAction, proofLock, rolloutRule, tone };
   }
 
+  function buildCommandLearningLedger(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, memory = {}) {
+    const savedLedger = memory.approval?.learningLedger || {};
+    const ledgerId = savedLedger.ledgerId || `${graduationGate.graduationId || canaryMonitor.monitorId || BUILD_VERSION.toUpperCase()}-LLD`;
+    const graduated = graduationGate.graduationState === "Graduation ready" || graduationGate.graduationDecision === "Graduate local playbook";
+    const proofReady = proofCue.cueState === "Learning review ready" || proofCue.proofStatus === "Proof attached" || graduationGate.proofLock === "Proof attached";
+    const reuseReady = reuseLock.lockState === "Reuse ready" || reuseLock.reuseDecision === "Ready for local reuse";
+    const retuneReady = graduationGate.graduationDecision === "Retune guidance" || reuseLock.lockState === "Retune locked" || reviewGate.reviewDecision === "Send retune";
+    const rollbackReady = graduationGate.graduationDecision === "Rollback learning" || canaryMonitor.canaryDecision === "Rollback canary";
+    const ledgerDecision =
+      savedLedger.ledgerDecision ||
+      (graduated && proofReady && reuseReady
+        ? "Reusable candidate"
+        : graduated
+          ? "Tenant ledger"
+          : retuneReady
+            ? "Retune ledger"
+            : rollbackReady
+              ? "Private hold"
+              : "Observe privately");
+    const recordedAt = savedLedger.recordedAt
+      ? new Date(savedLedger.recordedAt)
+      : null;
+    const recordedLabel = recordedAt && !Number.isNaN(recordedAt.getTime())
+      ? recordedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Not recorded yet";
+    const ledgerState =
+      ledgerDecision === "Reusable candidate" && proofReady
+        ? "Cross-tenant candidate"
+        : ledgerDecision === "Tenant ledger"
+          ? "Tenant learning ledger"
+          : ledgerDecision === "Retune ledger"
+            ? "Retune memory ledger"
+            : ledgerDecision === "Private hold"
+              ? "Private hold ledger"
+              : "Observation ledger";
+    const tone =
+      ledgerState === "Cross-tenant candidate"
+        ? "green"
+        : ledgerState === "Tenant learning ledger" || ledgerState === "Observation ledger"
+          ? "blue"
+          : "amber";
+    const custody =
+      ledgerState === "Cross-tenant candidate"
+        ? "Anonymized candidate"
+        : ledgerState === "Tenant learning ledger"
+          ? "Tenant-local memory"
+          : ledgerState === "Retune memory ledger"
+            ? "Retune queue"
+            : ledgerState === "Private hold ledger"
+              ? "Private tenant hold"
+              : "Observe-only memory";
+    const benefitPath =
+      ledgerState === "Cross-tenant candidate"
+        ? "May benefit other organizations after privacy and safety review"
+        : ledgerState === "Tenant learning ledger"
+          ? "Improves this tenant playbook only"
+          : ledgerState === "Retune memory ledger"
+            ? "Improves wording, routing, and stop rules"
+            : ledgerState === "Private hold ledger"
+              ? "Stored as private anti-risk memory"
+              : "Waits for one more proof signal";
+    const guardrail =
+      ledgerState === "Cross-tenant candidate"
+        ? "Strip client, value, owner, and document details before network review"
+        : ledgerState === "Tenant learning ledger"
+          ? "No network influence until a separate reuse decision"
+          : ledgerState === "Retune memory ledger"
+            ? "Do not influence live guidance until retune proof passes"
+            : ledgerState === "Private hold ledger"
+              ? "Do not export outside this tenant"
+              : "Keep outcome watch open";
+    const nextAction =
+      ledgerState === "Cross-tenant candidate"
+        ? "Record the learning as an anonymized candidate, preserve proof locally, and require safety review before another organization benefits."
+        : ledgerState === "Tenant learning ledger"
+          ? "Record the lesson inside this tenant playbook and keep network reuse locked."
+          : ledgerState === "Retune memory ledger"
+            ? "Convert the lesson into a retune note before it changes Advisor, Weekly Review, or Reports."
+            : ledgerState === "Private hold ledger"
+              ? "Keep the lesson private as rollback memory and block export until leadership reopens it."
+              : "Keep the lesson in observation until graduation, proof, and reuse locks agree.";
+    const choices = [
+      ["Tenant ledger", "Tenant", "Store as tenant-local playbook memory only.", "blue"],
+      ["Reusable candidate", "Reusable", "Queue anonymized reuse only after proof and governance review.", "green"],
+      ["Retune ledger", "Retune", "Route the lesson to model and guidance retune.", "amber"],
+      ["Private hold", "Private", "Keep the lesson private and block export.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Learning Ledger ${ledgerId}: ${ledgerState}. Decision ${ledgerDecision}. Custody ${custody}. Benefit ${benefitPath}. Guardrail ${guardrail}. Next: ${nextAction}`;
+    const cards = [
+      ["Learning", ledgerState, ledgerDecision, tone],
+      ["Custody", custody, approvalLane.boundary || "Tenant boundary controls learning custody.", tone],
+      ["Benefit", benefitPath, seed.route || "Route to capture.", ledgerState === "Cross-tenant candidate" ? "green" : "blue"],
+      ["Guardrail", guardrail, recordedLabel, tone],
+    ];
+    return { benefitPath, cards, choices, copyText, custody, guardrail, ledgerDecision, ledgerId, ledgerState, nextAction, recordedAt: savedLedger.recordedAt || null, recordedLabel, tone };
+  }
+
+  function buildCommandMemoryLearningChain(memory = {}) {
+    const seed = buildCommandOutcomeMemorySeed(memory);
+    const approvalLane = buildCommandLearningApprovalLane(seed, memory);
+    const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, memory);
+    const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, memory);
+    const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memory);
+    const historyRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memory);
+    const outcomeSlot = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, memory);
+    const proofCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, memory);
+    const reviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, memory);
+    const reuseLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, memory);
+    const influencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, memory);
+    const feedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, memory);
+    const activationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, memory);
+    const canaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, memory);
+    const graduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, memory);
+    const learningLedger = buildCommandLearningLedger(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, memory);
+    return { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, graduationGate, historyRibbon, influencePreview, learningLedger, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed };
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -15984,21 +16106,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const seed = buildCommandOutcomeMemorySeed(memory);
-    const approvalLane = buildCommandLearningApprovalLane(seed, memory);
-    const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, memory);
-    const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, memory);
-    const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memory);
-    const historyRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memory);
-    const outcomeSlot = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, memory);
-    const proofCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, memory);
-    const reviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, memory);
-    const reuseLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, memory);
-    const influencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, memory);
-    const feedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, memory);
-    const activationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, memory);
-    const canaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, memory);
-    const graduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, memory);
+    const { activationGate, approvalLane, canaryMonitor, evidenceLens, feedbackPulse, graduationGate, historyRibbon, influencePreview, learningLedger, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, seed } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -16401,6 +16509,36 @@ const state = {
                                             )
                                             .join("")}
                                           <button class="ghost-btn" type="button" data-action="copy-command-canary-graduation" data-copy-text="${escapeHtml(encodeURIComponent(graduationGate.copyText))}">Copy graduation</button>
+                                        </div>
+                                        <div class="command-learning-ledger tone-${escapeHtml(learningLedger.tone)}" aria-label="Learning ledger">
+                                          <div class="command-learning-ledger-head">
+                                            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Learning Ledger</span>
+                                            <strong>${escapeHtml(learningLedger.ledgerState)} / ${escapeHtml(compactText(learningLedger.ledgerId, 46))}</strong>
+                                            <small>${escapeHtml(learningLedger.nextAction)}</small>
+                                          </div>
+                                          <div class="command-learning-ledger-grid">
+                                            ${learningLedger.cards
+                                              .map(
+                                                ([label, value, note, tone]) => `
+                                                  <article class="tone-${escapeHtml(tone)}">
+                                                    <span>${escapeHtml(label)}</span>
+                                                    <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                    <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                  </article>
+                                                `,
+                                              )
+                                              .join("")}
+                                          </div>
+                                          <div class="command-learning-ledger-actions">
+                                            ${learningLedger.choices
+                                              .map(
+                                                ([ledgerDecision, label, note, tone]) => `
+                                                  <button class="ghost-btn ${learningLedger.ledgerDecision === ledgerDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-learning-ledger" data-ledger-decision="${escapeHtml(ledgerDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                                `,
+                                              )
+                                              .join("")}
+                                            <button class="ghost-btn" type="button" data-action="copy-command-learning-ledger" data-copy-text="${escapeHtml(encodeURIComponent(learningLedger.copyText))}">Copy ledger</button>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -34962,12 +35100,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v377 Local Canary Graduation Gate",
-      phase: "Local Canary Graduation Gate",
+      version: "v378 Learning Ledger",
+      phase: "Learning Ledger",
       lane: "Static product prototype on GitHub Pages",
-      pace: "358 meaningful versions since rebrand",
-      summary: "Command Center now decides whether monitored local canaries graduate, keep watching, retune, or rollback before broader reuse.",
+      pace: "359 meaningful versions since rebrand",
+      summary: "Command Center now records whether graduated lessons stay tenant-local, become anonymized reusable candidates, return to retune, or remain private.",
       tracks: [
+        ["v378 learning ledger", 100, "Command Center now records learning custody, benefit path, proof guardrail, and next action after a local canary graduation decision.", "green"],
         ["v377 local canary graduation gate", 100, "Command Center now decides whether monitored tenant-local canaries graduate to a playbook candidate, keep watching, retune, or rollback.", "green"],
         ["v376 local guidance canary monitor", 100, "Command Center now watches every tenant-local canary for lift, friction, rollback readiness, and the next review before wider reuse.", "green"],
         ["v375 local guidance activation gate", 100, "Command Center now decides whether previewed learning stays observe-only, enters a tenant-local canary, returns to retune, or remains held before activation.", "green"],
@@ -35487,10 +35626,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every monitored local canary now gets one graduation decision before playbook or broader reuse.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every graduated lesson now gets a ledger decision before tenant reuse or network candidacy.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -85334,6 +85473,7 @@ const state = {
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
           localCanaryGraduationGate: null,
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -85420,6 +85560,7 @@ const state = {
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
           localCanaryGraduationGate: null,
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -85506,6 +85647,7 @@ const state = {
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
           localCanaryGraduationGate: null,
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -85592,6 +85734,7 @@ const state = {
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
           localCanaryGraduationGate: null,
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -85678,6 +85821,7 @@ const state = {
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
           localCanaryGraduationGate: null,
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -85764,6 +85908,7 @@ const state = {
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
           localCanaryGraduationGate: null,
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -85850,6 +85995,7 @@ const state = {
           localGuidanceActivationGate: { activationDecision, activatedAt, build: BUILD_VERSION },
           localGuidanceCanaryMonitor: null,
           localCanaryGraduationGate: null,
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -85936,6 +86082,7 @@ const state = {
           ...existingApproval,
           localGuidanceCanaryMonitor: { canaryDecision, monitoredAt, build: BUILD_VERSION },
           localCanaryGraduationGate: null,
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -86022,6 +86169,7 @@ const state = {
         approval: {
           ...existingApproval,
           localCanaryGraduationGate: { graduationDecision, graduatedAt, build: BUILD_VERSION },
+          learningLedger: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
@@ -86039,6 +86187,10 @@ const state = {
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForGraduation);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForGraduation);
       const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForGraduation);
+      const learningLedger = buildCommandLearningLedger(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, localCanaryGraduationGate, {
+        ...memoryForGraduation,
+        approval: { ...memoryForGraduation.approval, localCanaryGraduationGate },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -86059,6 +86211,7 @@ const state = {
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
           localCanaryGraduationGate,
+          learningLedger,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86093,6 +86246,66 @@ const state = {
         text = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, state.commandMemory || {}).copyText || "";
       }
       copyTextToClipboard(text, "Local canary graduation gate copied.");
+      return;
+    }
+
+    if (action === "set-command-learning-ledger") {
+      const ledgerDecision = button.dataset.ledgerDecision || "Tenant ledger";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before recording the learning ledger.");
+        return;
+      }
+      const recordedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForLedger = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          learningLedger: { ledgerDecision, recordedAt, build: BUILD_VERSION },
+        },
+      };
+      const chain = buildCommandMemoryLearningChain(memoryForLedger);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed: chain.seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt: chain.releaseReceipt,
+          reviewCue: chain.reviewCue,
+          evidenceLens: chain.evidenceLens,
+          confidenceRibbon: chain.historyRibbon,
+          observationOutcome: chain.outcomeSlot,
+          proofAttachmentCue: chain.proofCue,
+          proofReviewGate: chain.reviewGate,
+          reuseReadinessLock: chain.reuseLock,
+          guidanceInfluencePreview: chain.influencePreview,
+          localInfluenceFeedbackPulse: chain.feedbackPulse,
+          localGuidanceActivationGate: chain.activationGate,
+          localGuidanceCanaryMonitor: chain.canaryMonitor,
+          localCanaryGraduationGate: chain.graduationGate,
+          learningLedger: chain.learningLedger,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${ledgerDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-learning-ledger") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).learningLedger.copyText || "";
+      }
+      copyTextToClipboard(text, "Learning ledger copied.");
       return;
     }
 

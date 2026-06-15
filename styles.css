@@ -6618,6 +6618,117 @@ body.quiet-focus-mode .focus-mode-pill {
   background: var(--teal);
 }
 
+.command-learning-ledger {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(49, 101, 158, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(251, 253, 255, 0.98), rgba(236, 246, 255, 0.92));
+}
+
+.command-learning-ledger.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-learning-ledger.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-learning-ledger.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-learning-ledger-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-learning-ledger-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-learning-ledger-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-learning-ledger-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.command-learning-ledger-grid article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 84px;
+  padding: 10px;
+  border: 1px solid rgba(49, 101, 158, 0.18);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-learning-ledger-grid article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-learning-ledger-grid article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-learning-ledger-grid article small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-learning-ledger-grid article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-learning-ledger-grid article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-learning-ledger-grid article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-learning-ledger-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command-learning-ledger-actions .ghost-btn.active {
+  border-color: rgba(13, 111, 97, 0.44);
+  color: #ffffff;
+  background: var(--teal);
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -12648,7 +12759,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-influence-feedback-grid,
   .command-guidance-activation-grid,
   .command-guidance-canary-grid,
-  .command-canary-graduation-grid {
+  .command-canary-graduation-grid,
+  .command-learning-ledger-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -12882,7 +12994,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-influence-feedback-grid,
   .command-guidance-activation-grid,
   .command-guidance-canary-grid,
-  .command-canary-graduation-grid {
+  .command-canary-graduation-grid,
+  .command-learning-ledger-grid {
     grid-template-columns: 1fr;
   }
 
@@ -12900,8 +13013,82 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-influence-feedback-actions .ghost-btn,
   .command-guidance-activation-actions .ghost-btn,
   .command-guidance-canary-actions .ghost-btn,
-  .command-canary-graduation-actions .ghost-btn {
+  .command-canary-graduation-actions .ghost-btn,
+  .command-learning-ledger-actions .ghost-btn {
     width: 100%;
+  }
+
+  .command-learning-approval-lane,
+  .command-learning-release-receipt,
+  .command-learning-review-cue,
+  .command-evidence-confidence-lens,
+  .command-confidence-history-ribbon,
+  .command-observation-outcome-slot,
+  .command-outcome-proof-cue,
+  .command-proof-review-gate,
+  .command-reuse-readiness-lock,
+  .command-influence-preview,
+  .command-influence-feedback-pulse,
+  .command-guidance-activation-gate,
+  .command-guidance-canary-monitor,
+  .command-canary-graduation-gate,
+  .command-learning-ledger {
+    box-sizing: border-box;
+    min-width: 0;
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+    border-left-width: 0;
+    border-top: 3px solid rgba(13, 111, 97, 0.24);
+  }
+
+  .command-learning-approval-head,
+  .command-learning-release-head,
+  .command-learning-review-head,
+  .command-evidence-confidence-head,
+  .command-confidence-history-head,
+  .command-observation-outcome-head,
+  .command-outcome-proof-head,
+  .command-proof-review-head,
+  .command-reuse-readiness-head,
+  .command-influence-preview-head,
+  .command-influence-feedback-head,
+  .command-guidance-activation-head,
+  .command-guidance-canary-head,
+  .command-canary-graduation-head,
+  .command-learning-ledger-head,
+  .command-learning-approval-grid,
+  .command-learning-release-grid,
+  .command-learning-review-grid,
+  .command-evidence-confidence-grid,
+  .command-confidence-history-steps,
+  .command-observation-outcome-grid,
+  .command-outcome-proof-grid,
+  .command-proof-review-grid,
+  .command-reuse-readiness-grid,
+  .command-influence-preview-grid,
+  .command-influence-feedback-grid,
+  .command-guidance-activation-grid,
+  .command-guidance-canary-grid,
+  .command-canary-graduation-grid,
+  .command-learning-ledger-grid,
+  .command-learning-approval-actions,
+  .command-learning-release-actions,
+  .command-learning-review-actions,
+  .command-evidence-confidence-actions,
+  .command-confidence-history-actions,
+  .command-observation-outcome-actions,
+  .command-outcome-proof-actions,
+  .command-proof-review-actions,
+  .command-reuse-readiness-actions,
+  .command-influence-preview-actions,
+  .command-influence-feedback-actions,
+  .command-guidance-activation-actions,
+  .command-guidance-canary-actions,
+  .command-canary-graduation-actions,
+  .command-learning-ledger-actions {
+    margin-right: 10px;
+    margin-left: 10px;
   }
 
   .calm-close-actions .secondary-btn,

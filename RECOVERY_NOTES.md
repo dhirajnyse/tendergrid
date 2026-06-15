@@ -75,3 +75,4 @@ Recovery cleanup in this copy:
 - v375 adds a Local Guidance Activation Gate so previewed learning must pass observe-only, tenant-local canary, retune, or hold activation before live guidance changes.
 - v376 adds a Local Guidance Canary Monitor so every tenant-local canary watches lift, friction, rollback, and next review before broader reuse.
 - v377 adds a Local Canary Graduation Gate so monitored canaries can graduate, keep watching, retune, or rollback with tenant proof intact.
+- v378 adds a Learning Ledger so graduated lessons become tenant memory, anonymized reusable candidates, retune memory, or private holds with proof and guardrails visible.
