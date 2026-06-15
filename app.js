@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v364";
-  const BUILD_LABEL = "Learning Approval Lane";
+  const BUILD_VERSION = "v365";
+  const BUILD_LABEL = "Learning Release Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=364";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=364";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=365";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=365";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15093,6 +15093,50 @@ const state = {
     return { activeDecision, activeTone, boundary, cards, copyText, decidedAt, decisions, nextStep, recommendedDecision, savedDecision };
   }
 
+  function buildCommandLearningReleaseReceipt(seed = {}, approvalLane = {}, memory = {}) {
+    const savedReceipt = memory.approval?.releaseReceipt || {};
+    const decision = approvalLane.activeDecision || "Outcome proof needed";
+    const explicitApproval = Boolean(approvalLane.savedDecision || memory.approval?.decision);
+    const decisionKey = decision.toUpperCase().replace(/[^A-Z0-9]+/g, "-").replace(/^-|-$/g, "") || "PENDING";
+    const routeKey = String(seed.route || "Command").toUpperCase().replace(/[^A-Z0-9]+/g, "").slice(0, 5) || "CMD";
+    const receiptId = savedReceipt.receiptId || `${BUILD_VERSION.toUpperCase()}-LRR-${routeKey}-${decisionKey.slice(0, 4)}`;
+    const reviewWindow =
+      decision === "Approve to observe"
+        ? "Next review"
+        : decision === "Private hold"
+          ? "Privacy review"
+          : "Proof review";
+    const releaseState =
+      !explicitApproval
+        ? "Draft"
+        : decision === "Approve to observe"
+          ? "Observe-only"
+          : decision === "Private hold"
+            ? "Private hold"
+            : "Proof waiting";
+    const releaseScope =
+      decision === "Approve to observe"
+        ? "Tenant observe-only, no network promotion"
+        : decision === "Private hold"
+          ? "Tenant-private memory only"
+          : "Tenant-only until outcome proof";
+    const rollback =
+      decision === "Approve to observe"
+        ? "Rollback if outcome proof is weak"
+        : decision === "Private hold"
+          ? "No export until privacy clears"
+          : "No release before measured movement";
+    const reviewDate = savedReceipt.reviewDate || seed.date || reviewWindow;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Learning Release Receipt ${receiptId}: ${releaseState}. Decision ${decision}. Scope ${releaseScope}. Route ${seed.route}. Owner ${seed.owner}. Review ${reviewDate}. Rollback ${rollback}.`;
+    const cards = [
+      ["Receipt", receiptId, explicitApproval ? "Decision receipt is ready." : "Draft until a user selects a learning decision.", explicitApproval ? "green" : "amber"],
+      ["Scope", releaseScope, approvalLane.boundary || "Learning scope must stay explicit.", decision === "Private hold" ? "amber" : "blue"],
+      ["Review", reviewDate, approvalLane.nextStep || seed.feedbackQuestion, decision === "Approve to observe" ? "green" : "blue"],
+      ["Rollback", rollback, "Every learning release keeps a safe return path.", "amber"],
+    ];
+    return { cards, copyText, receiptId, releaseScope, releaseState, reviewDate, rollback };
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -15113,6 +15157,7 @@ const state = {
     const source = simpleRoomLabel(memory.view || "Command");
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
+    const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -15166,6 +15211,29 @@ const state = {
                   )
                   .join("")}
                 <button class="secondary-btn" type="button" data-action="copy-command-learning-approval" data-copy-text="${escapeHtml(encodeURIComponent(approvalLane.copyText))}">Copy approval</button>
+              </div>
+              <div class="command-learning-release-receipt" aria-label="Learning release receipt">
+                <div class="command-learning-release-head">
+                  <span class="metric-label">${escapeHtml(BUILD_VERSION)} Learning Release Receipt</span>
+                  <strong>${escapeHtml(releaseReceipt.releaseState)} / ${escapeHtml(releaseReceipt.receiptId)}</strong>
+                  <small>${escapeHtml(releaseReceipt.copyText)}</small>
+                </div>
+                <div class="command-learning-release-grid">
+                  ${releaseReceipt.cards
+                    .map(
+                      ([label, value, note, tone]) => `
+                        <article class="tone-${escapeHtml(tone)}">
+                          <span>${escapeHtml(label)}</span>
+                          <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                          <small>${escapeHtml(compactText(note, 105))}</small>
+                        </article>
+                      `,
+                    )
+                    .join("")}
+                </div>
+                <div class="command-learning-release-actions">
+                  <button class="ghost-btn" type="button" data-action="copy-command-learning-release" data-copy-text="${escapeHtml(encodeURIComponent(releaseReceipt.copyText))}">Copy receipt</button>
+                </div>
               </div>
             </div>
           </div>
@@ -33714,12 +33782,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v364 Learning Approval Lane",
-      phase: "Learning Approval Lane",
+      version: "v365 Learning Release Receipt",
+      phase: "Learning Release Receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "345 meaningful versions since rebrand",
-      summary: "Command Center now lets every copied outcome seed move through an explicit learning approval lane before it can observe, wait for proof, or stay private.",
+      pace: "346 meaningful versions since rebrand",
+      summary: "Command Center now turns every approved, proof-waiting, or private-held learning seed into a copy-ready release receipt with scope, review, and rollback posture.",
       tracks: [
+        ["v365 learning release receipt", 100, "Command Center now turns every learning approval decision into a copy-ready release receipt with receipt ID, scope, review date, and rollback posture.", "green"],
         ["v364 learning approval lane", 100, "Command Center now lets every copied outcome seed move through a user-controlled approval lane for observe-only reuse, outcome proof, or private hold.", "green"],
         ["v363 outcome memory seed", 100, "Command Center now turns every copied calm line into a learning-ready outcome memory seed with route, owner, date, proof, privacy, and feedback posture.", "green"],
         ["v362 pilot story runtime guard", 100, "Command Center now guards the folded sponsor story by restoring the Pilot Close ROI model before render.", "green"],
@@ -34226,10 +34295,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Copied outcome seeds now move through an explicit approve, proof, or private-hold lane before reuse.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Learning approvals now produce a receipt with scope, review, and rollback before reuse.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -83880,6 +83949,10 @@ const state = {
         ...state.commandMemory,
         approval: { decision, decidedAt, build: BUILD_VERSION },
       });
+      const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, {
+        ...state.commandMemory,
+        approval: { decision, decidedAt, build: BUILD_VERSION },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -83889,6 +83962,7 @@ const state = {
           decidedAt,
           build: BUILD_VERSION,
           copyText: approvalLane.copyText,
+          releaseReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -83910,6 +83984,23 @@ const state = {
         text = buildCommandLearningApprovalLane(seed, state.commandMemory || {}).copyText || "";
       }
       copyTextToClipboard(text, "Learning approval copied.");
+      return;
+    }
+
+    if (action === "copy-command-learning-release") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+        const approvalLane = buildCommandLearningApprovalLane(seed, state.commandMemory || {});
+        text = buildCommandLearningReleaseReceipt(seed, approvalLane, state.commandMemory || {}).copyText || "";
+      }
+      copyTextToClipboard(text, "Learning release receipt copied.");
       return;
     }
 
