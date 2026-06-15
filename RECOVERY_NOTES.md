@@ -70,3 +70,4 @@ Recovery cleanup in this copy:
 - v370 adds an Outcome Proof Attachment Cue so each observed learning outcome asks for proof, document follow-up, or retune evidence before the loop closes.
 - v371 adds a Proof Review Decision Gate so attached proof must be accepted, held tenant-only, or routed to retune before learning is reused.
 - v372 adds a Learning Reuse Readiness Lock so accepted proof must clear privacy, governance, and reuse-scope locks before influencing guidance.
+- v373 adds a Local Guidance Influence Preview so approved learning can show exactly which local product surfaces may preview it before live guidance changes.
