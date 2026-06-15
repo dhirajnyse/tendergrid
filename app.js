@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v376";
-  const BUILD_LABEL = "Local Guidance Canary Monitor";
+  const BUILD_VERSION = "v377";
+  const BUILD_LABEL = "Local Canary Graduation Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=376";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=376";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=377";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=377";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15878,6 +15878,94 @@ const state = {
     return { blastRadius, canaryDecision, cards, choices, copyText, monitorId, monitoredAt: savedMonitor.monitoredAt || null, monitoredLabel, monitorState, nextAction, nextReview, outcomeSignal, rollback, tone };
   }
 
+  function buildCommandLocalCanaryGraduationGate(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, memory = {}) {
+    const savedGate = memory.approval?.localCanaryGraduationGate || {};
+    const graduationId = savedGate.graduationId || `${canaryMonitor.monitorId || activationGate.gateId || feedbackPulse.pulseId || BUILD_VERSION.toUpperCase()}-LCG`;
+    const liftReady = canaryMonitor.monitorState === "Lift confirmed" || canaryMonitor.canaryDecision === "Confirm lift";
+    const frictionSeen = canaryMonitor.monitorState === "Friction review" || canaryMonitor.canaryDecision === "Friction found";
+    const rollbackReady = canaryMonitor.monitorState === "Rollback ready" || canaryMonitor.canaryDecision === "Rollback canary";
+    const graduationDecision =
+      savedGate.graduationDecision ||
+      (liftReady
+        ? "Graduate local playbook"
+        : rollbackReady
+          ? "Rollback learning"
+          : frictionSeen
+            ? "Retune guidance"
+            : "Extend canary watch");
+    const graduatedAt = savedGate.graduatedAt
+      ? new Date(savedGate.graduatedAt)
+      : null;
+    const graduatedLabel = graduatedAt && !Number.isNaN(graduatedAt.getTime())
+      ? graduatedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Not graduated yet";
+    const graduationState =
+      graduationDecision === "Graduate local playbook" && liftReady
+        ? "Graduation ready"
+        : graduationDecision === "Extend canary watch"
+          ? "Watch extended"
+          : graduationDecision === "Retune guidance"
+            ? "Retune before graduation"
+            : graduationDecision === "Rollback learning"
+              ? "Rollback graduation"
+              : "Graduation held";
+    const tone =
+      graduationState === "Graduation ready"
+        ? "green"
+        : graduationState === "Watch extended"
+          ? "blue"
+          : "amber";
+    const graduationScope =
+      graduationState === "Graduation ready"
+        ? "Tenant playbook candidate"
+        : graduationState === "Watch extended"
+          ? "Canary watch only"
+          : graduationState === "Retune before graduation"
+            ? "Retune queue"
+            : "Rollback and hold";
+    const proofLock =
+      graduationState === "Graduation ready"
+        ? proofCue.cueState === "Learning review ready"
+          ? "Proof attached"
+          : "Attach lift proof"
+        : "Proof stays local";
+    const rolloutRule =
+      graduationState === "Graduation ready"
+        ? "One tenant playbook update, no network reuse yet"
+        : graduationState === "Watch extended"
+          ? "Measure one more outcome before graduation"
+          : graduationState === "Retune before graduation"
+            ? "Retune wording or routing before another canary"
+            : "Rollback canary and preserve private learning";
+    const nextAction =
+      graduationState === "Graduation ready"
+        ? "Graduate only to a tenant-local playbook candidate, keep proof attached, and wait for a separate reuse decision before network influence."
+        : graduationState === "Watch extended"
+          ? "Keep the canary calm, observe one more outcome, and revisit graduation at the next review."
+          : graduationState === "Retune before graduation"
+            ? "Route the canary lesson back to retune before it becomes playbook guidance."
+            : "Rollback the local canary and keep the lesson private until the proof path improves.";
+    const choices = [
+      ["Graduate local playbook", "Graduate", "Promote only to a tenant-local playbook candidate after lift proof.", "green"],
+      ["Extend canary watch", "Watch", "Keep measuring one more outcome before graduation.", "blue"],
+      ["Retune guidance", "Retune", "Send the canary lesson back to wording or routing retune.", "amber"],
+      ["Rollback learning", "Rollback", "Rollback the canary and hold the learning privately.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Local Canary Graduation Gate ${graduationId}: ${graduationState}. Decision ${graduationDecision}. Scope ${graduationScope}. Proof ${proofLock}. Rollout ${rolloutRule}. Next: ${nextAction}`;
+    const cards = [
+      ["Graduation", graduationState, graduationDecision, tone],
+      ["Scope", graduationScope, approvalLane.boundary || "Tenant boundary controls graduation.", tone],
+      ["Proof", proofLock, canaryMonitor.outcomeSignal || "Canary outcome to verify.", graduationState === "Graduation ready" ? "green" : "blue"],
+      ["Rollout rule", rolloutRule, graduatedLabel, tone],
+    ];
+    return { cards, choices, copyText, graduatedAt: savedGate.graduatedAt || null, graduatedLabel, graduationDecision, graduationId, graduationScope, graduationState, nextAction, proofLock, rolloutRule, tone };
+  }
+
   function renderCommandMemoryReceipt() {
     const memory = state.commandMemory || {};
     if (!memory.text) return "";
@@ -15910,6 +15998,7 @@ const state = {
     const feedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, memory);
     const activationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, memory);
     const canaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, memory);
+    const graduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -16283,6 +16372,36 @@ const state = {
                                           )
                                           .join("")}
                                         <button class="ghost-btn" type="button" data-action="copy-command-guidance-canary" data-copy-text="${escapeHtml(encodeURIComponent(canaryMonitor.copyText))}">Copy canary</button>
+                                      </div>
+                                      <div class="command-canary-graduation-gate tone-${escapeHtml(graduationGate.tone)}" aria-label="Local canary graduation gate">
+                                        <div class="command-canary-graduation-head">
+                                          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Local Canary Graduation Gate</span>
+                                          <strong>${escapeHtml(graduationGate.graduationState)} / ${escapeHtml(graduationGate.graduationId)}</strong>
+                                          <small>${escapeHtml(graduationGate.nextAction)}</small>
+                                        </div>
+                                        <div class="command-canary-graduation-grid">
+                                          ${graduationGate.cards
+                                            .map(
+                                              ([label, value, note, tone]) => `
+                                                <article class="tone-${escapeHtml(tone)}">
+                                                  <span>${escapeHtml(label)}</span>
+                                                  <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                  <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                </article>
+                                              `,
+                                            )
+                                            .join("")}
+                                        </div>
+                                        <div class="command-canary-graduation-actions">
+                                          ${graduationGate.choices
+                                            .map(
+                                              ([graduationDecision, label, note, tone]) => `
+                                                <button class="ghost-btn ${graduationGate.graduationDecision === graduationDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-canary-graduation-gate" data-graduation-decision="${escapeHtml(graduationDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                              `,
+                                            )
+                                            .join("")}
+                                          <button class="ghost-btn" type="button" data-action="copy-command-canary-graduation" data-copy-text="${escapeHtml(encodeURIComponent(graduationGate.copyText))}">Copy graduation</button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -34843,12 +34962,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v376 Local Guidance Canary Monitor",
-      phase: "Local Guidance Canary Monitor",
+      version: "v377 Local Canary Graduation Gate",
+      phase: "Local Canary Graduation Gate",
       lane: "Static product prototype on GitHub Pages",
-      pace: "357 meaningful versions since rebrand",
-      summary: "Command Center now monitors tenant-local canaries for lift, friction, rollback, and next review before broader reuse.",
+      pace: "358 meaningful versions since rebrand",
+      summary: "Command Center now decides whether monitored local canaries graduate, keep watching, retune, or rollback before broader reuse.",
       tracks: [
+        ["v377 local canary graduation gate", 100, "Command Center now decides whether monitored tenant-local canaries graduate to a playbook candidate, keep watching, retune, or rollback.", "green"],
         ["v376 local guidance canary monitor", 100, "Command Center now watches every tenant-local canary for lift, friction, rollback readiness, and the next review before wider reuse.", "green"],
         ["v375 local guidance activation gate", 100, "Command Center now decides whether previewed learning stays observe-only, enters a tenant-local canary, returns to retune, or remains held before activation.", "green"],
         ["v374 local influence feedback pulse", 100, "Command Center now lets previewed guidance be kept, retuned, promoted to a tenant-local playbook candidate, or held before activation.", "green"],
@@ -35367,10 +35487,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every tenant-local canary now records lift, friction, rollback posture, and next review before broader reuse.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every monitored local canary now gets one graduation decision before playbook or broader reuse.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -85069,6 +85189,10 @@ const state = {
         ...state.commandMemory,
         approval: { decision, decidedAt, build: BUILD_VERSION, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate },
       });
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, {
+        ...state.commandMemory,
+        approval: { decision, decidedAt, build: BUILD_VERSION, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85090,6 +85214,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85208,6 +85333,7 @@ const state = {
           localInfluenceFeedbackPulse: null,
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
+          localCanaryGraduationGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -85224,6 +85350,7 @@ const state = {
       const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForOutcome);
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForOutcome);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForOutcome);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForOutcome);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85243,6 +85370,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85291,6 +85419,7 @@ const state = {
           localInfluenceFeedbackPulse: null,
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
+          localCanaryGraduationGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -85307,6 +85436,7 @@ const state = {
       const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForProof);
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForProof);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForProof);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForProof);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85326,6 +85456,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85374,6 +85505,7 @@ const state = {
           localInfluenceFeedbackPulse: null,
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
+          localCanaryGraduationGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -85390,6 +85522,7 @@ const state = {
       const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForReview);
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForReview);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForReview);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForReview);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85409,6 +85542,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85457,6 +85591,7 @@ const state = {
           localInfluenceFeedbackPulse: null,
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
+          localCanaryGraduationGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -85473,6 +85608,7 @@ const state = {
       const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForLock);
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForLock);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForLock);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForLock);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85492,6 +85628,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85540,6 +85677,7 @@ const state = {
           localInfluenceFeedbackPulse: null,
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
+          localCanaryGraduationGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -85556,6 +85694,7 @@ const state = {
       const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForPreview);
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForPreview);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForPreview);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForPreview);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85575,6 +85714,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85623,6 +85763,7 @@ const state = {
           localInfluenceFeedbackPulse: { feedbackDecision, pulsedAt, build: BUILD_VERSION },
           localGuidanceActivationGate: null,
           localGuidanceCanaryMonitor: null,
+          localCanaryGraduationGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -85639,6 +85780,7 @@ const state = {
       const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForPulse);
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForPulse);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForPulse);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForPulse);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85658,6 +85800,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85706,6 +85849,7 @@ const state = {
           ...existingApproval,
           localGuidanceActivationGate: { activationDecision, activatedAt, build: BUILD_VERSION },
           localGuidanceCanaryMonitor: null,
+          localCanaryGraduationGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -85722,6 +85866,7 @@ const state = {
       const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForActivation);
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForActivation);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForActivation);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForActivation);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85741,6 +85886,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85789,6 +85935,7 @@ const state = {
         approval: {
           ...existingApproval,
           localGuidanceCanaryMonitor: { canaryDecision, monitoredAt, build: BUILD_VERSION },
+          localCanaryGraduationGate: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -85805,6 +85952,7 @@ const state = {
       const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForCanary);
       const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForCanary);
       const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForCanary);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForCanary);
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -85824,6 +85972,7 @@ const state = {
           localInfluenceFeedbackPulse,
           localGuidanceActivationGate,
           localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -85857,6 +86006,93 @@ const state = {
         text = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, state.commandMemory || {}).copyText || "";
       }
       copyTextToClipboard(text, "Local guidance canary monitor copied.");
+      return;
+    }
+
+    if (action === "set-command-canary-graduation-gate") {
+      const graduationDecision = button.dataset.graduationDecision || "Extend canary watch";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before graduating the local canary.");
+        return;
+      }
+      const graduatedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForGraduation = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          localCanaryGraduationGate: { graduationDecision, graduatedAt, build: BUILD_VERSION },
+        },
+      };
+      const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
+      const approvalLane = buildCommandLearningApprovalLane(seed, memoryForGraduation);
+      const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, memoryForGraduation);
+      const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, memoryForGraduation);
+      const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, memoryForGraduation);
+      const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, memoryForGraduation);
+      const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, memoryForGraduation);
+      const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, memoryForGraduation);
+      const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, memoryForGraduation);
+      const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, memoryForGraduation);
+      const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, memoryForGraduation);
+      const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, memoryForGraduation);
+      const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, memoryForGraduation);
+      const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, memoryForGraduation);
+      const localCanaryGraduationGate = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, memoryForGraduation);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt,
+          reviewCue,
+          evidenceLens,
+          confidenceRibbon,
+          observationOutcome,
+          proofAttachmentCue,
+          proofReviewGate,
+          reuseReadinessLock,
+          guidanceInfluencePreview,
+          localInfluenceFeedbackPulse,
+          localGuidanceActivationGate,
+          localGuidanceCanaryMonitor,
+          localCanaryGraduationGate,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${graduationDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-canary-graduation") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        const seed = buildCommandOutcomeMemorySeed(state.commandMemory || {});
+        const approvalLane = buildCommandLearningApprovalLane(seed, state.commandMemory || {});
+        const releaseReceipt = buildCommandLearningReleaseReceipt(seed, approvalLane, state.commandMemory || {});
+        const reviewCue = buildCommandLearningReviewCue(seed, approvalLane, releaseReceipt, state.commandMemory || {});
+        const evidenceLens = buildCommandEvidenceConfidenceLens(seed, approvalLane, releaseReceipt, reviewCue, state.commandMemory || {});
+        const confidenceRibbon = buildCommandConfidenceHistoryRibbon(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, state.commandMemory || {});
+        const observationOutcome = buildCommandObservationOutcomeSlot(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, state.commandMemory || {});
+        const proofAttachmentCue = buildCommandOutcomeProofAttachmentCue(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, state.commandMemory || {});
+        const proofReviewGate = buildCommandProofReviewDecisionGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, state.commandMemory || {});
+        const reuseReadinessLock = buildCommandLearningReuseReadinessLock(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, state.commandMemory || {});
+        const guidanceInfluencePreview = buildCommandLocalGuidanceInfluencePreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, state.commandMemory || {});
+        const localInfluenceFeedbackPulse = buildCommandLocalInfluenceFeedbackPulse(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, state.commandMemory || {});
+        const localGuidanceActivationGate = buildCommandLocalGuidanceActivationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, state.commandMemory || {});
+        const localGuidanceCanaryMonitor = buildCommandLocalGuidanceCanaryMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, state.commandMemory || {});
+        text = buildCommandLocalCanaryGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, state.commandMemory || {}).copyText || "";
+      }
+      copyTextToClipboard(text, "Local canary graduation gate copied.");
       return;
     }
 
