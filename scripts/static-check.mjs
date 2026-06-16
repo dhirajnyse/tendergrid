@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=403"), "index.html is missing the v403 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=403"), "index.html is missing the v403 data cache token.");
-assert(index.includes("app.js?v=403"), "index.html is missing the v403 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=403"), "index.html is missing the v403 icon cache token.");
+assert(index.includes("styles.css?v=404"), "index.html is missing the v404 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=404"), "index.html is missing the v404 data cache token.");
+assert(index.includes("app.js?v=404"), "index.html is missing the v404 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=404"), "index.html is missing the v404 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v403";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Guidance Decision Brief";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=403'), "app.js is missing the v403 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=403'), "app.js is missing the v403 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v404";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Guidance Commitment Receipt";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=404'), "app.js is missing the v404 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=404'), "app.js is missing the v404 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -178,6 +178,7 @@ assert(app.includes("buildCommandGuidanceFlightDeck"), "app.js is missing the Gu
 assert(app.includes("buildCommandGuidanceFlightRecorder"), "app.js is missing the Guidance Flight Recorder model.");
 assert(app.includes("buildCommandGuidanceReviewRadar"), "app.js is missing the Guidance Review Radar model.");
 assert(app.includes("buildCommandGuidanceDecisionBrief"), "app.js is missing the Guidance Decision Brief model.");
+assert(app.includes("buildCommandGuidanceCommitmentReceipt"), "app.js is missing the Guidance Commitment Receipt model.");
 assert(app.includes("buildCommandMemoryLearningChain"), "app.js is missing the Command Memory Learning Chain helper.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
@@ -252,6 +253,7 @@ assert(app.includes('action === "copy-command-guidance-flight-deck"'), "app.js i
 assert(app.includes('action === "copy-command-guidance-flight-recorder"'), "app.js is missing the Guidance Flight Recorder copy action.");
 assert(app.includes('action === "copy-command-guidance-review-radar"'), "app.js is missing the Guidance Review Radar copy action.");
 assert(app.includes('action === "copy-command-guidance-decision-brief"'), "app.js is missing the Guidance Decision Brief copy action.");
+assert(app.includes('action === "copy-command-guidance-commitment-receipt"'), "app.js is missing the Guidance Commitment Receipt copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -495,6 +497,9 @@ assert(css.includes(".command-guidance-radar-focus"), "styles.css is missing the
 assert(css.includes(".command-guidance-decision-brief"), "styles.css is missing the Guidance Decision Brief panel.");
 assert(css.includes(".command-guidance-decision-grid"), "styles.css is missing the Guidance Decision Brief grid.");
 assert(css.includes(".command-guidance-decision-signoff"), "styles.css is missing the Guidance Decision Brief signoff grid.");
+assert(css.includes(".command-guidance-commitment-receipt"), "styles.css is missing the Guidance Commitment Receipt panel.");
+assert(css.includes(".command-guidance-commitment-grid"), "styles.css is missing the Guidance Commitment Receipt grid.");
+assert(css.includes(".command-guidance-commitment-checkpoints"), "styles.css is missing the Guidance Commitment Receipt checkpoints.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);

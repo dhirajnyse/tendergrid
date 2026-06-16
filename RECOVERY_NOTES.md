@@ -90,6 +90,7 @@ Recovery cleanup in this copy:
 - v401 adds a Guidance Flight Recorder so the trigger, evidence, clearance, review, and rollback trail behind the Flight Deck is copy-ready.
 - v402 adds a Guidance Review Radar so proof, owner, review, rollback, and clearance gaps are visible after the Flight Recorder.
 - v403 adds a Guidance Decision Brief so the review radar becomes one approve, hold, or retune packet.
+- v404 adds a Guidance Commitment Receipt so each decision brief becomes one owner-backed commitment with proof and rollback.
 - v395 adds a Tenant Reinforcement Canary Watch so opened canaries are measured for lift, friction, evidence, and rollback before wider reuse.
 - v394 adds a Tenant Reinforcement Canary Plan so approved reinforcement still needs one canary surface, owner, metric, and rollback window before wider guidance changes.
 - v393 adds a Tenant Reinforcement Reward Gate so measured tenant outcomes must be approved, observed, retuned, or blocked before reinforcing future guidance.
