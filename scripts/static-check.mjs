@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=396"), "index.html is missing the v396 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=396"), "index.html is missing the v396 data cache token.");
-assert(index.includes("app.js?v=396"), "index.html is missing the v396 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=396"), "index.html is missing the v396 icon cache token.");
+assert(index.includes("styles.css?v=397"), "index.html is missing the v397 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=397"), "index.html is missing the v397 data cache token.");
+assert(index.includes("app.js?v=397"), "index.html is missing the v397 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=397"), "index.html is missing the v397 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v396";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Tenant Reinforcement Graduation Gate";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=396'), "app.js is missing the v396 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=396'), "app.js is missing the v396 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v397";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Tenant Reinforcement Reuse Passport";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=397'), "app.js is missing the v397 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=397'), "app.js is missing the v397 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -171,6 +171,7 @@ assert(app.includes("buildCommandTenantReinforcementRewardGate"), "app.js is mis
 assert(app.includes("buildCommandTenantReinforcementCanaryPlan"), "app.js is missing the Tenant Reinforcement Canary Plan model.");
 assert(app.includes("buildCommandTenantReinforcementCanaryWatch"), "app.js is missing the Tenant Reinforcement Canary Watch model.");
 assert(app.includes("buildCommandTenantReinforcementGraduationGate"), "app.js is missing the Tenant Reinforcement Graduation Gate model.");
+assert(app.includes("buildCommandTenantReinforcementReusePassport"), "app.js is missing the Tenant Reinforcement Reuse Passport model.");
 assert(app.includes("buildCommandMemoryLearningChain"), "app.js is missing the Command Memory Learning Chain helper.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
@@ -235,6 +236,8 @@ assert(app.includes('action === "set-command-tenant-canary-watch"'), "app.js is 
 assert(app.includes('action === "copy-command-tenant-canary-watch"'), "app.js is missing the Tenant Reinforcement Canary Watch copy action.");
 assert(app.includes('action === "set-command-tenant-graduation-gate"'), "app.js is missing the Tenant Reinforcement Graduation Gate decision action.");
 assert(app.includes('action === "copy-command-tenant-graduation-gate"'), "app.js is missing the Tenant Reinforcement Graduation Gate copy action.");
+assert(app.includes('action === "set-command-tenant-reuse-passport"'), "app.js is missing the Tenant Reinforcement Reuse Passport decision action.");
+assert(app.includes('action === "copy-command-tenant-reuse-passport"'), "app.js is missing the Tenant Reinforcement Reuse Passport copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -397,6 +400,10 @@ assert(
   approvalBlock.includes("tenantReinforcementGraduationGate"),
   "Learning Approval Lane should persist the Tenant Reinforcement Graduation Gate.",
 );
+assert(
+  approvalBlock.includes("tenantReinforcementReusePassport"),
+  "Learning Approval Lane should persist the Tenant Reinforcement Reuse Passport.",
+);
 
 assert(css.includes(".command-reuse-readiness-lock"), "styles.css is missing the Learning Reuse Readiness Lock panel.");
 assert(css.includes(".command-reuse-readiness-grid"), "styles.css is missing the Learning Reuse Readiness Lock grid.");
@@ -448,6 +455,8 @@ assert(css.includes(".command-tenant-canary-watch"), "styles.css is missing the 
 assert(css.includes(".command-tenant-watch-grid"), "styles.css is missing the Tenant Reinforcement Canary Watch grid.");
 assert(css.includes(".command-tenant-graduation-gate"), "styles.css is missing the Tenant Reinforcement Graduation Gate panel.");
 assert(css.includes(".command-tenant-graduation-grid"), "styles.css is missing the Tenant Reinforcement Graduation Gate grid.");
+assert(css.includes(".command-tenant-reuse-passport"), "styles.css is missing the Tenant Reinforcement Reuse Passport panel.");
+assert(css.includes(".command-tenant-reuse-grid"), "styles.css is missing the Tenant Reinforcement Reuse Passport grid.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);

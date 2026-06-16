@@ -8746,6 +8746,118 @@ body.quiet-focus-mode .focus-mode-pill {
   background: var(--teal);
 }
 
+.command-tenant-reuse-passport {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(226, 244, 238, 0.9));
+}
+
+.command-tenant-reuse-passport.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-tenant-reuse-passport.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-tenant-reuse-passport.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-tenant-reuse-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-tenant-reuse-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-tenant-reuse-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-tenant-reuse-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.command-tenant-reuse-grid article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 84px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-tenant-reuse-grid article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-tenant-reuse-grid article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-tenant-reuse-grid article small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-tenant-reuse-grid article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-tenant-reuse-grid article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-tenant-reuse-grid article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-tenant-reuse-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command-tenant-reuse-actions .ghost-btn.active {
+  border-color: rgba(13, 111, 97, 0.44);
+  color: #ffffff;
+  background: var(--teal);
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -14795,7 +14907,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-reward-grid,
   .command-tenant-canary-grid,
   .command-tenant-watch-grid,
-  .command-tenant-graduation-grid {
+  .command-tenant-graduation-grid,
+  .command-tenant-reuse-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -15048,7 +15161,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-reward-grid,
   .command-tenant-canary-grid,
   .command-tenant-watch-grid,
-  .command-tenant-graduation-grid {
+  .command-tenant-graduation-grid,
+  .command-tenant-reuse-grid {
     grid-template-columns: 1fr;
   }
 
@@ -15085,7 +15199,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-reward-actions .ghost-btn,
   .command-tenant-canary-actions .ghost-btn,
   .command-tenant-watch-actions .ghost-btn,
-  .command-tenant-graduation-actions .ghost-btn {
+  .command-tenant-graduation-actions .ghost-btn,
+  .command-tenant-reuse-actions .ghost-btn {
     width: 100%;
   }
 
@@ -15121,7 +15236,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-reward-gate,
   .command-tenant-canary-plan,
   .command-tenant-canary-watch,
-  .command-tenant-graduation-gate {
+  .command-tenant-graduation-gate,
+  .command-tenant-reuse-passport {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -15164,6 +15280,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-canary-head,
   .command-tenant-watch-head,
   .command-tenant-graduation-head,
+  .command-tenant-reuse-head,
   .command-learning-approval-grid,
   .command-learning-release-grid,
   .command-learning-review-grid,
@@ -15197,6 +15314,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-canary-grid,
   .command-tenant-watch-grid,
   .command-tenant-graduation-grid,
+  .command-tenant-reuse-grid,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -15229,7 +15347,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-reward-actions,
   .command-tenant-canary-actions,
   .command-tenant-watch-actions,
-  .command-tenant-graduation-actions {
+  .command-tenant-graduation-actions,
+  .command-tenant-reuse-actions {
     margin-right: 10px;
     margin-left: 10px;
   }
