@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v396 Tenant Reinforcement Graduation Gate decides whether watched canaries graduate, keep watching, retune, or roll back before wider reinforcement reuse.
 - v395 Tenant Reinforcement Canary Watch monitors lift, friction, evidence, and rollback after a canary plan opens so reinforcement stays measured before wider reuse.
 - v394 Tenant Reinforcement Canary Plan turns approved reinforcement into one canary surface, owner, metric, and rollback window before wider guidance changes.
 - v393 Tenant Reinforcement Reward Gate decides whether measured tenant outcomes can reinforce future guidance, stay observe-only, retune, or be blocked.

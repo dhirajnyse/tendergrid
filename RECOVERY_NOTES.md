@@ -82,6 +82,7 @@ Recovery cleanup in this copy:
 - v382 adds a Country Launch Receipt so first-country rollout carries environment, proof, and second-country expansion locks before global learning scales.
 - v383 adds a Second Country Expansion Gate so second-country rollout stays locked until first-country proof, localization delta, residency, and rollback readiness are visible.
 - v384 adds a Country Transfer Delta Map so outcome, wording, residency, and rollback differences are compared before any second-country learning transfer can launch.
+- v396 adds a Tenant Reinforcement Graduation Gate so watched canaries graduate, keep watching, retune, or roll back before wider reinforcement reuse.
 - v395 adds a Tenant Reinforcement Canary Watch so opened canaries are measured for lift, friction, evidence, and rollback before wider reuse.
 - v394 adds a Tenant Reinforcement Canary Plan so approved reinforcement still needs one canary surface, owner, metric, and rollback window before wider guidance changes.
 - v393 adds a Tenant Reinforcement Reward Gate so measured tenant outcomes must be approved, observed, retuned, or blocked before reinforcing future guidance.
