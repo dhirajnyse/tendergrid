@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=392"), "index.html is missing the v392 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=392"), "index.html is missing the v392 data cache token.");
-assert(index.includes("app.js?v=392"), "index.html is missing the v392 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=392"), "index.html is missing the v392 icon cache token.");
+assert(index.includes("styles.css?v=393"), "index.html is missing the v393 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=393"), "index.html is missing the v393 data cache token.");
+assert(index.includes("app.js?v=393"), "index.html is missing the v393 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=393"), "index.html is missing the v393 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v392";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Tenant Outcome Learning Loop";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=392'), "app.js is missing the v392 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=392'), "app.js is missing the v392 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v393";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Tenant Reinforcement Reward Gate";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=393'), "app.js is missing the v393 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=393'), "app.js is missing the v393 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -167,6 +167,7 @@ assert(app.includes("buildCommandTransferLearningTrustGate"), "app.js is missing
 assert(app.includes("buildCommandTenantLearningPolicyStudio"), "app.js is missing the Tenant Learning Policy Studio model.");
 assert(app.includes("buildCommandTenantPolicyImpactPreview"), "app.js is missing the Tenant Policy Impact Preview model.");
 assert(app.includes("buildCommandTenantOutcomeLearningLoop"), "app.js is missing the Tenant Outcome Learning Loop model.");
+assert(app.includes("buildCommandTenantReinforcementRewardGate"), "app.js is missing the Tenant Reinforcement Reward Gate model.");
 assert(app.includes("buildCommandMemoryLearningChain"), "app.js is missing the Command Memory Learning Chain helper.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
@@ -223,6 +224,8 @@ assert(app.includes('action === "set-command-tenant-policy-impact"'), "app.js is
 assert(app.includes('action === "copy-command-tenant-impact"'), "app.js is missing the Tenant Policy Impact Preview copy action.");
 assert(app.includes('action === "set-command-tenant-outcome-loop"'), "app.js is missing the Tenant Outcome Learning Loop decision action.");
 assert(app.includes('action === "copy-command-tenant-outcome-loop"'), "app.js is missing the Tenant Outcome Learning Loop copy action.");
+assert(app.includes('action === "set-command-tenant-reward-gate"'), "app.js is missing the Tenant Reinforcement Reward Gate decision action.");
+assert(app.includes('action === "copy-command-tenant-reward-gate"'), "app.js is missing the Tenant Reinforcement Reward Gate copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -369,6 +372,10 @@ assert(
   approvalBlock.includes("tenantOutcomeLearningLoop"),
   "Learning Approval Lane should persist the Tenant Outcome Learning Loop.",
 );
+assert(
+  approvalBlock.includes("tenantReinforcementRewardGate"),
+  "Learning Approval Lane should persist the Tenant Reinforcement Reward Gate.",
+);
 
 assert(css.includes(".command-reuse-readiness-lock"), "styles.css is missing the Learning Reuse Readiness Lock panel.");
 assert(css.includes(".command-reuse-readiness-grid"), "styles.css is missing the Learning Reuse Readiness Lock grid.");
@@ -412,6 +419,8 @@ assert(css.includes(".command-tenant-impact-preview"), "styles.css is missing th
 assert(css.includes(".command-tenant-impact-grid"), "styles.css is missing the Tenant Policy Impact Preview grid.");
 assert(css.includes(".command-tenant-outcome-loop"), "styles.css is missing the Tenant Outcome Learning Loop panel.");
 assert(css.includes(".command-tenant-outcome-grid"), "styles.css is missing the Tenant Outcome Learning Loop grid.");
+assert(css.includes(".command-tenant-reward-gate"), "styles.css is missing the Tenant Reinforcement Reward Gate panel.");
+assert(css.includes(".command-tenant-reward-grid"), "styles.css is missing the Tenant Reinforcement Reward Gate grid.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);
