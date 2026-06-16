@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v400 Guidance Flight Deck simplifies governed learning into one cockpit with observe, canary, activate, and rollback lanes.
 - v399 Tenant Reinforcement Reuse Activation Receipt issues one controlled activation receipt with surface, owner, proof, review, and rollback before tenant guidance changes.
 - v396 Tenant Reinforcement Graduation Gate decides whether watched canaries graduate, keep watching, retune, or roll back before wider reinforcement reuse.
 - v397 Tenant Reinforcement Reuse Passport packages graduated reinforcement with proof, privacy, fairness, and rollback rules before tenant-safe reuse.

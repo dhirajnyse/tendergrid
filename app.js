@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v399";
-  const BUILD_LABEL = "Tenant Reinforcement Reuse Activation Receipt";
+  const BUILD_VERSION = "v400";
+  const BUILD_LABEL = "Guidance Flight Deck";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=399";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=399";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=400";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=400";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -18113,6 +18113,56 @@ const state = {
     return { activatedAt: savedReceipt.activatedAt || null, activatedLabel, activationDecision, activationState, cards, choices, copyText, nextAction, ownerRule, proofRule, receiptId, reviewRule, rollbackRule, surfaceRule, tone };
   }
 
+  function buildCommandGuidanceFlightDeck(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, learningLedger = {}, learningSafetyReceipt = {}, globalLearningPassport = {}, marketFitGate = {}, countryLaunchReceipt = {}, secondCountryExpansionGate = {}, countryTransferDeltaMap = {}, transferReadinessScore = {}, transferActionPacket = {}, transferLaunchReceipt = {}, transferOutcomeMonitor = {}, transferLearningTrustGate = {}, tenantLearningPolicyStudio = {}, tenantPolicyImpactPreview = {}, tenantOutcomeLearningLoop = {}, tenantReinforcementRewardGate = {}, tenantReinforcementCanaryPlan = {}, tenantReinforcementCanaryWatch = {}, tenantReinforcementGraduationGate = {}, tenantReinforcementReusePassport = {}, tenantReinforcementReuseFitPreview = {}, tenantReinforcementReuseActivationReceipt = {}) {
+    const activationReady = tenantReinforcementReuseActivationReceipt.activationState === "Activation receipt ready";
+    const fitReady = tenantReinforcementReuseFitPreview.fitState === "Fit preview ready";
+    const canaryReady = String(tenantReinforcementCanaryPlan.canaryState || "").includes("ready") || String(tenantReinforcementCanaryWatch.watchState || "").includes("Watch");
+    const observeReady = (Number(evidenceLens.score) || 0) >= 50 || String(outcomeSlot.outcomeState || "").includes("Outcome");
+    const rollbackReady = Boolean(tenantReinforcementReuseActivationReceipt.rollbackRule && tenantReinforcementReuseActivationReceipt.rollbackRule !== "Rollback hold");
+    const deckScore = [observeReady, canaryReady, fitReady, activationReady, rollbackReady].filter(Boolean).length * 20;
+    const deckState =
+      activationReady
+        ? "Flight ready"
+        : fitReady
+          ? "Activation runway"
+          : canaryReady
+            ? "Canary runway"
+            : observeReady
+              ? "Observe runway"
+              : "Hold runway";
+    const tone =
+      deckState === "Flight ready"
+        ? "green"
+        : deckState === "Activation runway" || deckState === "Canary runway"
+          ? "blue"
+          : "amber";
+    const deckId = `${tenantReinforcementReuseActivationReceipt.receiptId || tenantReinforcementReuseFitPreview.previewId || seed.seedId || BUILD_VERSION.toUpperCase()}-FD`;
+    const nextAction =
+      deckState === "Flight ready"
+        ? "Fly only one receipted guidance change and keep rollback visible."
+        : deckState === "Activation runway"
+          ? "Finish the activation receipt before guidance can fly."
+          : deckState === "Canary runway"
+            ? "Use canary evidence to clear the fit preview."
+            : deckState === "Observe runway"
+              ? "Keep observing until canary and fit lanes are visible."
+              : "Hold guidance until evidence, owner, proof, and rollback are ready.";
+    const lanes = [
+      ["Observe", observeReady ? "Evidence visible" : "Evidence hold", evidenceLens.lensState || approvalLane.activeDecision || "Approval needed", observeReady ? "green" : "amber"],
+      ["Canary", canaryReady ? "Canary visible" : "Canary hold", tenantReinforcementCanaryPlan.surfaceRule || tenantReinforcementCanaryWatch.watchSignal || "Plan one surface", canaryReady ? "green" : "amber"],
+      ["Activate", activationReady ? "Receipted" : fitReady ? "Ready to receipt" : "Not ready", tenantReinforcementReuseActivationReceipt.surfaceRule || tenantReinforcementReuseFitPreview.surfaceRule || "One surface only", activationReady ? "green" : fitReady ? "blue" : "amber"],
+      ["Rollback", rollbackReady ? "Armed" : "Hold", tenantReinforcementReuseActivationReceipt.rollbackRule || tenantReinforcementReuseFitPreview.rollbackRule || "Rollback required", rollbackReady ? "green" : "amber"],
+    ];
+    const guardrails = [
+      ["One surface", tenantReinforcementReuseActivationReceipt.surfaceRule || tenantReinforcementReuseFitPreview.surfaceRule || "No broad activation", activationReady ? "green" : tone],
+      ["One owner", tenantReinforcementReuseActivationReceipt.ownerRule || seed.owner || "Owner required", activationReady ? "green" : tone],
+      ["One proof", tenantReinforcementReuseActivationReceipt.proofRule || tenantReinforcementReuseFitPreview.proofRule || "Proof required", activationReady ? "green" : tone],
+      ["One review", tenantReinforcementReuseActivationReceipt.reviewRule || reviewCue.reviewBy || "Review required", activationReady ? "green" : tone],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Guidance Flight Deck ${deckId}: ${deckState}, score ${deckScore}%. Observe ${lanes[0][1]}. Canary ${lanes[1][1]}. Activate ${lanes[2][1]}. Rollback ${lanes[3][1]}. Next: ${nextAction}`;
+    return { copyText, deckId, deckScore, deckState, guardrails, lanes, nextAction, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -18151,7 +18201,8 @@ const state = {
     const tenantReinforcementReusePassport = buildCommandTenantReinforcementReusePassport(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, memory);
     const tenantReinforcementReuseFitPreview = buildCommandTenantReinforcementReuseFitPreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReusePassport, memory);
     const tenantReinforcementReuseActivationReceipt = buildCommandTenantReinforcementReuseActivationReceipt(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReusePassport, tenantReinforcementReuseFitPreview, memory);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceFlightDeck = buildCommandGuidanceFlightDeck(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReusePassport, tenantReinforcementReuseFitPreview, tenantReinforcementReuseActivationReceipt);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceFlightDeck, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -18172,7 +18223,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceFlightDeck, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -19213,6 +19264,41 @@ const state = {
                                                                                         )
                                                                                         .join("")}
                                                                                       <button class="ghost-btn" type="button" data-action="copy-command-tenant-reuse-activation" data-copy-text="${escapeHtml(encodeURIComponent(tenantReinforcementReuseActivationReceipt.copyText))}">Copy activation</button>
+                                                                                    </div>
+                                                                                    <div class="command-guidance-flight-deck tone-${escapeHtml(guidanceFlightDeck.tone)}" aria-label="Guidance flight deck">
+                                                                                      <div class="command-guidance-flight-head">
+                                                                                        <span class="metric-label">${escapeHtml(BUILD_VERSION)} Guidance Flight Deck</span>
+                                                                                        <strong>${escapeHtml(guidanceFlightDeck.deckState)} / ${escapeHtml(String(guidanceFlightDeck.deckScore))}%</strong>
+                                                                                        <small>${escapeHtml(guidanceFlightDeck.nextAction)}</small>
+                                                                                      </div>
+                                                                                      <div class="command-guidance-flight-lanes">
+                                                                                        ${guidanceFlightDeck.lanes
+                                                                                          .map(
+                                                                                            ([label, value, note, tone]) => `
+                                                                                              <article class="tone-${escapeHtml(tone)}">
+                                                                                                <span>${escapeHtml(label)}</span>
+                                                                                                <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                                                                <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                                                              </article>
+                                                                                            `,
+                                                                                          )
+                                                                                          .join("")}
+                                                                                      </div>
+                                                                                      <div class="command-guidance-flight-guardrails">
+                                                                                        ${guidanceFlightDeck.guardrails
+                                                                                          .map(
+                                                                                            ([label, value, tone]) => `
+                                                                                              <article class="tone-${escapeHtml(tone)}">
+                                                                                                <span>${escapeHtml(label)}</span>
+                                                                                                <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                                                              </article>
+                                                                                            `,
+                                                                                          )
+                                                                                          .join("")}
+                                                                                      </div>
+                                                                                      <div class="command-guidance-flight-actions">
+                                                                                        <button class="ghost-btn" type="button" data-action="copy-command-guidance-flight-deck" data-copy-text="${escapeHtml(encodeURIComponent(guidanceFlightDeck.copyText))}">Copy flight deck</button>
+                                                                                      </div>
                                                                                     </div>
                                                                                   </div>
                                                                                 </div>
@@ -37796,12 +37882,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v399 Tenant Reinforcement Reuse Activation Receipt",
-      phase: "Tenant Reinforcement Reuse Activation Receipt",
+      version: "v400 Guidance Flight Deck",
+      phase: "Guidance Flight Deck",
       lane: "Static product prototype on GitHub Pages",
-      pace: "380 meaningful versions since rebrand",
-      summary: "Command Center now receipts one controlled guidance activation with surface, owner, proof, review, and rollback before tenant guidance changes.",
+      pace: "381 meaningful versions since rebrand",
+      summary: "Command Center now simplifies governed learning into one observe, canary, activate, and rollback flight deck.",
       tracks: [
+        ["v400 guidance flight deck", 100, "Command Center now simplifies governed learning into one observe, canary, activate, and rollback flight deck.", "green"],
         ["v399 tenant reinforcement reuse activation receipt", 100, "Command Center now receipts one controlled guidance activation with surface, owner, proof, review, and rollback before tenant guidance changes.", "green"],
         ["v398 tenant reinforcement reuse fit preview", 100, "Command Center now previews surface, owner, proof, privacy, and rollback fit before a reuse passport can influence tenant guidance.", "green"],
         ["v397 tenant reinforcement reuse passport", 100, "Command Center now packages graduated reinforcement with proof, privacy, fairness, and rollback rules before tenant-safe reuse.", "green"],
@@ -38343,10 +38430,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Tenant reinforcement reuse now issues an activation receipt before guidance changes.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Governed learning now has one calm observe, canary, activate, and rollback flight deck.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -91449,6 +91536,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).tenantReinforcementReuseActivationReceipt.copyText || "";
       }
       copyTextToClipboard(text, "Tenant reinforcement reuse activation receipt copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-flight-deck") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceFlightDeck.copyText || "";
+      }
+      copyTextToClipboard(text, "Guidance flight deck copied.");
       return;
     }
 
