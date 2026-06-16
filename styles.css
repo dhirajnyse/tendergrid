@@ -9215,6 +9215,129 @@ body.quiet-focus-mode .focus-mode-pill {
   gap: 8px;
 }
 
+.command-guidance-flight-recorder {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(246, 250, 249, 0.96));
+}
+
+.command-guidance-flight-recorder.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-flight-recorder.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-flight-recorder.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-recorder-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-guidance-recorder-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-guidance-recorder-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-guidance-recorder-chapters,
+.command-guidance-recorder-timeline {
+  display: grid;
+  gap: 8px;
+}
+
+.command-guidance-recorder-chapters {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-guidance-recorder-timeline {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-guidance-recorder-chapters article,
+.command-guidance-recorder-timeline article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-guidance-recorder-chapters article span,
+.command-guidance-recorder-timeline article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-guidance-recorder-chapters article strong,
+.command-guidance-recorder-timeline article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-guidance-recorder-chapters article small,
+.command-guidance-recorder-timeline article small,
+.command-guidance-recorder-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-guidance-recorder-chapters article.tone-green,
+.command-guidance-recorder-timeline article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-recorder-chapters article.tone-blue,
+.command-guidance-recorder-timeline article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-recorder-chapters article.tone-amber,
+.command-guidance-recorder-timeline article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-recorder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -15269,7 +15392,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-fit-grid,
   .command-tenant-activation-grid,
   .command-guidance-flight-lanes,
-  .command-guidance-flight-guardrails {
+  .command-guidance-flight-guardrails,
+  .command-guidance-recorder-chapters,
+  .command-guidance-recorder-timeline {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -15527,7 +15652,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-fit-grid,
   .command-tenant-activation-grid,
   .command-guidance-flight-lanes,
-  .command-guidance-flight-guardrails {
+  .command-guidance-flight-guardrails,
+  .command-guidance-recorder-chapters,
+  .command-guidance-recorder-timeline {
     grid-template-columns: 1fr;
   }
 
@@ -15568,7 +15695,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-reuse-actions .ghost-btn,
   .command-tenant-fit-actions .ghost-btn,
   .command-tenant-activation-actions .ghost-btn,
-  .command-guidance-flight-actions .ghost-btn {
+  .command-guidance-flight-actions .ghost-btn,
+  .command-guidance-recorder-actions .ghost-btn {
     width: 100%;
   }
 
@@ -15608,7 +15736,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-reuse-passport,
   .command-tenant-fit-preview,
   .command-tenant-activation-receipt,
-  .command-guidance-flight-deck {
+  .command-guidance-flight-deck,
+  .command-guidance-flight-recorder {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -15655,6 +15784,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-fit-head,
   .command-tenant-activation-head,
   .command-guidance-flight-head,
+  .command-guidance-recorder-head,
   .command-learning-approval-grid,
   .command-learning-release-grid,
   .command-learning-review-grid,
@@ -15693,6 +15823,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-activation-grid,
   .command-guidance-flight-lanes,
   .command-guidance-flight-guardrails,
+  .command-guidance-recorder-chapters,
+  .command-guidance-recorder-timeline,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -15729,7 +15861,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-reuse-actions,
   .command-tenant-fit-actions,
   .command-tenant-activation-actions,
-  .command-guidance-flight-actions {
+  .command-guidance-flight-actions,
+  .command-guidance-recorder-actions {
     margin-right: 10px;
     margin-left: 10px;
   }

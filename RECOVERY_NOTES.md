@@ -87,6 +87,7 @@ Recovery cleanup in this copy:
 - v398 adds a Tenant Reinforcement Reuse Fit Preview so reuse passports show surface, owner, proof, privacy, and rollback fit before tenant guidance can change.
 - v399 adds a Tenant Reinforcement Reuse Activation Receipt so one surface, owner, proof, review, and rollback path are locked before tenant guidance changes.
 - v400 adds a Guidance Flight Deck so observe, canary, activate, and rollback lanes are visible in one calm operator cockpit.
+- v401 adds a Guidance Flight Recorder so the trigger, evidence, clearance, review, and rollback trail behind the Flight Deck is copy-ready.
 - v395 adds a Tenant Reinforcement Canary Watch so opened canaries are measured for lift, friction, evidence, and rollback before wider reuse.
 - v394 adds a Tenant Reinforcement Canary Plan so approved reinforcement still needs one canary surface, owner, metric, and rollback window before wider guidance changes.
 - v393 adds a Tenant Reinforcement Reward Gate so measured tenant outcomes must be approved, observed, retuned, or blocked before reinforcing future guidance.
