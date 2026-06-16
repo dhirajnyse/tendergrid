@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v394 Tenant Reinforcement Canary Plan turns approved reinforcement into one canary surface, owner, metric, and rollback window before wider guidance changes.
 - v393 Tenant Reinforcement Reward Gate decides whether measured tenant outcomes can reinforce future guidance, stay observe-only, retune, or be blocked.
 - v392 Tenant Outcome Learning Loop watches tenant policy outcomes, reward signals, learning boundaries, and guardrails before reinforcement changes future guidance.
 - v391 Tenant Policy Impact Preview shows which tenant surfaces a learning policy may affect before live guidance changes.

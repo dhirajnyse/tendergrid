@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v393";
-  const BUILD_LABEL = "Tenant Reinforcement Reward Gate";
+  const BUILD_VERSION = "v394";
+  const BUILD_LABEL = "Tenant Reinforcement Canary Plan";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=393";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=393";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=394";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=394";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -17501,6 +17501,104 @@ const state = {
     return { boundaryRule, cards, choices, copyText, gateId, gateState, gatedAt: savedGate.gatedAt || null, gatedLabel, nextAction, proofRule, rewardDecision, rewardRule, rollbackRule, tone };
   }
 
+  function buildCommandTenantReinforcementCanaryPlan(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, learningLedger = {}, learningSafetyReceipt = {}, globalLearningPassport = {}, marketFitGate = {}, countryLaunchReceipt = {}, secondCountryExpansionGate = {}, countryTransferDeltaMap = {}, transferReadinessScore = {}, transferActionPacket = {}, transferLaunchReceipt = {}, transferOutcomeMonitor = {}, transferLearningTrustGate = {}, tenantLearningPolicyStudio = {}, tenantPolicyImpactPreview = {}, tenantOutcomeLearningLoop = {}, tenantReinforcementRewardGate = {}, memory = {}) {
+    const savedPlan = memory.approval?.tenantReinforcementCanaryPlan || {};
+    const planId = savedPlan.planId || `${tenantReinforcementRewardGate.gateId || tenantOutcomeLearningLoop.loopId || BUILD_VERSION.toUpperCase()}-RCP`;
+    const reinforcementReady = tenantReinforcementRewardGate.gateState === "Reinforcement ready" && tenantReinforcementRewardGate.rewardDecision === "Approve reinforcement";
+    const retuneReward = tenantReinforcementRewardGate.gateState === "Reward retune" || tenantReinforcementRewardGate.rewardDecision === "Retune reinforcement";
+    const blockedReward = tenantReinforcementRewardGate.gateState === "Reinforcement blocked" || tenantReinforcementRewardGate.rewardDecision === "Block reinforcement";
+    const canaryDecision =
+      savedPlan.canaryDecision ||
+      (reinforcementReady
+        ? "Open canary plan"
+        : retuneReward
+          ? "Retune canary plan"
+          : blockedReward
+            ? "Block canary"
+            : "Keep observe-only canary");
+    const plannedAt = savedPlan.plannedAt
+      ? new Date(savedPlan.plannedAt)
+      : null;
+    const plannedLabel = plannedAt && !Number.isNaN(plannedAt.getTime())
+      ? plannedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Canary not planned";
+    const planState =
+      canaryDecision === "Open canary plan" && reinforcementReady
+        ? "Canary plan ready"
+        : canaryDecision === "Open canary plan"
+          ? "Canary plan blocked"
+          : canaryDecision === "Retune canary plan"
+            ? "Canary retune"
+            : canaryDecision === "Block canary"
+              ? "Canary blocked"
+              : "Observe-only canary";
+    const tone =
+      planState === "Canary plan ready"
+        ? "green"
+        : planState === "Canary retune"
+          ? "blue"
+          : "amber";
+    const surfaceRule =
+      planState === "Canary plan ready"
+        ? "Advisor canary first"
+        : planState === "Canary retune"
+          ? "Retune surface"
+          : planState === "Canary blocked"
+            ? "No surface change"
+            : "Observe-only surface";
+    const ownerRule =
+      planState === "Canary plan ready"
+        ? seed.owner || "Tenant owner named"
+        : planState === "Canary retune"
+          ? "Retune owner"
+          : planState === "Canary blocked"
+            ? "Audit owner"
+            : "Owner watches only";
+    const metricRule =
+      planState === "Canary plan ready"
+        ? "Lift + friction metric"
+        : planState === "Canary retune"
+          ? "Fit metric retune"
+          : planState === "Canary blocked"
+            ? "Metric blocked"
+            : "Metric watched only";
+    const rollbackWindow =
+      planState === "Canary plan ready"
+        ? "24-hour rollback window"
+        : planState === "Canary retune"
+          ? "Retune before window"
+          : planState === "Canary blocked"
+            ? "Rollback not opened"
+            : "Rollback before release";
+    const nextAction =
+      planState === "Canary plan ready"
+        ? "Run one tenant reinforcement canary on one surface with one owner, one metric, and a rollback window before expanding guidance."
+        : planState === "Canary retune"
+          ? "Retune the reward signal and canary surface before any live tenant guidance changes."
+          : planState === "Canary blocked"
+            ? "Keep this reward from opening a canary and retain the audit receipt."
+            : "Keep the canary in observe-only mode until reward proof is strong enough to plan a controlled release.";
+    const choices = [
+      ["Open canary plan", "Open", "Open one tenant-scoped reinforcement canary with rollback ready.", "green"],
+      ["Keep observe-only canary", "Observe", "Watch the canary path without changing guidance.", "amber"],
+      ["Retune canary plan", "Retune", "Send the reward and surface plan back to retune.", "blue"],
+      ["Block canary", "Block", "Prevent this reward from opening any canary.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Tenant Reinforcement Canary Plan ${planId}: ${planState}. Decision ${canaryDecision}. Surface ${surfaceRule}. Owner ${ownerRule}. Metric ${metricRule}. Rollback ${rollbackWindow}. Next: ${nextAction}`;
+    const cards = [
+      ["Surface", surfaceRule, tenantReinforcementRewardGate.boundaryRule || "Reward boundary required.", planState === "Canary plan ready" ? "green" : tone],
+      ["Owner", ownerRule, seed.route || "Owner lane required.", tone],
+      ["Metric", metricRule, tenantReinforcementRewardGate.rewardRule || "Reward metric required.", planState === "Canary retune" ? "blue" : tone],
+      ["Rollback", rollbackWindow, plannedLabel, planState === "Canary plan ready" ? "green" : "amber"],
+    ];
+    return { canaryDecision, cards, choices, copyText, metricRule, nextAction, ownerRule, plannedAt: savedPlan.plannedAt || null, plannedLabel, planId, planState, rollbackWindow, surfaceRule, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -17533,7 +17631,8 @@ const state = {
     const tenantPolicyImpactPreview = buildCommandTenantPolicyImpactPreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, memory);
     const tenantOutcomeLearningLoop = buildCommandTenantOutcomeLearningLoop(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, memory);
     const tenantReinforcementRewardGate = buildCommandTenantReinforcementRewardGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, memory);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const tenantReinforcementCanaryPlan = buildCommandTenantReinforcementCanaryPlan(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, memory);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -17554,7 +17653,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -18421,6 +18520,36 @@ const state = {
                                                                             )
                                                                             .join("")}
                                                                           <button class="ghost-btn" type="button" data-action="copy-command-tenant-reward-gate" data-copy-text="${escapeHtml(encodeURIComponent(tenantReinforcementRewardGate.copyText))}">Copy reward</button>
+                                                                        </div>
+                                                                        <div class="command-tenant-canary-plan tone-${escapeHtml(tenantReinforcementCanaryPlan.tone)}" aria-label="Tenant reinforcement canary plan">
+                                                                          <div class="command-tenant-canary-head">
+                                                                            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Tenant Reinforcement Canary Plan</span>
+                                                                            <strong>${escapeHtml(tenantReinforcementCanaryPlan.planState)} / ${escapeHtml(compactText(tenantReinforcementCanaryPlan.planId, 46))}</strong>
+                                                                            <small>${escapeHtml(tenantReinforcementCanaryPlan.nextAction)}</small>
+                                                                          </div>
+                                                                          <div class="command-tenant-canary-grid">
+                                                                            ${tenantReinforcementCanaryPlan.cards
+                                                                              .map(
+                                                                                ([label, value, note, tone]) => `
+                                                                                  <article class="tone-${escapeHtml(tone)}">
+                                                                                    <span>${escapeHtml(label)}</span>
+                                                                                    <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                                                    <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                                                  </article>
+                                                                                `,
+                                                                              )
+                                                                              .join("")}
+                                                                          </div>
+                                                                          <div class="command-tenant-canary-actions">
+                                                                            ${tenantReinforcementCanaryPlan.choices
+                                                                              .map(
+                                                                                ([canaryDecision, label, note, tone]) => `
+                                                                                  <button class="ghost-btn ${tenantReinforcementCanaryPlan.canaryDecision === canaryDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-tenant-canary-plan" data-canary-decision="${escapeHtml(canaryDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                                                                `,
+                                                                              )
+                                                                              .join("")}
+                                                                            <button class="ghost-btn" type="button" data-action="copy-command-tenant-canary-plan" data-copy-text="${escapeHtml(encodeURIComponent(tenantReinforcementCanaryPlan.copyText))}">Copy canary</button>
+                                                                          </div>
                                                                         </div>
                                                                       </div>
                                                                     </div>
@@ -36998,12 +37127,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v393 Tenant Reinforcement Reward Gate",
-      phase: "Tenant Reinforcement Reward Gate",
+      version: "v394 Tenant Reinforcement Canary Plan",
+      phase: "Tenant Reinforcement Canary Plan",
       lane: "Static product prototype on GitHub Pages",
-      pace: "374 meaningful versions since rebrand",
-      summary: "Command Center now gates reinforcement reward before future guidance changes.",
+      pace: "375 meaningful versions since rebrand",
+      summary: "Command Center now turns approved reinforcement into one controlled canary plan before wider guidance changes.",
       tracks: [
+        ["v394 tenant reinforcement canary plan", 100, "Command Center now turns approved reinforcement into one canary surface, owner, metric, and rollback window before wider guidance changes.", "green"],
         ["v393 tenant reinforcement reward gate", 100, "Command Center now decides whether measured tenant outcomes can reinforce future guidance, stay observe-only, retune, or be blocked.", "green"],
         ["v392 tenant outcome learning loop", 100, "Command Center now watches tenant policy outcomes, reward signals, learning boundaries, and guardrails before reinforcement changes future guidance.", "green"],
         ["v391 tenant policy impact preview", 100, "Command Center now shows which tenant surfaces a learning policy may affect before live guidance changes.", "green"],
@@ -37539,10 +37669,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Tenant reinforcement reward is now gated before future guidance changes.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Tenant reinforcement canary planning is now controlled before wider guidance changes.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -87283,6 +87413,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87418,6 +87549,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -87471,6 +87603,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87536,6 +87669,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -87589,6 +87723,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87654,6 +87789,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -87707,6 +87843,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87772,6 +87909,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -87825,6 +87963,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87890,6 +88029,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -87943,6 +88083,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88008,6 +88149,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -88061,6 +88203,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88126,6 +88269,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -88179,6 +88323,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88244,6 +88389,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -88297,6 +88443,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88362,6 +88509,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
@@ -88443,6 +88591,10 @@ const state = {
         ...memoryForGraduation,
         approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop },
       });
+      const tenantReinforcementCanaryPlan = buildCommandTenantReinforcementCanaryPlan(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, {
+        ...memoryForGraduation,
+        approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -88479,6 +88631,7 @@ const state = {
           tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88544,6 +88697,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLedger);
@@ -88583,6 +88737,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88633,6 +88788,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForSafety);
@@ -88672,6 +88828,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88721,6 +88878,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPassport);
@@ -88760,6 +88918,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88808,6 +88967,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForMarket);
@@ -88847,6 +89007,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88894,6 +89055,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForCountry);
@@ -88933,6 +89095,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88979,6 +89142,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForExpansion);
@@ -89018,6 +89182,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89063,6 +89228,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForTransfer);
@@ -89102,6 +89268,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89146,6 +89313,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReadiness);
@@ -89185,6 +89353,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89228,6 +89397,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPacket);
@@ -89267,6 +89437,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89309,6 +89480,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLaunch);
@@ -89348,6 +89520,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89389,6 +89562,7 @@ const state = {
           tenantPolicyImpactPreview: null,
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForMonitor);
@@ -89428,6 +89602,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89503,6 +89678,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89578,6 +89754,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89616,6 +89793,7 @@ const state = {
           tenantPolicyImpactPreview: { impactDecision, previewedAt, build: BUILD_VERSION },
           tenantOutcomeLearningLoop: null,
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForImpact);
@@ -89655,6 +89833,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89692,6 +89871,7 @@ const state = {
           ...existingApproval,
           tenantOutcomeLearningLoop: { loopDecision, loopedAt, build: BUILD_VERSION },
           tenantReinforcementRewardGate: null,
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLoop);
@@ -89731,6 +89911,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89767,6 +89948,7 @@ const state = {
         approval: {
           ...existingApproval,
           tenantReinforcementRewardGate: { rewardDecision, gatedAt, build: BUILD_VERSION },
+          tenantReinforcementCanaryPlan: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReward);
@@ -89806,6 +89988,7 @@ const state = {
           tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
           tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
           tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89826,6 +90009,82 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).tenantReinforcementRewardGate.copyText || "";
       }
       copyTextToClipboard(text, "Tenant reinforcement reward gate copied.");
+      return;
+    }
+
+    if (action === "set-command-tenant-canary-plan") {
+      const canaryDecision = button.dataset.canaryDecision || "Keep observe-only canary";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before opening the tenant reinforcement canary plan.");
+        return;
+      }
+      const plannedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForCanary = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          tenantReinforcementCanaryPlan: { canaryDecision, plannedAt, build: BUILD_VERSION },
+        },
+      };
+      const chain = buildCommandMemoryLearningChain(memoryForCanary);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed: chain.seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt: chain.releaseReceipt,
+          reviewCue: chain.reviewCue,
+          evidenceLens: chain.evidenceLens,
+          confidenceRibbon: chain.historyRibbon,
+          observationOutcome: chain.outcomeSlot,
+          proofAttachmentCue: chain.proofCue,
+          proofReviewGate: chain.reviewGate,
+          reuseReadinessLock: chain.reuseLock,
+          guidanceInfluencePreview: chain.influencePreview,
+          localInfluenceFeedbackPulse: chain.feedbackPulse,
+          localGuidanceActivationGate: chain.activationGate,
+          localGuidanceCanaryMonitor: chain.canaryMonitor,
+          localCanaryGraduationGate: chain.graduationGate,
+          learningLedger: chain.learningLedger,
+          learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
+          countryLaunchReceipt: chain.countryLaunchReceipt,
+          secondCountryExpansionGate: chain.secondCountryExpansionGate,
+          countryTransferDeltaMap: chain.countryTransferDeltaMap,
+          transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
+          transferOutcomeMonitor: chain.transferOutcomeMonitor,
+          transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
+          tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
+          tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
+          tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${canaryDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-tenant-canary-plan") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).tenantReinforcementCanaryPlan.copyText || "";
+      }
+      copyTextToClipboard(text, "Tenant reinforcement canary plan copied.");
       return;
     }
 
