@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v398";
-  const BUILD_LABEL = "Tenant Reinforcement Reuse Fit Preview";
+  const BUILD_VERSION = "v399";
+  const BUILD_LABEL = "Tenant Reinforcement Reuse Activation Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=398";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=398";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=399";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=399";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -18007,6 +18007,112 @@ const state = {
     return { cards, choices, copyText, fitDecision, fitState, nextAction, ownerRule, previewedAt: savedPreview.previewedAt || null, previewedLabel, previewId, privacyRule, proofRule, rollbackRule, surfaceRule, tone };
   }
 
+  function buildCommandTenantReinforcementReuseActivationReceipt(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, learningLedger = {}, learningSafetyReceipt = {}, globalLearningPassport = {}, marketFitGate = {}, countryLaunchReceipt = {}, secondCountryExpansionGate = {}, countryTransferDeltaMap = {}, transferReadinessScore = {}, transferActionPacket = {}, transferLaunchReceipt = {}, transferOutcomeMonitor = {}, transferLearningTrustGate = {}, tenantLearningPolicyStudio = {}, tenantPolicyImpactPreview = {}, tenantOutcomeLearningLoop = {}, tenantReinforcementRewardGate = {}, tenantReinforcementCanaryPlan = {}, tenantReinforcementCanaryWatch = {}, tenantReinforcementGraduationGate = {}, tenantReinforcementReusePassport = {}, tenantReinforcementReuseFitPreview = {}, memory = {}) {
+    const savedReceipt = memory.approval?.tenantReinforcementReuseActivationReceipt || {};
+    const receiptId = savedReceipt.receiptId || `${tenantReinforcementReuseFitPreview.previewId || tenantReinforcementReusePassport.passportId || BUILD_VERSION.toUpperCase()}-ACT`;
+    const fitReady = tenantReinforcementReuseFitPreview.fitState === "Fit preview ready" && tenantReinforcementReuseFitPreview.fitDecision === "Preview reuse fit";
+    const fitRetune = tenantReinforcementReuseFitPreview.fitState === "Fit retune" || tenantReinforcementReuseFitPreview.fitDecision === "Retune fit";
+    const fitBlocked = tenantReinforcementReuseFitPreview.fitState === "Fit blocked" || tenantReinforcementReuseFitPreview.fitDecision === "Block fit";
+    const activationDecision =
+      savedReceipt.activationDecision ||
+      (fitReady
+        ? "Issue activation receipt"
+        : fitRetune
+          ? "Retune activation"
+          : fitBlocked
+            ? "Block activation"
+            : "Hold activation");
+    const activatedAt = savedReceipt.activatedAt
+      ? new Date(savedReceipt.activatedAt)
+      : null;
+    const activatedLabel = activatedAt && !Number.isNaN(activatedAt.getTime())
+      ? activatedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Activation not receipted";
+    const activationState =
+      activationDecision === "Issue activation receipt" && fitReady
+        ? "Activation receipt ready"
+        : activationDecision === "Issue activation receipt"
+          ? "Activation locked"
+          : activationDecision === "Retune activation"
+            ? "Activation retune"
+            : activationDecision === "Block activation"
+              ? "Activation blocked"
+              : "Activation held";
+    const tone =
+      activationState === "Activation receipt ready"
+        ? "green"
+        : activationState === "Activation retune"
+          ? "blue"
+          : "amber";
+    const surfaceRule =
+      activationState === "Activation receipt ready"
+        ? tenantReinforcementReuseFitPreview.surfaceRule || "One approved surface"
+        : activationState === "Activation retune"
+          ? "Surface waits for retune"
+          : activationState === "Activation blocked"
+            ? "Surface blocked"
+            : "Surface held";
+    const ownerRule =
+      activationState === "Activation receipt ready"
+        ? tenantReinforcementReuseFitPreview.ownerRule || seed.owner || "Activation owner"
+        : activationState === "Activation retune"
+          ? "Owner must re-approve"
+          : activationState === "Activation blocked"
+            ? "Owner cannot activate"
+            : "Owner held";
+    const proofRule =
+      activationState === "Activation receipt ready"
+        ? tenantReinforcementReuseFitPreview.proofRule || "Fit proof sealed"
+        : activationState === "Activation retune"
+          ? "Proof retune before activation"
+          : activationState === "Activation blocked"
+            ? "Proof blocks activation"
+            : "Proof held";
+    const reviewRule =
+      activationState === "Activation receipt ready"
+        ? reviewCue.reviewBy || "Next review attached"
+        : activationState === "Activation retune"
+          ? "Review after retune"
+          : activationState === "Activation blocked"
+            ? "Review blocked"
+            : "Review held";
+    const rollbackRule =
+      activationState === "Activation receipt ready"
+        ? tenantReinforcementReuseFitPreview.rollbackRule || "Rollback travels"
+        : activationState === "Activation retune"
+          ? "Rollback stays armed"
+          : activationState === "Activation blocked"
+            ? "Rollback prevents activation"
+            : "Rollback hold";
+    const nextAction =
+      activationState === "Activation receipt ready"
+        ? "Issue one activation receipt before tenant guidance changes: surface, owner, proof, review, and rollback must travel together."
+        : activationState === "Activation retune"
+          ? "Retune the activation receipt before the fit preview can influence tenant guidance."
+          : activationState === "Activation blocked"
+            ? "Block activation and keep the passport as protective memory until the fit issue is resolved."
+            : "Hold activation until the fit preview is ready enough to receipt one controlled guidance change.";
+    const choices = [
+      ["Issue activation receipt", "Issue", "Receipt one controlled guidance activation with owner, proof, review, and rollback.", "green"],
+      ["Hold activation", "Hold", "Keep the fit preview out of live guidance.", "amber"],
+      ["Retune activation", "Retune", "Retune activation details before any tenant guidance changes.", "blue"],
+      ["Block activation", "Block", "Block activation and retain protective memory.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Tenant Reinforcement Reuse Activation Receipt ${receiptId}: ${activationState}. Decision ${activationDecision}. Surface ${surfaceRule}. Owner ${ownerRule}. Proof ${proofRule}. Review ${reviewRule}. Rollback ${rollbackRule}. Next: ${nextAction}`;
+    const cards = [
+      ["Surface", surfaceRule, tenantReinforcementReuseFitPreview.surfaceRule || "Fit surface required.", activationState === "Activation receipt ready" ? "green" : tone],
+      ["Owner", ownerRule, activatedLabel, activationState === "Activation retune" ? "blue" : tone],
+      ["Proof", proofRule, tenantReinforcementReuseFitPreview.privacyRule || "Privacy proof required.", activationState === "Activation receipt ready" ? "green" : tone],
+      ["Rollback", rollbackRule, reviewRule, activationState === "Activation blocked" ? "amber" : tone],
+    ];
+    return { activatedAt: savedReceipt.activatedAt || null, activatedLabel, activationDecision, activationState, cards, choices, copyText, nextAction, ownerRule, proofRule, receiptId, reviewRule, rollbackRule, surfaceRule, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -18044,7 +18150,8 @@ const state = {
     const tenantReinforcementGraduationGate = buildCommandTenantReinforcementGraduationGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, memory);
     const tenantReinforcementReusePassport = buildCommandTenantReinforcementReusePassport(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, memory);
     const tenantReinforcementReuseFitPreview = buildCommandTenantReinforcementReuseFitPreview(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReusePassport, memory);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const tenantReinforcementReuseActivationReceipt = buildCommandTenantReinforcementReuseActivationReceipt(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReusePassport, tenantReinforcementReuseFitPreview, memory);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -18065,7 +18172,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -19077,6 +19184,36 @@ const state = {
                                                                                       )
                                                                                       .join("")}
                                                                                     <button class="ghost-btn" type="button" data-action="copy-command-tenant-reuse-fit" data-copy-text="${escapeHtml(encodeURIComponent(tenantReinforcementReuseFitPreview.copyText))}">Copy fit</button>
+                                                                                  </div>
+                                                                                  <div class="command-tenant-activation-receipt tone-${escapeHtml(tenantReinforcementReuseActivationReceipt.tone)}" aria-label="Tenant reinforcement reuse activation receipt">
+                                                                                    <div class="command-tenant-activation-head">
+                                                                                      <span class="metric-label">${escapeHtml(BUILD_VERSION)} Tenant Reinforcement Reuse Activation Receipt</span>
+                                                                                      <strong>${escapeHtml(tenantReinforcementReuseActivationReceipt.activationState)} / ${escapeHtml(compactText(tenantReinforcementReuseActivationReceipt.receiptId, 46))}</strong>
+                                                                                      <small>${escapeHtml(tenantReinforcementReuseActivationReceipt.nextAction)}</small>
+                                                                                    </div>
+                                                                                    <div class="command-tenant-activation-grid">
+                                                                                      ${tenantReinforcementReuseActivationReceipt.cards
+                                                                                        .map(
+                                                                                          ([label, value, note, tone]) => `
+                                                                                            <article class="tone-${escapeHtml(tone)}">
+                                                                                              <span>${escapeHtml(label)}</span>
+                                                                                              <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                                                              <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                                                            </article>
+                                                                                          `,
+                                                                                        )
+                                                                                        .join("")}
+                                                                                    </div>
+                                                                                    <div class="command-tenant-activation-actions">
+                                                                                      ${tenantReinforcementReuseActivationReceipt.choices
+                                                                                        .map(
+                                                                                          ([activationDecision, label, note, tone]) => `
+                                                                                            <button class="ghost-btn ${tenantReinforcementReuseActivationReceipt.activationDecision === activationDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-tenant-reuse-activation" data-activation-decision="${escapeHtml(activationDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                                                                          `,
+                                                                                        )
+                                                                                        .join("")}
+                                                                                      <button class="ghost-btn" type="button" data-action="copy-command-tenant-reuse-activation" data-copy-text="${escapeHtml(encodeURIComponent(tenantReinforcementReuseActivationReceipt.copyText))}">Copy activation</button>
+                                                                                    </div>
                                                                                   </div>
                                                                                 </div>
                                                                               </div>
@@ -37659,12 +37796,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v398 Tenant Reinforcement Reuse Fit Preview",
-      phase: "Tenant Reinforcement Reuse Fit Preview",
+      version: "v399 Tenant Reinforcement Reuse Activation Receipt",
+      phase: "Tenant Reinforcement Reuse Activation Receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "379 meaningful versions since rebrand",
-      summary: "Command Center now previews surface, owner, proof, privacy, and rollback fit before a reuse passport can influence tenant guidance.",
+      pace: "380 meaningful versions since rebrand",
+      summary: "Command Center now receipts one controlled guidance activation with surface, owner, proof, review, and rollback before tenant guidance changes.",
       tracks: [
+        ["v399 tenant reinforcement reuse activation receipt", 100, "Command Center now receipts one controlled guidance activation with surface, owner, proof, review, and rollback before tenant guidance changes.", "green"],
         ["v398 tenant reinforcement reuse fit preview", 100, "Command Center now previews surface, owner, proof, privacy, and rollback fit before a reuse passport can influence tenant guidance.", "green"],
         ["v397 tenant reinforcement reuse passport", 100, "Command Center now packages graduated reinforcement with proof, privacy, fairness, and rollback rules before tenant-safe reuse.", "green"],
         ["v396 tenant reinforcement graduation gate", 100, "Command Center now decides whether watched reinforcement canaries graduate, keep watching, retune, or roll back before wider reuse.", "green"],
@@ -38205,10 +38343,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Tenant reinforcement reuse now previews surface, owner, proof, privacy, and rollback fit before guidance changes.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Tenant reinforcement reuse now issues an activation receipt before guidance changes.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -87954,6 +88092,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88094,6 +88233,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -88152,6 +88292,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88222,6 +88363,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -88280,6 +88422,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88350,6 +88493,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -88408,6 +88552,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88478,6 +88623,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -88536,6 +88682,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88606,6 +88753,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -88664,6 +88812,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88734,6 +88883,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -88792,6 +88942,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88862,6 +89013,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -88920,6 +89072,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88990,6 +89143,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -89048,6 +89202,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89118,6 +89273,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
@@ -89219,6 +89375,10 @@ const state = {
         ...memoryForGraduation,
         approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReusePassport },
       });
+      const tenantReinforcementReuseActivationReceipt = buildCommandTenantReinforcementReuseActivationReceipt(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReusePassport, tenantReinforcementReuseFitPreview, {
+        ...memoryForGraduation,
+        approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, tenantLearningPolicyStudio, tenantPolicyImpactPreview, tenantOutcomeLearningLoop, tenantReinforcementRewardGate, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReusePassport, tenantReinforcementReuseFitPreview },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -89259,6 +89419,7 @@ const state = {
           tenantReinforcementCanaryWatch,
           tenantReinforcementGraduationGate,
           tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt,
           tenantReinforcementReusePassport,
         },
       };
@@ -89330,6 +89491,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLedger);
@@ -89374,6 +89536,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89429,6 +89592,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForSafety);
@@ -89473,6 +89637,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89527,6 +89692,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPassport);
@@ -89571,6 +89737,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89624,6 +89791,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForMarket);
@@ -89668,6 +89836,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89720,6 +89889,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForCountry);
@@ -89764,6 +89934,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89815,6 +89986,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForExpansion);
@@ -89859,6 +90031,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -89909,6 +90082,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForTransfer);
@@ -89953,6 +90127,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90002,6 +90177,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReadiness);
@@ -90046,6 +90222,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90094,6 +90271,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPacket);
@@ -90138,6 +90316,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90185,6 +90364,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLaunch);
@@ -90229,6 +90409,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90275,6 +90456,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForMonitor);
@@ -90319,6 +90501,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90399,6 +90582,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90479,6 +90663,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90522,6 +90707,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForImpact);
@@ -90566,6 +90752,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90608,6 +90795,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLoop);
@@ -90652,6 +90840,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90693,6 +90882,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReward);
@@ -90737,6 +90927,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90777,6 +90968,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForCanary);
@@ -90821,6 +91013,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90860,6 +91053,7 @@ const state = {
           tenantReinforcementGraduationGate: null,
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForWatch);
@@ -90904,6 +91098,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -90942,6 +91137,7 @@ const state = {
           tenantReinforcementGraduationGate: { graduationDecision, graduatedAt, build: BUILD_VERSION },
           tenantReinforcementReusePassport: null,
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForGraduationGate);
@@ -90986,6 +91182,7 @@ const state = {
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -91023,6 +91220,7 @@ const state = {
           ...existingApproval,
           tenantReinforcementReusePassport: { passportDecision, passportedAt, build: BUILD_VERSION },
           tenantReinforcementReuseFitPreview: null,
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReusePassport);
@@ -91066,6 +91264,7 @@ const state = {
           tenantReinforcementCanaryWatch: chain.tenantReinforcementCanaryWatch,
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
         },
       };
@@ -91103,6 +91302,7 @@ const state = {
         approval: {
           ...existingApproval,
           tenantReinforcementReuseFitPreview: { fitDecision, previewedAt, build: BUILD_VERSION },
+          tenantReinforcementReuseActivationReceipt: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReuseFit);
@@ -91145,6 +91345,7 @@ const state = {
           tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
           tenantReinforcementCanaryWatch: chain.tenantReinforcementCanaryWatch,
           tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
           tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
           tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
         },
@@ -91167,6 +91368,87 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).tenantReinforcementReuseFitPreview.copyText || "";
       }
       copyTextToClipboard(text, "Tenant reinforcement reuse fit preview copied.");
+      return;
+    }
+
+    if (action === "set-command-tenant-reuse-activation") {
+      const activationDecision = button.dataset.activationDecision || "Hold activation";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before issuing the tenant reinforcement reuse activation receipt.");
+        return;
+      }
+      const activatedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForReuseActivation = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          tenantReinforcementReuseActivationReceipt: { activationDecision, activatedAt, build: BUILD_VERSION },
+        },
+      };
+      const chain = buildCommandMemoryLearningChain(memoryForReuseActivation);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed: chain.seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt: chain.releaseReceipt,
+          reviewCue: chain.reviewCue,
+          evidenceLens: chain.evidenceLens,
+          confidenceRibbon: chain.historyRibbon,
+          observationOutcome: chain.outcomeSlot,
+          proofAttachmentCue: chain.proofCue,
+          proofReviewGate: chain.reviewGate,
+          reuseReadinessLock: chain.reuseLock,
+          guidanceInfluencePreview: chain.influencePreview,
+          localInfluenceFeedbackPulse: chain.feedbackPulse,
+          localGuidanceActivationGate: chain.activationGate,
+          localGuidanceCanaryMonitor: chain.canaryMonitor,
+          localCanaryGraduationGate: chain.graduationGate,
+          learningLedger: chain.learningLedger,
+          learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
+          countryLaunchReceipt: chain.countryLaunchReceipt,
+          secondCountryExpansionGate: chain.secondCountryExpansionGate,
+          countryTransferDeltaMap: chain.countryTransferDeltaMap,
+          transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
+          transferOutcomeMonitor: chain.transferOutcomeMonitor,
+          transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
+          tenantPolicyImpactPreview: chain.tenantPolicyImpactPreview,
+          tenantOutcomeLearningLoop: chain.tenantOutcomeLearningLoop,
+          tenantReinforcementRewardGate: chain.tenantReinforcementRewardGate,
+          tenantReinforcementCanaryPlan: chain.tenantReinforcementCanaryPlan,
+          tenantReinforcementCanaryWatch: chain.tenantReinforcementCanaryWatch,
+          tenantReinforcementGraduationGate: chain.tenantReinforcementGraduationGate,
+          tenantReinforcementReuseActivationReceipt: chain.tenantReinforcementReuseActivationReceipt,
+          tenantReinforcementReuseFitPreview: chain.tenantReinforcementReuseFitPreview,
+          tenantReinforcementReusePassport: chain.tenantReinforcementReusePassport,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${activationDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-tenant-reuse-activation") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).tenantReinforcementReuseActivationReceipt.copyText || "";
+      }
+      copyTextToClipboard(text, "Tenant reinforcement reuse activation receipt copied.");
       return;
     }
 

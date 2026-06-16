@@ -8970,6 +8970,118 @@ body.quiet-focus-mode .focus-mode-pill {
   background: var(--teal);
 }
 
+.command-tenant-activation-receipt {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(252, 254, 253, 0.98), rgba(232, 246, 244, 0.92));
+}
+
+.command-tenant-activation-receipt.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-tenant-activation-receipt.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-tenant-activation-receipt.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-tenant-activation-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-tenant-activation-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-tenant-activation-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-tenant-activation-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.command-tenant-activation-grid article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 86px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-tenant-activation-grid article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-tenant-activation-grid article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-tenant-activation-grid article small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-tenant-activation-grid article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-tenant-activation-grid article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-tenant-activation-grid article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-tenant-activation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command-tenant-activation-actions .ghost-btn.active {
+  border-color: rgba(13, 111, 97, 0.44);
+  color: #ffffff;
+  background: var(--teal);
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -15021,7 +15133,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-watch-grid,
   .command-tenant-graduation-grid,
   .command-tenant-reuse-grid,
-  .command-tenant-fit-grid {
+  .command-tenant-fit-grid,
+  .command-tenant-activation-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -15276,7 +15389,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-watch-grid,
   .command-tenant-graduation-grid,
   .command-tenant-reuse-grid,
-  .command-tenant-fit-grid {
+  .command-tenant-fit-grid,
+  .command-tenant-activation-grid {
     grid-template-columns: 1fr;
   }
 
@@ -15315,7 +15429,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-watch-actions .ghost-btn,
   .command-tenant-graduation-actions .ghost-btn,
   .command-tenant-reuse-actions .ghost-btn,
-  .command-tenant-fit-actions .ghost-btn {
+  .command-tenant-fit-actions .ghost-btn,
+  .command-tenant-activation-actions .ghost-btn {
     width: 100%;
   }
 
@@ -15353,7 +15468,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-canary-watch,
   .command-tenant-graduation-gate,
   .command-tenant-reuse-passport,
-  .command-tenant-fit-preview {
+  .command-tenant-fit-preview,
+  .command-tenant-activation-receipt {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -15398,6 +15514,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-graduation-head,
   .command-tenant-reuse-head,
   .command-tenant-fit-head,
+  .command-tenant-activation-head,
   .command-learning-approval-grid,
   .command-learning-release-grid,
   .command-learning-review-grid,
@@ -15433,6 +15550,7 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-graduation-grid,
   .command-tenant-reuse-grid,
   .command-tenant-fit-grid,
+  .command-tenant-activation-grid,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -15467,7 +15585,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-tenant-watch-actions,
   .command-tenant-graduation-actions,
   .command-tenant-reuse-actions,
-  .command-tenant-fit-actions {
+  .command-tenant-fit-actions,
+  .command-tenant-activation-actions {
     margin-right: 10px;
     margin-left: 10px;
   }
