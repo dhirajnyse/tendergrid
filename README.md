@@ -21,6 +21,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
 - v396 Tenant Reinforcement Graduation Gate decides whether watched canaries graduate, keep watching, retune, or roll back before wider reinforcement reuse.
 - v397 Tenant Reinforcement Reuse Passport packages graduated reinforcement with proof, privacy, fairness, and rollback rules before tenant-safe reuse.
+- v398 Tenant Reinforcement Reuse Fit Preview checks surface, owner, proof, privacy, and rollback fit before a reuse passport can influence tenant guidance.
 - v395 Tenant Reinforcement Canary Watch monitors lift, friction, evidence, and rollback after a canary plan opens so reinforcement stays measured before wider reuse.
 - v394 Tenant Reinforcement Canary Plan turns approved reinforcement into one canary surface, owner, metric, and rollback window before wider guidance changes.
 - v393 Tenant Reinforcement Reward Gate decides whether measured tenant outcomes can reinforce future guidance, stay observe-only, retune, or be blocked.

@@ -84,6 +84,7 @@ Recovery cleanup in this copy:
 - v384 adds a Country Transfer Delta Map so outcome, wording, residency, and rollback differences are compared before any second-country learning transfer can launch.
 - v396 adds a Tenant Reinforcement Graduation Gate so watched canaries graduate, keep watching, retune, or roll back before wider reinforcement reuse.
 - v397 adds a Tenant Reinforcement Reuse Passport so graduated reinforcement carries proof, privacy, fairness, and rollback rules before tenant-safe reuse.
+- v398 adds a Tenant Reinforcement Reuse Fit Preview so reuse passports show surface, owner, proof, privacy, and rollback fit before tenant guidance can change.
 - v395 adds a Tenant Reinforcement Canary Watch so opened canaries are measured for lift, friction, evidence, and rollback before wider reuse.
 - v394 adds a Tenant Reinforcement Canary Plan so approved reinforcement still needs one canary surface, owner, metric, and rollback window before wider guidance changes.
 - v393 adds a Tenant Reinforcement Reward Gate so measured tenant outcomes must be approved, observed, retuned, or blocked before reinforcing future guidance.
