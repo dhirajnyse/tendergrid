@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v389";
-  const BUILD_LABEL = "Transfer Learning Trust Gate";
+  const BUILD_VERSION = "v390";
+  const BUILD_LABEL = "Tenant Learning Policy Studio";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=389";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=389";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=390";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=390";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -17109,6 +17109,104 @@ const state = {
     return { cards, choices, copyText, gateId, nextAction, proofRule, reviewedAt: savedGate.reviewedAt || null, reviewedLabel, rollbackRule, sharingRule, tone, trustDecision, trustScope, trustState };
   }
 
+  function buildCommandTenantLearningPolicyStudio(seed = {}, approvalLane = {}, releaseReceipt = {}, reviewCue = {}, evidenceLens = {}, historyRibbon = {}, outcomeSlot = {}, proofCue = {}, reviewGate = {}, reuseLock = {}, influencePreview = {}, feedbackPulse = {}, activationGate = {}, canaryMonitor = {}, graduationGate = {}, learningLedger = {}, learningSafetyReceipt = {}, globalLearningPassport = {}, marketFitGate = {}, countryLaunchReceipt = {}, secondCountryExpansionGate = {}, countryTransferDeltaMap = {}, transferReadinessScore = {}, transferActionPacket = {}, transferLaunchReceipt = {}, transferOutcomeMonitor = {}, transferLearningTrustGate = {}, memory = {}) {
+    const savedPolicy = memory.approval?.tenantLearningPolicyStudio || {};
+    const policyId = savedPolicy.policyId || `${transferLearningTrustGate.gateId || transferOutcomeMonitor.monitorId || BUILD_VERSION.toUpperCase()}-POL`;
+    const trustedLocal = transferLearningTrustGate.trustState === "Trusted local learning" || transferLearningTrustGate.trustDecision === "Trust for local learning";
+    const localizationGate = transferLearningTrustGate.trustState === "Localization trust gate" || transferLearningTrustGate.trustDecision === "Trust after localization";
+    const archivedLearning = transferLearningTrustGate.trustState === "Learning archived" || transferLearningTrustGate.trustDecision === "Archive learning";
+    const policyDecision =
+      savedPolicy.policyDecision ||
+      (trustedLocal
+        ? "Activate tenant policy"
+        : localizationGate
+          ? "Review policy"
+          : archivedLearning
+            ? "Block policy"
+            : "Review policy");
+    const decidedAt = savedPolicy.decidedAt
+      ? new Date(savedPolicy.decidedAt)
+      : null;
+    const decidedLabel = decidedAt && !Number.isNaN(decidedAt.getTime())
+      ? decidedAt.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "Policy not decided";
+    const policyState =
+      policyDecision === "Activate tenant policy" && trustedLocal
+        ? "Tenant policy active"
+        : policyDecision === "Activate tenant policy"
+          ? "Policy activation blocked"
+          : policyDecision === "Private-only policy"
+            ? "Private-only guardrail"
+            : policyDecision === "Block policy"
+              ? "Policy blocked"
+              : "Policy review needed";
+    const tone =
+      policyState === "Tenant policy active"
+        ? "green"
+        : policyState === "Private-only guardrail"
+          ? "blue"
+          : "amber";
+    const sourceRule =
+      policyState === "Tenant policy active"
+        ? "Trusted tenant outcomes"
+        : policyState === "Private-only guardrail"
+          ? "Private tenant memory"
+          : policyState === "Policy blocked"
+            ? "No learning sources"
+            : "Sources need review";
+    const useRule =
+      policyState === "Tenant policy active"
+        ? "Advisor, reports, and review cues"
+        : policyState === "Private-only guardrail"
+          ? "Private notes only"
+          : policyState === "Policy blocked"
+            ? "No product influence"
+            : "Observe-only until approved";
+    const reviewRule =
+      policyState === "Tenant policy active"
+        ? "Monthly tenant review"
+        : policyState === "Private-only guardrail"
+          ? "Owner review before reuse"
+          : policyState === "Policy blocked"
+            ? "Archive review"
+            : "Admin review required";
+    const privacyRule =
+      policyState === "Tenant policy active"
+        ? "Network sharing locked"
+        : policyState === "Private-only guardrail"
+          ? "Tenant boundary only"
+          : policyState === "Policy blocked"
+            ? "All reuse blocked"
+            : "Boundary pending";
+    const nextAction =
+      policyState === "Tenant policy active"
+        ? "Let the tenant use this learning locally while every wider sharing path remains locked."
+        : policyState === "Private-only guardrail"
+          ? "Keep the learning as private tenant memory until an admin approves wider local use."
+          : policyState === "Policy blocked"
+            ? "Block this learning policy and keep only the audit receipt."
+            : "Review the tenant learning policy before this signal influences any workspace guidance.";
+    const choices = [
+      ["Activate tenant policy", "Activate", "Allow trusted learning to guide this tenant only.", "green"],
+      ["Review policy", "Review", "Keep this policy in admin review before guidance changes.", "amber"],
+      ["Private-only policy", "Private", "Keep learning inside private tenant memory.", "blue"],
+      ["Block policy", "Block", "Block this learning from product guidance.", "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Tenant Learning Policy Studio ${policyId}: ${policyState}. Decision ${policyDecision}. Sources ${sourceRule}. Use ${useRule}. Review ${reviewRule}. Privacy ${privacyRule}. Next: ${nextAction}`;
+    const cards = [
+      ["Sources", sourceRule, transferLearningTrustGate.trustScope || "Trust gate required.", tone],
+      ["Allowed use", useRule, transferLearningTrustGate.sharingRule || "Sharing rule required.", policyState === "Tenant policy active" ? "green" : tone],
+      ["Review", reviewRule, decidedLabel, policyState === "Policy review needed" ? "amber" : tone],
+      ["Boundary", privacyRule, transferLearningTrustGate.rollbackRule || "Rollback rule required.", policyState === "Private-only guardrail" ? "blue" : tone],
+    ];
+    return { cards, choices, copyText, decidedAt: savedPolicy.decidedAt || null, decidedLabel, nextAction, policyDecision, policyId, policyState, privacyRule, reviewRule, sourceRule, tone, useRule };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -17137,7 +17235,8 @@ const state = {
     const transferLaunchReceipt = buildCommandTransferLaunchReceipt(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, memory);
     const transferOutcomeMonitor = buildCommandTransferOutcomeMonitor(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, memory);
     const transferLearningTrustGate = buildCommandTransferLearningTrustGate(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, memory);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const tenantLearningPolicyStudio = buildCommandTenantLearningPolicyStudio(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, historyRibbon, outcomeSlot, proofCue, reviewGate, reuseLock, influencePreview, feedbackPulse, activationGate, canaryMonitor, graduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, memory);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -17158,7 +17257,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -17909,6 +18008,36 @@ const state = {
                                                                     )
                                                                     .join("")}
                                                                   <button class="ghost-btn" type="button" data-action="copy-command-transfer-trust" data-copy-text="${escapeHtml(encodeURIComponent(transferLearningTrustGate.copyText))}">Copy trust gate</button>
+                                                                </div>
+                                                                <div class="command-tenant-policy-studio tone-${escapeHtml(tenantLearningPolicyStudio.tone)}" aria-label="Tenant learning policy studio">
+                                                                  <div class="command-tenant-policy-head">
+                                                                    <span class="metric-label">${escapeHtml(BUILD_VERSION)} Tenant Learning Policy Studio</span>
+                                                                    <strong>${escapeHtml(tenantLearningPolicyStudio.policyState)} / ${escapeHtml(compactText(tenantLearningPolicyStudio.policyId, 46))}</strong>
+                                                                    <small>${escapeHtml(tenantLearningPolicyStudio.nextAction)}</small>
+                                                                  </div>
+                                                                  <div class="command-tenant-policy-grid">
+                                                                    ${tenantLearningPolicyStudio.cards
+                                                                      .map(
+                                                                        ([label, value, note, tone]) => `
+                                                                          <article class="tone-${escapeHtml(tone)}">
+                                                                            <span>${escapeHtml(label)}</span>
+                                                                            <strong>${escapeHtml(compactText(String(value), 58))}</strong>
+                                                                            <small>${escapeHtml(compactText(String(note), 105))}</small>
+                                                                          </article>
+                                                                        `,
+                                                                      )
+                                                                      .join("")}
+                                                                  </div>
+                                                                  <div class="command-tenant-policy-actions">
+                                                                    ${tenantLearningPolicyStudio.choices
+                                                                      .map(
+                                                                        ([policyDecision, label, note, tone]) => `
+                                                                          <button class="ghost-btn ${tenantLearningPolicyStudio.policyDecision === policyDecision ? "active" : ""} tone-${escapeHtml(tone)}" type="button" data-action="set-command-tenant-learning-policy" data-policy-decision="${escapeHtml(policyDecision)}" title="${escapeHtml(note)}">${escapeHtml(label)}</button>
+                                                                        `,
+                                                                      )
+                                                                      .join("")}
+                                                                    <button class="ghost-btn" type="button" data-action="copy-command-tenant-policy" data-copy-text="${escapeHtml(encodeURIComponent(tenantLearningPolicyStudio.copyText))}">Copy policy</button>
+                                                                  </div>
                                                                 </div>
                                                               </div>
                                                             </div>
@@ -36482,12 +36611,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v389 Transfer Learning Trust Gate",
-      phase: "Transfer Learning Trust Gate",
+      version: "v390 Tenant Learning Policy Studio",
+      phase: "Tenant Learning Policy Studio",
       lane: "Static product prototype on GitHub Pages",
-      pace: "370 meaningful versions since rebrand",
-      summary: "Command Center now gates whether a watched transfer outcome can become tenant-only learning.",
+      pace: "371 meaningful versions since rebrand",
+      summary: "Command Center now lets admins set the tenant policy for trusted transfer learning before it influences guidance.",
       tracks: [
+        ["v390 tenant learning policy studio", 100, "Command Center now lets tenant admins activate, review, privatize, or block trusted transfer learning before it influences guidance.", "green"],
         ["v389 transfer learning trust gate", 100, "Command Center now gates whether a watched transfer outcome can become tenant-only learning before any wider reuse.", "green"],
         ["v388 transfer outcome monitor", 100, "Command Center now watches the first transfer outcome before any second-country learning is trusted wider.", "green"],
         ["v387 transfer launch receipt", 100, "Command Center now turns the transfer action packet into a launch receipt before any second-country movement.", "green"],
@@ -37019,10 +37149,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Every watched transfer outcome now passes a learning trust gate before reuse.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Trusted transfer learning now needs a tenant policy before it can influence guidance.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -86759,6 +86889,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -86890,6 +87021,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForOutcome);
@@ -86939,6 +87071,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87000,6 +87133,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForProof);
@@ -87049,6 +87183,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87110,6 +87245,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForReview);
@@ -87159,6 +87295,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87220,6 +87357,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForLock);
@@ -87269,6 +87407,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87330,6 +87469,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPreview);
@@ -87379,6 +87519,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87440,6 +87581,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForPulse);
@@ -87489,6 +87631,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87550,6 +87693,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForActivation);
@@ -87599,6 +87743,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87660,6 +87805,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForCanary);
@@ -87709,6 +87855,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87770,6 +87917,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const seed = buildCommandOutcomeMemorySeed(memoryForGraduation);
@@ -87835,6 +87983,10 @@ const state = {
         ...memoryForGraduation,
         approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor },
       });
+      const tenantLearningPolicyStudio = buildCommandTenantLearningPolicyStudio(seed, approvalLane, releaseReceipt, reviewCue, evidenceLens, confidenceRibbon, observationOutcome, proofAttachmentCue, proofReviewGate, reuseReadinessLock, guidanceInfluencePreview, localInfluenceFeedbackPulse, localGuidanceActivationGate, localGuidanceCanaryMonitor, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate, {
+        ...memoryForGraduation,
+        approval: { ...memoryForGraduation.approval, localCanaryGraduationGate, learningLedger, learningSafetyReceipt, globalLearningPassport, marketFitGate, countryLaunchReceipt, secondCountryExpansionGate, countryTransferDeltaMap, transferReadinessScore, transferActionPacket, transferLaunchReceipt, transferOutcomeMonitor, transferLearningTrustGate },
+      });
       state.commandMemory = {
         ...state.commandMemory,
         build: BUILD_VERSION,
@@ -87867,6 +88019,7 @@ const state = {
           transferLaunchReceipt,
           transferOutcomeMonitor,
           transferLearningTrustGate,
+          tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -87928,6 +88081,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLedger);
@@ -87963,6 +88117,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88009,6 +88164,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForSafety);
@@ -88044,6 +88200,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88089,6 +88246,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPassport);
@@ -88124,6 +88282,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88168,6 +88327,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForMarket);
@@ -88203,6 +88363,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88246,6 +88407,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForCountry);
@@ -88281,6 +88443,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88323,6 +88486,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForExpansion);
@@ -88358,6 +88522,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88399,6 +88564,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForTransfer);
@@ -88434,6 +88600,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88474,6 +88641,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForReadiness);
@@ -88509,6 +88677,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88548,6 +88717,7 @@ const state = {
           transferLaunchReceipt: null,
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForPacket);
@@ -88583,6 +88753,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88621,6 +88792,7 @@ const state = {
           transferLaunchReceipt: { launchDecision, issuedAt, build: BUILD_VERSION },
           transferOutcomeMonitor: null,
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForLaunch);
@@ -88656,6 +88828,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88693,6 +88866,7 @@ const state = {
           ...existingApproval,
           transferOutcomeMonitor: { monitorDecision, observedAt, build: BUILD_VERSION },
           transferLearningTrustGate: null,
+          tenantLearningPolicyStudio: null,
         },
       };
       const chain = buildCommandMemoryLearningChain(memoryForMonitor);
@@ -88728,6 +88902,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88799,6 +88974,7 @@ const state = {
           transferLaunchReceipt: chain.transferLaunchReceipt,
           transferOutcomeMonitor: chain.transferOutcomeMonitor,
           transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
         },
       };
       persistCommandMemory(state.commandMemory);
@@ -88819,6 +88995,78 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).transferLearningTrustGate.copyText || "";
       }
       copyTextToClipboard(text, "Transfer learning trust gate copied.");
+      return;
+    }
+
+    if (action === "set-command-tenant-learning-policy") {
+      const policyDecision = button.dataset.policyDecision || "Review policy";
+      if (!state.commandMemory?.text) {
+        showTransientNotice("Copy a calm line before opening the tenant learning policy studio.");
+        return;
+      }
+      const decidedAt = new Date().toISOString();
+      const existingApproval = state.commandMemory.approval || {};
+      const memoryForPolicy = {
+        ...state.commandMemory,
+        approval: {
+          ...existingApproval,
+          tenantLearningPolicyStudio: { policyDecision, decidedAt, build: BUILD_VERSION },
+        },
+      };
+      const chain = buildCommandMemoryLearningChain(memoryForPolicy);
+      state.commandMemory = {
+        ...state.commandMemory,
+        build: BUILD_VERSION,
+        seed: chain.seed,
+        approval: {
+          ...existingApproval,
+          build: BUILD_VERSION,
+          releaseReceipt: chain.releaseReceipt,
+          reviewCue: chain.reviewCue,
+          evidenceLens: chain.evidenceLens,
+          confidenceRibbon: chain.historyRibbon,
+          observationOutcome: chain.outcomeSlot,
+          proofAttachmentCue: chain.proofCue,
+          proofReviewGate: chain.reviewGate,
+          reuseReadinessLock: chain.reuseLock,
+          guidanceInfluencePreview: chain.influencePreview,
+          localInfluenceFeedbackPulse: chain.feedbackPulse,
+          localGuidanceActivationGate: chain.activationGate,
+          localGuidanceCanaryMonitor: chain.canaryMonitor,
+          localCanaryGraduationGate: chain.graduationGate,
+          learningLedger: chain.learningLedger,
+          learningSafetyReceipt: chain.learningSafetyReceipt,
+          globalLearningPassport: chain.globalLearningPassport,
+          marketFitGate: chain.marketFitGate,
+          countryLaunchReceipt: chain.countryLaunchReceipt,
+          secondCountryExpansionGate: chain.secondCountryExpansionGate,
+          countryTransferDeltaMap: chain.countryTransferDeltaMap,
+          transferReadinessScore: chain.transferReadinessScore,
+          transferActionPacket: chain.transferActionPacket,
+          transferLaunchReceipt: chain.transferLaunchReceipt,
+          transferOutcomeMonitor: chain.transferOutcomeMonitor,
+          transferLearningTrustGate: chain.transferLearningTrustGate,
+          tenantLearningPolicyStudio: chain.tenantLearningPolicyStudio,
+        },
+      };
+      persistCommandMemory(state.commandMemory);
+      showTransientNotice(`${policyDecision} saved.`);
+      render();
+      return;
+    }
+
+    if (action === "copy-command-tenant-policy") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).tenantLearningPolicyStudio.copyText || "";
+      }
+      copyTextToClipboard(text, "Tenant learning policy copied.");
       return;
     }
 

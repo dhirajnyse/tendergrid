@@ -83,6 +83,7 @@ Recovery cleanup in this copy:
 - v383 adds a Second Country Expansion Gate so second-country rollout stays locked until first-country proof, localization delta, residency, and rollback readiness are visible.
 - v384 adds a Country Transfer Delta Map so outcome, wording, residency, and rollback differences are compared before any second-country learning transfer can launch.
 - v385 adds a Transfer Readiness Score so country transfer deltas collapse into one score, one answer, and one controlled next move.
+- v390 adds a Tenant Learning Policy Studio so trusted transfer learning is controlled by tenant policy before it influences guidance.
 - v389 adds a Transfer Learning Trust Gate so watched transfer outcomes become tenant-only learning only after proof, sharing, and rollback checks.
 - v388 adds a Transfer Outcome Monitor so the first transfer outcome is watched before second-country learning moves wider.
 - v387 adds a Transfer Launch Receipt so the action packet becomes a receipt before any second-country movement.
