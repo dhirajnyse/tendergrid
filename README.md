@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v418 Audit Signoff Trail captures accepted, held, and escalated renewal audit signoffs before a pack leaves Command Center.
 - v417 Retirement Appeal Lane lets retired guidance reopen only with fresh proof, consent, owner, and rollback acceptance visible.
 - v416 Outcome Renewal Ledger keeps renewed, tenant, retune, and proof-wait receipt outcomes in one longitudinal learning ledger.
 - v415 Renewal Audit Pack packages expiry, consent, outcome, retirement, proof, rollback, and retained memory into a leadership-ready handoff.
