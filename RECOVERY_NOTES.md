@@ -92,6 +92,7 @@ Recovery cleanup in this copy:
 - v403 adds a Guidance Decision Brief so the review radar becomes one approve, hold, or retune packet.
 - v404 adds a Guidance Commitment Receipt so each decision brief becomes one owner-backed commitment with proof and rollback.
 - v405 adds a Guidance Outcome Watch so committed guidance moves are watched for outcome proof, rollback pressure, and close rules.
+- v410 adds a Guidance License Receipt so each council decision becomes an auditable license, tenant-only hold, retune receipt, or proof-wait receipt with scope, expiry, rollback, and consent posture.
 - v409 adds a Guidance Council Decision Gate so council-ready learning is approved with license, held tenant-only, returned to retune, or kept waiting for proof.
 - v408 adds a Guidance Council Intake so queued learning has agenda, proof, owner, privacy, rollback, and boundary checks before safety review.
 - v407 adds a Guidance Release Queue so captured learning routes into safety council, tenant shelf, retune queue, or proof wait.

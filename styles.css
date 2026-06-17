@@ -10322,6 +10322,129 @@ body.quiet-focus-mode .focus-mode-pill {
   align-items: center;
 }
 
+.command-guidance-license-receipt {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(246, 251, 249, 0.96));
+}
+
+.command-guidance-license-receipt.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-license-receipt.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-license-receipt.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-license-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-guidance-license-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-guidance-license-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-guidance-license-grid,
+.command-guidance-license-controls {
+  display: grid;
+  gap: 8px;
+}
+
+.command-guidance-license-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-guidance-license-controls {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-guidance-license-grid article,
+.command-guidance-license-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-guidance-license-grid article span,
+.command-guidance-license-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-guidance-license-grid article strong,
+.command-guidance-license-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-guidance-license-grid article small,
+.command-guidance-license-controls article small,
+.command-guidance-license-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-guidance-license-grid article.tone-green,
+.command-guidance-license-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-license-grid article.tone-blue,
+.command-guidance-license-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-license-grid article.tone-amber,
+.command-guidance-license-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-license-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -16394,7 +16517,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-council-grid,
   .command-guidance-council-controls,
   .command-guidance-council-decision-grid,
-  .command-guidance-council-decision-controls {
+  .command-guidance-council-decision-controls,
+  .command-guidance-license-grid,
+  .command-guidance-license-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -16670,7 +16795,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-council-grid,
   .command-guidance-council-controls,
   .command-guidance-council-decision-grid,
-  .command-guidance-council-decision-controls {
+  .command-guidance-council-decision-controls,
+  .command-guidance-license-grid,
+  .command-guidance-license-controls {
     grid-template-columns: 1fr;
   }
 
@@ -16720,7 +16847,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-learning-actions .ghost-btn,
   .command-guidance-release-actions .ghost-btn,
   .command-guidance-council-actions .ghost-btn,
-  .command-guidance-council-decision-actions .ghost-btn {
+  .command-guidance-council-decision-actions .ghost-btn,
+  .command-guidance-license-actions .ghost-btn {
     width: 100%;
   }
 
@@ -16769,7 +16897,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-learning-capture,
   .command-guidance-release-queue,
   .command-guidance-council-intake,
-  .command-guidance-council-decision-gate {
+  .command-guidance-council-decision-gate,
+  .command-guidance-license-receipt {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -16878,6 +17007,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-council-controls,
   .command-guidance-council-decision-grid,
   .command-guidance-council-decision-controls,
+  .command-guidance-license-grid,
+  .command-guidance-license-controls,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -16923,7 +17054,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-learning-actions,
   .command-guidance-release-actions,
   .command-guidance-council-actions,
-  .command-guidance-council-decision-actions {
+  .command-guidance-council-decision-actions,
+  .command-guidance-license-actions {
     margin-right: 10px;
     margin-left: 10px;
   }
