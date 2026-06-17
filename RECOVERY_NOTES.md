@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v416 adds an Outcome Renewal Ledger so renewed, tenant, retune, and proof-wait receipt outcomes stay in one longitudinal learning ledger.
 - v415 adds a Renewal Audit Pack so expiry, consent, outcome, retirement, proof, rollback, and retained memory become one leadership-ready handoff.
 - v395 adds a Tenant Reinforcement Canary Watch so opened canaries are measured for lift, friction, evidence, and rollback before wider reuse.
 - v394 adds a Tenant Reinforcement Canary Plan so approved reinforcement still needs one canary surface, owner, metric, and rollback window before wider guidance changes.
