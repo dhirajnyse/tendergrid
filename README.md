@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v406 Guidance Learning Capture classifies watched outcomes into reusable learning, tenant-only memory, retune memory, or proof holds.
 - v405 Guidance Outcome Watch watches each committed guidance move for outcome proof, rollback pressure, and close rules.
 - v404 Guidance Commitment Receipt turns every decision brief into one owner-backed commitment with proof and rollback.
 - v403 Guidance Decision Brief turns the review radar into one approve, hold, or retune packet.
