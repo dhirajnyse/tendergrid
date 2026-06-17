@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v414";
-  const BUILD_LABEL = "License Retirement Receipt";
+  const BUILD_VERSION = "v415";
+  const BUILD_LABEL = "Renewal Audit Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=414";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=414";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=415";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=415";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -18886,6 +18886,81 @@ const state = {
     return { cards, controls, copyText, nextAction, retainedMemory, retirementId, retirementReason, retirementState, rightsPosture, tone };
   }
 
+  function buildCommandGuidanceRenewalAuditPack(seed = {}, evidenceLens = {}, proofCue = {}, reviewGate = {}, guidanceLicenseExpiryWatch = {}, guidanceConsentRenewalLane = {}, guidanceReceiptOutcomeReview = {}, guidanceLicenseRetirementReceipt = {}) {
+    const evidenceScore = Number(evidenceLens.score) || 0;
+    const auditId = `${guidanceLicenseRetirementReceipt.retirementId || guidanceReceiptOutcomeReview.reviewId || guidanceConsentRenewalLane.renewalId || BUILD_VERSION.toUpperCase()}-AUD`;
+    const expiryState = guidanceLicenseExpiryWatch.watchState || "Expiry captured";
+    const expiryWindow = guidanceLicenseExpiryWatch.expiryWindow || "Expiry review needed";
+    const consentDecision = guidanceConsentRenewalLane.renewalDecision || "Consent review";
+    const consentWindow = guidanceConsentRenewalLane.consentWindow || "Consent window open";
+    const outcomeState = guidanceReceiptOutcomeReview.reviewState || "Outcome review";
+    const reuseRights = guidanceReceiptOutcomeReview.reuseRights || "Review rights";
+    const retirementState = guidanceLicenseRetirementReceipt.retirementState || "Retirement review";
+    const retirementReason = guidanceLicenseRetirementReceipt.retirementReason || "Rights under review";
+    const retainedMemory = guidanceLicenseRetirementReceipt.retainedMemory || "Audit memory retained";
+    const proofState = guidanceLicenseRetirementReceipt.controls?.[2]?.[1] || guidanceReceiptOutcomeReview.controls?.[0]?.[1] || (evidenceScore >= 82 ? "Accepted" : "Held");
+    const rollbackState = guidanceLicenseRetirementReceipt.controls?.[1]?.[1] || guidanceReceiptOutcomeReview.controls?.[1]?.[1] || "Attached";
+    const expiryVisible = Boolean(guidanceLicenseExpiryWatch.watchId || expiryWindow);
+    const consentVisible = Boolean(guidanceConsentRenewalLane.renewalId || consentDecision);
+    const outcomeVisible = Boolean(guidanceReceiptOutcomeReview.reviewId || outcomeState);
+    const retirementVisible = Boolean(guidanceLicenseRetirementReceipt.retirementId || retirementState);
+    const proofVisible = /accepted|held|needed|proof/i.test(`${proofState} ${proofCue.cueState || ""} ${reviewGate.reviewDecision || ""}`) || evidenceScore >= 76;
+    const auditReadiness = Math.min(100, [expiryVisible, consentVisible, outcomeVisible, retirementVisible, proofVisible].filter(Boolean).length * 20);
+    const tenantOnly = /tenant|local/i.test(`${consentDecision} ${outcomeState} ${reuseRights} ${retirementState}`);
+    const retune = /retune/i.test(`${consentDecision} ${outcomeState} ${reuseRights} ${retirementState}`);
+    const proofHold = /proof|held|needed/i.test(`${consentDecision} ${outcomeState} ${proofState}`) && proofState !== "Accepted";
+    const auditState =
+      auditReadiness >= 90 && proofState === "Accepted"
+        ? "Leadership audit ready"
+        : retune
+          ? "Retune audit pack"
+          : tenantOnly
+            ? "Tenant-only audit pack"
+            : proofHold
+              ? "Proof hold audit pack"
+              : "Audit pack building";
+    const tone =
+      auditState === "Leadership audit ready"
+        ? "green"
+        : auditState === "Retune audit pack" || auditState === "Tenant-only audit pack"
+          ? "blue"
+          : "amber";
+    const handoffLine =
+      auditState === "Leadership audit ready"
+        ? "Send the pack with expiry, consent, outcome, retirement, proof, and rollback aligned."
+        : auditState === "Retune audit pack"
+          ? "Send as a retune handoff: explain why renewal stopped and what evidence must improve."
+          : auditState === "Tenant-only audit pack"
+            ? "Send as tenant-only memory: explain what stayed local and why wider reuse is closed."
+            : auditState === "Proof hold audit pack"
+              ? "Hold leadership release until proof is accepted or clearly marked as blocked."
+              : "Finish proof, consent, and retirement details before this pack goes to leadership.";
+    const nextAction =
+      auditState === "Leadership audit ready"
+        ? "Publish the renewal audit pack as the management handoff for this guidance receipt."
+        : auditState === "Retune audit pack"
+          ? "Attach the retune reason, owner, and proof gap before the next renewal review."
+          : auditState === "Tenant-only audit pack"
+            ? "Keep the pack inside tenant memory and block network reuse in the handoff."
+            : auditState === "Proof hold audit pack"
+              ? "Wait for accepted proof before releasing the audit pack as reusable guidance."
+              : "Complete the remaining audit evidence before leadership review.";
+    const cards = [
+      ["Expiry", expiryState, expiryWindow, expiryVisible ? "green" : "amber"],
+      ["Consent", consentDecision, consentWindow, /renew/i.test(consentDecision) ? "green" : tenantOnly ? "blue" : "amber"],
+      ["Outcome", outcomeState, reuseRights, guidanceReceiptOutcomeReview.tone || tone],
+      ["Retirement", retirementState, retirementReason, guidanceLicenseRetirementReceipt.tone || tone],
+    ];
+    const controls = [
+      ["Readiness", `${auditReadiness}%`, handoffLine, auditReadiness >= 90 ? "green" : auditReadiness >= 70 ? "blue" : "amber"],
+      ["Proof", proofState, `Evidence ${evidenceScore}% / ${proofCue.cueState || reviewGate.reviewDecision || "proof review"}`, proofState === "Accepted" ? "green" : "amber"],
+      ["Rollback", rollbackState, "Rollback posture travels with the audit handoff.", /quiet/i.test(rollbackState) ? "green" : "amber"],
+      ["Memory", retainedMemory, `Audit packet ${auditId}`, retirementState === "Retire to tenant memory" ? "blue" : tone],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Renewal Audit Pack ${auditId}: ${auditState}. Readiness ${auditReadiness}%. Expiry ${expiryState}. Consent ${consentDecision}. Outcome ${outcomeState}. Retirement ${retirementState}. Proof ${proofState}. Rollback ${rollbackState}. Next: ${nextAction}`;
+    return { auditId, auditReadiness, auditState, cards, controls, copyText, handoffLine, nextAction, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -18939,7 +19014,8 @@ const state = {
     const guidanceConsentRenewalLane = buildCommandGuidanceConsentRenewalLane(seed, evidenceLens, proofCue, reviewGate, guidanceCouncilDecisionGate, guidanceLicenseReceipt, guidanceLicenseExpiryWatch);
     const guidanceReceiptOutcomeReview = buildCommandGuidanceReceiptOutcomeReview(seed, evidenceLens, outcomeSlot, proofCue, reviewGate, guidanceOutcomeWatch, guidanceLicenseReceipt, guidanceLicenseExpiryWatch, guidanceConsentRenewalLane);
     const guidanceLicenseRetirementReceipt = buildCommandGuidanceLicenseRetirementReceipt(seed, evidenceLens, proofCue, reviewGate, guidanceLicenseReceipt, guidanceLicenseExpiryWatch, guidanceConsentRenewalLane, guidanceReceiptOutcomeReview);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceReviewRadar, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceRenewalAuditPack = buildCommandGuidanceRenewalAuditPack(seed, evidenceLens, proofCue, reviewGate, guidanceLicenseExpiryWatch, guidanceConsentRenewalLane, guidanceReceiptOutcomeReview, guidanceLicenseRetirementReceipt);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceReviewRadar, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -18960,7 +19036,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceReviewRadar, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceReviewRadar, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -20552,6 +20628,43 @@ const state = {
                                                                                         <div class="command-guidance-retirement-actions">
                                                                                           <button class="ghost-btn" type="button" data-action="copy-command-guidance-retirement-receipt" data-copy-text="${escapeHtml(encodeURIComponent(guidanceLicenseRetirementReceipt.copyText))}">Copy retirement receipt</button>
                                                                                           <small>${escapeHtml(guidanceLicenseRetirementReceipt.retainedMemory)}</small>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                      <div class="command-guidance-renewal-audit tone-${escapeHtml(guidanceRenewalAuditPack.tone)}" aria-label="Renewal audit pack">
+                                                                                        <div class="command-guidance-audit-head">
+                                                                                          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Renewal Audit Pack</span>
+                                                                                          <strong>${escapeHtml(guidanceRenewalAuditPack.auditState)} / ${escapeHtml(compactText(guidanceRenewalAuditPack.auditId, 46))}</strong>
+                                                                                          <small>${escapeHtml(guidanceRenewalAuditPack.handoffLine)}</small>
+                                                                                        </div>
+                                                                                        <div class="command-guidance-audit-grid">
+                                                                                          ${guidanceRenewalAuditPack.cards
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-audit-controls">
+                                                                                          ${guidanceRenewalAuditPack.controls
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-audit-actions">
+                                                                                          <button class="ghost-btn" type="button" data-action="copy-command-guidance-renewal-audit" data-copy-text="${escapeHtml(encodeURIComponent(guidanceRenewalAuditPack.copyText))}">Copy audit pack</button>
+                                                                                          <small>${escapeHtml(guidanceRenewalAuditPack.nextAction)}</small>
                                                                                         </div>
                                                                                       </div>
                                                                                     </div>
@@ -39137,12 +39250,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v414 License Retirement Receipt",
-      phase: "License Retirement Receipt",
+      version: "v415 Renewal Audit Pack",
+      phase: "Renewal Audit Pack",
       lane: "Static product prototype on GitHub Pages",
-      pace: "395 meaningful versions since rebrand",
-      summary: "Command Center now closes expired or unsafe guidance licenses with reason, owner, rollback, retained tenant memory, and reuse-rights posture.",
+      pace: "396 meaningful versions since rebrand",
+      summary: "Command Center now packages expiry, consent, outcome, retirement, proof, rollback, and retained memory into one leadership-ready renewal audit handoff.",
       tracks: [
+        ["v415 renewal audit pack", 100, "Command Center now packages expiry, consent, outcome, retirement, proof, rollback, and retained memory into one leadership-ready renewal audit handoff.", "green"],
         ["v414 license retirement receipt", 100, "Command Center now closes expired or unsafe guidance licenses with reason, owner, rollback, retained tenant memory, and reuse-rights posture.", "green"],
         ["v413 receipt outcome review", 100, "Command Center now reviews receipt outcomes against proof, lift, friction, rollback, and reuse rights before renewed guidance keeps moving.", "green"],
         ["v412 consent renewal lane", 100, "Command Center now separates consent renewal, tenant-only extension, retune, and proof wait before licensed guidance keeps moving.", "green"],
@@ -39537,9 +39651,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v415", "Renewal audit pack", "Package consent renewal, expiry, outcome, and retirement evidence into a leadership-ready audit handoff."],
         ["v416", "Outcome renewal ledger", "Keep renewed, local, retuned, and proof-wait receipt outcomes in one longitudinal learning ledger."],
         ["v417", "Retirement appeal lane", "Let owners reopen retired guidance only with fresh proof, consent, and rollback acceptance."],
+        ["v418", "Audit signoff trail", "Capture who accepted, held, or escalated each renewal audit pack before it leaves Command Center."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -39699,10 +39813,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Expired or unsafe guidance licenses now close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Expiry, consent, outcome, retirement, proof, rollback, and retained memory now become one leadership-ready audit handoff.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -93030,6 +93144,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceLicenseRetirementReceipt.copyText || "";
       }
       copyTextToClipboard(text, "License retirement receipt copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-renewal-audit") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceRenewalAuditPack.copyText || "";
+      }
+      copyTextToClipboard(text, "Renewal audit pack copied.");
       return;
     }
 

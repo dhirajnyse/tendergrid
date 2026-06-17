@@ -10920,6 +10920,122 @@ body.quiet-focus-mode .focus-mode-pill {
   align-items: center;
 }
 
+.command-guidance-renewal-audit {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(246, 251, 249, 0.96));
+}
+
+.command-guidance-renewal-audit.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-renewal-audit.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-renewal-audit.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-audit-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-guidance-audit-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-guidance-audit-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-guidance-audit-grid,
+.command-guidance-audit-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-guidance-audit-grid article,
+.command-guidance-audit-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-guidance-audit-grid article span,
+.command-guidance-audit-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-guidance-audit-grid article strong,
+.command-guidance-audit-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-guidance-audit-grid article small,
+.command-guidance-audit-controls article small,
+.command-guidance-audit-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-guidance-audit-grid article.tone-green,
+.command-guidance-audit-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-audit-grid article.tone-blue,
+.command-guidance-audit-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-audit-grid article.tone-amber,
+.command-guidance-audit-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-audit-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -17002,7 +17118,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-outcome-review-grid,
   .command-guidance-outcome-review-controls,
   .command-guidance-retirement-grid,
-  .command-guidance-retirement-controls {
+  .command-guidance-retirement-controls,
+  .command-guidance-audit-grid,
+  .command-guidance-audit-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -17288,7 +17406,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-outcome-review-grid,
   .command-guidance-outcome-review-controls,
   .command-guidance-retirement-grid,
-  .command-guidance-retirement-controls {
+  .command-guidance-retirement-controls,
+  .command-guidance-audit-grid,
+  .command-guidance-audit-controls {
     grid-template-columns: 1fr;
   }
 
@@ -17343,7 +17463,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-expiry-actions .ghost-btn,
   .command-guidance-consent-actions .ghost-btn,
   .command-guidance-outcome-review-actions .ghost-btn,
-  .command-guidance-retirement-actions .ghost-btn {
+  .command-guidance-retirement-actions .ghost-btn,
+  .command-guidance-audit-actions .ghost-btn {
     width: 100%;
   }
 
@@ -17397,7 +17518,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-expiry-watch,
   .command-guidance-consent-renewal,
   .command-guidance-outcome-review,
-  .command-guidance-retirement-receipt {
+  .command-guidance-retirement-receipt,
+  .command-guidance-renewal-audit {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -17516,6 +17638,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-outcome-review-controls,
   .command-guidance-retirement-grid,
   .command-guidance-retirement-controls,
+  .command-guidance-audit-grid,
+  .command-guidance-audit-controls,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -17566,7 +17690,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-expiry-actions,
   .command-guidance-consent-actions,
   .command-guidance-outcome-review-actions,
-  .command-guidance-retirement-actions {
+  .command-guidance-retirement-actions,
+  .command-guidance-audit-actions {
     margin-right: 10px;
     margin-left: 10px;
   }

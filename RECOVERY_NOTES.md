@@ -92,15 +92,16 @@ Recovery cleanup in this copy:
 - v403 adds a Guidance Decision Brief so the review radar becomes one approve, hold, or retune packet.
 - v404 adds a Guidance Commitment Receipt so each decision brief becomes one owner-backed commitment with proof and rollback.
 - v405 adds a Guidance Outcome Watch so committed guidance moves are watched for outcome proof, rollback pressure, and close rules.
-- v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
-- v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
-- v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
-- v411 adds a License Expiry Watch so active, tenant-only, retune, and proof-wait guidance receipts are reviewed for renewal, retirement, rollback, consent, and proof before quiet reuse continues.
-- v410 adds a Guidance License Receipt so each council decision becomes an auditable license, tenant-only hold, retune receipt, or proof-wait receipt with scope, expiry, rollback, and consent posture.
-- v409 adds a Guidance Council Decision Gate so council-ready learning is approved with license, held tenant-only, returned to retune, or kept waiting for proof.
-- v408 adds a Guidance Council Intake so queued learning has agenda, proof, owner, privacy, rollback, and boundary checks before safety review.
-- v407 adds a Guidance Release Queue so captured learning routes into safety council, tenant shelf, retune queue, or proof wait.
 - v406 adds a Guidance Learning Capture so watched outcomes become reusable learning, tenant-only memory, retune memory, or proof holds.
+- v407 adds a Guidance Release Queue so captured learning routes into safety council, tenant shelf, retune queue, or proof wait.
+- v408 adds a Guidance Council Intake so queued learning has agenda, proof, owner, privacy, rollback, and boundary checks before safety review.
+- v409 adds a Guidance Council Decision Gate so council-ready learning is approved with license, held tenant-only, returned to retune, or kept waiting for proof.
+- v410 adds a Guidance License Receipt so each council decision becomes an auditable license, tenant-only hold, retune receipt, or proof-wait receipt with scope, expiry, rollback, and consent posture.
+- v411 adds a License Expiry Watch so active, tenant-only, retune, and proof-wait guidance receipts are reviewed for renewal, retirement, rollback, consent, and proof before quiet reuse continues.
+- v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
+- v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
+- v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v415 adds a Renewal Audit Pack so expiry, consent, outcome, retirement, proof, rollback, and retained memory become one leadership-ready handoff.
 - v395 adds a Tenant Reinforcement Canary Watch so opened canaries are measured for lift, friction, evidence, and rollback before wider reuse.
 - v394 adds a Tenant Reinforcement Canary Plan so approved reinforcement still needs one canary surface, owner, metric, and rollback window before wider guidance changes.
 - v393 adds a Tenant Reinforcement Reward Gate so measured tenant outcomes must be approved, observed, retuned, or blocked before reinforcing future guidance.
