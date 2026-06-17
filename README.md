@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v414 License Retirement Receipt closes expired or unsafe guidance licenses with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
 - v413 Receipt Outcome Review compares renewed, tenant-only, retune, and proof-wait receipt outcomes against proof, lift, friction, rollback, and reuse rights.
 - v412 Consent Renewal Lane separates consent renewal, tenant-only extension, retune, and proof wait before licensed guidance keeps moving.
 - v411 License Expiry Watch monitors active, tenant-only, retune, and proof-wait guidance receipts for renewal, retirement, rollback, consent, and proof review before quiet reuse continues.
