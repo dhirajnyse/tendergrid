@@ -92,6 +92,7 @@ Recovery cleanup in this copy:
 - v403 adds a Guidance Decision Brief so the review radar becomes one approve, hold, or retune packet.
 - v404 adds a Guidance Commitment Receipt so each decision brief becomes one owner-backed commitment with proof and rollback.
 - v405 adds a Guidance Outcome Watch so committed guidance moves are watched for outcome proof, rollback pressure, and close rules.
+- v407 adds a Guidance Release Queue so captured learning routes into safety council, tenant shelf, retune queue, or proof wait.
 - v406 adds a Guidance Learning Capture so watched outcomes become reusable learning, tenant-only memory, retune memory, or proof holds.
 - v395 adds a Tenant Reinforcement Canary Watch so opened canaries are measured for lift, friction, evidence, and rollback before wider reuse.
 - v394 adds a Tenant Reinforcement Canary Plan so approved reinforcement still needs one canary surface, owner, metric, and rollback window before wider guidance changes.
