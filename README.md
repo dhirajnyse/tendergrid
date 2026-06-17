@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v408 Guidance Council Intake prepares queued learning with agenda, proof, owner, privacy, rollback, and boundary checks before safety review.
 - v407 Guidance Release Queue routes captured learning into safety council, tenant shelf, retune queue, or proof wait.
 - v406 Guidance Learning Capture classifies watched outcomes into reusable learning, tenant-only memory, retune memory, or proof holds.
 - v405 Guidance Outcome Watch watches each committed guidance move for outcome proof, rollback pressure, and close rules.

@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v407";
-  const BUILD_LABEL = "Guidance Release Queue";
+  const BUILD_VERSION = "v408";
+  const BUILD_LABEL = "Guidance Council Intake";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=407";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=407";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=408";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=408";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -18495,6 +18495,47 @@ const state = {
     return { controls, copyText, lanes, nextAction, queueId, queueState, tone };
   }
 
+  function buildCommandGuidanceCouncilIntake(seed = {}, evidenceLens = {}, proofCue = {}, reviewGate = {}, guidanceDecisionBrief = {}, guidanceCommitmentReceipt = {}, guidanceOutcomeWatch = {}, guidanceLearningCapture = {}, guidanceReleaseQueue = {}) {
+    const queueState = guidanceReleaseQueue.queueState || "Proof wait";
+    const evidenceScore = Number(evidenceLens.score) || 0;
+    const intakeId = `${guidanceReleaseQueue.queueId || guidanceLearningCapture.captureId || guidanceOutcomeWatch.watchId || BUILD_VERSION.toUpperCase()}-CI`;
+    const proofReady = /proof ready|proof attached|proof clear|proof accepted/i.test(`${guidanceReleaseQueue.lanes?.[1]?.[1] || ""} ${proofCue.cueState || ""}`) || evidenceScore >= 82;
+    const ownerReady = /owner needed/i.test(`${guidanceReleaseQueue.lanes?.[2]?.[1] || ""}`) ? false : Boolean(guidanceCommitmentReceipt.cards?.[1]?.[1] || seed.owner);
+    const privacyReady = /tenant-local|council review|private hold/i.test(`${guidanceReleaseQueue.lanes?.[3]?.[1] || ""}`) || Boolean(seed.privacy);
+    const rollbackReady = !/rollback pressure|rollback gap|watch rollback/i.test(JSON.stringify(guidanceOutcomeWatch.cards || []));
+    const councilCandidate = queueState === "Safety council queue";
+    const intakeState =
+      councilCandidate && proofReady && ownerReady && privacyReady && rollbackReady
+        ? "Council packet ready"
+        : queueState === "Tenant shelf"
+          ? "Tenant review packet"
+          : queueState === "Retune queue"
+            ? "Retune evidence packet"
+            : "Intake waiting";
+    const tone = intakeState === "Council packet ready" ? "green" : intakeState === "Tenant review packet" ? "blue" : "amber";
+    const nextAction =
+      intakeState === "Council packet ready"
+        ? "Place one bounded packet on the safety council agenda with proof, owner, privacy, and rollback notes visible."
+        : intakeState === "Tenant review packet"
+          ? "Ask the tenant owner to confirm whether the lesson stays local, expires, or returns with more proof."
+          : intakeState === "Retune evidence packet"
+            ? "Send the lesson to retune review with failure reason, rollback posture, and proof debt attached."
+            : "Keep the intake quiet until proof, owner, privacy, and rollback checks are all visible.";
+    const checks = [
+      ["Agenda", councilCandidate ? "Council agenda" : queueState, councilCandidate ? "Candidate can be heard by safety council." : "This packet does not need network council yet.", councilCandidate ? "green" : "blue"],
+      ["Proof", proofReady ? "Proof attached" : "Proof missing", proofCue.cueState || guidanceLearningCapture.lanes?.[1]?.[1] || `Evidence ${evidenceScore}%`, proofReady ? "green" : "amber"],
+      ["Owner", ownerReady ? (guidanceCommitmentReceipt.cards?.[1]?.[1] || seed.owner) : "Owner needed", ownerReady ? "One accountable owner is visible." : "Council intake cannot proceed anonymously.", ownerReady ? "green" : "amber"],
+      ["Privacy", privacyReady ? "Privacy note visible" : "Privacy note needed", seed.privacy || guidanceReleaseQueue.lanes?.[3]?.[1] || "Tenant data stays protected.", privacyReady ? "green" : "amber"],
+    ];
+    const controls = [
+      ["Decision", intakeState === "Council packet ready" ? "Hear next" : intakeState === "Intake waiting" ? "Wait" : "Review locally", nextAction, tone],
+      ["Rollback", rollbackReady ? "Rollback quiet" : "Rollback watch", guidanceOutcomeWatch.checkpoints?.[1]?.[2] || "Rollback signal remains attached.", rollbackReady ? "green" : "amber"],
+      ["Boundary", councilCandidate ? "No reuse pre-approval" : "No network movement", guidanceReleaseQueue.controls?.[0]?.[2] || "Council is a gate, not a shortcut.", "blue"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Guidance Council Intake ${intakeId}: ${intakeState}. Agenda ${checks[0][1]}. Proof ${checks[1][1]}. Owner ${checks[2][1]}. Privacy ${checks[3][1]}. Decision ${controls[0][1]}. Next: ${nextAction}`;
+    return { checks, controls, copyText, intakeId, intakeState, nextAction, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -18541,7 +18582,8 @@ const state = {
     const guidanceOutcomeWatch = buildCommandGuidanceOutcomeWatch(seed, evidenceLens, outcomeSlot, proofCue, reviewGate, guidanceDecisionBrief, guidanceCommitmentReceipt);
     const guidanceLearningCapture = buildCommandGuidanceLearningCapture(seed, evidenceLens, proofCue, reviewGate, guidanceDecisionBrief, guidanceCommitmentReceipt, guidanceOutcomeWatch);
     const guidanceReleaseQueue = buildCommandGuidanceReleaseQueue(seed, evidenceLens, proofCue, reviewGate, guidanceDecisionBrief, guidanceCommitmentReceipt, guidanceOutcomeWatch, guidanceLearningCapture);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceCommitmentReceipt, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceOutcomeWatch, guidanceReleaseQueue, guidanceReviewRadar, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceCouncilIntake = buildCommandGuidanceCouncilIntake(seed, evidenceLens, proofCue, reviewGate, guidanceDecisionBrief, guidanceCommitmentReceipt, guidanceOutcomeWatch, guidanceLearningCapture, guidanceReleaseQueue);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceCommitmentReceipt, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceOutcomeWatch, guidanceReleaseQueue, guidanceReviewRadar, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -18562,7 +18604,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceCommitmentReceipt, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceOutcomeWatch, guidanceReleaseQueue, guidanceReviewRadar, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceCommitmentReceipt, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceOutcomeWatch, guidanceReleaseQueue, guidanceReviewRadar, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -19895,6 +19937,43 @@ const state = {
                                                                                         <div class="command-guidance-release-actions">
                                                                                           <button class="ghost-btn" type="button" data-action="copy-command-guidance-release-queue" data-copy-text="${escapeHtml(encodeURIComponent(guidanceReleaseQueue.copyText))}">Copy queue</button>
                                                                                           <small>${escapeHtml(guidanceReleaseQueue.queueState)}</small>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                      <div class="command-guidance-council-intake tone-${escapeHtml(guidanceCouncilIntake.tone)}" aria-label="Guidance council intake">
+                                                                                        <div class="command-guidance-council-head">
+                                                                                          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Guidance Council Intake</span>
+                                                                                          <strong>${escapeHtml(guidanceCouncilIntake.intakeState)} / ${escapeHtml(compactText(guidanceCouncilIntake.intakeId, 46))}</strong>
+                                                                                          <small>${escapeHtml(guidanceCouncilIntake.nextAction)}</small>
+                                                                                        </div>
+                                                                                        <div class="command-guidance-council-grid">
+                                                                                          ${guidanceCouncilIntake.checks
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-council-controls">
+                                                                                          ${guidanceCouncilIntake.controls
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-council-actions">
+                                                                                          <button class="ghost-btn" type="button" data-action="copy-command-guidance-council-intake" data-copy-text="${escapeHtml(encodeURIComponent(guidanceCouncilIntake.copyText))}">Copy intake</button>
+                                                                                          <small>${escapeHtml(guidanceCouncilIntake.intakeState)}</small>
                                                                                         </div>
                                                                                       </div>
                                                                                     </div>
@@ -38480,13 +38559,14 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v407 Guidance Release Queue",
-      phase: "Guidance Release Queue",
+      version: "v408 Guidance Council Intake",
+      phase: "Guidance Council Intake",
       lane: "Static product prototype on GitHub Pages",
-      pace: "388 meaningful versions since rebrand",
-      summary: "Command Center now routes captured learning into safety council, tenant shelf, retune queue, or proof wait.",
+      pace: "389 meaningful versions since rebrand",
+      summary: "Command Center now prepares queued learning with agenda, proof, owner, privacy, rollback, and boundary checks before safety review.",
       tracks: [
-        ["v407 guidance release queue", 100, "Command Center now routes captured learning into safety council, tenant shelf, retune queue, or proof wait.", "green"],
+        ["v408 guidance council intake", 100, "Command Center now prepares queued learning with agenda, proof, owner, privacy, rollback, and boundary checks before safety review.", "green"],
+        ["v407 guidance release queue", 100, "Command Center routes captured learning into safety council, tenant shelf, retune queue, or proof wait.", "green"],
         ["v406 guidance learning capture", 100, "Command Center captures watched guidance outcomes as reusable learning, tenant-only memory, retune memory, or proof holds.", "green"],
         ["v405 guidance outcome watch", 100, "Command Center now watches each committed guidance move for outcome proof, rollback pressure, and close rules.", "green"],
         ["v404 guidance commitment receipt", 100, "Command Center now turns every guidance decision brief into one accountable commitment receipt.", "green"],
@@ -39035,10 +39115,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Captured learning now routes into safety council, tenant shelf, retune queue, or proof wait.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Queued learning now gets agenda, proof, owner, privacy, rollback, and boundary checks before safety review.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -92261,6 +92341,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceReleaseQueue.copyText || "";
       }
       copyTextToClipboard(text, "Guidance release queue copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-council-intake") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceCouncilIntake.copyText || "";
+      }
+      copyTextToClipboard(text, "Guidance council intake copied.");
       return;
     }
 
