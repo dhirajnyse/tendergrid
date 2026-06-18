@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v428 adds Signoff Loop Governance so owner, proof, and next-review evidence are required before signoff learning changes wider guidance.
 - v427 adds a Launch Roadmap under Build Phase so launch distance, stage gates, readiness lanes, near-launch moves, and hard blockers are visible before first live SaaS launch.
 - v426 adds an Appeal Learning Loop so safe reopened, held, retuned, and rejected appeal outcomes feed future guidance without letting weak appeals reopen quietly.
 - v425 adds a Trend Learning Loop so improved, localized, retuned, and proof-wait trend outcomes feed future guidance posture without overpromoting weak signals.

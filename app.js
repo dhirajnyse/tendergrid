@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v427";
-  const BUILD_LABEL = "Launch Roadmap";
+  const BUILD_VERSION = "v428";
+  const BUILD_LABEL = "Signoff Loop Governance";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=427";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=427";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=428";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=428";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -19661,6 +19661,91 @@ const state = {
     return { cards, controls, copyText, loopId, loopScore, loopState, nextAction, reuseGate, tone };
   }
 
+  function buildCommandGuidanceSignoffLoopGovernance(seed = {}, evidenceLens = {}, guidanceSignoffOutcomeReceipt = {}, guidanceSignoffLearningLoop = {}, guidanceTrendLearningLoop = {}, guidanceAppealLearningLoop = {}) {
+    const evidenceScore = Number(evidenceLens.score) || 0;
+    const signoffLoopScore = Number(guidanceSignoffLearningLoop.loopScore) || 0;
+    const trendLoopScore = Number(guidanceTrendLearningLoop.loopScore) || 0;
+    const appealLoopScore = Number(guidanceAppealLearningLoop.loopScore) || 0;
+    const ownerReady = Boolean(seed.ownerReady);
+    const proofReady = Boolean(seed.proofReady) && evidenceScore >= 70;
+    const reviewReady = Boolean(seed.dateReady);
+    const signoffReady = signoffLoopScore >= 75 && !/locked|proof-wait/i.test(guidanceSignoffLearningLoop.loopState || "");
+    const trendReady = trendLoopScore >= 70 && !/locked|proof-wait/i.test(guidanceTrendLearningLoop.loopState || "");
+    const appealReady = appealLoopScore >= 70 && !/locked/i.test(guidanceAppealLearningLoop.loopState || "");
+    const governanceId = `${guidanceAppealLearningLoop.loopId || guidanceTrendLearningLoop.loopId || guidanceSignoffLearningLoop.loopId || guidanceSignoffOutcomeReceipt.receiptId || BUILD_VERSION.toUpperCase()}-SLG`;
+    const governanceScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          evidenceScore * 0.22 +
+            signoffLoopScore * 0.24 +
+            trendLoopScore * 0.16 +
+            appealLoopScore * 0.16 +
+            (ownerReady ? 8 : 0) +
+            (proofReady ? 7 : 0) +
+            (reviewReady ? 7 : 0) -
+            (!ownerReady ? 10 : 0) -
+            (!proofReady ? 10 : 0) -
+            (!reviewReady ? 8 : 0),
+        ),
+      ),
+    );
+    const missing = [
+      !ownerReady ? "owner" : "",
+      !proofReady ? "proof" : "",
+      !reviewReady ? "next review" : "",
+    ].filter(Boolean);
+    const governed = ownerReady && proofReady && reviewReady && signoffReady && trendReady && appealReady && governanceScore >= 76;
+    const releaseGate =
+      governed
+        ? "Governed release"
+        : missing.length
+          ? `Locked: ${missing.join(", ")}`
+          : signoffReady
+            ? "Loop watch"
+            : "Signoff locked";
+    const governanceState =
+      governed
+        ? "Governed signoff learning"
+        : !ownerReady
+          ? "Owner gap"
+          : !proofReady
+            ? "Proof gap"
+            : !reviewReady
+              ? "Review gap"
+              : signoffReady
+                ? "Watch before release"
+                : "Signoff learning locked";
+    const tone = governed ? "green" : missing.length || !signoffReady ? "amber" : "blue";
+    const nextAction =
+      governed
+        ? "Let signoff learning influence wider guidance only with owner, proof, next-review evidence, loop scores, and rollback boundary attached."
+        : !ownerReady
+          ? "Name the accountable owner before signoff learning can change any wider guidance."
+          : !proofReady
+            ? "Attach evidence proof before signoff learning can leave the tenant learning lane."
+            : !reviewReady
+              ? "Set the next review date before signoff learning can become release-ready guidance."
+              : signoffReady
+                ? "Keep the loop under observation until trend and appeal evidence are strong enough for governed release."
+                : "Keep signoff learning locked until the signoff loop is strong and free of proof-wait language.";
+    const cards = [
+      ["Owner", ownerReady ? seed.owner : "Name owner", ownerReady ? "Owner is visible before the learning can influence guidance." : "Learning stays locked until one owner is named.", ownerReady ? "green" : "amber"],
+      ["Proof", proofReady ? seed.proof : "Attach proof", proofReady ? "Evidence is strong enough to carry the signoff outcome forward." : `Proof must be attached and evidence must improve from ${evidenceScore}%.`, proofReady ? "green" : "amber"],
+      ["Next review", reviewReady ? seed.date : "Set review", reviewReady ? "Next review evidence is attached to the signoff loop." : "A dated review is required before the loop can learn wider.", reviewReady ? "green" : "amber"],
+      ["Release", releaseGate, governed ? "The loop can influence future guidance under governance." : "Wider guidance stays protected until the missing controls close.", governed ? "green" : tone],
+    ];
+    const controls = [
+      ["Governance", governanceState, nextAction, tone],
+      ["Signoff loop", `${signoffLoopScore}%`, guidanceSignoffLearningLoop.nextAction || "Signoff learning stays attached.", signoffReady ? "green" : "amber"],
+      ["Trend/appeal", `${trendLoopScore}% / ${appealLoopScore}%`, "Trend and appeal loops must support the same learning before release.", trendReady && appealReady ? "green" : "blue"],
+      ["Score", `${governanceScore}%`, `Evidence ${evidenceScore}% / owner ${ownerReady ? "ready" : "gap"} / proof ${proofReady ? "ready" : "gap"} / review ${reviewReady ? "ready" : "gap"}`, governanceScore >= 82 ? "green" : governanceScore >= 70 ? "blue" : "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Signoff Loop Governance ${governanceId}: ${governanceState}. Owner ${ownerReady ? seed.owner : "needed"}. Proof ${proofReady ? seed.proof : "needed"}. Next review ${reviewReady ? seed.date : "needed"}. Release gate ${releaseGate}. Score ${governanceScore}%. Signoff loop ${guidanceSignoffLearningLoop.loopState || "review"} ${signoffLoopScore}%. Trend loop ${guidanceTrendLearningLoop.loopState || "review"} ${trendLoopScore}%. Appeal loop ${guidanceAppealLearningLoop.loopState || "review"} ${appealLoopScore}%. Next: ${nextAction}`;
+    return { cards, controls, copyText, governanceId, governanceScore, governanceState, nextAction, releaseGate, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -19726,7 +19811,8 @@ const state = {
     const guidanceSignoffLearningLoop = buildCommandGuidanceSignoffLearningLoop(seed, evidenceLens, guidanceSignoffOutcomeReceipt, guidanceTrendOutcomeReceipt, guidanceAppealDecisionOutcomeWatch);
     const guidanceTrendLearningLoop = buildCommandGuidanceTrendLearningLoop(seed, evidenceLens, guidanceTrendOutcomeReceipt, guidanceAppealDecisionOutcomeWatch, guidanceSignoffLearningLoop);
     const guidanceAppealLearningLoop = buildCommandGuidanceAppealLearningLoop(seed, evidenceLens, guidanceAppealDecisionReceipt, guidanceAppealDecisionOutcomeWatch, guidanceSignoffLearningLoop, guidanceTrendLearningLoop);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceSignoffLoopGovernance = buildCommandGuidanceSignoffLoopGovernance(seed, evidenceLens, guidanceSignoffOutcomeReceipt, guidanceSignoffLearningLoop, guidanceTrendLearningLoop, guidanceAppealLearningLoop);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -19747,7 +19833,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -21783,6 +21869,43 @@ const state = {
                                                                                         <div class="command-guidance-appeal-loop-actions">
                                                                                           <button class="ghost-btn" type="button" data-action="copy-command-guidance-appeal-loop" data-copy-text="${escapeHtml(encodeURIComponent(guidanceAppealLearningLoop.copyText))}">Copy appeal loop</button>
                                                                                           <small>${escapeHtml(guidanceAppealLearningLoop.loopId)}</small>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                      <div class="command-guidance-signoff-governance tone-${escapeHtml(guidanceSignoffLoopGovernance.tone)}" aria-label="Signoff loop governance">
+                                                                                        <div class="command-guidance-signoff-governance-head">
+                                                                                          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Signoff Loop Governance</span>
+                                                                                          <strong>${escapeHtml(guidanceSignoffLoopGovernance.governanceState)} / ${guidanceSignoffLoopGovernance.governanceScore}%</strong>
+                                                                                          <small>${escapeHtml(guidanceSignoffLoopGovernance.nextAction)}</small>
+                                                                                        </div>
+                                                                                        <div class="command-guidance-signoff-governance-grid">
+                                                                                          ${guidanceSignoffLoopGovernance.cards
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-signoff-governance-controls">
+                                                                                          ${guidanceSignoffLoopGovernance.controls
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-signoff-governance-actions">
+                                                                                          <button class="ghost-btn" type="button" data-action="copy-command-guidance-signoff-governance" data-copy-text="${escapeHtml(encodeURIComponent(guidanceSignoffLoopGovernance.copyText))}">Copy signoff governance</button>
+                                                                                          <small>${escapeHtml(guidanceSignoffLoopGovernance.governanceId)}</small>
                                                                                         </div>
                                                                                       </div>
                                                                                     </div>
@@ -40368,12 +40491,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v427 Launch Roadmap",
-      phase: "Launch Roadmap",
+      version: "v428 Signoff Loop Governance",
+      phase: "Signoff Loop Governance",
       lane: "Static product prototype on GitHub Pages",
-      pace: "408 meaningful versions since rebrand",
-      summary: "Build Phase now shows launch distance, stage gates, readiness lanes, and the exact blockers that keep PursuitDesk from the first live SaaS launch.",
+      pace: "409 meaningful versions since rebrand",
+      summary: "Command Center now requires owner, proof, and next-review evidence before signoff learning changes wider guidance.",
       tracks: [
+        ["v428 signoff loop governance", 100, "Command Center now requires owner, proof, and next-review evidence before signoff learning changes wider guidance.", "green"],
         ["v427 launch roadmap", 100, "Build Phase now shows launch distance, stage gates, readiness lanes, and the exact blockers that keep PursuitDesk from the first live SaaS launch.", "green"],
         ["v426 appeal learning loop", 100, "Command Center now feeds safe reopened, held, retuned, and rejected appeal outcomes into future guidance without letting weak appeals reopen quietly.", "green"],
         ["v425 trend learning loop", 100, "Command Center now feeds improved, localized, retuned, and proof-wait trend outcomes into future guidance posture without overpromoting weak signals.", "green"],
@@ -40781,9 +40905,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v428", "Signoff loop governance", "Require owner, proof, and next-review evidence before signoff learning changes wider guidance."],
         ["v429", "Trend loop governance", "Require trend proof, movement score, and tenant boundary before trend learning changes wider guidance posture."],
         ["v430", "Appeal loop governance", "Require appeal proof, safety score, and rejection memory before appeal learning changes wider guidance posture."],
+        ["v431", "Governance release receipt", "Record the owner, proof, review date, loop score, and rollback boundary before governed learning ships to wider guidance."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -41087,10 +41211,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Build Phase now shows launch distance, launch gates, near-launch path, and blockers in one calm roadmap.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now requires owner, proof, and next-review evidence before signoff learning changes wider guidance.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Signoff Loop Governance, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -94599,6 +94723,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceAppealLearningLoop.copyText || "";
       }
       copyTextToClipboard(text, "Appeal learning loop copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-signoff-governance") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceSignoffLoopGovernance.copyText || "";
+      }
+      copyTextToClipboard(text, "Signoff loop governance copied.");
       return;
     }
 
