@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v427 Launch Roadmap adds a Build Phase launch-distance view with stage gates, readiness lanes, near-launch moves, and the blockers that keep PursuitDesk from first live SaaS launch.
 - v426 Appeal Learning Loop feeds safe reopened, held, retuned, and rejected appeal outcomes into future guidance without letting weak appeals reopen quietly.
 - v425 Trend Learning Loop feeds improved, localized, retuned, and proof-wait trend outcomes into future guidance posture without overpromoting weak signals.
 - v424 Signoff Learning Loop feeds safe accepted, held, and escalated signoff outcomes into future guidance review without reopening unsafe lines.

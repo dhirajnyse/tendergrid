@@ -22919,6 +22919,241 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   }
 }
 
+.build-launch-roadmap {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(231, 246, 241, 0.86));
+  box-shadow: var(--shadow);
+}
+
+.build-launch-roadmap-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.build-launch-roadmap-hero > div:first-child,
+.build-launch-score-card,
+.build-launch-summary-grid article,
+.build-launch-stage-grid article,
+.build-launch-two-column > article {
+  border: 1px solid rgba(13, 111, 97, 0.16);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.build-launch-roadmap-hero > div:first-child {
+  padding: 16px;
+}
+
+.build-launch-roadmap h3 {
+  margin: 4px 0 8px;
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1.04;
+}
+
+.build-launch-roadmap p,
+.build-launch-summary-grid p,
+.build-launch-stage-grid p,
+.build-launch-gate-list p,
+.build-launch-move-list p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.build-launch-score-card {
+  display: grid;
+  align-content: center;
+  gap: 9px;
+  padding: 16px;
+  border-left: 4px solid var(--teal);
+}
+
+.build-launch-score-card span,
+.build-launch-summary-grid span,
+.build-launch-stage-grid span,
+.build-launch-gate-list span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.build-launch-score-card strong {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 42px;
+  line-height: 1;
+}
+
+.build-launch-score-card small {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.build-launch-score-card i,
+.build-launch-stage-grid i {
+  display: block;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(17, 24, 21, 0.08);
+}
+
+.build-launch-score-card i b,
+.build-launch-stage-grid i b {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teal);
+}
+
+.build-launch-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.build-launch-summary-grid article,
+.build-launch-stage-grid article {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 116px;
+  padding: 12px;
+  border-left: 4px solid var(--teal);
+}
+
+.build-launch-summary-grid strong,
+.build-launch-stage-grid strong,
+.build-launch-gate-list strong,
+.build-launch-move-list strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.18;
+}
+
+.build-launch-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.build-launch-stage-grid article > div {
+  display: grid;
+  gap: 5px;
+}
+
+.build-launch-stage-grid span {
+  width: 24px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--teal);
+}
+
+.build-launch-stage-grid em {
+  color: var(--muted);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.build-launch-two-column {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 8px;
+}
+
+.build-launch-two-column > article {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+}
+
+.build-launch-gate-list,
+.build-launch-move-list {
+  display: grid;
+  gap: 7px;
+}
+
+.build-launch-gate-list div,
+.build-launch-move-list div {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.16);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: var(--teal-soft);
+}
+
+.build-launch-summary-grid .tone-green,
+.build-launch-stage-grid .tone-green,
+.build-launch-gate-list .tone-green,
+.build-launch-move-list .tone-green {
+  border-color: rgba(36, 119, 71, 0.24);
+  border-left-color: var(--green);
+  background: var(--green-soft);
+}
+
+.build-launch-summary-grid .tone-blue,
+.build-launch-stage-grid .tone-blue,
+.build-launch-gate-list .tone-blue,
+.build-launch-move-list .tone-blue {
+  border-color: rgba(49, 95, 147, 0.24);
+  border-left-color: var(--blue);
+  background: var(--blue-soft);
+}
+
+.build-launch-summary-grid .tone-amber,
+.build-launch-stage-grid .tone-amber,
+.build-launch-gate-list .tone-amber,
+.build-launch-move-list .tone-amber {
+  border-color: rgba(184, 110, 23, 0.28);
+  border-left-color: var(--amber);
+  background: var(--amber-soft);
+}
+
+.build-launch-summary-grid .tone-red,
+.build-launch-stage-grid .tone-red,
+.build-launch-gate-list .tone-red,
+.build-launch-move-list .tone-red {
+  border-color: rgba(179, 59, 48, 0.24);
+  border-left-color: var(--red);
+  background: var(--red-soft);
+}
+
+.build-launch-stage-grid .tone-green i b {
+  background: var(--green);
+}
+
+.build-launch-stage-grid .tone-blue i b {
+  background: var(--blue);
+}
+
+.build-launch-stage-grid .tone-amber i b {
+  background: var(--amber);
+}
+
+.build-launch-stage-grid .tone-red i b {
+  background: var(--red);
+}
+
 .product-build-tracker {
   display: grid;
   gap: 12px;
@@ -60588,6 +60823,10 @@ tr.selected-row td:first-child {
   .insight-escalation-grid,
   .insight-minutes-grid,
   .insight-dispatch-grid,
+  .build-launch-roadmap-hero,
+  .build-launch-summary-grid,
+  .build-launch-stage-grid,
+  .build-launch-two-column,
   .build-release-grid,
   .build-track-grid,
   .build-phase-grid,
@@ -60978,6 +61217,10 @@ tr.selected-row td:first-child {
   .insight-minutes-grid,
   .insight-dispatch-grid,
   .build-tracker-hero,
+  .build-launch-roadmap-hero,
+  .build-launch-summary-grid,
+  .build-launch-stage-grid,
+  .build-launch-two-column,
   .build-release-grid,
   .build-track-grid,
   .build-phase-grid,
@@ -61337,6 +61580,10 @@ tr.selected-row td:first-child {
   .insight-minutes-grid,
   .insight-dispatch-grid,
   .build-tracker-hero,
+  .build-launch-roadmap-hero,
+  .build-launch-summary-grid,
+  .build-launch-stage-grid,
+  .build-launch-two-column,
   .build-release-grid,
   .build-track-grid,
   .build-phase-grid,
@@ -61584,6 +61831,10 @@ tr.selected-row td:first-child {
   .insight-minutes-grid,
   .insight-dispatch-grid,
   .build-tracker-hero,
+  .build-launch-roadmap-hero,
+  .build-launch-summary-grid,
+  .build-launch-stage-grid,
+  .build-launch-two-column,
   .build-release-grid,
   .build-track-grid,
   .build-phase-grid,
@@ -61595,6 +61846,10 @@ tr.selected-row td:first-child {
   .insight-kpis,
   .command-kpis,
   .build-tracker-hero,
+  .build-launch-roadmap-hero,
+  .build-launch-summary-grid,
+  .build-launch-stage-grid,
+  .build-launch-two-column,
   .build-release-grid,
   .build-track-grid,
   .build-phase-grid,

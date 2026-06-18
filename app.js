@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v426";
-  const BUILD_LABEL = "Appeal Learning Loop";
+  const BUILD_VERSION = "v427";
+  const BUILD_LABEL = "Launch Roadmap";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=426";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=426";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=427";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=427";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -40368,12 +40368,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v426 Appeal Learning Loop",
-      phase: "Appeal Learning Loop",
+      version: "v427 Launch Roadmap",
+      phase: "Launch Roadmap",
       lane: "Static product prototype on GitHub Pages",
-      pace: "407 meaningful versions since rebrand",
-      summary: "Command Center now feeds safe reopened, held, retuned, and rejected appeal outcomes into future guidance without letting weak appeals reopen quietly.",
+      pace: "408 meaningful versions since rebrand",
+      summary: "Build Phase now shows launch distance, stage gates, readiness lanes, and the exact blockers that keep PursuitDesk from the first live SaaS launch.",
       tracks: [
+        ["v427 launch roadmap", 100, "Build Phase now shows launch distance, stage gates, readiness lanes, and the exact blockers that keep PursuitDesk from the first live SaaS launch.", "green"],
         ["v426 appeal learning loop", 100, "Command Center now feeds safe reopened, held, retuned, and rejected appeal outcomes into future guidance without letting weak appeals reopen quietly.", "green"],
         ["v425 trend learning loop", 100, "Command Center now feeds improved, localized, retuned, and proof-wait trend outcomes into future guidance posture without overpromoting weak signals.", "green"],
         ["v424 signoff learning loop", 100, "Command Center now feeds safe accepted, held, and escalated signoff outcomes into future guidance review without reopening unsafe lines.", "green"],
@@ -40780,9 +40781,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v427", "Signoff loop governance", "Require owner, proof, and next-review evidence before signoff learning changes wider guidance."],
-        ["v428", "Trend loop governance", "Require trend proof, movement score, and tenant boundary before trend learning changes wider guidance posture."],
-        ["v429", "Appeal loop governance", "Require appeal proof, safety score, and rejection memory before appeal learning changes wider guidance posture."],
+        ["v428", "Signoff loop governance", "Require owner, proof, and next-review evidence before signoff learning changes wider guidance."],
+        ["v429", "Trend loop governance", "Require trend proof, movement score, and tenant boundary before trend learning changes wider guidance posture."],
+        ["v430", "Appeal loop governance", "Require appeal proof, safety score, and rejection memory before appeal learning changes wider guidance posture."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -40839,6 +40840,150 @@ const state = {
         "Customer success data persistence and support workflow",
       ],
     };
+  }
+
+  function buildBuildLaunchRoadmap(tracker) {
+    const doneCount = tracker.phases.filter(([, , status]) => status === "Done").length;
+    const activeCount = tracker.phases.filter(([, , status]) => status === "Active").length;
+    const mostlyDoneCount = tracker.phases.filter(([, , status]) => status === "Mostly done").length;
+    const phaseCount = tracker.phases.length || 1;
+    const mappedScore = Math.round(((doneCount + mostlyDoneCount * 0.8 + activeCount * 0.55) / phaseCount) * 100);
+    const blockerCount = tracker.blockers.length;
+    const hardBlockerCount = tracker.blockers.filter((item) => /private repo|backend|database|auth|staging|billing|hosting|production/i.test(item)).length;
+    const launchScore = Math.max(1, Math.min(100, Math.round(mappedScore * 0.42 + 100 * 0.18 + 44 * 0.24 + 38 * 0.16)));
+    const launchState = launchScore >= 75 ? "Near launch" : launchScore >= 55 ? "Pilot runway" : "Build runway";
+    const summaryCards = [
+      ["Static demo", "Ready now", "Public GitHub Pages demo is live and checked each release.", "green"],
+      ["Roadmap clarity", `${mappedScore}%`, `${doneCount} done, ${activeCount} active, ${mostlyDoneCount} mostly done phases are visible.`, "green"],
+      ["SaaS build", "Mapped", "Backend, auth, database, billing, hosting, and audit work are planned but not live.", "blue"],
+      ["Launch distance", `${launchScore}%`, `${launchState}. Main blockers are production backend, staging, billing, and real pilot data.`, launchScore >= 75 ? "green" : "amber"],
+    ];
+    const stages = [
+      ["1", "Prototype proof", "Complete", 100, "Live static product, navigation, rooms, reports, admin tools, and AI learning control surfaces are in place.", "green"],
+      ["2", "Pilot story", "Ready", 88, "Demo, close packet, launch board, membership model, ROI, feedback, and buyer-safe reports are prepared.", "green"],
+      ["3", "Backend foundation", "Next gate", 48, "Create the private repo, implement API, database, auth, audit, import, and tenant isolation.", "amber"],
+      ["4", "Staging proof", "Waiting", 34, "Run migrations, seed data, smoke checks, security checks, billing test mode, and rollback rehearsal.", "blue"],
+      ["5", "First live pilot", "Locked", 26, "Accept real customer data only after backend, access, billing, hosting, support, and monitoring gates pass.", "red"],
+    ];
+    const gates = [
+      ["Product demo", "Ready", "Live demo and Build Phase release flow are working.", "green"],
+      ["Private backend repo", "Required", "Create the real production repository and open the generated implementation issues.", "amber"],
+      ["Data and auth", "Required", "Build tenant accounts, user auth, database tables, import pipeline, and audit logs.", "red"],
+      ["Staging environment", "Required", "Deploy staging with secrets, smoke checks, rollback, monitoring, and backup proof.", "red"],
+      ["Billing and seats", "Required", "Implement checkout, invoices, seat reconciliation, webhooks, and access lock behavior.", "amber"],
+      ["Pilot go/no-go", "Required", "Run one pilot data dry run, support plan, owner signoff, and launch decision.", "blue"],
+    ];
+    const nextMoves = [
+      ["Open private repo", "Create repository, branch protection, labels, milestones, and issue wave.", "amber"],
+      ["Build backend alpha", "Implement auth, records API, tenant guard, database, import, audit, and tests.", "red"],
+      ["Run staging rehearsal", "Deploy staging, seed tenant, test import, check billing test mode, and prove rollback.", "blue"],
+      ["Pilot launch decision", "Use one customer workbook dry run, support checklist, and signed go/no-go decision.", "green"],
+    ];
+    return {
+      blockerCount,
+      gates,
+      hardBlockerCount,
+      launchScore,
+      launchState,
+      nextMoves,
+      summaryCards,
+      stages,
+    };
+  }
+
+  function renderBuildLaunchRoadmap(tracker) {
+    const roadmap = buildBuildLaunchRoadmap(tracker);
+    return `
+      <section class="build-launch-roadmap" aria-label="Build phase launch roadmap">
+        <div class="build-launch-roadmap-hero">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Launch Roadmap</span>
+            <h3>How close PursuitDesk is to launch</h3>
+            <p>We are strong as a public product prototype and demo workspace. The launch line moves when the private backend, staging proof, billing, access, and first pilot dry run become real.</p>
+          </div>
+          <div class="build-launch-score-card">
+            <span>Launch distance</span>
+            <strong>${roadmap.launchScore}%</strong>
+            <i><b style="width: ${roadmap.launchScore}%"></b></i>
+            <small>${escapeHtml(roadmap.launchState)} / ${roadmap.hardBlockerCount} hard blockers</small>
+          </div>
+        </div>
+        <div class="build-launch-summary-grid">
+          ${roadmap.summaryCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="build-launch-stage-grid">
+          ${roadmap.stages
+            .map(
+              ([no, title, state, progress, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <div>
+                    <span>${escapeHtml(no)}</span>
+                    <strong>${escapeHtml(title)}</strong>
+                    <em>${escapeHtml(state)}</em>
+                  </div>
+                  <i><b style="width: ${Math.max(0, Math.min(100, Number(progress)))}%"></b></i>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="build-launch-two-column">
+          <article>
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Launch gates</span>
+                <h3>What must turn green</h3>
+              </div>
+              <span>${roadmap.blockerCount} blockers</span>
+            </div>
+            <div class="build-launch-gate-list">
+              ${roadmap.gates
+                .map(
+                  ([label, state, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <span>${escapeHtml(label)}</span>
+                      <strong>${escapeHtml(state)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+          <article>
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Near-launch path</span>
+                <h3>Next practical moves</h3>
+              </div>
+            </div>
+            <div class="build-launch-move-list">
+              ${roadmap.nextMoves
+                .map(
+                  ([label, note, tone]) => `
+                    <div class="tone-${escapeHtml(tone)}">
+                      <strong>${escapeHtml(label)}</strong>
+                      <p>${escapeHtml(note)}</p>
+                    </div>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
   }
 
   function renderProductBuildTracker(tracker) {
@@ -40942,10 +41087,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Appeal outcomes now feed future guidance through reuse gates that keep weak reopen signals locked.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Build Phase now shows launch distance, launch gates, near-launch path, and blockers in one calm roadmap.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -40998,6 +41143,7 @@ const state = {
             <small>${doneCount} done / ${activeCount} active / ${mostlyDoneCount} mostly done</small>
           </div>
         </section>
+        ${renderBuildLaunchRoadmap(tracker)}
         ${renderBuildReleaseHandoff(tracker)}
         ${renderProductBuildTracker(tracker)}
         ${renderBuildPhaseArtifactSections(commandModel)}
