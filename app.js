@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v434";
-  const BUILD_LABEL = "Governance Release Archive";
+  const BUILD_VERSION = "v435";
+  const BUILD_LABEL = "Governance Proof Repair Queue";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=434";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=434";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=435";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=435";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -20263,6 +20263,94 @@ const state = {
     return { archiveCompleteness, archiveId, archiveState, cards, controls, copyText, nextAction, tone };
   }
 
+  function buildCommandGuidanceGovernanceProofRepairQueue(seed = {}, evidenceLens = {}, guidanceGovernanceReleaseReceipt = {}, guidanceGovernanceOutcomeMonitor = {}, guidanceGovernanceRollbackLane = {}, guidanceGovernanceReleaseArchive = {}) {
+    const evidenceScore = Number(evidenceLens.score) || 0;
+    const archiveScore = Number(guidanceGovernanceReleaseArchive.archiveCompleteness) || 0;
+    const proofQuality = Number(guidanceGovernanceOutcomeMonitor.proofQuality) || 0;
+    const laneScore = Number(guidanceGovernanceRollbackLane.laneScore) || 0;
+    const ownerReady = Boolean(seed.ownerReady);
+    const reviewReady = Boolean(seed.dateReady);
+    const proofReady = Boolean(seed.proofReady) || proofQuality >= 80;
+    const tenantBoundaryStable = Boolean(guidanceGovernanceOutcomeMonitor.tenantBoundaryStable);
+    const receiptReady = Boolean(guidanceGovernanceOutcomeMonitor.receiptReady) || /ready|captured/i.test(`${guidanceGovernanceReleaseReceipt.receiptState || ""} ${guidanceGovernanceReleaseArchive.archiveState || ""}`);
+    const rollbackDecision = guidanceGovernanceRollbackLane.decision || "Observe";
+    const archiveState = guidanceGovernanceReleaseArchive.archiveState || "Archive watch";
+    const weakProof = proofQuality < 78 || archiveScore < 74 || /repair|missing|watch/i.test(archiveState);
+    const retuneNeeded = rollbackDecision === "Repair" || rollbackDecision === "Rollback watch" || laneScore < 70;
+    const tenantHoldNeeded = receiptReady && !tenantBoundaryStable;
+    const repairScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          proofQuality * 0.3 +
+            archiveScore * 0.24 +
+            evidenceScore * 0.18 +
+            laneScore * 0.12 +
+            (ownerReady ? 6 : 0) +
+            (reviewReady ? 5 : 0) +
+            (proofReady ? 6 : 0) +
+            (tenantBoundaryStable ? 5 : 0) -
+            (retuneNeeded ? 4 : 0),
+        ),
+      ),
+    );
+    const queueState =
+      !receiptReady
+        ? "Receipt proof wait"
+        : tenantHoldNeeded
+          ? "Tenant proof hold"
+          : retuneNeeded
+            ? "Retune proof"
+            : weakProof && !ownerReady
+              ? "Owner proof repair"
+              : weakProof
+                ? "Proof repair open"
+                : repairScore >= 84
+                  ? "Proof accepted"
+                  : "Proof watch";
+    const route =
+      queueState === "Proof accepted"
+        ? "Accept"
+        : queueState === "Tenant proof hold"
+          ? "Tenant hold"
+          : queueState === "Retune proof"
+            ? "Retune"
+            : queueState === "Receipt proof wait"
+              ? "Wait"
+              : "Owner repair";
+    const tone = queueState === "Proof accepted" ? "green" : queueState === "Proof watch" ? "blue" : "amber";
+    const nextAction =
+      queueState === "Proof accepted"
+        ? "Accept proof into the archive and keep the release reusable only with its receipt, boundary, and rollback trail attached."
+        : queueState === "Tenant proof hold"
+          ? "Hold proof tenant-only until privacy scope and boundary evidence are explicit."
+          : queueState === "Retune proof"
+            ? "Retune the evidence package before this archived release can influence future guidance."
+            : queueState === "Receipt proof wait"
+              ? "Close the governance release receipt before proof repair can be routed."
+              : queueState === "Owner proof repair"
+                ? "Name one owner and assign the proof repair before future learning can trust this archive."
+                : queueState === "Proof repair open"
+                  ? "Attach stronger proof or review notes, then return the archive to the release chain."
+                  : "Keep proof in watch until archive score and evidence quality are strong enough to accept.";
+    const queueId = `${guidanceGovernanceReleaseArchive.archiveId || guidanceGovernanceRollbackLane.laneId || BUILD_VERSION.toUpperCase()}-GPR`;
+    const cards = [
+      ["Route", route, nextAction, tone],
+      ["Proof", `${proofQuality}%`, proofReady ? "Proof can move toward acceptance." : "Proof is below the acceptance threshold.", proofReady ? "green" : "amber"],
+      ["Owner", ownerReady ? seed.owner : "Assign owner", ownerReady ? "One owner can close the repair queue." : "Proof repair needs visible accountability.", ownerReady ? "green" : "amber"],
+      ["Boundary", tenantBoundaryStable ? "Stable" : "Tenant hold", tenantBoundaryStable ? "Boundary is clear enough for repaired proof." : "Proof remains tenant-only until scope is explicit.", tenantBoundaryStable ? "blue" : "amber"],
+    ];
+    const controls = [
+      ["Repair score", `${repairScore}%`, `Archive ${archiveScore}% / evidence ${evidenceScore}% / lane ${laneScore}%`, repairScore >= 84 ? "green" : repairScore >= 72 ? "blue" : "amber"],
+      ["Archive", archiveState, guidanceGovernanceReleaseArchive.nextAction || "Archive proof before reuse.", archiveScore >= 82 ? "green" : archiveScore >= 70 ? "blue" : "amber"],
+      ["Rollback", rollbackDecision, guidanceGovernanceRollbackLane.laneState || "Rollback lane", retuneNeeded ? "amber" : "blue"],
+      ["Review", reviewReady ? seed.date : "Set review", reviewReady ? "Repair has a dated control point." : "Proof repair needs a review date.", reviewReady ? "green" : "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Governance Proof Repair Queue ${queueId}: ${queueState}. Route ${route}. Repair score ${repairScore}%. Proof ${proofQuality}%. Archive ${archiveState} ${archiveScore}%. Rollback ${rollbackDecision}. Boundary ${tenantBoundaryStable ? "stable" : "tenant-only hold"}. Owner ${ownerReady ? seed.owner : "needed"}. Review ${reviewReady ? seed.date : "needed"}. Next: ${nextAction}`;
+    return { cards, controls, copyText, nextAction, queueId, queueScore: repairScore, queueState, route, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -20335,7 +20423,8 @@ const state = {
     const guidanceGovernanceOutcomeMonitor = buildCommandGuidanceGovernanceOutcomeMonitor(seed, evidenceLens, guidanceGovernanceReleaseReceipt, guidanceSignoffLoopGovernance, guidanceTrendLoopGovernance, guidanceAppealLoopGovernance);
     const guidanceGovernanceRollbackLane = buildCommandGuidanceGovernanceRollbackLane(seed, evidenceLens, guidanceGovernanceReleaseReceipt, guidanceGovernanceOutcomeMonitor);
     const guidanceGovernanceReleaseArchive = buildCommandGuidanceGovernanceReleaseArchive(seed, evidenceLens, guidanceGovernanceReleaseReceipt, guidanceGovernanceOutcomeMonitor, guidanceGovernanceRollbackLane);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceOutcomeMonitor, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceRollbackLane, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceGovernanceProofRepairQueue = buildCommandGuidanceGovernanceProofRepairQueue(seed, evidenceLens, guidanceGovernanceReleaseReceipt, guidanceGovernanceOutcomeMonitor, guidanceGovernanceRollbackLane, guidanceGovernanceReleaseArchive);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceOutcomeMonitor, guidanceGovernanceProofRepairQueue, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceRollbackLane, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -20356,7 +20445,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceOutcomeMonitor, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceRollbackLane, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceOutcomeMonitor, guidanceGovernanceProofRepairQueue, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceRollbackLane, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -22651,6 +22740,43 @@ const state = {
                                                                                         <div class="command-guidance-release-archive-actions">
                                                                                           <button class="ghost-btn" type="button" data-action="copy-command-guidance-release-archive" data-copy-text="${escapeHtml(encodeURIComponent(guidanceGovernanceReleaseArchive.copyText))}">Copy release archive</button>
                                                                                           <small>${escapeHtml(guidanceGovernanceReleaseArchive.archiveId)}</small>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                      <div class="command-guidance-proof-repair-queue tone-${escapeHtml(guidanceGovernanceProofRepairQueue.tone)}" aria-label="Governance proof repair queue">
+                                                                                        <div class="command-guidance-proof-repair-queue-head">
+                                                                                          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Governance Proof Repair Queue</span>
+                                                                                          <strong>${escapeHtml(guidanceGovernanceProofRepairQueue.queueState)} / ${guidanceGovernanceProofRepairQueue.queueScore}%</strong>
+                                                                                          <small>${escapeHtml(guidanceGovernanceProofRepairQueue.nextAction)}</small>
+                                                                                        </div>
+                                                                                        <div class="command-guidance-proof-repair-queue-grid">
+                                                                                          ${guidanceGovernanceProofRepairQueue.cards
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-proof-repair-queue-controls">
+                                                                                          ${guidanceGovernanceProofRepairQueue.controls
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-proof-repair-queue-actions">
+                                                                                          <button class="ghost-btn" type="button" data-action="copy-command-guidance-proof-repair-queue" data-copy-text="${escapeHtml(encodeURIComponent(guidanceGovernanceProofRepairQueue.copyText))}">Copy proof repair</button>
+                                                                                          <small>${escapeHtml(guidanceGovernanceProofRepairQueue.queueId)}</small>
                                                                                         </div>
                                                                                       </div>
                                                                                     </div>
@@ -41236,12 +41362,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v434 Governance Release Archive",
-      phase: "Governance Release Archive",
+      version: "v435 Governance Proof Repair Queue",
+      phase: "Governance Proof Repair Queue",
       lane: "Static product prototype on GitHub Pages",
-      pace: "415 meaningful versions since rebrand",
-      summary: "Command Center now archives governed release receipts with outcome, rollback, tenant-boundary, and proof history for audit review.",
+      pace: "416 meaningful versions since rebrand",
+      summary: "Command Center now routes weak archived proof into owner repair, tenant-only hold, or retune action before future learning trusts it.",
       tracks: [
+        ["v435 governance proof repair queue", 100, "Command Center now routes weak archived proof into owner repair, tenant-only hold, or retune action before future learning trusts it.", "green"],
         ["v434 governance release archive", 100, "Command Center now archives governed release receipts with outcome, rollback, tenant-boundary, and proof history for audit review.", "green"],
         ["v433 governance rollback lane", 100, "Command Center now separates continue, repair, tenant-only hold, and rollback decisions after governed release outcomes are monitored.", "green"],
         ["v432 governance outcome monitor", 100, "Command Center now watches governed releases for movement, rollback pressure, tenant boundary drift, and proof quality after guidance changes.", "green"],
@@ -41656,9 +41783,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v435", "Governance proof repair queue", "Route weak outcome proof into owner repair, tenant-only hold, or retune action before future learning trusts it."],
         ["v436", "Governance calm closeout", "Close stabilized governed releases with owner confirmation, proof lock, and next-review learning posture."],
         ["v437", "Governance audit export", "Package archived governance receipts into a simple evidence export for leadership, QA, and launch review."],
+        ["v438", "Governance proof SLA", "Add calm due rhythm for proof repair ownership, review dates, and blocked evidence escalation."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -41962,10 +42089,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now archives governed release receipts with outcome, rollback, tenant-boundary, and proof history for audit review.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now routes weak archived proof into owner repair, tenant-only hold, or retune action before future learning trusts it.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -95579,6 +95706,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceGovernanceReleaseArchive.copyText || "";
       }
       copyTextToClipboard(text, "Governance release archive copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-proof-repair-queue") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceGovernanceProofRepairQueue.copyText || "";
+      }
+      copyTextToClipboard(text, "Governance proof repair queue copied.");
       return;
     }
 
