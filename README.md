@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v424 Signoff Learning Loop feeds safe accepted, held, and escalated signoff outcomes into future guidance review without reopening unsafe lines.
 - v423 Appeal Decision Outcome Watch watches whether reopened, held, retuned, or rejected appeal decisions improved guidance safety after the next review.
 - v422 Trend Outcome Receipt measures whether improving, localizing, retuning, or proof-wait trends changed leadership decisions and next guidance posture.
 - v421 Signoff Outcome Receipt measures whether accepted, held, or escalated signoffs changed guidance safely after leadership review.
