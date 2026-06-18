@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=436"), "index.html is missing the v436 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=436"), "index.html is missing the v436 data cache token.");
-assert(index.includes("app.js?v=436"), "index.html is missing the v436 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=436"), "index.html is missing the v436 icon cache token.");
+assert(index.includes("styles.css?v=437"), "index.html is missing the v437 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=437"), "index.html is missing the v437 data cache token.");
+assert(index.includes("app.js?v=437"), "index.html is missing the v437 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=437"), "index.html is missing the v437 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v436";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Governance Calm Closeout";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=436'), "app.js is missing the v436 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=436'), "app.js is missing the v436 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v437";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Governance Audit Export";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=437'), "app.js is missing the v437 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=437'), "app.js is missing the v437 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -149,6 +149,7 @@ assert(app.includes("buildCommandGuidanceGovernanceRollbackLane"), "app.js is mi
 assert(app.includes("buildCommandGuidanceGovernanceReleaseArchive"), "app.js is missing the Governance Release Archive model.");
 assert(app.includes("buildCommandGuidanceGovernanceProofRepairQueue"), "app.js is missing the Governance Proof Repair Queue model.");
 assert(app.includes("buildCommandGuidanceGovernanceCalmCloseout"), "app.js is missing the Governance Calm Closeout model.");
+assert(app.includes("buildCommandGuidanceGovernanceAuditExport"), "app.js is missing the Governance Audit Export model.");
 assert(app.includes("buildCommandOutcomeMemorySeed"), "app.js is missing the Outcome Memory Seed model.");
 assert(app.includes("buildCommandLearningApprovalLane"), "app.js is missing the Learning Approval Lane model.");
 assert(app.includes("buildCommandLearningReleaseReceipt"), "app.js is missing the Learning Release Receipt model.");
@@ -319,6 +320,7 @@ assert(app.includes('action === "copy-command-guidance-rollback-lane"'), "app.js
 assert(app.includes('action === "copy-command-guidance-release-archive"'), "app.js is missing the Governance Release Archive copy action.");
 assert(app.includes('action === "copy-command-guidance-proof-repair-queue"'), "app.js is missing the Governance Proof Repair Queue copy action.");
 assert(app.includes('action === "copy-command-guidance-calm-closeout"'), "app.js is missing the Governance Calm Closeout copy action.");
+assert(app.includes('action === "copy-command-guidance-audit-export"'), "app.js is missing the Governance Audit Export copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -658,6 +660,9 @@ assert(css.includes(".command-guidance-proof-repair-queue-controls"), "styles.cs
 assert(css.includes(".command-guidance-calm-closeout"), "styles.css is missing the Governance Calm Closeout panel.");
 assert(css.includes(".command-guidance-calm-closeout-grid"), "styles.css is missing the Governance Calm Closeout grid.");
 assert(css.includes(".command-guidance-calm-closeout-controls"), "styles.css is missing the Governance Calm Closeout controls.");
+assert(css.includes(".command-guidance-audit-export"), "styles.css is missing the Governance Audit Export panel.");
+assert(css.includes(".command-guidance-audit-export-grid"), "styles.css is missing the Governance Audit Export grid.");
+assert(css.includes(".command-guidance-audit-export-controls"), "styles.css is missing the Governance Audit Export controls.");
 assert(css.includes(".build-launch-roadmap"), "styles.css is missing the Build Phase Launch Roadmap panel.");
 assert(css.includes(".build-launch-stage-grid"), "styles.css is missing the Build Phase Launch Roadmap stage grid.");
 assert(css.includes(".build-launch-gate-list"), "styles.css is missing the Build Phase Launch Roadmap gate list.");
