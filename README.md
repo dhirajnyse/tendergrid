@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v436 Governance Calm Closeout closes stabilized governed releases with owner confirmation, proof lock, and next-review posture.
 - v435 Governance Proof Repair Queue routes weak archived proof into owner repair, tenant-only hold, or retune action before future learning trusts it.
 - v434 Governance Release Archive preserves release receipt, outcome, rollback, tenant-boundary, and proof history for audit review.
 - v433 Governance Rollback Lane separates continue, repair, tenant-only hold, and rollback decisions after governed release outcomes are monitored.

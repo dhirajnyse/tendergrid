@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v436 adds a Governance Calm Closeout so stabilized governed releases close with owner confirmation, proof lock, and next-review posture.
 - v435 adds a Governance Proof Repair Queue so weak archived proof routes into owner repair, tenant-only hold, or retune action before future learning trusts it.
 - v434 adds a Governance Release Archive so governed releases preserve receipt, outcome, rollback, tenant-boundary, and proof history for audit review.
 - v433 adds a Governance Rollback Lane so governed releases separate continue, repair, tenant-only hold, and rollback decisions after outcome monitoring.
