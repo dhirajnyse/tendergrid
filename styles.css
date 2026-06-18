@@ -13713,6 +13713,149 @@ body.quiet-focus-mode .focus-mode-pill {
   overflow-wrap: anywhere;
 }
 
+.command-governance-reviewer-console {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(49, 101, 158, 0.18);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(250, 253, 255, 0.98), rgba(246, 251, 249, 0.96)),
+    radial-gradient(circle at 6% 0%, rgba(224, 246, 238, 0.48), transparent 34%);
+}
+
+.command-reviewer-console-preview {
+  box-shadow: 0 14px 34px rgba(24, 70, 92, 0.06);
+}
+
+.command-governance-reviewer-console.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-reviewer-console.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-reviewer-console.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-reviewer-console-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-governance-reviewer-console-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-reviewer-console-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-governance-reviewer-console-grid,
+.command-governance-reviewer-console-lanes,
+.command-governance-reviewer-console-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-governance-reviewer-console-grid article,
+.command-governance-reviewer-console-lanes article,
+.command-governance-reviewer-console-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-governance-reviewer-console-grid article span,
+.command-governance-reviewer-console-lanes article span,
+.command-governance-reviewer-console-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-governance-reviewer-console-grid article strong,
+.command-governance-reviewer-console-lanes article strong,
+.command-governance-reviewer-console-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-governance-reviewer-console-grid article small,
+.command-governance-reviewer-console-lanes article small,
+.command-governance-reviewer-console-controls article small,
+.command-governance-reviewer-console-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-governance-reviewer-console-grid article.tone-green,
+.command-governance-reviewer-console-lanes article.tone-green,
+.command-governance-reviewer-console-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-reviewer-console-grid article.tone-blue,
+.command-governance-reviewer-console-lanes article.tone-blue,
+.command-governance-reviewer-console-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-reviewer-console-grid article.tone-amber,
+.command-governance-reviewer-console-lanes article.tone-amber,
+.command-governance-reviewer-console-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-reviewer-console-grid article.tone-teal,
+.command-governance-reviewer-console-lanes article.tone-teal,
+.command-governance-reviewer-console-controls article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfefc, var(--teal-soft));
+}
+
+.command-governance-reviewer-console-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.command-governance-reviewer-console-actions small {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -19843,7 +19986,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-proof-sla-grid,
   .command-guidance-proof-sla-controls,
   .command-guidance-launch-evidence-packet-grid,
-  .command-guidance-launch-evidence-packet-controls {
+  .command-guidance-launch-evidence-packet-controls,
+  .command-governance-reviewer-console-grid,
+  .command-governance-reviewer-console-lanes,
+  .command-governance-reviewer-console-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -20177,7 +20323,10 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-proof-sla-grid,
   .command-guidance-proof-sla-controls,
   .command-guidance-launch-evidence-packet-grid,
-  .command-guidance-launch-evidence-packet-controls {
+  .command-guidance-launch-evidence-packet-controls,
+  .command-governance-reviewer-console-grid,
+  .command-governance-reviewer-console-lanes,
+  .command-governance-reviewer-console-controls {
     grid-template-columns: 1fr;
   }
 
@@ -20256,7 +20405,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-calm-closeout-actions .ghost-btn,
   .command-guidance-audit-export-actions .ghost-btn,
   .command-guidance-proof-sla-actions .ghost-btn,
-  .command-guidance-launch-evidence-packet-actions .ghost-btn {
+  .command-guidance-launch-evidence-packet-actions .ghost-btn,
+  .command-governance-reviewer-console-actions .ghost-btn {
     width: 100%;
   }
 
@@ -20334,7 +20484,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-calm-closeout,
   .command-guidance-audit-export,
   .command-guidance-proof-sla,
-  .command-guidance-launch-evidence-packet {
+  .command-guidance-launch-evidence-packet,
+  .command-governance-reviewer-console {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -20501,6 +20652,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-proof-sla-controls,
   .command-guidance-launch-evidence-packet-grid,
   .command-guidance-launch-evidence-packet-controls,
+  .command-governance-reviewer-console-grid,
+  .command-governance-reviewer-console-lanes,
+  .command-governance-reviewer-console-controls,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -20575,7 +20729,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-calm-closeout-actions,
   .command-guidance-audit-export-actions,
   .command-guidance-proof-sla-actions,
-  .command-guidance-launch-evidence-packet-actions {
+  .command-guidance-launch-evidence-packet-actions,
+  .command-governance-reviewer-console-actions {
     margin-right: 10px;
     margin-left: 10px;
   }
