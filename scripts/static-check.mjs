@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=420"), "index.html is missing the v420 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=420"), "index.html is missing the v420 data cache token.");
-assert(index.includes("app.js?v=420"), "index.html is missing the v420 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=420"), "index.html is missing the v420 icon cache token.");
+assert(index.includes("styles.css?v=421"), "index.html is missing the v421 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=421"), "index.html is missing the v421 data cache token.");
+assert(index.includes("app.js?v=421"), "index.html is missing the v421 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=421"), "index.html is missing the v421 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v420";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Appeal Decision Receipt";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=420'), "app.js is missing the v420 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=420'), "app.js is missing the v420 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v421";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Signoff Outcome Receipt";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=421'), "app.js is missing the v421 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=421'), "app.js is missing the v421 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -195,6 +195,7 @@ assert(app.includes("buildCommandGuidanceRetirementAppealLane"), "app.js is miss
 assert(app.includes("buildCommandGuidanceAuditSignoffTrail"), "app.js is missing the Audit Signoff Trail model.");
 assert(app.includes("buildCommandGuidanceLedgerTrendWatch"), "app.js is missing the Ledger Trend Watch model.");
 assert(app.includes("buildCommandGuidanceAppealDecisionReceipt"), "app.js is missing the Appeal Decision Receipt model.");
+assert(app.includes("buildCommandGuidanceSignoffOutcomeReceipt"), "app.js is missing the Signoff Outcome Receipt model.");
 assert(app.includes("buildCommandMemoryLearningChain"), "app.js is missing the Command Memory Learning Chain helper.");
 assert(app.includes('action === "copy-command-seed"'), "app.js is missing the Outcome Memory Seed copy action.");
 assert(app.includes('action === "set-command-learning-approval"'), "app.js is missing the Learning Approval Lane decision action.");
@@ -286,6 +287,7 @@ assert(app.includes('action === "copy-command-guidance-appeal-lane"'), "app.js i
 assert(app.includes('action === "copy-command-guidance-signoff-trail"'), "app.js is missing the Audit Signoff Trail copy action.");
 assert(app.includes('action === "copy-command-guidance-ledger-trend"'), "app.js is missing the Ledger Trend Watch copy action.");
 assert(app.includes('action === "copy-command-guidance-appeal-decision"'), "app.js is missing the Appeal Decision Receipt copy action.");
+assert(app.includes('action === "copy-command-guidance-signoff-outcome"'), "app.js is missing the Signoff Outcome Receipt copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -580,6 +582,9 @@ assert(css.includes(".command-guidance-trend-controls"), "styles.css is missing 
 assert(css.includes(".command-guidance-appeal-decision"), "styles.css is missing the Appeal Decision Receipt panel.");
 assert(css.includes(".command-guidance-appeal-decision-grid"), "styles.css is missing the Appeal Decision Receipt grid.");
 assert(css.includes(".command-guidance-appeal-decision-controls"), "styles.css is missing the Appeal Decision Receipt controls.");
+assert(css.includes(".command-guidance-signoff-outcome"), "styles.css is missing the Signoff Outcome Receipt panel.");
+assert(css.includes(".command-guidance-signoff-outcome-grid"), "styles.css is missing the Signoff Outcome Receipt grid.");
+assert(css.includes(".command-guidance-signoff-outcome-controls"), "styles.css is missing the Signoff Outcome Receipt controls.");
 
 const closedLoopStart = app.indexOf("function renderCommandClosedLoopLearningControlRoom");
 const closedLoopEnd = app.indexOf("function renderCommandLearningFlywheelEvidenceBoard", closedLoopStart);

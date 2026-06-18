@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v421 Signoff Outcome Receipt measures whether accepted, held, or escalated signoffs changed guidance safely after leadership review.
 - v420 Appeal Decision Receipt records whether a retirement appeal was reopened, held, retuned, or rejected before guidance changes again.
 - v419 Ledger Trend Watch shows whether renewal ledger outcomes are improving, localizing, retuning, or waiting on proof before leadership reviews the trail.
 - v418 Audit Signoff Trail captures accepted, held, and escalated renewal audit signoffs before a pack leaves Command Center.
