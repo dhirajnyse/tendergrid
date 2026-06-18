@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v438 Governance Proof SLA adds proof ownership, review timing, and blocked-evidence escalation rhythm before launch evidence depends on a release.
 - v437 Governance Audit Export packages governed release evidence into a leadership, QA, and launch-review audit export.
 - v436 Governance Calm Closeout closes stabilized governed releases with owner confirmation, proof lock, and next-review posture.
 - v435 Governance Proof Repair Queue routes weak archived proof into owner repair, tenant-only hold, or retune action before future learning trusts it.

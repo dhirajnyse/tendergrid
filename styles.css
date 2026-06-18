@@ -13472,6 +13472,122 @@ body.quiet-focus-mode .focus-mode-pill {
   align-items: center;
 }
 
+.command-guidance-proof-sla {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(246, 251, 249, 0.96));
+}
+
+.command-guidance-proof-sla.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-proof-sla.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-proof-sla.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-proof-sla-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-guidance-proof-sla-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-guidance-proof-sla-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-guidance-proof-sla-grid,
+.command-guidance-proof-sla-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-guidance-proof-sla-grid article,
+.command-guidance-proof-sla-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-guidance-proof-sla-grid article span,
+.command-guidance-proof-sla-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-guidance-proof-sla-grid article strong,
+.command-guidance-proof-sla-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-guidance-proof-sla-grid article small,
+.command-guidance-proof-sla-controls article small,
+.command-guidance-proof-sla-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-guidance-proof-sla-grid article.tone-green,
+.command-guidance-proof-sla-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-proof-sla-grid article.tone-blue,
+.command-guidance-proof-sla-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-proof-sla-grid article.tone-amber,
+.command-guidance-proof-sla-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-proof-sla-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -19598,7 +19714,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-calm-closeout-grid,
   .command-guidance-calm-closeout-controls,
   .command-guidance-audit-export-grid,
-  .command-guidance-audit-export-controls {
+  .command-guidance-audit-export-controls,
+  .command-guidance-proof-sla-grid,
+  .command-guidance-proof-sla-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -19928,7 +20046,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-calm-closeout-grid,
   .command-guidance-calm-closeout-controls,
   .command-guidance-audit-export-grid,
-  .command-guidance-audit-export-controls {
+  .command-guidance-audit-export-controls,
+  .command-guidance-proof-sla-grid,
+  .command-guidance-proof-sla-controls {
     grid-template-columns: 1fr;
   }
 
@@ -20005,7 +20125,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-release-archive-actions .ghost-btn,
   .command-guidance-proof-repair-queue-actions .ghost-btn,
   .command-guidance-calm-closeout-actions .ghost-btn,
-  .command-guidance-audit-export-actions .ghost-btn {
+  .command-guidance-audit-export-actions .ghost-btn,
+  .command-guidance-proof-sla-actions .ghost-btn {
     width: 100%;
   }
 
@@ -20081,7 +20202,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-release-archive,
   .command-guidance-proof-repair-queue,
   .command-guidance-calm-closeout,
-  .command-guidance-audit-export {
+  .command-guidance-audit-export,
+  .command-guidance-proof-sla {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -20244,6 +20366,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-calm-closeout-controls,
   .command-guidance-audit-export-grid,
   .command-guidance-audit-export-controls,
+  .command-guidance-proof-sla-grid,
+  .command-guidance-proof-sla-controls,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -20316,7 +20440,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-release-archive-actions,
   .command-guidance-proof-repair-queue-actions,
   .command-guidance-calm-closeout-actions,
-  .command-guidance-audit-export-actions {
+  .command-guidance-audit-export-actions,
+  .command-guidance-proof-sla-actions {
     margin-right: 10px;
     margin-left: 10px;
   }
