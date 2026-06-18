@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v433 Governance Rollback Lane separates continue, repair, tenant-only hold, and rollback decisions after governed release outcomes are monitored.
 - v432 Governance Outcome Monitor watches governed releases for movement, rollback pressure, tenant boundary drift, and proof quality after guidance changes.
 - v431 Governance Release Receipt records owner, proof, review date, loop score, and rollback boundary before governed learning ships to wider guidance.
 - v430 Appeal Loop Governance requires appeal proof, safety score, and rejection memory before appeal learning changes wider guidance posture.
