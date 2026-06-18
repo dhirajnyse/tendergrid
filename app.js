@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v422";
-  const BUILD_LABEL = "Trend Outcome Receipt";
+  const BUILD_VERSION = "v423";
+  const BUILD_LABEL = "Appeal Decision Outcome Watch";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=422";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=422";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=423";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=423";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -19367,6 +19367,68 @@ const state = {
     return { cards, controls, copyText, movementScore, nextAction, nextPosture, outcomeState, receiptId, tone };
   }
 
+  function buildCommandGuidanceAppealDecisionOutcomeWatch(seed = {}, evidenceLens = {}, guidanceAppealDecisionReceipt = {}, guidanceSignoffOutcomeReceipt = {}, guidanceTrendOutcomeReceipt = {}) {
+    const evidenceScore = Number(evidenceLens.score) || 0;
+    const signoffScore = Number(guidanceSignoffOutcomeReceipt.outcomeScore) || 0;
+    const movementScore = Number(guidanceTrendOutcomeReceipt.movementScore) || 0;
+    const watchId = `${guidanceTrendOutcomeReceipt.receiptId || guidanceSignoffOutcomeReceipt.receiptId || guidanceAppealDecisionReceipt.receiptId || BUILD_VERSION.toUpperCase()}-ADOW`;
+    const owner = seed.owner || "Watch owner needed";
+    const decisionState = guidanceAppealDecisionReceipt.decisionState || "Decision review";
+    const signoffOutcome = guidanceSignoffOutcomeReceipt.outcomeState || "Signoff outcome review";
+    const trendOutcome = guidanceTrendOutcomeReceipt.outcomeState || "Trend outcome review";
+    const watchText = `${decisionState} ${signoffOutcome} ${trendOutcome}`;
+    const reopened = /reopened|accepted outcome|improved decision/i.test(watchText);
+    const held = !reopened && /held|proof-wait/i.test(watchText);
+    const retuned = !reopened && /retuned|retune|escalated outcome/i.test(watchText);
+    const rejected = !reopened && !retuned && /rejected|localized decision|local/i.test(watchText);
+    const safetyScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          evidenceScore * 0.38 +
+            signoffScore * 0.24 +
+            movementScore * 0.24 +
+            (reopened ? 10 : 0) +
+            (held ? 6 : 0) +
+            (retuned ? 8 : 0) +
+            (rejected ? 8 : 0),
+        ),
+      ),
+    );
+    const watchState =
+      reopened && safetyScore >= 82
+        ? "Safety improved"
+        : retuned
+          ? "Retune learning"
+          : rejected
+            ? "Rejection protected"
+            : "Watch still open";
+    const tone = watchState === "Safety improved" ? "green" : watchState === "Watch still open" ? "amber" : "blue";
+    const nextAction =
+      watchState === "Safety improved"
+        ? "Keep the appeal reopened only with the review proof, trend outcome, and signoff outcome attached."
+        : watchState === "Retune learning"
+          ? "Turn the retune decision into learning evidence before the appeal can influence future guidance."
+          : watchState === "Rejection protected"
+            ? "Keep the rejection reason visible so unsafe appeal logic cannot quietly re-enter guidance."
+            : "Keep watching the next review until decision, proof, trend, and signoff outcomes agree.";
+    const cards = [
+      ["Reopened", reopened ? "Watched" : "No", reopened ? "Reopen movement is being checked against proof and trend outcome." : "No reopen outcome is driving safety yet.", reopened ? "green" : "amber"],
+      ["Held", held ? "Watched" : "No", held ? "Hold decision stays visible until proof and posture agree." : "No hold outcome is active now.", held ? "amber" : "green"],
+      ["Retuned", retuned ? "Watched" : "No", retuned ? "Retune outcome becomes learning evidence before reuse." : "No retune watch is active now.", retuned ? "blue" : "green"],
+      ["Rejected", rejected ? "Watched" : "No", rejected ? "Rejected appeal logic stays blocked from future guidance." : "No rejection watch is active now.", rejected ? "blue" : "green"],
+    ];
+    const controls = [
+      ["Watch", watchState, nextAction, tone],
+      ["Decision", decisionState, guidanceAppealDecisionReceipt.nextAction || "Decision receipt stays attached.", guidanceAppealDecisionReceipt.tone || tone],
+      ["Trend outcome", trendOutcome, guidanceTrendOutcomeReceipt.nextAction || "Trend outcome stays attached.", guidanceTrendOutcomeReceipt.tone || tone],
+      ["Safety", `${safetyScore}%`, `Evidence ${evidenceScore}% / signoff ${signoffScore}% / movement ${movementScore}%`, safetyScore >= 82 ? "green" : safetyScore >= 70 ? "blue" : "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Appeal Decision Outcome Watch ${watchId}: ${watchState}. Reopened ${cards[0][1]}. Held ${cards[1][1]}. Retuned ${cards[2][1]}. Rejected ${cards[3][1]}. Safety ${safetyScore}%. Owner ${owner}. Decision ${decisionState}. Signoff outcome ${signoffOutcome}. Trend outcome ${trendOutcome}. Next: ${nextAction}`;
+    return { cards, controls, copyText, nextAction, safetyScore, tone, watchId, watchState };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -19428,7 +19490,8 @@ const state = {
     const guidanceAppealDecisionReceipt = buildCommandGuidanceAppealDecisionReceipt(seed, evidenceLens, guidanceRetirementAppealLane, guidanceAuditSignoffTrail, guidanceLedgerTrendWatch);
     const guidanceSignoffOutcomeReceipt = buildCommandGuidanceSignoffOutcomeReceipt(seed, evidenceLens, guidanceAuditSignoffTrail, guidanceLedgerTrendWatch, guidanceAppealDecisionReceipt);
     const guidanceTrendOutcomeReceipt = buildCommandGuidanceTrendOutcomeReceipt(seed, evidenceLens, guidanceLedgerTrendWatch, guidanceAppealDecisionReceipt, guidanceSignoffOutcomeReceipt);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionReceipt, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffOutcomeReceipt, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceAppealDecisionOutcomeWatch = buildCommandGuidanceAppealDecisionOutcomeWatch(seed, evidenceLens, guidanceAppealDecisionReceipt, guidanceSignoffOutcomeReceipt, guidanceTrendOutcomeReceipt);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffOutcomeReceipt, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -19449,7 +19512,7 @@ const state = {
     }
 
     const source = simpleRoomLabel(memory.view || "Command");
-    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionReceipt, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffOutcomeReceipt, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
+    const { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffOutcomeReceipt, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore } = buildCommandMemoryLearningChain(memory);
     return `
       <section class="command-memory-receipt" aria-label="Last copied calm line">
         <div class="command-memory-copy">
@@ -21337,6 +21400,43 @@ const state = {
                                                                                         <div class="command-guidance-trend-outcome-actions">
                                                                                           <button class="ghost-btn" type="button" data-action="copy-command-guidance-trend-outcome" data-copy-text="${escapeHtml(encodeURIComponent(guidanceTrendOutcomeReceipt.copyText))}">Copy trend outcome</button>
                                                                                           <small>${escapeHtml(guidanceTrendOutcomeReceipt.receiptId)}</small>
+                                                                                        </div>
+                                                                                      </div>
+                                                                                      <div class="command-guidance-appeal-watch tone-${escapeHtml(guidanceAppealDecisionOutcomeWatch.tone)}" aria-label="Appeal decision outcome watch">
+                                                                                        <div class="command-guidance-appeal-watch-head">
+                                                                                          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Appeal Decision Outcome Watch</span>
+                                                                                          <strong>${escapeHtml(guidanceAppealDecisionOutcomeWatch.watchState)} / ${guidanceAppealDecisionOutcomeWatch.safetyScore}%</strong>
+                                                                                          <small>${escapeHtml(guidanceAppealDecisionOutcomeWatch.nextAction)}</small>
+                                                                                        </div>
+                                                                                        <div class="command-guidance-appeal-watch-grid">
+                                                                                          ${guidanceAppealDecisionOutcomeWatch.cards
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-appeal-watch-controls">
+                                                                                          ${guidanceAppealDecisionOutcomeWatch.controls
+                                                                                            .map(
+                                                                                              ([label, value, note, tone]) => `
+                                                                                                <article class="tone-${escapeHtml(tone)}">
+                                                                                                  <span>${escapeHtml(label)}</span>
+                                                                                                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                                                                                                  <small>${escapeHtml(compactText(String(note), 110))}</small>
+                                                                                                </article>
+                                                                                              `,
+                                                                                            )
+                                                                                            .join("")}
+                                                                                        </div>
+                                                                                        <div class="command-guidance-appeal-watch-actions">
+                                                                                          <button class="ghost-btn" type="button" data-action="copy-command-guidance-appeal-watch" data-copy-text="${escapeHtml(encodeURIComponent(guidanceAppealDecisionOutcomeWatch.copyText))}">Copy appeal watch</button>
+                                                                                          <small>${escapeHtml(guidanceAppealDecisionOutcomeWatch.watchId)}</small>
                                                                                         </div>
                                                                                       </div>
                                                                                     </div>
@@ -39922,12 +40022,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v422 Trend Outcome Receipt",
-      phase: "Trend Outcome Receipt",
+      version: "v423 Appeal Decision Outcome Watch",
+      phase: "Appeal Decision Outcome Watch",
       lane: "Static product prototype on GitHub Pages",
-      pace: "403 meaningful versions since rebrand",
-      summary: "Command Center now measures whether improving, localizing, retuning, or proof-wait trends changed leadership decisions and next guidance posture.",
+      pace: "404 meaningful versions since rebrand",
+      summary: "Command Center now watches whether reopened, held, retuned, or rejected appeal decisions improved guidance safety after the next review.",
       tracks: [
+        ["v423 appeal decision outcome watch", 100, "Command Center now watches whether reopened, held, retuned, or rejected appeal decisions improved guidance safety after the next review.", "green"],
         ["v422 trend outcome receipt", 100, "Command Center now measures whether improving, localizing, retuning, or proof-wait trends changed leadership decisions and next guidance posture.", "green"],
         ["v421 signoff outcome receipt", 100, "Command Center now measures whether accepted, held, or escalated signoffs changed guidance safely after leadership review.", "green"],
         ["v420 appeal decision receipt", 100, "Command Center now records who reopened, held, retuned, or rejected a retirement appeal before guidance changes again.", "green"],
@@ -40330,9 +40431,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v423", "Appeal decision outcome watch", "Watch whether reopened, held, retuned, or rejected appeal decisions improved guidance safety after the next review."],
         ["v424", "Signoff learning loop", "Feed safe accepted, held, and escalated signoff outcomes back into future guidance review without reopening unsafe lines."],
         ["v425", "Trend learning loop", "Feed improved, localized, retuned, and proof-wait trend outcomes back into future guidance posture without overpromoting weak signals."],
+        ["v426", "Appeal learning loop", "Feed safe reopened, held, retuned, and rejected appeal outcomes into future guidance without letting weak appeals reopen quietly."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -40492,10 +40593,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Trend outcomes now show whether improving, localizing, retuning, or proof-wait signals changed leadership posture safely.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Appeal outcomes now watch whether reopen, hold, retune, or reject decisions improved guidance safety after review.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -93943,6 +94044,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceTrendOutcomeReceipt.copyText || "";
       }
       copyTextToClipboard(text, "Trend outcome receipt copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-appeal-watch") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceAppealDecisionOutcomeWatch.copyText || "";
+      }
+      copyTextToClipboard(text, "Appeal decision outcome watch copied.");
       return;
     }
 

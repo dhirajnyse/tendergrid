@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v423 adds an Appeal Decision Outcome Watch so reopened, held, retuned, and rejected appeal decisions are checked for guidance safety improvement after the next review.
 - v422 adds a Trend Outcome Receipt so improving, localizing, retuning, and proof-wait trends are measured against leadership decisions and next guidance posture.
 - v421 adds a Signoff Outcome Receipt so accepted, held, and escalated signoffs are measured for safe guidance change after leadership review.
 - v420 adds an Appeal Decision Receipt so reopened, held, retuned, and rejected retirement appeal decisions are recorded before guidance changes again.
