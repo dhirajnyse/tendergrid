@@ -12660,6 +12660,122 @@ body.quiet-focus-mode .focus-mode-pill {
   align-items: center;
 }
 
+.command-guidance-release-receipt {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(246, 251, 249, 0.96));
+}
+
+.command-guidance-release-receipt.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-release-receipt.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-release-receipt.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-release-receipt-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-guidance-release-receipt-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-guidance-release-receipt-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-guidance-release-receipt-grid,
+.command-guidance-release-receipt-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-guidance-release-receipt-grid article,
+.command-guidance-release-receipt-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-guidance-release-receipt-grid article span,
+.command-guidance-release-receipt-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-guidance-release-receipt-grid article strong,
+.command-guidance-release-receipt-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-guidance-release-receipt-grid article small,
+.command-guidance-release-receipt-controls article small,
+.command-guidance-release-receipt-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-guidance-release-receipt-grid article.tone-green,
+.command-guidance-release-receipt-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-guidance-release-receipt-grid article.tone-blue,
+.command-guidance-release-receipt-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-guidance-release-receipt-grid article.tone-amber,
+.command-guidance-release-receipt-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-guidance-release-receipt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;
@@ -18772,7 +18888,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-trend-governance-grid,
   .command-guidance-trend-governance-controls,
   .command-guidance-appeal-governance-grid,
-  .command-guidance-appeal-governance-controls {
+  .command-guidance-appeal-governance-controls,
+  .command-guidance-release-receipt-grid,
+  .command-guidance-release-receipt-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -19088,7 +19206,9 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-trend-governance-grid,
   .command-guidance-trend-governance-controls,
   .command-guidance-appeal-governance-grid,
-  .command-guidance-appeal-governance-controls {
+  .command-guidance-appeal-governance-controls,
+  .command-guidance-release-receipt-grid,
+  .command-guidance-release-receipt-controls {
     grid-template-columns: 1fr;
   }
 
@@ -19158,7 +19278,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-appeal-loop-actions .ghost-btn,
   .command-guidance-signoff-governance-actions .ghost-btn,
   .command-guidance-trend-governance-actions .ghost-btn,
-  .command-guidance-appeal-governance-actions .ghost-btn {
+  .command-guidance-appeal-governance-actions .ghost-btn,
+  .command-guidance-release-receipt-actions .ghost-btn {
     width: 100%;
   }
 
@@ -19227,7 +19348,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-appeal-loop,
   .command-guidance-signoff-governance,
   .command-guidance-trend-governance,
-  .command-guidance-appeal-governance {
+  .command-guidance-appeal-governance,
+  .command-guidance-release-receipt {
     box-sizing: border-box;
     min-width: 0;
     width: 100%;
@@ -19376,6 +19498,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-trend-governance-controls,
   .command-guidance-appeal-governance-grid,
   .command-guidance-appeal-governance-controls,
+  .command-guidance-release-receipt-grid,
+  .command-guidance-release-receipt-controls,
   .command-learning-approval-actions,
   .command-learning-release-actions,
   .command-learning-review-actions,
@@ -19441,7 +19565,8 @@ body.quiet-focus-mode .command-room-cockpit-fold {
   .command-guidance-appeal-loop-actions,
   .command-guidance-signoff-governance-actions,
   .command-guidance-trend-governance-actions,
-  .command-guidance-appeal-governance-actions {
+  .command-guidance-appeal-governance-actions,
+  .command-guidance-release-receipt-actions {
     margin-right: 10px;
     margin-left: 10px;
   }

@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v431 Governance Release Receipt records owner, proof, review date, loop score, and rollback boundary before governed learning ships to wider guidance.
 - v430 Appeal Loop Governance requires appeal proof, safety score, and rejection memory before appeal learning changes wider guidance posture.
 - v429 Trend Loop Governance requires trend proof, movement score, tenant boundary, and next-review evidence before trend learning changes wider guidance posture.
 - v428 Signoff Loop Governance requires owner, proof, and next-review evidence before signoff learning changes wider guidance.
