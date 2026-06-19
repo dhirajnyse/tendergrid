@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v444 Governance First Pilot Readiness Room turns rehearsal, handoff, launch gate, evidence, owner, review date, rollback, and tenant boundary into one first-pilot go/no-go room.
 - v441 Governance Launch Gate Score turns reviewer, launch packet, audit export, proof SLA, owner, review date, rollback, and boundary into one calm go/hold/repair launch gate.
 - v442 Governance Pilot Handoff Board turns launch gate, reviewer, evidence packet, owner, review date, proof, rollback, and boundary into one pilot-facing handoff board.
 - v443 Governance Launch Rehearsal Room dry-runs launch script, pilot handoff, rollout owner, first review, proof walk, rollback line, and tenant boundary before customer movement.

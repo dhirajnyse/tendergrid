@@ -14285,6 +14285,178 @@ body.quiet-focus-mode .focus-mode-pill {
   overflow-wrap: anywhere;
 }
 
+.command-governance-first-pilot-readiness-room {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(247, 252, 255, 0.95)),
+    radial-gradient(circle at 8% 14%, rgba(224, 246, 238, 0.46), transparent 35%);
+}
+
+.command-first-pilot-readiness-room-preview {
+  box-shadow: 0 16px 36px rgba(19, 54, 45, 0.065);
+}
+
+.command-governance-first-pilot-readiness-room.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-first-pilot-readiness-room.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-first-pilot-readiness-room.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-first-pilot-readiness-room-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-governance-first-pilot-readiness-room-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-first-pilot-readiness-room-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-governance-first-pilot-readiness-room-grid,
+.command-governance-first-pilot-readiness-room-gates,
+.command-governance-first-pilot-readiness-room-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-governance-first-pilot-readiness-room-grid article,
+.command-governance-first-pilot-readiness-room-gates article,
+.command-governance-first-pilot-readiness-room-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-governance-first-pilot-readiness-room-grid article span,
+.command-governance-first-pilot-readiness-room-gates article span,
+.command-governance-first-pilot-readiness-room-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-governance-first-pilot-readiness-room-grid article strong,
+.command-governance-first-pilot-readiness-room-gates article strong,
+.command-governance-first-pilot-readiness-room-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-governance-first-pilot-readiness-room-grid article small,
+.command-governance-first-pilot-readiness-room-gates article small,
+.command-governance-first-pilot-readiness-room-controls article small,
+.command-governance-first-pilot-readiness-room-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-governance-first-pilot-readiness-room-grid article.tone-green,
+.command-governance-first-pilot-readiness-room-gates article.tone-green,
+.command-governance-first-pilot-readiness-room-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-first-pilot-readiness-room-grid article.tone-blue,
+.command-governance-first-pilot-readiness-room-gates article.tone-blue,
+.command-governance-first-pilot-readiness-room-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-first-pilot-readiness-room-grid article.tone-amber,
+.command-governance-first-pilot-readiness-room-gates article.tone-amber,
+.command-governance-first-pilot-readiness-room-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-first-pilot-readiness-room-grid article.tone-teal,
+.command-governance-first-pilot-readiness-room-gates article.tone-teal,
+.command-governance-first-pilot-readiness-room-controls article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfefc, var(--teal-soft));
+}
+
+.command-governance-first-pilot-readiness-room-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.command-governance-first-pilot-readiness-room-actions small {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 980px) {
+  .command-governance-first-pilot-readiness-room-grid,
+  .command-governance-first-pilot-readiness-room-gates,
+  .command-governance-first-pilot-readiness-room-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .command-governance-first-pilot-readiness-room {
+    margin-inline: -2px;
+  }
+
+  .command-governance-first-pilot-readiness-room-grid,
+  .command-governance-first-pilot-readiness-room-gates,
+  .command-governance-first-pilot-readiness-room-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .command-governance-first-pilot-readiness-room-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .command-governance-first-pilot-readiness-room-actions .ghost-btn {
+    width: 100%;
+  }
+}
+
 .command-memory-actions {
   display: flex;
   flex-wrap: wrap;

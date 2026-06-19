@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v443";
-  const BUILD_LABEL = "Governance Launch Rehearsal Room";
+  const BUILD_VERSION = "v444";
+  const BUILD_LABEL = "Governance First Pilot Readiness Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=443";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=443";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=444";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=444";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15329,6 +15329,79 @@ const state = {
     `;
   }
 
+  function renderCommandGovernanceFirstPilotReadinessRoomPreview(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const copiedAt = state.commandMemory?.copiedAt || new Date().toISOString();
+    const memory = {
+      ...(state.commandMemory || {}),
+      text: state.commandMemory?.text || slip.calmLine || slip.copyText,
+      copiedAt,
+      build: BUILD_VERSION,
+      view: "Command",
+      approval:
+        state.commandMemory?.approval ||
+        {
+          decision: "Approve to observe",
+          decidedAt: copiedAt,
+          build: BUILD_VERSION,
+        },
+    };
+    const readiness = buildCommandMemoryLearningChain(memory).guidanceGovernanceFirstPilotReadinessRoom;
+
+    return `
+      <section class="command-first-pilot-readiness-room-preview command-governance-first-pilot-readiness-room tone-${escapeHtml(readiness.tone)}" aria-label="Governance first pilot readiness room preview">
+        <div class="command-governance-first-pilot-readiness-room-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Governance First Pilot Readiness Room</span>
+          <strong>${escapeHtml(readiness.readinessDecision)} / ${readiness.readinessScore}%</strong>
+          <small>${escapeHtml(readiness.nextAction)}</small>
+        </div>
+        <div class="command-governance-first-pilot-readiness-room-grid">
+          ${readiness.cards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-first-pilot-readiness-room-gates">
+          ${readiness.gates
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-first-pilot-readiness-room-controls">
+          ${readiness.controls
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-first-pilot-readiness-room-actions">
+          <button class="ghost-btn" type="button" data-action="copy-command-guidance-first-pilot-readiness-room" data-copy-text="${escapeHtml(encodeURIComponent(readiness.copyText))}">Copy first pilot readiness</button>
+          <small>${escapeHtml(readiness.readinessId)}</small>
+        </div>
+      </section>
+    `;
+  }
+
   function extractOutcomeMemoryField(text, patterns, fallback) {
     const source = String(text || "");
     for (const pattern of patterns) {
@@ -21615,6 +21688,136 @@ const state = {
     return { cards, controls, copyText, nextAction, rehearsalDecision, rehearsalId, rehearsalScore, rehearsalState, scripts, tone };
   }
 
+  function buildCommandGuidanceGovernanceFirstPilotReadinessRoom(
+    seed = {},
+    evidenceLens = {},
+    guidanceGovernanceOutcomeMonitor = {},
+    guidanceGovernanceRollbackLane = {},
+    guidanceGovernanceProofRepairQueue = {},
+    guidanceGovernanceAuditExport = {},
+    guidanceGovernanceProofSla = {},
+    guidanceGovernanceLaunchEvidencePacket = {},
+    guidanceGovernanceReviewerConsole = {},
+    guidanceGovernanceLaunchGateScore = {},
+    guidanceGovernancePilotHandoffBoard = {},
+    guidanceGovernanceLaunchRehearsalRoom = {},
+  ) {
+    const gateScore = Number(guidanceGovernanceLaunchGateScore.gateScore) || 0;
+    const handoffScore = Number(guidanceGovernancePilotHandoffBoard.handoffScore) || 0;
+    const rehearsalScore = Number(guidanceGovernanceLaunchRehearsalRoom.rehearsalScore) || 0;
+    const reviewerScore = Number(guidanceGovernanceReviewerConsole.reviewScore) || 0;
+    const launchScore = Number(guidanceGovernanceLaunchEvidencePacket.launchScore) || 0;
+    const exportScore = Number(guidanceGovernanceAuditExport.exportScore) || 0;
+    const slaScore = Number(guidanceGovernanceProofSla.slaScore) || 0;
+    const evidenceScore = Number(evidenceLens.score) || 0;
+    const proofQuality = Number(guidanceGovernanceOutcomeMonitor.proofQuality) || 0;
+    const ownerReady = Boolean(seed.ownerReady);
+    const reviewReady = Boolean(seed.dateReady);
+    const proofReady =
+      Boolean(seed.proofReady) ||
+      proofQuality >= 80 ||
+      /ready|pass|accepted|on track/i.test(`${guidanceGovernanceProofSla.slaState || ""} ${guidanceGovernanceLaunchRehearsalRoom.rehearsalDecision || ""}`);
+    const tenantBoundaryStable = Boolean(guidanceGovernanceOutcomeMonitor.tenantBoundaryStable);
+    const repairPressure = /repair|blocked|overdue/i.test(
+      `${guidanceGovernanceProofRepairQueue.queueState || ""} ${guidanceGovernanceLaunchRehearsalRoom.rehearsalState || ""} ${guidanceGovernanceProofSla.slaState || ""}`,
+    );
+    const rollbackWatch = /rollback|watch|repair|hold/i.test(`${guidanceGovernanceRollbackLane.laneState || ""} ${guidanceGovernanceLaunchRehearsalRoom.scripts?.map((item) => item[1]).join(" ") || ""}`);
+    const rehearsalReady = /run rehearsal|review rehearsal|tenant rehearsal/i.test(guidanceGovernanceLaunchRehearsalRoom.rehearsalDecision || "");
+    const handoffReady = /send|tenant-only/i.test(guidanceGovernancePilotHandoffBoard.handoffDecision || "");
+    const hardGatesReady = ownerReady && reviewReady && proofReady && !repairPressure;
+    const readinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          rehearsalScore * 0.24 +
+            handoffScore * 0.2 +
+            gateScore * 0.16 +
+            launchScore * 0.12 +
+            reviewerScore * 0.1 +
+            slaScore * 0.06 +
+            exportScore * 0.05 +
+            evidenceScore * 0.03 +
+            proofQuality * 0.02 +
+            (tenantBoundaryStable ? 3 : 0) +
+            (hardGatesReady ? 2 : 0) -
+            (repairPressure ? 8 : 0) -
+            (rollbackWatch ? 3 : 0),
+        ),
+      ),
+    );
+    const readinessState =
+      repairPressure
+        ? "Pilot proof repair"
+        : !ownerReady
+          ? "Pilot owner missing"
+          : !reviewReady
+            ? "Pilot review date missing"
+            : !proofReady
+              ? "Pilot proof missing"
+              : !tenantBoundaryStable
+                ? "Tenant-only pilot ready"
+                : rehearsalReady && handoffReady && readinessScore >= 84
+                  ? "First pilot ready"
+                  : rehearsalReady && handoffReady && readinessScore >= 76
+                    ? "First pilot review"
+                    : "First pilot assembly";
+    const readinessDecision =
+      readinessState === "First pilot ready"
+        ? "Start pilot"
+        : readinessState === "First pilot review"
+          ? "Review pilot"
+          : readinessState === "Tenant-only pilot ready"
+            ? "Tenant pilot"
+            : /repair/i.test(readinessState)
+              ? "Repair proof"
+              : /missing/i.test(readinessState)
+                ? "Fill gate"
+                : "Prepare pilot";
+    const tone =
+      readinessDecision === "Start pilot"
+        ? "green"
+        : readinessDecision === "Review pilot" || readinessDecision === "Tenant pilot" || readinessDecision === "Prepare pilot"
+          ? "blue"
+          : "amber";
+    const firstCustomer = seed.routeReady ? seed.route : "First customer pilot";
+    const pilotOwner = ownerReady ? seed.owner : "Assign pilot owner";
+    const firstReview = reviewReady ? seed.date : "Set first review date";
+    const readinessId = `${guidanceGovernanceLaunchRehearsalRoom.rehearsalId || guidanceGovernancePilotHandoffBoard.handoffId || BUILD_VERSION.toUpperCase()}-FPR`;
+    const nextAction =
+      readinessDecision === "Start pilot"
+        ? "Start the first pilot only with owner, date, proof, rehearsal, rollback, and tenant boundary visible."
+        : readinessDecision === "Review pilot"
+          ? "Run one leadership review and clear any final launch wording, proof, or owner concern."
+          : readinessDecision === "Tenant pilot"
+            ? "Start as an internal tenant-only pilot until the external sharing boundary is approved."
+            : readinessDecision === "Repair proof"
+              ? "Repair blocked proof before first customer movement."
+              : readinessDecision === "Fill gate"
+                ? "Fill owner, review date, and proof gates before pilot launch."
+                : "Prepare first pilot readiness from rehearsal, handoff, gate, evidence, owner, date, and rollback signals.";
+    const cards = [
+      ["Pilot decision", readinessDecision, nextAction, tone],
+      ["First customer", firstCustomer, `Owner ${pilotOwner}. First review ${firstReview}.`, ownerReady && reviewReady ? "green" : "amber"],
+      ["Launch path", rehearsalReady ? "Rehearsed" : "Assemble", `Rehearsal ${guidanceGovernanceLaunchRehearsalRoom.rehearsalDecision || "Prepare"} at ${rehearsalScore}%.`, rehearsalReady ? "green" : "blue"],
+      ["Boundary", tenantBoundaryStable ? "Share-ready" : "Tenant-only", tenantBoundaryStable ? "Customer pilot can use approved language." : "Keep pilot internal or restricted until approved.", tenantBoundaryStable ? "green" : "blue"],
+    ];
+    const gates = [
+      ["Owner", ownerReady ? "Ready" : "Missing", pilotOwner, ownerReady ? "green" : "amber"],
+      ["First review", reviewReady ? "Dated" : "Missing", firstReview, reviewReady ? "green" : "amber"],
+      ["Proof", proofReady && !repairPressure ? "Ready" : "Repair", `Proof ${proofQuality}% / SLA ${slaScore}% / export ${exportScore}%.`, proofReady && !repairPressure ? "green" : "amber"],
+      ["Rollback", rollbackWatch ? "Watch" : "Ready", rollbackWatch ? "Name stop condition before launch." : "Rollback line is quiet enough for first pilot.", rollbackWatch ? "amber" : "green"],
+    ];
+    const controls = [
+      ["Readiness score", `${readinessScore}%`, `Rehearsal ${rehearsalScore}% / handoff ${handoffScore}% / gate ${gateScore}%`, readinessScore >= 84 ? "green" : readinessScore >= 76 ? "blue" : "amber"],
+      ["Pilot pack", handoffReady ? "Ready" : "Assemble", `Handoff ${guidanceGovernancePilotHandoffBoard.handoffDecision || "Prepare"} / packet ${launchScore}%.`, handoffReady ? "green" : "blue"],
+      ["Reviewer posture", `${reviewerScore}%`, guidanceGovernanceReviewerConsole.reviewState || "Review assembly", reviewerScore >= 76 ? "green" : "blue"],
+      ["Readiness id", readinessId, "Copy this into the first pilot go/no-go note.", "teal"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Governance First Pilot Readiness Room ${readinessId}: ${readinessState}. Decision ${readinessDecision}. Readiness ${readinessScore}%. First customer ${firstCustomer}. Owner ${pilotOwner}. First review ${firstReview}. Rehearsal ${guidanceGovernanceLaunchRehearsalRoom.rehearsalDecision || "Prepare"} ${rehearsalScore}%. Handoff ${guidanceGovernancePilotHandoffBoard.handoffDecision || "Prepare"} ${handoffScore}%. Gate ${guidanceGovernanceLaunchGateScore.gateDecision || "Review"} ${gateScore}%. Evidence packet ${launchScore}%, proof ${proofQuality}%, SLA ${slaScore}%, export ${exportScore}%. Boundary ${tenantBoundaryStable ? "share-ready" : "tenant-only"}. Rollback ${rollbackWatch ? "watch" : "ready"}. Next: ${nextAction}`;
+    return { cards, controls, copyText, gates, nextAction, readinessDecision, readinessId, readinessScore, readinessState, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -21696,7 +21899,8 @@ const state = {
     const guidanceGovernanceLaunchGateScore = buildCommandGuidanceGovernanceLaunchGateScore(seed, evidenceLens, guidanceGovernanceReleaseReceipt, guidanceGovernanceOutcomeMonitor, guidanceGovernanceRollbackLane, guidanceGovernanceReleaseArchive, guidanceGovernanceProofRepairQueue, guidanceGovernanceCalmCloseout, guidanceGovernanceAuditExport, guidanceGovernanceProofSla, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceReviewerConsole);
     const guidanceGovernancePilotHandoffBoard = buildCommandGuidanceGovernancePilotHandoffBoard(seed, evidenceLens, guidanceGovernanceReleaseReceipt, guidanceGovernanceOutcomeMonitor, guidanceGovernanceRollbackLane, guidanceGovernanceProofRepairQueue, guidanceGovernanceAuditExport, guidanceGovernanceProofSla, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceReviewerConsole, guidanceGovernanceLaunchGateScore);
     const guidanceGovernanceLaunchRehearsalRoom = buildCommandGuidanceGovernanceLaunchRehearsalRoom(seed, evidenceLens, guidanceGovernanceOutcomeMonitor, guidanceGovernanceRollbackLane, guidanceGovernanceProofRepairQueue, guidanceGovernanceAuditExport, guidanceGovernanceProofSla, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceReviewerConsole, guidanceGovernanceLaunchGateScore, guidanceGovernancePilotHandoffBoard);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceAuditExport, guidanceGovernanceCalmCloseout, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceLaunchGateScore, guidanceGovernanceLaunchRehearsalRoom, guidanceGovernanceOutcomeMonitor, guidanceGovernancePilotHandoffBoard, guidanceGovernanceProofRepairQueue, guidanceGovernanceProofSla, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceReviewerConsole, guidanceGovernanceRollbackLane, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceGovernanceFirstPilotReadinessRoom = buildCommandGuidanceGovernanceFirstPilotReadinessRoom(seed, evidenceLens, guidanceGovernanceOutcomeMonitor, guidanceGovernanceRollbackLane, guidanceGovernanceProofRepairQueue, guidanceGovernanceAuditExport, guidanceGovernanceProofSla, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceReviewerConsole, guidanceGovernanceLaunchGateScore, guidanceGovernancePilotHandoffBoard, guidanceGovernanceLaunchRehearsalRoom);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceAuditExport, guidanceGovernanceCalmCloseout, guidanceGovernanceFirstPilotReadinessRoom, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceLaunchGateScore, guidanceGovernanceLaunchRehearsalRoom, guidanceGovernanceOutcomeMonitor, guidanceGovernancePilotHandoffBoard, guidanceGovernanceProofRepairQueue, guidanceGovernanceProofSla, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceReviewerConsole, guidanceGovernanceRollbackLane, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -24290,6 +24494,7 @@ const state = {
         ${renderCommandGovernanceLaunchGateScorePreview(model, autopilot)}
         ${renderCommandGovernancePilotHandoffBoardPreview(model, autopilot)}
         ${renderCommandGovernanceLaunchRehearsalRoomPreview(model, autopilot)}
+        ${renderCommandGovernanceFirstPilotReadinessRoomPreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -42787,12 +42992,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v443 Governance Launch Rehearsal Room",
-      phase: "Governance Launch Rehearsal Room",
+      version: "v444 Governance First Pilot Readiness Room",
+      phase: "Governance First Pilot Readiness Room",
       lane: "Static product prototype on GitHub Pages",
-      pace: "424 meaningful versions since rebrand",
-      summary: "Command Center now dry-runs launch script, pilot handoff, rollout owner, first review, proof walk, rollback line, and tenant boundary before customer movement.",
+      pace: "425 meaningful versions since rebrand",
+      summary: "Command Center now turns rehearsal, handoff, launch gate, evidence, owner, review date, rollback, and tenant boundary into one first-pilot go/no-go room.",
       tracks: [
+        ["v444 governance first pilot readiness room", 100, "Command Center now turns rehearsal, handoff, launch gate, evidence, owner, review date, rollback, and tenant boundary into one first-pilot go/no-go room.", "green"],
         ["v443 governance launch rehearsal room", 100, "Command Center now dry-runs launch script, pilot handoff, rollout owner, first review, proof walk, rollback line, and tenant boundary before customer movement.", "green"],
         ["v442 governance pilot handoff board", 100, "Command Center now turns launch gate, reviewer, evidence packet, owner, review date, proof, rollback, and boundary into one pilot-facing handoff board.", "green"],
         ["v441 governance launch gate score", 100, "Command Center now turns reviewer, launch packet, audit export, proof SLA, owner, review date, rollback, and boundary into one calm launch gate score.", "green"],
@@ -43216,9 +43422,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v444", "Governance first pilot readiness room", "Turn launch gate score, rehearsal proof, pilot handoff, and owner readiness into a first-customer readiness room."],
         ["v445", "Governance pilot acceptance receipt", "Capture the first pilot sponsor response, accepted scope, evidence promise, launch date, and next proof owner."],
         ["v446", "Governance launch proof board", "Keep rehearsal result, first pilot readiness, accepted scope, launch proof, and rollback evidence in one launch proof board."],
+        ["v447", "Governance first pilot operating rhythm", "Turn accepted scope, launch proof, support owner, weekly review, and outcome evidence into the first pilot operating rhythm."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -43522,10 +43728,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now dry-runs launch script, pilot handoff, rollout owner, first review, proof walk, rollback line, and tenant boundary before customer movement.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns rehearsal, handoff, launch gate, evidence, owner, review date, rollback, and tenant boundary into one first-pilot go/no-go room.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -97274,6 +97480,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceGovernanceLaunchRehearsalRoom.copyText || "";
       }
       copyTextToClipboard(text, "Governance launch rehearsal copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-first-pilot-readiness-room") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceGovernanceFirstPilotReadinessRoom.copyText || "";
+      }
+      copyTextToClipboard(text, "First pilot readiness copied.");
       return;
     }
 
