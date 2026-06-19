@@ -14857,6 +14857,153 @@ body.quiet-focus-mode .focus-mode-pill {
   overflow-wrap: anywhere;
 }
 
+.command-governance-pilot-sponsor-update {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(250, 252, 255, 0.95)),
+    radial-gradient(circle at 10% 12%, rgba(224, 246, 238, 0.38), transparent 34%);
+}
+
+.command-pilot-sponsor-update-preview {
+  box-shadow: 0 16px 36px rgba(19, 54, 45, 0.065);
+}
+
+.command-governance-pilot-sponsor-update.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-pilot-sponsor-update.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-pilot-sponsor-update.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-pilot-sponsor-update-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-governance-pilot-sponsor-update-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-pilot-sponsor-update-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-governance-pilot-sponsor-update-grid,
+.command-governance-pilot-sponsor-update-message,
+.command-governance-pilot-sponsor-update-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-governance-pilot-sponsor-update-grid article,
+.command-governance-pilot-sponsor-update-message article,
+.command-governance-pilot-sponsor-update-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-governance-pilot-sponsor-update-message article {
+  min-height: 92px;
+}
+
+.command-governance-pilot-sponsor-update-grid article span,
+.command-governance-pilot-sponsor-update-message article span,
+.command-governance-pilot-sponsor-update-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-governance-pilot-sponsor-update-grid article strong,
+.command-governance-pilot-sponsor-update-message article strong,
+.command-governance-pilot-sponsor-update-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-governance-pilot-sponsor-update-grid article small,
+.command-governance-pilot-sponsor-update-message article small,
+.command-governance-pilot-sponsor-update-controls article small,
+.command-governance-pilot-sponsor-update-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-governance-pilot-sponsor-update-grid article.tone-green,
+.command-governance-pilot-sponsor-update-message article.tone-green,
+.command-governance-pilot-sponsor-update-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-pilot-sponsor-update-grid article.tone-blue,
+.command-governance-pilot-sponsor-update-message article.tone-blue,
+.command-governance-pilot-sponsor-update-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-pilot-sponsor-update-grid article.tone-amber,
+.command-governance-pilot-sponsor-update-message article.tone-amber,
+.command-governance-pilot-sponsor-update-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-pilot-sponsor-update-grid article.tone-teal,
+.command-governance-pilot-sponsor-update-message article.tone-teal,
+.command-governance-pilot-sponsor-update-controls article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfefc, var(--teal-soft));
+}
+
+.command-governance-pilot-sponsor-update-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.command-governance-pilot-sponsor-update-actions small {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 980px) {
   .command-governance-first-pilot-readiness-room-grid,
   .command-governance-first-pilot-readiness-room-gates,
@@ -14869,7 +15016,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-launch-proof-board-controls,
   .command-governance-first-pilot-operating-rhythm-grid,
   .command-governance-first-pilot-operating-rhythm-agenda,
-  .command-governance-first-pilot-operating-rhythm-controls {
+  .command-governance-first-pilot-operating-rhythm-controls,
+  .command-governance-pilot-sponsor-update-grid,
+  .command-governance-pilot-sponsor-update-message,
+  .command-governance-pilot-sponsor-update-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -14878,7 +15028,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-first-pilot-readiness-room,
   .command-governance-pilot-acceptance-receipt,
   .command-governance-launch-proof-board,
-  .command-governance-first-pilot-operating-rhythm {
+  .command-governance-first-pilot-operating-rhythm,
+  .command-governance-pilot-sponsor-update {
     margin-inline: -2px;
   }
 
@@ -14893,14 +15044,18 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-launch-proof-board-controls,
   .command-governance-first-pilot-operating-rhythm-grid,
   .command-governance-first-pilot-operating-rhythm-agenda,
-  .command-governance-first-pilot-operating-rhythm-controls {
+  .command-governance-first-pilot-operating-rhythm-controls,
+  .command-governance-pilot-sponsor-update-grid,
+  .command-governance-pilot-sponsor-update-message,
+  .command-governance-pilot-sponsor-update-controls {
     grid-template-columns: 1fr;
   }
 
   .command-governance-first-pilot-readiness-room-actions,
   .command-governance-pilot-acceptance-receipt-actions,
   .command-governance-launch-proof-board-actions,
-  .command-governance-first-pilot-operating-rhythm-actions {
+  .command-governance-first-pilot-operating-rhythm-actions,
+  .command-governance-pilot-sponsor-update-actions {
     align-items: stretch;
     flex-direction: column;
   }
@@ -14908,7 +15063,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-first-pilot-readiness-room-actions .ghost-btn,
   .command-governance-pilot-acceptance-receipt-actions .ghost-btn,
   .command-governance-launch-proof-board-actions .ghost-btn,
-  .command-governance-first-pilot-operating-rhythm-actions .ghost-btn {
+  .command-governance-first-pilot-operating-rhythm-actions .ghost-btn,
+  .command-governance-pilot-sponsor-update-actions .ghost-btn {
     width: 100%;
   }
 }

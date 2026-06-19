@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v448 adds a Governance Pilot Sponsor Update so acceptance, launch proof, first pilot rhythm, support owner, review date, and evidence promise become one sponsor-safe pilot update.
 - v447 adds a Governance First Pilot Operating Rhythm so accepted scope, launch proof, support owner, weekly review, evidence capture, and rollback rules become one first-week pilot rhythm.
 - v446 adds a Governance Launch Proof Board so acceptance, readiness, rehearsal, launch packet, proof SLA, audit export, owner, launch date, and rollback evidence stay together before first pilot launch.
 - v445 adds a Governance Pilot Acceptance Receipt so sponsor response, accepted scope, launch date, proof owner, evidence promise, rollback line, and tenant boundary are captured before first pilot movement.

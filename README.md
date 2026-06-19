@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v448 Governance Pilot Sponsor Update turns acceptance, launch proof, first pilot rhythm, support owner, review date, and evidence promise into one sponsor-safe pilot update.
 - v447 Governance First Pilot Operating Rhythm turns accepted scope, launch proof, support owner, weekly review, evidence capture, and rollback rules into one first pilot operating rhythm.
 - v446 Governance Launch Proof Board keeps acceptance, readiness, rehearsal, launch packet, proof SLA, audit export, owner, launch date, and rollback evidence in one launch proof board.
 - v445 Governance Pilot Acceptance Receipt captures sponsor response, accepted scope, launch date, proof owner, evidence promise, rollback line, and tenant boundary in one pilot acceptance receipt.
