@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v456 Governance Scaled Rollout Board turns expansion receipt, country rule, support owner, proof lane, first review, boundary, and rollback posture into one first scaled rollout board.
 - v455 Governance Launch Expansion Receipt turns expansion gate, closeout proof, launch proof, reusable learning, owner/date readiness, and rollback boundary into one first scaled rollout receipt.
 - v454 Governance Sponsor Expansion Gate turns accepted pilot decisions, closeout proof, reusable learning, sponsor posture, and rollback boundary into one expand, renew, repair, or stop gate.
 - v453 Governance Pilot Learning Release classifies pilot outcomes into reusable learning, tenant-only memory, retune queue, proof hold, and owner review before broader guidance changes.
