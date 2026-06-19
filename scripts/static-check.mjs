@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=470"), "index.html is missing the v470 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=470"), "index.html is missing the v470 data cache token.");
-assert(index.includes("app.js?v=470"), "index.html is missing the v470 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=470"), "index.html is missing the v470 icon cache token.");
+assert(index.includes("styles.css?v=471"), "index.html is missing the v471 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=471"), "index.html is missing the v471 data cache token.");
+assert(index.includes("app.js?v=471"), "index.html is missing the v471 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=471"), "index.html is missing the v471 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v470";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Governance Rollout First Pilot Proof Bridge";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=470'), "app.js is missing the v470 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=470'), "app.js is missing the v470 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v471";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Governance Rollout First Pilot Command Room";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=471'), "app.js is missing the v471 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=471'), "app.js is missing the v471 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -203,6 +203,8 @@ assert(app.includes("renderCommandGovernanceRolloutLaunchReadinessSealPreview(mo
 assert(app.includes("renderCommandGovernanceRolloutLaunchReadinessSealPreview"), "app.js is missing the top-level Governance Rollout Launch Readiness Seal preview.");
 assert(app.includes("renderCommandGovernanceFirstPilotProofBridgePreview(model, autopilot)"), "Command Center is missing the Governance First Pilot Proof Bridge preview.");
 assert(app.includes("renderCommandGovernanceFirstPilotProofBridgePreview"), "app.js is missing the top-level Governance First Pilot Proof Bridge preview.");
+assert(app.includes("renderCommandGovernanceFirstPilotCommandRoomPreview(model, autopilot)"), "Command Center is missing the Governance First Pilot Command Room preview.");
+assert(app.includes("renderCommandGovernanceFirstPilotCommandRoomPreview"), "app.js is missing the top-level Governance First Pilot Command Room preview.");
 assert(app.includes("buildCommandGuidanceSignoffLoopGovernance"), "app.js is missing the Signoff Loop Governance model.");
 assert(app.includes("buildCommandGuidanceTrendLoopGovernance"), "app.js is missing the Trend Loop Governance model.");
 assert(app.includes("buildCommandGuidanceAppealLoopGovernance"), "app.js is missing the Appeal Loop Governance model.");
@@ -246,6 +248,7 @@ assert(app.includes("buildCommandGuidanceGovernanceRolloutActivationOutcomeWatch
 assert(app.includes("buildCommandGuidanceGovernanceRolloutAuditCloseoutReceipt"), "app.js is missing the Governance Rollout Audit Closeout Receipt model.");
 assert(app.includes("buildCommandGuidanceGovernanceRolloutLaunchReadinessSeal"), "app.js is missing the Governance Rollout Launch Readiness Seal model.");
 assert(app.includes("buildCommandGuidanceGovernanceFirstPilotProofBridge"), "app.js is missing the Governance First Pilot Proof Bridge model.");
+assert(app.includes("buildCommandGuidanceGovernanceFirstPilotCommandRoom"), "app.js is missing the Governance First Pilot Command Room model.");
 assert(app.includes("buildCommandOutcomeMemorySeed"), "app.js is missing the Outcome Memory Seed model.");
 assert(app.includes("buildCommandLearningApprovalLane"), "app.js is missing the Learning Approval Lane model.");
 assert(app.includes("buildCommandLearningReleaseReceipt"), "app.js is missing the Learning Release Receipt model.");
@@ -450,6 +453,7 @@ assert(app.includes('action === "copy-command-guidance-rollout-activation-outcom
 assert(app.includes('action === "copy-command-guidance-rollout-audit-closeout-receipt"'), "app.js is missing the Governance Rollout Audit Closeout Receipt copy action.");
 assert(app.includes('action === "copy-command-guidance-rollout-launch-readiness-seal"'), "app.js is missing the Governance Rollout Launch Readiness Seal copy action.");
 assert(app.includes('action === "copy-command-guidance-first-pilot-proof-bridge"'), "app.js is missing the Governance First Pilot Proof Bridge copy action.");
+assert(app.includes('action === "copy-command-guidance-first-pilot-command-room"'), "app.js is missing the Governance First Pilot Command Room copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -954,6 +958,11 @@ assert(css.includes(".command-first-pilot-proof-bridge-preview"), "styles.css is
 assert(css.includes(".command-governance-first-pilot-proof-bridge-grid"), "styles.css is missing the Governance First Pilot Proof Bridge grid.");
 assert(css.includes(".command-governance-first-pilot-proof-bridge-proof"), "styles.css is missing the Governance First Pilot Proof Bridge proof lanes.");
 assert(css.includes(".command-governance-first-pilot-proof-bridge-controls"), "styles.css is missing the Governance First Pilot Proof Bridge controls.");
+assert(css.includes(".command-governance-first-pilot-command-room"), "styles.css is missing the Governance First Pilot Command Room panel.");
+assert(css.includes(".command-first-pilot-command-room-preview"), "styles.css is missing the top-level Governance First Pilot Command Room preview.");
+assert(css.includes(".command-governance-first-pilot-command-room-grid"), "styles.css is missing the Governance First Pilot Command Room grid.");
+assert(css.includes(".command-governance-first-pilot-command-room-lanes"), "styles.css is missing the Governance First Pilot Command Room day-one lanes.");
+assert(css.includes(".command-governance-first-pilot-command-room-controls"), "styles.css is missing the Governance First Pilot Command Room controls.");
 assert(css.includes(".build-launch-roadmap"), "styles.css is missing the Build Phase Launch Roadmap panel.");
 assert(css.includes(".build-launch-stage-grid"), "styles.css is missing the Build Phase Launch Roadmap stage grid.");
 assert(css.includes(".build-launch-gate-list"), "styles.css is missing the Build Phase Launch Roadmap gate list.");

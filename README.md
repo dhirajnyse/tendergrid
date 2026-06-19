@@ -19,8 +19,9 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
-- v469 Governance Rollout Launch Readiness Seal combines audit closeout, launch evidence, gate posture, pilot readiness, rollback posture, support load, and owner/date controls into one pilot-ready seal.
+- v471 Governance Rollout First Pilot Command Room turns the proof bridge into a first-pilot operating room with day-one rhythm, support triage, sponsor update, outcome watch, decision receipt, rollback, boundary, and a copyable pilot-room line.
 - v470 Governance Rollout First Pilot Proof Bridge turns the launch readiness seal into a first-pilot proof handoff with board evidence, operating rhythm, acceptance posture, owner/date controls, and a copyable bridge line.
+- v469 Governance Rollout Launch Readiness Seal combines audit closeout, launch evidence, gate posture, pilot readiness, rollback posture, support load, and owner/date controls into one pilot-ready seal.
 - v468 Governance Rollout Audit Closeout Receipt closes rollout audit history with accepted proof, owner confirmation, next review, rollback posture, support load, and launch-readiness evidence.
 - v467 Governance Rollout Activation Outcome Watch measures whether activated rollout learning improves future decisions, confidence, support load, privacy boundary, and rollback posture after activation.
 - v466 Governance Rollout Reuse Activation Receipt records whether approved rollout learning can activate, which guidance surfaces change, who owns it, what rollback line protects users, and when review happens next.
