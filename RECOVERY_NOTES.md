@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v463 adds a Governance Rollout Reuse Gate so recorded rollout outcomes are approved for reusable guidance, held tenant-only, routed to proof repair, or stored as rollback learning.
 - v462 adds a Governance Rollout Sponsor Decision Receipt so sponsor response, decision date, accepted proof, blocked ask, rollback acceptance, and next owner are captured after rollout learning.
 - v461 adds a Governance Rollout Learning Receipt so rollout outcomes are classified into reusable learning, tenant-only memory, proof repair, support retune, and rollback learning before broader reuse.
 - v460 adds a Governance Rollout Outcome Ledger so expansion support movement, sponsor response, proof movement, blocker closure, and rollback result stay in one rollout outcome ledger.
