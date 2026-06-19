@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v453 Governance Pilot Learning Release classifies pilot outcomes into reusable learning, tenant-only memory, retune queue, proof hold, and owner review before broader guidance changes.
 - v452 Governance Pilot Support Closeout closes support blockers, first-review evidence, sponsor response, rollback watch, and next owner into one pilot support closeout.
 - v451 Governance Sponsor Decision Receipt captures sponsor decision, committed support, proof acceptance, next decision date, boundary, and rollback posture in one sponsor decision receipt.
 - v450 Governance Pilot Outcome Ledger records first-review movement, sponsor response, support actions, proof movement, learning capture, and rollback result in one controlled pilot outcome ledger.

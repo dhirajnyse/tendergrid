@@ -15592,6 +15592,153 @@ body.quiet-focus-mode .focus-mode-pill {
   overflow-wrap: anywhere;
 }
 
+.command-governance-pilot-learning-release {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(248, 252, 255, 0.95)),
+    radial-gradient(circle at 14% 8%, rgba(224, 246, 238, 0.44), transparent 34%);
+}
+
+.command-pilot-learning-release-preview {
+  box-shadow: 0 16px 36px rgba(19, 54, 45, 0.065);
+}
+
+.command-governance-pilot-learning-release.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-pilot-learning-release.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-pilot-learning-release.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-pilot-learning-release-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-governance-pilot-learning-release-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-pilot-learning-release-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-governance-pilot-learning-release-grid,
+.command-governance-pilot-learning-release-lanes,
+.command-governance-pilot-learning-release-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-governance-pilot-learning-release-grid article,
+.command-governance-pilot-learning-release-lanes article,
+.command-governance-pilot-learning-release-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-governance-pilot-learning-release-lanes article {
+  min-height: 92px;
+}
+
+.command-governance-pilot-learning-release-grid article span,
+.command-governance-pilot-learning-release-lanes article span,
+.command-governance-pilot-learning-release-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-governance-pilot-learning-release-grid article strong,
+.command-governance-pilot-learning-release-lanes article strong,
+.command-governance-pilot-learning-release-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-governance-pilot-learning-release-grid article small,
+.command-governance-pilot-learning-release-lanes article small,
+.command-governance-pilot-learning-release-controls article small,
+.command-governance-pilot-learning-release-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-governance-pilot-learning-release-grid article.tone-green,
+.command-governance-pilot-learning-release-lanes article.tone-green,
+.command-governance-pilot-learning-release-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-pilot-learning-release-grid article.tone-blue,
+.command-governance-pilot-learning-release-lanes article.tone-blue,
+.command-governance-pilot-learning-release-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-pilot-learning-release-grid article.tone-amber,
+.command-governance-pilot-learning-release-lanes article.tone-amber,
+.command-governance-pilot-learning-release-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-pilot-learning-release-grid article.tone-teal,
+.command-governance-pilot-learning-release-lanes article.tone-teal,
+.command-governance-pilot-learning-release-controls article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfefc, var(--teal-soft));
+}
+
+.command-governance-pilot-learning-release-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.command-governance-pilot-learning-release-actions small {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 980px) {
   .command-governance-first-pilot-readiness-room-grid,
   .command-governance-first-pilot-readiness-room-gates,
@@ -15619,7 +15766,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-sponsor-decision-receipt-controls,
   .command-governance-pilot-support-closeout-grid,
   .command-governance-pilot-support-closeout-closeout,
-  .command-governance-pilot-support-closeout-controls {
+  .command-governance-pilot-support-closeout-controls,
+  .command-governance-pilot-learning-release-grid,
+  .command-governance-pilot-learning-release-lanes,
+  .command-governance-pilot-learning-release-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -15633,7 +15783,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-launch-support-desk,
   .command-governance-pilot-outcome-ledger,
   .command-governance-sponsor-decision-receipt,
-  .command-governance-pilot-support-closeout {
+  .command-governance-pilot-support-closeout,
+  .command-governance-pilot-learning-release {
     margin-inline: -2px;
   }
 
@@ -15663,7 +15814,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-sponsor-decision-receipt-controls,
   .command-governance-pilot-support-closeout-grid,
   .command-governance-pilot-support-closeout-closeout,
-  .command-governance-pilot-support-closeout-controls {
+  .command-governance-pilot-support-closeout-controls,
+  .command-governance-pilot-learning-release-grid,
+  .command-governance-pilot-learning-release-lanes,
+  .command-governance-pilot-learning-release-controls {
     grid-template-columns: 1fr;
   }
 
@@ -15675,7 +15829,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-launch-support-desk-actions,
   .command-governance-pilot-outcome-ledger-actions,
   .command-governance-sponsor-decision-receipt-actions,
-  .command-governance-pilot-support-closeout-actions {
+  .command-governance-pilot-support-closeout-actions,
+  .command-governance-pilot-learning-release-actions {
     align-items: stretch;
     flex-direction: column;
   }
@@ -15688,7 +15843,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-launch-support-desk-actions .ghost-btn,
   .command-governance-pilot-outcome-ledger-actions .ghost-btn,
   .command-governance-sponsor-decision-receipt-actions .ghost-btn,
-  .command-governance-pilot-support-closeout-actions .ghost-btn {
+  .command-governance-pilot-support-closeout-actions .ghost-btn,
+  .command-governance-pilot-learning-release-actions .ghost-btn {
     width: 100%;
   }
 }
