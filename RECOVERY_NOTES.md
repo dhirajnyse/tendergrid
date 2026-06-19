@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v454 adds a Governance Sponsor Expansion Gate so accepted pilot decisions, closeout proof, reusable learning, sponsor posture, and rollback boundary become one expand, renew, repair, or stop gate.
 - v453 adds a Governance Pilot Learning Release so pilot outcomes are classified into reusable learning, tenant-only memory, retune queue, proof hold, and owner review before broader guidance changes.
 - v452 adds a Governance Pilot Support Closeout so support blockers, first-review evidence, sponsor response, rollback watch, and next owner stay in one pilot support closeout.
 - v451 adds a Governance Sponsor Decision Receipt so sponsor decision, committed support, proof acceptance, next decision date, boundary, and rollback posture stay in one sponsor decision receipt.
