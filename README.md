@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v464 Governance Rollout Learning Review Room reviews rollout learning before activation with owner, boundary, proof quality, retune state, rollback memory, and next reuse decision visible.
 - v463 Governance Rollout Reuse Gate decides whether recorded rollout outcomes can become reusable guidance, tenant-only memory, proof repair, or rollback learning.
 - v462 Governance Rollout Sponsor Decision Receipt captures sponsor response, decision date, accepted proof, blocked ask, rollback acceptance, and next owner after rollout learning.
 - v461 Governance Rollout Learning Receipt classifies rollout outcomes into reusable learning, tenant-only memory, proof repair, support retune, and rollback learning before broader reuse.
