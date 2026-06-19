@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v461 Governance Rollout Learning Receipt classifies rollout outcomes into reusable learning, tenant-only memory, proof repair, support retune, and rollback learning before broader reuse.
 - v460 Governance Rollout Outcome Ledger records expansion support movement, sponsor response, proof movement, blocker closure, and rollback result in one rollout outcome ledger.
 - v459 Governance Rollout Sponsor Update turns scaled rollout proof, support posture, country rule, owner response, and rollback state into one sponsor-safe rollout update.
 - v458 Governance Scaled Rollout Proof Board tracks first scaled rollout proof, owner response, launch risk, support readiness, rollback evidence, and boundary posture in one proof board.
