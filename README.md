@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v459 Governance Rollout Sponsor Update turns scaled rollout proof, support posture, country rule, owner response, and rollback state into one sponsor-safe rollout update.
 - v458 Governance Scaled Rollout Proof Board tracks first scaled rollout proof, owner response, launch risk, support readiness, rollback evidence, and boundary posture in one proof board.
 - v457 Governance Expansion Support Desk routes rollout blockers, sponsor ask, owner load, proof watch, country rule, boundary, and rollback posture into one expansion support desk.
 - v456 Governance Scaled Rollout Board turns expansion receipt, country rule, support owner, proof lane, first review, boundary, and rollback posture into one first scaled rollout board.
