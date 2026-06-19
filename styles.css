@@ -15886,6 +15886,153 @@ body.quiet-focus-mode .focus-mode-pill {
   overflow-wrap: anywhere;
 }
 
+.command-governance-launch-expansion-receipt {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(250, 254, 252, 0.98), rgba(248, 252, 255, 0.95)),
+    radial-gradient(circle at 90% 10%, rgba(214, 238, 247, 0.42), transparent 34%);
+}
+
+.command-launch-expansion-receipt-preview {
+  box-shadow: 0 18px 38px rgba(19, 54, 45, 0.068);
+}
+
+.command-governance-launch-expansion-receipt.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-launch-expansion-receipt.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-launch-expansion-receipt.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-launch-expansion-receipt-head {
+  display: grid;
+  gap: 4px;
+}
+
+.command-governance-launch-expansion-receipt-head strong {
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-launch-expansion-receipt-head small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.command-governance-launch-expansion-receipt-grid,
+.command-governance-launch-expansion-receipt-receipt,
+.command-governance-launch-expansion-receipt-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-governance-launch-expansion-receipt-grid article,
+.command-governance-launch-expansion-receipt-receipt article,
+.command-governance-launch-expansion-receipt-controls article {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  min-height: 78px;
+  padding: 10px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-governance-launch-expansion-receipt-receipt article {
+  min-height: 92px;
+}
+
+.command-governance-launch-expansion-receipt-grid article span,
+.command-governance-launch-expansion-receipt-receipt article span,
+.command-governance-launch-expansion-receipt-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-governance-launch-expansion-receipt-grid article strong,
+.command-governance-launch-expansion-receipt-receipt article strong,
+.command-governance-launch-expansion-receipt-controls article strong {
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.18;
+}
+
+.command-governance-launch-expansion-receipt-grid article small,
+.command-governance-launch-expansion-receipt-receipt article small,
+.command-governance-launch-expansion-receipt-controls article small,
+.command-governance-launch-expansion-receipt-actions small {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.command-governance-launch-expansion-receipt-grid article.tone-green,
+.command-governance-launch-expansion-receipt-receipt article.tone-green,
+.command-governance-launch-expansion-receipt-controls article.tone-green {
+  border-color: rgba(40, 131, 74, 0.28);
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, #fbfefc, var(--green-soft));
+}
+
+.command-governance-launch-expansion-receipt-grid article.tone-blue,
+.command-governance-launch-expansion-receipt-receipt article.tone-blue,
+.command-governance-launch-expansion-receipt-controls article.tone-blue {
+  border-color: rgba(49, 101, 158, 0.28);
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, #fbfdff, var(--blue-soft));
+}
+
+.command-governance-launch-expansion-receipt-grid article.tone-amber,
+.command-governance-launch-expansion-receipt-receipt article.tone-amber,
+.command-governance-launch-expansion-receipt-controls article.tone-amber {
+  border-color: rgba(198, 116, 23, 0.3);
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, #fffdf8, var(--amber-soft));
+}
+
+.command-governance-launch-expansion-receipt-grid article.tone-teal,
+.command-governance-launch-expansion-receipt-receipt article.tone-teal,
+.command-governance-launch-expansion-receipt-controls article.tone-teal {
+  border-color: rgba(13, 111, 97, 0.24);
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, #fbfefc, var(--teal-soft));
+}
+
+.command-governance-launch-expansion-receipt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.command-governance-launch-expansion-receipt-actions small {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 980px) {
   .command-governance-first-pilot-readiness-room-grid,
   .command-governance-first-pilot-readiness-room-gates,
@@ -15919,7 +16066,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-pilot-learning-release-controls,
   .command-governance-sponsor-expansion-gate-grid,
   .command-governance-sponsor-expansion-gate-lanes,
-  .command-governance-sponsor-expansion-gate-controls {
+  .command-governance-sponsor-expansion-gate-controls,
+  .command-governance-launch-expansion-receipt-grid,
+  .command-governance-launch-expansion-receipt-receipt,
+  .command-governance-launch-expansion-receipt-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -15935,7 +16085,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-sponsor-decision-receipt,
   .command-governance-pilot-support-closeout,
   .command-governance-pilot-learning-release,
-  .command-governance-sponsor-expansion-gate {
+  .command-governance-sponsor-expansion-gate,
+  .command-governance-launch-expansion-receipt {
     margin-inline: -2px;
   }
 
@@ -15971,7 +16122,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-pilot-learning-release-controls,
   .command-governance-sponsor-expansion-gate-grid,
   .command-governance-sponsor-expansion-gate-lanes,
-  .command-governance-sponsor-expansion-gate-controls {
+  .command-governance-sponsor-expansion-gate-controls,
+  .command-governance-launch-expansion-receipt-grid,
+  .command-governance-launch-expansion-receipt-receipt,
+  .command-governance-launch-expansion-receipt-controls {
     grid-template-columns: 1fr;
   }
 
@@ -15985,7 +16139,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-sponsor-decision-receipt-actions,
   .command-governance-pilot-support-closeout-actions,
   .command-governance-pilot-learning-release-actions,
-  .command-governance-sponsor-expansion-gate-actions {
+  .command-governance-sponsor-expansion-gate-actions,
+  .command-governance-launch-expansion-receipt-actions {
     align-items: stretch;
     flex-direction: column;
   }
@@ -16000,7 +16155,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-sponsor-decision-receipt-actions .ghost-btn,
   .command-governance-pilot-support-closeout-actions .ghost-btn,
   .command-governance-pilot-learning-release-actions .ghost-btn,
-  .command-governance-sponsor-expansion-gate-actions .ghost-btn {
+  .command-governance-sponsor-expansion-gate-actions .ghost-btn,
+  .command-governance-launch-expansion-receipt-actions .ghost-btn {
     width: 100%;
   }
 }
