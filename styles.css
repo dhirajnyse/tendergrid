@@ -18164,6 +18164,156 @@ body.quiet-focus-mode .focus-mode-pill {
   overflow-wrap: anywhere;
 }
 
+.command-governance-first-pilot-proof-bridge {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(51, 101, 153, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.7));
+  box-shadow: var(--shadow);
+}
+
+.command-first-pilot-proof-bridge-preview {
+  margin: 0 0 14px;
+}
+
+.command-governance-first-pilot-proof-bridge.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(228, 242, 232, 0.72));
+}
+
+.command-governance-first-pilot-proof-bridge.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.72));
+}
+
+.command-governance-first-pilot-proof-bridge.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 216, 0.68));
+}
+
+.command-governance-first-pilot-proof-bridge-head {
+  display: grid;
+  gap: 6px;
+}
+
+.command-governance-first-pilot-proof-bridge-head strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-first-pilot-proof-bridge-head small {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.42;
+}
+
+.command-governance-first-pilot-proof-bridge-grid,
+.command-governance-first-pilot-proof-bridge-proof,
+.command-governance-first-pilot-proof-bridge-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-governance-first-pilot-proof-bridge-grid article,
+.command-governance-first-pilot-proof-bridge-proof article,
+.command-governance-first-pilot-proof-bridge-controls article {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.command-governance-first-pilot-proof-bridge-proof article {
+  min-height: 108px;
+}
+
+.command-governance-first-pilot-proof-bridge-grid article span,
+.command-governance-first-pilot-proof-bridge-proof article span,
+.command-governance-first-pilot-proof-bridge-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-governance-first-pilot-proof-bridge-grid article strong,
+.command-governance-first-pilot-proof-bridge-proof article strong,
+.command-governance-first-pilot-proof-bridge-controls article strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-first-pilot-proof-bridge-grid article small,
+.command-governance-first-pilot-proof-bridge-proof article small,
+.command-governance-first-pilot-proof-bridge-controls article small,
+.command-governance-first-pilot-proof-bridge-actions small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.command-governance-first-pilot-proof-bridge-grid article.tone-green,
+.command-governance-first-pilot-proof-bridge-proof article.tone-green,
+.command-governance-first-pilot-proof-bridge-controls article.tone-green {
+  background: rgba(228, 242, 232, 0.7);
+  border-left-color: var(--green);
+}
+
+.command-governance-first-pilot-proof-bridge-grid article.tone-blue,
+.command-governance-first-pilot-proof-bridge-proof article.tone-blue,
+.command-governance-first-pilot-proof-bridge-controls article.tone-blue {
+  background: rgba(231, 239, 248, 0.72);
+  border-left-color: var(--blue);
+}
+
+.command-governance-first-pilot-proof-bridge-grid article.tone-amber,
+.command-governance-first-pilot-proof-bridge-proof article.tone-amber,
+.command-governance-first-pilot-proof-bridge-controls article.tone-amber {
+  background: rgba(255, 240, 216, 0.72);
+  border-left-color: var(--amber);
+}
+
+.command-governance-first-pilot-proof-bridge-grid article.tone-red,
+.command-governance-first-pilot-proof-bridge-proof article.tone-red,
+.command-governance-first-pilot-proof-bridge-controls article.tone-red {
+  background: rgba(250, 225, 220, 0.7);
+  border-left-color: var(--red);
+}
+
+.command-governance-first-pilot-proof-bridge-grid article.tone-teal,
+.command-governance-first-pilot-proof-bridge-proof article.tone-teal,
+.command-governance-first-pilot-proof-bridge-controls article.tone-teal {
+  background: rgba(226, 243, 236, 0.74);
+  border-left-color: var(--teal);
+}
+
+.command-governance-first-pilot-proof-bridge-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command-governance-first-pilot-proof-bridge-actions small {
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 980px) {
   .command-governance-rollout-reuse-gate-grid,
   .command-governance-rollout-reuse-gate-lanes,
@@ -18185,7 +18335,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-rollout-audit-closeout-receipt-controls,
   .command-governance-rollout-launch-readiness-seal-grid,
   .command-governance-rollout-launch-readiness-seal-readiness,
-  .command-governance-rollout-launch-readiness-seal-controls {
+  .command-governance-rollout-launch-readiness-seal-controls,
+  .command-governance-first-pilot-proof-bridge-grid,
+  .command-governance-first-pilot-proof-bridge-proof,
+  .command-governance-first-pilot-proof-bridge-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -18197,7 +18350,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-rollout-reuse-activation-receipt,
   .command-governance-rollout-activation-outcome-watch,
   .command-governance-rollout-audit-closeout-receipt,
-  .command-governance-rollout-launch-readiness-seal {
+  .command-governance-rollout-launch-readiness-seal,
+  .command-governance-first-pilot-proof-bridge {
     padding: 12px;
   }
 
@@ -18221,7 +18375,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-rollout-audit-closeout-receipt-controls,
   .command-governance-rollout-launch-readiness-seal-grid,
   .command-governance-rollout-launch-readiness-seal-readiness,
-  .command-governance-rollout-launch-readiness-seal-controls {
+  .command-governance-rollout-launch-readiness-seal-controls,
+  .command-governance-first-pilot-proof-bridge-grid,
+  .command-governance-first-pilot-proof-bridge-proof,
+  .command-governance-first-pilot-proof-bridge-controls {
     grid-template-columns: 1fr;
   }
 
@@ -18231,7 +18388,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-rollout-reuse-activation-receipt-actions,
   .command-governance-rollout-activation-outcome-watch-actions,
   .command-governance-rollout-audit-closeout-receipt-actions,
-  .command-governance-rollout-launch-readiness-seal-actions {
+  .command-governance-rollout-launch-readiness-seal-actions,
+  .command-governance-first-pilot-proof-bridge-actions {
     display: grid;
   }
 
@@ -18241,7 +18399,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-rollout-reuse-activation-receipt-actions .ghost-btn,
   .command-governance-rollout-activation-outcome-watch-actions .ghost-btn,
   .command-governance-rollout-audit-closeout-receipt-actions .ghost-btn,
-  .command-governance-rollout-launch-readiness-seal-actions .ghost-btn {
+  .command-governance-rollout-launch-readiness-seal-actions .ghost-btn,
+  .command-governance-first-pilot-proof-bridge-actions .ghost-btn {
     width: 100%;
   }
 }
