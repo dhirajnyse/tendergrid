@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v458 adds a Governance Scaled Rollout Proof Board so first scaled rollout proof, owner response, launch risk, support readiness, rollback evidence, and boundary posture stay in one proof board.
 - v457 adds a Governance Expansion Support Desk so rollout blockers, sponsor ask, owner load, proof watch, country rule, boundary, and rollback posture stay in one expansion support desk.
 - v456 adds a Governance Scaled Rollout Board so expansion receipt, country rule, support owner, proof lane, first review, boundary, and rollback posture stay in one first scaled rollout board.
 - v455 adds a Governance Launch Expansion Receipt so expansion gate, closeout proof, launch proof, reusable learning, owner/date readiness, and rollback boundary stay in one first scaled rollout receipt.
