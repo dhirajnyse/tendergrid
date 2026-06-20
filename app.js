@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v474";
-  const BUILD_LABEL = "Governance Rollout First Pilot Learning Room";
+  const BUILD_VERSION = "v475";
+  const BUILD_LABEL = "Governance Rollout First Pilot Expansion Decision";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=474";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=474";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=475";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=475";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -4476,6 +4476,14 @@ const state = {
     return Math.ceil((date.getTime() - today.getTime()) / 86400000);
   }
 
+  function dueLabel(days) {
+    if (days === null || Number.isNaN(days)) return "No due date";
+    if (days < 0) return `${Math.abs(days)}d late`;
+    if (days === 0) return "Due today";
+    if (days === 1) return "Due tomorrow";
+    return `${days}d left`;
+  }
+
   function scoreRecord(record, valueFloor) {
     const amount = Number(record.valueAmount) || 0;
     const days = recordDueDays(record);
@@ -5756,6 +5764,360 @@ const state = {
             </div>
           </article>
         </div>
+      </section>
+    `;
+  }
+
+  function buildPursuitAdvisorModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const reminders = buildReminderModel();
+    const valueFloor = highValueThreshold(records);
+    const recommendations = openRecords
+      .map((record) => {
+        const days = recordDueDays(record);
+        const amount = Number(record.valueAmount) || 0;
+        const missing = [
+          !record.owner ? "owner" : "",
+          !record.endDate ? "date" : "",
+          !record.category ? "category" : "",
+          !record.sourceSheet ? "source" : "",
+        ].filter(Boolean);
+        const highValue = amount >= valueFloor && amount > 0;
+        const overdue = days !== null && days < 0;
+        const decisionNeeded = ["Tender", "EOI"].includes(record.type) && ["Active", "Pending", "Submitted"].includes(record.status);
+        const score = Math.max(
+          10,
+          Math.min(99, Math.round(26 + (overdue ? 34 : 0) + missing.length * 9 + (highValue ? 18 : 0) + (decisionNeeded ? 12 : 0))),
+        );
+        const lane = overdue ? "Recover" : missing.length ? "Clean up" : decisionNeeded ? "Decide" : highValue ? "Protect" : "Rhythm";
+        const tone = lane === "Recover" ? "red" : lane === "Clean up" ? "amber" : lane === "Decide" ? "blue" : lane === "Protect" ? "green" : "teal";
+        const action =
+          lane === "Recover"
+            ? "Update due date or escalation note before the next management review."
+            : lane === "Clean up"
+              ? `Assign ${missing.join(", ")} cleanup so the record can re-enter the operating rhythm.`
+              : lane === "Decide"
+                ? "Confirm bid, no-bid, hold, or submission posture with a clear owner."
+                : lane === "Protect"
+                  ? "Keep value visible in management rooms with proof, owner, and next decision."
+                  : "Keep the item moving through the weekly review rhythm.";
+        return { action, amount, days, lane, missing, record, score, tone };
+      })
+      .sort((a, b) => b.score - a.score || (a.days ?? 9999) - (b.days ?? 9999));
+    const doNow = recommendations.filter((item) => item.tone === "red" || item.score >= 82).slice(0, 17);
+    const decisionQueue = recommendations.filter((item) => item.lane === "Decide").slice(0, 8);
+    const scheduleCleanup = recommendations.filter((item) => item.missing.length).slice(0, 11);
+    const recommendationValue = sumAmounts(recommendations.map((item) => item.record));
+    const advisorScore = Math.max(0, Math.min(100, Math.round(100 - Math.min(70, reminders.overdue + reminders.missingData) + Math.min(12, decisionQueue.length))));
+    const signalConfidence = Math.max(35, Math.min(95, Math.round(100 - Math.min(45, (reminders.missingData / Math.max(openRecords.length, 1)) * 100))));
+    const lanes = [
+      ["Recover", "red", "Past-due or control-critical records", recommendations.filter((item) => item.lane === "Recover").slice(0, 4)],
+      ["Clean up", "amber", "Missing owner, date, category, or source proof", recommendations.filter((item) => item.lane === "Clean up").slice(0, 4)],
+      ["Decide", "blue", "Bid posture, hold, submission, or next commercial decision", decisionQueue.slice(0, 4)],
+      ["Protect", "green", "High-value work that needs visible management memory", recommendations.filter((item) => item.lane === "Protect").slice(0, 4)],
+    ];
+    const brief = [
+      `${recommendations.length} ranked actions are available from live workspace signals.`,
+      `${doNow.length} items should move before routine updates.`,
+      `${formatCompactMoney(recommendationValue)} is connected to advisor recommendations.`,
+      `${signalConfidence}% signal confidence based on governance, evidence, and date quality.`,
+    ];
+    return { advisorScore, brief, decisionQueue, doNow, lanes, recommendationValue, recommendations, scheduleCleanup, signalConfidence };
+  }
+
+  function renderPursuitAdvisorPage() {
+    const model = buildPursuitAdvisorModel();
+    const renderRecommendation = (item) => `
+      <article class="action-card tone-${escapeHtml(item.tone)}">
+        <span class="metric-label">${escapeHtml(item.lane)}</span>
+        <strong>${escapeHtml(item.record.title || item.record.reference || "Workspace action")}</strong>
+        <p>${escapeHtml(item.action)}</p>
+        <small>${escapeHtml([item.record.client, item.record.owner, dueLabel(item.days), formatCompactMoney(item.amount)].filter(Boolean).join(" / "))}</small>
+      </article>
+    `;
+    return `
+      <section class="advisor-room">
+        <div class="command-hero advisor-hero">
+          <div>
+            <span class="metric-label">Pursuit advisor</span>
+            <h2>Turn every signal into the next best move.</h2>
+            <p>Advisor reads Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminders, then ranks the moves that improve operating control fastest.</p>
+            <div class="hero-actions">
+              <button class="secondary-btn" type="button" data-view="Risk">Open risk control</button>
+              <button class="ghost-btn" type="button" data-view="Bid Desk">Open Bid Desk</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+            </div>
+          </div>
+          <div class="hero-score-card">
+            <span>Advisor score</span>
+            <strong>${model.advisorScore}%</strong>
+            <small>${model.doNow.length} do-now moves / ${model.signalConfidence}% signal confidence</small>
+          </div>
+        </div>
+
+        <div class="insight-kpi-grid">
+          ${renderInsightKpi("Recommendations", model.recommendations.length, "Ranked from live workspace signals")}
+          ${renderInsightKpi("Do now", model.doNow.length, "Highest priority actions")}
+          ${renderInsightKpi("Value touched", formatCompactMoney(model.recommendationValue), "Unique value connected to recommendations")}
+          ${renderInsightKpi("Signal confidence", `${model.signalConfidence}%`, "Governance, evidence, and forecast quality")}
+        </div>
+
+        <div class="action-grid">
+          <article class="action-card tone-red">
+            <span class="metric-label">First move</span>
+            <strong>${escapeHtml(model.doNow[0]?.lane || "Focused recovery")}</strong>
+            <p>${escapeHtml(model.doNow[0]?.action || "Keep the operating rhythm moving from the highest confidence signal.")}</p>
+          </article>
+          <article class="action-card tone-amber">
+            <span class="metric-label">Decision queue</span>
+            <strong>${model.decisionQueue.length} decisions</strong>
+            <p>Convert Watch items into Bid, No-bid, or hold with a clear owner.</p>
+          </article>
+          <article class="action-card tone-blue">
+            <span class="metric-label">Schedule cleanup</span>
+            <strong>${model.scheduleCleanup.length} no-data records</strong>
+            <p>Add due, submission, or review dates so work appears in time views.</p>
+          </article>
+          <article class="action-card tone-green">
+            <span class="metric-label">Review posture</span>
+            <strong>Focused recovery</strong>
+            <p>${model.recommendations.length} ranked actions with ${model.signalConfidence}% signal confidence.</p>
+          </article>
+        </div>
+
+        <div class="weekly-layout two-column">
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Next best actions</span>
+                <h3>Advisor lanes</h3>
+              </div>
+              <span>${model.recommendations.length} recommendations</span>
+            </div>
+            <div class="action-grid compact">
+              ${model.lanes
+                .map(
+                  ([label, tone, note, items]) => `
+                    <section class="lane-panel tone-${escapeHtml(tone)}">
+                      <div class="info-head compact">
+                        <div>
+                          <span class="metric-label">${escapeHtml(label)}</span>
+                          <h4>${escapeHtml(note)}</h4>
+                        </div>
+                        <span>${items.length}</span>
+                      </div>
+                      ${items.map(renderRecommendation).join("") || `<p>No urgent items in this lane.</p>`}
+                    </section>
+                  `,
+                )
+                .join("")}
+            </div>
+          </article>
+
+          <article class="info-panel">
+            <div class="info-head">
+              <div>
+                <span class="metric-label">Management brief</span>
+                <h3>What to say in review</h3>
+              </div>
+            </div>
+            <div class="brief-list">
+              ${model.brief.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}
+            </div>
+          </article>
+        </div>
+      </section>
+    `;
+  }
+
+  function buildWeeklyReviewModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const reminders = buildReminderModel();
+    const reviewValue = sumAmounts(openRecords);
+    const actionRegister = reminders.tasks.slice(0, 14).map((task, index) => ({
+      id: `WR-${String(index + 1).padStart(2, "0")}`,
+      title: task.title,
+      owner: task.record?.owner || "Commercial",
+      note: task.note,
+      tone: task.tone,
+    }));
+    const agenda = [
+      ["Opening brief", `${openRecords.length} open records and ${formatCompactMoney(reviewValue)} in review.`],
+      ["Red work", `${reminders.overdue} overdue actions before routine updates.`],
+      ["Decision queue", "Confirm bid/no-bid, hold, owner, and next date where signals are unclear."],
+      ["Evidence gaps", `${reminders.missingData} missing-data actions need cleanup.`],
+      ["Owner load", "Balance Commercial and Operations follow-through before closeout."],
+      ["Closeout", "Capture commitments, dates, evidence, and next review owner."],
+    ];
+    const reviewScore = Math.max(0, Math.min(100, Math.round(100 - Math.min(55, reminders.overdue) - Math.min(20, reminders.missingData / 4))));
+    const brief = [
+      `${records.length} records are in the review base; ${openRecords.length} remain open.`,
+      `${actionRegister.length} action lines should be cleared before routine updates.`,
+      `${formatCompactMoney(reviewValue)} is connected to the weekly management review.`,
+    ];
+    return { actionRegister, agenda, brief, openRecords, records, reminders, reviewScore, reviewValue };
+  }
+
+  function renderWeeklyReviewPage() {
+    const model = buildWeeklyReviewModel();
+    return `
+      <section class="weekly-review-room">
+        <div class="command-hero weekly-hero">
+          <div>
+            <span class="metric-label">Weekly review room</span>
+            <h2>Turn the weekly meeting into an operating system.</h2>
+            <p>Generated from Advisor, Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, Reminders, and Reports.</p>
+            <div class="hero-actions">
+              <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
+              <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
+              <button class="ghost-btn" type="button" data-action="print-report">Print review</button>
+            </div>
+          </div>
+          <div class="hero-score-card">
+            <span>Review readiness</span>
+            <strong>${model.reviewScore}%</strong>
+            <small>${model.actionRegister.length} action lines / ${model.agenda.length} agenda blocks</small>
+          </div>
+        </div>
+        <div class="insight-kpi-grid">
+          ${renderInsightKpi("Review value", formatCompactMoney(model.reviewValue), "Value connected to the action register")}
+          ${renderInsightKpi("Do-now actions", model.actionRegister.length, "Clear before routine updates")}
+          ${renderInsightKpi("Open records", model.openRecords.length, "Tenders and projects still moving")}
+          ${renderInsightKpi("Review confidence", `${model.reviewScore}%`, "Weighted by dates, values, and status quality")}
+        </div>
+        <div class="weekly-layout two-column">
+          <article class="info-panel">
+            <div class="info-head"><div><span class="metric-label">Meeting agenda</span><h3>55-minute review flow</h3></div><span>${model.agenda.length} blocks</span></div>
+            <div class="brief-list">${model.agenda.map(([label, note]) => `<p><strong>${escapeHtml(label)}</strong><br>${escapeHtml(note)}</p>`).join("")}</div>
+          </article>
+          <article class="info-panel">
+            <div class="info-head"><div><span class="metric-label">Opening brief</span><h3>Read this first</h3></div></div>
+            <div class="brief-list">${model.brief.map((line) => `<p>${escapeHtml(line)}</p>`).join("")}</div>
+          </article>
+        </div>
+        <article class="info-panel">
+          <div class="info-head"><div><span class="metric-label">Action register</span><h3>Commitments to close before next review</h3></div><span>${model.actionRegister.length}</span></div>
+          <div class="action-grid compact">
+            ${model.actionRegister
+              .map(
+                (item) => `
+                  <article class="action-card tone-${escapeHtml(item.tone)}">
+                    <span class="metric-label">${escapeHtml(item.id)} / ${escapeHtml(item.owner)}</span>
+                    <strong>${escapeHtml(item.title)}</strong>
+                    <p>${escapeHtml(item.note)}</p>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+        </article>
+      </section>
+    `;
+  }
+
+  function buildReviewCalendarModel() {
+    const records = companyRecords().filter((record) => !isClosedRecord(record));
+    const events = records
+      .map((record) => {
+        const days = recordDueDays(record);
+        return {
+          days,
+          record,
+          title: record.title || record.reference || "Calendar item",
+          tone: days === null ? "amber" : days < 0 ? "red" : days <= 30 ? "blue" : "green",
+        };
+      })
+      .sort((a, b) => (a.days ?? 9999) - (b.days ?? 9999));
+    const overdue = events.filter((event) => event.days !== null && event.days < 0);
+    const next30 = events.filter((event) => event.days !== null && event.days >= 0 && event.days <= 30);
+    const noDate = events.filter((event) => event.days === null);
+    const focusScore = Math.max(0, Math.min(100, Math.round(100 - Math.min(60, overdue.length * 2) - Math.min(25, noDate.length * 3))));
+    return { events, focusScore, next30, noDate, overdue };
+  }
+
+  function renderReviewCalendarPage() {
+    const model = buildReviewCalendarModel();
+    const renderEvent = (event) => `
+      <article class="action-card tone-${escapeHtml(event.tone)}">
+        <span class="metric-label">${escapeHtml(dueLabel(event.days))}</span>
+        <strong>${escapeHtml(event.title)}</strong>
+        <p>${escapeHtml([event.record.client, event.record.type, event.record.status, event.record.owner].filter(Boolean).join(" / "))}</p>
+      </article>
+    `;
+    return `
+      <section class="calendar-room">
+        <div class="command-hero">
+          <div>
+            <span class="metric-label">Review calendar</span>
+            <h2>Make time visible before it becomes pressure.</h2>
+            <p>One view for overdue movement, near-date work, no-date cleanup, and owner review rhythm.</p>
+          </div>
+          <div class="hero-score-card"><span>Focus score</span><strong>${model.focusScore}%</strong><small>${model.events.length} dated signals</small></div>
+        </div>
+        <div class="insight-kpi-grid">
+          ${renderInsightKpi("Events", model.events.length, "Open records in calendar view")}
+          ${renderInsightKpi("Overdue", model.overdue.length, "Past-due movement")}
+          ${renderInsightKpi("Next 30", model.next30.length, "Near-date pressure")}
+          ${renderInsightKpi("No date", model.noDate.length, "Needs schedule cleanup")}
+        </div>
+        <div class="weekly-layout two-column">
+          <article class="info-panel"><div class="info-head"><div><span class="metric-label">Overdue</span><h3>Recover first</h3></div></div><div class="action-grid compact">${model.overdue.slice(0, 8).map(renderEvent).join("") || "<p>No overdue records.</p>"}</div></article>
+          <article class="info-panel"><div class="info-head"><div><span class="metric-label">Next 30</span><h3>Prepare now</h3></div></div><div class="action-grid compact">${model.next30.slice(0, 8).map(renderEvent).join("") || "<p>No near-date records.</p>"}</div></article>
+        </div>
+      </section>
+    `;
+  }
+
+  function buildRiskControlModel() {
+    const records = companyRecords().filter((record) => !isClosedRecord(record));
+    const risks = records
+      .map((record) => {
+        const days = recordDueDays(record);
+        const amount = Number(record.valueAmount) || 0;
+        const missingCount = [record.owner, record.endDate, record.category, record.sourceSheet].filter((value) => !value).length;
+        const score = Math.max(5, Math.min(100, Math.round((days !== null && days < 0 ? 42 : 0) + missingCount * 13 + (amount >= highValueThreshold(records) ? 22 : 6))));
+        const tone = score >= 75 ? "red" : score >= 55 ? "amber" : score >= 35 ? "blue" : "green";
+        return { amount, days, missingCount, record, score, tone };
+      })
+      .sort((a, b) => b.score - a.score);
+    const critical = risks.filter((risk) => risk.score >= 75);
+    const high = risks.filter((risk) => risk.score >= 55 && risk.score < 75);
+    const riskExposure = sumAmounts(critical.concat(high).map((risk) => risk.record));
+    const controlScore = Math.max(0, Math.min(100, Math.round(100 - Math.min(70, critical.length * 3 + high.length))));
+    return { controlScore, critical, high, riskExposure, risks };
+  }
+
+  function renderRiskControlPage() {
+    const model = buildRiskControlModel();
+    const renderRisk = (risk) => `
+      <article class="action-card tone-${escapeHtml(risk.tone)}">
+        <span class="metric-label">${risk.score} risk / ${escapeHtml(dueLabel(risk.days))}</span>
+        <strong>${escapeHtml(risk.record.title || risk.record.reference || "Risk item")}</strong>
+        <p>${escapeHtml([risk.record.client, risk.record.owner || "No owner", formatCompactMoney(risk.amount)].filter(Boolean).join(" / "))}</p>
+      </article>
+    `;
+    return `
+      <section class="risk-room">
+        <div class="command-hero risk-hero">
+          <div>
+            <span class="metric-label">Risk control</span>
+            <h2>Keep pressure visible while there is still time to act.</h2>
+            <p>Risk control ranks overdue movement, missing proof, owner gaps, and value exposure without pushing commercial detail into frontline edits.</p>
+          </div>
+          <div class="hero-score-card"><span>Control score</span><strong>${model.controlScore}%</strong><small>${model.critical.length} critical / ${model.high.length} high</small></div>
+        </div>
+        <div class="insight-kpi-grid">
+          ${renderInsightKpi("Risks", model.risks.length, "Open records scanned")}
+          ${renderInsightKpi("Critical", model.critical.length, "Immediate management attention")}
+          ${renderInsightKpi("High", model.high.length, "Watch closely")}
+          ${renderInsightKpi("Exposure", formatCompactMoney(model.riskExposure), "Value connected to high risk")}
+        </div>
+        <article class="info-panel">
+          <div class="info-head"><div><span class="metric-label">Risk queue</span><h3>Highest control pressure</h3></div><span>${model.risks.length}</span></div>
+          <div class="action-grid compact">${model.risks.slice(0, 12).map(renderRisk).join("")}</div>
+        </article>
       </section>
     `;
   }
@@ -7414,6 +7776,143 @@ const state = {
             .join("")}
         </div>
       </section>
+    `;
+  }
+
+  function renderCommandModuleCard(card) {
+    const enabled = canAccessView(card.view);
+    return `
+      <article class="command-module-card tone-${escapeHtml(card.tone)}">
+        <div>
+          <span class="metric-label">${escapeHtml(card.label)}</span>
+          <strong>${escapeHtml(String(card.value))}</strong>
+        </div>
+        <p>${escapeHtml(card.note)}</p>
+        <small>${escapeHtml(card.signal)}</small>
+        <button class="ghost-btn" type="button" data-view="${escapeHtml(card.view)}" ${enabled ? "" : "disabled"}>Open room</button>
+      </article>
+    `;
+  }
+
+  function renderCommandPulse(model) {
+    const pulseRows = [
+      ["Health", `${model.healthScore}%`, "Overall operating confidence", model.healthScore >= 70 ? "green" : "amber"],
+      ["Actions", model.reminders.tasks.length, "Generated follow-up lines", model.reminders.overdue ? "red" : "green"],
+      ["Evidence", `${model.evidenceScore}%`, "Source coverage after gap penalty", model.evidenceScore >= 70 ? "green" : "amber"],
+      ["Contracts", `${model.contractScore}%`, "Agreement and commercial-control posture", model.contractScore >= 70 ? "blue" : "amber"],
+    ];
+    return `
+      <div class="command-pulse-grid">
+        ${pulseRows
+          .map(
+            ([label, value, note, tone]) => `
+              <article class="action-card tone-${escapeHtml(tone)}">
+                <span class="metric-label">${escapeHtml(label)}</span>
+                <strong>${escapeHtml(String(value))}</strong>
+                <p>${escapeHtml(note)}</p>
+              </article>
+            `,
+          )
+          .join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandEvidenceList(items) {
+    return renderCommandSimpleList(
+      items,
+      (item) => item.title || item.label || item.record?.title || "Evidence item",
+      (item) => item.note || item.gap || item.record?.client || "Review source, agreement, proof, date, and owner.",
+      "blue",
+    );
+  }
+
+  function renderCommandContractList(items) {
+    return renderCommandSimpleList(
+      items,
+      (item) => item.title || item.label || item.record?.title || "Contract item",
+      (item) => item.note || item.gap || item.record?.client || "Confirm agreement, value, commercial owner, and status.",
+      "amber",
+    );
+  }
+
+  function renderCommandClientList(items) {
+    return renderCommandSimpleList(
+      items,
+      (item) => item.label || item.client || item.name || "Client account",
+      (item) => `${item.openCount ?? item.open ?? item.records?.length ?? 0} open / ${formatCompactMoney(item.totalValue || item.value || 0)} captured`,
+      "green",
+    );
+  }
+
+  function renderCommandValueList(items) {
+    return renderCommandSimpleList(
+      items,
+      (item) => item.title || item.reference || "Open value",
+      (item) => `${item.client || "Account"} / ${formatCompactMoney(item.valueAmount || item.value || 0)} / ${item.status || "Open"}`,
+      "teal",
+    );
+  }
+
+  function renderCommandTaskList(items) {
+    return renderCommandSimpleList(
+      items,
+      (item) => item.title || item.record?.title || "Priority action",
+      (item) => item.note || item.action || "Confirm owner, date, proof, and next action.",
+      "red",
+    );
+  }
+
+  function renderCommandBrief(lines) {
+    return `<div class="brief-list">${(lines || []).map((line) => `<p>${escapeHtml(line)}</p>`).join("")}</div>`;
+  }
+
+  function renderCommandRhythm() {
+    const steps = [
+      ["1", "Open Command", "Read health, value, overdue, evidence, and client heat."],
+      ["2", "Move one room", "Open only the room with the strongest pressure."],
+      ["3", "Assign proof", "Name owner, date, evidence, and next action."],
+      ["4", "Close the loop", "Copy the brief into Weekly Review or Reports."],
+    ];
+    return `<div class="brief-list">${steps.map(([num, title, note]) => `<p><strong>${escapeHtml(num)}. ${escapeHtml(title)}</strong><br>${escapeHtml(note)}</p>`).join("")}</div>`;
+  }
+
+  function renderSignalLegend() {
+    const rows = [
+      ["green", "Ready or healthy"],
+      ["teal", "Operating movement"],
+      ["blue", "Decision or evidence"],
+      ["amber", "Watch or cleanup"],
+      ["red", "Recover first"],
+    ];
+    return `<div class="signal-legend">${rows.map(([tone, label]) => `<span class="tone-${escapeHtml(tone)}">${escapeHtml(label)}</span>`).join("")}</div>`;
+  }
+
+  function renderReadabilityAudit(audit) {
+    return `
+      <div class="brief-list">
+        ${(audit.checks || []).map(([tone, title, note]) => `<p class="tone-${escapeHtml(tone)}"><strong>${escapeHtml(title)}</strong><br>${escapeHtml(note)}</p>`).join("")}
+      </div>
+    `;
+  }
+
+  function renderCommandSimpleList(items, titleFn, noteFn, fallbackTone) {
+    const rows = (items || []).slice(0, 6);
+    if (!rows.length) return `<p class="empty-note">Nothing needs attention in this lane.</p>`;
+    return `
+      <div class="command-simple-list">
+        ${rows
+          .map((item) => {
+            const tone = item.tone || fallbackTone;
+            return `
+              <article class="action-card tone-${escapeHtml(tone)}">
+                <strong>${escapeHtml(String(titleFn(item)))}</strong>
+                <p>${escapeHtml(String(noteFn(item)))}</p>
+              </article>
+            `;
+          })
+          .join("")}
+      </div>
     `;
   }
 
@@ -17587,6 +18086,79 @@ const state = {
         <div class="command-governance-first-pilot-learning-room-actions">
           <button class="ghost-btn" type="button" data-action="copy-command-guidance-first-pilot-learning-room" data-copy-text="${escapeHtml(encodeURIComponent(room.copyText))}">Copy learning room</button>
           <small>${escapeHtml(room.learningRoomId)}</small>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandGovernanceFirstPilotExpansionDecisionPreview(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const copiedAt = state.commandMemory?.copiedAt || new Date().toISOString();
+    const memory = {
+      ...(state.commandMemory || {}),
+      text: state.commandMemory?.text || slip.calmLine || slip.copyText,
+      copiedAt,
+      build: BUILD_VERSION,
+      view: "Command",
+      approval:
+        state.commandMemory?.approval ||
+        {
+          decision: "Approve to observe",
+          decidedAt: copiedAt,
+          build: BUILD_VERSION,
+        },
+    };
+    const decision = buildCommandMemoryLearningChain(memory).guidanceGovernanceFirstPilotExpansionDecision;
+
+    return `
+      <section class="command-first-pilot-expansion-decision-preview command-governance-first-pilot-expansion-decision tone-${escapeHtml(decision.tone)}" aria-label="Governance first pilot expansion decision preview">
+        <div class="command-governance-first-pilot-expansion-decision-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} First Pilot Expansion Decision</span>
+          <strong>${escapeHtml(decision.expansionDecision)} / ${decision.expansionDecisionScore}%</strong>
+          <small>${escapeHtml(decision.nextAction)}</small>
+        </div>
+        <div class="command-governance-first-pilot-expansion-decision-grid">
+          ${decision.cards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-first-pilot-expansion-decision-options">
+          ${decision.options
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 72))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 132))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-first-pilot-expansion-decision-controls">
+          ${decision.controls
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-first-pilot-expansion-decision-actions">
+          <button class="ghost-btn" type="button" data-action="copy-command-guidance-first-pilot-expansion-decision" data-copy-text="${escapeHtml(encodeURIComponent(decision.copyText))}">Copy expansion decision</button>
+          <small>${escapeHtml(decision.expansionDecisionId)}</small>
         </div>
       </section>
     `;
@@ -27958,6 +28530,162 @@ const state = {
     return { cards, controls, copyText, learningDecision, learningGaps, learningLanes, learningRoomId, learningRoomScore, learningState, nextAction, tone };
   }
 
+  function buildCommandGuidanceGovernanceFirstPilotExpansionDecision(
+    seed = {},
+    evidenceLens = {},
+    guidanceGovernanceFirstPilotLearningRoom = {},
+    guidanceGovernanceSponsorExpansionGate = {},
+    guidanceGovernanceFirstPilotSupportReceipt = {},
+    guidanceGovernanceSponsorDecisionReceipt = {},
+    guidanceGovernancePilotOutcomeLedger = {},
+    guidanceGovernancePilotSupportCloseout = {},
+  ) {
+    const learningScore = Number(guidanceGovernanceFirstPilotLearningRoom.learningRoomScore) || 0;
+    const learningGaps = Number(guidanceGovernanceFirstPilotLearningRoom.learningGaps) || 0;
+    const gateScore = Number(guidanceGovernanceSponsorExpansionGate.gateScore) || 0;
+    const supportScore = Number(guidanceGovernanceFirstPilotSupportReceipt.supportReceiptScore) || 0;
+    const sponsorScore = Number(guidanceGovernanceSponsorDecisionReceipt.receiptScore) || 0;
+    const outcomeScore = Number(guidanceGovernancePilotOutcomeLedger.outcomeScore) || 0;
+    const closeoutScore = Number(guidanceGovernancePilotSupportCloseout.closeoutScore) || 0;
+    const confidenceScore = Number(evidenceLens.score) || 0;
+    const ownerReady = Boolean(seed.ownerReady);
+    const dateReady = Boolean(seed.dateReady);
+    const proofReady = Boolean(seed.proofReady) || outcomeScore >= 76 || learningScore >= 78;
+    const learningDecision = String(guidanceGovernanceFirstPilotLearningRoom.learningDecision || "Prepare learning room");
+    const gateDecision = String(guidanceGovernanceSponsorExpansionGate.gateDecision || "Prepare expansion");
+    const supportDecision = String(guidanceGovernanceFirstPilotSupportReceipt.supportDecision || "Prepare support receipt");
+    const sponsorDecision = String(guidanceGovernanceSponsorDecisionReceipt.sponsorDecision || "Prepare decision");
+    const outcomeDecision = String(guidanceGovernancePilotOutcomeLedger.outcomeDecision || "Prepare ledger");
+    const closeoutDecision = String(guidanceGovernancePilotSupportCloseout.closeoutDecision || "Prepare closeout");
+    const source = [
+      guidanceGovernanceFirstPilotLearningRoom.copyText,
+      guidanceGovernanceSponsorExpansionGate.copyText,
+      guidanceGovernanceFirstPilotSupportReceipt.copyText,
+      guidanceGovernanceSponsorDecisionReceipt.copyText,
+      guidanceGovernancePilotOutcomeLedger.copyText,
+      guidanceGovernancePilotSupportCloseout.copyText,
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const learningReady = learningScore >= 74 || /release|review|prepare learning/i.test(learningDecision);
+    const sponsorReady = sponsorScore >= 74 || /accept|review|hold internal|prepare/i.test(sponsorDecision);
+    const supportReady = supportScore >= 74 || /receipt support|review support|prepare support/i.test(supportDecision);
+    const expansionReady = gateScore >= 72 || /expand|renew|review expansion|repair|hold/i.test(gateDecision);
+    const outcomeReady = outcomeScore >= 74 || /record|review|prepare ledger/i.test(outcomeDecision);
+    const closeoutReady = closeoutScore >= 72 || /close|review|prepare closeout|hold internal/i.test(closeoutDecision);
+    const reusableCandidate = /Reusable candidate|Reusable pattern Candidate|reusable candidate|Release pilot learning/i.test(source) || learningScore >= 82;
+    const tenantSafe = /Tenant boundary scoped|Boundary scoped|tenant-only|sponsor-safe|privacy/i.test(source);
+    const rollbackSafe = /Rollback accepted|rollback accepted|Rollback visible|rollback visible|stop condition/i.test(source);
+    const proofRepairNeeded = /Proof repair needed|Repair learning proof|proof repair needed|proof hold/i.test(source) || !proofReady;
+    const retuneOpen = /Retune open|Retune pilot guidance|retune open|support retune/i.test(source);
+    const pausePressure = proofRepairNeeded || retuneOpen || learningGaps > 4 || confidenceScore < 68;
+    const renewPressure = sponsorReady && supportReady && outcomeReady && !pausePressure;
+    const expandPressure = reusableCandidate && expansionReady && sponsorReady && supportReady && tenantSafe && rollbackSafe && confidenceScore >= 74 && !proofRepairNeeded;
+    const decisionGaps = [
+      !learningReady,
+      !sponsorReady,
+      !supportReady,
+      !expansionReady,
+      !outcomeReady,
+      !closeoutReady,
+      !ownerReady,
+      !dateReady,
+      !proofReady,
+      !tenantSafe,
+      !rollbackSafe,
+      learningGaps > 3,
+      confidenceScore < 70,
+    ].filter(Boolean).length;
+    const expansionDecisionScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          learningScore * 0.22 +
+            gateScore * 0.18 +
+            supportScore * 0.14 +
+            sponsorScore * 0.12 +
+            outcomeScore * 0.1 +
+            closeoutScore * 0.08 +
+            confidenceScore * 0.08 +
+            (ownerReady ? 2 : 0) +
+            (dateReady ? 2 : 0) +
+            (proofReady ? 2 : 0) +
+            (tenantSafe ? 1.5 : 0) +
+            (rollbackSafe ? 1.5 : 0) -
+            decisionGaps * 1.05,
+        ),
+      ),
+    );
+    const expansionState =
+      expandPressure && expansionDecisionScore >= 82 && decisionGaps <= 2
+        ? "First pilot ready to expand"
+        : renewPressure && expansionDecisionScore >= 76 && decisionGaps <= 4
+          ? "Renew first pilot"
+          : proofRepairNeeded
+            ? "Repair before expansion"
+            : retuneOpen
+              ? "Retune before expansion"
+              : pausePressure
+                ? "Pause expansion"
+                : "Expansion decision setup";
+    const expansionDecision =
+      expansionState === "First pilot ready to expand"
+        ? "Approve expansion"
+        : expansionState === "Renew first pilot"
+          ? "Renew pilot"
+          : expansionState === "Repair before expansion"
+            ? "Repair proof"
+            : expansionState === "Retune before expansion"
+              ? "Retune guidance"
+              : expansionState === "Pause expansion"
+                ? "Pause expansion"
+                : "Prepare expansion decision";
+    const tone =
+      expansionDecision === "Approve expansion"
+        ? "green"
+        : expansionDecision === "Renew pilot" || expansionDecision === "Prepare expansion decision"
+          ? "blue"
+          : "amber";
+    const pilotName = seed.routeReady ? seed.route : "First customer pilot";
+    const expansionOwner = ownerReady ? seed.owner : "Owner missing";
+    const decisionDate = dateReady ? seed.date : "Decision date missing";
+    const expansionDecisionId = `${guidanceGovernanceFirstPilotLearningRoom.learningRoomId || guidanceGovernanceSponsorExpansionGate.gateId || BUILD_VERSION.toUpperCase()}-FED`;
+    const nextAction =
+      expansionDecision === "Approve expansion"
+        ? "Prepare a sponsor-safe expansion packet with scope, owner, support plan, proof appendix, rollback line, and next review."
+        : expansionDecision === "Renew pilot"
+          ? "Renew the first pilot while keeping expansion optional until reusable learning and sponsor proof are stronger."
+          : expansionDecision === "Repair proof"
+            ? "Repair proof and rerun the learning room before asking the sponsor for expansion."
+            : expansionDecision === "Retune guidance"
+              ? "Retune guidance and observe the next proof point before expansion pressure returns."
+              : expansionDecision === "Pause expansion"
+                ? "Pause expansion until support, proof, tenant boundary, rollback, and confidence are cleaner."
+                : "Prepare the expansion decision from learning room, sponsor expansion gate, support receipt, sponsor decision, outcome ledger, and closeout.";
+    const cards = [
+      ["Expansion decision", expansionDecision, nextAction, tone],
+      ["Decision score", `${expansionDecisionScore}%`, `Learning ${learningScore}% / gate ${gateScore}% / sponsor ${sponsorScore}%.`, expansionDecisionScore >= 82 ? "green" : expansionDecisionScore >= 76 ? "blue" : "amber"],
+      ["Pilot", pilotName, `Owner ${expansionOwner}. Decision ${decisionDate}.`, ownerReady && dateReady ? "green" : "amber"],
+      ["Decision gaps", `${decisionGaps}`, decisionGaps <= 2 ? "Expansion decision is controlled." : "Gaps protect the expansion ask.", decisionGaps <= 2 ? "green" : decisionGaps <= 4 ? "blue" : "amber"],
+    ];
+    const options = [
+      ["Expand", expandPressure ? "Ready" : "Hold", expandPressure ? "Sponsor-safe expansion packet can be drafted." : "Expansion waits for proof, learning, support, and boundary.", expandPressure ? "green" : "blue"],
+      ["Renew", renewPressure ? "Ready" : "Optional", renewPressure ? "First pilot can continue while expansion matures." : "Renewal stays optional until sponsor posture is clearer.", renewPressure ? "green" : "blue"],
+      ["Repair", proofRepairNeeded ? "Needed" : "Closed", proofRepairNeeded ? "Proof repair must happen before expansion." : "Proof repair is not blocking the decision.", proofRepairNeeded ? "amber" : "green"],
+      ["Retune", retuneOpen ? "Open" : "Quiet", retuneOpen ? "Guidance retune is safer than expansion pressure." : "Retune pressure is quiet.", retuneOpen ? "amber" : "green"],
+      ["Pause", pausePressure ? "Active" : "Not needed", pausePressure ? "Expansion pauses until risk is lower." : "Pause is not the preferred path.", pausePressure ? "amber" : "green"],
+    ];
+    const controls = [
+      ["Learning room", learningReady ? learningDecision : "Review learning", guidanceGovernanceFirstPilotLearningRoom.nextAction || "Learning room controls expansion pressure.", learningReady ? "green" : "amber"],
+      ["Sponsor gate", expansionReady ? gateDecision : "Review gate", guidanceGovernanceSponsorExpansionGate.nextAction || "Sponsor expansion gate decides expand, renew, repair, or stop.", expansionReady ? "green" : "blue"],
+      ["Rollback", rollbackSafe ? "Accepted" : "Name stop line", rollbackSafe ? "Rollback travels with the expansion decision." : "Name rollback before sponsor expansion ask.", rollbackSafe ? "green" : "amber"],
+      ["Boundary", tenantSafe ? "Scoped" : "Hold", tenantSafe ? "Tenant and sponsor boundary are explicit." : "Boundary must be explicit before expansion.", tenantSafe ? "green" : "blue"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Governance First Pilot Expansion Decision ${expansionDecisionId}: ${expansionState}. Decision ${expansionDecision}. Score ${expansionDecisionScore}%. Pilot ${pilotName}. Owner ${expansionOwner}. Date ${decisionDate}. Learning ${learningDecision} (${learningScore}%). Sponsor gate ${gateDecision} (${gateScore}%). Support ${supportDecision} (${supportScore}%). Sponsor ${sponsorDecision} (${sponsorScore}%). Outcome ${outcomeDecision} (${outcomeScore}%). Closeout ${closeoutDecision} (${closeoutScore}%). Confidence ${confidenceScore}%. Expand ${expandPressure ? "ready" : "hold"}. Renew ${renewPressure ? "ready" : "optional"}. Repair ${proofRepairNeeded ? "needed" : "closed"}. Retune ${retuneOpen ? "open" : "quiet"}. Pause ${pausePressure ? "active" : "not needed"}. Rollback ${rollbackSafe ? "accepted" : "name stop line"}. Boundary ${tenantSafe ? "scoped" : "hold"}. Gaps ${decisionGaps}. Next: ${nextAction}`;
+    return { cards, controls, copyText, expansionDecision, expansionDecisionId, expansionDecisionScore, expansionState, nextAction, options, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -28070,7 +28798,8 @@ const state = {
     const guidanceGovernanceFirstPilotOutcomeWatch = buildCommandGuidanceGovernanceFirstPilotOutcomeWatch(seed, evidenceLens, guidanceGovernanceFirstPilotCommandRoom, guidanceGovernancePilotOutcomeLedger, guidanceGovernanceSponsorDecisionReceipt, guidanceGovernancePilotSupportCloseout, guidanceGovernancePilotLearningRelease, guidanceGovernanceSponsorExpansionGate);
     const guidanceGovernanceFirstPilotSupportReceipt = buildCommandGuidanceGovernanceFirstPilotSupportReceipt(seed, evidenceLens, guidanceGovernanceFirstPilotOutcomeWatch, guidanceGovernancePilotSupportCloseout, guidanceGovernanceSponsorDecisionReceipt, guidanceGovernancePilotOutcomeLedger, guidanceGovernancePilotLearningRelease, guidanceGovernanceSponsorExpansionGate);
     const guidanceGovernanceFirstPilotLearningRoom = buildCommandGuidanceGovernanceFirstPilotLearningRoom(seed, evidenceLens, guidanceGovernanceFirstPilotSupportReceipt, guidanceGovernanceFirstPilotOutcomeWatch, guidanceGovernancePilotLearningRelease, guidanceGovernancePilotOutcomeLedger, guidanceGovernanceSponsorDecisionReceipt, guidanceGovernanceSponsorExpansionGate);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceAuditExport, guidanceGovernanceCalmCloseout, guidanceGovernanceExpansionSupportDesk, guidanceGovernanceFirstPilotCommandRoom, guidanceGovernanceFirstPilotLearningRoom, guidanceGovernanceFirstPilotOperatingRhythm, guidanceGovernanceFirstPilotOutcomeWatch, guidanceGovernanceFirstPilotProofBridge, guidanceGovernanceFirstPilotReadinessRoom, guidanceGovernanceFirstPilotSupportReceipt, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceLaunchExpansionReceipt, guidanceGovernanceLaunchGateScore, guidanceGovernanceLaunchProofBoard, guidanceGovernanceLaunchRehearsalRoom, guidanceGovernanceLaunchSupportDesk, guidanceGovernanceOutcomeMonitor, guidanceGovernancePilotAcceptanceReceipt, guidanceGovernancePilotHandoffBoard, guidanceGovernancePilotLearningRelease, guidanceGovernancePilotOutcomeLedger, guidanceGovernancePilotSponsorUpdate, guidanceGovernancePilotSupportCloseout, guidanceGovernanceProofRepairQueue, guidanceGovernanceProofSla, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceReviewerConsole, guidanceGovernanceRollbackLane, guidanceGovernanceRolloutActivationOutcomeWatch, guidanceGovernanceRolloutAuditCloseoutReceipt, guidanceGovernanceRolloutDecisionAuditPack, guidanceGovernanceRolloutLaunchReadinessSeal, guidanceGovernanceRolloutLearningReceipt, guidanceGovernanceRolloutLearningReviewRoom, guidanceGovernanceRolloutOutcomeLedger, guidanceGovernanceRolloutReuseActivationReceipt, guidanceGovernanceRolloutReuseGate, guidanceGovernanceRolloutSponsorDecisionReceipt, guidanceGovernanceRolloutSponsorUpdate, guidanceGovernanceScaledRolloutBoard, guidanceGovernanceScaledRolloutProofBoard, guidanceGovernanceSponsorDecisionReceipt, guidanceGovernanceSponsorExpansionGate, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceGovernanceFirstPilotExpansionDecision = buildCommandGuidanceGovernanceFirstPilotExpansionDecision(seed, evidenceLens, guidanceGovernanceFirstPilotLearningRoom, guidanceGovernanceSponsorExpansionGate, guidanceGovernanceFirstPilotSupportReceipt, guidanceGovernanceSponsorDecisionReceipt, guidanceGovernancePilotOutcomeLedger, guidanceGovernancePilotSupportCloseout);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceAuditExport, guidanceGovernanceCalmCloseout, guidanceGovernanceExpansionSupportDesk, guidanceGovernanceFirstPilotCommandRoom, guidanceGovernanceFirstPilotExpansionDecision, guidanceGovernanceFirstPilotLearningRoom, guidanceGovernanceFirstPilotOperatingRhythm, guidanceGovernanceFirstPilotOutcomeWatch, guidanceGovernanceFirstPilotProofBridge, guidanceGovernanceFirstPilotReadinessRoom, guidanceGovernanceFirstPilotSupportReceipt, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceLaunchExpansionReceipt, guidanceGovernanceLaunchGateScore, guidanceGovernanceLaunchProofBoard, guidanceGovernanceLaunchRehearsalRoom, guidanceGovernanceLaunchSupportDesk, guidanceGovernanceOutcomeMonitor, guidanceGovernancePilotAcceptanceReceipt, guidanceGovernancePilotHandoffBoard, guidanceGovernancePilotLearningRelease, guidanceGovernancePilotOutcomeLedger, guidanceGovernancePilotSponsorUpdate, guidanceGovernancePilotSupportCloseout, guidanceGovernanceProofRepairQueue, guidanceGovernanceProofSla, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceReviewerConsole, guidanceGovernanceRollbackLane, guidanceGovernanceRolloutActivationOutcomeWatch, guidanceGovernanceRolloutAuditCloseoutReceipt, guidanceGovernanceRolloutDecisionAuditPack, guidanceGovernanceRolloutLaunchReadinessSeal, guidanceGovernanceRolloutLearningReceipt, guidanceGovernanceRolloutLearningReviewRoom, guidanceGovernanceRolloutOutcomeLedger, guidanceGovernanceRolloutReuseActivationReceipt, guidanceGovernanceRolloutReuseGate, guidanceGovernanceRolloutSponsorDecisionReceipt, guidanceGovernanceRolloutSponsorUpdate, guidanceGovernanceScaledRolloutBoard, guidanceGovernanceScaledRolloutProofBoard, guidanceGovernanceSponsorDecisionReceipt, guidanceGovernanceSponsorExpansionGate, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -30695,6 +31424,7 @@ const state = {
         ${renderCommandGovernanceFirstPilotOutcomeWatchPreview(model, autopilot)}
         ${renderCommandGovernanceFirstPilotSupportReceiptPreview(model, autopilot)}
         ${renderCommandGovernanceFirstPilotLearningRoomPreview(model, autopilot)}
+        ${renderCommandGovernanceFirstPilotExpansionDecisionPreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -46643,1013 +47373,33 @@ const state = {
       ["Scope", "List root docs, app shell, packages, workflows, scripts, env examples, evidence files, and fixture-only data.", "blue"],
       ["Out of scope", "Confirm no live customer data, no production deployment, no real billing capture, and no workbook import.", "red"],
       ["Proof commands", "Paste command transcripts or placeholder issue links for preflight, install, lint, tests, and release gate.", "teal"],
-      ["Evidence links", "Link each evidence markdown file and screenshot artifact from the PR body.", "green"],
-      ["Risk and stop rules", "Reference public repo, secret, workbook, commercial leak, missing owner, and workflow-name hold rules.", "red"],
-      ["Rollback", "Explain how to close the draft PR, delete the branch, rotate credentials, or recreate the repo if needed.", "amber"],
-      ["Reviewers and signoff", "Name product, platform, backend, security, data, and QA owner lanes before merge trust.", "blue"],
+      ["Evidence links", "Link each evidence file, issue URL, workflow run, and branch proof into an evidence artifact status board.", "green"],
+      ["Rollback", "Confirm the first private branch can be abandoned without touching the public demo.", "amber"],
+      ["Reviewer ask", "Ask reviewers to check evidence boundaries, workflow names, and first merge policy before approval.", "blue"],
+      ["Next release", "List the next private repo hardening milestone and the owner for unresolved blockers.", "teal"],
     ];
     const screenshotChecklist = [
-      ["Repo settings", "Private visibility", "Capture before adding files or issues.", "red"],
-      ["Code tree", "Starter shell", "Capture apps, packages, infra, docs, workflows, scripts, and evidence folders.", "green"],
-      ["Labels", "Taxonomy imported", "Capture labels after import and before issue wave.", "teal"],
-      ["Milestones", "Sprint-zero route", "Capture milestones before issues are opened.", "blue"],
-      ["Issues", "Opening wave", "Capture filtered M0/M1 issue wave with owners and milestones.", "green"],
-      ["Pull request", "Draft PR body", "Capture scope, proof commands, rollback, reviewers, checks, and evidence links.", "amber"],
-      ["Actions", "Workflow check names", "Capture exact check names from the first Actions run.", "blue"],
-      ["Rules", "Branch protection", "Capture required checks, review rules, conversation resolution, and bypass policy.", "red"],
+      ["Private repo visibility", "Show the repo privacy setting and owner account.", "red"],
+      ["Starter file tree", "Show root folders, docs, workflows, scripts, and package files.", "green"],
+      ["Issue wave", "Show labels, milestones, and the first issue list after creation.", "blue"],
+      ["First PR", "Show PR title, body, checks, reviewers, and branch name.", "green"],
+      ["Branch protection", "Show required checks and review rules once configured.", "amber"],
+      ["Evidence folder", "Show completed markdown proof files before handoff.", "teal"],
     ];
-    const commandTranscriptSlots = [
-      ["preflight-auth.txt", "gh auth status; git --version; node --version; npm --version", "Confirm operator identity and local toolchain.", "blue"],
-      ["repo-create.txt", "gh repo view dhirajnyse/pursuitdesk-platform --json name,visibility,url", "Prove the repo exists and is private.", "red"],
-      ["branch-start.txt", "git status --short; git branch --show-current", "Prove work is on the backend alpha branch.", "teal"],
-      ["tree-after-copy.txt", "Get-ChildItem -Recurse -Depth 3 | Select-Object FullName", "Prove starter shell files and evidence folders exist.", "green"],
-      ["secret-scan.txt", "Manual scan summary plus any available secret-scan command", "Prove no live secrets, workbooks, certificates, or commercial files.", "red"],
-      ["quality-proof.txt", "npm install; npm run lint; npm run test -- --runInBand", "Capture success or issue-linked placeholders for first proof commands.", "amber"],
-      ["issue-wave.txt", "gh issue list --limit 50 --state open", "Capture issue URLs, labels, milestones, and owner lanes.", "blue"],
-      ["workflow-names.txt", "gh run list --limit 10; gh run view <run-id>", "Capture exact workflow, job, check, artifact, and failure names.", "teal"],
-    ];
-    const ownerApprovalNotes = [
-      ["Founder / Product", "Approved controlled repo opening only; no live SaaS, no customer data, no production billing.", "green"],
-      ["Platform owner", "Private visibility, branch discipline, workflow names, and branch protection proof reviewed.", "teal"],
-      ["Backend lead", "Starter files, API shell, package scripts, and first PR scope reviewed.", "blue"],
-      ["Security owner", "No-secret scan, tenant guard scope, access rules, and commercial redaction reviewed.", "red"],
-      ["Data owner", "Generated fixtures, no workbook import, migration rollback, and source trace reviewed.", "amber"],
-      ["QA / Release", "Evidence files, screenshots, branch rules, open blockers, and closeout reviewed.", "green"],
-    ];
-    const closeoutPacket = [
-      ["Passed", "List commands, screenshots, issue URLs, PR link, and branch protection proof that completed.", "green"],
-      ["Deferred", "List checks or workflow names that require a later Actions run or owner decision.", "amber"],
-      ["Blocked", "List anything that prevents merge, protected main, or next implementation work.", "red"],
-      ["No-leak statement", "Confirm no secret, workbook, customer file, certificate, invoice, or commercial field entered the repo.", "red"],
-      ["Reviewer status", "Record go, hold, or no-go for each owner lane.", "blue"],
-      ["Next owner", "Name the owner of v132 GitHub Repo Opening Packet or first backend implementation PR.", "teal"],
-      ["Rollback path", "State branch close, PR close, repo recreate, or credential rotation path if needed.", "amber"],
-      ["Management line", "One sentence summary for the Command Center build tracker and weekly review.", "green"],
-    ];
-    const exportSequence = [
-      ["1", "Create empty evidence files", "Make all markdown evidence files before running the day-one command blocks.", "green"],
-      ["2", "Paste preflight template", "Add owner decision, no-live-data boundary, and local tool identity.", "blue"],
-      ["3", "Capture screenshots as links", "Use consistent names so the PR body can reference them without hunting.", "teal"],
-      ["4", "Paste command transcripts", "Add success output or issue-linked placeholders in the right transcript slot.", "amber"],
-      ["5", "Write PR body", "Assemble scope, out-of-scope, proof, rollback, risk, reviewers, and blockers.", "green"],
-      ["6", "Collect owner approvals", "Each owner lane records go, hold, no-go, or defer with reason.", "red"],
-      ["7", "Write closeout", "Summarize passed, deferred, blocked, no-leak proof, rollback, and next owner.", "blue"],
-      ["8", "Lock packet", "Do not alter proof after closeout unless a new dated note is added.", "red"],
-    ];
-    const qualityGates = [
-      ["Private before proof", "Evidence cannot pass if the repo visibility screenshot is missing.", "red"],
-      ["No live data", "Any workbook, secret, certificate, payment key, or production export fails the packet.", "red"],
-      ["Traceable PR", "PR must link issue URLs, evidence files, command transcripts, blockers, and reviewers.", "green"],
-      ["Real check names", "Branch protection cannot be marked complete with guessed workflow names.", "amber"],
-      ["Owner lanes named", "Product, platform, backend, security, data, and QA lanes must be visible.", "blue"],
-      ["Rollback stated", "The first PR must be safe to close or redo without customer impact.", "teal"],
-      ["Blocked work explicit", "Any placeholder command, failed check, missing URL, or deferred owner must be written.", "amber"],
-      ["Closeout complete", "Passed, deferred, blocked, no-leak proof, next owner, and management line must exist.", "green"],
-    ];
-    const copyReadySnippets = [
-      ["No-live-data statement", "docs/evidence/00-preflight.md", "This repo opening session is limited to backend alpha shell proof. No live customer data, production billing keys, source workbooks, certificates, or commercial exports are approved for this PR.", "red"],
-      ["PR scope line", "docs/evidence/05-first-pr.md", "This draft PR creates the backend alpha shell, evidence packet, and controlled repo proof only. It does not launch production SaaS or import live customer records.", "blue"],
-      ["Rollback line", "docs/evidence/05-first-pr.md", "Rollback is to close the draft PR, delete the alpha branch, and recreate the private repo if visibility, secret, or data-leak proof fails.", "amber"],
-      ["Closeout line", "docs/evidence/08-closeout.md", "Closeout status records what passed, what was deferred, what remains blocked, who owns the next step, and whether this repo day is go, hold, or no-go.", "green"],
+    const blockerRows = [
+      ["Repo URL", "Pending", "Needs the real private repository link before proof is final.", "red"],
+      ["Issue URLs", "Pending", `${issueCount} planned issue bodies need real created issue URLs.`, "amber"],
+      ["Workflow names", workflowCount ? "Ready" : "Pending", "Use exact GitHub Actions check names in branch protection.", workflowCount ? "green" : "amber"],
+      ["Owner signoff", "Pending", "Release owner must approve the private repo boundary and first PR path.", "blue"],
     ];
     return {
-      proofReadinessScore,
+      blockerRows,
       downloadHref,
-      proofKpis,
       evidenceTemplates,
       prBodySections,
+      proofKpis,
+      proofReadinessScore,
       screenshotChecklist,
-      commandTranscriptSlots,
-      ownerApprovalNotes,
-      closeoutPacket,
-      exportSequence,
-      qualityGates,
-      copyReadySnippets,
-      signalCards: [
-        ["Proof exporter", `${proofReadinessScore}%`, "Readiness to produce repo proof files from the day-one script.", proofReadinessScore >= 80 ? "green" : "amber"],
-        ["Templates", evidenceTemplates.length, "Markdown evidence files for repo day proof.", "teal"],
-        ["PR sections", prBodySections.length, "Copy-ready review body sections.", "blue"],
-        ["Hard gates", qualityGates.filter(([label]) => label === "Private before proof" || label === "No live data").length, "Proof gates that fail the packet immediately.", "red"],
-      ],
-      handoff: [
-        "v131 turns the day-one script into a proof exporter for the private backend repo.",
-        "The exporter defines evidence markdown files, screenshot names, command transcript slots, PR body sections, owner approval notes, closeout packet, and quality gates.",
-        "The static demo still cannot create real screenshots, real GitHub URLs, real workflow names, or real signoffs; it now makes the empty proof packet ready for those facts.",
-        "v132 can bundle repo name, owner roles, issue wave, PR body, proof artifacts, and closeout notes into one GitHub Repo Opening Packet.",
-      ],
-    };
-  }
-
-  function buildGithubRepoOpeningPacketModel(commandModel, backendRepoProofExporter, privateRepoDayOneScript, backendIssueBodyExporter, githubLabelsMilestonesImportPack, branchProtectionReleaseChecklist, privateRepoSetupScriptDraft, privateRepoOpeningDayRunbook, productionBackendRepoDecisionMemo) {
-    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || 0;
-    const labelCount = githubLabelsMilestonesImportPack.labelCatalog?.length || 0;
-    const milestoneCount = githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0;
-    const proofFileCount = backendRepoProofExporter.evidenceTemplates?.length || 0;
-    const transcriptCount = backendRepoProofExporter.commandTranscriptSlots?.length || 0;
-    const openingReadinessScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          backendRepoProofExporter.proofReadinessScore * 0.24 +
-            privateRepoDayOneScript.scriptReadinessScore * 0.16 +
-            githubLabelsMilestonesImportPack.importPackScore * 0.16 +
-            branchProtectionReleaseChecklist.releaseChecklistScore * 0.14 +
-            Math.min(100, issueCount * 6) * 0.1 +
-            Math.min(100, proofFileCount * 9) * 0.1 +
-            Math.min(100, transcriptCount * 10) * 0.1,
-        ),
-      ),
-    );
-    const downloadHref = "data/github-repo-opening-packet.json?v=281";
-    const openingKpis = [
-      ["Opening readiness", `${openingReadinessScore}%`, "How ready the private GitHub repo opening packet is before the real repo exists.", openingReadinessScore >= 80 ? "green" : "amber"],
-      ["Issue wave", issueCount, "Copy-ready backend issues that should be opened after repo shell proof.", "teal"],
-      ["Taxonomy", labelCount + milestoneCount, `${labelCount} labels and ${milestoneCount} milestones shape the first backlog.`, "blue"],
-      ["Repo facts pending", "Real GitHub", "URL, issue URLs, PR URL, Actions names, and approvals still need the private repository.", "red"],
-    ];
-    const repoIdentity = [
-      ["Repository name", "pursuitdesk-platform", "Suggested private production backend repo name for the first alpha build.", "green"],
-      ["Owner account", "dhirajnyse", "Current GitHub owner lane for the future private repository.", "teal"],
-      ["Visibility", "Private only", "Public demo remains in tendergrid; backend repo must stay private.", "red"],
-      ["Default branch", "main", "Protected after the first workflow run exposes exact required check names.", "blue"],
-      ["Working branch", "alpha/backend-day-one", "First implementation branch for repo shell and proof packet.", "green"],
-      ["Opening status", "Go with holds", "Open the repo only after no-live-data and private-visibility proof are captured.", "amber"],
-    ];
-    const ownerMatrix = [
-      ["Product owner", "Approve alpha scope", "Confirms repo opening does not launch production SaaS or accept live customer data.", "green"],
-      ["Platform owner", "Repo and branch rules", "Owns private visibility, branch naming, workflow names, and branch protection timing.", "teal"],
-      ["Backend lead", "Starter shell", "Owns root files, API shell, scripts, route boundaries, and first PR quality.", "blue"],
-      ["Security owner", "No leak proof", "Owns secret scan, tenant guardrail, commercial redaction, and denial proof.", "red"],
-      ["Data owner", "Fixture boundary", "Owns generated fixtures, migration rollback, no workbook import, and source trace.", "amber"],
-      ["QA owner", "Evidence closeout", "Owns screenshots, command transcripts, issue links, PR proof, and go/hold/no-go note.", "green"],
-    ];
-    const issueOpeningWave = [
-      ["Wave 1", "Repo shell", "Open PD-BE-001 first with repo shell, README, PR template, CODEOWNERS, env example, and proof commands.", "green"],
-      ["Wave 2", "API privacy core", "Open request id, safe errors, tenant scope, access decision, redaction, and audit writer issues together.", "red"],
-      ["Wave 3", "Data fixtures", "Open migration runner, seed runner, restore proof, and workbook dry-run boundaries after fixture names are stable.", "blue"],
-      ["Wave 4", "Billing and reports", "Open USD billing test-mode and redaction-safe reports after audit context exists.", "amber"],
-      ["Wave 5", "Workflow proof", "Open GitHub Actions workflow files and artifact-upload issue after package scripts are named.", "teal"],
-      ["Wave 6", "Release control", "Open branch protection and staging smoke issues after check names and proof artifacts are visible.", "green"],
-    ];
-    const firstPrStarter = [
-      ["Title", "chore: create backend alpha shell and proof packet", "Keep the first PR boring, reviewable, and evidence-led.", "green"],
-      ["Summary", "Creates the private backend alpha shell, proof packet, and opening evidence only.", "blue"],
-      ["Scope", "Root docs, env example, ownership files, workflow shells, evidence files, and fixture-only planning artifacts.", "teal"],
-      ["Out of scope", "No production launch, no live customer data, no real billing keys, no workbook import, no commercial values.", "red"],
-      ["Proof commands", "Paste install, lint, test, secret-scan, issue-wave, workflow-name, and release-gate transcripts.", "amber"],
-      ["Evidence links", `Link ${proofFileCount} evidence files, screenshots, command slots, issue URLs, and closeout note.`, "green"],
-      ["Rollback", "Close draft PR, delete alpha branch, rotate credentials, or recreate repo if visibility or leak proof fails.", "red"],
-      ["Reviewers", "Product, platform, backend, security, data, QA, and release lanes must be named before trust.", "blue"],
-    ];
-    const artifactManifest = [
-      ["repo-private.png", "Private visibility screenshot", "Capture immediately after repo creation and before files are added.", "red"],
-      ["tree-after-first-copy.png", "Starter file tree screenshot", "Capture root, apps, packages, docs, scripts, workflows, and evidence folders.", "green"],
-      ["labels-and-milestones.png", "Taxonomy screenshot", "Capture labels and milestones after import and before issue wave.", "teal"],
-      ["issue-wave.csv", "Issue opening ledger", "Record issue keys, URLs, labels, milestones, owners, and opening wave.", "blue"],
-      ["first-pr.md", "Draft PR body", "Store title, scope, out-of-scope, proof, rollback, blockers, and reviewers.", "green"],
-      ["command-transcripts.zip", "Command evidence archive", "Store preflight, repo, tree, secret scan, install, test, issue, workflow, and release output.", "amber"],
-      ["branch-protection.png", "Branch rule screenshot", "Capture only after exact required check names are known.", "red"],
-      ["owner-signoff.md", "Owner approval trail", "Record go, hold, no-go, or defer by owner lane.", "blue"],
-      ["closeout.md", "Repo day closeout", "State passed, deferred, blocked, no-leak proof, rollback path, and next owner.", "green"],
-    ];
-    const openingSequence = [
-      ["01", "Confirm go/no-go decision", "Use the decision memo and risk register before touching GitHub.", "red"],
-      ["02", "Create private repo shell", "Create pursuitdesk-platform as private and capture visibility proof.", "green"],
-      ["03", "Copy starter files", "Add root shell, API shell, package boundaries, workflows, env example, and docs.", "blue"],
-      ["04", "Create evidence folder", "Create evidence markdown files and transcript placeholders before commands run.", "teal"],
-      ["05", "Import taxonomy", "Create labels, milestones, and board columns before issues are opened.", "amber"],
-      ["06", "Open issue wave", "Open P0 issues first, then data, billing, reports, workflow, and release-control issues.", "green"],
-      ["07", "Open first draft PR", "Attach proof packet, issue links, commands, rollback, reviewers, blockers, and no-live-data statement.", "blue"],
-      ["08", "Close repo day", "Write closeout, owner approvals, remaining blockers, workflow names, and next implementation move.", "red"],
-    ];
-    const closeoutLedger = [
-      ["Repo URL", "Pending real repo", "Paste private repository URL and visibility proof reference.", "red"],
-      ["Issue URLs", `${issueCount} planned`, "Paste opened issue URLs and confirm label, milestone, and owner routing.", "teal"],
-      ["PR URL", "Pending first PR", "Paste draft PR URL and confirm evidence links are present.", "blue"],
-      ["Workflow names", "Pending Actions run", "Paste exact workflow and job names before branch protection is marked complete.", "amber"],
-      ["Branch rules", "Hold until checks exist", "Record protected main rules, required reviews, and conversation resolution.", "red"],
-      ["No-leak proof", "Required", "Confirm no secrets, workbooks, certificates, live keys, invoices, or commercial exports.", "red"],
-      ["Owner approvals", "Six lanes", "Record go, hold, no-go, or defer from each owner lane.", "green"],
-      ["Next move", "First backend PR", "Name the owner and first implementation issue after repo opening closes.", "blue"],
-    ];
-    const riskLocks = [
-      ["Public repo leakage", "Fail packet", "If backend files or proof land in the public demo repo, stop and recreate privately.", "red"],
-      ["Live data present", "Fail packet", "Any workbook, customer export, certificate, payment key, or live secret fails opening.", "red"],
-      ["Missing visibility proof", "Hold", "Do not open issue wave until private visibility screenshot exists.", "amber"],
-      ["Unknown check names", "Hold protection", "Do not guess branch protection required checks before GitHub Actions runs.", "blue"],
-      ["Unassigned owner", "Hold review", "No first PR review until product, platform, backend, security, data, and QA lanes are named.", "teal"],
-      ["Evidence not linked", "Hold PR", "A PR without evidence links, command proof, or rollback note should remain draft.", "amber"],
-      ["Commercial field drift", "Fail section", "Operational tracker files must not expose values, agreements, LOA, invoices, or negotiation notes.", "red"],
-      ["Closeout missing", "Hold next build", "Do not start implementation depth until closeout names passed, deferred, blocked, and next owner.", "green"],
-    ];
-    const launchFiles = [
-      ["docs/repo-opening/README.md", "One-page map of repo purpose, scope, owner lanes, and no-live-data boundary.", "green"],
-      ["docs/repo-opening/repo-facts.md", "Repo name, owner, visibility, branches, URLs, environment, and opening status.", "teal"],
-      ["docs/repo-opening/owner-matrix.md", "Product, platform, backend, security, data, QA, release roles and approvals.", "blue"],
-      ["docs/repo-opening/issue-wave.md", "Issue opening sequence, batch order, labels, milestones, owners, and URL placeholders.", "green"],
-      ["docs/repo-opening/first-pr.md", "Copy-ready PR body with scope, proof, rollback, reviewers, blockers, and checklist.", "amber"],
-      ["docs/repo-opening/artifacts.md", "Screenshot names, command transcript files, evidence docs, and retention notes.", "blue"],
-      ["docs/repo-opening/risk-locks.md", "Fail, hold, and defer rules for visibility, data, owners, checks, and closeout.", "red"],
-      ["docs/repo-opening/closeout.md", "Passed, deferred, blocked, no-leak statement, owner signoff, and next implementation move.", "green"],
-    ];
-    const copyReadyBlocks = [
-      ["Repo description", "GitHub About", "Private backend alpha repository for PursuitDesk. Contains generated fixtures, API shell, proof artifacts, and controlled implementation issues only. No live customer data or production billing keys are approved.", "blue"],
-      ["First PR summary", "docs/repo-opening/first-pr.md", "This draft PR creates the backend alpha shell and repo-opening proof packet only. It does not launch production SaaS, import live workbooks, or expose commercial tracker values.", "green"],
-      ["No-live-data proof", "docs/repo-opening/README.md", "Repo opening is approved only for generated fixtures, placeholder secrets, and evidence artifacts. Any live customer data, workbook, certificate, payment key, invoice, or commercial export blocks the packet.", "red"],
-      ["Closeout line", "docs/repo-opening/closeout.md", "Repo opening closes only when private visibility, issue wave, first PR, workflow names or holds, owner approvals, no-leak proof, and next owner are recorded.", "amber"],
-    ];
-    return {
-      openingReadinessScore,
-      downloadHref,
-      openingKpis,
-      repoIdentity,
-      ownerMatrix,
-      issueOpeningWave,
-      firstPrStarter,
-      artifactManifest,
-      openingSequence,
-      closeoutLedger,
-      riskLocks,
-      launchFiles,
-      copyReadyBlocks,
-      signalCards: [
-        ["Opening packet", `${openingReadinessScore}%`, "Readiness to open the future private repo with a controlled handoff.", openingReadinessScore >= 80 ? "green" : "amber"],
-        ["Repo files", launchFiles.length, "Opening docs for facts, owners, issues, PR, artifacts, risks, and closeout.", "teal"],
-        ["Artifacts", artifactManifest.length, "Screenshots, transcripts, PR body, issue ledger, approvals, and closeout.", "blue"],
-        ["Risk locks", riskLocks.filter(([label]) => label.includes("Live data") || label.includes("Public repo") || label.includes("Commercial")).length, "Rules that fail or hold the repo opening immediately.", "red"],
-      ],
-      handoff: [
-        "v132 turns the proof exporter into one GitHub Repo Opening Packet for the real private backend repo.",
-        "The packet now names repo identity, owner lanes, issue waves, first PR text, proof artifacts, launch files, risk locks, closeout ledger, and copy-ready starter blocks.",
-        "The static demo still cannot create the repo or URLs; it now defines exactly what must be captured when the real repo is opened.",
-        "v133 can turn the issue wave into a cleaner Backend Alpha Issue Import Kit with CSV-ready issue rows, label mapping, and import validation.",
-      ],
-    };
-  }
-
-  function buildBackendAlphaIssueImportKitModel(commandModel, githubRepoOpeningPacket, backendIssueBodyExporter, githubLabelsMilestonesImportPack, branchProtectionReleaseChecklist, privateRepoSetupScriptDraft) {
-    const issues = backendIssueBodyExporter.copyReadyIssues || [];
-    const labelCount = githubLabelsMilestonesImportPack.labelCatalog?.length || 0;
-    const milestoneCount = githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0;
-    const issueCount = issues.length;
-    const importReadinessScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          githubRepoOpeningPacket.openingReadinessScore * 0.22 +
-            backendIssueBodyExporter.issueExportScore * 0.22 +
-            githubLabelsMilestonesImportPack.importPackScore * 0.2 +
-            privateRepoSetupScriptDraft.setupScriptScore * 0.16 +
-            branchProtectionReleaseChecklist.releaseChecklistScore * 0.1 +
-            Math.min(100, issueCount * 7) * 0.1,
-        ),
-      ),
-    );
-    const downloadHref = "data/backend-alpha-issue-import-kit.json?v=281";
-    const issueRows = issues.map((issue, index) => [
-      issue.id,
-      issue.title,
-      issue.owner,
-      issue.milestone,
-      issue.labels.join(", "),
-      issue.commands[0] || "pnpm ci:release-gate",
-      `Wave ${Math.min(6, Math.floor(index / 2) + 1)}`,
-      issue.tone,
-    ]);
-    const importKpis = [
-      ["Import readiness", `${importReadinessScore}%`, "How ready the backend alpha issues are for controlled private-repo import.", importReadinessScore >= 80 ? "green" : "amber"],
-      ["Issue rows", issueRows.length, "CSV-style rows with title, owner, milestone, labels, proof command, and wave.", "teal"],
-      ["Taxonomy links", labelCount + milestoneCount, `${labelCount} labels and ${milestoneCount} milestones referenced by the import kit.`, "blue"],
-      ["Blocked facts", "URLs pending", "Real issue URLs, assignees, project board IDs, and PR links still need the private repo.", "red"],
-    ];
-    const csvColumns = [
-      ["id", "Stable issue key", "PD-BE key used in PR, proof files, board, and release notes.", "green"],
-      ["title", "Issue title", "Human-readable GitHub issue title copied from the backend issue exporter.", "teal"],
-      ["owner", "Owner lane", "Platform, backend, security, data, migration, billing, reports, repo, or QA owner.", "blue"],
-      ["milestone", "Alpha milestone", "M0 to M4 implementation stage that controls import order.", "green"],
-      ["labels", "Label list", "Comma-separated labels from the taxonomy import pack.", "amber"],
-      ["proof_command", "First proof", "The first command or evidence expectation required before review.", "red"],
-      ["import_wave", "Opening wave", "Batch order that prevents dependent work from opening too early.", "blue"],
-      ["body_file", "Body source", "Markdown source for paste-ready GitHub issue content.", "teal"],
-    ];
-    const ownerLanes = [
-      ["Platform Owner", issues.filter((issue) => issue.owner === "Platform Owner").length, "Repo shell, CI workflows, and command proof.", "green"],
-      ["Backend Lead", issues.filter((issue) => issue.owner === "Backend Lead").length, "API shell, route entry, controllers, and services.", "teal"],
-      ["Security Owner", issues.filter((issue) => issue.owner === "Security Owner").length, "Safe errors, tenant scope, access decisions, and redaction.", "red"],
-      ["Governance Owner", issues.filter((issue) => issue.owner === "Governance Owner").length, "Audit context, event writer, retention, and proof artifacts.", "blue"],
-      ["Database Owner", issues.filter((issue) => issue.owner === "Database Owner").length, "Migration runner, seeds, restore proof, and parity checks.", "blue"],
-      ["Migration Owner", issues.filter((issue) => issue.owner === "Migration Owner").length, "Workbook dry run, quarantine, duplicate decisions, and rollback id.", "amber"],
-      ["Billing Owner", issues.filter((issue) => issue.owner === "Billing Owner").length, "USD billing test mode, invoices, webhooks, seats, and access locks.", "amber"],
-      ["QA Owner", issues.filter((issue) => issue.owner === "QA Owner").length, "Staging smoke, rollback, screenshots, and go/no-go proof.", "green"],
-    ];
-    const labelMappings = [
-      ["priority:p0", "Open first", "Foundation, API boot, privacy, tenant, audit, and CI work that protects the repo.", "red"],
-      ["priority:p1", "Open after P0 proof", "Billing, reports, branch protection, and staging smoke once shell and scripts exist.", "amber"],
-      ["type:foundation", "M0 Repo shell", "Root files, docs, owners, env examples, and first proof commands.", "green"],
-      ["type:api", "M1 API core", "Server, route registry, controllers, services, and response envelopes.", "teal"],
-      ["type:security", "M1 Privacy core", "Tenant isolation, access decision, redaction, safe errors, and denial proof.", "red"],
-      ["type:data", "M2 Fixtures", "Migrations, seeds, restore, parity, and fixture proof.", "blue"],
-      ["type:import", "M2 Import", "Workbook staging, dry run, quarantine, duplicate decisions, and rollback.", "blue"],
-      ["type:ci", "M3-M4 Proof", "GitHub Actions, artifact uploads, branch rules, and release gates.", "red"],
-    ];
-    const importWaves = [
-      ["Wave 1", "PD-BE-001", "Repo shell must open first so all later issues have proof commands and ownership files.", "green"],
-      ["Wave 2", "PD-BE-002 to PD-BE-005", "API boot, safe errors, tenant access, redaction, and audit share request identity.", "red"],
-      ["Wave 3", "PD-BE-006 to PD-BE-007", "Migration runner and workbook dry run depend on stable fixtures and source trace.", "blue"],
-      ["Wave 4", "PD-BE-008 to PD-BE-009", "Billing and reports wait for env parsing, audit context, and redaction boundary.", "amber"],
-      ["Wave 5", "PD-BE-010", "Workflow files open after scripts and artifact names are stable.", "teal"],
-      ["Wave 6", "PD-BE-011 to PD-BE-012", "Branch protection and staging smoke open after check names and proof lanes exist.", "green"],
-    ];
-    const importValidation = [
-      ["Unique IDs", "No duplicate PD-BE keys before import.", "red"],
-      ["Known labels", "Every label exists in the taxonomy import pack before issue creation.", "amber"],
-      ["Known milestones", "Every milestone exists before issues are opened.", "blue"],
-      ["Owner visible", "Every issue has a named owner lane and no blank assignee note.", "green"],
-      ["Proof command present", "Every row has at least one proof command or evidence requirement.", "red"],
-      ["Commercial boundary", "Operational tracker issues do not include values, agreements, invoices, or negotiation notes.", "red"],
-      ["P0 order", "P0 issues are created before billing, reports, branch protection, and staging smoke.", "amber"],
-      ["URL capture", "After import, every generated issue URL is pasted into the opening ledger.", "green"],
-    ];
-    const bodyFilePlan = issues.map((issue) => [
-      `docs/issues/${issue.id.toLowerCase()}.md`,
-      issue.title,
-      `${issue.owner} / ${issue.milestone}`,
-      issue.tone,
-    ]);
-    const pasteChecks = [
-      ["Before paste", "Repo private, labels created, milestones created, board ready, and no-live-data statement accepted.", "red"],
-      ["During paste", "Create issues in wave order and paste full markdown bodies without changing owner or proof sections.", "amber"],
-      ["After paste", "Record issue URL, project column, label set, milestone, owner, and first proof command.", "green"],
-      ["Review", "Compare GitHub issue count to import kit count and lock changes behind admin review.", "blue"],
-    ];
-    const csvPreview = issueRows.slice(0, 6).map(([id, title, owner, milestone, labels, proofCommand, wave, tone]) => [
-      id,
-      `${title} | ${owner} | ${milestone}`,
-      `${wave} / ${labels} / ${proofCommand}`,
-      tone,
-    ]);
-    const importFiles = [
-      ["data/backend-alpha-issue-import-kit.json", "Structured import handoff for issue rows, owners, labels, milestones, validation, and paste checks.", "green"],
-      ["docs/issues/import.csv", "CSV-ready issue rows for manual review before GitHub creation.", "teal"],
-      ["docs/issues/import-ledger.md", "Table for real issue URLs, owner confirmation, labels, milestones, and project board status.", "blue"],
-      ["docs/issues/body-files/", "One markdown body per PD-BE issue for controlled paste into GitHub.", "green"],
-      ["docs/issues/validation-checklist.md", "Preflight, import, post-import, and admin freeze checks.", "red"],
-      ["docs/issues/owner-lanes.md", "Owner accountability map by issue key and wave.", "amber"],
-      ["docs/issues/label-map.md", "Label and milestone crosswalk with routing rules.", "blue"],
-      ["docs/issues/import-closeout.md", "Post-import closeout with issue count, exceptions, blockers, and next PR link.", "green"],
-    ];
-    const acceptanceChecks = [
-      ["Rows complete", `${issueRows.length} issue rows carry id, title, owner, milestone, labels, proof command, and wave.`, "green"],
-      ["Owner lanes complete", `${ownerLanes.length} owner lanes show accountability before import.`, "teal"],
-      ["Taxonomy linked", `${labelMappings.length} label mappings connect issue type, priority, milestone, and proof.`, "blue"],
-      ["Waves controlled", `${importWaves.length} waves prevent branch, CI, staging, and billing work from opening too early.`, "amber"],
-      ["Validation gates visible", `${importValidation.length} gates catch duplicate IDs, unknown labels, missing owners, and commercial leakage.`, "red"],
-      ["Body files named", `${bodyFilePlan.length} markdown body files are named before GitHub paste starts.`, "green"],
-      ["Paste checks ready", `${pasteChecks.length} paste checkpoints cover before, during, after, and review.`, "blue"],
-      ["Next handoff ready", "v134 can turn the first backend PR into a full PR body builder with evidence links and reviewer notes.", "teal"],
-    ];
-    return {
-      importReadinessScore,
-      downloadHref,
-      importKpis,
-      csvColumns,
-      ownerLanes,
-      labelMappings,
-      importWaves,
-      issueRows,
-      csvPreview,
-      bodyFilePlan,
-      importValidation,
-      pasteChecks,
-      importFiles,
-      acceptanceChecks,
-      signalCards: [
-        ["Import kit", `${importReadinessScore}%`, "Readiness to convert issue bodies into a controlled private-repo import.", importReadinessScore >= 80 ? "green" : "amber"],
-        ["Issue rows", issueRows.length, "Rows prepared from the backend issue body exporter.", "teal"],
-        ["Owner lanes", ownerLanes.length, "Accountability lanes before issues are opened.", "blue"],
-        ["Validation gates", importValidation.length, "Checks that stop duplicates, missing taxonomy, and leakage.", "red"],
-      ],
-      handoff: [
-        "v133 turns the opening packet issue wave into an import kit for the future private backend repo.",
-        "The kit creates CSV-style rows, owner lanes, label mappings, import waves, body-file names, validation gates, paste checks, and import closeout files.",
-        "The static demo still cannot create GitHub issues; it now defines exactly what each issue row must contain and what must be captured after paste.",
-        "v134 can now build the exact first backend PR body with issue links, evidence links, reviewer notes, rollback, and release checklist.",
-      ],
-    };
-  }
-
-  function buildFirstPrBodyBuilderModel(commandModel, backendAlphaIssueImportKit, githubRepoOpeningPacket, backendRepoProofExporter, branchProtectionReleaseChecklist, backendIssueBodyExporter) {
-    const issueRows = backendAlphaIssueImportKit.issueRows || [];
-    const evidenceTemplates = backendRepoProofExporter.evidenceTemplates || [];
-    const reviewerRows = githubRepoOpeningPacket.ownerMatrix || [];
-    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || issueRows.length;
-    const firstPrReadinessScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          backendAlphaIssueImportKit.importReadinessScore * 0.24 +
-            githubRepoOpeningPacket.openingReadinessScore * 0.18 +
-            backendRepoProofExporter.proofReadinessScore * 0.16 +
-            branchProtectionReleaseChecklist.releaseChecklistScore * 0.12 +
-            Math.min(100, issueRows.length * 6) * 0.1 +
-            Math.min(100, evidenceTemplates.length * 9) * 0.1 +
-            Math.min(100, reviewerRows.length * 12) * 0.1 +
-            8,
-        ),
-      ),
-    );
-    const downloadHref = "data/first-pr-body-builder.json?v=281";
-    const prKpis = [
-      ["PR readiness", `${firstPrReadinessScore}%`, "How ready the first backend PR body is before the private repo exists.", firstPrReadinessScore >= 80 ? "green" : "amber"],
-      ["Linked issues", issueRows.length, "Issue rows that can be referenced after real GitHub URLs exist.", "teal"],
-      ["Evidence links", evidenceTemplates.length, "Evidence markdown files and screenshots the PR body should point to.", "blue"],
-      ["Blocked facts", "URLs pending", "Real repo URL, issue URLs, PR URL, workflow names, and reviewers still need the private repo.", "red"],
-    ];
-    const prIdentity = [
-      ["PR title", "chore: create backend alpha shell and proof packet", "Narrow first PR title for the controlled private backend opening.", "green"],
-      ["Base branch", "main", "Protected only after the first Actions run exposes exact status check names.", "blue"],
-      ["Working branch", "alpha/backend-day-one", "First backend alpha branch for shell files, proof packet, and evidence.", "teal"],
-      ["Primary issue", issueRows[0]?.[0] || "PD-BE-001", "First issue should anchor repo shell, first proof docs, and no-live-data controls.", "green"],
-      ["Review mode", "Draft first", "Keep the first PR draft until proof, rollback, issue trace, and reviewers are present.", "amber"],
-      ["Merge posture", "Hold by default", "The PR is mergeable only after evidence, risk locks, and owner lanes are complete.", "red"],
-    ];
-    const summaryBlocks = [
-      ["Executive summary", "Backend alpha shell", "Creates the backend shell and proof packet only; it does not launch production SaaS.", "green"],
-      ["Why now", "Repo discipline", "Moves PursuitDesk from public static prototype into a controlled private backend runway.", "teal"],
-      ["Business boundary", "No live data", "No customer workbook, production secret, billing key, invoice, certificate, or commercial export enters this PR.", "red"],
-      ["Operational boundary", "Tracker privacy", "Operational tracker examples stay free of value, LOA, agreement, invoice, billing, and negotiation fields.", "red"],
-      ["Proof posture", "Evidence led", "Every change needs an issue, command result or placeholder, evidence file, and rollback note.", "blue"],
-      ["Review posture", "Named lanes", "Product, platform, backend, security, data, governance, and QA lanes are visible before trust.", "green"],
-      ["Release posture", "No direct main", "Main waits for draft PR evidence, exact workflow names, and branch protection proof.", "amber"],
-      ["Closeout posture", "Written handoff", "Passed, deferred, blocked, owner signoffs, and next implementation owner are recorded.", "teal"],
-    ];
-    const scopeChecklist = [
-      ["Root shell", "README, ownership, env example, PR template, CODEOWNERS, and release runbook.", "green"],
-      ["API shell", "Health route, request id, route registry, safe error boundary, tenant scope placeholder.", "blue"],
-      ["Package shell", "Domain, database, audit, importer, redaction, billing, and shared result boundaries.", "teal"],
-      ["Workflow shell", "CI, security, migration, billing, import, staging, release, and dependency workflow placeholders.", "amber"],
-      ["Evidence folder", "Preflight, private repo, clean copy, file tree, issue wave, first PR, checks, protection, and closeout files.", "green"],
-      ["Fixture-only data", "Generated tenants, users, records, commercial vault facts, import batches, and audit events only.", "blue"],
-      ["Backlog trace", `${issueRows.length} issue rows from the import kit become trace targets for the PR body.`, "teal"],
-      ["Review packet", "Scope, out-of-scope, proof commands, evidence links, rollback, blockers, reviewers, and closeout.", "green"],
-    ];
-    const outOfScopeLocks = [
-      ["Production launch", "Out of scope", "No customer-facing SaaS deployment is approved by the first backend PR.", "red"],
-      ["Live customer data", "Out of scope", "No source workbook, client export, certificate, invoice, or production file enters the repo.", "red"],
-      ["Live billing", "Out of scope", "No real payment keys, invoice sending, subscription capture, or customer charging.", "red"],
-      ["Commercial values", "Out of scope", "Operational tracker files do not expose value, LOA, agreement, billing, or negotiation data.", "red"],
-      ["Branch protection guess", "Hold", "Do not create required status checks until GitHub exposes real workflow names.", "amber"],
-      ["Unreviewed owners", "Hold", "Do not merge until reviewer lanes are named and acceptance notes are visible.", "blue"],
-      ["Missing evidence", "Hold", "Do not leave draft mode without evidence links, command output, blockers, and rollback.", "teal"],
-      ["Silent closeout", "Hold", "Do not move to implementation depth until closeout says passed, deferred, blocked, and next owner.", "green"],
-    ];
-    const issueLinkPlan = issueRows.slice(0, 10).map(([id, title, owner, milestone, labels, proofCommand, wave, tone]) => [
-      id,
-      title,
-      `${owner} / ${milestone} / ${wave} / ${proofCommand}`,
-      tone,
-    ]);
-    const evidenceLinkPlan = evidenceTemplates.map(([file, title, note, tone]) => [
-      file,
-      title,
-      `${note} Link this file from the first PR after the private repo evidence folder exists.`,
-      tone,
-    ]);
-    const reviewerMatrix = reviewerRows.map(([owner, value, note, tone]) => [
-      owner,
-      value,
-      `${note} Add GitHub reviewer or signoff placeholder in the PR body.`,
-      tone,
-    ]);
-    const rollbackPlan = [
-      ["Close draft PR", "Default rollback", "Close without merge if scope, evidence, issue trace, or owner review is incomplete.", "green"],
-      ["Delete alpha branch", "Clean branch rollback", "Delete the working branch if the first copy set or command proof is wrong.", "blue"],
-      ["Recreate private repo", "Visibility rollback", "Recreate if repo visibility, file copy, or early proof started in the wrong place.", "red"],
-      ["Rotate credentials", "Secret rollback", "Rotate immediately if any live secret, token, certificate, or payment key appears.", "red"],
-      ["Remove data and restart", "Data rollback", "Restart from generated fixtures only if source workbook or customer export appears.", "red"],
-      ["Reset branch rules", "Protection rollback", "Remove guessed required checks and reapply after real workflow names exist.", "amber"],
-      ["Reopen issue wave", "Backlog rollback", "Reopen with clean labels, milestone, owner, and evidence if issue import drifts.", "teal"],
-      ["Write incident note", "Closeout rollback", "Every rollback has owner, reason, affected files, credential status, and next action.", "green"],
-    ];
-    const releaseChecklist = [
-      ["PR remains draft", "Until proof complete", "Draft status stays until issue links, evidence, rollback, and reviewers are present.", "amber"],
-      ["No-leak statement", "Required", "PR body states no secrets, customer workbooks, certificates, invoices, or commercial exports.", "red"],
-      ["Issue trace", `${issueCount} planned`, "At least the primary issue URL is linked; remaining issue URLs can be ledger placeholders.", "blue"],
-      ["Evidence links", `${evidenceTemplates.length} files`, "Every evidence file has a named purpose and PR link target.", "green"],
-      ["Command proof", "Required or explained", "Install, lint, tests, secret scan, workflow names, and release gate are pasted or deferred with reason.", "teal"],
-      ["Reviewer lanes", `${reviewerRows.length} lanes`, "Product, platform, backend, security, data, and QA review lanes are named.", "green"],
-      ["Workflow names", "Hold until Actions", "Required status checks use exact names only after the first Actions run.", "red"],
-      ["Closeout note", "Required", "Passed, deferred, blocked, rollback, owner signoff, and next move are recorded.", "blue"],
-    ];
-    const acceptanceChecks = [
-      ["PR identity complete", `${prIdentity.length} identity facts make the title, branch, issue, mode, and merge posture explicit.`, "green"],
-      ["Summary complete", `${summaryBlocks.length} summary blocks explain why, scope, proof, risk, and closeout.`, "teal"],
-      ["Scope clear", `${scopeChecklist.length} scope checks keep the first PR narrow and reviewable.`, "blue"],
-      ["Out-of-scope locked", `${outOfScopeLocks.length} locks prevent launch, data, billing, commercial, workflow, and evidence drift.`, "red"],
-      ["Issues traceable", `${issueLinkPlan.length} issue links are ready for URL replacement after GitHub issue import.`, "green"],
-      ["Evidence traceable", `${evidenceLinkPlan.length} evidence links are named before screenshots and transcripts exist.`, "teal"],
-      ["Rollback clear", `${rollbackPlan.length} rollback paths cover PR, branch, repo, credentials, data, rules, issues, and incident note.`, "amber"],
-      ["Release checks clear", `${releaseChecklist.length} release checks stop an unsafe merge before the repo is ready.`, "red"],
-    ];
-    const copyReadySections = [
-      ["Title", "Pull request title", "chore: create backend alpha shell and proof packet", "green"],
-      ["Summary", "PR body", "This draft PR creates the PursuitDesk backend alpha shell and proof packet only. It prepares the private repo for API, tenant, audit, import, billing, and release work without launching production SaaS or importing live customer records.", "green"],
-      ["Scope", "PR body", "Scope: root docs, CODEOWNERS, PR template, env example, API shell, package boundaries, workflow placeholders, generated fixtures, issue trace, and evidence files. All commercial values and billing facts stay outside operational tracker examples.", "blue"],
-      ["Out of scope", "PR body", "Out of scope: production deployment, live customer workbooks, live billing keys, real invoice sending, production secrets, certificates, and any commercial value, LOA, agreement, invoice, or negotiation data in tracker payloads.", "red"],
-      ["Proof", "PR body", "Proof plan: attach preflight identity, private repo evidence, clean-copy scan, file tree, issue wave, command output or deferred placeholders, workflow check names after Actions, branch protection proof, and closeout note.", "teal"],
-      ["Rollback", "PR body", "Rollback: keep the PR draft, close without merge if proof fails, delete the alpha branch, rotate any exposed credential, remove any accidental data, and recreate the private repo if visibility or copy-set proof is compromised.", "amber"],
-      ["Reviewer request", "PR body", "Review requested from product, platform, backend, security, data, governance, and QA lanes. Please approve only if no-live-data, no-secret, issue trace, evidence links, rollback, and branch-protection timing are clear.", "blue"],
-      ["Closeout", "PR body", "Closeout must record passed, deferred, blocked, no-leak proof, owner signoffs, exact workflow names or hold reason, branch-protection status, rollback status, and the next implementation owner.", "green"],
-    ];
-    const prBodySkeleton = [
-      "## Summary",
-      copyReadySections[1][2],
-      "",
-      "## Scope",
-      copyReadySections[2][2],
-      "",
-      "## Out of scope",
-      copyReadySections[3][2],
-      "",
-      "## Proof plan",
-      copyReadySections[4][2],
-      "",
-      "## Rollback",
-      copyReadySections[5][2],
-      "",
-      "## Reviewers",
-      copyReadySections[6][2],
-      "",
-      "## Closeout",
-      copyReadySections[7][2],
-    ].join("\n");
-    return {
-      firstPrReadinessScore,
-      downloadHref,
-      prKpis,
-      prIdentity,
-      summaryBlocks,
-      scopeChecklist,
-      outOfScopeLocks,
-      issueLinkPlan,
-      evidenceLinkPlan,
-      reviewerMatrix,
-      rollbackPlan,
-      releaseChecklist,
-      acceptanceChecks,
-      copyReadySections,
-      prBodySkeleton,
-      signalCards: [
-        ["First PR builder", `${firstPrReadinessScore}%`, "Readiness to write the first backend PR from issue, evidence, reviewer, rollback, and release controls.", firstPrReadinessScore >= 80 ? "green" : "amber"],
-        ["Issue links", issueLinkPlan.length, "Issue rows ready for URL replacement after private repo import.", "teal"],
-        ["Evidence files", evidenceLinkPlan.length, "Evidence links the PR body should point to.", "blue"],
-        ["Hard locks", outOfScopeLocks.filter(([label]) => label.includes("Live") || label.includes("Production") || label.includes("Commercial")).length, "Out-of-scope rules that prevent unsafe merge trust.", "red"],
-      ],
-      handoff: [
-        "v134 turns the import kit, repo opening packet, proof exporter, and release checklist into a first backend PR body builder.",
-        "The builder now has title, identity, executive summary, scope, out-of-scope locks, issue link plan, evidence link plan, reviewer matrix, rollback plan, release checklist, and copy-ready PR text.",
-        "The static demo still cannot create the real PR; it now defines exactly what must be pasted when the private repo, issue URLs, evidence files, and reviewer handles exist.",
-        "v135 can now write the evidence folder files that the first backend PR will link to.",
-      ],
-    };
-  }
-
-  function buildRepoEvidenceFolderWriterModel(commandModel, firstPrBodyBuilder, backendRepoProofExporter, githubRepoOpeningPacket, branchProtectionReleaseChecklist, backendAlphaIssueImportKit) {
-    const evidenceTemplates = backendRepoProofExporter.evidenceTemplates || [];
-    const transcriptSlots = backendRepoProofExporter.commandTranscriptSlots || [];
-    const artifactManifest = githubRepoOpeningPacket.artifactManifest || [];
-    const issueLinks = firstPrBodyBuilder.issueLinkPlan || [];
-    const reviewerRows = firstPrBodyBuilder.reviewerMatrix || [];
-    const releaseChecks = firstPrBodyBuilder.releaseChecklist || [];
-    const evidenceFolderScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          firstPrBodyBuilder.firstPrReadinessScore * 0.24 +
-            backendRepoProofExporter.proofReadinessScore * 0.18 +
-            githubRepoOpeningPacket.openingReadinessScore * 0.14 +
-            branchProtectionReleaseChecklist.releaseChecklistScore * 0.12 +
-            Math.min(100, evidenceTemplates.length * 10) * 0.1 +
-            Math.min(100, transcriptSlots.length * 10) * 0.08 +
-            Math.min(100, issueLinks.length * 8) * 0.08 +
-            Math.min(100, reviewerRows.length * 12) * 0.06 +
-            6,
-        ),
-      ),
-    );
-    const downloadHref = "data/repo-evidence-folder-writer.json?v=281";
-    const evidenceKpis = [
-      ["Evidence folder", `${evidenceFolderScore}%`, "How ready the first backend PR evidence folder is before the private repo exists.", evidenceFolderScore >= 80 ? "green" : "amber"],
-      ["Markdown files", evidenceTemplates.length, "Proof files that should exist under docs/evidence before review.", "teal"],
-      ["Transcript slots", transcriptSlots.length, "Command outputs or explicit placeholders the PR body can link to.", "blue"],
-      ["Real blockers", "URLs pending", "Repo URL, issue URLs, screenshot links, workflow names, and reviewer handles still need GitHub.", "red"],
-    ];
-    const folderManifest = [
-      ["docs/evidence/README.md", "Evidence index", "Table of proof files, screenshot names, transcript slots, issue links, owner signoffs, and closeout status.", "green"],
-      ...evidenceTemplates.map(([file, title, note, tone]) => [file, title, note, tone]),
-      ["docs/evidence/screenshots/", "Screenshot folder", "Private repo, file tree, labels, milestones, issues, PR, Actions, and branch protection screenshots.", "blue"],
-      ["docs/evidence/transcripts/", "Transcript folder", "Preflight, repo view, branch, file tree, secret scan, quality proof, issue wave, and workflow-name output.", "teal"],
-      ["docs/evidence/signoffs/", "Owner signoff folder", "Product, platform, backend, security, data, and QA owner go/hold/no-go notes.", "green"],
-    ];
-    const markdownTemplates = [
-      ["00-preflight.md", "Preflight proof", "## Preflight proof\n- GitHub account:\n- Local path:\n- Tool versions:\n- Decision owner:\n- No-live-data boundary:\n- Status: pending real repo", "blue"],
-      ["01-repo-private.md", "Private repo proof", "## Private repo proof\n- Repository URL:\n- Visibility screenshot:\n- Owner:\n- Timestamp:\n- Public demo repo remains separate:\n- Status: pending real repo", "red"],
-      ["02-clean-copy-set.md", "Clean copy proof", "## Clean copy proof\n- No secrets:\n- No workbooks:\n- No certificates:\n- No invoices:\n- No commercial exports:\n- Status: pending scan", "red"],
-      ["03-file-tree.md", "Starter tree proof", "## Starter tree proof\n- Branch:\n- Root files:\n- apps/api:\n- packages:\n- workflows:\n- evidence folder:\n- Status: pending copy", "green"],
-      ["04-issue-wave.md", "Issue wave proof", `## Issue wave proof\n- Planned issue rows: ${issueLinks.length}\n- First issue URL:\n- Labels and milestones:\n- Owner lanes:\n- Import exceptions:\n- Status: pending GitHub import`, "teal"],
-      ["05-first-pr.md", "First PR proof", `## First PR proof\n- PR title: chore: create backend alpha shell and proof packet\n- PR URL:\n- Issue links:\n- Evidence links:\n- Reviewers:\n- Rollback:\n- Status: draft pending`, "green"],
-      ["06-workflow-check-names.md", "Workflow names proof", "## Workflow names proof\n- Workflow run URL:\n- Job names:\n- Required status check names:\n- Failed checks:\n- Artifact links:\n- Status: hold until Actions run", "amber"],
-      ["07-branch-protection.md", "Branch protection proof", "## Branch protection proof\n- Required checks:\n- Review policy:\n- Conversation resolution:\n- Admin bypass decision:\n- Screenshot:\n- Status: hold until check names exist", "red"],
-      ["08-closeout.md", "Closeout proof", "## Closeout proof\n- Passed:\n- Deferred:\n- Blocked:\n- No-leak statement:\n- Owner signoffs:\n- Next owner:\n- Status: pending repo day", "blue"],
-    ];
-    const screenshotSlots = [
-      ["repo-private.png", "Private visibility", "Capture before any file, issue, or PR work begins.", "red"],
-      ["tree-after-first-copy.png", "Starter file tree", "Capture root, apps, packages, docs, scripts, workflows, and evidence folders.", "green"],
-      ["labels-and-milestones.png", "Taxonomy proof", "Capture labels and milestones after import and before issue creation.", "teal"],
-      ["issue-wave.png", "Issue wave", "Capture filtered first wave with labels, milestones, owners, and issue numbers.", "blue"],
-      ["first-pr-body.png", "Draft PR body", "Capture summary, scope, out-of-scope, proof, rollback, reviewers, and closeout sections.", "green"],
-      ["actions-check-names.png", "Actions names", "Capture exact workflow and job names after the first run.", "amber"],
-      ["branch-protection.png", "Main protection", "Capture required checks, review settings, conversation resolution, and bypass rules.", "red"],
-      ["closeout-board.png", "Repo day closeout", "Capture passed, deferred, blocked, no-leak proof, and next owner.", "blue"],
-    ];
-    const transcriptPlan = transcriptSlots.map(([file, command, note, tone]) => [
-      `docs/evidence/transcripts/${file}`,
-      command,
-      `${note} Save real output or a dated blocker note before linking the PR.`,
-      tone,
-    ]);
-    const issueTraceLedger = issueLinks.map(([id, title, note, tone]) => [
-      id,
-      title,
-      `${note}. Replace placeholder with real GitHub issue URL after import.`,
-      tone,
-    ]);
-    const ownerSignoffFiles = reviewerRows.map(([owner, value, note, tone]) => [
-      `docs/evidence/signoffs/${owner.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.md`,
-      value,
-      `${note} Capture go, hold, no-go, or defer with reason.`,
-      tone,
-    ]);
-    const branchProtectionProof = releaseChecks.map(([label, value, note, tone]) => [
-      label,
-      value,
-      `${note} Evidence folder should state pass, hold, defer, or not applicable.`,
-      tone,
-    ]);
-    const closeoutNotes = [
-      ["Passed", "Commands and evidence", "List proof files, screenshots, command transcripts, issue URLs, PR URL, and owner lanes that passed.", "green"],
-      ["Deferred", "Known follow-ups", "List workflow names, branch protection, reviewer handles, or issue URLs still waiting on GitHub.", "amber"],
-      ["Blocked", "Merge blockers", "List any missing proof, failed command, missing owner, data leak, or unsafe branch rule.", "red"],
-      ["No-leak statement", "Required", "State no secret, customer workbook, certificate, invoice, billing key, or commercial export entered the repo.", "red"],
-      ["Rollback status", "Required", "Record whether rollback path is close PR, delete branch, recreate repo, rotate credentials, or restart data.", "blue"],
-      ["Owner signoffs", `${reviewerRows.length} lanes`, "Capture go, hold, no-go, or defer for each owner lane.", "green"],
-      ["Next owner", "Required", "Name the person or lane that owns the next backend implementation PR.", "teal"],
-      ["Management line", "One sentence", "Summarize repo day result for Command Center and Weekly Review.", "green"],
-    ];
-    const folderTree = [
-      ["docs/evidence/README.md", "Index and status map", "green"],
-      ["docs/evidence/00-preflight.md", "Identity and no-live-data proof", "blue"],
-      ["docs/evidence/01-repo-private.md", "Private repo proof", "red"],
-      ["docs/evidence/02-clean-copy-set.md", "No secret and no workbook proof", "red"],
-      ["docs/evidence/03-file-tree.md", "Starter file tree proof", "green"],
-      ["docs/evidence/04-issue-wave.md", "Issue URL and label proof", "teal"],
-      ["docs/evidence/05-first-pr.md", "Draft PR body and link proof", "green"],
-      ["docs/evidence/06-workflow-check-names.md", "Actions names proof", "amber"],
-      ["docs/evidence/07-branch-protection.md", "Main protection proof", "red"],
-      ["docs/evidence/08-closeout.md", "Passed, deferred, blocked, and next owner", "blue"],
-      ["docs/evidence/screenshots/", `${screenshotSlots.length} screenshot slots`, "blue"],
-      ["docs/evidence/transcripts/", `${transcriptPlan.length} transcript slots`, "teal"],
-      ["docs/evidence/signoffs/", `${ownerSignoffFiles.length} owner signoff files`, "green"],
-    ];
-    const copyReadyMarkdown = [
-      ["Evidence index", "docs/evidence/README.md", `# PursuitDesk backend alpha evidence\n\nStatus: pending private repo execution\n\nFiles: ${evidenceTemplates.length} markdown proofs, ${screenshotSlots.length} screenshots, ${transcriptPlan.length} transcripts, ${ownerSignoffFiles.length} signoffs.\n\nRule: no live data, no secrets, no workbooks, no commercial exports.`, "green"],
-      ["No-leak statement", "docs/evidence/02-clean-copy-set.md", "No customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved for this PR. If any appears, stop, remove, rotate where needed, and write an incident note.", "red"],
-      ["Issue ledger note", "docs/evidence/04-issue-wave.md", `The first PR should link the primary issue and maintain a ledger for ${issueLinks.length} planned issue links. Placeholder IDs are allowed only until real GitHub URLs exist.`, "blue"],
-      ["Workflow hold note", "docs/evidence/06-workflow-check-names.md", "Branch protection remains on hold until the first Actions run exposes exact workflow, job, and required status check names. Do not guess names.", "amber"],
-      ["Owner signoff note", "docs/evidence/signoffs/README.md", "Each owner lane records go, hold, no-go, or defer. A hold must name the missing proof and next owner before the PR leaves draft.", "teal"],
-      ["Closeout note", "docs/evidence/08-closeout.md", "Closeout is complete only when passed, deferred, blocked, no-leak proof, rollback status, owner signoffs, and next owner are written.", "green"],
-    ];
-    const acceptanceChecks = [
-      ["Manifest complete", `${folderManifest.length} manifest entries define evidence files, screenshot folder, transcript folder, and signoffs.`, "green"],
-      ["Templates ready", `${markdownTemplates.length} markdown templates are copy-ready for the first private backend branch.`, "teal"],
-      ["Screenshots named", `${screenshotSlots.length} screenshot slots cover private repo, tree, taxonomy, issues, PR, Actions, branch rules, and closeout.`, "blue"],
-      ["Transcripts named", `${transcriptPlan.length} command transcript slots are ready for real output or dated blocker notes.`, "amber"],
-      ["Issues traceable", `${issueTraceLedger.length} issue rows can receive real GitHub URLs after import.`, "green"],
-      ["Signoffs visible", `${ownerSignoffFiles.length} owner signoff files keep review accountability out in the open.`, "teal"],
-      ["Branch proof gated", `${branchProtectionProof.length} branch and release checks require pass, hold, defer, or not-applicable notes.`, "red"],
-      ["Closeout complete", `${closeoutNotes.length} closeout notes prevent silent merge drift.`, "blue"],
-    ];
-    return {
-      evidenceFolderScore,
-      downloadHref,
-      evidenceKpis,
-      folderManifest,
-      markdownTemplates,
-      screenshotSlots,
-      transcriptPlan,
-      issueTraceLedger,
-      ownerSignoffFiles,
-      branchProtectionProof,
-      closeoutNotes,
-      folderTree,
-      copyReadyMarkdown,
-      acceptanceChecks,
-      signalCards: [
-        ["Evidence folder", `${evidenceFolderScore}%`, "Readiness to write the first backend PR evidence pack.", evidenceFolderScore >= 80 ? "green" : "amber"],
-        ["Markdown files", markdownTemplates.length, "Copy-ready proof files for docs/evidence.", "teal"],
-        ["Screenshots", screenshotSlots.length, "Visual proof slots for GitHub state.", "blue"],
-        ["Hold rules", branchProtectionProof.filter(([label]) => label.includes("Workflow") || label.includes("No-leak") || label.includes("PR remains")).length, "Rules that keep the PR draft until proof exists.", "red"],
-      ],
-      handoff: [
-        "v135 turns the first PR body into a concrete evidence folder writer.",
-        "The writer defines docs/evidence files, screenshot slots, transcript slots, issue ledger rows, owner signoff files, branch-protection proof, closeout notes, and copy-ready markdown.",
-        "The static demo still cannot capture real screenshots or command output; it now names exactly where those artifacts belong when the private repo exists.",
-        "v136 can now bundle the private repo command runner pack that fills these evidence files with real outputs.",
-      ],
-    };
-  }
-
-  function buildPrivateRepoCommandRunnerPackModel(commandModel, repoEvidenceFolderWriter, privateRepoDayOneScript, privateRepoSetupScriptDraft, githubRepoOpeningPacket, branchProtectionReleaseChecklist) {
-    const commandBlocks = privateRepoDayOneScript.commandBlocks || [];
-    const transcriptPlan = repoEvidenceFolderWriter.transcriptPlan || [];
-    const screenshotSlots = repoEvidenceFolderWriter.screenshotSlots || [];
-    const ownerSignoffFiles = repoEvidenceFolderWriter.ownerSignoffFiles || [];
-    const folderTree = repoEvidenceFolderWriter.folderTree || [];
-    const artifactManifest = githubRepoOpeningPacket.artifactManifest || [];
-    const setupScore = privateRepoSetupScriptDraft.setupScriptScore || 0;
-    const openingScore = githubRepoOpeningPacket.openingReadinessScore || 0;
-    const releaseScore = branchProtectionReleaseChecklist.releaseChecklistScore || 0;
-    const commandRunnerScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          repoEvidenceFolderWriter.evidenceFolderScore * 0.24 +
-            privateRepoDayOneScript.scriptReadinessScore * 0.2 +
-            setupScore * 0.14 +
-            openingScore * 0.12 +
-            releaseScore * 0.1 +
-            Math.min(100, commandBlocks.length * 8) * 0.08 +
-            Math.min(100, transcriptPlan.length * 10) * 0.05 +
-            Math.min(100, screenshotSlots.length * 10) * 0.04 +
-            Math.min(100, ownerSignoffFiles.length * 12) * 0.03 +
-            6,
-        ),
-      ),
-    );
-    const downloadHref = "data/private-repo-command-runner-pack.json?v=281";
-    const runnerKpis = [
-      ["Runner readiness", `${commandRunnerScore}%`, "How ready the real private repo command session is to run without improvising.", commandRunnerScore >= 80 ? "green" : "amber"],
-      ["Command blocks", commandBlocks.length, "Day-one command blocks from preflight through branch protection closeout.", "blue"],
-      ["Evidence writes", folderTree.length, "Evidence paths that must be created, updated, or intentionally deferred.", "teal"],
-      ["Hard stops", 4, "Public repo, secret, workbook, or commercial data leak stops execution immediately.", "red"],
-    ];
-    const preflightCommands = [
-      ["01", "Confirm operator", "gh auth status", "The output must show the expected GitHub identity before any repository action.", "blue"],
-      ["02", "Confirm tools", "git --version; node --version; npm --version", "Tool versions are written to the preflight transcript.", "blue"],
-      ["03", "Confirm workspace", "Get-Location", "The local folder is captured before copy or setup steps begin.", "teal"],
-      ["04", "Confirm no live data", "Review copy set manually", "No Excel workbook, secret, certificate, payment key, invoice, or customer file may enter the private repo.", "red"],
-      ["05", "Confirm decision", "Owner go/hold/no-go", "Repo opening approval must exist before creating the private repo.", "green"],
-      ["06", "Confirm evidence path", "Create docs/evidence first", "Screenshots and transcripts need a named destination before commands start.", "teal"],
-    ];
-    const commandRunbook = commandBlocks.map(([step, phase, shell, command, note, tone], index) => {
-      const transcript = transcriptPlan[index % Math.max(1, transcriptPlan.length)]?.[0] || "docs/evidence/transcripts/command-output.txt";
-      return [step, phase, `${shell}: ${command}`, `${note} Save output or blocker note to ${transcript}.`, tone];
-    });
-    const expectedOutputs = [
-      ["Preflight output", "docs/evidence/transcripts/00-preflight-auth.txt", "GitHub account, git version, node version, npm version, and local path are captured.", "blue"],
-      ["Private repo output", "docs/evidence/01-repo-private.md", "Private visibility, repo URL, owner, and timestamp are written before file copy.", "red"],
-      ["Clean copy output", "docs/evidence/02-clean-copy-set.md", "No source workbook, secret, certificate, invoice, billing key, or commercial export is present.", "red"],
-      ["File tree output", "docs/evidence/03-file-tree.md", "Root, apps, packages, infra, docs, workflows, scripts, and evidence folders are visible.", "green"],
-      ["Taxonomy output", "docs/evidence/04-issue-wave.md", "Labels, milestones, issue waves, owner lanes, and generated URLs are recorded.", "teal"],
-      ["Draft PR output", "docs/evidence/05-first-pr.md", "PR title, URL, scope, proof links, rollback text, reviewers, and blockers are captured.", "green"],
-      ["Actions output", "docs/evidence/06-workflow-check-names.md", "Exact workflow, job, required check names, failed check notes, and artifact links are captured.", "amber"],
-      ["Closeout output", "docs/evidence/08-closeout.md", "Passed, deferred, blocked, no-leak proof, owner signoffs, rollback status, and next owner are written.", "blue"],
-    ];
-    const failureHolds = [
-      ["Immediate stop", "Repo is public", "Stop before adding files. Switch to private or recreate, then document the event.", "red"],
-      ["Immediate stop", "Secret appears", "Stop, remove it, rotate if needed, check history, and write an incident note.", "red"],
-      ["Immediate stop", "Workbook appears", "Stop and restart from generated fixtures only.", "red"],
-      ["Immediate stop", "Commercial leak appears", "Remove value, LOA, agreement, invoice, billing, and negotiation data from operational examples.", "red"],
-      ["Hold", "Owner decision missing", "Pause until the owner confirms go, hold, or no-go.", "amber"],
-      ["Hold", "Workflow names unknown", "Do not apply branch protection until exact check names appear.", "blue"],
-      ["Hold", "PR proof incomplete", "Add issue links, scope, proof, rollback, blockers, and reviewer lanes before requesting review.", "teal"],
-      ["Hold", "Evidence not saved", "Write proof files and screenshot names before closing repo day.", "green"],
-    ];
-    const evidenceWriteMap = folderTree.map(([path, note, tone]) => [
-      path,
-      "Evidence path",
-      `${note} Create, update, or mark deferred before the first PR body links here.`,
-      tone,
-    ]);
-    const artifactSlots = [
-      ...screenshotSlots.map(([file, title, note, tone]) => [`docs/evidence/screenshots/${file}`, title, note, tone]),
-      ...artifactManifest.slice(0, 6).map(([file, title, note, tone]) => [file, title, note, tone]),
-      ["docs/evidence/private-repo-command-runner-pack.json", "Runner JSON", "Attach this v136 handoff as the command source-of-truth for repo day.", "teal"],
-    ];
-    const manualProofActions = privateRepoDayOneScript.manualActions || [];
-    const ownerPromptRun = privateRepoDayOneScript.ownerPrompts || [];
-    const branchTimingRun = privateRepoDayOneScript.branchProtectionTiming || [];
-    const closeoutRun = privateRepoDayOneScript.closeoutChecks || [];
-    const copyReadyCommands = [
-      ["Preflight", "PowerShell", "gh auth status\ngit --version\nnode --version\nnpm --version\nGet-Location", "blue"],
-      ["Create private repo", "GitHub CLI", "gh repo create dhirajnyse/pursuitdesk-platform --private --description PursuitDesk-production-backend --confirm", "red"],
-      ["Clone and branch", "Git", "git clone git@github.com:dhirajnyse/pursuitdesk-platform.git\ncd pursuitdesk-platform\ngit checkout -b codex/backend-alpha-shell", "teal"],
-      ["Create evidence shell", "PowerShell", "New-Item -ItemType Directory -Force docs/evidence/screenshots docs/evidence/transcripts docs/evidence/signoffs", "green"],
-      ["Create backend shell", "PowerShell", "New-Item -ItemType Directory -Force apps/api/src packages/domain packages/db infra .github/workflows scripts", "green"],
-      ["Quality proof", "Package manager", "npm install\nnpm run lint\nnpm run test -- --runInBand", "blue"],
-      ["First PR", "GitHub CLI", "git add .\ngit commit -m \"Backend alpha shell\"\ngit push -u origin codex/backend-alpha-shell\ngh pr create --draft --title \"Backend alpha shell\" --body-file docs/evidence/first-pr.md", "amber"],
-      ["Branch protection hold", "GitHub settings", "Capture exact workflow and job names from the first Actions run before creating required status checks.", "red"],
-    ];
-    const acceptanceChecks = [
-      ["Preflight captured", `${preflightCommands.length} preflight commands or manual checks are named before repo creation.`, "blue"],
-      ["Runbook complete", `${commandRunbook.length} command blocks cover create, clone, shell, proof, issues, PR, checks, protection, and closeout.`, "green"],
-      ["Outputs named", `${expectedOutputs.length} expected outputs map commands to evidence files.`, "teal"],
-      ["Failure holds clear", `${failureHolds.length} stop or hold rules prevent unsafe execution.`, "red"],
-      ["Evidence paths ready", `${evidenceWriteMap.length} evidence writes map to the repo folder.`, "green"],
-      ["Artifacts named", `${artifactSlots.length} screenshot, manifest, and JSON artifact slots are named.`, "blue"],
-      ["Owners prompted", `${ownerPromptRun.length} owner prompts define approval accountability.`, "teal"],
-      ["Closeout explicit", `${closeoutRun.length} closeout checks define what must be true before implementation depth.`, "amber"],
-    ];
-    return {
-      commandRunnerScore,
-      downloadHref,
-      runnerKpis,
-      preflightCommands,
-      commandRunbook,
-      expectedOutputs,
-      failureHolds,
-      evidenceWriteMap,
-      artifactSlots,
-      manualProofActions,
-      ownerPromptRun,
-      branchTimingRun,
-      closeoutRun,
-      copyReadyCommands,
-      acceptanceChecks,
-      signalCards: [
-        ["Command runner", `${commandRunnerScore}%`, "Readiness to run the private repo day from a controlled sequence.", commandRunnerScore >= 80 ? "green" : "amber"],
-        ["Commands", commandRunbook.length, "Executable or manually controlled steps with transcript destinations.", "blue"],
-        ["Evidence writes", evidenceWriteMap.length, "Proof files, folders, screenshots, transcripts, and signoffs to create.", "teal"],
-        ["Stop rules", failureHolds.filter(([status]) => status === "Immediate stop").length, "Conditions that stop the day before trust is compromised.", "red"],
-      ],
-      handoff: [
-        "v136 turns the evidence folder writer and day-one script into a private repo command runner pack.",
-        "The pack names preflight commands, command order, expected outputs, evidence write paths, screenshot slots, owner prompts, branch-protection timing, closeout checks, and copy-ready commands.",
-        "It deliberately does not execute against GitHub from the static demo; it prepares the exact run sheet for the real private backend repository session.",
-        "v137 can now define the backend PR review gate matrix so reviewers know what to approve, hold, or block after the command runner produces evidence.",
-      ],
-    };
-  }
-
-  function buildBackendPrReviewGateMatrixModel(commandModel, privateRepoCommandRunnerPack, firstPrBodyBuilder, repoEvidenceFolderWriter, backendAlphaIssueImportKit, branchProtectionReleaseChecklist) {
-    const reviewerRows = firstPrBodyBuilder.reviewerMatrix?.length
-      ? firstPrBodyBuilder.reviewerMatrix
-      : [
-          ["Founder / Product", "Scope owner", "Approves product scope, no-live-data boundary, and first PR intent.", "green"],
-          ["Platform owner", "Repo owner", "Approves private repo visibility, workflow names, and branch discipline.", "teal"],
-          ["Backend lead", "Code owner", "Approves folder shell, API starter files, package boundaries, and commands.", "blue"],
-          ["Security owner", "Control owner", "Approves no-secret, tenant guard, commercial privacy, and audit controls.", "red"],
-          ["Data owner", "Migration owner", "Approves generated fixtures, source trace, rollback, and no workbook import.", "amber"],
-          ["QA / Release", "Release owner", "Approves evidence files, screenshots, branch rules, and closeout readiness.", "green"],
-        ];
-    const evidenceLinks = firstPrBodyBuilder.evidenceLinkPlan || [];
-    const issueLinks = firstPrBodyBuilder.issueLinkPlan || [];
-    const releaseChecklist = firstPrBodyBuilder.releaseChecklist || [];
-    const runnerAcceptance = privateRepoCommandRunnerPack.acceptanceChecks || [];
-    const branchProof = repoEvidenceFolderWriter.branchProtectionProof || [];
-    const reviewGateScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          privateRepoCommandRunnerPack.commandRunnerScore * 0.2 +
-            firstPrBodyBuilder.firstPrReadinessScore * 0.2 +
-            repoEvidenceFolderWriter.evidenceFolderScore * 0.14 +
-            branchProtectionReleaseChecklist.releaseChecklistScore * 0.12 +
-            Math.min(100, reviewerRows.length * 14) * 0.1 +
-            Math.min(100, evidenceLinks.length * 10) * 0.08 +
-            Math.min(100, issueLinks.length * 8) * 0.06 +
-            Math.min(100, releaseChecklist.length * 10) * 0.05 +
-            Math.min(100, runnerAcceptance.length * 10) * 0.05 +
-            8,
-        ),
-      ),
-    );
-    const downloadHref = "data/backend-pr-review-gate-matrix.json?v=281";
-    const reviewKpis = [
-      ["Review readiness", `${reviewGateScore}%`, "How ready the first backend PR is for reviewer-specific approve, hold, block, and merge gates.", reviewGateScore >= 80 ? "green" : "amber"],
-      ["Reviewer lanes", reviewerRows.length, "Named product, platform, backend, security, data, and release review lanes.", "teal"],
-      ["Evidence links", evidenceLinks.length, "Evidence files the PR body should link before formal approval.", "blue"],
-      ["Hard blocks", 8, "Unsafe conditions that prevent review or merge.", "red"],
-    ];
-    const reviewerGateMatrix = reviewerRows.map(([owner, scope, note, tone], index) => {
-      const evidence = evidenceLinks[index % Math.max(1, evidenceLinks.length)]?.[1] || "docs/evidence/README.md";
-      const issue = issueLinks[index % Math.max(1, issueLinks.length)]?.[0] || "Primary backend shell issue";
-      return [
-        owner,
-        scope,
-        `Approve when ${note.toLowerCase()} Evidence: ${evidence}. Issue trace: ${issue}.`,
-        "Hold when the evidence file is missing, placeholder-only, or not tied to an opened issue URL.",
-        "Block if live data, secrets, public visibility, missing rollback, or commercial leakage appears.",
-        tone,
-      ];
-    });
-    const decisionGates = [
-      ["Draft only", "Evidence incomplete", "The PR stays draft while repo URL, issue URLs, command outputs, workflow names, or owner signoffs are missing.", "amber"],
-      ["Reviewable", "Evidence linked", "The PR can request review after scope, proof links, rollback, blockers, and reviewer lanes are visible.", "blue"],
-      ["Hold", "Proof waiting", "A reviewer can hold when a proof file, screenshot, transcript, check name, or owner answer is incomplete.", "amber"],
-      ["Block", "Trust failure", "A reviewer must block if public repo, secret, workbook, commercial leak, direct main push, or no rollback appears.", "red"],
-      ["Approve", "Lane clear", "A reviewer can approve only their lane after evidence and issue trace match the PR body.", "green"],
-      ["Merge ready", "All gates clear", "Merge only after approvals, exact checks, no-leak proof, branch rules, closeout, and next owner are recorded.", "teal"],
-    ];
-    const evidenceReviewMap = [
-      ...evidenceLinks.map(([label, file, note, tone]) => [label, file, `${note} Reviewer must confirm the file exists or is explicitly deferred.`, tone]),
-      ...privateRepoCommandRunnerPack.expectedOutputs.map(([label, file, note, tone]) => [label, file, `${note} Reviewer checks whether the output is real, deferred, or blocked.`, tone]),
-    ];
-    const holdQueue = [
-      ["Repo URL missing", "Hold review", "Private repo URL and visibility proof must be pasted before review starts.", "red"],
-      ["Issue URLs missing", "Hold review", "Generated issue links must replace placeholders in the first PR body.", "teal"],
-      ["Evidence placeholder only", "Hold review", "Placeholder evidence is allowed in draft, but must be explicit before review.", "amber"],
-      ["Workflow names pending", "Hold branch protection", "Required check names cannot be guessed before the first Actions run.", "blue"],
-      ["Owner signoff missing", "Hold approval", "Each lane needs go, hold, no-go, or defer with reason.", "green"],
-      ["Rollback not written", "Hold review", "Close PR, delete branch, recreate repo, rotate credential, or restart data path must be named.", "amber"],
-      ["Command output missing", "Hold proof", "Preflight, setup, quality, issue, PR, and closeout transcripts need output or blocker notes.", "blue"],
-      ["Closeout missing", "Hold merge", "Passed, deferred, blocked, no-leak, owners, and next owner must be written.", "green"],
-    ];
-    const blockRules = [
-      ["Public repository", "Block immediately", "No production backend work can proceed in a public repo.", "red"],
-      ["Secret or credential", "Block and rotate", "Any secret, token, certificate, or live key requires removal and rotation review.", "red"],
-      ["Customer workbook", "Block and restart", "Live Excel source data cannot enter the production backend repo.", "red"],
-      ["Commercial leakage", "Block and redact", "Value, LOA, agreement, invoice, billing, and negotiation facts stay out of frontline examples.", "red"],
-      ["No rollback path", "Block merge", "A first backend PR must be safely closable without production effects.", "amber"],
-      ["Direct main push", "Block release", "All production backend work must stay on reviewable branches.", "red"],
-      ["Missing required checks", "Block merge", "Workflow and job names must be exact before branch protection or merge trust.", "blue"],
-      ["No owner accountability", "Block review", "Reviewer lane, next owner, and closeout owner must be named.", "teal"],
-    ];
-    const mergeReadinessChecklist = [
-      ["PR remains draft until proof exists", "Required", "A draft PR can carry placeholders; a review-ready PR must link real proof or explicit holds.", "amber"],
-      ["Private visibility proven", "Required", "Visibility screenshot and repo URL are recorded.", "red"],
-      ["No-leak proof written", "Required", "No secrets, workbooks, certificates, live keys, invoices, or commercial exports are present.", "red"],
-      ["Issue trace complete", `${issueLinks.length} rows`, "Issue URLs replace placeholders and map to generated issue lanes.", "teal"],
-      ["Evidence links complete", `${evidenceLinks.length} links`, "Evidence links point to files, screenshots, transcripts, or deferred blockers.", "blue"],
-      ["Reviewers clear", `${reviewerRows.length} lanes`, "Each lane has approve, hold, block, and next action rules.", "green"],
-      ["Branch checks real", "Required", "Required check names come from an actual Actions run, not guesses.", "blue"],
-      ["Closeout ready", "Required", "Passed, deferred, blocked, no-leak, rollback, owners, and next owner are written.", "green"],
-    ];
-    const reviewerPackets = reviewerGateMatrix.map(([owner, scope, approve, hold, block, tone]) => [
-      owner,
-      scope,
-      `Review lane: ${owner}\nScope: ${scope}\nApprove: ${approve}\nHold: ${hold}\nBlock: ${block}`,
-      tone,
-    ]);
-    const prCommentTemplates = [
-      ["Approve", "Review comment", "Approved for my lane. Evidence is linked, issue trace is visible, rollback is clear, and no-live-data/no-secret boundaries are preserved.", "green"],
-      ["Hold", "Review comment", "Holding approval until the listed evidence file, command output, screenshot, owner response, workflow name, or issue URL is completed.", "amber"],
-      ["Block", "Review comment", "Requesting changes because the PR contains a trust blocker: public visibility, secret, workbook, commercial leak, no rollback, missing owner, or unsafe branch posture.", "red"],
-      ["Merge summary", "PR closeout", "Merge is allowed only after all reviewer lanes are green, required checks are exact, branch protection is documented, and closeout names the next owner.", "teal"],
-      ["No-leak signoff", "Security note", "I confirm no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.", "red"],
-      ["Deferred proof", "Review note", "Deferred proof is acceptable only if the blocker file names the missing proof, owner, date, and next command.", "blue"],
-    ];
-    const acceptanceChecks = [
-      ["Reviewer lanes complete", `${reviewerGateMatrix.length} lanes define approve, hold, and block language.`, "green"],
-      ["Decision gates clear", `${decisionGates.length} gates describe draft, reviewable, hold, block, approve, and merge-ready states.`, "teal"],
-      ["Evidence reviewable", `${evidenceReviewMap.length} evidence and command-output rows are mapped for reviewers.`, "blue"],
-      ["Holds actionable", `${holdQueue.length} hold reasons name the missing proof and owner action.`, "amber"],
-      ["Blocks explicit", `${blockRules.length} block rules stop unsafe repo trust.`, "red"],
-      ["Merge checklist ready", `${mergeReadinessChecklist.length} merge-readiness checks prevent accidental production trust.`, "green"],
-      ["Comment templates ready", `${prCommentTemplates.length} reusable review comments help keep review language consistent.`, "blue"],
-      ["Runner linked", `${runnerAcceptance.length} runner acceptance checks feed the review gate.`, "teal"],
-    ];
-    return {
-      reviewGateScore,
-      downloadHref,
-      reviewKpis,
-      reviewerGateMatrix,
-      decisionGates,
-      evidenceReviewMap,
-      holdQueue,
-      blockRules,
-      mergeReadinessChecklist,
-      reviewerPackets,
-      prCommentTemplates,
-      acceptanceChecks,
-      signalCards: [
-        ["Review gates", `${reviewGateScore}%`, "Readiness to control the first backend PR review by lane.", reviewGateScore >= 80 ? "green" : "amber"],
-        ["Reviewer lanes", reviewerGateMatrix.length, "Product, platform, backend, security, data, and release accountability.", "teal"],
-        ["Hold reasons", holdQueue.length, "Actionable holds before approval or merge.", "amber"],
-        ["Block rules", blockRules.length, "Hard trust failures that require changes.", "red"],
-      ],
-      handoff: [
-        "v137 turns the first backend PR body and command runner evidence into a review gate matrix.",
-        "Each reviewer lane now has approve, hold, block, and merge-readiness language tied to evidence files, issue trace, branch proof, and no-leak controls.",
-        "The static demo still cannot approve a real PR; it now defines how the real PR should be reviewed once GitHub evidence exists.",
-        "v138 can now turn screenshots, transcripts, signoffs, issue URLs, and branch proof into an evidence artifact status board.",
-      ],
     };
   }
 
@@ -47729,777 +47479,29 @@ const state = {
       ["Branch protection", "Workflow names, required checks, review rules, protected branch proof, and bypass decision.", "Release owner", "amber"],
       ["Owner signoff", "Product, platform, backend, security, data, and QA go, hold, no-go, or defer notes.", "Owner lanes", "green"],
     ];
-    const sourceOfTruthMap = [
-      ["GitHub repo settings", "Private visibility screenshot", "Hard proof source for repo privacy and owner account.", "red"],
-      ["GitHub Issues", "Issue URLs and labels", "Traceability source for backend alpha scope and owner lanes.", "blue"],
-      ["GitHub Pull Request", "Draft PR URL and review comments", "Source for review status, proof links, rollback, and blockers.", "green"],
-      ["GitHub Actions", "Workflow and job names", "Source for required status checks and branch-protection setup.", "amber"],
-      ["docs/evidence", "Markdown proof packet", "Source for snapshots, transcripts, signoffs, closeout, and no-leak notes.", "teal"],
-      ["Command Center", "Management status", "Executive source for ready, hold, blocked, deferred, and next owner state.", "green"],
+    const escalationQueue = artifactRows.filter((artifact) => artifact.status === "Hold" || artifact.status === "Blocked");
+    const signalCards = [
+      ["Evidence board", `${evidenceBoardScore}%`, "Readiness across templates, screenshots, transcripts, branch proof, and owner signoff.", evidenceBoardScore >= 80 ? "green" : "amber"],
+      ["Ready artifacts", readyCount, "Prepared files and proof shells that can move into repo day.", "green"],
+      ["Held artifacts", holdCount, "Screenshots and transcripts that require real capture.", "amber"],
+      ["Blocked artifacts", blockedCount, "Items that cannot pass without real branch and trust evidence.", "red"],
     ];
-    const escalationQueue = [
-      ...holdQueue.map(([label, value, note, tone]) => [label, value, note, tone]),
-      ...blockRules.slice(0, 6).map(([label, value, note, tone]) => [label, value, note, tone]),
-    ];
-    const captureSequence = [
-      ["01", "Create evidence index", "Create docs/evidence/README.md and list every artifact row before commands run.", "green"],
-      ["02", "Capture private repo", "Save private visibility proof before moving files or creating issues.", "red"],
-      ["03", "Write clean copy note", "Confirm no workbooks, secrets, certificates, invoices, live keys, or commercial exports.", "red"],
-      ["04", "Save tree and taxonomy", "Capture file tree, labels, milestones, and issue wave before first PR review.", "teal"],
-      ["05", "Paste transcripts", "Save command output or blocker notes under transcript slots.", "blue"],
-      ["06", "Open draft PR", "Link issues, evidence files, proof commands, rollback, reviewers, and closeout.", "green"],
-      ["07", "Record check names", "Use exact GitHub Actions check names before branch protection is applied.", "amber"],
-      ["08", "Close out board", "Mark passed, held, blocked, deferred, no-leak proof, owner signoffs, and next owner.", "green"],
-    ];
-    const qualityRules = [
-      ["No guessed checks", "Blocked", "Branch protection stays blocked until real GitHub Actions check names exist.", "red"],
-      ["No silent placeholders", "Hold", "Any placeholder must name owner, blocker reason, and next command.", "amber"],
-      ["No live data", "Blocked", "Any workbook, source export, secret, certificate, payment key, or production file fails the board.", "red"],
-      ["No orphan artifact", "Hold", "Every screenshot, transcript, and signoff needs a PR link or issue trace.", "blue"],
-      ["One owner per gap", "Required", "Each hold, block, and deferred artifact has an owner lane.", "teal"],
-      ["Closeout always written", "Required", "Passed, deferred, blocked, no-leak statement, rollback, and next owner are recorded.", "green"],
-      ["Review lane aligned", "Required", "Product, platform, backend, security, data, and QA lanes use the v137 review matrix.", "green"],
-      ["Downloadable handoff", "Required", "The JSON handoff can be used as a checklist outside the static demo.", "blue"],
-    ];
-    const acceptanceChecks = [
-      ["Statuses separated", `${statusSummary.length} status groups split ready, hold, deferred, and blocked work.`, "green"],
-      ["Artifacts indexed", `${artifactRows.length} artifacts are normalized into one board.`, "teal"],
-      ["Evidence lanes clear", `${evidenceLanes.length} owner lanes explain who captures which proof.`, "blue"],
-      ["Escalations visible", `${escalationQueue.length} hold and block items are ready for management review.`, "amber"],
-      ["Capture rhythm clear", `${captureSequence.length} steps explain how proof moves from planned to captured.`, "green"],
-      ["Quality rules explicit", `${qualityRules.length} rules prevent guessed checks, silent placeholders, and data leakage.`, "red"],
-      ["Source map ready", `${sourceOfTruthMap.length} source systems define where each proof fact lives.`, "blue"],
-      ["Next handoff ready", "v139 can prepare the private repo handoff email and owner briefing pack.", "teal"],
+    const handoff = [
+      "The artifact board gives the private repo day one place to see proof readiness, holds, deferred items, and blockers.",
+      "Each row names the evidence group, file, owner, status, and note so the meeting can move without hunting across rooms.",
+      "The static demo still uses fixture-only data; real repo URLs, screenshots, transcripts, and owner signoffs remain live-session captures.",
+      "Next handoff can capture real reviewer replies, decisions, holds, and requested changes after the meeting.",
     ];
     return {
-      evidenceBoardScore,
-      downloadHref,
-      boardKpis,
-      statusSummary,
-      evidenceLanes,
       artifactRows,
-      sourceOfTruthMap,
+      boardKpis,
+      downloadHref,
       escalationQueue,
-      captureSequence,
-      qualityRules,
-      acceptanceChecks,
-      signalCards: [
-        ["Artifact board", `${evidenceBoardScore}%`, "Readiness to track evidence capture instead of relying on memory.", evidenceBoardScore >= 80 ? "green" : "amber"],
-        ["Ready", readyCount, "Prepared templates and closeout shells.", "green"],
-        ["Hold or deferred", holdCount + deferredCount, "Real GitHub outputs, URLs, screenshots, or signoffs still needed.", "amber"],
-        ["Blocked", blockedCount, "Trust items that need real branch or no-leak proof.", "red"],
-      ],
-      handoff: [
-        "v138 turns the review gate matrix, evidence folder writer, proof exporter, and command runner into one artifact status board.",
-        "The board separates ready templates from real holds, deferred repo-day items, and hard blocks so proof gaps are visible before the private backend repo starts.",
-        "It remains honest: real screenshots, transcripts, issue URLs, workflow names, branch proof, and owner signoffs still require the real private GitHub repository.",
-        "v139 can now prepare the private repo handoff email, owner briefing, upload checklist, and meeting script for the execution day.",
-      ],
-    };
-  }
-
-  function buildPrivateRepoHandoffEmailPackModel(commandModel, evidenceArtifactStatusBoard, backendPrReviewGateMatrix, privateRepoCommandRunnerPack, githubRepoOpeningPacket, firstPrBodyBuilder, productionBackendRepoDecisionMemo) {
-    const ownerMatrix = githubRepoOpeningPacket.ownerMatrix || [];
-    const artifactManifest = githubRepoOpeningPacket.artifactManifest || [];
-    const firstPrStarter = githubRepoOpeningPacket.firstPrStarter || [];
-    const closeoutLedger = githubRepoOpeningPacket.closeoutLedger || [];
-    const statusSummary = evidenceArtifactStatusBoard.statusSummary || [];
-    const sourceOfTruthMap = evidenceArtifactStatusBoard.sourceOfTruthMap || [];
-    const escalationQueue = evidenceArtifactStatusBoard.escalationQueue || [];
-    const captureSequence = evidenceArtifactStatusBoard.captureSequence || [];
-    const qualityRules = evidenceArtifactStatusBoard.qualityRules || [];
-    const reviewerPackets = backendPrReviewGateMatrix.reviewerPackets || [];
-    const prCommentTemplates = backendPrReviewGateMatrix.prCommentTemplates || [];
-    const commandRunbook = privateRepoCommandRunnerPack.commandRunbook || [];
-    const proofOutputs = privateRepoCommandRunnerPack.expectedOutputs || [];
-    const copyReadySections = firstPrBodyBuilder.copyReadySections || [];
-    const decisionOptions = productionBackendRepoDecisionMemo.decisionOptions || [
-      ["Go", "Open controlled private repo session with evidence capture.", "green"],
-      ["Hold", "Wait until owner, proof, or scope questions are closed.", "amber"],
-      ["No-go", "Stop if repo privacy, no-live-data, or no-secret controls are not accepted.", "red"],
-    ];
-    const audienceBriefs = ownerMatrix.length
-      ? ownerMatrix.map(([owner, lane, note, tone]) => [
-          owner,
-          lane,
-          `${note} Receives the repo-day brief, evidence status, approval language, and hold/block expectations.`,
-          tone,
-        ])
-      : [
-          ["Product owner", "Approve alpha scope", "Receives scope, no-live-data boundary, and final go/hold/no-go request.", "green"],
-          ["Platform owner", "Repo and branch rules", "Receives repo creation steps, branch timing, proof capture, and protection holds.", "teal"],
-          ["Backend lead", "Starter shell", "Receives command runbook, first PR body, and transcript expectations.", "blue"],
-          ["Security owner", "No leak proof", "Receives no-secret, no-workbook, commercial privacy, and block language.", "red"],
-          ["Data owner", "Fixture boundary", "Receives generated fixture boundary, no workbook import, and source trace notes.", "amber"],
-          ["QA owner", "Evidence closeout", "Receives artifact board, screenshot list, transcripts, signoffs, and closeout checks.", "green"],
-        ];
-    const emailSections = [
-      ["Subject", "Private repo opening day for PursuitDesk backend alpha", "Clear subject for owner review and action.", "green"],
-      ["Opening line", "We are ready to run a controlled private repo opening session for the PursuitDesk backend alpha.", "States the move without overselling production readiness.", "teal"],
-      ["Purpose", "Create the private backend shell, evidence packet, issue trace, draft PR, and proof rhythm.", "Explains why the session exists.", "blue"],
-      ["Boundary", "No production launch, no live customer workbook, no live billing, no secrets, and no commercial tracker export.", "Locks the safety posture before any approval.", "red"],
-      ["Evidence summary", `${statusSummary.length} artifact status groups and ${artifactManifest.length} opening artifacts are prepared for the session.`, "Connects v138 status board to the communication pack.", "green"],
-      ["Action request", "Please review your lane and reply Go, Hold, No-go, or Defer with reason.", "Turns the email into an explicit decision request.", "amber"],
-      ["Meeting ask", "Use the included agenda to run a 30-minute repo-day briefing before execution.", "Keeps owners aligned before commands run.", "blue"],
-      ["Closeout ask", "At the end, we record passed, deferred, blocked, no-leak proof, rollback status, and next owner.", "Keeps the day from ending with loose proof.", "green"],
-    ];
-    const evidenceAttachmentLinks = [
-      ...artifactManifest.slice(0, 9).map(([file, title, note, tone]) => [file, title, note, tone]),
-      ...sourceOfTruthMap.map(([source, proof, note, tone]) => [source, proof, note, tone]),
-    ];
-    const approvalLanguage = [
-      ["Go", "Owner reply", "Go for controlled private repo opening. Scope is backend alpha shell and evidence packet only; no production launch, live data, or billing capture is approved.", "green"],
-      ["Hold", "Owner reply", "Hold until the listed owner, evidence file, screenshot, command output, issue URL, workflow name, or rollback note is complete.", "amber"],
-      ["No-go", "Owner reply", "No-go if repository privacy, no-secret proof, no-workbook proof, rollback, or owner accountability is not accepted.", "red"],
-      ["Defer", "Owner reply", "Defer with reason, owner, date, and next proof command. Silent deferrals are not accepted.", "blue"],
-      ...prCommentTemplates.slice(0, 4),
-    ];
-    const meetingAgenda = [
-      ["00-05", "Confirm decision boundary", "Private repo only, backend alpha shell only, no live data, no live billing.", "red"],
-      ["05-10", "Review owner lanes", `${audienceBriefs.length} owner lanes confirm go, hold, no-go, or defer responsibilities.`, "green"],
-      ["10-15", "Walk artifact board", `${statusSummary.length} status groups explain ready, hold, deferred, and blocked evidence.`, "blue"],
-      ["15-20", "Review command run", `${commandRunbook.length} command blocks define execution order and transcript capture.`, "teal"],
-      ["20-24", "Review first PR", `${firstPrStarter.length} PR starter lines define scope, proof, rollback, and reviewers.`, "green"],
-      ["24-27", "Review hard stops", `${escalationQueue.length} holds and blocks are visible before execution.`, "red"],
-      ["27-29", "Assign closeout owner", `${closeoutLedger.length} closeout facts must be written before the session ends.`, "amber"],
-      ["29-30", "Confirm next move", "Decide whether to run repo day, hold for missing proof, or defer to another owner.", "blue"],
-    ];
-    const sendChecklist = [
-      ["Recipient lanes", `${audienceBriefs.length} owner lanes named before send.`, "green"],
-      ["Subject clear", "Private repo opening day subject line is explicit.", "teal"],
-      ["Scope locked", "No production launch, live data, live billing, secrets, or commercial tracker export.", "red"],
-      ["Evidence attached", `${evidenceAttachmentLinks.length} evidence links and source-of-truth items listed.`, "blue"],
-      ["Decision language", `${approvalLanguage.length} go, hold, no-go, defer, approve, and block phrases ready.`, "amber"],
-      ["Meeting agenda", `${meetingAgenda.length} agenda rows keep the briefing under control.`, "green"],
-      ["Follow-up rhythm", "Same day closeout, next-day cleanup, weekly management note.", "teal"],
-      ["JSON handoff", "Downloadable handoff can be shared outside the static demo.", "blue"],
-    ];
-    const followUpCadence = [
-      ["T-1 day", "Send briefing", "Owner lanes review scope, artifact board, evidence links, and decision language.", "green"],
-      ["T morning", "Run 30-minute briefing", "Confirm go, hold, no-go, or defer before repo commands begin.", "blue"],
-      ["During session", "Update artifact board", "Move proof from planned to captured, held, deferred, or blocked.", "teal"],
-      ["End of day", "Send closeout note", "Summarize passed, deferred, blocked, no-leak proof, rollback, and next owner.", "amber"],
-      ["T+1 day", "Clean unresolved holds", "Resolve missing URLs, screenshots, transcript output, and owner signoffs.", "red"],
-      ["Weekly review", "Report status", "Add management line to Command Center and Reports room.", "green"],
-    ];
-    const riskDisclaimers = [
-      ["Not production launch", "This session opens a private backend alpha shell only.", "red"],
-      ["No customer workbook", "Source Excel files and live customer exports are not approved for the repo.", "red"],
-      ["No live billing", "No live payment key, invoice sending, customer charging, or subscription capture is approved.", "red"],
-      ["No secret movement", "Any token, certificate, live key, or credential exposure stops the session.", "red"],
-      ["No guessed checks", "Branch protection waits for exact GitHub Actions names.", "amber"],
-      ["No silent placeholders", "Every placeholder names owner, blocker reason, and next proof action.", "blue"],
-      ["No commercial leakage", "Operational tracker examples stay free of value, LOA, agreement, invoice, billing, and negotiation facts.", "red"],
-      ["No unowned closeout", "Closeout must name passed, deferred, blocked, rollback, no-leak proof, and next owner.", "green"],
-    ];
-    const copyReadyEmail = [
-      "Subject: Private repo opening day for PursuitDesk backend alpha",
-      "",
-      "Hi team,",
-      "",
-      "We are ready to run a controlled private repo opening session for the PursuitDesk backend alpha.",
-      "",
-      "Purpose: create the private backend shell, evidence packet, issue trace, draft PR, and proof rhythm. This is not a production launch.",
-      "",
-      "Boundary: no live customer workbook, no production billing, no live secrets, no certificates, no invoices, and no commercial tracker export will enter the repo.",
-      "",
-      `Evidence status: ${evidenceArtifactStatusBoard.evidenceBoardScore}% artifact readiness, ${statusSummary.length} status groups, ${escalationQueue.length} holds or blocks to review before execution.`,
-      "",
-      "Please review your lane and reply with one of: Go, Hold, No-go, or Defer with reason.",
-      "",
-      "Meeting agenda: confirm scope, review owner lanes, walk evidence board, review command run, confirm first PR posture, call out hard stops, assign closeout owner, and confirm next move.",
-      "",
-      "Closeout will record passed, deferred, blocked, no-leak proof, rollback status, owner signoffs, and the next backend owner.",
-      "",
-      "Regards,",
-      "PursuitDesk control owner",
-    ].join("\n");
-    const handoffEmailScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          evidenceArtifactStatusBoard.evidenceBoardScore * 0.22 +
-            backendPrReviewGateMatrix.reviewGateScore * 0.18 +
-            privateRepoCommandRunnerPack.commandRunnerScore * 0.14 +
-            githubRepoOpeningPacket.openingReadinessScore * 0.14 +
-            firstPrBodyBuilder.firstPrReadinessScore * 0.12 +
-            Math.min(100, emailSections.length * 11) * 0.08 +
-            Math.min(100, audienceBriefs.length * 14) * 0.05 +
-            Math.min(100, evidenceAttachmentLinks.length * 7) * 0.04 +
-            Math.min(100, sendChecklist.length * 10) * 0.03 +
-            10,
-        ),
-      ),
-    );
-    const downloadHref = "data/private-repo-handoff-email-pack.json?v=281";
-    const handoffKpis = [
-      ["Email pack", `${handoffEmailScore}%`, "Readiness to send the private repo briefing without improvising.", handoffEmailScore >= 80 ? "green" : "amber"],
-      ["Owner lanes", audienceBriefs.length, "Recipients with clear decision and evidence expectations.", "teal"],
-      ["Evidence links", evidenceAttachmentLinks.length, "Artifacts, source-of-truth items, and proof references to include.", "blue"],
-      ["Escalations", escalationQueue.length, "Holds and blocks that should be visible before anyone says go.", "red"],
-    ];
-    return {
-      handoffEmailScore,
-      downloadHref,
-      handoffKpis,
-      audienceBriefs,
-      emailSections,
-      evidenceAttachmentLinks,
-      approvalLanguage,
-      meetingAgenda,
-      sendChecklist,
-      followUpCadence,
-      riskDisclaimers,
-      decisionOptions,
-      reviewerPackets,
-      proofOutputs,
-      copyReadySections,
-      copyReadyEmail,
-      signalCards: [
-        ["Handoff email", `${handoffEmailScore}%`, "Readiness to brief owners before private repo day.", handoffEmailScore >= 80 ? "green" : "amber"],
-        ["Recipients", audienceBriefs.length, "Owner lanes for product, platform, backend, security, data, and QA.", "teal"],
-        ["Agenda", meetingAgenda.length, "Timed briefing steps for repo-day control.", "blue"],
-        ["Safety locks", riskDisclaimers.length, "Scope and trust warnings before execution.", "red"],
-      ],
-      acceptanceChecks: [
-        ["Audience clear", `${audienceBriefs.length} recipients have lane-specific briefing notes.`, "green"],
-        ["Email sections clear", `${emailSections.length} sections form the briefing email structure.`, "teal"],
-        ["Evidence links ready", `${evidenceAttachmentLinks.length} evidence and source-of-truth links are listed.`, "blue"],
-        ["Decision language ready", `${approvalLanguage.length} go, hold, no-go, defer, approve, and block phrases are prepared.`, "amber"],
-        ["Meeting agenda ready", `${meetingAgenda.length} agenda rows control the briefing.`, "green"],
-        ["Send checklist ready", `${sendChecklist.length} checks prevent unsafe communication.`, "red"],
-        ["Follow-up rhythm ready", `${followUpCadence.length} follow-up moments keep the repo day from drifting.`, "blue"],
-        ["Next handoff ready", "v140 can turn the PR review language into copy-ready GitHub comments.", "teal"],
-      ],
-      handoff: [
-        "v139 turns the artifact status board and PR review matrix into a private repo handoff email pack.",
-        "The pack gives owners a copy-ready email, recipient lanes, evidence links, meeting agenda, approval language, send checklist, follow-up cadence, and safety disclaimers.",
-        "The static demo still cannot send the email or create the real private repo; it now makes the communication package ready for the actual execution day.",
-        "v140 can now prepare copy-ready GitHub PR review comments for approve, hold, request changes, no-leak signoff, and merge closeout.",
-      ],
-    };
-  }
-
-  function buildFirstBackendPrReviewCommentPackModel(commandModel, backendPrReviewGateMatrix, privateRepoHandoffEmailPack, evidenceArtifactStatusBoard, firstPrBodyBuilder, privateRepoCommandRunnerPack) {
-    const reviewerPackets = backendPrReviewGateMatrix.reviewerPackets || [];
-    const prCommentTemplates = backendPrReviewGateMatrix.prCommentTemplates || [];
-    const holdQueue = backendPrReviewGateMatrix.holdQueue || [];
-    const blockRules = backendPrReviewGateMatrix.blockRules || [];
-    const mergeChecks = backendPrReviewGateMatrix.mergeReadinessChecklist || [];
-    const evidenceReviewMap = backendPrReviewGateMatrix.evidenceReviewMap || [];
-    const decisionGates = backendPrReviewGateMatrix.decisionGates || [];
-    const copyReadySections = firstPrBodyBuilder.copyReadySections || [];
-    const runnerAcceptance = privateRepoCommandRunnerPack.acceptanceChecks || [];
-    const reviewCommentLibrary = [
-      [
-        "Opening review note",
-        "PR conversation",
-        "COMMENT",
-        "Starting controlled review. I am checking private repo visibility, no-live-data boundary, issue trace, evidence links, branch protection proof, no-secret proof, rollback, and closeout owner before any approval.",
-        "blue",
-      ],
-      [
-        "Approve lane",
-        "Formal review",
-        "APPROVE",
-        "Approved for my lane. Evidence is linked, issue trace is visible, rollback is clear, and no-live-data/no-secret/no-commercial-export boundaries are preserved.",
-        "green",
-      ],
-      [
-        "Evidence hold",
-        "PR conversation",
-        "COMMENT",
-        "Holding approval until the named evidence file, command output, screenshot, workflow name, issue URL, or owner response is complete and linked in the PR body.",
-        "amber",
-      ],
-      [
-        "Request changes",
-        "Formal review",
-        "REQUEST_CHANGES",
-        "Requesting changes because a trust blocker is present or unresolved: public visibility, secret, workbook, commercial leak, no rollback, unsafe branch posture, missing owner, or missing proof.",
-        "red",
-      ],
-      [
-        "No-leak signoff",
-        "Security note",
-        "COMMENT",
-        "No-leak signoff: no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.",
-        "red",
-      ],
-      [
-        "Deferred proof",
-        "PR conversation",
-        "COMMENT",
-        "Deferred proof is acceptable only when the blocker note names the missing proof, owner, reason, target date, and next command or screenshot needed to close it.",
-        "blue",
-      ],
-      [
-        "Branch protection hold",
-        "PR conversation",
-        "COMMENT",
-        "Holding branch-protection approval until the exact GitHub Actions check names are known from a real workflow run. Required checks must not be guessed.",
-        "amber",
-      ],
-      [
-        "Merge closeout",
-        "PR closeout",
-        "COMMENT",
-        "Merge can proceed only after all reviewer lanes are green, required checks are exact, branch protection is documented, no-leak proof is linked, rollback is written, and next owner is named.",
-        "teal",
-      ],
-    ];
-    const reviewerCommentPackets = reviewerPackets.map(([owner, scope, content, tone]) => [
-      owner,
-      scope,
-      `Reviewer lane: ${owner}\nScope: ${scope}\nDefault action: COMMENT until evidence is linked.\nApprove only for your lane after proof, issue trace, no-leak boundary, and rollback are visible.\nHold with a named owner and proof file when evidence is incomplete.\nRequest changes for trust blockers.\n\nSource packet:\n${content}`,
-      tone,
-    ]);
-    const inlineCommentSnippets = [
-      ["apps/api/src/middleware/tenantGuard.ts", "Tenant guard", "REQUEST_CHANGES", "Please link or implement tenant isolation proof before this route can be considered review-ready.", "red"],
-      ["apps/api/src/middleware/auditEnvelope.ts", "Audit envelope", "COMMENT", "Please confirm request id, actor, tenant id, action, resource id, and denial reason are captured without leaking sensitive payload data.", "blue"],
-      ["apps/api/src/routes/records.ts", "Operational records", "COMMENT", "Please confirm this endpoint only exposes tracker fields and does not return value, LOA, agreement, invoice, billing, or negotiation fields.", "amber"],
-      ["apps/api/src/routes/commercialVault.ts", "Commercial vault", "REQUEST_CHANGES", "Commercial vault access needs admin/commercial permission proof and denied-audit proof before approval.", "red"],
-      ["apps/api/src/routes/import.ts", "Import route", "COMMENT", "Please link import dry-run, quarantine, duplicate detection, and commit gate evidence before review leaves draft.", "blue"],
-      [".github/workflows/ci.yml", "Workflow checks", "COMMENT", "Required check names should come from the first real Actions run; branch protection should wait until those names are exact.", "amber"],
-      ["docs/evidence/no-secret-proof.md", "No-secret proof", "APPROVE", "No-secret proof is acceptable for my lane when it shows no tokens, certificates, keys, or live credentials were committed.", "green"],
-      ["docs/evidence/rollback-note.md", "Rollback note", "COMMENT", "Please confirm rollback names the branch, PR, repo recreation path, credential rotation path, and next owner.", "teal"],
-    ];
-    const reviewDecisionBoard = [
-      ["Draft comment", "COMMENT", "Use while proof files, issue URLs, workflow names, or owner replies are still pending.", "amber"],
-      ["Lane approval", "APPROVE", "Use only for the reviewer lane that has full proof and no unresolved blockers.", "green"],
-      ["Evidence hold", "COMMENT", "Use when the direction is acceptable but the evidence is not yet complete.", "blue"],
-      ["Trust blocker", "REQUEST_CHANGES", "Use when public visibility, secret movement, workbook leakage, commercial leakage, missing rollback, or unsafe branch posture appears.", "red"],
-      ["No-leak signoff", "COMMENT", "Use to document that sensitive data boundaries are preserved.", "teal"],
-      ["Merge closeout", "COMMENT", "Use immediately before merge readiness or before closing the PR as held.", "green"],
-    ];
-    const reviewSendChecklist = [
-      ["PR URL real", "Do not paste final review text until the real private PR URL exists.", "red"],
-      ["Reviewer lane chosen", `${reviewerCommentPackets.length} reviewer lanes are available for lane-specific comments.`, "green"],
-      ["Action type selected", "COMMENT, APPROVE, or REQUEST_CHANGES is chosen before pasting.", "teal"],
-      ["Evidence linked", `${evidenceReviewMap.length} evidence rows can be referenced by the review note.`, "blue"],
-      ["Holds named", `${holdQueue.length} hold reasons name what is missing before approval.`, "amber"],
-      ["Blocks named", `${blockRules.length} trust blockers have request-changes language.`, "red"],
-      ["Merge checklist checked", `${mergeChecks.length} merge checks keep the first backend PR controlled.`, "green"],
-      ["No leak repeated", "Every formal approval repeats no workbook, no secret, no billing, and no commercial export boundaries.", "red"],
-    ];
-    const replyHandlingCadence = [
-      ["Reviewer replies Go", "Mark lane green", "Confirm lane scope, proof link, and next owner before treating it as approval.", "green"],
-      ["Reviewer replies Hold", "Keep PR draft", "Add missing proof, owner, date, and next command to the hold queue.", "amber"],
-      ["Reviewer requests changes", "Stop merge path", "Resolve blocker and update no-leak, rollback, or branch proof before asking again.", "red"],
-      ["Reviewer defers", "Capture reason", "Record deferred owner, date, proof path, and next meeting or command.", "blue"],
-      ["All lanes green", "Run closeout", "Confirm exact checks, branch protection, issue trace, no-leak proof, rollback, and next owner.", "teal"],
-      ["Any lane red", "Do not merge", "Close or keep draft until blocker is removed and documented.", "red"],
-    ];
-    const firstBackendPrCommentScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          backendPrReviewGateMatrix.reviewGateScore * 0.2 +
-            privateRepoHandoffEmailPack.handoffEmailScore * 0.16 +
-            evidenceArtifactStatusBoard.evidenceBoardScore * 0.16 +
-            firstPrBodyBuilder.firstPrReadinessScore * 0.14 +
-            Math.min(100, reviewCommentLibrary.length * 11) * 0.1 +
-            Math.min(100, reviewerCommentPackets.length * 14) * 0.08 +
-            Math.min(100, inlineCommentSnippets.length * 12) * 0.06 +
-            Math.min(100, reviewSendChecklist.length * 10) * 0.05 +
-            Math.min(100, replyHandlingCadence.length * 14) * 0.05 +
-            9,
-        ),
-      ),
-    );
-    const downloadHref = "data/first-backend-pr-review-comment-pack.json?v=281";
-    const reviewCommentKpis = [
-      ["Comment pack", `${firstBackendPrCommentScore}%`, "Readiness to paste controlled GitHub review language into the first backend PR.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
-      ["Review actions", reviewCommentLibrary.length, "Copy-ready COMMENT, APPROVE, REQUEST_CHANGES, no-leak, hold, and merge notes.", "teal"],
-      ["Reviewer packets", reviewerCommentPackets.length, "Lane-specific reviewer instructions for product, platform, backend, security, data, and release.", "blue"],
-      ["Inline snippets", inlineCommentSnippets.length, "File-scoped review notes for middleware, routes, workflows, and evidence files.", "amber"],
-    ];
-    const copyReadyReviewText = [
-      "PursuitDesk first backend PR review pack",
-      "",
-      ...reviewCommentLibrary.flatMap(([label, surface, action, comment]) => [
-        `${label} / ${surface} / ${action}`,
-        comment,
-        "",
-      ]),
-    ].join("\n");
-    return {
-      firstBackendPrCommentScore,
-      downloadHref,
-      reviewCommentKpis,
-      reviewCommentLibrary,
-      reviewerCommentPackets,
-      inlineCommentSnippets,
-      reviewDecisionBoard,
-      reviewSendChecklist,
-      replyHandlingCadence,
-      prCommentTemplates,
-      decisionGates,
-      holdQueue,
-      blockRules,
-      mergeChecks,
-      evidenceReviewMap,
-      copyReadySections,
-      runnerAcceptance,
-      copyReadyReviewText,
-      signalCards: [
-        ["Review comments", `${firstBackendPrCommentScore}%`, "Readiness to turn the review gate matrix into GitHub PR comments.", firstBackendPrCommentScore >= 80 ? "green" : "amber"],
-        ["Formal actions", reviewCommentLibrary.filter(([, , action]) => action !== "COMMENT").length, "Approve and request-changes comments are separated from neutral comments.", "teal"],
-        ["Holds", holdQueue.length, "Known hold reasons remain visible before approval.", "amber"],
-        ["No-leak controls", blockRules.filter(([, , note]) => note.toLowerCase().includes("secret") || note.toLowerCase().includes("workbook") || note.toLowerCase().includes("commercial")).length, "Trust blockers get explicit request-changes language.", "red"],
-      ],
-      acceptanceChecks: [
-        ["Comment library ready", `${reviewCommentLibrary.length} copy-ready GitHub review comments are prepared.`, "green"],
-        ["Reviewer packets ready", `${reviewerCommentPackets.length} reviewer-specific packets can be pasted into PR threads.`, "teal"],
-        ["Inline snippets ready", `${inlineCommentSnippets.length} file-scoped snippets guide line comments.`, "blue"],
-        ["Decision board ready", `${reviewDecisionBoard.length} review actions separate comment, approval, hold, request changes, no-leak, and closeout.`, "amber"],
-        ["Send checklist ready", `${reviewSendChecklist.length} checks prevent unsafe review submission.`, "red"],
-        ["Reply handling ready", `${replyHandlingCadence.length} reviewer reply outcomes are mapped.`, "green"],
-        ["Review gate linked", `${decisionGates.length} decision gates feed the comment pack.`, "blue"],
-        ["Next handoff ready", "v141 can close the evidence packet after the real PR review session.", "teal"],
-      ],
-      handoff: [
-        "v140 turns the backend PR review gate matrix into copy-ready GitHub PR review comments.",
-        "The pack separates neutral comments, lane approvals, request-changes blockers, no-leak signoffs, evidence holds, branch-protection holds, and merge closeout language.",
-        "The static demo still cannot post to GitHub; it now gives the exact language to paste once the real private PR exists.",
-        "v141 can now prepare the private repo evidence closeout pack for passed, held, blocked, deferred, rollback, no-leak, and next-owner outcomes.",
-      ],
-    };
-  }
-
-  function buildPrivateRepoEvidenceCloseoutPackModel(commandModel, firstBackendPrReviewCommentPack, evidenceArtifactStatusBoard, privateRepoHandoffEmailPack, backendPrReviewGateMatrix, privateRepoCommandRunnerPack) {
-    const reviewCommentLibrary = firstBackendPrReviewCommentPack.reviewCommentLibrary || [];
-    const reviewerCommentPackets = firstBackendPrReviewCommentPack.reviewerCommentPackets || [];
-    const inlineCommentSnippets = firstBackendPrReviewCommentPack.inlineCommentSnippets || [];
-    const replyHandlingCadence = firstBackendPrReviewCommentPack.replyHandlingCadence || [];
-    const holdQueue = backendPrReviewGateMatrix.holdQueue || [];
-    const blockRules = backendPrReviewGateMatrix.blockRules || [];
-    const mergeChecks = backendPrReviewGateMatrix.mergeReadinessChecklist || [];
-    const statusSummary = evidenceArtifactStatusBoard.statusSummary || [];
-    const artifactRows = evidenceArtifactStatusBoard.artifactRows || [];
-    const escalationQueue = evidenceArtifactStatusBoard.escalationQueue || [];
-    const captureSequence = evidenceArtifactStatusBoard.captureSequence || [];
-    const qualityRules = evidenceArtifactStatusBoard.qualityRules || [];
-    const commandOutputs = privateRepoCommandRunnerPack.expectedOutputs || [];
-    const closeoutOutcomeLanes = [
-      ["Passed proof", "Ready to close", "Evidence, comments, issue trace, command output, and owner lane are recorded.", "green"],
-      ["Held proof", "Waiting", "Evidence direction is acceptable but still needs proof file, screenshot, command output, URL, or owner reply.", "amber"],
-      ["Blocked proof", "Stop condition", "Trust blocker requires request changes, redaction, rollback, or owner decision before continuing.", "red"],
-      ["Deferred proof", "Owner dated", "Deferred proof names missing item, owner, target date, next command, and management visibility.", "blue"],
-      ["No-leak proof", "Required", "No workbook, secret, certificate, billing key, invoice, commercial export, or live customer payload is present.", "red"],
-      ["Rollback posture", "Required", "Branch, PR, repo recreation, credential rotation, and data path reset are named.", "amber"],
-      ["Next owner", "Required", "Every unresolved item has one owner lane and one next action.", "teal"],
-      ["Management note", "Required", "Closeout summary is ready for Command Center, Reports, and owner email follow-up.", "green"],
-    ];
-    const evidenceCloseoutRegister = [
-      ...statusSummary.map(([label, value, note, tone]) => [label, value, `${note} Closeout must mark final status after the real repo session.`, tone]),
-      ["Comment decisions", reviewCommentLibrary.length, "Review comments become passed, held, blocked, or deferred outcomes.", "blue"],
-      ["Reviewer lanes", reviewerCommentPackets.length, "Each reviewer lane receives a final go, hold, no-go, defer, or request-changes state.", "teal"],
-      ["Inline snippets", inlineCommentSnippets.length, "File-scoped comments feed exact evidence or code-review closeout.", "amber"],
-      ["Command outputs", commandOutputs.length, "Command outputs become proof links, blocker notes, or deferred rows.", "green"],
-    ];
-    const closeoutDecisionLog = [
-      ["PR opened", "Pending real repo", "Record private PR URL, branch name, author, issue wave, and draft status.", "blue"],
-      ["Review comments posted", "Pending real PR", "Record comment URLs, review action type, reviewer lane, and unresolved threads.", "teal"],
-      ["Approvals received", "Lane by lane", "Record who approved, what scope they approved, and what evidence they relied on.", "green"],
-      ["Holds recorded", `${holdQueue.length} possible holds`, "Record owner, missing proof, target date, and next command for every hold.", "amber"],
-      ["Blocks recorded", `${blockRules.length} possible blocks`, "Record request-changes reason, risk owner, redaction, rollback, and restart decision.", "red"],
-      ["No-leak statement", "Required", "Record explicit no workbook, no secret, no billing, no commercial export statement.", "red"],
-      ["Rollback status", "Required", "Record whether rollback is not needed, ready, used, or blocked.", "amber"],
-      ["Next move", "Required", "Record merge, keep draft, close PR, restart branch, or defer to owner.", "green"],
-    ];
-    const ownerCloseoutQueue = [
-      ["Product owner", "Scope and next value", "Confirm scope, accepted tradeoffs, deferred product questions, and next release decision.", "green"],
-      ["Platform owner", "Repo and branch proof", "Confirm private visibility, check names, branch rules, and protection timing.", "teal"],
-      ["Backend lead", "Code and command proof", "Confirm shell, route files, tests, transcripts, and unresolved implementation holds.", "blue"],
-      ["Security owner", "No-leak and guard proof", "Confirm no secrets, no workbooks, no commercial leakage, tenant guard, audit envelope, and denial proof.", "red"],
-      ["Data owner", "Fixture and import proof", "Confirm fixture boundary, source trace, import dry-run, quarantine, and rollback path.", "amber"],
-      ["QA / Release", "Closeout owner", "Confirm evidence packet, screenshots, comments, check results, rollback, and management note.", "green"],
-    ];
-    const noLeakRollbackChecks = [
-      ["No workbook", "Required", "Source Excel files and live customer exports are absent from the repo and evidence packet.", "red"],
-      ["No secret", "Required", "Tokens, certificates, live keys, credentials, and payment secrets are absent or rotated if exposed.", "red"],
-      ["No commercial export", "Required", "Value, LOA, agreement, invoice, billing, and negotiation facts are not in frontline examples.", "red"],
-      ["No public repo", "Required", "Private visibility proof is linked before any closeout is called passed.", "red"],
-      ["Rollback note", "Required", "Branch, PR, recreate repo, rotate credential, and restart data path instructions are written.", "amber"],
-      ["Check names exact", "Required", "Required checks match real GitHub Actions names, not guessed labels.", "blue"],
-      ["Owner signoff", "Required", "Each lane gives go, hold, no-go, or defer with reason.", "teal"],
-      ["Management record", "Required", "Command Center tracker records passed, held, blocked, deferred, no-leak, rollback, and next owner.", "green"],
-    ];
-    const closeoutTimeline = [
-      ["Before merge", "Freeze evidence state", "Record all comments, approvals, holds, blocks, and missing proof before merge decision.", "blue"],
-      ["At decision", "Write outcome", "Mark merge, keep draft, request changes, close PR, restart branch, or defer.", "green"],
-      ["Same day", "Send closeout", "Send management note with passed, held, blocked, deferred, no-leak, rollback, and next owner.", "teal"],
-      ["Next day", "Clean holds", "Resolve missing links, screenshots, transcript output, or owner replies.", "amber"],
-      ["Weekly review", "Report residual risk", "Bring open holds, blocks, and deferred proof into the operating review.", "red"],
-      ["Next build", "Prepare reply board", "v142 or v143 can capture meeting/reply decisions after the real private repo day.", "blue"],
-    ];
-    const managementSummaryLines = [
-      ["Opening line", "First backend PR review closeout is controlled, but real GitHub execution is still pending.", "green"],
-      ["Passed line", "Passed items require linked evidence, issue trace, reviewer lane, no-leak proof, and rollback visibility.", "teal"],
-      ["Hold line", "Held items remain acceptable only with owner, target date, missing proof, and next command.", "amber"],
-      ["Block line", "Blocked items stop merge until trust failure is removed and documented.", "red"],
-      ["No-leak line", "No workbook, secret, billing, invoice, or commercial export is approved in the first backend PR.", "red"],
-      ["Next-owner line", "Every unresolved item has one named owner and one next action.", "blue"],
-    ];
-    const copyReadyCloseoutNote = [
-      "Subject: PursuitDesk private repo evidence closeout",
-      "",
-      "Closeout status: first backend PR review evidence is ready to be recorded against passed, held, blocked, deferred, no-leak, rollback, and next-owner lanes.",
-      "",
-      `Review comments prepared: ${reviewCommentLibrary.length}. Reviewer lanes: ${reviewerCommentPackets.length}. Evidence status groups: ${statusSummary.length}.`,
-      "",
-      "Passed means evidence is linked, issue trace is visible, reviewer lane is clear, no-leak proof is present, rollback is written, and next owner is named.",
-      "",
-      "Held means the direction is acceptable, but the proof is incomplete and must name owner, missing item, target date, and next command.",
-      "",
-      "Blocked means a trust failure exists: public repo, secret, workbook, commercial leakage, missing rollback, direct main push, missing checks, or no owner accountability.",
-      "",
-      "Deferred means the proof is intentionally moved forward with owner, reason, date, and next evidence action.",
-      "",
-      "No-leak statement: no customer workbook, production secret, certificate, payment key, invoice, billing export, or commercial tracker value is approved in this PR.",
-      "",
-      "Rollback statement: close PR, delete branch, recreate repo, rotate credential, or restart data path is named before any merge decision.",
-      "",
-      "Next owner: QA / Release keeps the closeout ledger until all holds, blocks, and deferred proof are resolved.",
-    ].join("\n");
-    const evidenceCloseoutScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          firstBackendPrReviewCommentPack.firstBackendPrCommentScore * 0.2 +
-            evidenceArtifactStatusBoard.evidenceBoardScore * 0.18 +
-            privateRepoHandoffEmailPack.handoffEmailScore * 0.14 +
-            backendPrReviewGateMatrix.reviewGateScore * 0.12 +
-            privateRepoCommandRunnerPack.commandRunnerScore * 0.1 +
-            Math.min(100, closeoutOutcomeLanes.length * 11) * 0.08 +
-            Math.min(100, closeoutDecisionLog.length * 10) * 0.06 +
-            Math.min(100, ownerCloseoutQueue.length * 14) * 0.04 +
-            Math.min(100, noLeakRollbackChecks.length * 10) * 0.04 +
-            Math.min(100, managementSummaryLines.length * 14) * 0.04 +
-            8,
-        ),
-      ),
-    );
-    const downloadHref = "data/private-repo-evidence-closeout-pack.json?v=281";
-    const closeoutKpis = [
-      ["Closeout pack", `${evidenceCloseoutScore}%`, "Readiness to close the first private backend PR evidence session without losing proof state.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
-      ["Outcome lanes", closeoutOutcomeLanes.length, "Passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout lanes.", "teal"],
-      ["Owner queue", ownerCloseoutQueue.length, "Product, platform, backend, security, data, and QA closeout ownership.", "blue"],
-      ["Trust checks", noLeakRollbackChecks.length, "No-leak, rollback, exact checks, owner signoff, and management record locks.", "red"],
-    ];
-    return {
-      evidenceCloseoutScore,
-      downloadHref,
-      closeoutKpis,
-      closeoutOutcomeLanes,
-      evidenceCloseoutRegister,
-      closeoutDecisionLog,
-      ownerCloseoutQueue,
-      noLeakRollbackChecks,
-      closeoutTimeline,
-      managementSummaryLines,
-      copyReadyCloseoutNote,
-      reviewCommentLibrary,
-      reviewerCommentPackets,
-      replyHandlingCadence,
-      holdQueue,
-      blockRules,
-      mergeChecks,
-      escalationQueue,
-      captureSequence,
-      qualityRules,
-      signalCards: [
-        ["Evidence closeout", `${evidenceCloseoutScore}%`, "Readiness to convert the review session into a clear management record.", evidenceCloseoutScore >= 80 ? "green" : "amber"],
-        ["Held or blocked", holdQueue.length + blockRules.length, "Known hold and block reasons that cannot disappear at closeout.", "red"],
-        ["Owner lanes", ownerCloseoutQueue.length, "Named lanes responsible for final proof state.", "teal"],
-        ["Management lines", managementSummaryLines.length, "Copy-ready lines for the weekly operating review.", "blue"],
-      ],
-      acceptanceChecks: [
-        ["Outcome lanes ready", `${closeoutOutcomeLanes.length} closeout lanes separate passed, held, blocked, deferred, no-leak, rollback, next owner, and management note.`, "green"],
-        ["Evidence register ready", `${evidenceCloseoutRegister.length} evidence rows can be closed or escalated.`, "teal"],
-        ["Decision log ready", `${closeoutDecisionLog.length} decision rows prevent vague closeout.`, "blue"],
-        ["Owner queue ready", `${ownerCloseoutQueue.length} owner lanes receive final closeout duties.`, "amber"],
-        ["No-leak and rollback ready", `${noLeakRollbackChecks.length} trust checks must pass before merge language is used.`, "red"],
-        ["Timeline ready", `${closeoutTimeline.length} closeout moments keep the repo day from fading away.`, "green"],
-        ["Management summary ready", `${managementSummaryLines.length} lines can move into Reports and Command Center.`, "blue"],
-        ["Next handoff ready", "v142 can prepare the backend repo day meeting pack and v143 can capture real reviewer replies.", "teal"],
-      ],
-      handoff: [
-        "v141 turns review comments, evidence status, handoff email, and PR review gates into a private repo evidence closeout pack.",
-        "The pack separates passed, held, blocked, deferred, no-leak, rollback, next-owner, and management-note outcomes.",
-        "The static demo still cannot read a real GitHub PR; it now defines exactly how the real evidence closeout should be recorded after the private repo session.",
-        "v142 can now prepare the backend repo day meeting pack, while v143 can track real reviewer replies and closeout decisions.",
-      ],
-    };
-  }
-
-  function buildBackendRepoDayMeetingPackModel(commandModel, privateRepoEvidenceCloseoutPack, privateRepoHandoffEmailPack, backendAlphaControlBoard, privateRepoDayOneScript, backendPrReviewGateMatrix, evidenceArtifactStatusBoard, productionBackendRepoDecisionMemo) {
-    const openRecords = commandModel.openRecords || [];
-    const reviewGates = backendPrReviewGateMatrix.decisionGates || [];
-    const holdQueue = backendPrReviewGateMatrix.holdQueue || [];
-    const blockRules = backendPrReviewGateMatrix.blockRules || [];
-    const artifactRows = evidenceArtifactStatusBoard.artifactRows || [];
-    const evidenceCloseoutScore = privateRepoEvidenceCloseoutPack.evidenceCloseoutScore || 0;
-    const handoffScore = privateRepoHandoffEmailPack.handoffEmailScore || 0;
-    const controlScore = backendAlphaControlBoard.controlReadinessScore || backendAlphaControlBoard.alphaControlScore || backendAlphaControlBoard.controlScore || 0;
-    const scriptScore = privateRepoDayOneScript.scriptReadinessScore || privateRepoDayOneScript.dayOneScriptScore || privateRepoDayOneScript.repoDayOneScore || 0;
-    const decisionMemoScore = productionBackendRepoDecisionMemo.approvalScore || productionBackendRepoDecisionMemo.decisionMemoScore || productionBackendRepoDecisionMemo.repoDecisionMemoScore || 0;
-    const meetingAgendaBlocks = [
-      ["Opening and scope", "10 min", "Confirm private repo objective, alpha boundary, non-goals, and stop rules before anyone starts commands.", "green"],
-      ["Repo visibility proof", "8 min", "Confirm private repository, owner access, branch posture, and no public exposure.", "red"],
-      ["Issue wave and first PR", "12 min", "Confirm issue wave, first PR scope, reviewer lanes, branch name, and draft status.", "blue"],
-      ["Evidence walkthrough", "15 min", `Walk through ${artifactRows.length} artifact slots and mark ready, hold, deferred, or blocked.`, "teal"],
-      ["Review gate decisions", "12 min", `Use ${reviewGates.length} review gates to decide approve, hold, request changes, or defer.`, "amber"],
-      ["No-leak and rollback", "10 min", "Repeat no workbook, no secret, no billing, no commercial export, and rollback path before any closeout language.", "red"],
-      ["Owner action capture", "10 min", `Assign every hold or blocker from ${holdQueue.length + blockRules.length} known risks to one owner and one date.`, "amber"],
-      ["Management closeout", "8 min", "Write the final passed, held, blocked, deferred, no-leak, rollback, and next-owner summary.", "green"],
-    ];
-    const attendeeRoles = [
-      ["Product sponsor", "Decision owner", "Approves alpha scope, business value, and go/no-go posture.", "green"],
-      ["Platform owner", "Repo owner", "Shows private repo visibility, branch protection timing, checks, and environment posture.", "teal"],
-      ["Backend lead", "Implementation owner", "Explains route shell, migrations, seed data, tests, and command outputs.", "blue"],
-      ["Security reviewer", "Trust owner", "Checks tenant isolation, no secrets, no workbook, no commercial leakage, and denial audit proof.", "red"],
-      ["Data owner", "Import owner", "Confirms fixture boundary, source trace, quarantine, dry-run, rollback, and reconciliation thinking.", "amber"],
-      ["QA / Release owner", "Evidence owner", "Captures screenshots, transcripts, PR notes, issue links, signoffs, and closeout ledger.", "green"],
-      ["Billing owner", "Commercial privacy", "Confirms billing is test-mode only and no invoice, payment, or commercial export is exposed.", "amber"],
-      ["Meeting scribe", "Record keeper", "Writes decisions, action owners, due dates, parked questions, and final management note.", "blue"],
-    ];
-    const decisionCaptureBoard = [
-      ["Create or keep repo", "Decision", "Confirm repo name, private visibility, owner, and whether the day proceeds.", "red"],
-      ["Open issue wave", "Decision", "Confirm which issues are opened now, deferred, or parked for later sprint work.", "blue"],
-      ["Open first PR", "Decision", "Confirm draft PR scope, reviewers, evidence links, rollback note, and no-leak statement.", "teal"],
-      ["Approve lane", "Decision", "Record each reviewer lane as go, hold, request changes, defer, or no-go.", "green"],
-      ["Resolve holds", "Action", "Assign each hold to owner, proof item, command, target date, and follow-up point.", "amber"],
-      ["Stop on blocker", "Action", "Record request-changes reason, redaction, rollback, owner, and restart path.", "red"],
-      ["Close meeting", "Record", "Capture passed, held, blocked, deferred, no-leak, rollback, and next owner.", "green"],
-      ["Next build input", "Queue", "Feed replies and real outcomes into the v143 reply capture board.", "blue"],
-    ];
-    const actionFollowupQueue = [
-      ["Repo proof", "Platform owner", "Attach private visibility screenshot, branch name, check names, and branch-protection timing.", "red"],
-      ["Issue URLs", "Product sponsor", "Paste real issue URLs into first PR body and closeout ledger.", "blue"],
-      ["Command transcript", "Backend lead", "Attach install, lint, test, migration, seed, smoke, and audit command outputs.", "teal"],
-      ["No-leak proof", "Security reviewer", "Confirm no workbook, secrets, billing export, invoice, or commercial tracker value moved.", "red"],
-      ["Fixture proof", "Data owner", "Attach fixture boundary, import dry-run, quarantine, duplicate, and rollback notes.", "amber"],
-      ["Review comments", "QA / Release owner", "Post comments or holds using the PR review comment pack and record thread URLs.", "green"],
-      ["Meeting minutes", "Meeting scribe", "Publish decision log, attendance, open holds, blockers, and management closeout summary.", "blue"],
-      ["Follow-up review", "Product sponsor", "Schedule the next checkpoint for held, blocked, or deferred evidence.", "amber"],
-    ];
-    const meetingEvidenceArtifacts = [
-      ["Attendance log", "Required", "Names, role, organization lane, attendance status, and decision authority.", "green"],
-      ["Decision log", "Required", "Every go, hold, request changes, defer, no-go, and closeout decision is recorded.", "blue"],
-      ["Action register", "Required", "Owner, action, due date, evidence file, risk level, and follow-up status.", "amber"],
-      ["PR review notes", "Required", "Real PR URL, review comments, line comments, requested changes, and approvals.", "teal"],
-      ["No-leak signoff", "Required", "No workbook, secret, billing, invoice, or commercial export statement.", "red"],
-      ["Rollback note", "Required", "Branch, PR, repo recreation, credential rotation, and data path reset.", "red"],
-      ["Evidence index", "Required", "Screenshots, transcripts, issue URLs, workflow names, branch proof, and signoff files.", "green"],
-      ["Management summary", "Required", "Short report line for passed, held, blocked, deferred, next owner, and next build.", "blue"],
-    ];
-    const riskParkingLot = [
-      ["Scope creep", "Park", "Anything beyond first backend PR alpha is moved into a later issue or decision memo.", "amber"],
-      ["Unknown check names", "Hold", "Branch protection waits until real GitHub Actions check names exist.", "blue"],
-      ["Commercial leakage", "Block", "Any value, invoice, LOA, agreement, billing, or negotiation leak stops the session.", "red"],
-      ["Credential exposure", "Block", "Any token, key, certificate, or live secret exposure triggers rotation and rollback.", "red"],
-      ["Unowned action", "Hold", "No action leaves the meeting without one named owner and one due date.", "amber"],
-      ["Unclear approval", "Park", "Any vague approval is converted into lane-specific go, hold, defer, or request changes.", "teal"],
-    ];
-    const meetingTimeline = [
-      ["Before meeting", "Send pack", "Send agenda, attendee roles, evidence links, decision scope, and stop rules.", "blue"],
-      ["First 15 min", "Confirm safety", "Confirm private visibility, no-leak boundary, and rollback posture before commands.", "red"],
-      ["Middle block", "Review evidence", "Walk issue wave, PR body, command outputs, artifact board, and review gates.", "teal"],
-      ["Decision block", "Capture outcomes", "Record go, hold, request changes, defer, no-go, and owner actions.", "green"],
-      ["Closeout", "Publish minutes", "Send management summary and action queue the same day.", "amber"],
-      ["Next day", "Chase proof", "Resolve holds, blockers, deferred evidence, and real reviewer replies.", "blue"],
-    ];
-    const managementBriefLines = [
-      ["Meeting purpose", "The private backend repo day is controlled around first PR evidence, not general development discussion.", "green"],
-      ["Decision standard", "No pass is accepted without evidence, issue trace, no-leak proof, rollback visibility, and owner.", "teal"],
-      ["Risk standard", "Public repo, secret movement, workbook leakage, commercial leakage, missing rollback, or missing owner blocks closeout.", "red"],
-      ["Action standard", "Every hold or deferred item has owner, proof item, next command, target date, and review path.", "amber"],
-      ["Output standard", "Meeting minutes produce attendance, decision log, action register, PR note links, and management summary.", "blue"],
-      ["Next build", "Real reviewer replies and outcomes feed the v143 reply capture board.", "green"],
-    ];
-    const copyReadyMeetingScript = [
-      "PursuitDesk backend repo day meeting script",
-      "",
-      "1. Open by confirming purpose: create controlled evidence for the first private backend PR, not to expand the product scope.",
-      "2. Confirm private repo visibility before discussing files, commands, screenshots, or issue URLs.",
-      "3. Restate the no-leak boundary: no workbook, no production secret, no payment key, no billing export, no invoice, and no commercial tracker values.",
-      "4. Walk the issue wave, first PR body, command runner pack, artifact board, and review gate matrix.",
-      "5. Ask each reviewer lane for go, hold, request changes, defer, or no-go. Do not accept vague approval.",
-      "6. For every hold, capture owner, missing proof, target date, next command, and evidence file name.",
-      "7. For every blocker, stop the merge path and record redaction, rollback, credential rotation, or restart decision.",
-      "8. Close with the management summary: passed, held, blocked, deferred, no-leak, rollback, next owner, and next meeting input.",
-    ].join("\n");
-    const backendRepoDayMeetingScore = Math.max(
-      0,
-      Math.min(
-        100,
-        Math.round(
-          evidenceCloseoutScore * 0.22 +
-            handoffScore * 0.14 +
-            controlScore * 0.12 +
-            scriptScore * 0.1 +
-            decisionMemoScore * 0.08 +
-            Math.min(100, meetingAgendaBlocks.length * 12) * 0.08 +
-            Math.min(100, attendeeRoles.length * 11) * 0.07 +
-            Math.min(100, decisionCaptureBoard.length * 12) * 0.07 +
-            Math.min(100, actionFollowupQueue.length * 12) * 0.05 +
-            Math.min(100, meetingEvidenceArtifacts.length * 12) * 0.04 +
-            6,
-        ),
-      ),
-    );
-    const downloadHref = "data/backend-repo-day-meeting-pack.json?v=281";
-    return {
-      backendRepoDayMeetingScore,
-      downloadHref,
-      meetingKpis: [
-        ["Meeting pack", `${backendRepoDayMeetingScore}%`, "Readiness to run the first private repo day as a controlled evidence meeting.", backendRepoDayMeetingScore >= 80 ? "green" : "amber"],
-        ["Agenda blocks", meetingAgendaBlocks.length, "Time-boxed blocks for scope, proof, review gates, actions, and closeout.", "teal"],
-        ["Attendee roles", attendeeRoles.length, "Decision, repo, backend, security, data, QA, billing, and scribe ownership.", "blue"],
-        ["Evidence outputs", meetingEvidenceArtifacts.length, "Attendance, decisions, actions, PR notes, no-leak, rollback, evidence index, and management summary.", "red"],
-      ],
-      meetingAgendaBlocks,
-      attendeeRoles,
-      decisionCaptureBoard,
-      actionFollowupQueue,
-      meetingEvidenceArtifacts,
-      riskParkingLot,
-      meetingTimeline,
-      managementBriefLines,
-      copyReadyMeetingScript,
-      sourceReadiness: [
-        ["Evidence closeout", `${evidenceCloseoutScore}%`, "v141 closeout lanes feed the meeting minutes.", "green"],
-        ["Handoff email", `${handoffScore}%`, "Recipient lanes and briefing agenda seed the meeting invite.", "teal"],
-        ["Control board", `${controlScore}%`, "Repo status, blockers, evidence health, and action queue orient the meeting.", "blue"],
-        ["Open work", openRecords.length, "Open pursuit and project records remain operational context, not meeting scope.", "amber"],
-      ],
-      signalCards: [
-        ["Meeting readiness", `${backendRepoDayMeetingScore}%`, "Readiness to run the private backend repo day without losing decisions.", backendRepoDayMeetingScore >= 80 ? "green" : "amber"],
-        ["Decisions", decisionCaptureBoard.length, "Decision rows for repo, issue wave, PR, review lanes, holds, blockers, closeout, and next build.", "teal"],
-        ["Actions", actionFollowupQueue.length, "Owner follow-ups that become the post-meeting work queue.", "blue"],
-        ["Parking lot", riskParkingLot.length, "Risks that must be parked, held, or blocked cleanly.", "red"],
-      ],
-      acceptanceChecks: [
-        ["Agenda ready", `${meetingAgendaBlocks.length} blocks cover opening, proof, review, action capture, and closeout.`, "green"],
-        ["Attendance ready", `${attendeeRoles.length} roles name who can decide, review, own evidence, and write minutes.`, "teal"],
-        ["Decision capture ready", `${decisionCaptureBoard.length} decision rows prevent vague meeting outcomes.`, "blue"],
-        ["Action queue ready", `${actionFollowupQueue.length} owner actions are ready for post-meeting follow-up.`, "amber"],
-        ["Evidence outputs ready", `${meetingEvidenceArtifacts.length} artifacts define what must exist after the meeting.`, "green"],
-        ["Risk parking ready", `${riskParkingLot.length} parking lot rows keep blockers from disappearing.`, "red"],
-        ["Meeting script ready", "Copy-ready facilitator script keeps the meeting focused on private repo proof.", "teal"],
-        ["Next handoff ready", "v143 can capture real reviewer replies, decisions, holds, and requested changes after the meeting.", "blue"],
-      ],
-      handoff: [
-        "v142 turns the private repo closeout pack into a meeting-ready operating packet.",
-        "The pack names the agenda, attendee roles, decision rows, owner actions, risk parking lot, evidence outputs, and management summary.",
-        "The static demo still cannot run the meeting or connect to GitHub; it now defines what the real repo day should produce.",
-        "v143 can now become the Private Repo Reply Capture Board for real reviewer replies, holds, requested changes, and approval outcomes.",
-      ],
+      evidenceBoardScore,
+      evidenceLanes,
+      handoff,
+      signalCards,
+      statusSummary,
     };
   }
 
@@ -49192,12 +48194,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v474 Governance Rollout First Pilot Learning Room",
-      phase: "Governance Rollout First Pilot Learning Room",
+      version: "v475 Governance Rollout First Pilot Expansion Decision",
+      phase: "Governance Rollout First Pilot Expansion Decision",
       lane: "Static product prototype on GitHub Pages",
-      pace: "455 meaningful versions since rebrand",
-      summary: "Command Center now turns first-pilot support closure into a learning room that separates reusable patterns, tenant-only memory, proof repair, retune needs, expansion watch, rollback, and next-pilot guidance.",
+      pace: "456 meaningful versions since rebrand",
+      summary: "Command Center now turns first-pilot learning into an expansion decision that chooses expand, renew, repair, retune, pause, or wait with sponsor-safe controls.",
       tracks: [
+        ["v475 governance rollout first pilot expansion decision", 100, "Command Center now decides whether the first pilot expands, renews, repairs, retunes, pauses, or waits after learning, support, sponsor, proof, rollback, and boundary are visible.", "green"],
         ["v474 governance rollout first pilot learning room", 100, "Command Center now turns first-pilot support closure into tenant-safe learning, proof repair, reusable patterns, retune posture, expansion watch, rollback, and next-pilot guidance.", "green"],
         ["v473 governance rollout first pilot support receipt", 100, "Command Center now closes the first-pilot support loop with blocker closure, owner action, sponsor response, proof movement, learning next step, rollback, boundary, and a copyable support receipt.", "green"],
         ["v472 governance rollout first pilot outcome watch", 100, "Command Center now watches the first-pilot command room for movement proof, sponsor signal, support friction, learning release, expansion option, rollback, boundary, owner, and next review.", "green"],
@@ -49652,9 +48655,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v475", "Governance rollout first pilot expansion decision", "Decide whether the first pilot expands, renews, repairs, or pauses after watched outcomes and learning are visible."],
         ["v476", "Governance rollout second pilot readiness", "Prepare the next pilot only after support closure, learning safety, expansion posture, owner, and boundary are accepted."],
         ["v477", "Governance rollout second pilot launch room", "Turn second-pilot readiness into owner, proof, support, rollback, and sponsor-safe launch guidance."],
+        ["v478", "Governance rollout second pilot outcome watch", "Watch second-pilot proof, sponsor signal, support pressure, boundary, and reusable-learning safety before rollout widens."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -49737,7 +48740,7 @@ const state = {
       ["5", "First live pilot", "Locked", 26, "Accept real customer data only after backend, access, billing, hosting, support, and monitoring gates pass.", "red"],
     ];
     const gates = [
-      ["Product demo", "Ready", "Live demo, Build Phase release flow, scaled rollout proof board, sponsor update, outcome ledger, learning receipt, sponsor decision receipt, reuse gate, learning review room, decision audit pack, reuse activation receipt, activation outcome watch, audit closeout receipt, launch readiness seal, first-pilot proof bridge, outcome watch, support receipt, and learning room are working.", "green"],
+      ["Product demo", "Ready", "Live demo, Build Phase release flow, scaled rollout proof board, sponsor update, outcome ledger, learning receipt, sponsor decision receipt, reuse gate, learning review room, decision audit pack, reuse activation receipt, activation outcome watch, audit closeout receipt, launch readiness seal, first-pilot proof bridge, outcome watch, support receipt, learning room, and expansion decision are working.", "green"],
       ["Private backend repo", "Required", "Create the real production repository and open the generated implementation issues.", "amber"],
       ["Data and auth", "Required", "Build tenant accounts, user auth, database tables, import pipeline, and audit logs.", "red"],
       ["Staging environment", "Required", "Deploy staging with secrets, smoke checks, rollback, monitoring, and backup proof.", "red"],
@@ -49958,10 +48961,10 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns first-pilot support closure into a learning room with reusable pattern, tenant-only memory, proof repair, retune, expansion watch, rollback, and next-pilot guidance.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns first-pilot learning into an expansion decision with expand, renew, repair, retune, pause, rollback, boundary, and sponsor-safe next action.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room copy, Proof Bridge copy, Launch Seal copy, Closeout Receipt copy, Outcome Watch copy, Activation Receipt copy, Decision Audit Pack copy, Learning Review Room copy, Reuse Gate copy, Sponsor Decision copy, Learning Receipt copy, Outcome Ledger copy, Sponsor Update copy, Rollout Proof copy, Expansion Support copy, Scaled Rollout copy, Expansion Receipt copy, Expansion Gate copy, Learning Release copy, Support Closeout copy, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room copy, Proof Bridge copy, Launch Seal copy, Closeout Receipt copy, Outcome Watch copy, Activation Receipt copy, Decision Audit Pack copy, Learning Review Room copy, Reuse Gate copy, Sponsor Decision copy, Learning Receipt copy, Outcome Ledger copy, Sponsor Update copy, Rollout Proof copy, Expansion Support copy, Scaled Rollout copy, Expansion Receipt copy, Expansion Gate copy, Learning Release copy, Support Closeout copy, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -62753,3906 +61756,7 @@ const state = {
               <h3>Who owns each class of proof</h3>
             </div>
             <span>${model.evidenceLanes.length} lanes</span>
-          </div>
-          <div class="artifact-board-lane-grid">
-            ${model.evidenceLanes.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Escalation queue</span>
-                <h3>Holds and blocks to call out before review</h3>
-              </div>
-              <span>${model.escalationQueue.length} items</span>
-            </div>
-            <div class="artifact-board-escalation-grid">
-              ${model.escalationQueue.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Source of truth</span>
-                <h3>Where each proof fact must come from</h3>
-              </div>
-              <span>${model.sourceOfTruthMap.length} sources</span>
-            </div>
-            <div class="artifact-board-source-grid">
-              ${model.sourceOfTruthMap.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Capture sequence</span>
-                <h3>How artifacts move from planned to captured</h3>
-              </div>
-              <span>${model.captureSequence.length} steps</span>
-            </div>
-            <div class="artifact-board-capture-grid">
-              ${model.captureSequence.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Quality rules</span>
-                <h3>What prevents evidence drift</h3>
-              </div>
-              <span>${model.qualityRules.length} rules</span>
-            </div>
-            <div class="artifact-board-quality-grid">
-              ${model.qualityRules.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Acceptance checks</span>
-              <h3>What makes the artifact board useful</h3>
-            </div>
-            <span>${model.acceptanceChecks.length} checks</span>
-          </div>
-          <div class="repo-proof-gate-grid artifact-board-acceptance-grid">
-            ${model.acceptanceChecks.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Artifact board handoff</span>
-              <h3>What v138 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderPrivateRepoHandoffEmailPack(model) {
-    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
-      const hasValue = Boolean(maybeTone);
-      const value = hasValue ? valueOrNote : "";
-      const note = hasValue ? noteOrTone : valueOrNote;
-      const tone = maybeTone || noteOrTone || "teal";
-      return `
-        <div class="tone-${escapeHtml(tone)}">
-          <span>${escapeHtml(label)}</span>
-          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
-          <p>${escapeHtml(note)}</p>
-        </div>
-      `;
-    };
-    const renderAudience = ([owner, lane, note, tone]) => `
-      <article class="handoff-email-audience-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(owner)}</span>
-        <strong>${escapeHtml(lane)}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    const renderLink = ([file, title, note, tone]) => `
-      <article class="handoff-email-link-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(title)}</span>
-        <strong>${escapeHtml(file)}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    return `
-      <section class="backend-repo-proof-exporter private-repo-handoff-email-pack">
-        <div class="staging-smoke-hero">
-          <div>
-            <span class="metric-label">Private repo handoff email pack</span>
-            <h3>Brief every owner before the first private backend repo session.</h3>
-            <p>This pack converts the artifact board, PR review matrix, command runner, opening packet, and first PR body into a copy-ready owner email, agenda, evidence links, approval language, safety locks, and follow-up rhythm.</p>
-            <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-handoff-email-pack-v179.json">Download handoff email JSON</a>
-              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
-            </div>
-          </div>
-          <div class="staging-smoke-score-card">
-            <span>Handoff readiness</span>
-            <strong>${model.handoffEmailScore}%</strong>
-            <i style="--width: ${model.handoffEmailScore}%"></i>
-            <small>${model.audienceBriefs.length} recipients / ${model.evidenceAttachmentLinks.length} evidence links.</small>
-          </div>
-        </div>
-
-        <div class="staging-smoke-signal-grid">
-          ${model.signalCards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(String(value))}</strong>
-                  <p>${escapeHtml(note)}</p>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Handoff KPIs</span>
-              <h3>Whether the briefing is ready to send</h3>
-            </div>
-            <span>${model.handoffKpis.length} signals</span>
-          </div>
-          <div class="repo-proof-kpi-grid handoff-email-kpi-grid">
-            ${model.handoffKpis.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Copy-ready email</span>
-                <h3>The message that starts the controlled repo day</h3>
-              </div>
-              <span>plain text</span>
-            </div>
-            <pre class="handoff-email-copy"><code>${escapeHtml(model.copyReadyEmail)}</code></pre>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Email sections</span>
-                <h3>What the message must cover</h3>
-              </div>
-              <span>${model.emailSections.length} sections</span>
-            </div>
-            <div class="handoff-email-section-grid">
-              ${model.emailSections.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Recipient lanes</span>
-              <h3>Who receives the briefing and what they approve</h3>
-            </div>
-            <span>${model.audienceBriefs.length} lanes</span>
-          </div>
-          <div class="handoff-email-audience-grid">
-            ${model.audienceBriefs.map(renderAudience).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Evidence link bundle</span>
-                <h3>What gets attached or referenced</h3>
-              </div>
-              <span>${model.evidenceAttachmentLinks.length} links</span>
-            </div>
-            <div class="handoff-email-link-grid">
-              ${model.evidenceAttachmentLinks.map(renderLink).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Approval language</span>
-                <h3>Go, hold, no-go, defer, approve, and block text</h3>
-              </div>
-              <span>${model.approvalLanguage.length} phrases</span>
-            </div>
-            <div class="handoff-email-approval-grid">
-              ${model.approvalLanguage.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Briefing agenda</span>
-                <h3>30-minute owner meeting before commands run</h3>
-              </div>
-              <span>${model.meetingAgenda.length} rows</span>
-            </div>
-            <div class="handoff-email-agenda-grid">
-              ${model.meetingAgenda.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Send checklist</span>
-                <h3>What must be true before the email goes out</h3>
-              </div>
-              <span>${model.sendChecklist.length} checks</span>
-            </div>
-            <div class="handoff-email-send-grid">
-              ${model.sendChecklist.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Follow-up rhythm</span>
-                <h3>How the repo day stays visible after the email</h3>
-              </div>
-              <span>${model.followUpCadence.length} moments</span>
-            </div>
-            <div class="handoff-email-followup-grid">
-              ${model.followUpCadence.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Safety disclaimers</span>
-                <h3>What the email must not leave ambiguous</h3>
-              </div>
-              <span>${model.riskDisclaimers.length} locks</span>
-            </div>
-            <div class="handoff-email-risk-grid">
-              ${model.riskDisclaimers.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Acceptance checks</span>
-              <h3>What makes the email pack trustworthy</h3>
-            </div>
-            <span>${model.acceptanceChecks.length} checks</span>
-          </div>
-          <div class="repo-proof-gate-grid handoff-email-acceptance-grid">
-            ${model.acceptanceChecks.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Email pack handoff</span>
-              <h3>What v139 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderFirstBackendPrReviewCommentPack(model) {
-    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
-      const hasValue = Boolean(maybeTone);
-      const value = hasValue ? valueOrNote : "";
-      const note = hasValue ? noteOrTone : valueOrNote;
-      const tone = maybeTone || noteOrTone || "teal";
-      return `
-        <div class="tone-${escapeHtml(tone)}">
-          <span>${escapeHtml(label)}</span>
-          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
-          <p>${escapeHtml(note)}</p>
-        </div>
-      `;
-    };
-    const renderComment = ([label, surface, action, comment, tone]) => `
-      <article class="pr-review-comment-library-card tone-${escapeHtml(tone)}">
-        <div>
-          <span>${escapeHtml(label)}</span>
-          <em>${escapeHtml(action)}</em>
-        </div>
-        <strong>${escapeHtml(surface)}</strong>
-        <code>${escapeHtml(comment)}</code>
-      </article>
-    `;
-    const renderPacket = ([owner, scope, content, tone]) => `
-      <article class="pr-review-comment-packet-card tone-${escapeHtml(tone)}">
-        <div>
-          <span>${escapeHtml(owner)}</span>
-          <strong>${escapeHtml(scope)}</strong>
-        </div>
-        <code>${escapeHtml(content)}</code>
-      </article>
-    `;
-    const renderInline = ([file, title, action, comment, tone]) => `
-      <article class="pr-review-inline-snippet-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(title)}</span>
-        <strong>${escapeHtml(file)}</strong>
-        <em>${escapeHtml(action)}</em>
-        <p>${escapeHtml(comment)}</p>
-      </article>
-    `;
-    return `
-      <section class="backend-repo-proof-exporter first-backend-pr-review-comment-pack">
-        <div class="staging-smoke-hero">
-          <div>
-            <span class="metric-label">First backend PR review comment pack</span>
-            <h3>Turn review rules into paste-ready GitHub PR comments.</h3>
-            <p>This pack converts the review gate matrix and private repo handoff into GitHub-ready comments for opening review, lane approval, evidence holds, request changes, no-leak signoff, branch-protection holds, and merge closeout.</p>
-            <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-first-backend-pr-review-comment-pack-v179.json">Download review comments JSON</a>
-              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
-            </div>
-          </div>
-          <div class="staging-smoke-score-card">
-            <span>Comment readiness</span>
-            <strong>${model.firstBackendPrCommentScore}%</strong>
-            <i style="--width: ${model.firstBackendPrCommentScore}%"></i>
-            <small>${model.reviewCommentLibrary.length} comments / ${model.reviewerCommentPackets.length} packets / ${model.inlineCommentSnippets.length} inline snippets.</small>
-          </div>
-        </div>
-
-        <div class="staging-smoke-signal-grid">
-          ${model.signalCards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(String(value))}</strong>
-                  <p>${escapeHtml(note)}</p>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Review comment KPIs</span>
-              <h3>Whether the first PR review text is ready to paste</h3>
-            </div>
-            <span>${model.reviewCommentKpis.length} signals</span>
-          </div>
-          <div class="repo-proof-kpi-grid pr-review-comment-kpi-grid">
-            ${model.reviewCommentKpis.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Copy-ready review text</span>
-                <h3>The review language library in one plain-text block</h3>
-              </div>
-              <span>copy block</span>
-            </div>
-            <pre class="pr-review-comment-copy"><code>${escapeHtml(model.copyReadyReviewText)}</code></pre>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Review decision board</span>
-                <h3>Which GitHub action to use and when</h3>
-              </div>
-              <span>${model.reviewDecisionBoard.length} decisions</span>
-            </div>
-            <div class="pr-review-decision-grid">
-              ${model.reviewDecisionBoard.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Comment library</span>
-              <h3>Opening note, approval, hold, request changes, and closeout text</h3>
-            </div>
-            <span>${model.reviewCommentLibrary.length} comments</span>
-          </div>
-          <div class="pr-review-comment-library-grid">
-            ${model.reviewCommentLibrary.map(renderComment).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Reviewer packets</span>
-              <h3>Lane-specific review instructions ready for PR threads</h3>
-            </div>
-            <span>${model.reviewerCommentPackets.length} packets</span>
-          </div>
-          <div class="pr-review-comment-packet-grid">
-            ${model.reviewerCommentPackets.map(renderPacket).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Inline comment snippets</span>
-                <h3>File-scoped notes for middleware, routes, workflows, and evidence</h3>
-              </div>
-              <span>${model.inlineCommentSnippets.length} snippets</span>
-            </div>
-            <div class="pr-review-inline-snippet-grid">
-              ${model.inlineCommentSnippets.map(renderInline).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Send checklist</span>
-                <h3>What must be true before any review comment is submitted</h3>
-              </div>
-              <span>${model.reviewSendChecklist.length} checks</span>
-            </div>
-            <div class="pr-review-send-grid">
-              ${model.reviewSendChecklist.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Reply handling</span>
-                <h3>How owner responses change the review posture</h3>
-              </div>
-              <span>${model.replyHandlingCadence.length} outcomes</span>
-            </div>
-            <div class="pr-review-reply-grid">
-              ${model.replyHandlingCadence.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Review source locks</span>
-                <h3>The upstream rules this comment pack must obey</h3>
-              </div>
-              <span>${model.holdQueue.length + model.blockRules.length} controls</span>
-            </div>
-            <div class="pr-review-source-grid">
-              ${[...model.holdQueue.slice(0, 4), ...model.blockRules.slice(0, 4)].map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Acceptance checks</span>
-              <h3>What makes the PR review comment pack trustworthy</h3>
-            </div>
-            <span>${model.acceptanceChecks.length} checks</span>
-          </div>
-          <div class="repo-proof-gate-grid pr-review-acceptance-grid">
-            ${model.acceptanceChecks.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Review comment handoff</span>
-              <h3>What v140 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderPrivateRepoEvidenceCloseoutPack(model) {
-    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
-      const hasValue = Boolean(maybeTone);
-      const value = hasValue ? valueOrNote : "";
-      const note = hasValue ? noteOrTone : valueOrNote;
-      const tone = maybeTone || noteOrTone || "teal";
-      return `
-        <div class="tone-${escapeHtml(tone)}">
-          <span>${escapeHtml(label)}</span>
-          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
-          <p>${escapeHtml(note)}</p>
-        </div>
-      `;
-    };
-    const renderOutcome = ([lane, status, note, tone]) => `
-      <article class="evidence-closeout-outcome-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(lane)}</span>
-        <strong>${escapeHtml(status)}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    const renderOwner = ([owner, scope, note, tone]) => `
-      <article class="evidence-closeout-owner-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(owner)}</span>
-        <strong>${escapeHtml(scope)}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    return `
-      <section class="backend-repo-proof-exporter private-repo-evidence-closeout-pack">
-        <div class="staging-smoke-hero">
-          <div>
-            <span class="metric-label">Private repo evidence closeout pack</span>
-            <h3>Close the private repo day with proof, not memory.</h3>
-            <p>This pack converts review comments, artifact status, owner handoff, and review gates into passed, held, blocked, deferred, no-leak, rollback, next-owner, and management closeout records.</p>
-            <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-evidence-closeout-pack-v179.json">Download closeout JSON</a>
-              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
-            </div>
-          </div>
-          <div class="staging-smoke-score-card">
-            <span>Closeout readiness</span>
-            <strong>${model.evidenceCloseoutScore}%</strong>
-            <i style="--width: ${model.evidenceCloseoutScore}%"></i>
-            <small>${model.closeoutOutcomeLanes.length} outcomes / ${model.ownerCloseoutQueue.length} owners / ${model.noLeakRollbackChecks.length} trust checks.</small>
-          </div>
-        </div>
-
-        <div class="staging-smoke-signal-grid">
-          ${model.signalCards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(String(value))}</strong>
-                  <p>${escapeHtml(note)}</p>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Closeout KPIs</span>
-              <h3>Whether the private repo evidence session can be closed cleanly</h3>
-            </div>
-            <span>${model.closeoutKpis.length} signals</span>
-          </div>
-          <div class="repo-proof-kpi-grid evidence-closeout-kpi-grid">
-            ${model.closeoutKpis.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Copy-ready closeout note</span>
-                <h3>The message that freezes the evidence state</h3>
-              </div>
-              <span>plain text</span>
-            </div>
-            <pre class="evidence-closeout-copy"><code>${escapeHtml(model.copyReadyCloseoutNote)}</code></pre>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Outcome lanes</span>
-                <h3>Passed, held, blocked, deferred, no-leak, rollback, and next owner</h3>
-              </div>
-              <span>${model.closeoutOutcomeLanes.length} lanes</span>
-            </div>
-            <div class="evidence-closeout-outcome-grid">
-              ${model.closeoutOutcomeLanes.map(renderOutcome).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Evidence closeout register</span>
-                <h3>What gets marked passed, held, blocked, or deferred</h3>
-              </div>
-              <span>${model.evidenceCloseoutRegister.length} rows</span>
-            </div>
-            <div class="evidence-closeout-register-grid">
-              ${model.evidenceCloseoutRegister.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Decision log</span>
-                <h3>What must be written before the session can end</h3>
-              </div>
-              <span>${model.closeoutDecisionLog.length} rows</span>
-            </div>
-            <div class="evidence-closeout-decision-grid">
-              ${model.closeoutDecisionLog.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Owner closeout queue</span>
-              <h3>Who owns the final proof state after review</h3>
-            </div>
-            <span>${model.ownerCloseoutQueue.length} lanes</span>
-          </div>
-          <div class="evidence-closeout-owner-grid">
-            ${model.ownerCloseoutQueue.map(renderOwner).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">No-leak and rollback checks</span>
-                <h3>Trust controls that must survive the closeout</h3>
-              </div>
-              <span>${model.noLeakRollbackChecks.length} checks</span>
-            </div>
-            <div class="evidence-closeout-trust-grid">
-              ${model.noLeakRollbackChecks.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Closeout timeline</span>
-                <h3>When closeout facts get recorded and reviewed</h3>
-              </div>
-              <span>${model.closeoutTimeline.length} moments</span>
-            </div>
-            <div class="evidence-closeout-timeline-grid">
-              ${model.closeoutTimeline.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Management summary lines</span>
-              <h3>What leadership should see after the repo day</h3>
-            </div>
-            <span>${model.managementSummaryLines.length} lines</span>
-          </div>
-          <div class="evidence-closeout-summary-grid">
-            ${model.managementSummaryLines.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Acceptance checks</span>
-              <h3>What makes the closeout pack trustworthy</h3>
-            </div>
-            <span>${model.acceptanceChecks.length} checks</span>
-          </div>
-          <div class="repo-proof-gate-grid evidence-closeout-acceptance-grid">
-            ${model.acceptanceChecks.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Evidence closeout handoff</span>
-              <h3>What v141 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderBackendRepoDayMeetingPack(model) {
-    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
-      const hasValue = Boolean(maybeTone);
-      const value = hasValue ? valueOrNote : "";
-      const note = hasValue ? noteOrTone : valueOrNote;
-      const tone = maybeTone || noteOrTone || "teal";
-      return `
-        <div class="tone-${escapeHtml(tone)}">
-          <span>${escapeHtml(label)}</span>
-          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
-          <p>${escapeHtml(note)}</p>
-        </div>
-      `;
-    };
-    const renderMeetingCard = ([label, value, note, tone]) => `
-      <article class="backend-meeting-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(label)}</span>
-        <strong>${escapeHtml(String(value))}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    const renderAgenda = ([label, duration, note, tone]) => `
-      <article class="backend-meeting-agenda-card tone-${escapeHtml(tone)}">
-        <div>
-          <span>${escapeHtml(label)}</span>
-          <em>${escapeHtml(duration)}</em>
-        </div>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    return `
-      <section class="backend-repo-proof-exporter backend-repo-day-meeting-pack">
-        <div class="staging-smoke-hero">
-          <div>
-            <span class="metric-label">Backend repo day meeting pack</span>
-            <h3>Run the private repo day like a decision room.</h3>
-            <p>This pack turns the closeout model into an agenda, attendee map, decision capture board, owner action queue, risk parking lot, evidence outputs, and facilitator script for the first backend repo session.</p>
-            <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-repo-day-meeting-pack-v179.json">Download meeting JSON</a>
-              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
-              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-            </div>
-          </div>
-          <div class="staging-smoke-score-card">
-            <span>Meeting readiness</span>
-            <strong>${model.backendRepoDayMeetingScore}%</strong>
-            <i style="--width: ${model.backendRepoDayMeetingScore}%"></i>
-            <small>${model.meetingAgendaBlocks.length} agenda blocks / ${model.attendeeRoles.length} roles / ${model.decisionCaptureBoard.length} decisions.</small>
-          </div>
-        </div>
-
-        <div class="staging-smoke-signal-grid">
-          ${model.signalCards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(String(value))}</strong>
-                  <p>${escapeHtml(note)}</p>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Meeting KPIs</span>
-              <h3>Whether repo day can run as a controlled evidence meeting</h3>
-            </div>
-            <span>${model.meetingKpis.length} signals</span>
-          </div>
-          <div class="repo-proof-kpi-grid backend-meeting-kpi-grid">
-            ${model.meetingKpis.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Facilitator script</span>
-                <h3>The meeting rhythm for the private repo day</h3>
-              </div>
-              <span>copy-ready</span>
-            </div>
-            <pre class="backend-meeting-copy"><code>${escapeHtml(model.copyReadyMeetingScript)}</code></pre>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Source readiness</span>
-                <h3>What previous packs feed into the meeting</h3>
-              </div>
-              <span>${model.sourceReadiness.length} inputs</span>
-            </div>
-            <div class="backend-meeting-source-grid">
-              ${model.sourceReadiness.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Agenda</span>
-              <h3>Time-boxed blocks for the first private backend repo meeting</h3>
-            </div>
-            <span>${model.meetingAgendaBlocks.length} blocks</span>
-          </div>
-          <div class="backend-meeting-agenda-grid">
-            ${model.meetingAgendaBlocks.map(renderAgenda).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Attendee roles</span>
-                <h3>Who needs to be in the room and why</h3>
-              </div>
-              <span>${model.attendeeRoles.length} roles</span>
-            </div>
-            <div class="backend-meeting-attendee-grid">
-              ${model.attendeeRoles.map(renderMeetingCard).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Decision capture board</span>
-                <h3>What must be recorded before the meeting ends</h3>
-              </div>
-              <span>${model.decisionCaptureBoard.length} rows</span>
-            </div>
-            <div class="backend-meeting-decision-grid">
-              ${model.decisionCaptureBoard.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Action follow-up queue</span>
-              <h3>Post-meeting work that must not disappear</h3>
-            </div>
-            <span>${model.actionFollowupQueue.length} actions</span>
-          </div>
-          <div class="backend-meeting-action-grid">
-            ${model.actionFollowupQueue.map(renderMeetingCard).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Evidence outputs</span>
-                <h3>Files and records that should exist after the meeting</h3>
-              </div>
-              <span>${model.meetingEvidenceArtifacts.length} outputs</span>
-            </div>
-            <div class="backend-meeting-evidence-grid">
-              ${model.meetingEvidenceArtifacts.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Risk parking lot</span>
-                <h3>How to park, hold, or block unclear items</h3>
-              </div>
-              <span>${model.riskParkingLot.length} rows</span>
-            </div>
-            <div class="backend-meeting-risk-grid">
-              ${model.riskParkingLot.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Meeting timeline</span>
-                <h3>Before, during, and after the repo day</h3>
-              </div>
-              <span>${model.meetingTimeline.length} moments</span>
-            </div>
-            <div class="backend-meeting-timeline-grid">
-              ${model.meetingTimeline.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Management brief</span>
-                <h3>What leadership should hear after the session</h3>
-              </div>
-              <span>${model.managementBriefLines.length} lines</span>
-            </div>
-            <div class="backend-meeting-brief-grid">
-              ${model.managementBriefLines.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Acceptance checks</span>
-              <h3>What makes the meeting pack usable on repo day</h3>
-            </div>
-            <span>${model.acceptanceChecks.length} checks</span>
-          </div>
-          <div class="repo-proof-gate-grid backend-meeting-acceptance-grid">
-            ${model.acceptanceChecks.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Meeting handoff</span>
-              <h3>What v142 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderPrivateRepoReplyCaptureBoard(model) {
-    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
-      const hasValue = Boolean(maybeTone);
-      const value = hasValue ? valueOrNote : "";
-      const note = hasValue ? noteOrTone : valueOrNote;
-      const tone = maybeTone || noteOrTone || "teal";
-      return `
-        <div class="tone-${escapeHtml(tone)}">
-          <span>${escapeHtml(label)}</span>
-          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
-          <p>${escapeHtml(note)}</p>
-        </div>
-      `;
-    };
-    const renderReplyCard = ([label, value, note, tone]) => `
-      <article class="reply-capture-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(label)}</span>
-        <strong>${escapeHtml(String(value))}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    return `
-      <section class="backend-repo-proof-exporter private-repo-reply-capture-board">
-        <div class="staging-smoke-hero">
-          <div>
-            <span class="metric-label">Private repo reply capture board</span>
-            <h3>Turn every reviewer reply into a clear next state.</h3>
-            <p>This board captures real GitHub replies, holds, requested changes, deferred proof, no-response lanes, owner actions, and merge-readiness outcomes after the backend repo day meeting.</p>
-            <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-private-repo-reply-capture-board-v179.json">Download reply board JSON</a>
-              <button class="ghost-btn" type="button" data-view="Advisor">Open advisor</button>
-              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-            </div>
-          </div>
-          <div class="staging-smoke-score-card">
-            <span>Reply capture readiness</span>
-            <strong>${model.replyCaptureScore}%</strong>
-            <i style="--width: ${model.replyCaptureScore}%"></i>
-            <small>${model.reviewerReplyLanes.length} lanes / ${model.replyStateBoard.length} states / ${model.mergeReadinessLanes.length} merge gates.</small>
-          </div>
-        </div>
-
-        <div class="staging-smoke-signal-grid">
-          ${model.signalCards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(String(value))}</strong>
-                  <p>${escapeHtml(note)}</p>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Reply KPIs</span>
-              <h3>Whether real reviewer replies can become controlled outcomes</h3>
-            </div>
-            <span>${model.replyKpis.length} signals</span>
-          </div>
-          <div class="repo-proof-kpi-grid reply-capture-kpi-grid">
-            ${model.replyKpis.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Reply log template</span>
-                <h3>Copy-ready structure for each GitHub reply</h3>
-              </div>
-              <span>copy-ready</span>
-            </div>
-            <pre class="reply-capture-copy"><code>${escapeHtml(model.copyReadyReplyLog)}</code></pre>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Source readiness</span>
-                <h3>What previous packs feed into reply capture</h3>
-              </div>
-              <span>${model.sourceReadiness.length} inputs</span>
-            </div>
-            <div class="reply-capture-source-grid">
-              ${model.sourceReadiness.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Reviewer reply lanes</span>
-              <h3>Every lane gets one clear response state</h3>
-            </div>
-            <span>${model.reviewerReplyLanes.length} lanes</span>
-          </div>
-          <div class="reply-capture-lane-grid">
-            ${model.reviewerReplyLanes.map(renderReplyCard).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Reply states</span>
-                <h3>Approved, held, blocked, deferred, and merge-ready states</h3>
-              </div>
-              <span>${model.replyStateBoard.length} states</span>
-            </div>
-            <div class="reply-capture-state-grid">
-              ${model.replyStateBoard.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Thread capture checklist</span>
-                <h3>Fields required for every GitHub thread row</h3>
-              </div>
-              <span>${model.threadCaptureChecklist.length} fields</span>
-            </div>
-            <div class="reply-capture-thread-grid">
-              ${model.threadCaptureChecklist.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Requested changes resolver</span>
-              <h3>How blockers become owner work instead of noise</h3>
-            </div>
-            <span>${model.requestedChangesResolver.length} rows</span>
-          </div>
-          <div class="reply-capture-request-grid">
-            ${model.requestedChangesResolver.map(renderReplyCard).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Approval readiness</span>
-                <h3>When each lane can be treated as approved</h3>
-              </div>
-              <span>${model.approvalReadinessBoard.length} lanes</span>
-            </div>
-            <div class="reply-capture-approval-grid">
-              ${model.approvalReadinessBoard.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Merge readiness</span>
-                <h3>Final gates before any merge-ready state</h3>
-              </div>
-              <span>${model.mergeReadinessLanes.length} gates</span>
-            </div>
-            <div class="reply-capture-merge-grid">
-              ${model.mergeReadinessLanes.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Reply SLA cadence</span>
-                <h3>How replies are chased and escalated</h3>
-              </div>
-              <span>${model.replySlaCadence.length} moments</span>
-            </div>
-            <div class="reply-capture-sla-grid">
-              ${model.replySlaCadence.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Management reply brief</span>
-                <h3>What leadership should know after replies arrive</h3>
-              </div>
-              <span>${model.managementReplyBrief.length} lines</span>
-            </div>
-            <div class="reply-capture-brief-grid">
-              ${model.managementReplyBrief.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Acceptance checks</span>
-              <h3>What makes the reply capture board usable</h3>
-            </div>
-            <span>${model.acceptanceChecks.length} checks</span>
-          </div>
-          <div class="repo-proof-gate-grid reply-capture-acceptance-grid">
-            ${model.acceptanceChecks.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Reply capture handoff</span>
-              <h3>What v143 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderEvidenceCloseoutPdfExportPlan(model) {
-    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
-      const hasValue = Boolean(maybeTone);
-      const value = hasValue ? valueOrNote : "";
-      const note = hasValue ? noteOrTone : valueOrNote;
-      const tone = maybeTone || noteOrTone || "teal";
-      return `
-        <div class="tone-${escapeHtml(tone)}">
-          <span>${escapeHtml(label)}</span>
-          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
-          <p>${escapeHtml(note)}</p>
-        </div>
-      `;
-    };
-    const renderPage = ([label, value, note, tone]) => `
-      <article class="pdf-export-page-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(label)}</span>
-        <strong>${escapeHtml(String(value))}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    const renderPerson = ([label, note, tone]) => `
-      <article class="pdf-export-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(label)}</span>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    return `
-      <section class="backend-repo-proof-exporter evidence-closeout-pdf-export-plan">
-        <div class="staging-smoke-hero">
-          <div>
-            <span class="metric-label">Evidence closeout PDF export plan</span>
-            <h3>Turn captured replies into a management-ready closeout pack.</h3>
-            <p>This plan defines the printable packet that will eventually convert reviewer replies, evidence status, redaction checks, distribution lanes, archive naming, and owner actions into a controlled closeout export.</p>
-            <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-evidence-closeout-pdf-export-plan-v179.json">Download export plan JSON</a>
-              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
-            </div>
-          </div>
-          <div class="staging-smoke-score-card">
-            <span>PDF export readiness</span>
-            <strong>${model.pdfExportScore}%</strong>
-            <i style="--width: ${model.pdfExportScore}%"></i>
-            <small>${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redactions / ${model.exportQaChecklist.length} QA gates.</small>
-          </div>
-        </div>
-
-        <div class="staging-smoke-signal-grid">
-          ${model.signalCards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(String(value))}</strong>
-                  <p>${escapeHtml(note)}</p>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Export KPIs</span>
-              <h3>Whether captured replies can become a controlled closeout packet</h3>
-            </div>
-            <span>${model.pdfKpis.length} signals</span>
-          </div>
-          <div class="repo-proof-kpi-grid pdf-export-kpi-grid">
-            ${model.pdfKpis.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Export brief</span>
-                <h3>Copy-ready closeout note for the future PDF route</h3>
-              </div>
-              <span>copy-ready</span>
-            </div>
-            <pre class="pdf-export-copy"><code>${escapeHtml(model.copyReadyExportBrief)}</code></pre>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Source readiness</span>
-                <h3>Which packs become the PDF evidence source</h3>
-              </div>
-              <span>${model.sourceReadiness.length} inputs</span>
-            </div>
-            <div class="pdf-export-source-grid">
-              ${model.sourceReadiness.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Page blueprint</span>
-              <h3>The future PDF page order</h3>
-            </div>
-            <span>${model.pageBlueprint.length} pages</span>
-          </div>
-          <div class="pdf-export-page-grid">
-            ${model.pageBlueprint.map(renderPage).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Printable sections</span>
-                <h3>Management content without operational clutter</h3>
-              </div>
-              <span>${model.printableSections.length} sections</span>
-            </div>
-            <div class="pdf-export-section-grid">
-              ${model.printableSections.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Redaction checks</span>
-                <h3>What cannot leak into the closeout export</h3>
-              </div>
-              <span>${model.redactionChecks.length} checks</span>
-            </div>
-            <div class="pdf-export-redaction-grid">
-              ${model.redactionChecks.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Export QA</span>
-              <h3>Checks before a closeout packet is archived</h3>
-            </div>
-            <span>${model.exportQaChecklist.length} gates</span>
-          </div>
-          <div class="pdf-export-qa-grid">
-            ${model.exportQaChecklist.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Distribution matrix</span>
-                <h3>Who should receive which closeout family</h3>
-              </div>
-              <span>${model.distributionMatrix.length} lanes</span>
-            </div>
-            <div class="pdf-export-distribution-grid">
-              ${model.distributionMatrix.map(renderPerson).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Archive naming</span>
-                <h3>How the exported packet should be named</h3>
-              </div>
-              <span>${model.archiveNamingRules.length} rules</span>
-            </div>
-            <div class="pdf-export-archive-grid">
-              ${model.archiveNamingRules.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Management closeout</span>
-                <h3>Lines leadership can use in review</h3>
-              </div>
-              <span>${model.managementCloseoutLines.length} lines</span>
-            </div>
-            <div class="pdf-export-brief-grid">
-              ${model.managementCloseoutLines.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Acceptance checks</span>
-                <h3>What makes the export plan usable</h3>
-              </div>
-              <span>${model.acceptanceChecks.length} checks</span>
-            </div>
-            <div class="repo-proof-gate-grid pdf-export-acceptance-grid">
-              ${model.acceptanceChecks.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Export handoff</span>
-              <h3>What v144 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderBackendMeetingMinutesExporter(model) {
-    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
-      const hasValue = Boolean(maybeTone);
-      const value = hasValue ? valueOrNote : "";
-      const note = hasValue ? noteOrTone : valueOrNote;
-      const tone = maybeTone || noteOrTone || "teal";
-      return `
-        <div class="tone-${escapeHtml(tone)}">
-          <span>${escapeHtml(label)}</span>
-          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
-          <p>${escapeHtml(note)}</p>
-        </div>
-      `;
-    };
-    const renderMinutesCard = ([label, value, note, tone]) => `
-      <article class="minutes-export-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(label)}</span>
-        <strong>${escapeHtml(String(value))}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    return `
-      <section class="backend-repo-proof-exporter backend-meeting-minutes-exporter">
-        <div class="staging-smoke-hero">
-          <div>
-            <span class="metric-label">Backend meeting minutes exporter</span>
-            <h3>Turn the repo-day review into clean minutes and owner actions.</h3>
-            <p>This exporter converts the meeting pack, captured replies, evidence closeout, and PDF export plan into copy-ready minutes, attendance, decision register, action queue, privacy checks, follow-up cadence, and a management email.</p>
-            <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-backend-meeting-minutes-exporter-v179.json">Download minutes JSON</a>
-              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
-              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-            </div>
-          </div>
-          <div class="staging-smoke-score-card">
-            <span>Minutes readiness</span>
-            <strong>${model.meetingMinutesScore}%</strong>
-            <i style="--width: ${model.meetingMinutesScore}%"></i>
-            <small>${model.attendanceLog.length} attendees / ${model.decisionRegister.length} decisions / ${model.actionQueue.length} actions.</small>
-          </div>
-        </div>
-
-        <div class="staging-smoke-signal-grid">
-          ${model.signalCards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(String(value))}</strong>
-                  <p>${escapeHtml(note)}</p>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Minutes KPIs</span>
-              <h3>Whether the repo-day output can become a controlled operating record</h3>
-            </div>
-            <span>${model.minutesKpis.length} signals</span>
-          </div>
-          <div class="repo-proof-kpi-grid minutes-export-kpi-grid">
-            ${model.minutesKpis.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Copy-ready minutes</span>
-                <h3>Meeting minutes template</h3>
-              </div>
-              <span>copy-ready</span>
-            </div>
-            <pre class="minutes-export-copy"><code>${escapeHtml(model.copyReadyMinutes)}</code></pre>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Management email</span>
-                <h3>Email body after the repo-day review</h3>
-              </div>
-              <span>copy-ready</span>
-            </div>
-            <pre class="minutes-export-copy"><code>${escapeHtml(model.copyReadyManagementEmail)}</code></pre>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Source readiness</span>
-              <h3>Which previous packs feed the minutes</h3>
-            </div>
-            <span>${model.sourceReadiness.length} inputs</span>
-          </div>
-          <div class="minutes-export-source-grid">
-            ${model.sourceReadiness.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Attendance log</span>
-                <h3>Roles required for a useful repo-day record</h3>
-              </div>
-              <span>${model.attendanceLog.length} lanes</span>
-            </div>
-            <div class="minutes-export-attendance-grid">
-              ${model.attendanceLog.map(renderMinutesCard).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Minutes sections</span>
-                <h3>The structure of the final minutes</h3>
-              </div>
-              <span>${model.minutesSections.length} sections</span>
-            </div>
-            <div class="minutes-export-section-grid">
-              ${model.minutesSections.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Decision register</span>
-              <h3>Decision rows that stop vague meeting outcomes</h3>
-            </div>
-            <span>${model.decisionRegister.length} rows</span>
-          </div>
-          <div class="minutes-export-decision-grid">
-            ${model.decisionRegister.map(renderMinutesCard).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Owner action queue</span>
-              <h3>Actions that must survive after the meeting ends</h3>
-            </div>
-            <span>${model.actionQueue.length} actions</span>
-          </div>
-          <div class="minutes-export-action-grid">
-            ${model.actionQueue.map(renderMinutesCard).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Management email blocks</span>
-                <h3>What leadership receives after review</h3>
-              </div>
-              <span>${model.managementEmailBlocks.length} blocks</span>
-            </div>
-            <div class="minutes-export-email-grid">
-              ${model.managementEmailBlocks.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Follow-up cadence</span>
-                <h3>How unresolved meeting rows keep moving</h3>
-              </div>
-              <span>${model.followUpCadence.length} moments</span>
-            </div>
-            <div class="minutes-export-cadence-grid">
-              ${model.followUpCadence.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Privacy and audit checks</span>
-              <h3>Minutes stay clean before they are sent or archived</h3>
-            </div>
-            <span>${model.privacyAndAuditChecks.length} checks</span>
-          </div>
-          <div class="minutes-export-privacy-grid">
-            ${model.privacyAndAuditChecks.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Acceptance checks</span>
-              <h3>What makes the minutes exporter usable</h3>
-            </div>
-            <span>${model.acceptanceChecks.length} checks</span>
-          </div>
-          <div class="repo-proof-gate-grid minutes-export-acceptance-grid">
-            ${model.acceptanceChecks.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Minutes handoff</span>
-              <h3>What v145 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderReviewerDecisionEmailPack(model) {
-    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
-      const hasValue = Boolean(maybeTone);
-      const value = hasValue ? valueOrNote : "";
-      const note = hasValue ? noteOrTone : valueOrNote;
-      const tone = maybeTone || noteOrTone || "teal";
-      return `
-        <div class="tone-${escapeHtml(tone)}">
-          <span>${escapeHtml(label)}</span>
-          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
-          <p>${escapeHtml(note)}</p>
-        </div>
-      `;
-    };
-    const renderEmailCard = ([label, value, note, tone]) => `
-      <article class="reviewer-email-card tone-${escapeHtml(tone)}">
-        <span>${escapeHtml(label)}</span>
-        <strong>${escapeHtml(String(value))}</strong>
-        <p>${escapeHtml(note)}</p>
-      </article>
-    `;
-    return `
-      <section class="backend-repo-proof-exporter reviewer-decision-email-pack">
-        <div class="staging-smoke-hero">
-          <div>
-            <span class="metric-label">Reviewer decision email pack</span>
-            <h3>Turn unresolved reviewer states into precise follow-up emails.</h3>
-            <p>This pack converts meeting minutes, reply capture states, review gates, and archive rules into targeted reviewer emails for approvals, holds, requested changes, deferrals, no responses, merge confirmation, and archive signoff.</p>
-            <div class="staging-smoke-action-row">
-              <a class="secondary-btn fixture-export-download" href="${escapeHtml(model.downloadHref)}" download="pursuitdesk-reviewer-decision-email-pack-v179.json">Download email pack JSON</a>
-              <button class="ghost-btn" type="button" data-view="Weekly Review">Open weekly review</button>
-              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-            </div>
-          </div>
-          <div class="staging-smoke-score-card">
-            <span>Email readiness</span>
-            <strong>${model.reviewerDecisionEmailScore}%</strong>
-            <i style="--width: ${model.reviewerDecisionEmailScore}%"></i>
-            <small>${model.reviewerEmailLanes.length} lanes / ${model.decisionEmailTemplates.length} templates / ${model.privacyGuardrails.length} guardrails.</small>
-          </div>
-        </div>
-
-        <div class="staging-smoke-signal-grid">
-          ${model.signalCards
-            .map(
-              ([label, value, note, tone]) => `
-                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(String(value))}</strong>
-                  <p>${escapeHtml(note)}</p>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Email KPIs</span>
-              <h3>Whether reviewer states can become controlled follow-up</h3>
-            </div>
-            <span>${model.emailKpis.length} signals</span>
-          </div>
-          <div class="repo-proof-kpi-grid reviewer-email-kpi-grid">
-            ${model.emailKpis.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Reviewer email</span>
-                <h3>Copy-ready lane decision request</h3>
-              </div>
-              <span>copy-ready</span>
-            </div>
-            <pre class="reviewer-email-copy"><code>${escapeHtml(model.copyReadyReviewerEmail)}</code></pre>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Escalation email</span>
-                <h3>Copy-ready open state follow-up</h3>
-              </div>
-              <span>copy-ready</span>
-            </div>
-            <pre class="reviewer-email-copy"><code>${escapeHtml(model.copyReadyEscalationEmail)}</code></pre>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Source readiness</span>
-              <h3>Which packs decide what email should be sent</h3>
-            </div>
-            <span>${model.sourceReadiness.length} inputs</span>
-          </div>
-          <div class="reviewer-email-source-grid">
-            ${model.sourceReadiness.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Reviewer lanes</span>
-                <h3>Each reviewer gets a specific decision request</h3>
-              </div>
-              <span>${model.reviewerEmailLanes.length} lanes</span>
-            </div>
-            <div class="reviewer-email-lane-grid">
-              ${model.reviewerEmailLanes.map(renderEmailCard).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Decision templates</span>
-                <h3>Prepared language by decision state</h3>
-              </div>
-              <span>${model.decisionEmailTemplates.length} templates</span>
-            </div>
-            <div class="reviewer-email-template-grid">
-              ${model.decisionEmailTemplates.map(renderEmailCard).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Response triggers</span>
-              <h3>Which condition sends which reviewer email</h3>
-            </div>
-            <span>${model.responseTriggers.length} triggers</span>
-          </div>
-          <div class="reviewer-email-trigger-grid">
-            ${model.responseTriggers.map(renderEmailCard).join("")}
-          </div>
-        </article>
-
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Send checklist</span>
-              <h3>Every email must be specific, safe, and auditable</h3>
-            </div>
-            <span>${model.sendChecklist.length} checks</span>
-          </div>
-          <div class="reviewer-email-checklist-grid">
-            ${model.sendChecklist.map(renderTile).join("")}
-          </div>
-        </article>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Escalation cadence</span>
-                <h3>How unanswered reviewer states move forward</h3>
-              </div>
-              <span>${model.escalationCadence.length} moments</span>
-            </div>
-            <div class="reviewer-email-cadence-grid">
-              ${model.escalationCadence.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Privacy guardrails</span>
-                <h3>What every reviewer email must protect</h3>
-              </div>
-              <span>${model.privacyGuardrails.length} guardrails</span>
-            </div>
-            <div class="reviewer-email-privacy-grid">
-              ${model.privacyGuardrails.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <div class="staging-smoke-two-column">
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Management summary</span>
-                <h3>What leadership should know about follow-up emails</h3>
-              </div>
-              <span>${model.managementSummaryBlocks.length} blocks</span>
-            </div>
-            <div class="reviewer-email-summary-grid">
-              ${model.managementSummaryBlocks.map(renderTile).join("")}
-            </div>
-          </article>
-
-          <article class="staging-smoke-panel">
-            <div class="info-head compact">
-              <div>
-                <span class="metric-label">Acceptance checks</span>
-                <h3>What makes the email pack usable</h3>
-              </div>
-              <span>${model.acceptanceChecks.length} checks</span>
-            </div>
-            <div class="repo-proof-gate-grid reviewer-email-acceptance-grid">
-              ${model.acceptanceChecks.map(renderTile).join("")}
-            </div>
-          </article>
-        </div>
-
-        <article class="staging-smoke-panel staging-smoke-handoff-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Email handoff</span>
-              <h3>What v146 gives the private repo move</h3>
-            </div>
-          </div>
-          <div class="staging-handoff-list">
-            ${model.handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
-          </div>
-        </article>
-      </section>
-    `;
-  }
-
-  function renderCommandModuleCard(card) {
-    const enabled = canAccessView(card.view);
-    return `
-      <button class="command-module-card tone-${escapeHtml(card.tone)}" type="button" data-view="${escapeHtml(card.view)}" ${enabled ? "" : "disabled"}>
-        <span>${escapeHtml(card.label)}</span>
-        <strong>${escapeHtml(card.value)}</strong>
-        <small>${escapeHtml(card.note)}</small>
-        <em>${escapeHtml(card.signal)}</em>
-      </button>
-    `;
-  }
-
-  function renderCommandPulse(model) {
-    const rows = [
-      ["Action pulse", `${model.actionScore}%`, `${model.reminders.overdue} overdue / ${model.reminders.next30} near-date`],
-      ["Evidence pulse", `${model.evidenceScore}%`, `${model.documents.totalGaps} document gaps`],
-      ["Contract pulse", `${model.contractScore}%`, `${model.contracts.gapCount} commercial gaps`],
-      ["Outcome pulse", model.winRate ? `${model.winRate}%` : "Live", "Closed success signal"],
-    ];
-    return `
-      <div class="command-pulse-grid">
-        ${rows
-          .map(
-            ([label, value, note]) => `
-              <div>
-                <span>${escapeHtml(label)}</span>
-                <strong>${escapeHtml(value)}</strong>
-                <small>${escapeHtml(note)}</small>
-              </div>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderCommandTaskList(tasks) {
-    if (!tasks.length) return `<div class="empty-state compact">No priority actions generated.</div>`;
-    return `
-      <div class="command-list">
-        ${tasks
-          .map((task) => {
-            const dueText =
-              task.days === null
-                ? "No date"
-                : task.days < 0
-                  ? `${Math.abs(task.days)}d late`
-                  : task.days === 0
-                    ? "Due today"
-                    : `${task.days}d left`;
-            return `
-              <button class="command-row tone-${escapeHtml(task.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(task.record.id)}">
-                <span>${escapeHtml(task.lane)}</span>
-                <strong>${escapeHtml(task.record.title || "Untitled record")}</strong>
-                <em>${escapeHtml([task.record.client, task.record.type, task.record.status, dueText].filter(Boolean).join(" / "))}</em>
-              </button>
-            `;
-          })
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderCommandBrief(rows) {
-    return `
-      <div class="command-brief-list">
-        ${rows.map((row) => `<p>${escapeHtml(row)}</p>`).join("")}
-      </div>
-    `;
-  }
-
-  function renderSignalLegend() {
-    const rows = [
-      ["red", "Critical / overdue", "Clear first before review"],
-      ["amber", "Needs decision", "Manager or owner movement"],
-      ["blue", "Evidence / data", "Proof, source, or document signal"],
-      ["green", "Healthy / ready", "Good to progress"],
-      ["teal", "Active / default", "Normal operating movement"],
-    ];
-    return `
-      <div class="signal-legend">
-        ${rows
-          .map(
-            ([tone, label, note]) => `
-              <div class="signal-legend-row tone-${escapeHtml(tone)}">
-                <i aria-hidden="true"></i>
-                <strong>${escapeHtml(label)}</strong>
-                <span>${escapeHtml(note)}</span>
-              </div>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderReadabilityAudit(audit) {
-    return `
-      <div class="readability-audit">
-        <div class="readability-score tone-green">
-          <span>Soft-card coverage</span>
-          <strong>${audit.score}%</strong>
-          <small>Designed for quick scanning across all rooms.</small>
-        </div>
-        <div class="readability-check-grid">
-          ${audit.checks
-            .map(
-              ([tone, label, note]) => `
-                <div class="readability-check tone-${escapeHtml(tone)}">
-                  <strong>${escapeHtml(label)}</strong>
-                  <span>${escapeHtml(note)}</span>
-                </div>
-              `,
-            )
-            .join("")}
-        </div>
-      </div>
-    `;
-  }
-
-  function renderCommandEvidenceList(packs) {
-    if (!packs.length) return `<div class="empty-state compact">No evidence gaps found.</div>`;
-    return `
-      <div class="command-list">
-        ${packs
-          .map(
-            (pack) => `
-              <button class="command-row tone-blue" type="button" data-action="open-related-record" data-id="${escapeHtml(pack.record.id)}">
-                <span>${pack.gaps.length} gaps</span>
-                <strong>${escapeHtml(pack.record.title || "Untitled record")}</strong>
-                <em>${escapeHtml(pack.gaps.slice(0, 4).join(" / "))}</em>
-              </button>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderCommandContractList(items) {
-    if (!items.length) return `<div class="empty-state compact">No contract gaps found.</div>`;
-    return `
-      <div class="command-list">
-        ${items
-          .map(
-            (item) => `
-              <button class="command-row tone-amber" type="button" data-action="open-related-record" data-id="${escapeHtml(item.record.id)}">
-                <span>${escapeHtml(item.risk)}</span>
-                <strong>${escapeHtml(item.record.title || "Untitled record")}</strong>
-                <em>${escapeHtml([item.record.client, item.stage, item.record.agreementNo || "No agreement"].filter(Boolean).join(" / "))}</em>
-              </button>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderCommandClientList(accounts) {
-    if (!accounts.length) return `<div class="empty-state compact">No client heat available.</div>`;
-    return `
-      <div class="command-list">
-        ${accounts
-          .map(
-            (account) => `
-              <button class="command-row tone-green" type="button" data-action="open-related-record" data-id="${escapeHtml(account.latest?.id || "")}" ${account.latest ? "" : "disabled"}>
-                <span>${escapeHtml(account.pulse)}</span>
-                <strong>${escapeHtml(account.label)}</strong>
-                <em>${account.records.length} records / ${account.openCount} open / ${escapeHtml(formatCompactMoney(account.totalValue))}</em>
-              </button>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderCommandValueList(records) {
-    if (!records.length) return `<div class="empty-state compact">No open value captured yet.</div>`;
-    return `
-      <div class="command-list">
-        ${records
-          .map(
-            (record) => `
-              <button class="command-row tone-teal" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">
-                <span>${escapeHtml(formatCompactMoney(record.valueAmount))}</span>
-                <strong>${escapeHtml(record.client || record.reference || "Open record")}</strong>
-                <em>${escapeHtml(record.title || "Untitled record")}</em>
-              </button>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderCommandRhythm() {
-    const rows = [
-      ["1", "Clear red actions", "Open Reminders and update overdue or near-date records first.", "Reminders"],
-      ["2", "Fix evidence", "Review Documents so source sheets, LOA, and agreement proof are visible.", "Documents"],
-      ["3", "Move commercial gaps", "Open Contracts and close agreement, handover, and value gaps.", "Contracts"],
-      ["4", "Share the pack", "Open Reports when the operating story is ready for management.", "Reports"],
-    ];
-    return `
-      <div class="command-rhythm">
-        ${rows
-          .map(
-            ([step, title, note, view]) => `
-              <button type="button" data-view="${escapeHtml(view)}" ${canAccessView(view) ? "" : "disabled"}>
-                <span>${escapeHtml(step)}</span>
-                <strong>${escapeHtml(title)}</strong>
-                <em>${escapeHtml(note)}</em>
-              </button>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderBidDeskPage() {
-    const model = buildBidDeskModel();
-    return `
-      <section class="bid-desk">
-        <section class="bid-console">
-          <div>
-            <span class="panel-label">Submission war room</span>
-            <h2>Move from opportunity tracking to bid execution.</h2>
-            <p>Bid Desk turns open tenders and EOIs into a controlled submission floor: readiness checks, bid/no-bid decisions, deadline pressure, pack-ready status, and audit-backed movement.</p>
-            <div class="bid-actions">
-              <button class="secondary-btn" type="button" data-view="Tenders">Open tenders</button>
-              <button class="ghost-btn" type="button" data-view="Tenders Insights">Open tender insights</button>
-              <button class="ghost-btn" type="button" data-view="Documents">Review evidence</button>
-            </div>
-          </div>
-          <div class="bid-score-card">
-            <span>Submission readiness</span>
-            <strong>${model.totalReadiness}%</strong>
-            <small>${model.readyRows.length} packs ready / ${model.due14} due in 14 days</small>
-          </div>
-        </section>
-
-        <div class="bid-kpis">
-          ${renderInsightKpi("Active bid floor", `${model.activeRows.length}`, "Open tender and EOI records")}
-          ${renderInsightKpi("Bid value", formatCompactMoney(model.bidValue), `${model.bidRows.length} records marked Bid`)}
-          ${renderInsightKpi("Pack ready", `${model.readyRows.length}`, `${formatCompactMoney(model.readyValue)} ready value`)}
-          ${renderInsightKpi("Due pressure", `${model.due14}`, "Past due or due in 14 days")}
-        </div>
-
-        <div class="bid-layout">
-          <section class="bid-main">
-            <article class="info-panel bid-board-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Bid board</span>
-                  <h3>Decision and readiness queue</h3>
-                </div>
-                <span>${model.packRows.length} shown</span>
-              </div>
-              ${renderBidBoard(model.packRows)}
-            </article>
-          </section>
-
-          <aside class="bid-side">
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Deadline pressure</span>
-                  <h3>Next submission moves</h3>
-                </div>
-                <span>${model.dueRows.length} shown</span>
-              </div>
-              ${renderBidDueList(model.dueRows)}
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Pack gaps</span>
-                  <h3>Low readiness records</h3>
-                </div>
-                <span>${model.missingRows.length} total</span>
-              </div>
-              ${renderBidGapList(model.missingRows.slice(0, 8))}
-            </article>
-          </aside>
-        </div>
-
-        <div class="bid-analytics-grid">
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Decision mix</span>
-                <h3>Bid / watch / no-bid</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.decisionRows, "teal")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Category spread</span>
-                <h3>Submission concentration</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.categoryRows, "amber")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Client heat</span>
-                <h3>Bid demand by client</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.clientRows, "blue")}
-          </article>
-
-          <article class="info-panel bid-playbook-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Submission rhythm</span>
-                <h3>Bid control loop</h3>
-              </div>
-            </div>
-            ${renderBidPlaybook()}
-          </article>
-        </div>
-      </section>
-    `;
-  }
-
-  function renderBidBoard(rows) {
-    if (!rows.length) return `<div class="empty-state compact">No active tenders or EOIs found.</div>`;
-    return `
-      <div class="bid-board-list">
-        ${rows.map((row) => {
-          const { record, decision, readiness, dueDays, ready, checklist } = row;
-          return `
-            <div class="bid-row tone-${escapeHtml(bidDecisionTone(decision.decision))} ${ready ? "is-ready" : ""}">
-              <div class="bid-row-main">
-                <span>${escapeHtml(decision.decision)}</span>
-                <strong>${escapeHtml(record.title || record.reference || "Untitled bid")}</strong>
-                <em>${escapeHtml([record.reference, record.client, record.category, dueLabel(dueDays), formatCompactMoney(record.valueAmount)].filter(Boolean).join(" / "))}</em>
-                <div class="bid-readiness">
-                  <i style="--width: ${Math.max(4, readiness)}%"></i>
-                  <small>${readiness}% ready / ${checklist.filter((item) => !item.passed).map((item) => item.label).slice(0, 3).join(", ") || "core pack complete"}</small>
-                </div>
-              </div>
-              <div class="bid-row-actions">
-                ${["Bid", "Watch", "No-bid"].map((option) => `
-                  <button class="mini-btn ${decision.decision === option ? "primary-mini" : ""}" type="button" data-action="set-bid-decision" data-id="${escapeHtml(record.id)}" data-decision="${escapeHtml(option)}" ${canEdit() ? "" : "disabled"}>${escapeHtml(option)}</button>
-                `).join("")}
-                <button class="mini-btn ${ready ? "primary-mini" : ""}" type="button" data-action="toggle-submission-ready" data-id="${escapeHtml(record.id)}" ${canEdit() ? "" : "disabled"}>${ready ? "Ready" : "Pack"}</button>
-                <button class="mini-btn" type="button" data-action="open-related-record" data-id="${escapeHtml(record.id)}">Open</button>
-              </div>
-            </div>
-          `;
-        }).join("")}
-      </div>
-    `;
-  }
-
-  function renderBidDueList(rows) {
-    if (!rows.length) return `<div class="empty-state compact">No bid deadlines in the next 30 days.</div>`;
-    return `
-      <div class="command-list">
-        ${rows.map((row) => `
-          <button class="command-row tone-${row.dueDays !== null && row.dueDays < 0 ? "red" : "amber"}" type="button" data-action="open-related-record" data-id="${escapeHtml(row.record.id)}">
-            <span>${escapeHtml(dueLabel(row.dueDays))}</span>
-            <strong>${escapeHtml(row.record.title || row.record.reference || "Untitled bid")}</strong>
-            <em>${escapeHtml([row.record.client, row.decision.decision, `${row.readiness}% ready`].join(" / "))}</em>
-          </button>
-        `).join("")}
-      </div>
-    `;
-  }
-
-  function renderBidGapList(rows) {
-    if (!rows.length) return `<div class="empty-state compact">No low-readiness packs in the active bid floor.</div>`;
-    return `
-      <div class="command-list">
-        ${rows.map((row) => {
-          const gaps = row.checklist.filter((item) => !item.passed).map((item) => item.label).slice(0, 4);
-          return `
-            <button class="command-row tone-blue" type="button" data-action="open-related-record" data-id="${escapeHtml(row.record.id)}">
-              <span>${row.readiness}%</span>
-              <strong>${escapeHtml(row.record.title || row.record.reference || "Untitled bid")}</strong>
-              <em>${escapeHtml(gaps.join(" / ") || "No major gaps")}</em>
-            </button>
-          `;
-        }).join("")}
-      </div>
-    `;
-  }
-
-  function renderBidPlaybook() {
-    const rows = [
-      ["1", "Decide", "Set Bid, Watch, or No-bid before effort is spent."],
-      ["2", "Complete pack", "Close missing reference, client, due date, value, owner, and source gaps."],
-      ["3", "Mark ready", "Flag the submission pack when the team can proceed."],
-      ["4", "Audit movement", "Bid decisions and pack status are logged in Governance."],
-    ];
-    return `
-      <div class="command-rhythm bid-playbook">
-        ${rows.map(([step, title, note]) => `
-          <div>
-            <span>${escapeHtml(step)}</span>
-            <strong>${escapeHtml(title)}</strong>
-            <em>${escapeHtml(note)}</em>
-          </div>
-        `).join("")}
-      </div>
-    `;
-  }
-
-  function bidDecisionTone(decision) {
-    if (decision === "Bid") return "green";
-    if (decision === "No-bid") return "red";
-    return "amber";
-  }
-
-  function dueLabel(days) {
-    if (days === null) return "No date";
-    if (days < 0) return `${Math.abs(days)}d late`;
-    if (days === 0) return "Due today";
-    return `${days}d left`;
-  }
-
-  function calendarLaneFor(days) {
-    if (days === null) return "No date";
-    if (days < 0) return "Overdue";
-    if (days <= 7) return "This week";
-    if (days <= 30) return "Next 30";
-    if (days <= 90) return "Next 90";
-    return "Later";
-  }
-
-  function calendarToneFor(days) {
-    if (days === null) return "blue";
-    if (days < 0) return "red";
-    if (days <= 14) return "amber";
-    if (days <= 90) return "blue";
-    return "green";
-  }
-
-  function startOfWeek(date) {
-    const start = new Date(date);
-    start.setHours(0, 0, 0, 0);
-    const day = start.getDay();
-    const diff = day === 0 ? -6 : 1 - day;
-    start.setDate(start.getDate() + diff);
-    return start;
-  }
-
-  function formatCalendarDay(date) {
-    if (!date) return "No date";
-    return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short" });
-  }
-
-  function formatCalendarWeek(start) {
-    const end = new Date(start);
-    end.setDate(start.getDate() + 6);
-    return `${formatCalendarDay(start)} - ${formatCalendarDay(end)}`;
-  }
-
-  function calendarBreakdown(events, getter, limit = 6) {
-    const rows = new Map();
-    events.forEach((event) => {
-      const label = String(getter(event) || "Unassigned").trim() || "Unassigned";
-      rows.set(label, (rows.get(label) || 0) + 1);
-    });
-    return Array.from(rows, ([label, value]) => ({ label, value }))
-      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
-      .slice(0, limit);
-  }
-
-  function buildReviewCalendarModel() {
-    const records = companyRecords().filter((record) => !isClosedRecord(record));
-    const floor = highValueThreshold(companyRecords());
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const currentWeek = startOfWeek(today);
-    const events = records
-      .map((record) => {
-        const date = parseRecordDate(record.endDate);
-        const days = recordDueDays(record);
-        const amount = Number(record.valueAmount) || 0;
-        const isTender = record.type === "Tender" || record.type === "EOI";
-        const kind = isTender ? "Tender submission" : "Project milestone";
-        const lane = calendarLaneFor(days);
-        const tone = calendarToneFor(days);
-        const priority =
-          (days === null ? 54 : days < 0 ? 120 + Math.min(35, Math.abs(days)) : days <= 7 ? 105 - days : days <= 30 ? 82 - Math.round(days / 2) : 45) +
-          (amount >= floor && amount > 0 ? 14 : 0) +
-          ((record.rounds || []).length ? 7 : 0);
-        return {
-          record,
-          date,
-          days,
-          amount,
-          isTender,
-          isHighValue: amount >= floor && amount > 0,
-          kind,
-          lane,
-          tone,
-          priority,
-        };
-      })
-      .sort((a, b) => {
-        const aDays = a.days === null ? 9999 : a.days;
-        const bDays = b.days === null ? 9999 : b.days;
-        return b.priority - a.priority || aDays - bDays || a.record.client.localeCompare(b.record.client);
-      });
-    const scheduled = events.filter((event) => event.date);
-    const overdue = events.filter((event) => event.days !== null && event.days < 0);
-    const next30 = events.filter((event) => event.days !== null && event.days >= 0 && event.days <= 30);
-    const noDate = events.filter((event) => event.days === null);
-    const activeWeekStarts = Array.from(new Set(scheduled.map((event) => startOfWeek(event.date).getTime()))).sort((a, b) => a - b);
-    const futureWeekStarts = activeWeekStarts.filter((stamp) => stamp >= currentWeek.getTime());
-    const selectedWeekStarts = (futureWeekStarts.length ? futureWeekStarts : activeWeekStarts.slice(-8)).slice(0, 8);
-    const weeks = selectedWeekStarts.map((stamp) => {
-      const start = new Date(stamp);
-      const end = new Date(start);
-      end.setDate(start.getDate() + 6);
-      const weekEvents = scheduled
-        .filter((event) => event.date >= start && event.date <= end)
-        .sort((a, b) => (a.days ?? 9999) - (b.days ?? 9999) || b.priority - a.priority);
-      return {
-        label: start.getTime() === currentWeek.getTime() ? "This week" : formatCalendarWeek(start),
-        dateRange: formatCalendarWeek(start),
-        start,
-        end,
-        events: weekEvents,
-        tenderCount: weekEvents.filter((event) => event.isTender).length,
-        projectCount: weekEvents.filter((event) => !event.isTender).length,
-        value: sumAmounts(weekEvents.map((event) => event.record)),
-      };
-    });
-    const laneNames = ["Overdue", "This week", "Next 30", "Next 90", "Later", "No date"];
-    const lanes = laneNames.map((name) => ({
-      name,
-      events: events.filter((event) => event.lane === name).slice(0, 8),
-      count: events.filter((event) => event.lane === name).length,
-    }));
-    const dateCoverage = records.length ? Math.round((scheduled.length / records.length) * 100) : 100;
-    const onTimeRate = scheduled.length ? Math.round(((scheduled.length - overdue.length) / scheduled.length) * 100) : 100;
-    const focusScore = Math.max(0, Math.min(100, Math.round(dateCoverage * 0.45 + onTimeRate * 0.35 + Math.max(0, 100 - noDate.length * 4) * 0.2)));
-    return {
-      records,
-      events,
-      scheduled,
-      overdue,
-      next30,
-      noDate,
-      weeks,
-      lanes,
-      focusScore,
-      dateCoverage,
-      onTimeRate,
-      highValueRows: events.filter((event) => event.isHighValue).slice(0, 8),
-      ownerRows: calendarBreakdown(events, (event) => event.record.owner, 6),
-      clientRows: calendarBreakdown(events, (event) => accountLabelForRecord(event.record), 6),
-      typeRows: calendarBreakdown(events, (event) => event.record.type, 4),
-      qualityRows: [
-        { label: "Date captured", value: dateCoverage },
-        { label: "Not overdue", value: onTimeRate },
-        { label: "Next 30 events", value: next30.length },
-        { label: "No-date records", value: noDate.length },
-      ],
-    };
-  }
-
-  function renderReviewCalendarPage() {
-    const model = buildReviewCalendarModel();
-    return `
-      <section class="calendar-desk">
-        <section class="calendar-console">
-          <div>
-            <span class="panel-label">Review calendar</span>
-            <h2>See the week before it becomes pressure.</h2>
-            <p>Calendar turns tender deadlines, project milestones, overdue items, and no-date records into one review rhythm for managers, estimators, and delivery owners.</p>
-            <div class="calendar-actions">
-              <button class="secondary-btn" type="button" data-view="Reminders">Open reminders</button>
-              <button class="ghost-btn" type="button" data-view="Bid Desk">Open Bid Desk</button>
-              <button class="ghost-btn" type="button" data-view="Projects">Open projects</button>
-            </div>
-          </div>
-          <div class="calendar-score-card">
-            <span>Calendar focus</span>
-            <strong>${model.focusScore}%</strong>
-            <small>${model.overdue.length} overdue / ${model.noDate.length} no-date records</small>
-          </div>
-        </section>
-
-        <div class="calendar-kpis">
-          ${renderInsightKpi("Scheduled records", `${model.scheduled.length}`, `${model.dateCoverage}% date coverage`)}
-          ${renderInsightKpi("Overdue", `${model.overdue.length}`, "Past due tender or project dates")}
-          ${renderInsightKpi("Next 30 days", `${model.next30.length}`, "Upcoming review pressure")}
-          ${renderInsightKpi("High-value dates", `${model.highValueRows.length}`, "Management attention candidates")}
-        </div>
-
-        <div class="calendar-layout">
-          <section class="calendar-main">
-            <article class="info-panel calendar-week-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Rolling calendar</span>
-                  <h3>Eight-week review strip</h3>
-                </div>
-                <span>${model.events.length} open events</span>
-              </div>
-              ${renderCalendarWeeks(model.weeks)}
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Urgency lanes</span>
-                  <h3>What needs movement</h3>
-                </div>
-                <span>${model.lanes.reduce((sum, lane) => sum + lane.count, 0)} items</span>
-              </div>
-              <div class="calendar-lanes">
-                ${model.lanes.map(renderCalendarLane).join("")}
-              </div>
-            </article>
-          </section>
-
-          <aside class="calendar-side">
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">High-value diary</span>
-                  <h3>Management review dates</h3>
-                </div>
-                <span>${model.highValueRows.length} shown</span>
-              </div>
-              ${renderCalendarEventList(model.highValueRows, "No high-value open dates found.")}
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">No-date cleanup</span>
-                  <h3>Records outside the calendar</h3>
-                </div>
-                <span>${model.noDate.length} total</span>
-              </div>
-              ${renderCalendarEventList(model.noDate.slice(0, 8), "Every open record has a date.")}
-            </article>
-          </aside>
-        </div>
-
-        <div class="calendar-analytics-grid">
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Owner diary</span>
-                <h3>Who carries dated work</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.ownerRows, "green")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Client pressure</span>
-                <h3>Accounts on the calendar</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.clientRows, "blue")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Work type</span>
-                <h3>Tender vs project dates</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.typeRows, "teal")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Calendar quality</span>
-                <h3>Date hygiene signals</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.qualityRows, "amber")}
-          </article>
-        </div>
-      </section>
-    `;
-  }
-
-  function renderCalendarWeeks(weeks) {
-    return `
-      <div class="calendar-week-grid">
-        ${weeks
-          .map(
-            (week) => `
-              <div class="calendar-week-card">
-                <div class="calendar-week-head">
-                  <span>${escapeHtml(week.label)}</span>
-                  <strong>${week.events.length}</strong>
-                </div>
-                <small>${escapeHtml(week.dateRange)} / ${week.tenderCount} tender / ${week.projectCount} project</small>
-                <div class="calendar-mini-list">
-                  ${
-                    week.events.length
-                      ? week.events
-                          .slice(0, 3)
-                          .map(
-                            (event) => `
-                              <button class="calendar-mini-event tone-${escapeHtml(event.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(event.record.id)}">
-                                <span>${escapeHtml(formatCalendarDay(event.date))}</span>
-                                <strong>${escapeHtml(event.record.title || event.record.reference || "Untitled")}</strong>
-                              </button>
-                            `,
-                          )
-                          .join("")
-                      : `<p>No dated records</p>`
-                  }
-                </div>
-              </div>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderCalendarLane(lane) {
-    return `
-      <article class="calendar-lane">
-        <div class="calendar-lane-head">
-          <strong>${escapeHtml(lane.name)}</strong>
-          <span>${lane.count}</span>
-        </div>
-        <div class="calendar-event-list">
-          ${lane.events.length ? lane.events.map(renderCalendarEventCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} items.</div>`}
-        </div>
-      </article>
-    `;
-  }
-
-  function renderCalendarEventList(events, emptyCopy) {
-    if (!events.length) return `<div class="empty-state compact">${escapeHtml(emptyCopy)}</div>`;
-    return `
-      <div class="calendar-event-list">
-        ${events.map(renderCalendarEventCard).join("")}
-      </div>
-    `;
-  }
-
-  function renderCalendarEventCard(event) {
-    return `
-      <button class="calendar-event-card tone-${escapeHtml(event.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(event.record.id)}">
-        <span>${escapeHtml(event.lane)}</span>
-        <strong>${escapeHtml(event.record.title || event.record.reference || "Untitled record")}</strong>
-        <em>${escapeHtml([event.kind, event.record.client, event.date ? formatDate(event.record.endDate) : "No date", dueLabel(event.days)].filter(Boolean).join(" / "))}</em>
-        <small>${escapeHtml([event.record.type, event.record.status, event.amount ? formatCompactMoney(event.amount) : "No value"].filter(Boolean).join(" / "))}</small>
-      </button>
-    `;
-  }
-
-  function riskSeverityFor(score) {
-    if (score >= 92) return { label: "Critical", tone: "red" };
-    if (score >= 74) return { label: "High", tone: "amber" };
-    if (score >= 56) return { label: "Watch", tone: "blue" };
-    return { label: "Controlled", tone: "green" };
-  }
-
-  function pushRisk(risks, record, type, title, note, action, score, amountOverride) {
-    const severity = riskSeverityFor(score);
-    risks.push({
-      id: `${record.id}-${normalize(type).replaceAll(" ", "-")}-${risks.length}`,
-      record,
-      type,
-      title,
-      note,
-      action,
-      score: Math.max(1, Math.min(100, Math.round(score))),
-      severity: severity.label,
-      tone: severity.tone,
-      amount: amountOverride ?? (Number(record.valueAmount) || 0),
-      days: recordDueDays(record),
-    });
-  }
-
-  function riskBreakdown(risks, getter, limit = 6) {
-    const rows = new Map();
-    risks.forEach((risk) => {
-      const label = String(getter(risk) || "Unassigned").trim() || "Unassigned";
-      rows.set(label, (rows.get(label) || 0) + 1);
-    });
-    return Array.from(rows, ([label, value]) => ({ label, value }))
-      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
-      .slice(0, limit);
-  }
-
-  function buildRiskControlModel() {
-    const records = companyRecords();
-    const openRecords = records.filter((record) => !isClosedRecord(record));
-    const floor = highValueThreshold(records);
-    const risks = [];
-    records.forEach((record) => {
-      const isOpen = !isClosedRecord(record);
-      const isTender = record.type === "Tender" || record.type === "EOI";
-      const isProject = record.type === "Project";
-      const amount = Number(record.valueAmount) || 0;
-      const days = recordDueDays(record);
-      const highValue = amount >= floor && amount > 0;
-      const missingCore = [
-        ["reference", record.reference],
-        ["client", record.client],
-        ["title", record.title],
-        ["category", record.category],
-        ["owner", record.owner],
-        ["source", record.sourceSheet || record.sourceWorkbook],
-      ]
-        .filter(([, value]) => !String(value || "").trim())
-        .map(([label]) => label);
-
-      if (isOpen && days !== null && days < 0) {
-        pushRisk(risks, record, "Schedule", "Overdue movement", `${Math.abs(days)} days past due. Status, owner, and next date need confirmation.`, "Update due date or escalation note.", 96 + Math.min(4, Math.abs(days) / 15));
-      } else if (isOpen && days !== null && days <= 14) {
-        pushRisk(risks, record, "Schedule", "Near-date pressure", `${days === 0 ? "Due today" : `${days} days left`}. Move this before it becomes overdue.`, "Confirm submission or delivery next step.", 76 + (14 - days));
-      }
-
-      if (isOpen && days === null) {
-        pushRisk(risks, record, "Data", "No control date", "This active record is outside calendar, reminder, and forecast timing control.", "Add due, submission, or review date.", 72);
-      }
-
-      if (isOpen && !amount) {
-        pushRisk(risks, record, "Value", "Missing expected value", "Value is not captured, so prioritization and management exposure are understated.", "Add estimated value or mark as intentionally unpriced.", highValue ? 80 : 66);
-      }
-
-      if (missingCore.length >= 2) {
-        pushRisk(risks, record, "Data", "Core data gaps", `${missingCore.slice(0, 4).join(", ")} missing. Reporting quality is reduced.`, "Complete the missing core fields.", 58 + missingCore.length * 7);
-      }
-
-      if (highValue && isOpen) {
-        const score = 70 + (days === null ? 10 : days < 0 ? 20 : days <= 30 ? 12 : 4) + (!record.owner ? 8 : 0);
-        pushRisk(risks, record, "Value", "High-value control", `${formatCompactMoney(amount)} open exposure needs visible ownership and review discipline.`, "Keep owner, date, and next move current.", score, amount);
-      }
-
-      if (isTender && isOpen) {
-        const decision = bidDecisionFor(record).decision;
-        const readiness = bidReadinessFor(record);
-        const ready = Boolean(state.data.submissionReady?.[record.id]);
-        if (decision === "Watch" && (days === null || days <= 30)) {
-          pushRisk(risks, record, "Bid", "Bid decision pending", "This pursuit is still on Watch while the date is close or missing.", "Set Bid or No-bid before effort increases.", days === null ? 74 : 82);
-        }
-        if (decision === "Bid" && !ready && days !== null && days <= 14) {
-          pushRisk(risks, record, "Bid", "Submission pack not ready", "Marked Bid, but the submission pack is not ready near the due date.", "Complete and mark pack ready in Bid Desk.", 88 + Math.max(0, 14 - days));
-        }
-        if (readiness < 72) {
-          pushRisk(risks, record, "Bid", "Low bid readiness", `Submission readiness is ${readiness}%.`, "Close reference, value, owner, source, and decision gaps.", 62 + (72 - readiness) * 0.7);
-        }
-      }
-
-      if (isProject && isOpen) {
-        if (days !== null && days < 0) {
-          pushRisk(risks, record, "Delivery", "Project date slipped", `${Math.abs(days)} days past the captured project date.`, "Confirm delivery status and revised milestone.", 94);
-        } else if (days !== null && days <= 30) {
-          pushRisk(risks, record, "Delivery", "Project milestone near", `${days} days to captured project date.`, "Check delivery owner, client readiness, and next handover.", 70 + Math.max(0, 30 - days) * 0.4);
-        }
-        if (!record.owner) {
-          pushRisk(risks, record, "Delivery", "No delivery owner", "Project record has no owner, which weakens accountability.", "Assign a project owner.", 68);
-        }
-      }
-
-      if ((["Awarded", "Ongoing", "Completed"].includes(record.status) || isProject) && (!record.agreementNo || !record.loaReceived || !record.agreementReceived)) {
-        const gaps = [
-          !record.agreementNo ? "agreement no" : "",
-          !record.loaReceived ? "LOA proof" : "",
-          !record.agreementReceived ? "agreement received" : "",
-        ].filter(Boolean);
-        pushRisk(risks, record, "Commercial", "Commercial evidence gap", `${gaps.join(", ")} missing for commercial control.`, "Update contract evidence in the source record.", 62 + gaps.length * 8);
-      }
-
-      if ((record.rounds || []).length >= 2 && isOpen) {
-        pushRisk(risks, record, "Negotiation", "Negotiation trail active", `${record.rounds.length} negotiation rounds captured. Commercial movement should stay visible.`, "Review latest negotiation note and next response.", 62 + Math.min(18, record.rounds.length * 4));
-      }
-    });
-
-    const sorted = risks.sort((a, b) => b.score - a.score || (a.days ?? 9999) - (b.days ?? 9999) || a.record.client.localeCompare(b.record.client));
-    const critical = sorted.filter((risk) => risk.severity === "Critical");
-    const high = sorted.filter((risk) => risk.severity === "High");
-    const watch = sorted.filter((risk) => risk.severity === "Watch");
-    const uniqueRiskRecords = Array.from(new Map(sorted.map((risk) => [risk.record.id, risk.record])).values());
-    const riskExposure = sumAmounts(uniqueRiskRecords);
-    const severityPenalty = Math.min(55, critical.length * 0.6 + high.length * 0.35 + watch.length * 0.15);
-    const densityPenalty = Math.min(20, (sorted.length / Math.max(openRecords.length, 1)) * 5);
-    const controlScore = Math.max(15, Math.min(100, Math.round(100 - severityPenalty - densityPenalty)));
-    const riskTypes = ["Schedule", "Bid", "Commercial", "Delivery", "Data", "Value", "Negotiation"];
-    const heatRows = riskTypes
-      .map((type) => {
-        const typeRisks = sorted.filter((risk) => risk.type === type);
-        return {
-          label: type,
-          total: typeRisks.length,
-          critical: typeRisks.filter((risk) => risk.severity === "Critical").length,
-          high: typeRisks.filter((risk) => risk.severity === "High").length,
-          watch: typeRisks.filter((risk) => risk.severity === "Watch").length,
-        };
-      })
-      .filter((row) => row.total);
-    const lanes = [
-      { name: "Critical", risks: critical.slice(0, 8), count: critical.length },
-      { name: "Schedule", risks: sorted.filter((risk) => risk.type === "Schedule").slice(0, 8), count: sorted.filter((risk) => risk.type === "Schedule").length },
-      { name: "Bid", risks: sorted.filter((risk) => risk.type === "Bid").slice(0, 8), count: sorted.filter((risk) => risk.type === "Bid").length },
-      { name: "Commercial", risks: sorted.filter((risk) => risk.type === "Commercial").slice(0, 8), count: sorted.filter((risk) => risk.type === "Commercial").length },
-      { name: "Delivery", risks: sorted.filter((risk) => risk.type === "Delivery").slice(0, 8), count: sorted.filter((risk) => risk.type === "Delivery").length },
-      { name: "Data", risks: sorted.filter((risk) => risk.type === "Data" || risk.type === "Value").slice(0, 8), count: sorted.filter((risk) => risk.type === "Data" || risk.type === "Value").length },
-    ];
-    return {
-      records,
-      openRecords,
-      risks: sorted,
-      critical,
-      high,
-      watch,
-      riskExposure,
-      controlScore,
-      lanes,
-      heatRows,
-      ownerRows: riskBreakdown(sorted, (risk) => risk.record.owner, 6),
-      clientRows: riskBreakdown(sorted, (risk) => accountLabelForRecord(risk.record), 6),
-      typeRows: riskBreakdown(sorted, (risk) => risk.type, 7),
-      severityRows: [
-        { label: "Critical", value: critical.length },
-        { label: "High", value: high.length },
-        { label: "Watch", value: watch.length },
-        { label: "Controlled", value: sorted.filter((risk) => risk.severity === "Controlled").length },
-      ],
-      commercialDataRows: sorted.filter((risk) => ["Commercial", "Data", "Value"].includes(risk.type)).slice(0, 10),
-      playbook: [
-        ["Stabilize red", "Clear overdue, high-value, and pack-not-ready items before ordinary cleanup."],
-        ["Assign ownership", "Every critical or high risk needs one owner and one next date."],
-        ["Protect evidence", "Commercial gaps should be closed before weekly reporting or client escalation."],
-        ["Reduce noise", "No-date and missing-value records should not survive the weekly review."],
-      ],
-    };
-  }
-
-  function renderRiskControlPage() {
-    const model = buildRiskControlModel();
-    return `
-      <section class="risk-control">
-        <section class="risk-console">
-          <div>
-            <span class="panel-label">Risk control room</span>
-            <h2>Make the hidden problems impossible to miss.</h2>
-            <p>Risk Control reads the same pursuit and project records, then turns schedule pressure, bid gaps, commercial evidence, missing data, and delivery exposure into a register the team can act on.</p>
-            <div class="risk-actions">
-              <button class="secondary-btn" type="button" data-view="Calendar">Open calendar</button>
-              <button class="ghost-btn" type="button" data-view="Bid Desk">Open Bid Desk</button>
-              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
-            </div>
-          </div>
-          <div class="risk-score-card">
-            <span>Control score</span>
-            <strong>${model.controlScore}%</strong>
-            <small>${model.critical.length} critical / ${model.high.length} high risks</small>
-          </div>
-        </section>
-
-        <div class="risk-kpis">
-          ${renderInsightKpi("Active risks", `${model.risks.length}`, `${model.openRecords.length} open records scanned`)}
-          ${renderInsightKpi("Critical risks", `${model.critical.length}`, "Immediate management attention")}
-          ${renderInsightKpi("Risk exposure", formatCompactMoney(model.riskExposure), "Unique record value touched by risks")}
-          ${renderInsightKpi("Commercial/data", `${model.commercialDataRows.length}`, "Evidence and hygiene risks shown")}
-        </div>
-
-        <div class="risk-layout">
-          <section class="risk-main">
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Risk register</span>
-                  <h3>Severity lanes</h3>
-                </div>
-                <span>${model.risks.length} risks</span>
-              </div>
-              <div class="risk-lanes">
-                ${model.lanes.map(renderRiskLane).join("")}
-              </div>
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Risk heatmap</span>
-                  <h3>Type and severity concentration</h3>
-                </div>
-              </div>
-              ${renderRiskHeatmap(model.heatRows)}
-            </article>
-          </section>
-
-          <aside class="risk-side">
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Critical now</span>
-                  <h3>First risks to clear</h3>
-                </div>
-                <span>${model.critical.length} total</span>
-              </div>
-              ${renderRiskList(model.critical.slice(0, 8), "No critical risks currently detected.")}
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Evidence cleanup</span>
-                  <h3>Commercial and data risks</h3>
-                </div>
-                <span>${model.commercialDataRows.length} shown</span>
-              </div>
-              ${renderRiskList(model.commercialDataRows.slice(0, 8), "No commercial or data cleanup risks detected.")}
-            </article>
-          </aside>
-        </div>
-
-        <div class="risk-analytics-grid">
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Owner exposure</span>
-                <h3>Risk by owner</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.ownerRows, "green")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Client exposure</span>
-                <h3>Accounts carrying risk</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.clientRows, "blue")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Risk mix</span>
-                <h3>Primary risk types</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.typeRows, "amber")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Mitigation rhythm</span>
-                <h3>Weekly control loop</h3>
-              </div>
-            </div>
-            ${renderRiskPlaybook(model.playbook)}
-          </article>
-        </div>
-      </section>
-    `;
-  }
-
-  function renderRiskLane(lane) {
-    return `
-      <article class="risk-lane">
-        <div class="risk-lane-head">
-          <strong>${escapeHtml(lane.name)}</strong>
-          <span>${lane.count}</span>
-        </div>
-        <div class="risk-card-list">
-          ${lane.risks.length ? lane.risks.map(renderRiskCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} risks.</div>`}
-        </div>
-      </article>
-    `;
-  }
-
-  function renderRiskList(risks, emptyCopy) {
-    if (!risks.length) return `<div class="empty-state compact">${escapeHtml(emptyCopy)}</div>`;
-    return `<div class="risk-card-list">${risks.map(renderRiskCard).join("")}</div>`;
-  }
-
-  function renderRiskCard(risk) {
-    return `
-      <button class="risk-card tone-${escapeHtml(risk.tone)}" type="button" data-action="open-related-record" data-id="${escapeHtml(risk.record.id)}">
-        <span>${escapeHtml(risk.severity)} / ${escapeHtml(risk.type)}</span>
-        <strong>${escapeHtml(risk.title)}</strong>
-        <em>${escapeHtml(risk.record.title || risk.record.reference || "Untitled record")}</em>
-        <small>${escapeHtml([risk.record.client, dueLabel(risk.days), risk.amount ? formatCompactMoney(risk.amount) : "No value"].filter(Boolean).join(" / "))}</small>
-        <p>${escapeHtml(risk.action)}</p>
-      </button>
-    `;
-  }
-
-  function renderRiskHeatmap(rows) {
-    if (!rows.length) return `<div class="empty-state compact">No risk heatmap data available.</div>`;
-    const max = Math.max(...rows.map((row) => row.total), 1);
-    return `
-      <div class="risk-heatmap">
-        ${rows
-          .map((row) => {
-            const width = Math.max(6, Math.round((row.total / max) * 100));
-            return `
-              <div class="risk-heat-row">
-                <div>
-                  <strong>${escapeHtml(row.label)}</strong>
-                  <span>${row.total} total</span>
-                </div>
-                <i style="--width: ${width}%"><b></b></i>
-                <small>${row.critical} critical / ${row.high} high / ${row.watch} watch</small>
-              </div>
-            `;
-          })
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderRiskPlaybook(rows) {
-    return `
-      <div class="risk-playbook">
-        ${rows
-          .map(
-            ([title, note]) => `
-              <div>
-                <strong>${escapeHtml(title)}</strong>
-                <span>${escapeHtml(note)}</span>
-              </div>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function advisorBreakdown(items, getter, limit = 6) {
-    const rows = new Map();
-    items.forEach((item) => {
-      const label = String(getter(item) || "Unassigned").trim() || "Unassigned";
-      rows.set(label, (rows.get(label) || 0) + 1);
-    });
-    return Array.from(rows, ([label, value]) => ({ label, value }))
-      .sort((a, b) => b.value - a.value || a.label.localeCompare(b.label))
-      .slice(0, limit);
-  }
-
-  function addAdvisorRecommendation(recommendations, seen, item) {
-    const key = `${item.source}-${item.record?.id || item.view || item.title}-${item.title}`;
-    if (seen.has(key)) return;
-    seen.add(key);
-    recommendations.push({
-      lane: item.lane || "Do now",
-      source: item.source || "Advisor",
-      title: item.title || "Recommended action",
-      reason: item.reason || "PursuitDesk found a signal that needs review.",
-      action: item.action || "Open the source and confirm the next move.",
-      impact: item.impact || "Operating control",
-      view: item.view || "Command",
-      record: item.record || null,
-      score: Math.max(1, Math.min(100, Math.round(item.score || 50))),
-      tone: item.tone || "blue",
-    });
-  }
-
-  function buildPursuitAdvisorModel() {
-    const records = companyRecords();
-    const risk = buildRiskControlModel();
-    const calendar = buildReviewCalendarModel();
-    const bidDesk = buildBidDeskModel();
-    const forecast = buildForecastModel();
-    const contracts = buildContractsModel();
-    const documents = buildDocumentsModel();
-    const reminders = buildReminderModel();
-    const governance = buildGovernanceModel();
-    const portfolio = buildClientPortfolioModel();
-    const recommendations = [];
-    const seen = new Set();
-
-    risk.critical.slice(0, 6).forEach((item) =>
-      addAdvisorRecommendation(recommendations, seen, {
-        lane: "Do now",
-        source: "Risk",
-        title: item.title,
-        reason: item.note,
-        action: item.action,
-        impact: item.amount ? formatCompactMoney(item.amount) : "Critical control",
-        view: "Risk",
-        record: item.record,
-        score: 100 + item.score * 0.1,
-        tone: "red",
-      }),
-    );
-
-    risk.high.slice(0, 5).forEach((item) =>
-      addAdvisorRecommendation(recommendations, seen, {
-        lane: "Do now",
-        source: "Risk",
-        title: item.title,
-        reason: item.note,
-        action: item.action,
-        impact: item.amount ? formatCompactMoney(item.amount) : "High risk",
-        view: "Risk",
-        record: item.record,
-        score: 88 + item.score * 0.05,
-        tone: item.tone,
-      }),
-    );
-
-    bidDesk.activeRows
-      .filter((row) => row.decision.decision === "Watch" && (row.dueDays === null || row.dueDays <= 30))
-      .slice(0, 5)
-      .forEach((row) =>
-        addAdvisorRecommendation(recommendations, seen, {
-          lane: "Decide",
-          source: "Bid Desk",
-          title: "Set bid/no-bid decision",
-          reason: `${row.decision.decision} decision while ${dueLabel(row.dueDays).toLowerCase()} and ${row.readiness}% ready.`,
-          action: "Decide Bid or No-bid before effort increases.",
-          impact: row.amount ? formatCompactMoney(row.amount) : "Bid effort control",
-          view: "Bid Desk",
-          record: row.record,
-          score: row.dueDays === null ? 78 : 92 - Math.max(0, row.dueDays),
-          tone: "amber",
-        }),
-      );
-
-    bidDesk.activeRows
-      .filter((row) => row.decision.decision === "Bid" && !row.ready && row.dueDays !== null && row.dueDays <= 14)
-      .slice(0, 5)
-      .forEach((row) =>
-        addAdvisorRecommendation(recommendations, seen, {
-          lane: "Decide",
-          source: "Bid Desk",
-          title: "Complete submission pack",
-          reason: `Bid is active but pack is not ready with ${dueLabel(row.dueDays).toLowerCase()}.`,
-          action: "Close readiness gaps and mark the pack ready.",
-          impact: row.amount ? formatCompactMoney(row.amount) : "Submission readiness",
-          view: "Bid Desk",
-          record: row.record,
-          score: 90,
-          tone: "red",
-        }),
-      );
-
-    calendar.noDate.slice(0, 5).forEach((event) =>
-      addAdvisorRecommendation(recommendations, seen, {
-        lane: "Schedule",
-        source: "Calendar",
-        title: "Put record on the calendar",
-        reason: "This open item has no control date, so it is invisible to time-based review.",
-        action: "Add a due, submission, or next review date.",
-        impact: event.amount ? formatCompactMoney(event.amount) : "Calendar control",
-        view: "Calendar",
-        record: event.record,
-        score: 74,
-        tone: "blue",
-      }),
-    );
-
-    contracts.gaps.slice(0, 6).forEach((item) =>
-      addAdvisorRecommendation(recommendations, seen, {
-        lane: "Commercial",
-        source: "Contracts",
-        title: item.risk,
-        reason: `${item.stage} has a commercial control gap.`,
-        action: "Update agreement number, LOA proof, agreement receipt, or value.",
-        impact: item.record.valueAmount ? formatCompactMoney(item.record.valueAmount) : "Commercial evidence",
-        view: "Contracts",
-        record: item.record,
-        score: item.risk === "Needs agreement" ? 84 : 70,
-        tone: item.risk === "Needs agreement" ? "amber" : "blue",
-      }),
-    );
-
-    forecast.atRiskItems.slice(0, 5).forEach((item) =>
-      addAdvisorRecommendation(recommendations, seen, {
-        lane: "Forecast",
-        source: "Forecast",
-        title: "Clean forecast risk",
-        reason: `${item.window.label} / ${item.probability}% probability is affecting forecast confidence.`,
-        action: "Update date, probability-driving status, or value assumptions.",
-        impact: item.amount ? formatCompactMoney(item.amount) : "Forecast quality",
-        view: "Forecast",
-        record: item.record,
-        score: item.amount ? 78 : 62,
-        tone: item.window.label === "Past due" ? "red" : "amber",
-      }),
-    );
-
-    documents.gapPacks.slice(0, 6).forEach((pack) =>
-      addAdvisorRecommendation(recommendations, seen, {
-        lane: "Clean data",
-        source: "Documents",
-        title: "Close evidence gaps",
-        reason: `${pack.gaps.slice(0, 3).join(", ")} missing from the document pack.`,
-        action: "Complete source, agreement, LOA, date, or negotiation evidence.",
-        impact: `${pack.readiness}% document readiness`,
-        view: "Documents",
-        record: pack.record,
-        score: 64 + pack.gaps.length * 4,
-        tone: "blue",
-      }),
-    );
-
-    reminders.tasks.slice(0, 5).forEach((task) =>
-      addAdvisorRecommendation(recommendations, seen, {
-        lane: task.lane === "Overdue" ? "Do now" : "Schedule",
-        source: "Reminders",
-        title: task.label,
-        reason: task.note,
-        action: "Open the source record and close the reminder loop.",
-        impact: task.record.valueAmount ? formatCompactMoney(task.record.valueAmount) : "Follow-up control",
-        view: "Reminders",
-        record: task.record,
-        score: task.priority,
-        tone: task.tone,
-      }),
-    );
-
-    if (risk.critical.length || reminders.overdue) {
-      addAdvisorRecommendation(recommendations, seen, {
-        lane: "Do now",
-        source: "Advisor",
-        title: "Run a 15-minute red review",
-        reason: `${risk.critical.length} critical risks and ${reminders.overdue} overdue reminders need a short management pass.`,
-        action: "Open Risk, clear owners, assign next dates, then review Calendar.",
-        impact: "Management rhythm",
-        view: "Risk",
-        score: 96,
-        tone: "red",
-      });
-    }
-
-    const sorted = recommendations.sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
-    const laneToneMap = {
-      "Do now": "red",
-      Decide: "amber",
-      Schedule: "blue",
-      Commercial: "amber",
-      Forecast: "green",
-      "Clean data": "blue",
-    };
-    const laneNames = ["Do now", "Decide", "Schedule", "Commercial", "Forecast", "Clean data"];
-    const lanes = laneNames.map((name) => ({
-      name,
-      tone: laneToneMap[name] || "teal",
-      items: sorted.filter((item) => item.lane === name).slice(0, 8),
-      count: sorted.filter((item) => item.lane === name).length,
-    }));
-    const commercialScore = Math.max(0, 100 - Math.min(70, contracts.gapCount));
-    const decisionScore = bidDesk.activeRows.length
-      ? Math.round(((bidDesk.bidRows.length + bidDesk.noBidRows.length) / bidDesk.activeRows.length) * 100)
-      : 100;
-    const advisorScore = Math.max(
-      1,
-      Math.min(
-        100,
-        Math.round(
-          risk.controlScore * 0.24 +
-            calendar.focusScore * 0.18 +
-            governance.governanceScore * 0.16 +
-            forecast.confidence * 0.14 +
-            documents.sourceCoverage * 0.12 +
-            commercialScore * 0.08 +
-            decisionScore * 0.08,
-        ),
-      ),
-    );
-    const uniqueRecommendationRecords = Array.from(
-      new Map(sorted.filter((item) => item.record).map((item) => [item.record.id, item.record])).values(),
-    );
-    const recommendationValue = sumAmounts(uniqueRecommendationRecords);
-    const topAction = sorted[0];
-    const topForecast = forecast.topItems[0];
-    const topClient = portfolio.accounts[0];
-    const brief = [
-      {
-        label: "Opening line",
-        text: `${sorted.length} advisor recommendations are active; ${risk.critical.length} are critical-risk driven and ${calendar.noDate.length} records still need dates.`,
-      },
-      {
-        label: "First move",
-        text: topAction
-          ? `${topAction.title}: ${topAction.action}`
-          : "No urgent action found; continue weekly review and keep the data clean.",
-      },
-      {
-        label: "Value line",
-        text: `${formatCompactMoney(recommendationValue)} is attached to advisor-linked records; base forecast remains ${formatCompactMoney(forecast.weightedValue)}.`,
-      },
-      {
-        label: "Client note",
-        text: topClient
-          ? `${topClient.label} carries the hottest relationship signal with ${topClient.openCount} open items.`
-          : "Client concentration will appear as relationship history grows.",
-      },
-    ];
-    const decisionStack = [
-      { label: "Risk", value: `${risk.controlScore}%`, note: `${risk.critical.length} critical / ${risk.high.length} high`, view: "Risk", tone: "red" },
-      { label: "Bid decisions", value: `${decisionScore}%`, note: `${bidDesk.watchRows.length} watch items`, view: "Bid Desk", tone: "amber" },
-      { label: "Calendar", value: `${calendar.focusScore}%`, note: `${calendar.noDate.length} no-date records`, view: "Calendar", tone: "blue" },
-      { label: "Forecast", value: formatCompactMoney(forecast.weightedValue), note: `${forecast.atRiskItems.length} at-risk items`, view: "Forecast", tone: "green" },
-      { label: "Commercial", value: `${commercialScore}%`, note: `${contracts.gapCount} gaps`, view: "Contracts", tone: "amber" },
-      { label: "Evidence", value: `${documents.sourceCoverage}%`, note: `${documents.totalGaps} document gaps`, view: "Documents", tone: "blue" },
-    ];
-    return {
-      records,
-      recommendations: sorted,
-      lanes,
-      advisorScore,
-      confidence: Math.round((governance.governanceScore + documents.sourceCoverage + forecast.confidence) / 3),
-      recommendationValue,
-      doNow: sorted.filter((item) => item.lane === "Do now"),
-      decisionStack,
-      focusStrip: [
-        {
-          tone: topAction?.tone || "red",
-          label: "First move",
-          value: topAction?.title || "No urgent action",
-          note: topAction?.action || "Keep the regular weekly review rhythm.",
-        },
-        {
-          tone: "amber",
-          label: "Decision queue",
-          value: `${lanes.find((lane) => lane.name === "Decide")?.count || 0} decisions`,
-          note: "Convert Watch items into Bid, No-bid, or hold with a clear owner.",
-        },
-        {
-          tone: "blue",
-          label: "Schedule cleanup",
-          value: `${calendar.noDate.length} no-date records`,
-          note: "Add due, submission, or review dates so work appears in time views.",
-        },
-        {
-          tone: advisorScore >= 72 ? "green" : "teal",
-          label: "Review posture",
-          value: advisorScore >= 72 ? "Controlled push" : advisorScore >= 48 ? "Focused recovery" : "Management intervention",
-          note: `${sorted.length} ranked actions with ${Math.round((governance.governanceScore + documents.sourceCoverage + forecast.confidence) / 3)}% signal confidence.`,
-        },
-      ],
-      brief,
-      sourceRows: advisorBreakdown(sorted, (item) => item.source, 8),
-      ownerRows: advisorBreakdown(sorted, (item) => item.record?.owner, 6),
-      clientRows: advisorBreakdown(sorted, (item) => (item.record ? accountLabelForRecord(item.record) : "Management"), 6),
-      playbook: [
-        ["Start red", "Open Do now and clear ownership, next dates, and evidence before anything else."],
-        ["Decide fast", "Move Watch bids into Bid or No-bid so effort is not wasted."],
-        ["Protect forecast", "Clean past-due and no-date value before management reporting."],
-        ["Close proof gaps", "Commercial and document evidence should be updated before weekly review."],
-      ],
-    };
-  }
-
-  function renderPursuitAdvisorPage() {
-    const model = buildPursuitAdvisorModel();
-    return `
-      <section class="advisor-desk">
-        <section class="advisor-console">
-          <div>
-            <span class="panel-label">Pursuit advisor</span>
-            <h2>Turn every signal into the next best move.</h2>
-            <p>Advisor reads Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, and Reminders, then ranks the moves that will improve operating control fastest.</p>
-            <div class="advisor-actions">
-              <button class="secondary-btn" type="button" data-view="Risk">Open risk control</button>
-              <button class="ghost-btn" type="button" data-view="Bid Desk">Open Bid Desk</button>
-              <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
-            </div>
-          </div>
-          <div class="advisor-score-card">
-            <span>Advisor score</span>
-            <strong>${model.advisorScore}%</strong>
-            <small>${model.doNow.length} do-now moves / ${model.confidence}% signal confidence</small>
-          </div>
-        </section>
-
-        <div class="advisor-kpis">
-          ${renderInsightKpi("Recommendations", `${model.recommendations.length}`, "Ranked from live workspace signals")}
-          ${renderInsightKpi("Do now", `${model.doNow.length}`, "Highest priority actions")}
-          ${renderInsightKpi("Value touched", formatCompactMoney(model.recommendationValue), "Unique value connected to recommendations")}
-          ${renderInsightKpi("Signal confidence", `${model.confidence}%`, "Governance, evidence, and forecast quality")}
-        </div>
-
-        ${renderAdvisorFocusStrip(model.focusStrip)}
-
-        <div class="advisor-layout">
-          <section class="advisor-main">
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Next best actions</span>
-                  <h3>Advisor lanes</h3>
-                </div>
-                <span>${model.recommendations.length} recommendations</span>
-              </div>
-              <div class="advisor-lanes">
-                ${model.lanes.map(renderAdvisorLane).join("")}
-              </div>
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Decision cockpit</span>
-                  <h3>Rooms that need leadership</h3>
-                </div>
-              </div>
-              <div class="advisor-decision-grid">
-                ${model.decisionStack.map(renderAdvisorDecisionCard).join("")}
-              </div>
-            </article>
-          </section>
-
-          <aside class="advisor-side">
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Management brief</span>
-                  <h3>What to say in review</h3>
-                </div>
-              </div>
-              ${renderAdvisorBrief(model.brief)}
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Operating rhythm</span>
-                  <h3>How to work the recommendations</h3>
-                </div>
-              </div>
-              ${renderAdvisorPlaybook(model.playbook)}
-            </article>
-          </aside>
-        </div>
-
-        <div class="advisor-analytics-grid">
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Source signals</span>
-                <h3>Where advice is coming from</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.sourceRows, "teal")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Owner focus</span>
-                <h3>Who needs support</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.ownerRows, "green")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Client focus</span>
-                <h3>Accounts behind recommendations</h3>
-              </div>
-            </div>
-            ${renderRankBars(model.clientRows, "blue")}
-          </article>
-
-          <article class="info-panel">
-            <div class="info-head">
-              <div>
-                <span class="metric-label">Advisor posture</span>
-                <h3>Current operating stance</h3>
-              </div>
-            </div>
-            <div class="advisor-posture">
-              <strong>${model.advisorScore >= 72 ? "Controlled push" : model.advisorScore >= 48 ? "Focused recovery" : "Management intervention"}</strong>
-              <span>${model.advisorScore >= 72 ? "Keep the weekly rhythm tight and protect high-value movement." : model.advisorScore >= 48 ? "Clear red items, decisions, and date gaps before expanding the pipeline." : "Use Risk, Calendar, and Bid Desk first; defer cosmetic cleanup until control improves."}</span>
-            </div>
-          </article>
-        </div>
-      </section>
-    `;
-  }
-
-  function renderAdvisorLane(lane) {
-    return `
-      <article class="advisor-lane tone-${escapeHtml(lane.tone)}">
-        <div class="advisor-lane-head">
-          <strong>${escapeHtml(lane.name)}</strong>
-          <span>${lane.count}</span>
-        </div>
-        <div class="advisor-card-list">
-          ${lane.items.length ? lane.items.map(renderAdvisorCard).join("") : `<div class="empty-state compact">No ${escapeHtml(lane.name.toLowerCase())} recommendations.</div>`}
-        </div>
-      </article>
-    `;
-  }
-
-  function renderAdvisorFocusStrip(rows) {
-    return renderRoomFocusStrip(rows, "advisor-focus-strip", "Advisor focus strip");
-  }
-
-  function renderRoomFocusStrip(rows, extraClass = "", label = "Room focus strip") {
-    return `
-      <section class="room-focus-strip ${escapeHtml(extraClass)}" aria-label="${escapeHtml(label)}">
-        ${rows
-          .map(
-            (row) => `
-              <article class="room-focus-card tone-${escapeHtml(row.tone || "teal")}">
-                <span>${escapeHtml(row.label)}</span>
-                <strong>${escapeHtml(row.value)}</strong>
-                <small>${escapeHtml(row.note)}</small>
-              </article>
-            `,
-          )
-          .join("")}
-      </section>
-    `;
-  }
-
-  function renderAdvisorCard(item) {
-    const attrs = item.record
-      ? `data-action="open-related-record" data-id="${escapeHtml(item.record.id)}"`
-      : `data-view="${escapeHtml(item.view)}"`;
-    const meta = item.record
-      ? [item.record.client, dueLabel(recordDueDays(item.record)), item.impact].filter(Boolean).join(" / ")
-      : item.impact;
-    return `
-      <button class="advisor-card tone-${escapeHtml(item.tone)}" type="button" ${attrs}>
-        <span>${escapeHtml(item.source)} / ${escapeHtml(item.lane)}</span>
-        <strong>${escapeHtml(item.title)}</strong>
-        <em>${escapeHtml(item.reason)}</em>
-        <small>${escapeHtml(meta)}</small>
-        <p>${escapeHtml(item.action)}</p>
-      </button>
-    `;
-  }
-
-  function renderAdvisorDecisionCard(item) {
-    return `
-      <button class="advisor-decision-card tone-${escapeHtml(item.tone)}" type="button" data-view="${escapeHtml(item.view)}">
-        <span>${escapeHtml(item.label)}</span>
-        <strong>${escapeHtml(item.value)}</strong>
-        <small>${escapeHtml(item.note)}</small>
-      </button>
-    `;
-  }
-
-  function renderAdvisorBrief(rows) {
-    return `
-      <div class="advisor-brief-list">
-        ${rows
-          .map(
-            (row) => `
-              <div>
-                <span>${escapeHtml(row.label)}</span>
-                <strong>${escapeHtml(row.text)}</strong>
-              </div>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function renderAdvisorPlaybook(rows) {
-    return `
-      <div class="advisor-playbook">
-        ${rows
-          .map(
-            ([title, note]) => `
-              <div>
-                <strong>${escapeHtml(title)}</strong>
-                <span>${escapeHtml(note)}</span>
-              </div>
-            `,
-          )
-          .join("")}
-      </div>
-    `;
-  }
-
-  function buildWeeklyReviewModel() {
-    const records = companyRecords();
-    const openRecords = records.filter((record) => !isClosedRecord(record));
-    const advisor = buildPursuitAdvisorModel();
-    const report = buildReportModel();
-    const reminders = buildReminderModel();
-    const calendar = buildReviewCalendarModel();
-    const risk = buildRiskControlModel();
-    const bidDesk = buildBidDeskModel();
-    const forecast = buildForecastModel();
-    const contracts = buildContractsModel();
-    const documents = buildDocumentsModel();
-    const governance = buildGovernanceModel();
-    const reviewDate = new Date().toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-    const commercialScore = contracts.records.length
-      ? Math.max(0, Math.round(((contracts.records.length - contracts.gapCount) / contracts.records.length) * 100))
-      : 100;
-    const reviewScore = Math.max(
-      1,
-      Math.min(
-        100,
-        Math.round(
-          advisor.advisorScore * 0.24 +
-            risk.controlScore * 0.18 +
-            calendar.focusScore * 0.16 +
-            forecast.confidence * 0.14 +
-            documents.sourceCoverage * 0.12 +
-            governance.governanceScore * 0.1 +
-            commercialScore * 0.06,
-        ),
-      ),
-    );
-    const actionRegister = advisor.recommendations.slice(0, 14).map((item, index) => {
-      const record = item.record;
-      return {
-        rank: index + 1,
-        source: item.source,
-        owner: record?.owner || (item.lane === "Do now" ? "Management" : "Unassigned"),
-        title: item.title,
-        action: item.action,
-        due: record ? dueLabel(recordDueDays(record)) : "This review",
-        value: record ? formatCompactMoney(record.valueAmount) : item.impact,
-        client: record ? accountLabelForRecord(record) : "Operating team",
-        tone: item.tone,
-        record,
-        view: item.view,
-      };
-    });
-    const decisionLog = [
-      {
-        label: "Bid/no-bid",
-        value: bidDesk.watchRows.length,
-        ask: bidDesk.watchRows.length ? "Move watch items into Bid or No-bid." : "No watch decisions waiting.",
-        view: "Bid Desk",
-        tone: bidDesk.watchRows.length ? "amber" : "green",
-      },
-      {
-        label: "Critical risk",
-        value: risk.critical.length,
-        ask: risk.critical.length ? "Confirm owners, next date, and mitigation for red risks." : "No critical risks in this review.",
-        view: "Risk",
-        tone: risk.critical.length ? "red" : "green",
-      },
-      {
-        label: "No-date records",
-        value: calendar.noDate.length,
-        ask: calendar.noDate.length ? "Assign review dates so work enters the calendar rhythm." : "Calendar coverage is clean.",
-        view: "Calendar",
-        tone: calendar.noDate.length ? "blue" : "green",
-      },
-      {
-        label: "Commercial proof",
-        value: contracts.gapCount,
-        ask: contracts.gapCount ? "Close agreement, LOA, value, or handover proof gaps." : "Commercial register is controlled.",
-        view: "Contracts",
-        tone: contracts.gapCount ? "amber" : "green",
-      },
-      {
-        label: "Evidence gaps",
-        value: documents.totalGaps,
-        ask: documents.totalGaps ? "Complete source, agreement, LOA, date, and negotiation evidence." : "Document evidence is controlled.",
-        view: "Documents",
-        tone: documents.totalGaps ? "blue" : "green",
-      },
-      {
-        label: "Forecast risk",
-        value: forecast.atRiskItems.length,
-        ask: forecast.atRiskItems.length ? "Clean past-due, no-date, and value assumptions before reporting." : "Forecast risk is contained.",
-        view: "Forecast",
-        tone: forecast.atRiskItems.length ? "amber" : "green",
-      },
-    ];
-    const agenda = [
-      {
-        slot: "00-05",
-        title: "Open the room",
-        note: `${reviewScore}% review readiness with ${openRecords.length} open records and ${advisor.recommendations.length} advisor actions.`,
-        view: "Command",
-        tone: "green",
-      },
-      {
-        slot: "05-15",
-        title: "Red and overdue",
-        note: `${risk.critical.length} critical risks, ${risk.high.length} high risks, and ${reminders.overdue} overdue follow-ups.`,
-        view: "Risk",
-        tone: risk.critical.length ? "red" : "amber",
-      },
-      {
-        slot: "15-25",
-        title: "Bid decisions",
-        note: `${bidDesk.watchRows.length} watch decisions, ${bidDesk.due14} due-soon submissions, ${bidDesk.readyRows.length} packs ready.`,
-        view: "Bid Desk",
-        tone: bidDesk.watchRows.length ? "amber" : "green",
-      },
-      {
-        slot: "25-35",
-        title: "Dates and forecast",
-        note: `${calendar.noDate.length} no-date records, ${calendar.next30.length} next-30 events, ${forecast.atRiskItems.length} forecast risks.`,
-        view: "Calendar",
-        tone: calendar.noDate.length ? "blue" : "green",
-      },
-      {
-        slot: "35-45",
-        title: "Commercial evidence",
-        note: `${contracts.gapCount} commercial gaps and ${documents.totalGaps} document gaps before management pack sharing.`,
-        view: "Contracts",
-        tone: contracts.gapCount || documents.totalGaps ? "amber" : "green",
-      },
-      {
-        slot: "45-55",
-        title: "Owner commitments",
-        note: `${actionRegister.length} ranked actions need owner, date, and closeout status before the next review.`,
-        view: "Reminders",
-        tone: "teal",
-      },
-    ];
-    const ownerRows = advisor.ownerRows.length
-      ? advisor.ownerRows
-      : advisorBreakdown(actionRegister, (item) => item.owner, 6);
-    const sourceRows = advisor.sourceRows.length
-      ? advisor.sourceRows
-      : advisorBreakdown(actionRegister, (item) => item.source, 6);
-    const briefLines = [
-      `${records.length} records are in the review base; ${openRecords.length} remain open across tenders and projects.`,
-      `${advisor.doNow.length} do-now actions should be cleared before the team moves into routine updates.`,
-      `${formatCompactMoney(advisor.recommendationValue)} is tied to the ranked action register for this weekly cycle.`,
-      `${forecast.confidence}% forecast confidence and ${documents.sourceCoverage}% document source coverage shape the reporting posture.`,
-    ];
-    const closeout = [
-      ["Owners", "Every red, amber, and watch item has a named owner before the meeting closes."],
-      ["Dates", "Every open item has a next review, submission, or delivery date."],
-      ["Decisions", "Watch bids are converted into Bid, No-bid, or a dated decision hold."],
-      ["Evidence", "Commercial and document gaps are assigned to the next owner."],
-      ["Report", "Reports room is ready for print once action owners are accepted."],
-    ];
-    const decisionSignalTotal = decisionLog.reduce((sum, item) => sum + Number(item.value || 0), 0);
-    const topOwner = ownerRows[0] || null;
-    return {
-      reviewDate,
-      reviewScore,
-      advisor,
-      report,
-      risk,
-      calendar,
-      bidDesk,
-      forecast,
-      contracts,
-      documents,
-      governance,
-      agenda,
-      actionRegister,
-      decisionLog,
-      ownerRows,
-      sourceRows,
-      focusStrip: [
-        {
-          label: "Meeting priority",
-          value: risk.critical.length ? `${risk.critical.length} critical` : `${advisor.doNow.length} do-now`,
-          note: risk.critical.length ? "Start with red risks before routine updates." : "Start with the highest priority owner actions.",
-          tone: risk.critical.length ? "red" : advisor.doNow.length ? "amber" : "green",
-        },
-        {
-          label: "Decision queue",
-          value: `${decisionSignalTotal} signals`,
-          note: "Needs yes, no, owner, date, or evidence confirmation.",
-          tone: decisionSignalTotal ? "amber" : "green",
-        },
-        {
-          label: "Owner load",
-          value: topOwner ? topOwner.label : "Team clear",
-          note: topOwner ? `${topOwner.value} review actions need support.` : "No concentrated owner pressure found.",
-          tone: topOwner && topOwner.value > 3 ? "blue" : "teal",
-        },
-        {
-          label: "Report readiness",
-          value: `${reviewScore}% ready`,
-          note: reviewScore >= 72 ? "Management pack can follow owner commitments." : "Clear red, date, and proof gaps before sending.",
-          tone: reviewScore >= 72 ? "green" : reviewScore >= 48 ? "amber" : "red",
-        },
-      ],
-      briefLines,
-      closeout,
-      reviewValue: advisor.recommendationValue,
-      openRecords: openRecords.length,
-    };
-  }
-
-  function renderWeeklyReviewPage() {
-    const model = buildWeeklyReviewModel();
-    return `
-      <section class="weekly-review-room">
-        <section class="weekly-console">
-          <div>
-            <span class="panel-label">Weekly review room</span>
-            <h2>Turn the weekly meeting into an operating system.</h2>
-            <p>Generated on ${escapeHtml(model.reviewDate)} from Advisor, Risk, Calendar, Bid Desk, Forecast, Contracts, Documents, Governance, Reminders, and Reports.</p>
-            <div class="weekly-actions">
-              <button class="secondary-btn" type="button" data-view="Advisor">Open advisor</button>
-              <button class="ghost-btn" type="button" data-view="Reports">Open report pack</button>
-              <button class="ghost-btn" type="button" data-action="print-report">Print review</button>
-            </div>
-          </div>
-          <div class="weekly-score-card">
-            <span>Review readiness</span>
-            <strong>${model.reviewScore}%</strong>
-            <small>${model.actionRegister.length} action lines / ${model.decisionLog.reduce((sum, item) => sum + Number(item.value || 0), 0)} decision signals</small>
-          </div>
-        </section>
-
-        <div class="weekly-kpis">
-          ${renderInsightKpi("Review value", formatCompactMoney(model.reviewValue), "Value connected to the action register")}
-          ${renderInsightKpi("Do-now actions", `${model.advisor.doNow.length}`, "Clear before routine updates")}
-          ${renderInsightKpi("Open records", `${model.openRecords}`, "Tenders and projects still moving")}
-          ${renderInsightKpi("Forecast confidence", `${model.forecast.confidence}%`, "Weighted by dates, values, and status quality")}
-        </div>
-
-        ${renderRoomFocusStrip(model.focusStrip, "weekly-focus-strip", "Weekly review focus strip")}
-
-        <div class="weekly-layout">
-          <section class="weekly-main">
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Meeting agenda</span>
-                  <h3>55-minute review flow</h3>
-                </div>
-                <span>${model.agenda.length} blocks</span>
-              </div>
-              ${renderWeeklyAgenda(model.agenda)}
-            </article>
-
-            <article class="info-panel weekly-register-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Action register</span>
-                  <h3>Owner-ready follow-through</h3>
-                </div>
-                <span>${model.actionRegister.length} ranked</span>
-              </div>
-              ${renderWeeklyActionRegister(model.actionRegister)}
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Leadership decisions</span>
-                  <h3>What needs a yes, no, or owner</h3>
-                </div>
-              </div>
-              ${renderWeeklyDecisionLog(model.decisionLog)}
-            </article>
-          </section>
-
-          <aside class="weekly-side">
-            <article class="info-panel">
-              <div class="info-head">
-                <div>
-                  <span class="metric-label">Opening brief</span>
-                  <h3>Read this first</h3>
-                </div>
-              </div>
-              ${renderWeeklyBrief(model.briefLines)}
-            </article>
-
-            <article class="info-panel">
-              <div class="info-head">
+          </d   <div class="info-head">
                 <div>
                   <span class="metric-label">Owner focus</span>
                   <h3>Where help is needed</h3>
@@ -104175,6 +99279,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceGovernanceFirstPilotLearningRoom.copyText || "";
       }
       copyTextToClipboard(text, "First pilot learning room copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-first-pilot-expansion-decision") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceGovernanceFirstPilotExpansionDecision.copyText || "";
+      }
+      copyTextToClipboard(text, "First pilot expansion decision copied.");
       return;
     }
 
