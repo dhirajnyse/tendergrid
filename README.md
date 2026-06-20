@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v477 Governance Rollout Second Pilot Launch Room turns second-pilot readiness into sponsor-safe launch guidance with owner, first review, launch pack, support desk, proof board, rollback, and boundary controls.
 - v476 Governance Rollout Second Pilot Readiness gates the second pilot behind expansion decision, receipt, rollout board, support desk, proof board, launch seal, owner/date, rollback, and boundary readiness.
 - v475 Governance Rollout First Pilot Expansion Decision decides whether the first pilot expands, renews, repairs, retunes, pauses, or waits after learning, support, sponsor, proof, rollback, and boundary checks.
 - v474 Governance Rollout First Pilot Learning Room turns first-pilot support closure into tenant-safe learning, proof repair, reusable patterns, retune posture, expansion watch, rollback, and a copyable next-pilot guidance line.
