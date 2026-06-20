@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v474 adds a Governance Rollout First Pilot Learning Room so first-pilot support closure can be classified into reusable pattern, tenant-only memory, proof repair, retune posture, expansion watch, rollback, and next-pilot guidance before learning is reused.
 - v473 adds a Governance Rollout First Pilot Support Receipt so first-pilot support closure records blocker closure, owner action, sponsor response, proof movement, learning next step, rollback, boundary, and one copyable support receipt.
 - v472 adds a Governance Rollout First Pilot Outcome Watch so the first pilot command room can be watched for movement proof, sponsor signal, support friction, learning release, expansion option, rollback, boundary, and one copyable outcome-watch line.
 - v471 adds a Governance Rollout First Pilot Command Room so the proof bridge turns into a first-pilot operating room with day-one rhythm, support triage, sponsor update, outcome watch, decision receipt, rollback, boundary, and one copyable pilot-room line.
