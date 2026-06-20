@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v478 Governance Rollout Second Pilot Outcome Watch watches second-pilot proof movement, sponsor signal, support pressure, rollback, boundary, owner, review, and learning safety before rollout widens.
 - v477 Governance Rollout Second Pilot Launch Room turns second-pilot readiness into sponsor-safe launch guidance with owner, first review, launch pack, support desk, proof board, rollback, and boundary controls.
 - v476 Governance Rollout Second Pilot Readiness gates the second pilot behind expansion decision, receipt, rollout board, support desk, proof board, launch seal, owner/date, rollback, and boundary readiness.
 - v475 Governance Rollout First Pilot Expansion Decision decides whether the first pilot expands, renews, repairs, retunes, pauses, or waits after learning, support, sponsor, proof, rollback, and boundary checks.

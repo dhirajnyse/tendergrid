@@ -19399,6 +19399,161 @@ body.quiet-focus-mode .focus-mode-pill {
   overflow-wrap: anywhere;
 }
 
+.command-governance-second-pilot-outcome-watch {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid rgba(44, 128, 86, 0.24);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.72));
+  box-shadow: var(--shadow);
+}
+
+.command-second-pilot-outcome-watch-preview {
+  margin: 0 0 14px;
+}
+
+.command-governance-second-pilot-outcome-watch.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(228, 242, 232, 0.74));
+}
+
+.command-governance-second-pilot-outcome-watch.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(231, 239, 248, 0.72));
+}
+
+.command-governance-second-pilot-outcome-watch.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 240, 216, 0.68));
+}
+
+.command-governance-second-pilot-outcome-watch-head {
+  display: grid;
+  gap: 6px;
+}
+
+.command-governance-second-pilot-outcome-watch-head strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-second-pilot-outcome-watch-head small {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.42;
+}
+
+.command-governance-second-pilot-outcome-watch-grid,
+.command-governance-second-pilot-outcome-watch-controls {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-governance-second-pilot-outcome-watch-signals {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.command-governance-second-pilot-outcome-watch-grid article,
+.command-governance-second-pilot-outcome-watch-signals article,
+.command-governance-second-pilot-outcome-watch-controls article {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-height: 94px;
+  padding: 11px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.command-governance-second-pilot-outcome-watch-signals article {
+  min-height: 116px;
+}
+
+.command-governance-second-pilot-outcome-watch-grid article span,
+.command-governance-second-pilot-outcome-watch-signals article span,
+.command-governance-second-pilot-outcome-watch-controls article span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.command-governance-second-pilot-outcome-watch-grid article strong,
+.command-governance-second-pilot-outcome-watch-signals article strong,
+.command-governance-second-pilot-outcome-watch-controls article strong {
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.command-governance-second-pilot-outcome-watch-grid article small,
+.command-governance-second-pilot-outcome-watch-signals article small,
+.command-governance-second-pilot-outcome-watch-controls article small,
+.command-governance-second-pilot-outcome-watch-actions small {
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.42;
+}
+
+.command-governance-second-pilot-outcome-watch-grid article.tone-green,
+.command-governance-second-pilot-outcome-watch-signals article.tone-green,
+.command-governance-second-pilot-outcome-watch-controls article.tone-green {
+  background: rgba(228, 242, 232, 0.7);
+  border-left-color: var(--green);
+}
+
+.command-governance-second-pilot-outcome-watch-grid article.tone-blue,
+.command-governance-second-pilot-outcome-watch-signals article.tone-blue,
+.command-governance-second-pilot-outcome-watch-controls article.tone-blue {
+  background: rgba(231, 239, 248, 0.72);
+  border-left-color: var(--blue);
+}
+
+.command-governance-second-pilot-outcome-watch-grid article.tone-amber,
+.command-governance-second-pilot-outcome-watch-signals article.tone-amber,
+.command-governance-second-pilot-outcome-watch-controls article.tone-amber {
+  background: rgba(255, 240, 216, 0.72);
+  border-left-color: var(--amber);
+}
+
+.command-governance-second-pilot-outcome-watch-grid article.tone-red,
+.command-governance-second-pilot-outcome-watch-signals article.tone-red,
+.command-governance-second-pilot-outcome-watch-controls article.tone-red {
+  background: rgba(250, 225, 220, 0.7);
+  border-left-color: var(--red);
+}
+
+.command-governance-second-pilot-outcome-watch-grid article.tone-teal,
+.command-governance-second-pilot-outcome-watch-signals article.tone-teal,
+.command-governance-second-pilot-outcome-watch-controls article.tone-teal {
+  background: rgba(226, 243, 236, 0.74);
+  border-left-color: var(--teal);
+}
+
+.command-governance-second-pilot-outcome-watch-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.command-governance-second-pilot-outcome-watch-actions small {
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 980px) {
   .command-governance-rollout-reuse-gate-grid,
   .command-governance-rollout-reuse-gate-lanes,
@@ -19444,7 +19599,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-second-pilot-readiness-controls,
   .command-governance-second-pilot-launch-room-grid,
   .command-governance-second-pilot-launch-room-brief,
-  .command-governance-second-pilot-launch-room-controls {
+  .command-governance-second-pilot-launch-room-controls,
+  .command-governance-second-pilot-outcome-watch-grid,
+  .command-governance-second-pilot-outcome-watch-signals,
+  .command-governance-second-pilot-outcome-watch-controls {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -19464,7 +19622,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-first-pilot-learning-room,
   .command-governance-first-pilot-expansion-decision,
   .command-governance-second-pilot-readiness,
-  .command-governance-second-pilot-launch-room {
+  .command-governance-second-pilot-launch-room,
+  .command-governance-second-pilot-outcome-watch {
     padding: 12px;
   }
 
@@ -19512,7 +19671,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-second-pilot-readiness-controls,
   .command-governance-second-pilot-launch-room-grid,
   .command-governance-second-pilot-launch-room-brief,
-  .command-governance-second-pilot-launch-room-controls {
+  .command-governance-second-pilot-launch-room-controls,
+  .command-governance-second-pilot-outcome-watch-grid,
+  .command-governance-second-pilot-outcome-watch-signals,
+  .command-governance-second-pilot-outcome-watch-controls {
     grid-template-columns: 1fr;
   }
 
@@ -19530,7 +19692,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-first-pilot-learning-room-actions,
   .command-governance-first-pilot-expansion-decision-actions,
   .command-governance-second-pilot-readiness-actions,
-  .command-governance-second-pilot-launch-room-actions {
+  .command-governance-second-pilot-launch-room-actions,
+  .command-governance-second-pilot-outcome-watch-actions {
     display: grid;
   }
 
@@ -19548,7 +19711,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-governance-first-pilot-learning-room-actions .ghost-btn,
   .command-governance-first-pilot-expansion-decision-actions .ghost-btn,
   .command-governance-second-pilot-readiness-actions .ghost-btn,
-  .command-governance-second-pilot-launch-room-actions .ghost-btn {
+  .command-governance-second-pilot-launch-room-actions .ghost-btn,
+  .command-governance-second-pilot-outcome-watch-actions .ghost-btn {
     width: 100%;
   }
 }
