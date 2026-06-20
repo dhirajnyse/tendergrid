@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v473 Governance Rollout First Pilot Support Receipt closes the first-pilot support loop with blocker closure, owner action, sponsor response, proof movement, learning next step, rollback, boundary, and a copyable support receipt.
 - v472 Governance Rollout First Pilot Outcome Watch watches the first pilot command room for movement proof, sponsor signal, support friction, learning release, expansion option, rollback, boundary, and a copyable outcome-watch line.
 - v471 Governance Rollout First Pilot Command Room turns the proof bridge into a first-pilot operating room with day-one rhythm, support triage, sponsor update, outcome watch, decision receipt, rollback, boundary, and a copyable pilot-room line.
 - v470 Governance Rollout First Pilot Proof Bridge turns the launch readiness seal into a first-pilot proof handoff with board evidence, operating rhythm, acceptance posture, owner/date controls, and a copyable bridge line.
