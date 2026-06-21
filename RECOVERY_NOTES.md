@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v495 adds a Governance Rollout Second Pilot Expansion Outcome Watch so expansion outcomes are watched for proof movement, support pressure, sponsor signal, rollback posture, and learning reuse before wider rollout.
 - v494 adds a Governance Rollout Second Pilot Expansion Launch Handoff so expansion readiness becomes owner rhythm, proof lane, support promise, sponsor update, rollback line, and launch observation controls.
 - v493 adds a Governance Rollout Second Pilot Expansion Readiness Room so the next expansion opens only when outcome watch, learning receipt, sponsor posture, support load, rollback, and owner cadence are calm enough.
 - v492 adds a Governance Rollout Second Pilot Expansion Decision Receipt so review learning becomes a controlled expand, renew, repair, retune, or hold decision with sponsor and rollback proof.
