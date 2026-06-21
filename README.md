@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v497 Governance Rollout Second Pilot Expansion Support Receipt closes expansion learning with support actions, proof repair, sponsor response, rollback posture, owner cadence, and next rollout guidance.
 - v496 Governance Rollout Second Pilot Expansion Learning Handoff packages expansion outcome watch into tenant-safe learning, proof repair, support retune, sponsor response, rollback learning, and wider launch guidance.
 - v495 Governance Rollout Second Pilot Expansion Outcome Watch watches expansion outcomes for proof movement, support pressure, sponsor signal, rollback posture, and learning reuse before wider rollout.
 - v494 Governance Rollout Second Pilot Expansion Launch Handoff packages expansion readiness into owner rhythm, proof lane, support promise, sponsor update, rollback line, and launch observation controls.
