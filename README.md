@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v509 Governance Rollout Second Pilot Expansion Wider Launch Handoff Receipt turns council minutes into a signed launch handoff receipt with owner acceptance, proof pack, support guardrail, rollback route, sponsor decision, first outcome watch, and buyer-safe archive.
 - v508 Governance Rollout Second Pilot Expansion Wider Launch Council Minutes turns the buyer launch pack and expansion council into audit-ready minutes with accepted proof, held gaps, owner actions, rollback route, sponsor decision, and next market trail.
 - v507 Governance Rollout Second Pilot Expansion Wider Launch Buyer Launch Pack turns the market launch room into a buyer-safe launch pack with proof, support promise, rollback line, sponsor signal, country-ready narrative, and pack owner handoff.
 - v506 Governance Rollout Second Pilot Expansion Wider Launch Market Launch Room turns the expansion council into a market launch room with market owner, proof pack, support guardrail, rollback route, sponsor go/no-go, market guidance, and launch handoff.
