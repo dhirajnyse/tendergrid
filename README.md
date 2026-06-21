@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v482 Governance Rollout Second Pilot Decision Audit Pack packages second-pilot learning, sponsor response, support closure, proof, rollback, and boundary into one audit-ready decision handoff.
 - v481 Governance Rollout Second Pilot Expansion Gate decides whether the second pilot widens, renews, repairs proof, retunes guidance, or stays under watch after learning review.
 - v480 Governance Rollout Second Pilot Learning Room turns the second-pilot support receipt into tenant-safe learning, reusable guidance candidates, proof repair, retune memory, rollback, and expansion watch.
 - v479 Governance Rollout Second Pilot Support Receipt closes the second-pilot support loop with owner action, sponsor response, proof movement, rollback, boundary, review, and next learning step in one copy-ready receipt.
