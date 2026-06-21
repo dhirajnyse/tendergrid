@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v487 Governance Rollout Second Pilot Support Readiness Closeout closes second-pilot support readiness after launch seal with owner load, proof repair, rollback, boundary, first-review handoff, and launch-pack decision posture.
 - v486 Governance Rollout Second Pilot Launch Readiness Seal seals second-pilot launch readiness across audit closeout, activation outcome, launch room, support readiness, learning file, owner/date, rollback, boundary, and next review.
 - v485 Governance Rollout Second Pilot Audit Closeout Receipt closes the second-pilot audit with activation proof, outcome watch, support readiness, learning file, owner/date, rollback, boundary, and launch-seal next action.
 - v484 Governance Rollout Second Pilot Activation Outcome Watch watches whether activated second-pilot learning improves decisions, support load, proof quality, confidence, rollback safety, and boundary discipline before wider launch readiness.
