@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v490 Governance Rollout Second Pilot First Review Outcome Watch closes the first-review bridge with proof movement, support pressure, sponsor signal, rollback quiet, and learning handoff before expansion.
 - v489 Governance Rollout Second Pilot First Review Bridge turns the launch handoff into a first-review bridge with owner rhythm, proof promise, sponsor update, support watch, rollback check, and learning handoff.
 - v488 Governance Rollout Second Pilot Launch Handoff Pack packages the launch seal, support closeout, proof bridge, owner rhythm, sponsor boundary, rollback, first review, and learning file into one copy-ready handoff.
 - v487 Governance Rollout Second Pilot Support Readiness Closeout closes second-pilot support readiness after launch seal with owner load, proof repair, rollback, boundary, first-review handoff, and launch-pack decision posture.
