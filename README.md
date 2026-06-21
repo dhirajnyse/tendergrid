@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v506 Governance Rollout Second Pilot Expansion Wider Launch Market Launch Room turns the expansion council into a market launch room with market owner, proof pack, support guardrail, rollback route, sponsor go/no-go, market guidance, and launch handoff.
 - v505 Governance Rollout Second Pilot Expansion Wider Launch Expansion Council opens, watches, or holds the next expansion council based on launch ledger, tenant-safe proof, sponsor evidence, support promise, rollback route, market guidance, and owner cadence.
 - v504 Governance Rollout Second Pilot Expansion Wider Launch Launch-Readiness Ledger seals launch readiness with market gate, proof pack, buyer story, support plan, rollback route, tenant boundary, country guidance, and owner cadence.
 - v503 Governance Rollout Second Pilot Expansion Wider Launch Market Readiness Gate decides whether wider launch learning is ready for market expansion with tenant-safe proof, sponsor signal, support calm, rollback memory, and country-ready guidance.
