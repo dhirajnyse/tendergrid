@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v510 Build Phase Route Guard makes the admin-only Build Phase open reliably from the build badge, Admin Tools tray, and `#build-phase` route after login, session refresh, or GitHub Pages hash navigation.
 - v509 Governance Rollout Second Pilot Expansion Wider Launch Handoff Receipt turns council minutes into a signed launch handoff receipt with owner acceptance, proof pack, support guardrail, rollback route, sponsor decision, first outcome watch, and buyer-safe archive.
 - v508 Governance Rollout Second Pilot Expansion Wider Launch Council Minutes turns the buyer launch pack and expansion council into audit-ready minutes with accepted proof, held gaps, owner actions, rollback route, sponsor decision, and next market trail.
 - v507 Governance Rollout Second Pilot Expansion Wider Launch Buyer Launch Pack turns the market launch room into a buyer-safe launch pack with proof, support promise, rollback line, sponsor signal, country-ready narrative, and pack owner handoff.

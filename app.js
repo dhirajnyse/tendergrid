@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v509";
-  const BUILD_LABEL = "Governance Rollout Second Pilot Expansion Wider Launch Handoff Receipt";
+  const BUILD_VERSION = "v510";
+  const BUILD_LABEL = "Build Phase Route Guard";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=509";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=509";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=510";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=510";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -646,8 +646,8 @@ const state = {
   };
 
   if (initialUser) {
-    const routeView = viewFromRoute();
-    state.view = routeView && canAccessView(routeView, initialUser) ? routeView : preferredStartView(initialUser, state.roomMemory) || "Command";
+    const routeView = routeViewForUser(window.location.hash, initialUser);
+    state.view = routeView || preferredStartView(initialUser, state.roomMemory) || "Command";
   }
 
   function clone(value) {
@@ -961,8 +961,12 @@ const state = {
     return state.user && state.user.role !== "Viewer";
   }
 
-  function canAdmin() {
-    return state.user && state.user.role === "Admin";
+  function isAdminUser(user = state.user) {
+    return String(user?.role || "").trim().toLowerCase() === "admin";
+  }
+
+  function canAdmin(user = state.user) {
+    return isAdminUser(user);
   }
 
   function isAccessPreviewing() {
@@ -1190,7 +1194,7 @@ const state = {
   }
 
   function hasSectionAccess(key, user = state.user) {
-    if (ADMIN_ONLY_SECTION_KEYS.includes(key)) return user?.role === "Admin";
+    if (ADMIN_ONLY_SECTION_KEYS.includes(key)) return isAdminUser(user);
     return userAccess(user).includes(key);
   }
 
@@ -1205,6 +1209,11 @@ const state = {
       "Tender Insights": "Tenders Insights",
       "Pitch": "Pilot Pitch",
       "Pilot": "Pilot Pitch",
+      "Build phase": "Build Phase",
+      "BuildPhase": "Build Phase",
+      "buildPhase": "Build Phase",
+      "build-phase": "Build Phase",
+      "Admin: Build Phase": "Build Phase",
     };
     const candidate = aliases[cleanView] || cleanView;
     return ACCESS_SECTIONS.find((section) => section.view === candidate)?.view || candidate;
@@ -1222,6 +1231,18 @@ const state = {
     const slug = String(hash || "").replace(/^#/, "").trim().toLowerCase();
     if (!slug) return "";
     return ACCESS_SECTIONS.find((section) => viewRouteSlug(section.view) === slug)?.view || "";
+  }
+
+  function routeViewForUser(hash = window.location.hash, user = state.user) {
+    const routeView = viewFromRoute(hash);
+    return routeView && user && canAccessView(routeView, user) ? routeView : "";
+  }
+
+  function hydrateRouteView(hash = window.location.hash) {
+    const routeView = routeViewForUser(hash);
+    if (!routeView) return false;
+    state.view = routeView;
+    return true;
   }
 
   function syncViewRoute(view) {
@@ -3033,8 +3054,8 @@ const state = {
   }
 
   function renderShell() {
-    const routeView = viewFromRoute();
-    if (routeView && state.user && canAccessView(routeView)) state.view = routeView;
+    ensureAccessibleView();
+    hydrateRouteView();
     ensureAccessibleView();
     const company = state.data.company;
     const records = filterRecords();
@@ -57136,12 +57157,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v509 Governance Rollout Second Pilot Expansion Wider Launch Handoff Receipt",
-      phase: "Governance Rollout Second Pilot Expansion Wider Launch Handoff Receipt",
+      version: "v510 Build Phase Route Guard",
+      phase: "Build Phase Route Guard",
       lane: "Static product prototype on GitHub Pages",
-      pace: "490 meaningful versions since rebrand",
-      summary: "Command Center now turns council minutes into a signed launch handoff receipt with owner acceptance, proof pack, support guardrail, rollback route, sponsor decision, first outcome watch, and buyer-safe archive.",
+      pace: "491 meaningful versions since rebrand",
+      summary: "Admin-only Build Phase now opens reliably from the build badge, Admin Tools tray, and #build-phase route after login, session refresh, or GitHub Pages hash navigation.",
       tracks: [
+        ["v510 build phase route guard", 100, "Admin-only Build Phase now opens reliably from the build badge, Admin Tools tray, and #build-phase route after login, session refresh, or GitHub Pages hash navigation.", "green"],
         ["v509 governance rollout second pilot expansion wider launch handoff receipt", 100, "Command Center now turns council minutes into a signed launch handoff receipt with owner acceptance, proof pack, support guardrail, rollback route, sponsor decision, first outcome watch, and buyer-safe archive.", "green"],
         ["v508 governance rollout second pilot expansion wider launch council minutes", 100, "Command Center now turns the buyer launch pack and expansion council into audit-ready minutes with accepted proof, held gaps, owner actions, rollback route, sponsor decision, and next market trail.", "green"],
         ["v507 governance rollout second pilot expansion wider launch buyer launch pack", 100, "Command Center now turns the market launch room into a buyer-safe launch pack with proof, support promise, rollback line, sponsor signal, country-ready narrative, and pack owner handoff.", "green"],
@@ -57631,9 +57653,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v510", "Governance rollout second pilot expansion wider launch buyer response watch", "Watch buyer response after the launch pack for proof acceptance, support asks, rollback concerns, sponsor movement, country narrative gaps, and next action."],
-        ["v511", "Governance rollout second pilot expansion wider launch minutes approval receipt", "Turn sealed council minutes into an approval receipt with signoff owner, accepted gaps, buyer-safe archive, rollback memory, and next-market approval window."],
-        ["v512", "Governance rollout second pilot expansion wider launch handoff outcome receipt", "Turn the first outcome watch into a handoff outcome receipt with buyer response, proof acceptance, support asks, rollback signal, sponsor movement, and next-market action."],
+        ["v511", "Governance rollout second pilot expansion wider launch buyer response watch", "Watch buyer response after the launch pack for proof acceptance, support asks, rollback concerns, sponsor movement, country narrative gaps, and next action."],
+        ["v512", "Governance rollout second pilot expansion wider launch minutes approval receipt", "Turn sealed council minutes into an approval receipt with signoff owner, accepted gaps, buyer-safe archive, rollback memory, and next-market approval window."],
+        ["v513", "Governance rollout second pilot expansion wider launch handoff outcome receipt", "Turn the first outcome watch into a handoff outcome receipt with buyer response, proof acceptance, support asks, rollback signal, sponsor movement, and next-market action."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -57937,7 +57959,7 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns council minutes into a signed launch handoff receipt with owner acceptance, proof pack, support guardrail, rollback route, sponsor decision, first outcome watch, and buyer-safe archive.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Admin-only Build Phase now opens reliably from the build badge, Admin Tools tray, and #build-phase route after login, session refresh, or GitHub Pages hash navigation.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room copy, Proof Bridge copy, Launch Seal copy, Closeout Receipt copy, Outcome Watch copy, Activation Receipt copy, Decision Audit Pack copy, Learning Review Room copy, Reuse Gate copy, Sponsor Decision copy, Learning Receipt copy, Outcome Ledger copy, Sponsor Update copy, Rollout Proof copy, Expansion Support copy, Scaled Rollout copy, Expansion Receipt copy, Expansion Gate copy, Learning Release copy, Support Closeout copy, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
@@ -103489,8 +103511,8 @@ const state = {
       };
       state.message = "";
       state.roomMemory = loadRoomMemory(state.user);
-      const routeView = viewFromRoute();
-      state.view = routeView && canAccessView(routeView) ? routeView : preferredStartView(state.user, state.roomMemory) || "Command";
+      const routeView = routeViewForUser(window.location.hash, state.user);
+      state.view = routeView || preferredStartView(state.user, state.roomMemory) || "Command";
       persistSession(state.user);
       render();
       scrollToTop();
@@ -103603,6 +103625,8 @@ const state = {
     }
 
     if (action === "open-admin-view") {
+      event.preventDefault();
+      event.stopPropagation();
       openAdminView(button.dataset.view);
       return;
     }
@@ -108875,6 +108899,7 @@ const state = {
     }
 
     if (button.dataset.view) {
+      if (button.tagName === "A") event.preventDefault();
       openView(button.dataset.view);
       return;
     }
@@ -109062,8 +109087,11 @@ const state = {
   });
 
   window.addEventListener("hashchange", () => {
-    if (!state.user) return;
-    const routeView = viewFromRoute();
+    if (!state.user) {
+      render();
+      return;
+    }
+    const routeView = routeViewForUser();
     if (routeView) openView(routeView, { syncRoute: false });
   });
 

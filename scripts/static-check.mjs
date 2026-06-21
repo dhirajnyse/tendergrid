@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=509"), "index.html is missing the v509 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=509"), "index.html is missing the v509 data cache token.");
-assert(index.includes("app.js?v=509"), "index.html is missing the v509 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=509"), "index.html is missing the v509 icon cache token.");
+assert(index.includes("styles.css?v=510"), "index.html is missing the v510 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=510"), "index.html is missing the v510 data cache token.");
+assert(index.includes("app.js?v=510"), "index.html is missing the v510 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=510"), "index.html is missing the v510 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v509";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Governance Rollout Second Pilot Expansion Wider Launch Handoff Receipt";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=509'), "app.js is missing the v509 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=509'), "app.js is missing the v509 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v510";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Build Phase Route Guard";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=510'), "app.js is missing the v510 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=510'), "app.js is missing the v510 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -140,6 +140,15 @@ assert(app.includes("renderCommandLearningNetworkFold"), "app.js is missing the 
 assert(app.includes("buildBuildLaunchRoadmap"), "app.js is missing the Build Phase Launch Roadmap model.");
 assert(app.includes("renderBuildLaunchRoadmap"), "app.js is missing the Build Phase Launch Roadmap render path.");
 assert(app.includes("renderBuildLaunchRoadmap(tracker)"), "Build Phase page is missing the Launch Roadmap section.");
+assert(app.includes('href: "#build-phase"'), "Admin Tools is missing the Build Phase hash fallback.");
+assert(app.includes("function isAdminUser"), "app.js is missing the safe admin role helper.");
+assert(app.includes('String(user?.role || "").trim().toLowerCase() === "admin"'), "app.js should normalize admin role checks.");
+assert(app.includes("function routeViewForUser"), "app.js is missing the route access guard.");
+assert(app.includes("function hydrateRouteView"), "app.js is missing route hydration after session refresh.");
+assert(app.includes("const routeView = routeViewForUser(window.location.hash, initialUser);"), "Initial session load should honor #build-phase.");
+assert(app.includes("const routeView = routeViewForUser(window.location.hash, state.user);"), "Login should honor #build-phase after authentication.");
+assert(app.includes("hydrateRouteView();"), "renderShell should re-apply the current hash route after refreshing the session.");
+assert(app.includes("if (action === \"open-build-phase\")"), "Build badge is missing its Build Phase click action.");
 assert(app.includes("renderCommandLaunchEvidencePacketPreview"), "app.js is missing the top-level Governance Launch Evidence Packet preview.");
 assert(app.includes("renderCommandGovernanceReviewerConsolePreview(model, autopilot)"), "Command Center is missing the Governance Reviewer Console preview.");
 assert(app.includes("renderCommandGovernanceReviewerConsolePreview"), "app.js is missing the top-level Governance Reviewer Console preview.");
