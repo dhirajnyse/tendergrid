@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v513";
-  const BUILD_LABEL = "Handoff Outcome Receipt";
+  const BUILD_VERSION = "v514";
+  const BUILD_LABEL = "Build Phase Route Repair";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=513";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=513";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=514";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=514";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -57470,14 +57470,667 @@ const state = {
       ["Workflow names", workflowCount ? "Ready" : "Pending", "Use exact GitHub Actions check names in branch protection.", workflowCount ? "green" : "amber"],
       ["Owner signoff", "Pending", "Release owner must approve the private repo boundary and first PR path.", "blue"],
     ];
+    const commandTranscriptSlots = [
+      ["Preflight", "docs/evidence/transcripts/preflight.txt", "GitHub identity, local path, tool versions, repo decision owner, and no-live-data boundary.", "blue"],
+      ["Setup", "docs/evidence/transcripts/setup.txt", "Repo creation, folder creation, clean copy-set, and install output.", "green"],
+      ["Quality", "docs/evidence/transcripts/quality.txt", "Lint/test placeholders, route smoke, and release-gate output.", "teal"],
+      ["Issue import", "docs/evidence/transcripts/issues.txt", "Labels, milestones, first issue wave, and real issue URLs after import.", "amber"],
+    ];
+    const ownerApprovalNotes = [
+      ["Product sponsor", "Scope approval", "Approves backend alpha scope, non-goals, and management wording.", "green"],
+      ["Platform owner", "Repo controls", "Approves private visibility, branch posture, workflow names, and protection timing.", "teal"],
+      ["Backend lead", "Implementation shell", "Approves starter files, route shell, package scripts, and first PR quality.", "blue"],
+      ["Security reviewer", "Trust proof", "Approves no-secret, no-workbook, no-commercial-leak, tenant guard, and denial audit proof.", "red"],
+      ["Data owner", "Fixture boundary", "Approves generated fixture-only data, migration dry-run, rollback, and reconciliation posture.", "amber"],
+      ["QA / Release", "Evidence closeout", "Approves screenshots, transcripts, issue links, PR note, branch proof, and closeout.", "green"],
+    ];
+    const closeoutPacket = [
+      ["Repo URL", "Pending real URL", "Private repository link and visibility proof are saved.", "red"],
+      ["First PR", "Draft only", "PR title, branch, scope, proof, rollback, reviewers, and blockers are recorded.", "green"],
+      ["Issue ledger", `${issueCount} planned`, "Real issue URLs replace static issue rows after import.", "blue"],
+      ["Workflow checks", `${workflowCount} mapped`, "Exact check names are captured before branch protection.", workflowCount ? "green" : "amber"],
+      ["Next owner", "Named", "One owner and next implementation move are explicit.", "teal"],
+    ];
+    const exportSequence = [
+      ["1", "Create evidence files", "Seed markdown proof files before commands start.", "green"],
+      ["2", "Capture screenshots", "Save private repo, issue wave, first PR, checks, and branch proof.", "blue"],
+      ["3", "Paste transcripts", "Attach command output or dated blocker notes to transcript slots.", "teal"],
+      ["4", "Record decisions", "Write owner approvals, holds, blocks, and deferred proof.", "amber"],
+      ["5", "Close packet", "Publish closeout note with next owner and next action.", "green"],
+    ];
+    const qualityGates = [
+      ["Private repo", "Required", "Public repo state blocks proof trust immediately.", "red"],
+      ["No secrets", "Required", "Any secret, workbook, certificate, invoice, or live payment key blocks movement.", "red"],
+      ["Evidence links", "Required", "PR body must link evidence files before reviewer action.", "blue"],
+      ["Rollback", "Required", "Branch can be closed and recreated without touching customer data.", "amber"],
+      ["Owner signoff", "Required", "Every trust lane has approve, hold, defer, or block.", "green"],
+    ];
+    const copyReadySnippets = [
+      ["No-live-data note", "docs/evidence/02-clean-copy-set.md", "Confirmed: no customer workbook, secret, certificate, invoice, payment key, or commercial export entered this private repo.", "red"],
+      ["PR proof note", "docs/evidence/05-first-pr.md", "Draft PR opened with scope, proof links, rollback, reviewer lanes, open holds, and next owner.", "green"],
+      ["Closeout note", "docs/evidence/08-closeout.md", "Repo opening reviewed. Passed, held, blocked, deferred, and next-owner decisions are recorded.", "blue"],
+    ];
     return {
       blockerRows,
+      closeoutPacket,
+      commandTranscriptSlots,
+      copyReadySnippets,
       downloadHref,
       evidenceTemplates,
+      exportSequence,
+      handoff: [
+        "v514 restores the proof exporter model fields required by the Build Phase renderer.",
+        "The exporter now feeds the GitHub repo opening packet, issue import kit, first PR builder, evidence folder, command runner, and review gates without route drift.",
+        "Real repo creation remains intentionally blocked until private visibility, no-live-data proof, and owner signoff are captured.",
+      ],
+      ownerApprovalNotes,
       prBodySections,
       proofKpis,
       proofReadinessScore,
+      qualityGates,
       screenshotChecklist,
+      signalCards: [
+        ["Proof exporter", `${proofReadinessScore}%`, "Readiness to turn repo day into a proof packet.", proofReadinessScore >= 72 ? "green" : "amber"],
+        ["Evidence files", evidenceTemplates.length, "Markdown proof files mapped.", "teal"],
+        ["PR sections", prBodySections.length, "First PR body sections.", "blue"],
+        ["Closeout", closeoutPacket.length, "Closeout rows restored for route rendering.", "green"],
+      ],
+    };
+  }
+
+  function buildGithubRepoOpeningPacketModel(commandModel, backendRepoProofExporter, privateRepoDayOneScript, backendIssueBodyExporter, githubLabelsMilestonesImportPack, branchProtectionReleaseChecklist, privateRepoSetupScriptDraft, privateRepoOpeningDayRunbook, productionBackendRepoDecisionMemo) {
+    const issueCount = backendIssueBodyExporter.copyReadyIssues?.length || backendIssueBodyExporter.issueCards?.length || 0;
+    const labelCount = githubLabelsMilestonesImportPack.labelCatalog?.length || 0;
+    const milestoneCount = githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0;
+    const evidenceCount = backendRepoProofExporter.evidenceTemplates?.length || privateRepoDayOneScript.evidenceFiles?.length || 0;
+    const openingReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          (backendRepoProofExporter.proofReadinessScore || 0) * 0.34 +
+            (privateRepoDayOneScript.scriptReadinessScore || 0) * 0.24 +
+            (branchProtectionReleaseChecklist.releaseChecklistScore || 0) * 0.18 +
+            Math.min(100, issueCount * 4) * 0.12 +
+            Math.min(100, labelCount * 3) * 0.06 +
+            12,
+        ),
+      ),
+    );
+    const repoName = "dhirajnyse/pursuitdesk-platform";
+    const launchFiles = [
+      ["README.md", "Repo purpose", "Private backend alpha scope, non-goals, owner lanes, and proof boundary.", "green"],
+      ["docs/evidence/00-preflight.md", "Preflight proof", "GitHub identity, local path, clean copy boundary, and tool versions.", "blue"],
+      ["docs/evidence/05-first-pr.md", "First PR proof", "PR link, scope, proof commands, reviewers, rollback, and blockers.", "teal"],
+      ["docs/evidence/08-closeout.md", "Closeout ledger", "Passed, held, blocked, deferred, next owner, and management note.", "amber"],
+      [".github/pull_request_template.md", "Review frame", "Scope, proof, risk, rollback, no-live-data, and reviewer asks.", "red"],
+    ];
+    return {
+      artifactManifest: [
+        ["Private repo visibility", "Screenshot", "Proves the repo is private before files, issues, or branches move.", "red"],
+        ["Issue wave", `${issueCount} issues`, "Real issue URLs replace static issue bodies after import.", "blue"],
+        ["Workflow check names", "Capture after run", "Branch protection uses exact GitHub check names only.", "amber"],
+        ["Owner signoffs", "Six lanes", "Product, platform, backend, security, data, and QA approve or hold.", "green"],
+      ],
+      closeoutLedger: [
+        ["Repo URL", "Pending", "Record the private repo URL only after visibility proof is captured.", "red"],
+        ["First PR", "Draft only", "The first PR remains reviewable and can be closed without customer impact.", "green"],
+        ["Branch protection", "After checks", "Do not guess required check names before Actions creates them.", "amber"],
+        ["Next owner", "Named", "Close the day with one owner for the next implementation move.", "teal"],
+      ],
+      copyReadyBlocks: [
+        ["GitHub about", "Repository description", "Private backend alpha for PursuitDesk. Fixture-only, no live customer data, no production billing.", "green"],
+        ["First PR summary", "PR body", "This PR opens the backend alpha shell with proof-first scope, rollback, and review gates.", "blue"],
+        ["Closeout note", "docs/evidence/08-closeout.md", "Repo opened under private boundary. Evidence captured. Open holds and next owner recorded.", "teal"],
+      ],
+      downloadHref: "data/github-repo-opening-packet.json?v=514",
+      firstPrStarter: [
+        ["Title", "Backend alpha shell", "Keep the first PR narrow, draft, and proof-led.", "green"],
+        ["Scope", "Shell + evidence", "Root docs, route shells, workflows, env examples, scripts, and evidence files.", "blue"],
+        ["Out of scope", "No live SaaS", "No production deployment, workbook import, customer data, or payment capture.", "red"],
+        ["Rollback", "Close draft PR", "Branch can be abandoned without touching public demo or customer data.", "amber"],
+      ],
+      handoff: [
+        "v514 restores the GitHub repo opening packet model so Build Phase can render the private backend roadmap again.",
+        "The packet keeps repo opening honest: private visibility, clean copy-set, issue wave, first PR, branch protection, and closeout must all have proof.",
+        "The live page now has a route smoke check so this Build Phase crash cannot quietly return.",
+      ],
+      issueOpeningWave: [
+        ["Wave A", "Repo shell", "Open README, folder tree, scripts, env examples, and evidence-path issues first.", "green"],
+        ["Wave B", "Security guard", "Tenant isolation, denied audit, no-secret scan, and commercial redaction.", "red"],
+        ["Wave C", "API skeleton", "Health, auth, records, import, billing, feedback, audit, and reports routes.", "blue"],
+        ["Wave D", "CI and release", "Workflows, artifacts, release gate, branch protection, and rollback.", "amber"],
+      ],
+      launchFiles,
+      openingKpis: [
+        ["Opening readiness", `${openingReadinessScore}%`, "Composite readiness from proof exporter, day-one script, branch gates, issues, and taxonomy.", openingReadinessScore >= 72 ? "green" : "amber"],
+        ["Issue bodies", issueCount, "Planned issue bodies ready for the first import wave.", "blue"],
+        ["Labels", labelCount, "Routing labels available before backlog import.", "teal"],
+        ["Milestones", milestoneCount, "Milestone lanes for alpha sequencing.", "green"],
+      ],
+      openingReadinessScore,
+      openingSequence: [
+        ["1", "Preflight", "Confirm identity, local path, tool versions, no-live-data boundary, and evidence folder.", "blue"],
+        ["2", "Create repo", "Create the private repository and capture visibility proof immediately.", "red"],
+        ["3", "Copy shell", "Move approved generated starter files only; no workbook, secret, certificate, or invoice.", "green"],
+        ["4", "Import issues", "Create labels, milestones, and first issue wave; save real URLs.", "teal"],
+        ["5", "Open first PR", "Draft PR with scope, commands, rollback, reviewers, blockers, and evidence links.", "amber"],
+        ["6", "Closeout", "Record check names, branch rule proof, owner signoffs, holds, and next owner.", "green"],
+      ],
+      ownerMatrix: [
+        ["Product sponsor", "Go/Hold", "Approves opening scope, non-goals, and management wording.", "green"],
+        ["Platform owner", "Repo controls", "Owns private visibility, branches, workflows, and protection timing.", "teal"],
+        ["Backend lead", "Starter files", "Owns route shells, package scripts, and first PR quality.", "blue"],
+        ["Security owner", "Trust proof", "Owns no-secret, no-workbook, tenant guard, and commercial redaction proof.", "red"],
+        ["QA / Release", "Evidence", "Owns screenshots, transcripts, issue URLs, and closeout proof.", "amber"],
+      ],
+      repoIdentity: [
+        ["Repository", repoName, "Default private backend repository identity until owner changes it deliberately.", "green"],
+        ["Branch", "codex/backend-alpha-shell", "First implementation branch stays reviewable and disposable.", "blue"],
+        ["Visibility", "Private only", "Opening stops immediately if the repository is public.", "red"],
+        ["Data boundary", "Fixture-only", "No live customer workbook, secret, invoice, certificate, or payment key.", "amber"],
+      ],
+      riskLocks: [
+        ["Hard stop", "Repo is public", "Stop before adding files; switch to private or recreate and document the event.", "red"],
+        ["Hard stop", "Secret appears", "Remove, rotate, check history, and write an incident note.", "red"],
+        ["Hold", "Workflow names unknown", "Do not enable required checks until the first Actions run reveals exact names.", "amber"],
+        ["Hold", "Owner decision missing", "Pause until go, hold, defer, or no-go is captured.", "blue"],
+      ],
+      signalCards: [
+        ["Opening packet", `${openingReadinessScore}%`, "Private repo opening can proceed only with visible proof.", openingReadinessScore >= 72 ? "green" : "amber"],
+        ["Evidence files", evidenceCount, "Proof files mapped before repo day starts.", "teal"],
+        ["Issue wave", issueCount, "Backlog rows ready to become real GitHub issues.", "blue"],
+        ["Stop rules", "Active", "Public repo, secrets, workbook, or commercial leak stops the move.", "red"],
+      ],
+    };
+  }
+
+  function buildBackendAlphaIssueImportKitModel(commandModel, githubRepoOpeningPacket, backendIssueBodyExporter, githubLabelsMilestonesImportPack, branchProtectionReleaseChecklist, privateRepoSetupScriptDraft) {
+    const issueRows = [
+      ["TG-BE-001", "Open private backend repo shell", "Platform owner", "M0 Repo opening", "area:repo-shell, owner:platform", "Capture private visibility and folder tree.", "Wave A", "green"],
+      ["TG-BE-002", "Add tenant access guard", "Security owner", "M1 Trust baseline", "area:tenant-access, proof:redaction", "Show denied audit and commercial redaction proof.", "Wave B", "red"],
+      ["TG-BE-003", "Create API route skeleton", "Backend lead", "M1 API shell", "area:api-shell, proof:contract", "Attach route contract smoke output.", "Wave C", "blue"],
+      ["TG-BE-004", "Wire migration fixture path", "Data owner", "M1 Data foundation", "area:importer, proof:migration", "Attach fixture seed and rollback proof.", "Wave D", "amber"],
+      ["TG-BE-005", "Create CI release gate", "QA / Release", "M1 CI release", "area:ci-release, proof:smoke", "Attach workflow names after first Actions run.", "Wave E", "teal"],
+      ["TG-BE-006", "Prepare billing boundary", "Billing owner", "M2 Membership", "area:billing, proof:billing", "Confirm test-mode billing only and no payment key.", "Wave F", "amber"],
+    ];
+    const importReadinessScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round((githubRepoOpeningPacket.openingReadinessScore || 0) * 0.44 + (branchProtectionReleaseChecklist.releaseChecklistScore || 0) * 0.2 + Math.min(100, issueRows.length * 12) * 0.18 + 18),
+      ),
+    );
+    return {
+      acceptanceChecks: [
+        ["No public repo", "Hard stop", "Issue import waits until private visibility proof is captured.", "red"],
+        ["Labels first", "Required", "Labels and milestones are imported before issue rows.", "blue"],
+        ["URL ledger", "Required", "Every created issue URL is written back to evidence.", "green"],
+        ["Owner lane", "Required", "Every issue has a named owner before sprint planning.", "teal"],
+      ],
+      bodyFilePlan: [
+        ["docs/issues/TG-BE-001.md", "Repo shell", "Private repo, folder tree, evidence root, and README.", "green"],
+        ["docs/issues/TG-BE-002.md", "Tenant guard", "Access middleware, redaction, denied audit, and no-secret checks.", "red"],
+        ["docs/issues/TG-BE-003.md", "API skeleton", "Health, auth, records, import, billing, feedback, and audit routes.", "blue"],
+      ],
+      csvColumns: [
+        ["title", "Issue title", "Human-readable GitHub issue title.", "green"],
+        ["body_file", "Markdown file", "Paste-ready body source.", "blue"],
+        ["labels", "Routing labels", "Area, owner, and proof labels.", "teal"],
+        ["milestone", "Delivery lane", "M0/M1/M2 backlog order.", "amber"],
+      ],
+      downloadHref: "data/backend-alpha-issue-import-kit.json?v=514",
+      handoff: [
+        "The import kit restores Build Phase issue import visibility after the route repair.",
+        "It keeps the first issue wave small enough to execute but rich enough to prove repo, security, data, CI, and billing boundaries.",
+      ],
+      importFiles: [
+        ["labels.csv", "Labels", "Area, owner, and proof labels before issue creation.", "teal"],
+        ["milestones.csv", "Milestones", "M0/M1/M2 sequencing before backlog import.", "green"],
+        ["issues.csv", "Issue rows", "Title, body file, labels, milestone, and owner lane.", "blue"],
+        ["docs/issues/*.md", "Bodies", "Paste-ready issue bodies with acceptance proof.", "amber"],
+      ],
+      importKpis: [
+        ["Import readiness", `${importReadinessScore}%`, "Readiness to convert static issue bodies into real GitHub issues.", importReadinessScore >= 72 ? "green" : "amber"],
+        ["Issue rows", issueRows.length, "First controlled backend alpha wave.", "blue"],
+        ["Labels", githubLabelsMilestonesImportPack.labelCatalog?.length || 0, "Routing labels ready for import.", "teal"],
+        ["Milestones", githubLabelsMilestonesImportPack.milestoneCatalog?.length || 0, "Milestone lanes ready for import.", "green"],
+      ],
+      importReadinessScore,
+      importValidation: [
+        ["Dry run", "Before create", "Preview issue rows, labels, and milestones before touching GitHub.", "blue"],
+        ["Duplicate check", "Before create", "Confirm no matching issue title already exists.", "amber"],
+        ["Trace ledger", "After create", "Paste created issue URL beside every source row.", "green"],
+      ],
+      importWaves: githubRepoOpeningPacket.issueOpeningWave,
+      issueRows,
+      labelMappings: [
+        ["area:*", "Functional route", "Repo shell, API shell, tenant access, importer, billing, CI, reports.", "teal"],
+        ["owner:*", "Accountability lane", "Platform, backend, security, data, billing, QA.", "green"],
+        ["proof:*", "Evidence demand", "Contract, redaction, migration, billing, audit, and smoke proof.", "blue"],
+      ],
+      ownerLanes: githubRepoOpeningPacket.ownerMatrix,
+      pasteChecks: [
+        ["Body length", "Safe", "Each issue body stays short enough for GitHub paste review.", "green"],
+        ["No secrets", "Hard stop", "No key, workbook, invoice, certificate, or commercial export appears.", "red"],
+        ["Acceptance criteria", "Visible", "Every issue includes proof command or proof artifact.", "blue"],
+      ],
+      signalCards: [
+        ["Issue import", `${importReadinessScore}%`, "First private backlog wave can be created after repo proof.", importReadinessScore >= 72 ? "green" : "amber"],
+        ["Rows", issueRows.length, "Controlled issues for repo day.", "blue"],
+        ["Labels", githubLabelsMilestonesImportPack.labelCatalog?.length || 0, "Taxonomy import support.", "teal"],
+        ["Stop rule", "No leak", "Import stops on public repo, workbook, secret, or commercial leak.", "red"],
+      ],
+    };
+  }
+
+  function buildFirstPrBodyBuilderModel(commandModel, backendAlphaIssueImportKit, githubRepoOpeningPacket, backendRepoProofExporter, branchProtectionReleaseChecklist, backendIssueBodyExporter) {
+    const issueCount = backendAlphaIssueImportKit.issueRows?.length || 0;
+    const evidenceCount = backendRepoProofExporter.evidenceTemplates?.length || 0;
+    const reviewerCount = githubRepoOpeningPacket.ownerMatrix?.length || 0;
+    const firstPrReadinessScore = Math.max(0, Math.min(100, Math.round((backendAlphaIssueImportKit.importReadinessScore || 0) * 0.34 + (githubRepoOpeningPacket.openingReadinessScore || 0) * 0.24 + (backendRepoProofExporter.proofReadinessScore || 0) * 0.24 + 16)));
+    const prBodySkeleton = [
+      "## Summary",
+      "Open the backend alpha shell with fixture-only data, proof-first scope, and controlled review.",
+      "## Scope",
+      "Repo shell, route skeleton, workflows, scripts, env examples, evidence folder, and first issue links.",
+      "## Out of scope",
+      "No live deployment, customer workbook, production billing, payment key, invoice, or commercial export.",
+      "## Proof",
+      "Attach preflight, clean copy-set, folder tree, issue wave, first PR, check names, branch proof, and closeout evidence.",
+      "## Rollback",
+      "Close the draft PR and delete the branch; no customer data or production service is touched.",
+    ].join("\n");
+    return {
+      acceptanceChecks: [
+        ["Draft only", "Required", "First PR does not merge until proof, reviewers, and holds are closed.", "amber"],
+        ["Issue links", "Required", "All issue references point to real GitHub issue URLs after import.", "blue"],
+        ["Evidence links", "Required", "PR body links evidence files, screenshots, and transcripts.", "green"],
+        ["No live data", "Hard stop", "Any customer workbook, secret, payment key, or invoice blocks review.", "red"],
+      ],
+      copyReadySections: [
+        ["Summary", "PR body", "Backend alpha shell with proof-first boundaries and fixture-only data.", "green"],
+        ["Reviewer ask", "PR body", "Please review scope, evidence, no-leak boundary, rollback, and hold queue.", "blue"],
+        ["Rollback", "PR body", "This branch can be closed and recreated without touching public demo or customer data.", "amber"],
+      ],
+      downloadHref: "data/first-pr-body-builder.json?v=514",
+      evidenceLinkPlan: [
+        ["Preflight", "docs/evidence/00-preflight.md", "Tool versions, identity, and no-live-data boundary.", "blue"],
+        ["Clean copy", "docs/evidence/02-clean-copy-set.md", "No secret, workbook, invoice, certificate, or commercial leak.", "red"],
+        ["First PR", "docs/evidence/05-first-pr.md", "PR title, branch, commands, reviewers, and blockers.", "green"],
+        ["Closeout", "docs/evidence/08-closeout.md", "Decision, holds, blockers, owner, and next move.", "teal"],
+      ],
+      firstPrReadinessScore,
+      handoff: [
+        "The first PR body builder gives the private repo a paste-ready draft PR structure.",
+        "It links issues and evidence before implementation depth starts, keeping review calm and reversible.",
+      ],
+      issueLinkPlan: backendAlphaIssueImportKit.issueRows.map(([id, title, owner, milestone, labels, proof, wave, tone]) => [id, title, `${owner} / ${milestone} / ${wave}. ${proof}`, tone]),
+      outOfScopeLocks: githubRepoOpeningPacket.riskLocks,
+      prBodySkeleton,
+      prIdentity: [
+        ["Title", "Backend alpha shell", "Clear, narrow, non-production first PR.", "green"],
+        ["Branch", "codex/backend-alpha-shell", "Review branch stays disposable.", "blue"],
+        ["Linked issues", issueCount, "The first PR references the controlled issue wave.", "teal"],
+        ["Merge posture", "Draft", "No merge until evidence, reviewers, and holds are visible.", "amber"],
+      ],
+      prKpis: [
+        ["PR readiness", `${firstPrReadinessScore}%`, "Readiness to open the first backend PR without losing proof.", firstPrReadinessScore >= 72 ? "green" : "amber"],
+        ["Issue links", issueCount, "Issue references to include in the body.", "blue"],
+        ["Evidence links", evidenceCount, "Evidence files to link before review.", "teal"],
+        ["Review lanes", reviewerCount, "Owner lanes that decide approve, hold, or block.", "green"],
+      ],
+      releaseChecklist: [
+        ["Commands", "Recorded", "Install, lint/test placeholders, route smoke, and release gate transcript.", "blue"],
+        ["Reviewers", "Named", "Product, platform, backend, security, data, QA, and billing where needed.", "green"],
+        ["Branch rules", "Deferred until checks", "Exact workflow check names are captured before protection.", "amber"],
+        ["Closeout", "Required", "Owner decisions and next move are recorded before implementation depth.", "teal"],
+      ],
+      reviewerMatrix: githubRepoOpeningPacket.ownerMatrix,
+      rollbackPlan: [
+        ["Close PR", "Immediate", "Close draft PR if no-leak, privacy, or proof fails.", "red"],
+        ["Delete branch", "Safe", "No migration or customer data is applied by the shell branch.", "amber"],
+        ["Recreate shell", "Fallback", "Repo shell can be rebuilt from generated packs after incident note.", "blue"],
+      ],
+      scopeChecklist: [
+        ["Root docs", "Include", "README, architecture note, evidence index, and PR template.", "green"],
+        ["API shell", "Include", "Health, auth, records, import, billing, feedback, audit, and reports route placeholders.", "blue"],
+        ["Fixtures", "Include", "Generated demo fixture only; no workbook import.", "teal"],
+        ["Workflows", "Include", "CI placeholder with check names captured after first run.", "amber"],
+      ],
+      signalCards: [
+        ["First PR", `${firstPrReadinessScore}%`, "Draft body can be opened with proof and rollback language.", firstPrReadinessScore >= 72 ? "green" : "amber"],
+        ["Issue links", issueCount, "Backlog trace in the PR.", "blue"],
+        ["Evidence links", evidenceCount, "Proof trace in the PR.", "teal"],
+        ["No leak", "Locked", "Commercial and customer data stay outside the branch.", "red"],
+      ],
+      summaryBlocks: [
+        ["Purpose", "Open backend alpha shell", "Create the private implementation base without pretending production is live.", "green"],
+        ["Boundary", "Fixture-only", "Use generated data only; live workbook and billing stay out.", "red"],
+        ["Review", "Proof-led", "Reviewers inspect evidence before accepting any implementation depth.", "blue"],
+      ],
+    };
+  }
+
+  function buildRepoEvidenceFolderWriterModel(commandModel, firstPrBodyBuilder, backendRepoProofExporter, githubRepoOpeningPacket, branchProtectionReleaseChecklist, backendAlphaIssueImportKit) {
+    const markdownTemplates = [
+      ["Preflight proof", "docs/evidence/00-preflight.md", "GitHub identity, local path, tool versions, decision owner, and no-live-data boundary.", "blue"],
+      ["Private repo proof", "docs/evidence/01-repo-private.md", "Private visibility screenshot, repo URL, owner, and timestamp.", "red"],
+      ["Clean copy proof", "docs/evidence/02-clean-copy-set.md", "No secrets, workbooks, certificates, invoices, commercial exports, or live keys.", "red"],
+      ["Issue wave proof", "docs/evidence/04-issue-wave.md", "Issue URLs, labels, milestones, owners, and opening order.", "teal"],
+      ["First PR proof", "docs/evidence/05-first-pr.md", "PR title, link, scope, commands, rollback, reviewers, and blockers.", "green"],
+      ["Closeout proof", "docs/evidence/08-closeout.md", "Passed, held, blocked, deferred, owners, and next action.", "blue"],
+    ];
+    const evidenceFolderScore = Math.max(0, Math.min(100, Math.round((firstPrBodyBuilder.firstPrReadinessScore || 0) * 0.42 + (backendRepoProofExporter.proofReadinessScore || 0) * 0.28 + Math.min(100, markdownTemplates.length * 12) * 0.18 + 10)));
+    return {
+      acceptanceChecks: [
+        ["Files exist", "Required", "Every linked evidence file must exist before review.", "green"],
+        ["Screenshots named", "Required", "Private repo, issue wave, PR, and branch proof screenshots use stable names.", "blue"],
+        ["No leak", "Hard stop", "Evidence folder cannot contain workbook, secret, invoice, or commercial export.", "red"],
+      ],
+      branchProtectionProof: [
+        ["Check names", "After Actions", "Capture exact workflow and job names before required checks are enabled.", "amber"],
+        ["Review policy", "Before protect", "Named reviewer lanes match product, platform, backend, security, data, and QA.", "green"],
+        ["Bypass note", "Closeout", "Write who can bypass and why, or state no bypass.", "red"],
+      ],
+      closeoutNotes: githubRepoOpeningPacket.closeoutLedger,
+      copyReadyMarkdown: [
+        ["No leak statement", "docs/evidence/02-clean-copy-set.md", "Checked: no workbook, secret, certificate, invoice, payment key, or commercial export entered this repo.", "red"],
+        ["First PR closeout", "docs/evidence/05-first-pr.md", "Draft PR opened with scope, proof links, rollback, reviewer lanes, and open holds.", "green"],
+      ],
+      downloadHref: "data/repo-evidence-folder-writer.json?v=514",
+      evidenceFolderScore,
+      evidenceKpis: [
+        ["Folder readiness", `${evidenceFolderScore}%`, "Readiness of the private repo evidence folder.", evidenceFolderScore >= 72 ? "green" : "amber"],
+        ["Markdown files", markdownTemplates.length, "Proof files to create before first review.", "blue"],
+        ["Screenshots", 5, "Screenshots that prove GitHub state.", "teal"],
+        ["Owner signoffs", 6, "Named signoff files for owner lanes.", "green"],
+      ],
+      folderManifest: [
+        ["docs/evidence", "Evidence root", "All proof files, screenshots, transcripts, and closeout notes stay here.", "green"],
+        ["docs/evidence/screenshots", "Screenshots", "Private repo, issue list, PR, checks, and branch protection images.", "blue"],
+        ["docs/evidence/transcripts", "Commands", "Preflight, install, lint/test, smoke, and release command output.", "teal"],
+        ["docs/issues", "Issue trace", "Issue body source and real URL ledger.", "amber"],
+      ],
+      folderTree: [
+        ["docs/evidence/", "Evidence index and proof pages.", "green"],
+        ["docs/evidence/screenshots/", "Visual proof captured from GitHub.", "blue"],
+        ["docs/evidence/transcripts/", "Command output and blocker notes.", "teal"],
+        ["docs/issues/", "Issue body sources and created URL ledger.", "amber"],
+      ],
+      handoff: [
+        "The evidence folder writer gives the first private PR a proof spine.",
+        "The route repair keeps this spine visible in Build Phase so launch progress can be audited.",
+      ],
+      issueTraceLedger: backendAlphaIssueImportKit.issueRows.map(([id, title, owner, milestone, labels, proof, wave, tone]) => [id, title, `${owner} / ${milestone} / ${labels}`, tone]),
+      markdownTemplates,
+      ownerSignoffFiles: [
+        ["Product sponsor", "docs/evidence/signoff-product.md", "Scope and non-goals approved or held.", "green"],
+        ["Platform owner", "docs/evidence/signoff-platform.md", "Repo, branch, workflow, and protection proof approved or held.", "teal"],
+        ["Backend lead", "docs/evidence/signoff-backend.md", "Route shell and command proof approved or held.", "blue"],
+        ["Security owner", "docs/evidence/signoff-security.md", "No-secret, no-workbook, tenant guard, and redaction proof approved or held.", "red"],
+      ],
+      screenshotSlots: [
+        ["Private repo", "Show repo visibility and owner.", "red"],
+        ["Issue wave", "Show imported labels, milestones, and first issue list.", "blue"],
+        ["First PR", "Show PR title, body, branch, checks, and reviewers.", "green"],
+        ["Branch protection", "Show required checks and review policy after check names exist.", "amber"],
+      ],
+      signalCards: [
+        ["Evidence folder", `${evidenceFolderScore}%`, "Proof folder restored for Build Phase.", evidenceFolderScore >= 72 ? "green" : "amber"],
+        ["Markdown", markdownTemplates.length, "Files ready to seed.", "blue"],
+        ["Issue trace", backendAlphaIssueImportKit.issueRows.length, "Issue rows linked to proof.", "teal"],
+        ["No leak", "Required", "Evidence cannot carry private workbook or commercial data.", "red"],
+      ],
+      transcriptPlan: [
+        ["docs/evidence/transcripts/preflight.txt", "Preflight command output", "GitHub identity, local path, versions, and clean boundary.", "blue"],
+        ["docs/evidence/transcripts/install-test.txt", "Install/test output", "Install, lint/test placeholder, and smoke command result.", "green"],
+        ["docs/evidence/transcripts/release-gate.txt", "Release gate output", "Final check and route smoke output.", "teal"],
+      ],
+    };
+  }
+
+  function buildPrivateRepoCommandRunnerPackModel(commandModel, repoEvidenceFolderWriter, privateRepoDayOneScript, privateRepoSetupScriptDraft, githubRepoOpeningPacket, branchProtectionReleaseChecklist) {
+    const commandRunbook = [
+      ["01", "Preflight", "gh auth status; node --version; npm --version", "Save identity and tool proof before repo creation.", "blue"],
+      ["02", "Create repo", "gh repo create dhirajnyse/pursuitdesk-platform --private --description PursuitDesk-production-backend", "Create private repo and capture visibility immediately.", "red"],
+      ["03", "Branch", "git checkout -b codex/backend-alpha-shell", "Keep main clean and reviewable.", "green"],
+      ["04", "Copy shell", "Copy approved generated shell files only", "No workbook, secret, invoice, or live credential enters the repo.", "amber"],
+      ["05", "Issue wave", "Create labels, milestones, and first issue wave", "Paste real URLs into the evidence ledger.", "teal"],
+      ["06", "First PR", "git add .; git commit; git push; gh pr create --draft", "Open draft PR with scope, proof, rollback, and reviewer lanes.", "green"],
+    ];
+    const commandRunnerScore = Math.max(0, Math.min(100, Math.round((repoEvidenceFolderWriter.evidenceFolderScore || 0) * 0.36 + (privateRepoDayOneScript.scriptReadinessScore || 0) * 0.32 + (githubRepoOpeningPacket.openingReadinessScore || 0) * 0.18 + 12)));
+    return {
+      acceptanceChecks: [
+        ["Transcript saved", "Required", "Every command block has output or a dated blocker note.", "green"],
+        ["Manual proof captured", "Required", "Screenshots for private repo, issue wave, first PR, checks, and branch rules.", "blue"],
+        ["Stop rules active", "Hard stop", "Public repo, secret, workbook, or commercial leak stops the session.", "red"],
+      ],
+      artifactSlots: [
+        ["repo-visibility.png", "Private repo", "Private visibility proof.", "red"],
+        ["issue-wave.png", "Issue wave", "Labels, milestones, and issue rows after import.", "blue"],
+        ["first-pr.png", "First PR", "Draft PR body, checks, and reviewers.", "green"],
+      ],
+      branchTimingRun: githubRepoOpeningPacket.openingSequence,
+      closeoutRun: githubRepoOpeningPacket.closeoutLedger,
+      commandRunbook,
+      commandRunnerScore,
+      copyReadyCommands: [
+        ["Check identity", "PowerShell", "gh auth status; git config user.name; git config user.email", "blue"],
+        ["Open branch", "Git", "git checkout -b codex/backend-alpha-shell", "green"],
+        ["Draft PR", "GitHub CLI", "gh pr create --draft --title \"Backend alpha shell\" --body-file docs/evidence/05-first-pr.md", "teal"],
+      ],
+      downloadHref: "data/private-repo-command-runner-pack.json?v=514",
+      evidenceWriteMap: repoEvidenceFolderWriter.folderManifest,
+      expectedOutputs: [
+        ["Preflight output", "docs/evidence/transcripts/preflight.txt", "Identity, versions, and clean boundary.", "blue"],
+        ["Install/test output", "docs/evidence/transcripts/install-test.txt", "Dependency and quality gate result.", "green"],
+        ["Issue URLs", "docs/evidence/04-issue-wave.md", "Created issue links and import status.", "teal"],
+        ["PR link", "docs/evidence/05-first-pr.md", "Draft PR URL and review state.", "amber"],
+      ],
+      failureHolds: githubRepoOpeningPacket.riskLocks,
+      handoff: [
+        "The command runner pack makes repo opening executable without improvisation.",
+        "It pairs commands with evidence destinations so the Build Phase roadmap shows operational proof, not only intent.",
+      ],
+      manualProofActions: repoEvidenceFolderWriter.screenshotSlots,
+      ownerPromptRun: githubRepoOpeningPacket.ownerMatrix,
+      preflightCommands: [
+        ["01", "Identity", "gh auth status", "Confirm expected GitHub account before creating anything.", "blue"],
+        ["02", "Local path", "pwd; git status --short", "Confirm clean working path and no unrelated files.", "green"],
+        ["03", "No live data", "Manual inspection", "Stop if workbook, secret, invoice, certificate, or payment key is present.", "red"],
+      ],
+      runnerKpis: [
+        ["Runner readiness", `${commandRunnerScore}%`, "Readiness to run private repo day from command blocks.", commandRunnerScore >= 72 ? "green" : "amber"],
+        ["Commands", commandRunbook.length, "Ordered execution blocks.", "blue"],
+        ["Evidence writes", repoEvidenceFolderWriter.folderManifest.length, "Where proof should land.", "teal"],
+        ["Hard stops", githubRepoOpeningPacket.riskLocks.filter(([label]) => label === "Hard stop").length, "Immediate stop conditions.", "red"],
+      ],
+      signalCards: [
+        ["Command runner", `${commandRunnerScore}%`, "Build Phase route now shows command execution posture.", commandRunnerScore >= 72 ? "green" : "amber"],
+        ["Runbook", commandRunbook.length, "Command blocks ready.", "blue"],
+        ["Artifacts", 3, "Screenshots and proof files.", "teal"],
+        ["Stop rules", "On", "Privacy and repo safety holds remain visible.", "red"],
+      ],
+    };
+  }
+
+  function buildBackendPrReviewGateMatrixModel(commandModel, privateRepoCommandRunnerPack, firstPrBodyBuilder, repoEvidenceFolderWriter, backendAlphaIssueImportKit, branchProtectionReleaseChecklist) {
+    const reviewGateScore = Math.max(0, Math.min(100, Math.round((privateRepoCommandRunnerPack.commandRunnerScore || 0) * 0.3 + (firstPrBodyBuilder.firstPrReadinessScore || 0) * 0.28 + (repoEvidenceFolderWriter.evidenceFolderScore || 0) * 0.24 + 14)));
+    return {
+      acceptanceChecks: [
+        ["Named reviewer", "Required", "Each lane has one accountable reviewer before review starts.", "green"],
+        ["Hold allowed", "Required", "Holds are explicit and do not become silent blockers.", "amber"],
+        ["Block visible", "Required", "Trust failures produce change requests before merge.", "red"],
+      ],
+      blockRules: [
+        ["No private proof", "Block", "Repo visibility proof missing or repo is public.", "red"],
+        ["Secret or workbook", "Block", "Any secret, workbook, invoice, certificate, or commercial export in branch.", "red"],
+        ["No rollback", "Block", "PR body does not describe safe close/delete path.", "amber"],
+        ["No evidence links", "Block", "PR cannot be reviewed without evidence file links.", "blue"],
+      ],
+      decisionGates: [
+        ["Draft", "Open", "PR starts as draft with scope and no-live-data boundary.", "green"],
+        ["Review", "Owner lanes", "Reviewers respond approve, hold, block, defer, or request changes.", "blue"],
+        ["Protect", "After checks", "Branch protection waits until exact check names are known.", "amber"],
+        ["Closeout", "Record", "Decision, holds, blockers, and next owner are written.", "teal"],
+      ],
+      downloadHref: "data/backend-pr-review-gate-matrix.json?v=514",
+      evidenceReviewMap: repoEvidenceFolderWriter.folderManifest,
+      handoff: [
+        "The review gate matrix makes the first backend PR reviewable, holdable, and blockable.",
+        "It restores the Build Phase roadmap across reviewer gates after the v513 route failure.",
+      ],
+      holdQueue: [
+        ["Workflow names unknown", "Hold", "Wait for first Actions run before branch protection.", "amber"],
+        ["Owner absent", "Hold", "Pause lane until go, hold, defer, or no-go is captured.", "blue"],
+        ["Evidence incomplete", "Hold", "Add screenshot, transcript, or issue URL before review continues.", "teal"],
+      ],
+      mergeReadinessChecklist: [
+        ["Evidence folder complete", "Required", "All linked evidence files exist.", "green"],
+        ["No leak proof accepted", "Required", "Security lane accepts no-live-data proof.", "red"],
+        ["Required checks named", "Required", "Exact check names are captured from GitHub.", "amber"],
+        ["Closeout owner named", "Required", "Next owner and next action are explicit.", "blue"],
+      ],
+      prCommentTemplates: [
+        ["Approve", "Review comment", "Approved for alpha shell only. Evidence reviewed and no-live-data boundary accepted.", "green"],
+        ["Hold", "Review comment", "Holding until missing proof, owner, target date, and next command are confirmed.", "amber"],
+        ["Request changes", "Review comment", "Changes required before merge because trust proof or rollback is incomplete.", "red"],
+      ],
+      reviewGateScore,
+      reviewKpis: [
+        ["Review readiness", `${reviewGateScore}%`, "Readiness of the first backend PR review gates.", reviewGateScore >= 72 ? "green" : "amber"],
+        ["Reviewer lanes", firstPrBodyBuilder.reviewerMatrix.length, "Named owner lanes.", "green"],
+        ["Holds", 3, "Actionable pause states.", "amber"],
+        ["Blocks", 4, "Trust failures that require changes.", "red"],
+      ],
+      reviewerGateMatrix: [
+        ["Product sponsor", "Scope and non-goals", "Scope approved and next owner clear.", "Management wording unclear.", "Live SaaS implied.", "green"],
+        ["Platform owner", "Repo controls", "Private repo, branches, checks, and protection timing accepted.", "Check names missing.", "Repo public or branch unsafe.", "teal"],
+        ["Backend lead", "Implementation shell", "Route shell and commands accepted.", "Command transcript missing.", "Unreviewable starter files.", "blue"],
+        ["Security reviewer", "No-leak proof", "No secrets, workbook, commercial data, and denied audit accepted.", "Screenshot missing.", "Secret or workbook present.", "red"],
+      ],
+      reviewerPackets: [
+        ["Product sponsor", "Decision ask", "Please approve, hold, defer, or reject the alpha shell scope and management wording.", "green"],
+        ["Platform owner", "Repo controls", "Please confirm private visibility, check names, branch posture, and protection timing.", "teal"],
+        ["Security reviewer", "Trust proof", "Please confirm no-live-data, tenant guard, redaction, and denied audit proof.", "red"],
+      ],
+      signalCards: [
+        ["Review gate", `${reviewGateScore}%`, "First PR review can proceed with visible holds and blocks.", reviewGateScore >= 72 ? "green" : "amber"],
+        ["Holds", 3, "Pause states are explicit.", "amber"],
+        ["Blocks", 4, "Trust failures are explicit.", "red"],
+        ["Merge", "Not automatic", "Merge waits for evidence, reviewers, and closeout.", "blue"],
+      ],
+    };
+  }
+
+  function buildPrivateRepoHandoffEmailPackModel(commandModel, evidenceArtifactStatusBoard, backendPrReviewGateMatrix, privateRepoCommandRunnerPack, githubRepoOpeningPacket, firstPrBodyBuilder, productionBackendRepoDecisionMemo) {
+    const handoffEmailScore = Math.max(0, Math.min(100, Math.round((evidenceArtifactStatusBoard.evidenceBoardScore || 0) * 0.3 + (backendPrReviewGateMatrix.reviewGateScore || 0) * 0.28 + (privateRepoCommandRunnerPack.commandRunnerScore || 0) * 0.22 + 14)));
+    return {
+      copyReadyHandoffEmail: [
+        "Subject: PursuitDesk backend alpha handoff",
+        "The private repo opening packet is ready for review.",
+        "Please review private visibility, issue wave, first PR, evidence folder, branch protection timing, open holds, and next owner.",
+      ].join("\n"),
+      downloadHref: "data/private-repo-handoff-email-pack.json?v=514",
+      emailBlocks: [
+        ["Opening line", "Ready for review", "State the private repo handoff is controlled and non-production.", "green"],
+        ["Evidence links", "Attach proof", "Point to evidence board, issue wave, first PR, and closeout files.", "blue"],
+        ["Decision ask", "Approve/Hold/Block", "Ask every owner lane for a specific decision.", "amber"],
+      ],
+      handoffEmailScore,
+      handoffKpis: [
+        ["Email readiness", `${handoffEmailScore}%`, "Readiness of the handoff email and proof links.", handoffEmailScore >= 72 ? "green" : "amber"],
+        ["Review gates", backendPrReviewGateMatrix.reviewerGateMatrix.length, "Reviewer lanes included.", "blue"],
+        ["Evidence artifacts", evidenceArtifactStatusBoard.artifactRows?.length || 0, "Artifacts referenced.", "teal"],
+        ["Open holds", backendPrReviewGateMatrix.holdQueue.length, "Holds disclosed in the email.", "amber"],
+      ],
+      managementBrief: [
+        ["Purpose", "Private backend alpha", "Move from static demo proof to private implementation shell.", "green"],
+        ["Safety", "No live data", "No customer workbook, production billing, secret, or commercial export.", "red"],
+        ["Decision", "Go/Hold/Block", "Owner lanes respond with one clear state.", "blue"],
+      ],
+      recipientMatrix: githubRepoOpeningPacket.ownerMatrix,
+      signalCards: [
+        ["Handoff email", `${handoffEmailScore}%`, "Reviewer email can carry proof without ambiguity.", handoffEmailScore >= 72 ? "green" : "amber"],
+        ["Recipients", githubRepoOpeningPacket.ownerMatrix.length, "Owner lanes included.", "green"],
+        ["Evidence board", evidenceArtifactStatusBoard.evidenceBoardScore || 0, "Evidence readiness referenced.", "teal"],
+        ["Review gate", backendPrReviewGateMatrix.reviewGateScore, "Gate status included.", "blue"],
+      ],
+    };
+  }
+
+  function buildFirstBackendPrReviewCommentPackModel(commandModel, backendPrReviewGateMatrix, privateRepoHandoffEmailPack, evidenceArtifactStatusBoard, firstPrBodyBuilder, privateRepoCommandRunnerPack) {
+    const firstBackendPrCommentScore = Math.max(0, Math.min(100, Math.round((backendPrReviewGateMatrix.reviewGateScore || 0) * 0.38 + (privateRepoHandoffEmailPack.handoffEmailScore || 0) * 0.26 + (firstPrBodyBuilder.firstPrReadinessScore || 0) * 0.2 + 12)));
+    return {
+      commentTemplates: backendPrReviewGateMatrix.prCommentTemplates,
+      downloadHref: "data/first-backend-pr-review-comment-pack.json?v=514",
+      firstBackendPrCommentScore,
+      replyHandlingCadence: [
+        ["Same day", "Acknowledge", "Confirm every approve, hold, block, defer, or request change.", "green"],
+        ["24 hours", "Route owner", "Assign missing proof, owner, and target date.", "amber"],
+        ["48 hours", "Escalate", "Escalate unresolved trust blockers before merge pressure builds.", "red"],
+      ],
+      reviewerCommentPackets: backendPrReviewGateMatrix.reviewerPackets,
+      signalCards: [
+        ["Review comments", `${firstBackendPrCommentScore}%`, "First PR can receive calm, structured comments.", firstBackendPrCommentScore >= 72 ? "green" : "amber"],
+        ["Packets", backendPrReviewGateMatrix.reviewerPackets.length, "Reviewer-specific packets.", "blue"],
+        ["Cadence", "48h", "Reply SLA for unresolved proof.", "amber"],
+        ["Block language", "Ready", "Request-changes language is explicit.", "red"],
+      ],
+    };
+  }
+
+  function buildPrivateRepoEvidenceCloseoutPackModel(commandModel, firstBackendPrReviewCommentPack, evidenceArtifactStatusBoard, privateRepoHandoffEmailPack, backendPrReviewGateMatrix, privateRepoCommandRunnerPack) {
+    const evidenceCloseoutScore = Math.max(0, Math.min(100, Math.round((evidenceArtifactStatusBoard.evidenceBoardScore || 0) * 0.34 + (firstBackendPrReviewCommentPack.firstBackendPrCommentScore || 0) * 0.26 + (backendPrReviewGateMatrix.reviewGateScore || 0) * 0.2 + 14)));
+    return {
+      closeoutChecklist: [
+        ["Evidence index", "Complete", "All proof files, screenshots, transcripts, and issue URLs are linked.", "green"],
+        ["Reviewer decisions", "Captured", "Approve, hold, block, defer, and requested changes are logged.", "blue"],
+        ["No-leak statement", "Accepted", "Security lane accepts no customer workbook, secret, invoice, or commercial data.", "red"],
+        ["Next owner", "Named", "One owner and next date are recorded.", "teal"],
+      ],
+      downloadHref: "data/private-repo-evidence-closeout-pack.json?v=514",
+      evidenceCloseoutScore,
+      ownerCloseoutQueue: [
+        ["Product sponsor", "Decision wording", "Approve scope or state the exact hold.", "green"],
+        ["Platform owner", "Branch and check proof", "Confirm branch posture, check names, and protection timing.", "teal"],
+        ["Security reviewer", "No-leak proof", "Accept or block no-secret, no-workbook, and redaction evidence.", "red"],
+        ["QA / Release", "Evidence archive", "Confirm screenshots, transcripts, issue links, and closeout naming.", "blue"],
+      ],
+      signalCards: [
+        ["Evidence closeout", `${evidenceCloseoutScore}%`, "Closeout pack can summarize first backend review proof.", evidenceCloseoutScore >= 72 ? "green" : "amber"],
+        ["Owner queue", 4, "Owner closeout lanes.", "green"],
+        ["Blocks", backendPrReviewGateMatrix.blockRules.length, "Trust failures visible.", "red"],
+        ["Reply cadence", firstBackendPrReviewCommentPack.replyHandlingCadence.length, "Follow-up rhythm ready.", "blue"],
+      ],
+    };
+  }
+
+  function buildBackendRepoDayMeetingPackModel(commandModel, privateRepoEvidenceCloseoutPack, privateRepoHandoffEmailPack, backendAlphaControlBoard, privateRepoDayOneScript, backendPrReviewGateMatrix, evidenceArtifactStatusBoard, productionBackendRepoDecisionMemo) {
+    const backendRepoDayMeetingScore = Math.max(0, Math.min(100, Math.round((privateRepoEvidenceCloseoutPack.evidenceCloseoutScore || 0) * 0.32 + (privateRepoHandoffEmailPack.handoffEmailScore || 0) * 0.22 + (backendPrReviewGateMatrix.reviewGateScore || 0) * 0.22 + 16)));
+    return {
+      agendaBlocks: [
+        ["0-5 min", "Scope and non-goals", "Confirm private backend alpha only; no live SaaS or live billing.", "green"],
+        ["5-15 min", "Evidence review", "Walk private repo, clean copy, issue wave, PR, checks, and branch proof.", "blue"],
+        ["15-25 min", "Reviewer decisions", "Approve, hold, block, defer, and requested changes by lane.", "amber"],
+        ["25-35 min", "Closeout", "Name next owner, next action, and evidence archive status.", "teal"],
+      ],
+      backendRepoDayMeetingScore,
+      decisionPrompts: backendPrReviewGateMatrix.decisionGates,
+      downloadHref: "data/backend-repo-day-meeting-pack.json?v=514",
+      meetingKpis: [
+        ["Meeting readiness", `${backendRepoDayMeetingScore}%`, "Readiness to run backend repo day as a controlled meeting.", backendRepoDayMeetingScore >= 72 ? "green" : "amber"],
+        ["Agenda blocks", 4, "Short meeting structure.", "blue"],
+        ["Owner queue", privateRepoEvidenceCloseoutPack.ownerCloseoutQueue.length, "Owners with decision asks.", "green"],
+        ["Blocks visible", backendPrReviewGateMatrix.blockRules.length, "Trust blockers are visible.", "red"],
+      ],
+      signalCards: [
+        ["Repo day meeting", `${backendRepoDayMeetingScore}%`, "Build Phase can now show the meeting handoff path.", backendRepoDayMeetingScore >= 72 ? "green" : "amber"],
+        ["Evidence", evidenceArtifactStatusBoard.evidenceBoardScore || 0, "Evidence board readiness.", "teal"],
+        ["Closeout", privateRepoEvidenceCloseoutPack.evidenceCloseoutScore, "Closeout pack readiness.", "blue"],
+        ["Decisions", backendPrReviewGateMatrix.decisionGates.length, "Decision gates ready.", "amber"],
+      ],
     };
   }
 
@@ -57558,6 +58211,32 @@ const state = {
       ["Owner signoff", "Product, platform, backend, security, data, and QA go, hold, no-go, or defer notes.", "Owner lanes", "green"],
     ];
     const escalationQueue = artifactRows.filter((artifact) => artifact.status === "Hold" || artifact.status === "Blocked");
+    const ownerRows = Object.entries(
+      artifactRows.reduce((counts, artifact) => {
+        counts[artifact.owner] = (counts[artifact.owner] || 0) + 1;
+        return counts;
+      }, {}),
+    )
+      .sort(([, left], [, right]) => right - left)
+      .slice(0, 6)
+      .map(([label, value]) => ({ label, value }));
+    const sourceRows = Object.entries(
+      artifactRows.reduce((counts, artifact) => {
+        counts[artifact.group] = (counts[artifact.group] || 0) + 1;
+        return counts;
+      }, {}),
+    )
+      .sort(([, left], [, right]) => right - left)
+      .slice(0, 6)
+      .map(([label, value]) => ({ label, value }));
+    const closeout = [
+      ["Ready templates", `${readyCount} evidence templates are available before repo day.`],
+      ["Held captures assigned", `${holdCount} screenshot or transcript captures need real output.`],
+      ["Blocked proof visible", `${blockedCount} trust blockers remain visible until real proof exists.`],
+      ["Deferred owner queue visible", `${deferredCount} owner or issue rows wait for the private repo session.`],
+      ["No-live-data reminder included", "No workbook, secret, billing key, invoice, certificate, or commercial export is accepted."],
+    ];
+    const reviewScore = evidenceBoardScore;
     const signalCards = [
       ["Evidence board", `${evidenceBoardScore}%`, "Readiness across templates, screenshots, transcripts, branch proof, and owner signoff.", evidenceBoardScore >= 80 ? "green" : "amber"],
       ["Ready artifacts", readyCount, "Prepared files and proof shells that can move into repo day.", "green"],
@@ -57573,12 +58252,16 @@ const state = {
     return {
       artifactRows,
       boardKpis,
+      closeout,
       downloadHref,
       escalationQueue,
       evidenceBoardScore,
       evidenceLanes,
       handoff,
+      ownerRows,
+      reviewScore,
       signalCards,
+      sourceRows,
       statusSummary,
     };
   }
@@ -58272,12 +58955,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v513 Handoff Outcome Receipt",
-      phase: "Handoff Outcome Receipt",
+      version: "v514 Build Phase Route Repair",
+      phase: "Build Phase Route Repair",
       lane: "Static product prototype on GitHub Pages",
-      pace: "494 meaningful versions since rebrand",
-      summary: "Command Center now turns the first outcome watch into a handoff outcome receipt with buyer response, proof acceptance, support asks, rollback signal, sponsor movement, and next-market action.",
+      pace: "495 meaningful versions since rebrand",
+      summary: "Build Phase now opens its backend handoff chain again, with the missing repo-opening model, closeout renderers, and route-smoke coverage restored.",
       tracks: [
+        ["v514 build phase route repair", 100, "Build Phase now opens its backend handoff chain again, with the missing repo-opening model, closeout renderers, and route-smoke coverage restored.", "green"],
         ["v513 handoff outcome receipt", 100, "Command Center now turns the first outcome watch into a handoff outcome receipt with buyer response, proof acceptance, support asks, rollback signal, sponsor movement, and next-market action.", "green"],
         ["v512 minutes approval receipt", 100, "Command Center now turns sealed council minutes into a signoff receipt with signoff owner, accepted gaps, buyer-safe archive, rollback memory, and next-market approval window.", "green"],
         ["v511 buyer response watch", 100, "Command Center now watches buyer response after launch handoff for proof acceptance, support asks, rollback concerns, sponsor movement, country narrative gaps, and one next action.", "green"],
@@ -58771,9 +59455,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v514", "Governance rollout second pilot expansion wider launch market response learning receipt", "Turn buyer response into market learning with proof accepted, support routed, rollback concerns closed, sponsor movement, country narrative repair, and next-market guidance."],
-        ["v515", "Governance rollout second pilot expansion wider launch approval outcome monitor", "Watch what happened after minutes approval: signoff movement, accepted-gap closure, archive safety, rollback quiet, next-market decision, and buyer-response learning."],
-        ["v516", "Governance rollout second pilot expansion wider launch next-market action receipt", "Record the next-market action after handoff outcome closure with owner, date, proof promise, support path, rollback option, sponsor line, and learning handoff."],
+        ["v515", "Governance rollout second pilot expansion wider launch market response learning receipt", "Turn buyer response into market learning with proof accepted, support routed, rollback concerns closed, sponsor movement, country narrative repair, and next-market guidance."],
+        ["v516", "Governance rollout second pilot expansion wider launch approval outcome monitor", "Watch what happened after minutes approval: signoff movement, accepted-gap closure, archive safety, rollback quiet, next-market decision, and buyer-response learning."],
+        ["v517", "Governance rollout second pilot expansion wider launch next-market action receipt", "Record the next-market action after handoff outcome closure with owner, date, proof promise, support path, rollback option, sponsor line, and learning handoff."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -59077,7 +59761,7 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now turns the first outcome watch into a handoff outcome receipt with buyer response, proof acceptance, support asks, rollback signal, sponsor movement, and next-market action.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Build Phase now opens its backend handoff chain again, with the missing repo-opening model, compact closeout renderers, and route-smoke coverage restored.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room copy, Proof Bridge copy, Launch Seal copy, Closeout Receipt copy, Outcome Watch copy, Activation Receipt copy, Decision Audit Pack copy, Learning Review Room copy, Reuse Gate copy, Sponsor Decision copy, Learning Receipt copy, Outcome Ledger copy, Sponsor Update copy, Rollout Proof copy, Expansion Support copy, Scaled Rollout copy, Expansion Receipt copy, Expansion Gate copy, Learning Release copy, Support Closeout copy, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
@@ -71760,6 +72444,347 @@ const state = {
     `;
   }
 
+  function renderBuildPhaseCompactArtifactSection({
+    sectionClass,
+    metricLabel,
+    heading,
+    body,
+    downloadHref,
+    downloadName,
+    scoreLabel,
+    score,
+    scoreNote,
+    signalCards = [],
+    groups = [],
+    copyBlocks = [],
+    handoff = [],
+  }) {
+    const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <div class="tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </div>
+      `;
+    };
+    const renderCard = ([label, valueOrNote, noteOrTone, maybeTone]) => {
+      const hasValue = Boolean(maybeTone);
+      const value = hasValue ? valueOrNote : "";
+      const note = hasValue ? noteOrTone : valueOrNote;
+      const tone = maybeTone || noteOrTone || "teal";
+      return `
+        <article class="repo-proof-template-card tone-${escapeHtml(tone)}">
+          <span>${escapeHtml(label)}</span>
+          ${hasValue ? `<strong>${escapeHtml(String(value))}</strong>` : ""}
+          <p>${escapeHtml(note)}</p>
+        </article>
+      `;
+    };
+    const renderCopy = ([label, file, content, tone]) => `
+      <article class="repo-proof-snippet-card tone-${escapeHtml(tone || "teal")}">
+        <div>
+          <span>${escapeHtml(label)}</span>
+          <strong>${escapeHtml(file)}</strong>
+        </div>
+        <code>${escapeHtml(content)}</code>
+      </article>
+    `;
+    return `
+      <section class="backend-repo-proof-exporter ${escapeHtml(sectionClass)}">
+        <div class="staging-smoke-hero">
+          <div>
+            <span class="metric-label">${escapeHtml(metricLabel)}</span>
+            <h3>${escapeHtml(heading)}</h3>
+            <p>${escapeHtml(body)}</p>
+            <div class="staging-smoke-action-row">
+              <a class="secondary-btn fixture-export-download" href="${escapeHtml(downloadHref)}" download="${escapeHtml(downloadName)}">Download JSON</a>
+              <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
+              <button class="ghost-btn" type="button" data-view="Governance">Open governance</button>
+            </div>
+          </div>
+          <div class="staging-smoke-score-card">
+            <span>${escapeHtml(scoreLabel)}</span>
+            <strong>${escapeHtml(String(score))}%</strong>
+            <i style="--width: ${escapeHtml(String(score))}%"></i>
+            <small>${escapeHtml(scoreNote)}</small>
+          </div>
+        </div>
+
+        <div class="staging-smoke-signal-grid">
+          ${signalCards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="staging-smoke-signal-card tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(String(value))}</strong>
+                  <p>${escapeHtml(note)}</p>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+
+        ${groups
+          .map(
+            (group) => `
+              <article class="staging-smoke-panel">
+                <div class="info-head compact">
+                  <div>
+                    <span class="metric-label">${escapeHtml(group.label)}</span>
+                    <h3>${escapeHtml(group.heading)}</h3>
+                  </div>
+                  <span>${group.items.length} rows</span>
+                </div>
+                <div class="${escapeHtml(group.gridClass || "repo-proof-template-grid")}">
+                  ${group.items.map(group.cardStyle === "card" ? renderCard : renderTile).join("")}
+                </div>
+              </article>
+            `,
+          )
+          .join("")}
+
+        ${copyBlocks.length
+          ? `
+            <article class="staging-smoke-panel">
+              <div class="info-head compact">
+                <div>
+                  <span class="metric-label">Copy-ready text</span>
+                  <h3>Controlled text for the next handoff</h3>
+                </div>
+                <span>${copyBlocks.length} blocks</span>
+              </div>
+              <div class="repo-proof-snippet-grid">
+                ${copyBlocks.map(renderCopy).join("")}
+              </div>
+            </article>
+          `
+          : ""}
+
+        ${handoff.length
+          ? `
+            <article class="staging-smoke-panel staging-smoke-handoff-panel">
+              <div class="info-head compact">
+                <div>
+                  <span class="metric-label">Handoff</span>
+                  <h3>What this gives the Build Phase roadmap</h3>
+                </div>
+              </div>
+              <div class="staging-handoff-list">
+                ${handoff.map((item) => `<p>${escapeHtml(item)}</p>`).join("")}
+              </div>
+            </article>
+          `
+          : ""}
+      </section>
+    `;
+  }
+
+  function renderPrivateRepoHandoffEmailPack(model) {
+    return renderBuildPhaseCompactArtifactSection({
+      sectionClass: "private-repo-handoff-email-pack",
+      metricLabel: "Private repo handoff email pack",
+      heading: "Send the backend handoff with proof, owners, and holds.",
+      body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
+      downloadHref: model.downloadHref,
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v514.json",
+      scoreLabel: "Email readiness",
+      score: model.handoffEmailScore,
+      scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
+      signalCards: model.signalCards,
+      groups: [
+        { label: "Recipients", heading: "Who receives the handoff", items: model.recipientMatrix, gridClass: "repo-proof-owner-grid" },
+        { label: "Email blocks", heading: "What the message must contain", items: model.emailBlocks, cardStyle: "card" },
+        { label: "Management brief", heading: "How to summarize the move", items: model.managementBrief, gridClass: "repo-proof-command-grid" },
+      ],
+      copyBlocks: [["Handoff email", "email draft", model.copyReadyHandoffEmail, "green"]],
+      handoff: ["The handoff email pack keeps reviewer context together before PR comments start.", "It prevents Build Phase from hiding open holds behind a friendly send button."],
+    });
+  }
+
+  function renderFirstBackendPrReviewCommentPack(model) {
+    return renderBuildPhaseCompactArtifactSection({
+      sectionClass: "first-backend-pr-review-comment-pack",
+      metricLabel: "First backend PR review comment pack",
+      heading: "Turn reviewer responses into structured approve, hold, and block comments.",
+      body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
+      downloadHref: model.downloadHref,
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v514.json",
+      scoreLabel: "Comment readiness",
+      score: model.firstBackendPrCommentScore,
+      scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
+      signalCards: model.signalCards,
+      groups: [
+        { label: "Reviewer packets", heading: "Lane-specific review asks", items: model.reviewerCommentPackets, cardStyle: "card" },
+        { label: "Comment templates", heading: "Approve, hold, and request-change language", items: model.commentTemplates, cardStyle: "card" },
+        { label: "Reply cadence", heading: "How unresolved comments move", items: model.replyHandlingCadence, gridClass: "repo-proof-sequence-grid" },
+      ],
+      handoff: ["The review comment pack turns reviewer feedback into controlled evidence movement.", "It keeps requested changes from becoming vague follow-up noise."],
+    });
+  }
+
+  function renderPrivateRepoEvidenceCloseoutPack(model) {
+    return renderBuildPhaseCompactArtifactSection({
+      sectionClass: "private-repo-evidence-closeout-pack",
+      metricLabel: "Private repo evidence closeout pack",
+      heading: "Close the first backend evidence loop before implementation depth starts.",
+      body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
+      downloadHref: model.downloadHref,
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v514.json",
+      scoreLabel: "Closeout readiness",
+      score: model.evidenceCloseoutScore,
+      scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
+      signalCards: model.signalCards,
+      groups: [
+        { label: "Closeout checks", heading: "What must be true before the next move", items: model.closeoutChecklist, gridClass: "repo-proof-gate-grid" },
+        { label: "Owner queue", heading: "Who must approve, hold, or block", items: model.ownerCloseoutQueue, gridClass: "repo-proof-owner-grid" },
+      ],
+      handoff: ["The evidence closeout pack makes the private repo opening auditable.", "It keeps Build Phase honest about unresolved blockers and next ownership."],
+    });
+  }
+
+  function renderBackendRepoDayMeetingPack(model) {
+    return renderBuildPhaseCompactArtifactSection({
+      sectionClass: "backend-repo-day-meeting-pack",
+      metricLabel: "Backend repo day meeting pack",
+      heading: "Run the private repo day as a decision meeting.",
+      body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
+      downloadHref: model.downloadHref,
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v514.json",
+      scoreLabel: "Meeting readiness",
+      score: model.backendRepoDayMeetingScore,
+      scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
+      signalCards: model.signalCards,
+      groups: [
+        { label: "Agenda", heading: "How the meeting should run", items: model.agendaBlocks, gridClass: "repo-proof-sequence-grid" },
+        { label: "Decision prompts", heading: "How the PR moves forward", items: model.decisionPrompts, gridClass: "repo-proof-command-grid" },
+      ],
+      handoff: ["The meeting pack gives Build Phase a visible operating ritual for launch readiness.", "It turns private repo progress into decisions, not just artifacts."],
+    });
+  }
+
+  function renderPrivateRepoReplyCaptureBoard(model) {
+    return renderBuildPhaseCompactArtifactSection({
+      sectionClass: "private-repo-reply-capture-board",
+      metricLabel: "Private repo reply capture board",
+      heading: "Capture reviewer replies before they fade into chat.",
+      body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
+      downloadHref: model.downloadHref,
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v514.json",
+      scoreLabel: "Reply readiness",
+      score: model.replyCaptureScore,
+      scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
+      signalCards: [
+        ["Reply capture", `${model.replyCaptureScore}%`, "Reviewer replies are visible and owned.", model.replyCaptureScore >= 72 ? "green" : "amber"],
+        ["Lanes", model.reviewerReplyLanes.length, "Reviewer reply lanes.", "blue"],
+        ["Requested changes", model.requestedChangesResolver.length, "Change paths ready.", "red"],
+        ["SLA", model.replySlaCadence.length, "Follow-up cadence rules.", "teal"],
+      ],
+      groups: [
+        { label: "Reply lanes", heading: "Who owes a response", items: model.reviewerReplyLanes, gridClass: "repo-proof-owner-grid" },
+        { label: "Reply state", heading: "How replies are categorized", items: model.replyStateBoard, gridClass: "repo-proof-command-grid" },
+        { label: "Requested changes", heading: "How requested changes get resolved", items: model.requestedChangesResolver, cardStyle: "card" },
+        { label: "Merge readiness", heading: "What must be true before merge pressure", items: model.mergeReadinessLanes, gridClass: "repo-proof-gate-grid" },
+      ],
+      copyBlocks: [["Reply log", "docs/evidence/reviewer-replies.md", model.copyReadyReplyLog, "blue"]],
+      handoff: model.managementReplyBrief?.map(([label, value, note]) => `${label}: ${value}. ${note}`) || [],
+    });
+  }
+
+  function renderEvidenceCloseoutPdfExportPlan(model) {
+    return renderBuildPhaseCompactArtifactSection({
+      sectionClass: "evidence-closeout-pdf-export-plan",
+      metricLabel: "Evidence closeout PDF export plan",
+      heading: "Package closeout proof into a management-safe PDF.",
+      body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
+      downloadHref: model.downloadHref,
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v514.json",
+      scoreLabel: "PDF readiness",
+      score: model.pdfExportScore,
+      scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
+      signalCards: [
+        ["PDF export", `${model.pdfExportScore}%`, "Closeout proof can become a management-safe packet.", model.pdfExportScore >= 72 ? "green" : "amber"],
+        ["Pages", model.pageBlueprint.length, "Export page plan.", "blue"],
+        ["Redaction", model.redactionChecks.length, "Privacy checks.", "red"],
+        ["Distribution", model.distributionMatrix.length, "Who can receive the pack.", "teal"],
+      ],
+      groups: [
+        { label: "Page blueprint", heading: "What the PDF should include", items: model.pageBlueprint, cardStyle: "card" },
+        { label: "Printable sections", heading: "Sections that become export pages", items: model.printableSections, gridClass: "repo-proof-template-grid" },
+        { label: "Redaction", heading: "What must be removed before sharing", items: model.redactionChecks, gridClass: "repo-proof-gate-grid" },
+        { label: "Archive names", heading: "How the packet should be stored", items: model.archiveNamingRules, cardStyle: "card" },
+      ],
+      copyBlocks: [["Export brief", "management closeout", model.copyReadyExportBrief, "green"]],
+      handoff: model.managementCloseoutLines?.map(([label, value, note]) => `${label}: ${value}. ${note}`) || [],
+    });
+  }
+
+  function renderBackendMeetingMinutesExporter(model) {
+    return renderBuildPhaseCompactArtifactSection({
+      sectionClass: "backend-meeting-minutes-exporter",
+      metricLabel: "Backend meeting minutes exporter",
+      heading: "Write the repo-day decisions while the meeting is still fresh.",
+      body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
+      downloadHref: model.downloadHref,
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v514.json",
+      scoreLabel: "Minutes readiness",
+      score: model.meetingMinutesScore,
+      scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
+      signalCards: [
+        ["Meeting minutes", `${model.meetingMinutesScore}%`, "Decision record is ready to export.", model.meetingMinutesScore >= 72 ? "green" : "amber"],
+        ["Attendance", model.attendanceLog.length, "Required and optional lanes.", "blue"],
+        ["Actions", model.actionQueue.length, "Action queue rows.", "amber"],
+        ["Privacy checks", model.privacyAndAuditChecks.length, "Audit checks before distribution.", "red"],
+      ],
+      groups: [
+        { label: "Attendance", heading: "Who attended and what they own", items: model.attendanceLog, gridClass: "repo-proof-owner-grid" },
+        { label: "Minutes sections", heading: "The meeting record structure", items: model.minutesSections, cardStyle: "card" },
+        { label: "Decision register", heading: "Decisions captured during the meeting", items: model.decisionRegister, gridClass: "repo-proof-command-grid" },
+        { label: "Follow-up", heading: "Action queue and cadence", items: [...model.actionQueue, ...model.followUpCadence], gridClass: "repo-proof-sequence-grid" },
+      ],
+      copyBlocks: [
+        ["Minutes", "meeting minutes", model.copyReadyMinutes, "green"],
+        ["Management email", "email draft", model.copyReadyManagementEmail, "blue"],
+      ],
+      handoff: model.managementEmailBlocks?.map(([label, value, note]) => `${label}: ${value}. ${note}`) || [],
+    });
+  }
+
+  function renderReviewerDecisionEmailPack(model) {
+    return renderBuildPhaseCompactArtifactSection({
+      sectionClass: "reviewer-decision-email-pack",
+      metricLabel: "Reviewer decision email pack",
+      heading: "Ask every reviewer for one clear decision.",
+      body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
+      downloadHref: model.downloadHref,
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v514.json",
+      scoreLabel: "Decision email readiness",
+      score: model.reviewerDecisionEmailScore,
+      scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
+      signalCards: [
+        ["Decision email", `${model.reviewerDecisionEmailScore}%`, "Reviewer decision asks are ready.", model.reviewerDecisionEmailScore >= 72 ? "green" : "amber"],
+        ["Lanes", model.reviewerEmailLanes.length, "Reviewer-specific asks.", "blue"],
+        ["Triggers", model.responseTriggers.length, "Response states.", "teal"],
+        ["Privacy", model.privacyGuardrails.length, "Privacy guardrails before sending.", "red"],
+      ],
+      groups: [
+        { label: "Reviewer lanes", heading: "Who receives which decision ask", items: model.reviewerEmailLanes, gridClass: "repo-proof-owner-grid" },
+        { label: "Email templates", heading: "Approve, hold, request changes, or defer", items: model.decisionEmailTemplates, cardStyle: "card" },
+        { label: "Response triggers", heading: "How replies move the loop", items: model.responseTriggers, gridClass: "repo-proof-command-grid" },
+        { label: "Send checks", heading: "What must be checked before emails go out", items: [...model.sendChecklist, ...model.privacyGuardrails], gridClass: "repo-proof-gate-grid" },
+      ],
+      copyBlocks: [
+        ["Reviewer email", "email draft", model.copyReadyReviewerEmail, "green"],
+        ["Escalation email", "email draft", model.copyReadyEscalationEmail, "amber"],
+      ],
+      handoff: model.managementSummaryBlocks?.map(([label, value, note]) => `${label}: ${value}. ${note}`) || [],
+    });
+  }
+
   function renderEvidenceArtifactStatusBoard(model) {
     const renderTile = ([label, valueOrNote, noteOrTone, maybeTone]) => {
       const hasValue = Boolean(maybeTone);
@@ -71865,22 +72890,29 @@ const state = {
           </div>
         </article>
 
-        <article class="staging-smoke-panel">
-          <div class="info-head compact">
-            <div>
-              <span class="metric-label">Evidence lanes</span>
-              <h3>Who owns each class of proof</h3>
-            </div>
-            <span>${model.evidenceLanes.length} lanes</span>
-          </d   <div class="info-head">
-                <div>
-                  <span class="metric-label">Owner focus</span>
-                  <h3>Where help is needed</h3>
-                </div>
+        <div class="staging-smoke-two-column">
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Evidence lanes</span>
+                <h3>Who owns each class of proof</h3>
               </div>
-              ${renderRankBars(model.ownerRows, "teal")}
-            </article>
-          </aside>
+              <span>${model.evidenceLanes.length} lanes</span>
+            </div>
+            <div class="repo-proof-owner-grid">
+              ${model.evidenceLanes.map(renderTile).join("")}
+            </div>
+          </article>
+
+          <article class="staging-smoke-panel">
+            <div class="info-head compact">
+              <div>
+                <span class="metric-label">Owner focus</span>
+                <h3>Where help is needed</h3>
+              </div>
+            </div>
+            ${renderRankBars(model.ownerRows, "teal")}
+          </article>
         </div>
 
         <div class="weekly-analytics-grid">

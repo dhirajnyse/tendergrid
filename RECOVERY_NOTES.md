@@ -115,6 +115,7 @@ Recovery cleanup in this copy:
 - v510 adds a Build Phase Route Guard so the admin-only Build Phase opens reliably from the build badge, Admin Tools tray, and #build-phase route after login, session refresh, or GitHub Pages hash navigation.
 - v511 adds a Buyer Response Watch so launch handoff is watched for proof acceptance, support asks, rollback concerns, sponsor movement, country narrative gaps, and the next action.
 - v512 adds a Minutes Approval Receipt so sealed council minutes become a signoff receipt with signoff owner, accepted gaps, buyer-safe archive, rollback memory, and next-market approval window.
+- v514 restores the Build Phase route by rebuilding the missing backend handoff model chain and compact closeout renderers, then adds route-smoke coverage for `#build-phase`.
 - v513 adds a Handoff Outcome Receipt so the first outcome watch becomes a receipt with buyer response, proof acceptance, support asks, rollback signal, sponsor movement, and next-market action.
 - v498 adds a Governance Rollout Second Pilot Expansion Wider Launch Gate so wider launch opens only after learning handoff, support receipt, proof repair, sponsor response, rollback posture, owner cadence, and evidence confidence are calm.
 - v497 adds a Governance Rollout Second Pilot Expansion Support Receipt so expansion learning closes with support actions, proof repair, sponsor response, rollback posture, owner cadence, and next rollout guidance.
