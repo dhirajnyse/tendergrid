@@ -101,6 +101,7 @@ Recovery cleanup in this copy:
 - v412 adds a Consent Renewal Lane so renewal, tenant-only extension, retune, and proof-wait paths stay explicit before licensed guidance keeps moving.
 - v413 adds a Receipt Outcome Review so renewed, tenant-only, retune, and proof-wait receipts are compared against proof, lift, friction, rollback, and reuse rights.
 - v414 adds a License Retirement Receipt so expired or unsafe guidance licenses close with reason, owner, rollback, retained tenant memory, and reuse-rights posture.
+- v483 adds a Governance Rollout Second Pilot Reuse Activation so only audit-approved second-pilot learning can enter selected guidance surfaces with owner, rollback, boundary, and observation controls.
 - v482 adds a Governance Rollout Second Pilot Decision Audit Pack so second-pilot learning, sponsor response, support closure, proof, rollback, and boundary stay audit-ready before reuse activation.
 - v481 adds a Governance Rollout Second Pilot Expansion Gate so second-pilot learning can widen, renew, repair proof, retune guidance, or stay under watch with sponsor, support, rollback, and boundary checks.
 - v480 adds a Governance Rollout Second Pilot Learning Room so second-pilot support closure becomes tenant-safe learning, reusable guidance candidates, proof repair, retune memory, rollback, and expansion watch.
