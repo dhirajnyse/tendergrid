@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v498";
-  const BUILD_LABEL = "Governance Rollout Second Pilot Expansion Wider Launch Gate";
+  const BUILD_VERSION = "v499";
+  const BUILD_LABEL = "Governance Rollout Second Pilot Expansion Wider Launch Decision Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=498";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=498";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=499";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=499";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -19843,6 +19843,79 @@ const state = {
     `;
   }
 
+  function renderCommandGovernanceSecondPilotExpansionWiderLaunchDecisionReceiptPreview(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const copiedAt = state.commandMemory?.copiedAt || new Date().toISOString();
+    const memory = {
+      ...(state.commandMemory || {}),
+      text: state.commandMemory?.text || slip.calmLine || slip.copyText,
+      copiedAt,
+      build: BUILD_VERSION,
+      view: "Command",
+      approval:
+        state.commandMemory?.approval ||
+        {
+          decision: "Approve to observe",
+          decidedAt: copiedAt,
+          build: BUILD_VERSION,
+        },
+    };
+    const receipt = buildCommandMemoryLearningChain(memory).guidanceGovernanceSecondPilotExpansionWiderLaunchDecisionReceipt;
+
+    return `
+      <section class="command-second-pilot-expansion-wider-launch-decision-receipt-preview command-governance-second-pilot-expansion-wider-launch-decision-receipt tone-${escapeHtml(receipt.tone)}" aria-label="Governance second pilot expansion wider launch decision receipt preview">
+        <div class="command-governance-second-pilot-expansion-wider-launch-decision-receipt-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Wider Launch Decision Receipt</span>
+          <strong>${escapeHtml(receipt.decisionReceipt)} / ${receipt.decisionScore}%</strong>
+          <small>${escapeHtml(receipt.nextAction)}</small>
+        </div>
+        <div class="command-governance-second-pilot-expansion-wider-launch-decision-receipt-grid">
+          ${receipt.cards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-second-pilot-expansion-wider-launch-decision-receipt-evidence">
+          ${receipt.decisionEvidence
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 72))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 132))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-second-pilot-expansion-wider-launch-decision-receipt-controls">
+          ${receipt.decisionControls
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-second-pilot-expansion-wider-launch-decision-receipt-actions">
+          <button class="ghost-btn" type="button" data-action="copy-command-guidance-second-pilot-expansion-wider-launch-decision-receipt" data-copy-text="${escapeHtml(encodeURIComponent(receipt.copyText))}">Copy decision receipt</button>
+          <small>${escapeHtml(receipt.decisionId)}</small>
+        </div>
+      </section>
+    `;
+  }
+
   function extractOutcomeMemoryField(text, patterns, fallback) {
     const source = String(text || "");
     for (const pattern of patterns) {
@@ -34312,6 +34385,192 @@ const state = {
     return { cards, copyText, gateChecks, gateControls, gateDecision, gateGaps, gateId, gateScore, gateState, nextAction, tone };
   }
 
+  function buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchDecisionReceipt(
+    seed = {},
+    evidenceLens = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchGate = {},
+    guidanceGovernanceSecondPilotExpansionSupportReceipt = {},
+    guidanceGovernanceSecondPilotExpansionLearningHandoff = {},
+    guidanceGovernanceSecondPilotExpansionOutcomeWatch = {},
+  ) {
+    const gateScore = Number(guidanceGovernanceSecondPilotExpansionWiderLaunchGate.gateScore) || 0;
+    const gateGaps = Number(guidanceGovernanceSecondPilotExpansionWiderLaunchGate.gateGaps) || 0;
+    const receiptScore = Number(guidanceGovernanceSecondPilotExpansionSupportReceipt.receiptScore) || 0;
+    const receiptGaps = Number(guidanceGovernanceSecondPilotExpansionSupportReceipt.receiptGaps) || 0;
+    const learningScore = Number(guidanceGovernanceSecondPilotExpansionLearningHandoff.learningScore) || 0;
+    const learningGaps = Number(guidanceGovernanceSecondPilotExpansionLearningHandoff.learningGaps) || 0;
+    const watchScore = Number(guidanceGovernanceSecondPilotExpansionOutcomeWatch.watchScore) || 0;
+    const watchGaps = Number(guidanceGovernanceSecondPilotExpansionOutcomeWatch.watchGaps) || 0;
+    const confidenceScore = Number(evidenceLens.score) || 0;
+    const ownerReady = Boolean(seed.ownerReady);
+    const dateReady = Boolean(seed.dateReady);
+    const gateDecision = String(guidanceGovernanceSecondPilotExpansionWiderLaunchGate.gateDecision || "Hold wider launch");
+    const supportDecision = String(guidanceGovernanceSecondPilotExpansionSupportReceipt.receiptDecision || "Prepare support receipt");
+    const learningDecision = String(guidanceGovernanceSecondPilotExpansionLearningHandoff.learningDecision || "Prepare learning handoff");
+    const watchDecision = String(guidanceGovernanceSecondPilotExpansionOutcomeWatch.watchDecision || "Prepare outcome watch");
+    const source = [
+      guidanceGovernanceSecondPilotExpansionWiderLaunchGate.copyText,
+      guidanceGovernanceSecondPilotExpansionSupportReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionLearningHandoff.copyText,
+      guidanceGovernanceSecondPilotExpansionOutcomeWatch.copyText,
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const gateApproved = /Open wider launch|Open with watch/i.test(gateDecision) && gateScore >= 80 && gateGaps <= 4;
+    const evidenceBasisReady =
+      confidenceScore >= 78 &&
+      /Evidence can support|Evidence confidence|proof repair ready|Proof repair ready|proof repair/i.test(source) &&
+      !/evidence (?:missing|needed|hold|before)|proof(?: repair| movement| lane)? (?:missing|needed|hold|before)/i.test(source);
+    const ownerRhythmReady = ownerReady && dateReady;
+    const supportPromiseReady =
+      /Support receipt (?:closed|Issue|Issue support receipt|Issue with watch)|support actions ready|support promise|support receipt/i.test(source) &&
+      receiptScore >= 80 &&
+      receiptGaps <= 4 &&
+      !/support(?: receipt| actions| promise)? (?:missing|needed|open|hold|before)/i.test(source);
+    const sponsorResponseReady =
+      /sponsor response (?:captured|ready)|sponsor signal captured|sponsor update ready|Sponsor/i.test(source) &&
+      !/sponsor(?: response| signal| update| posture)? (?:missing|needed|hold|capture)/i.test(source);
+    const rollbackOptionReady =
+      /rollback posture (?:confirmed|safe|ready)|rollback option|rollback learning attached|rollback line ready|Rollback/i.test(source) &&
+      !/rollback(?: option| posture| learning| line| proof)? (?:missing|needed|watch|hold)/i.test(source);
+    const learningReuseReady =
+      /tenant-safe learning|learning handoff|Learning handoff.*Package|Package learning handoff|learning reuse/i.test(source) &&
+      learningScore >= 80 &&
+      learningGaps <= 4;
+    const decisionReady =
+      gateApproved &&
+      evidenceBasisReady &&
+      ownerRhythmReady &&
+      supportPromiseReady &&
+      sponsorResponseReady &&
+      rollbackOptionReady &&
+      learningReuseReady &&
+      watchGaps <= 4;
+    const decisionGaps = [
+      !gateApproved,
+      !evidenceBasisReady,
+      !ownerRhythmReady,
+      !supportPromiseReady,
+      !sponsorResponseReady,
+      !rollbackOptionReady,
+      !learningReuseReady,
+      watchGaps > 4,
+      gateGaps > 4,
+      receiptGaps > 4,
+      learningGaps > 4,
+      confidenceScore < 78,
+    ].filter(Boolean).length;
+    const decisionScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          gateScore * 0.28 +
+            receiptScore * 0.18 +
+            learningScore * 0.14 +
+            watchScore * 0.12 +
+            confidenceScore * 0.14 +
+            (evidenceBasisReady ? 2 : 0) +
+            (ownerRhythmReady ? 2 : 0) +
+            (supportPromiseReady ? 2 : 0) +
+            (sponsorResponseReady ? 2 : 0) +
+            (rollbackOptionReady ? 2 : 0) +
+            (learningReuseReady ? 2 : 0) -
+            decisionGaps * 1.15,
+        ),
+      ),
+    );
+    const decisionState =
+      decisionReady && decisionScore >= 86
+        ? "Wider launch decision receipt ready"
+        : gateApproved && decisionScore >= 80 && decisionGaps <= 4
+          ? "Decision receipt with watch"
+          : !gateApproved
+            ? "Gate decision before receipt"
+            : !evidenceBasisReady
+              ? "Evidence basis before receipt"
+              : !ownerRhythmReady
+                ? "Owner rhythm before receipt"
+                : !supportPromiseReady
+                  ? "Support promise before receipt"
+                  : !sponsorResponseReady
+                    ? "Sponsor response before receipt"
+                    : !rollbackOptionReady
+                      ? "Rollback option before receipt"
+                      : !learningReuseReady
+                        ? "Learning reuse before receipt"
+                        : "Wider launch decision receipt assembly";
+    const decisionReceipt =
+      decisionState === "Wider launch decision receipt ready"
+        ? "Issue decision receipt"
+        : decisionState === "Decision receipt with watch"
+          ? "Issue with watch"
+          : decisionState === "Gate decision before receipt"
+            ? "Resolve gate decision"
+            : decisionState === "Evidence basis before receipt"
+              ? "Attach evidence basis"
+              : decisionState === "Owner rhythm before receipt"
+                ? "Set owner rhythm"
+                : decisionState === "Support promise before receipt"
+                  ? "Attach support promise"
+                  : decisionState === "Sponsor response before receipt"
+                    ? "Capture sponsor response"
+                    : decisionState === "Rollback option before receipt"
+                      ? "Attach rollback option"
+                      : decisionState === "Learning reuse before receipt"
+                        ? "Confirm learning reuse"
+                        : "Prepare decision receipt";
+    const tone =
+      decisionReceipt === "Issue decision receipt"
+        ? "green"
+        : decisionReceipt === "Issue with watch" || decisionReceipt === "Prepare decision receipt"
+          ? "blue"
+          : "amber";
+    const decisionId = `${guidanceGovernanceSecondPilotExpansionWiderLaunchGate.gateId || guidanceGovernanceSecondPilotExpansionSupportReceipt.receiptId || BUILD_VERSION.toUpperCase()}-WDR`;
+    const nextAction =
+      decisionReceipt === "Issue decision receipt"
+        ? "Issue the wider launch decision receipt with evidence basis, owner rhythm, support promise, sponsor response, rollback option, and tenant-safe learning reuse attached."
+        : decisionReceipt === "Issue with watch"
+          ? "Issue the decision receipt with watch notes so the wider launch remains reversible."
+          : decisionReceipt === "Resolve gate decision"
+            ? "Resolve the wider launch gate before recording a decision receipt."
+            : decisionReceipt === "Attach evidence basis"
+              ? "Attach evidence basis and proof confidence before the decision travels."
+              : decisionReceipt === "Set owner rhythm"
+                ? "Set owner rhythm and next review date before the decision is published."
+                : decisionReceipt === "Attach support promise"
+                  ? "Attach the support promise so wider launch has a named response path."
+                  : decisionReceipt === "Capture sponsor response"
+                    ? "Capture sponsor response before the decision becomes release guidance."
+                    : decisionReceipt === "Attach rollback option"
+                      ? "Attach rollback option so wider launch remains reversible."
+                      : decisionReceipt === "Confirm learning reuse"
+                        ? "Confirm tenant-safe learning reuse before the decision receipt is used by release room."
+                        : "Prepare the wider launch decision receipt from gate result, evidence basis, owner rhythm, support promise, sponsor response, rollback option, and tenant-safe learning reuse.";
+    const cards = [
+      ["Decision receipt", decisionReceipt, nextAction, tone],
+      ["Decision score", `${decisionScore}%`, `Gate ${gateScore}% / support ${receiptScore}% / evidence ${confidenceScore}%.`, decisionScore >= 86 ? "green" : decisionScore >= 80 ? "blue" : "amber"],
+      ["Decision gaps", `${decisionGaps}`, decisionGaps <= 1 ? "Decision receipt is ready for release room." : "Decision receipt stays gated until the basis is calmer.", decisionGaps <= 1 ? "green" : decisionGaps <= 4 ? "blue" : "amber"],
+      ["Gate posture", gateApproved ? gateDecision : "Gate not ready", `Gate gaps ${gateGaps}; watch gaps ${watchGaps}.`, gateApproved ? "green" : "amber"],
+    ];
+    const decisionEvidence = [
+      ["Evidence basis", evidenceBasisReady ? "Attached" : "Attach basis", `Confidence ${confidenceScore}%.`, evidenceBasisReady ? "green" : "amber"],
+      ["Owner rhythm", ownerRhythmReady ? seed.owner : "Set owner/date", dateReady ? `Next review ${seed.date}.` : "Review date missing.", ownerRhythmReady ? "green" : "amber"],
+      ["Support promise", supportPromiseReady ? supportDecision : "Attach promise", `Support receipt ${receiptScore}% / gaps ${receiptGaps}.`, supportPromiseReady ? "green" : "amber"],
+      ["Sponsor response", sponsorResponseReady ? "Captured" : "Capture response", "Sponsor response keeps the receipt executive-safe.", sponsorResponseReady ? "green" : "blue"],
+      ["Rollback option", rollbackOptionReady ? "Attached" : "Attach option", "Rollback option keeps the wider launch reversible.", rollbackOptionReady ? "green" : "amber"],
+      ["Learning reuse", learningReuseReady ? learningDecision : "Confirm reuse", `Learning ${learningScore}% / gaps ${learningGaps}.`, learningReuseReady ? "green" : "blue"],
+    ];
+    const decisionControls = [
+      ["Wider launch gate", gateDecision, `Gate score ${gateScore}% / gaps ${gateGaps}.`, gateApproved ? "green" : "amber"],
+      ["Outcome watch", watchDecision, `Watch ${watchScore}% / gaps ${watchGaps}.`, watchScore >= 80 && watchGaps <= 4 ? "green" : "blue"],
+      ["Evidence confidence", `${confidenceScore}%`, evidenceBasisReady ? "Evidence can support the decision." : "Evidence basis needs repair before publish.", evidenceBasisReady ? "green" : "amber"],
+      ["Decision id", decisionId, "Use this in Build Phase, release room, and wider launch audit notes.", "teal"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Governance Second Pilot Expansion Wider Launch Decision Receipt ${decisionId}: ${decisionState}. Receipt ${decisionReceipt}. Score ${decisionScore}%. Gate ${gateDecision} (${gateScore}%). Support ${supportDecision} (${receiptScore}%). Learning ${learningDecision} (${learningScore}%). Outcome watch ${watchDecision} (${watchScore}%). Evidence ${confidenceScore}%. Evidence basis ${evidenceBasisReady ? "attached" : "needed"}. Owner rhythm ${ownerRhythmReady ? "ready" : "missing"}. Support promise ${supportPromiseReady ? "attached" : "needed"}. Sponsor response ${sponsorResponseReady ? "captured" : "needed"}. Rollback option ${rollbackOptionReady ? "attached" : "needed"}. Tenant-safe learning reuse ${learningReuseReady ? "confirmed" : "needed"}. Gaps ${decisionGaps}. Next: ${nextAction}`;
+    return { cards, copyText, decisionControls, decisionEvidence, decisionGaps, decisionId, decisionReceipt, decisionScore, decisionState, nextAction, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -34448,7 +34707,8 @@ const state = {
     const guidanceGovernanceSecondPilotExpansionLearningHandoff = buildCommandGuidanceGovernanceSecondPilotExpansionLearningHandoff(seed, evidenceLens, guidanceGovernanceSecondPilotExpansionOutcomeWatch, guidanceGovernanceSecondPilotExpansionLaunchHandoff, guidanceGovernanceSecondPilotExpansionReadinessRoom, guidanceGovernanceSecondPilotExpansionDecisionReceipt, guidanceGovernanceSecondPilotReviewLearningReceipt, guidanceGovernanceSecondPilotSupportReceipt);
     const guidanceGovernanceSecondPilotExpansionSupportReceipt = buildCommandGuidanceGovernanceSecondPilotExpansionSupportReceipt(seed, evidenceLens, guidanceGovernanceSecondPilotExpansionLearningHandoff, guidanceGovernanceSecondPilotExpansionOutcomeWatch, guidanceGovernanceSecondPilotExpansionLaunchHandoff, guidanceGovernanceSecondPilotExpansionReadinessRoom, guidanceGovernanceSecondPilotReviewLearningReceipt, guidanceGovernanceSecondPilotSupportReceipt);
     const guidanceGovernanceSecondPilotExpansionWiderLaunchGate = buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchGate(seed, evidenceLens, guidanceGovernanceSecondPilotExpansionSupportReceipt, guidanceGovernanceSecondPilotExpansionLearningHandoff, guidanceGovernanceSecondPilotExpansionOutcomeWatch, guidanceGovernanceSecondPilotExpansionLaunchHandoff, guidanceGovernanceSecondPilotExpansionReadinessRoom, guidanceGovernanceSecondPilotReviewLearningReceipt);
-    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceAuditExport, guidanceGovernanceCalmCloseout, guidanceGovernanceExpansionSupportDesk, guidanceGovernanceFirstPilotCommandRoom, guidanceGovernanceFirstPilotExpansionDecision, guidanceGovernanceFirstPilotLearningRoom, guidanceGovernanceFirstPilotOperatingRhythm, guidanceGovernanceFirstPilotOutcomeWatch, guidanceGovernanceFirstPilotProofBridge, guidanceGovernanceFirstPilotReadinessRoom, guidanceGovernanceFirstPilotSupportReceipt, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceLaunchExpansionReceipt, guidanceGovernanceLaunchGateScore, guidanceGovernanceLaunchProofBoard, guidanceGovernanceLaunchRehearsalRoom, guidanceGovernanceLaunchSupportDesk, guidanceGovernanceOutcomeMonitor, guidanceGovernancePilotAcceptanceReceipt, guidanceGovernancePilotHandoffBoard, guidanceGovernancePilotLearningRelease, guidanceGovernancePilotOutcomeLedger, guidanceGovernancePilotSponsorUpdate, guidanceGovernancePilotSupportCloseout, guidanceGovernanceProofRepairQueue, guidanceGovernanceProofSla, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceReviewerConsole, guidanceGovernanceRollbackLane, guidanceGovernanceRolloutActivationOutcomeWatch, guidanceGovernanceRolloutAuditCloseoutReceipt, guidanceGovernanceRolloutDecisionAuditPack, guidanceGovernanceRolloutLaunchReadinessSeal, guidanceGovernanceRolloutLearningReceipt, guidanceGovernanceRolloutLearningReviewRoom, guidanceGovernanceRolloutOutcomeLedger, guidanceGovernanceRolloutReuseActivationReceipt, guidanceGovernanceRolloutReuseGate, guidanceGovernanceRolloutSponsorDecisionReceipt, guidanceGovernanceRolloutSponsorUpdate, guidanceGovernanceScaledRolloutBoard, guidanceGovernanceScaledRolloutProofBoard, guidanceGovernanceSecondPilotActivationOutcomeWatch, guidanceGovernanceSecondPilotAuditCloseoutReceipt, guidanceGovernanceSecondPilotDecisionAuditPack, guidanceGovernanceSecondPilotExpansionDecisionReceipt, guidanceGovernanceSecondPilotExpansionGate, guidanceGovernanceSecondPilotExpansionLaunchHandoff, guidanceGovernanceSecondPilotExpansionLearningHandoff, guidanceGovernanceSecondPilotExpansionOutcomeWatch, guidanceGovernanceSecondPilotExpansionReadinessRoom, guidanceGovernanceSecondPilotExpansionSupportReceipt, guidanceGovernanceSecondPilotExpansionWiderLaunchGate, guidanceGovernanceSecondPilotFirstReviewBridge, guidanceGovernanceSecondPilotFirstReviewOutcomeWatch, guidanceGovernanceSecondPilotLaunchHandoffPack, guidanceGovernanceSecondPilotLaunchReadinessSeal, guidanceGovernanceSecondPilotLaunchRoom, guidanceGovernanceSecondPilotLearningRoom, guidanceGovernanceSecondPilotOutcomeWatch, guidanceGovernanceSecondPilotReadiness, guidanceGovernanceSecondPilotReuseActivation, guidanceGovernanceSecondPilotReviewLearningReceipt, guidanceGovernanceSecondPilotSupportReadinessCloseout, guidanceGovernanceSecondPilotSupportReceipt, guidanceGovernanceSponsorDecisionReceipt, guidanceGovernanceSponsorExpansionGate, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
+    const guidanceGovernanceSecondPilotExpansionWiderLaunchDecisionReceipt = buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchDecisionReceipt(seed, evidenceLens, guidanceGovernanceSecondPilotExpansionWiderLaunchGate, guidanceGovernanceSecondPilotExpansionSupportReceipt, guidanceGovernanceSecondPilotExpansionLearningHandoff, guidanceGovernanceSecondPilotExpansionOutcomeWatch);
+    return { activationGate, approvalLane, canaryMonitor, countryLaunchReceipt, countryTransferDeltaMap, evidenceLens, feedbackPulse, globalLearningPassport, graduationGate, guidanceAppealDecisionOutcomeWatch, guidanceAppealDecisionReceipt, guidanceAppealLearningLoop, guidanceAppealLoopGovernance, guidanceAuditSignoffTrail, guidanceCommitmentReceipt, guidanceConsentRenewalLane, guidanceCouncilDecisionGate, guidanceCouncilIntake, guidanceDecisionBrief, guidanceFlightDeck, guidanceFlightRecorder, guidanceGovernanceAuditExport, guidanceGovernanceCalmCloseout, guidanceGovernanceExpansionSupportDesk, guidanceGovernanceFirstPilotCommandRoom, guidanceGovernanceFirstPilotExpansionDecision, guidanceGovernanceFirstPilotLearningRoom, guidanceGovernanceFirstPilotOperatingRhythm, guidanceGovernanceFirstPilotOutcomeWatch, guidanceGovernanceFirstPilotProofBridge, guidanceGovernanceFirstPilotReadinessRoom, guidanceGovernanceFirstPilotSupportReceipt, guidanceGovernanceLaunchEvidencePacket, guidanceGovernanceLaunchExpansionReceipt, guidanceGovernanceLaunchGateScore, guidanceGovernanceLaunchProofBoard, guidanceGovernanceLaunchRehearsalRoom, guidanceGovernanceLaunchSupportDesk, guidanceGovernanceOutcomeMonitor, guidanceGovernancePilotAcceptanceReceipt, guidanceGovernancePilotHandoffBoard, guidanceGovernancePilotLearningRelease, guidanceGovernancePilotOutcomeLedger, guidanceGovernancePilotSponsorUpdate, guidanceGovernancePilotSupportCloseout, guidanceGovernanceProofRepairQueue, guidanceGovernanceProofSla, guidanceGovernanceReleaseArchive, guidanceGovernanceReleaseReceipt, guidanceGovernanceReviewerConsole, guidanceGovernanceRollbackLane, guidanceGovernanceRolloutActivationOutcomeWatch, guidanceGovernanceRolloutAuditCloseoutReceipt, guidanceGovernanceRolloutDecisionAuditPack, guidanceGovernanceRolloutLaunchReadinessSeal, guidanceGovernanceRolloutLearningReceipt, guidanceGovernanceRolloutLearningReviewRoom, guidanceGovernanceRolloutOutcomeLedger, guidanceGovernanceRolloutReuseActivationReceipt, guidanceGovernanceRolloutReuseGate, guidanceGovernanceRolloutSponsorDecisionReceipt, guidanceGovernanceRolloutSponsorUpdate, guidanceGovernanceScaledRolloutBoard, guidanceGovernanceScaledRolloutProofBoard, guidanceGovernanceSecondPilotActivationOutcomeWatch, guidanceGovernanceSecondPilotAuditCloseoutReceipt, guidanceGovernanceSecondPilotDecisionAuditPack, guidanceGovernanceSecondPilotExpansionDecisionReceipt, guidanceGovernanceSecondPilotExpansionGate, guidanceGovernanceSecondPilotExpansionLaunchHandoff, guidanceGovernanceSecondPilotExpansionLearningHandoff, guidanceGovernanceSecondPilotExpansionOutcomeWatch, guidanceGovernanceSecondPilotExpansionReadinessRoom, guidanceGovernanceSecondPilotExpansionSupportReceipt, guidanceGovernanceSecondPilotExpansionWiderLaunchDecisionReceipt, guidanceGovernanceSecondPilotExpansionWiderLaunchGate, guidanceGovernanceSecondPilotFirstReviewBridge, guidanceGovernanceSecondPilotFirstReviewOutcomeWatch, guidanceGovernanceSecondPilotLaunchHandoffPack, guidanceGovernanceSecondPilotLaunchReadinessSeal, guidanceGovernanceSecondPilotLaunchRoom, guidanceGovernanceSecondPilotLearningRoom, guidanceGovernanceSecondPilotOutcomeWatch, guidanceGovernanceSecondPilotReadiness, guidanceGovernanceSecondPilotReuseActivation, guidanceGovernanceSecondPilotReviewLearningReceipt, guidanceGovernanceSecondPilotSupportReadinessCloseout, guidanceGovernanceSecondPilotSupportReceipt, guidanceGovernanceSponsorDecisionReceipt, guidanceGovernanceSponsorExpansionGate, guidanceLearningCapture, guidanceLedgerTrendWatch, guidanceLicenseExpiryWatch, guidanceLicenseReceipt, guidanceLicenseRetirementReceipt, guidanceOutcomeRenewalLedger, guidanceOutcomeWatch, guidanceReceiptOutcomeReview, guidanceReleaseQueue, guidanceRenewalAuditPack, guidanceRetirementAppealLane, guidanceReviewRadar, guidanceSignoffLearningLoop, guidanceSignoffLoopGovernance, guidanceSignoffOutcomeReceipt, guidanceTrendLearningLoop, guidanceTrendLoopGovernance, guidanceTrendOutcomeReceipt, historyRibbon, influencePreview, learningLedger, learningSafetyReceipt, marketFitGate, outcomeSlot, proofCue, releaseReceipt, reuseLock, reviewCue, reviewGate, secondCountryExpansionGate, seed, tenantLearningPolicyStudio, tenantOutcomeLearningLoop, tenantPolicyImpactPreview, tenantReinforcementCanaryPlan, tenantReinforcementCanaryWatch, tenantReinforcementGraduationGate, tenantReinforcementReuseActivationReceipt, tenantReinforcementReuseFitPreview, tenantReinforcementReusePassport, tenantReinforcementRewardGate, transferActionPacket, transferLaunchReceipt, transferLearningTrustGate, transferOutcomeMonitor, transferReadinessScore };
   }
 
   function renderCommandMemoryReceipt() {
@@ -37097,6 +37357,7 @@ const state = {
         ${renderCommandGovernanceSecondPilotExpansionLearningHandoffPreview(model, autopilot)}
         ${renderCommandGovernanceSecondPilotExpansionSupportReceiptPreview(model, autopilot)}
         ${renderCommandGovernanceSecondPilotExpansionWiderLaunchGatePreview(model, autopilot)}
+        ${renderCommandGovernanceSecondPilotExpansionWiderLaunchDecisionReceiptPreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -53866,12 +54127,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v498 Governance Rollout Second Pilot Expansion Wider Launch Gate",
-      phase: "Governance Rollout Second Pilot Expansion Wider Launch Gate",
+      version: "v499 Governance Rollout Second Pilot Expansion Wider Launch Decision Receipt",
+      phase: "Governance Rollout Second Pilot Expansion Wider Launch Decision Receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "479 meaningful versions since rebrand",
-      summary: "Command Center now decides wider launch only after learning handoff, support receipt, proof repair, sponsor response, rollback posture, owner cadence, and evidence confidence are calm.",
+      pace: "480 meaningful versions since rebrand",
+      summary: "Command Center now records the wider launch decision with evidence basis, owner rhythm, support promise, sponsor response, rollback option, and tenant-safe learning reuse.",
       tracks: [
+        ["v499 governance rollout second pilot expansion wider launch decision receipt", 100, "Command Center now records the wider launch decision with evidence basis, owner rhythm, support promise, sponsor response, rollback option, and tenant-safe learning reuse.", "green"],
         ["v498 governance rollout second pilot expansion wider launch gate", 100, "Command Center now decides wider launch only after learning handoff, support receipt, proof repair, sponsor response, rollback posture, owner cadence, and evidence confidence are calm.", "green"],
         ["v497 governance rollout second pilot expansion support receipt", 100, "Command Center now closes expansion learning with support actions, proof repair, sponsor response, rollback posture, owner cadence, and next rollout guidance.", "green"],
         ["v496 governance rollout second pilot expansion learning handoff", 100, "Command Center now packages expansion outcome watch into tenant-safe learning, proof repair, support retune, sponsor response, rollback learning, and wider launch guidance.", "green"],
@@ -54350,9 +54612,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v499", "Governance rollout second pilot expansion wider launch decision receipt", "Record the wider launch decision with evidence basis, owner rhythm, support promise, sponsor response, rollback option, and tenant-safe learning reuse."],
         ["v500", "Governance rollout second pilot expansion wider launch release room", "Prepare the wider launch release room with decision receipt, support receipt, evidence confidence, rollout owner rhythm, rollback option, and tenant-safe learning reuse."],
         ["v501", "Governance rollout second pilot expansion wider launch outcome watch", "Watch wider launch movement after release room with proof movement, sponsor response, support load, rollback pressure, owner cadence, and tenant-safe learning reuse."],
+        ["v502", "Governance rollout second pilot expansion wider launch learning receipt", "Convert wider launch outcomes into tenant-safe learning, proof repair, support retune, sponsor response, rollback memory, and next market guidance."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -105334,6 +105596,21 @@ const state = {
         text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceGovernanceSecondPilotExpansionWiderLaunchGate.copyText || "";
       }
       copyTextToClipboard(text, "Second pilot expansion wider launch gate copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-second-pilot-expansion-wider-launch-decision-receipt") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      try {
+        text = decodeURIComponent(encoded);
+      } catch (error) {
+        text = encoded;
+      }
+      if (!text) {
+        text = buildCommandMemoryLearningChain(state.commandMemory || {}).guidanceGovernanceSecondPilotExpansionWiderLaunchDecisionReceipt.copyText || "";
+      }
+      copyTextToClipboard(text, "Second pilot expansion wider launch decision receipt copied.");
       return;
     }
 
