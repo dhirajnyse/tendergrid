@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v536 Market Handoff Acceptance Passport packages accepted recovery work into a proof, owner, rollback, support, learning-boundary, review, buyer-safe, and reuse-ready passport before market handoff.
 - v535 Launch Acceptance Recovery Board turns reuse approval, acceptance repair, and response queue signals into repaired, waiting, escalated, and ready-for-reuse blockers before market handoff.
 - v534 Reuse Approval Lane turns repaired acceptance and rollback-learning signals into a reuse approval lane with boundary reason, owner signoff, review lock, support stability, and tenant-safe release decision before market handoff.
 - v533 Acceptance Repair Desk converts held, escalated, returned, proof-wait, and local-only acceptance outcomes into one repair desk with owner, proof, support, rollback, learning, and review recovery paths.
