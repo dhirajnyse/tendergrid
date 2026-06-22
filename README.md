@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v518 Next-Market Action Receipt turns approval closeout into a next-market action with action owner, action date, proof promise, support path, rollback option, sponsor line, and learning handoff.
 - v517 Approval Closeout Receipt closes approval outcomes with final owner acceptance, buyer-safe archive, rollback note, learning lock, next review date, and launch handoff.
 - v516 Approval Outcome Monitor watches whether approval produced signoff movement, accepted-gap closure, archive safety, rollback quiet, next-market decision, and buyer-response learning.
 - v515 Market Response Learning Receipt turns buyer and market response into reusable learning with proof accepted, support routed, rollback closed, sponsor movement, country narrative repair, and next-market guidance.
