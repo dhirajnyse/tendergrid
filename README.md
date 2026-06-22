@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v523 Archive Retrieval Drill proves the closeout archive can be retrieved with archive lookup, owner match, evidence path, rollback note, learning lock, review date, handoff receiver, and archive index intact.
 - v522 Market Reuse Activation Receipt activates approved market learning only when activation surface, activation owner, sponsor approval, rollback note, tenant boundary, and review lock are visible.
 - v521 Next-Market Outcome Watch measures whether the archived next-market action produced proof movement, sponsor response, support calm, rollback safety, reusable learning, and a next-market review lock.
 - v520 Closeout Archive seals the approval closeout with owner acceptance, buyer-safe evidence, rollback note, learning lock, next review date, handoff receiver, and archive index.
