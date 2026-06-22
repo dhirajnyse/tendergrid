@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v533 Acceptance Repair Desk converts held, escalated, returned, proof-wait, and local-only acceptance outcomes into one repair desk with owner, proof, support, rollback, learning, and review recovery paths.
 - v532 Response Repair Queue routes response-watch, acceptance, and rollback-learning reuse gaps into proof repair, receiver follow-up, rollback confidence repair, support task, sponsor nudge, or tenant-safe learning hold before acceptance.
 - v531 Rollback Learning Reuse Receipt decides whether restored rollback learning can become tenant-safe reuse, must remain local memory, or has to wait for proof repair before wider guidance.
 - v530 Receiver Acceptance Receipt records whether the receiver accepted, held, escalated, or returned the handoff with proof response, owner acceptance, support hold, rollback option, learning reuse line, and next review intact.
