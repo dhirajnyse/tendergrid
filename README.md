@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v537 Acceptance Release Receipt turns the market handoff passport into a release receipt with owner signoff, boundary reason, review lock, support stability, market handoff proof, rollback option, buyer-safe release, and reuse release decision before launch handoff.
 - v536 Market Handoff Acceptance Passport packages accepted recovery work into a proof, owner, rollback, support, learning-boundary, review, buyer-safe, and reuse-ready passport before market handoff.
 - v535 Launch Acceptance Recovery Board turns reuse approval, acceptance repair, and response queue signals into repaired, waiting, escalated, and ready-for-reuse blockers before market handoff.
 - v534 Reuse Approval Lane turns repaired acceptance and rollback-learning signals into a reuse approval lane with boundary reason, owner signoff, review lock, support stability, and tenant-safe release decision before market handoff.
