@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v521 Next-Market Outcome Watch measures whether the archived next-market action produced proof movement, sponsor response, support calm, rollback safety, reusable learning, and a next-market review lock.
 - v520 Closeout Archive seals the approval closeout with owner acceptance, buyer-safe evidence, rollback note, learning lock, next review date, handoff receiver, and archive index.
 - v519 Market Learning Reuse Gate controls whether market learning can be reused, stay tenant-only, require proof repair, wait for sponsor approval, explain boundary reason, choose reuse surface, and lock review.
 - v518 Next-Market Action Receipt turns approval closeout into a next-market action with action owner, action date, proof promise, support path, rollback option, sponsor line, and learning handoff.
