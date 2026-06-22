@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v526 Retrieval Evidence Handoff turns retrieval and rollback proof into a buyer-safe evidence handoff with archive lookup, owner acceptance, evidence path, rollback proof, learning lock, review date, receiver, archive index, handoff sentence, and buyer-safe boundary visible.
 - v525 Activation Rollback Drill proves activated market learning can be rolled back with activation surface, rollback owner, sponsor approval, tenant boundary, review lock, outcome watch, evidence pack, and fallback guidance visible.
 - v524 Outcome Evidence Pack packages retrieved outcomes into a management-ready evidence pack with outcome proof, sponsor response, support calm, rollback safety, reusable learning, review lock, buyer-safe bundle, and management handoff visible.
 - v523 Archive Retrieval Drill proves the closeout archive can be retrieved with archive lookup, owner match, evidence path, rollback note, learning lock, review date, handoff receiver, and archive index intact.
