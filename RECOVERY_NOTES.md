@@ -115,6 +115,7 @@ Recovery cleanup in this copy:
 - v510 adds a Build Phase Route Guard so the admin-only Build Phase opens reliably from the build badge, Admin Tools tray, and #build-phase route after login, session refresh, or GitHub Pages hash navigation.
 - v511 adds a Buyer Response Watch so launch handoff is watched for proof acceptance, support asks, rollback concerns, sponsor movement, country narrative gaps, and the next action.
 - v512 adds a Minutes Approval Receipt so sealed council minutes become a signoff receipt with signoff owner, accepted gaps, buyer-safe archive, rollback memory, and next-market approval window.
+- v534 adds a Reuse Approval Lane so repaired acceptance and rollback-learning signals need boundary reason, owner signoff, review lock, support stability, and tenant-safe release decision before market handoff.
 - v533 adds an Acceptance Repair Desk so held, escalated, returned, proof-wait, and local-only acceptance outcomes become one owner/proof/support/rollback/learning/review recovery path before launch acceptance moves.
 - v532 adds a Response Repair Queue so response-watch, acceptance, and rollback-learning reuse gaps route into proof repair, receiver follow-up, rollback confidence repair, support task, sponsor nudge, or tenant-safe learning hold before acceptance.
 - v531 adds a Rollback Learning Reuse Receipt so restored rollback learning is classified as tenant-safe reuse, local-only memory, proof-repair wait, or held review before wider guidance.
