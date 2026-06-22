@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=528"), "index.html is missing the v528 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=528"), "index.html is missing the v528 data cache token.");
-assert(index.includes("app.js?v=528"), "index.html is missing the v528 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=528"), "index.html is missing the v528 icon cache token.");
+assert(index.includes("styles.css?v=529"), "index.html is missing the v529 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=529"), "index.html is missing the v529 data cache token.");
+assert(index.includes("app.js?v=529"), "index.html is missing the v529 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=529"), "index.html is missing the v529 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v528";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Rollback Outcome Receipt";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=528'), "app.js is missing the v528 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=528'), "app.js is missing the v528 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v529";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Handoff Response Watch";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=529'), "app.js is missing the v529 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=529'), "app.js is missing the v529 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -150,6 +150,7 @@ assert(app.includes("const routeView = routeViewForUser(window.location.hash, st
 assert(app.includes("hydrateRouteView();"), "renderShell should re-apply the current hash route after refreshing the session.");
 assert(app.includes("if (action === \"open-build-phase\")"), "Build badge is missing its Build Phase click action.");
 assert(app.includes("v514 build phase route repair"), "Build Phase route repair history is missing.");
+assert(app.includes("Handoff Response Watch"), "Handoff response watch release label is missing.");
 assert(app.includes("Rollback Outcome Receipt"), "Rollback outcome receipt release label is missing.");
 assert(app.includes("Management Receiver Rehearsal"), "Management receiver rehearsal release label is missing.");
 assert(app.includes("Retrieval Evidence Handoff"), "Retrieval evidence handoff release label is missing.");
@@ -362,6 +363,8 @@ assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchManag
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchManagementReceiverRehearsalPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Management Receiver Rehearsal preview.");
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchRollbackOutcomeReceiptPreview(model, autopilot)"), "Command Center is missing the Governance Second Pilot Expansion Wider Launch Rollback Outcome Receipt preview.");
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchRollbackOutcomeReceiptPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Rollback Outcome Receipt preview.");
+assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatchPreview(model, autopilot)"), "Command Center is missing the Governance Second Pilot Expansion Wider Launch Handoff Response Watch preview.");
+assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatchPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Handoff Response Watch preview.");
 assert(app.includes("buildCommandGuidanceSignoffLoopGovernance"), "app.js is missing the Signoff Loop Governance model.");
 assert(app.includes("buildCommandGuidanceTrendLoopGovernance"), "app.js is missing the Trend Loop Governance model.");
 assert(app.includes("buildCommandGuidanceAppealLoopGovernance"), "app.js is missing the Appeal Loop Governance model.");
@@ -461,6 +464,7 @@ assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaun
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchRetrievalEvidenceHandoff"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Retrieval Evidence Handoff model.");
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchManagementReceiverRehearsal"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Management Receiver Rehearsal model.");
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchRollbackOutcomeReceipt"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Rollback Outcome Receipt model.");
+assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatch"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Handoff Response Watch model.");
 assert(app.includes("Proof acceptance"), "Buyer Response Watch should track proof acceptance.");
 assert(app.includes("Support asks"), "Buyer Response Watch should track support asks.");
 assert(app.includes("Rollback concerns"), "Buyer Response Watch should track rollback concerns.");
@@ -581,6 +585,16 @@ assert(app.includes("Evidence pack restored"), "Rollback Outcome Receipt should 
 assert(app.includes("Fallback guidance restored"), "Rollback Outcome Receipt should track restored fallback guidance.");
 assert(app.includes("Drift checked"), "Rollback Outcome Receipt should track rollback drift check.");
 assert(app.includes("Receiver notified"), "Rollback Outcome Receipt should track receiver notice.");
+assert(app.includes("Receiver response"), "Handoff Response Watch should track receiver response.");
+assert(app.includes("Proof acceptance"), "Handoff Response Watch should track proof acceptance.");
+assert(app.includes("Rollback confidence"), "Handoff Response Watch should track rollback confidence.");
+assert(app.includes("Learning reuse readiness"), "Handoff Response Watch should track learning reuse readiness.");
+assert(app.includes("Next review movement"), "Handoff Response Watch should track next review movement.");
+assert(app.includes("Support follow-through"), "Handoff Response Watch should track support follow-through.");
+assert(app.includes("Sponsor signal"), "Handoff Response Watch should track sponsor signal.");
+assert(app.includes("Evidence pack match"), "Handoff Response Watch should track evidence pack match.");
+assert(app.includes("Boundary still safe"), "Handoff Response Watch should track boundary safety.");
+assert(app.includes("Escalation outcome"), "Handoff Response Watch should track escalation outcome.");
 assert(app.includes("buildCommandOutcomeMemorySeed"), "app.js is missing the Outcome Memory Seed model.");
 assert(app.includes("buildCommandLearningApprovalLane"), "app.js is missing the Learning Approval Lane model.");
 assert(app.includes("buildCommandLearningReleaseReceipt"), "app.js is missing the Learning Release Receipt model.");
@@ -841,6 +855,7 @@ assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wi
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-retrieval-evidence-handoff"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Retrieval Evidence Handoff copy action.");
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-management-receiver-rehearsal"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Management Receiver Rehearsal copy action.");
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-rollback-outcome-receipt"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Rollback Outcome Receipt copy action.");
+assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-handoff-response-watch"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Handoff Response Watch copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -1625,6 +1640,11 @@ assert(css.includes(".command-second-pilot-expansion-wider-launch-rollback-outco
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-rollback-outcome-receipt-grid"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Rollback Outcome Receipt grid.");
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-rollback-outcome-receipt-outcome"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Rollback Outcome Receipt rows.");
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-rollback-outcome-receipt-controls"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Rollback Outcome Receipt controls.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-handoff-response-watch"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Handoff Response Watch panel.");
+assert(css.includes(".command-second-pilot-expansion-wider-launch-handoff-response-watch-preview"), "styles.css is missing the top-level Governance Second Pilot Expansion Wider Launch Handoff Response Watch preview.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-grid"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Handoff Response Watch grid.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-watch"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Handoff Response Watch rows.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-controls"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Handoff Response Watch controls.");
 assert(css.includes(".build-launch-roadmap"), "styles.css is missing the Build Phase Launch Roadmap panel.");
 assert(css.includes(".build-launch-stage-grid"), "styles.css is missing the Build Phase Launch Roadmap stage grid.");
 assert(css.includes(".build-launch-gate-list"), "styles.css is missing the Build Phase Launch Roadmap gate list.");
