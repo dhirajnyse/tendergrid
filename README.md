@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v528 Rollback Outcome Receipt records whether rollback rehearsal restored surface, owner, sponsor, tenant boundary, review lock, outcome watch, evidence pack, fallback guidance, drift check, and receiver notice without losing the management handoff.
 - v527 Management Receiver Rehearsal rehearses the receiver path with receiver named, evidence pack owner, decision sentence, support hold, rollback option, learning reuse line, next review, read-back receipt, acceptance path, and escalation rule visible.
 - v526 Retrieval Evidence Handoff turns retrieval and rollback proof into a buyer-safe evidence handoff with archive lookup, owner acceptance, evidence path, rollback proof, learning lock, review date, receiver, archive index, handoff sentence, and buyer-safe boundary visible.
 - v525 Activation Rollback Drill proves activated market learning can be rolled back with activation surface, rollback owner, sponsor approval, tenant boundary, review lock, outcome watch, evidence pack, and fallback guidance visible.
