@@ -115,6 +115,7 @@ Recovery cleanup in this copy:
 - v510 adds a Build Phase Route Guard so the admin-only Build Phase opens reliably from the build badge, Admin Tools tray, and #build-phase route after login, session refresh, or GitHub Pages hash navigation.
 - v511 adds a Buyer Response Watch so launch handoff is watched for proof acceptance, support asks, rollback concerns, sponsor movement, country narrative gaps, and the next action.
 - v512 adds a Minutes Approval Receipt so sealed council minutes become a signoff receipt with signoff owner, accepted gaps, buyer-safe archive, rollback memory, and next-market approval window.
+- v522 adds a Market Reuse Activation Receipt so approved market learning activates only when activation surface, activation owner, sponsor approval, rollback note, tenant boundary, and review lock are visible.
 - v521 adds a Next-Market Outcome Watch so the archived action must show proof movement, sponsor response, support calm, rollback safety, reusable learning, and a next-market review lock before learning is treated as measured.
 - v520 adds a Closeout Archive so approval closeout is sealed only when owner acceptance, buyer-safe evidence, rollback note, learning lock, next review date, handoff receiver, and archive index are visible.
 - v519 adds a Market Learning Reuse Gate so market learning is approved for reuse only when reusable lesson, tenant-only memory, proof repair, sponsor approval, boundary reason, reuse surface, and review lock are visible.

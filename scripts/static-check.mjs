@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=521"), "index.html is missing the v521 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=521"), "index.html is missing the v521 data cache token.");
-assert(index.includes("app.js?v=521"), "index.html is missing the v521 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=521"), "index.html is missing the v521 icon cache token.");
+assert(index.includes("styles.css?v=522"), "index.html is missing the v522 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=522"), "index.html is missing the v522 data cache token.");
+assert(index.includes("app.js?v=522"), "index.html is missing the v522 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=522"), "index.html is missing the v522 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v521";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Next-Market Outcome Watch";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=521'), "app.js is missing the v521 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=521'), "app.js is missing the v521 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v522";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Market Reuse Activation Receipt";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=522'), "app.js is missing the v522 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=522'), "app.js is missing the v522 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -150,6 +150,7 @@ assert(app.includes("const routeView = routeViewForUser(window.location.hash, st
 assert(app.includes("hydrateRouteView();"), "renderShell should re-apply the current hash route after refreshing the session.");
 assert(app.includes("if (action === \"open-build-phase\")"), "Build badge is missing its Build Phase click action.");
 assert(app.includes("v514 build phase route repair"), "Build Phase route repair history is missing.");
+assert(app.includes("Market Reuse Activation Receipt"), "Market reuse activation receipt release label is missing.");
 assert(app.includes("Next-Market Outcome Watch"), "Next-market outcome watch release label is missing.");
 assert(app.includes("Closeout Archive"), "Closeout Archive release label is missing.");
 assert(app.includes("Market Learning Reuse Gate"), "Market learning reuse gate release label is missing.");
@@ -341,6 +342,8 @@ assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchClose
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchCloseoutArchivePreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Closeout Archive preview.");
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchNextMarketOutcomeWatchPreview(model, autopilot)"), "Command Center is missing the Governance Second Pilot Expansion Wider Launch Next-Market Outcome Watch preview.");
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchNextMarketOutcomeWatchPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Next-Market Outcome Watch preview.");
+assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchMarketReuseActivationReceiptPreview(model, autopilot)"), "Command Center is missing the Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt preview.");
+assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchMarketReuseActivationReceiptPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt preview.");
 assert(app.includes("buildCommandGuidanceSignoffLoopGovernance"), "app.js is missing the Signoff Loop Governance model.");
 assert(app.includes("buildCommandGuidanceTrendLoopGovernance"), "app.js is missing the Trend Loop Governance model.");
 assert(app.includes("buildCommandGuidanceAppealLoopGovernance"), "app.js is missing the Appeal Loop Governance model.");
@@ -433,6 +436,7 @@ assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaun
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchMarketLearningReuseGate"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Market Learning Reuse Gate model.");
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchCloseoutArchive"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Closeout Archive model.");
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchNextMarketOutcomeWatch"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Next-Market Outcome Watch model.");
+assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchMarketReuseActivationReceipt"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt model.");
 assert(app.includes("Proof acceptance"), "Buyer Response Watch should track proof acceptance.");
 assert(app.includes("Support asks"), "Buyer Response Watch should track support asks.");
 assert(app.includes("Rollback concerns"), "Buyer Response Watch should track rollback concerns.");
@@ -493,6 +497,12 @@ assert(app.includes("Support calm"), "Next-Market Outcome Watch should track sup
 assert(app.includes("Rollback safety"), "Next-Market Outcome Watch should track rollback safety.");
 assert(app.includes("Reusable learning"), "Next-Market Outcome Watch should track reusable learning.");
 assert(app.includes("Next-market review"), "Next-Market Outcome Watch should track the next-market review lock.");
+assert(app.includes("Activation surface"), "Market Reuse Activation Receipt should track the activation surface.");
+assert(app.includes("Activation owner"), "Market Reuse Activation Receipt should track the activation owner.");
+assert(app.includes("Sponsor approval"), "Market Reuse Activation Receipt should track sponsor approval.");
+assert(app.includes("Rollback note"), "Market Reuse Activation Receipt should track the rollback note.");
+assert(app.includes("Tenant boundary"), "Market Reuse Activation Receipt should track the tenant boundary.");
+assert(app.includes("Review lock"), "Market Reuse Activation Receipt should track the review lock.");
 assert(app.includes("buildCommandOutcomeMemorySeed"), "app.js is missing the Outcome Memory Seed model.");
 assert(app.includes("buildCommandLearningApprovalLane"), "app.js is missing the Learning Approval Lane model.");
 assert(app.includes("buildCommandLearningReleaseReceipt"), "app.js is missing the Learning Release Receipt model.");
@@ -746,6 +756,7 @@ assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wi
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-market-learning-reuse-gate"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Market Learning Reuse Gate copy action.");
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-closeout-archive"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Closeout Archive copy action.");
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-next-market-outcome-watch"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Next-Market Outcome Watch copy action.");
+assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-market-reuse-activation-receipt"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -1495,6 +1506,11 @@ assert(css.includes(".command-second-pilot-expansion-wider-launch-next-market-ou
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-next-market-outcome-watch-grid"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Next-Market Outcome Watch grid.");
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-next-market-outcome-watch-watch"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Next-Market Outcome Watch watch rows.");
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-next-market-outcome-watch-controls"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Next-Market Outcome Watch controls.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-market-reuse-activation-receipt"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt panel.");
+assert(css.includes(".command-second-pilot-expansion-wider-launch-market-reuse-activation-receipt-preview"), "styles.css is missing the top-level Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt preview.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-market-reuse-activation-receipt-grid"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt grid.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-market-reuse-activation-receipt-receipt"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt rows.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-market-reuse-activation-receipt-controls"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Market Reuse Activation Receipt controls.");
 assert(css.includes(".build-launch-roadmap"), "styles.css is missing the Build Phase Launch Roadmap panel.");
 assert(css.includes(".build-launch-stage-grid"), "styles.css is missing the Build Phase Launch Roadmap stage grid.");
 assert(css.includes(".build-launch-gate-list"), "styles.css is missing the Build Phase Launch Roadmap gate list.");
