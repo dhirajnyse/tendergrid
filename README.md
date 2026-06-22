@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v531 Rollback Learning Reuse Receipt decides whether restored rollback learning can become tenant-safe reuse, must remain local memory, or has to wait for proof repair before wider guidance.
 - v530 Receiver Acceptance Receipt records whether the receiver accepted, held, escalated, or returned the handoff with proof response, owner acceptance, support hold, rollback option, learning reuse line, and next review intact.
 - v529 Handoff Response Watch watches whether the evidence handoff produces receiver response, proof acceptance, rollback confidence, learning reuse readiness, next review movement, support follow-through, sponsor signal, evidence match, boundary safety, and escalation outcome.
 - v528 Rollback Outcome Receipt records whether rollback rehearsal restored surface, owner, sponsor, tenant boundary, review lock, outcome watch, evidence pack, fallback guidance, drift check, and receiver notice without losing the management handoff.

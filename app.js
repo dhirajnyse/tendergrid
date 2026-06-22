@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v530";
-  const BUILD_LABEL = "Receiver Acceptance Receipt";
+  const BUILD_VERSION = "v531";
+  const BUILD_LABEL = "Rollback Learning Reuse Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=530";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=530";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=531";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=531";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -21538,6 +21538,41 @@ const state = {
       chain.guidanceGovernanceSecondPilotExpansionSupportReceipt,
       chain.guidanceGovernanceSecondPilotExpansionLearningHandoff,
     );
+    const rollbackLearningReuseReceipt = buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchRollbackLearningReuseReceipt(
+      chain.seed,
+      chain.evidenceLens,
+      receiverAcceptanceReceipt,
+      handoffResponseWatch,
+      rollbackOutcomeReceipt,
+      managementReceiverRehearsal,
+      retrievalEvidenceHandoff,
+      activationRollbackDrill,
+      outcomeEvidencePack,
+      archiveRetrievalDrill,
+      marketReuseActivationReceipt,
+      nextMarketOutcomeWatch,
+      closeoutArchive,
+      marketLearningReuseGate,
+      nextMarketActionReceipt,
+      approvalCloseoutReceipt,
+      approvalOutcomeMonitor,
+      marketResponseLearningReceipt,
+      outcomeReceipt,
+      approvalReceipt,
+      responseWatch,
+      handoffReceipt,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchCouncilMinutes,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchBuyerLaunchPack,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchMarketLaunchRoom,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchExpansionCouncil,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchLaunchReadinessLedger,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchMarketReadinessGate,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchLearningReceipt,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchOutcomeWatch,
+      chain.guidanceGovernanceSecondPilotExpansionWiderLaunchReleaseRoom,
+      chain.guidanceGovernanceSecondPilotExpansionSupportReceipt,
+      chain.guidanceGovernanceSecondPilotExpansionLearningHandoff,
+    );
     return {
       activationRollbackDrill,
       approvalCloseoutReceipt,
@@ -21559,6 +21594,7 @@ const state = {
       receiverAcceptanceReceipt,
       retrievalEvidenceHandoff,
       responseWatch,
+      rollbackLearningReuseReceipt,
       rollbackOutcomeReceipt,
     };
   }
@@ -22726,6 +22762,79 @@ const state = {
         <div class="command-governance-second-pilot-expansion-wider-launch-receiver-acceptance-receipt-actions command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-actions">
           <button class="ghost-btn" type="button" data-action="copy-command-guidance-second-pilot-expansion-wider-launch-receiver-acceptance-receipt" data-copy-text="${escapeHtml(encodeURIComponent(receiverAcceptanceReceipt.copyText))}">Copy acceptance receipt</button>
           <small>${escapeHtml(receiverAcceptanceReceipt.receiptId)}</small>
+        </div>
+      </section>
+    `;
+  }
+
+  function renderCommandGovernanceSecondPilotExpansionWiderLaunchRollbackLearningReuseReceiptPreview(model, autopilot) {
+    const slip = buildCommandBriefSlip(model, autopilot);
+    const copiedAt = state.commandMemory?.copiedAt || new Date().toISOString();
+    const memory = {
+      ...(state.commandMemory || {}),
+      text: state.commandMemory?.text || slip.calmLine || slip.copyText,
+      copiedAt,
+      build: BUILD_VERSION,
+      view: "Command",
+      approval:
+        state.commandMemory?.approval ||
+        {
+          decision: "Approve to observe",
+          decidedAt: copiedAt,
+          build: BUILD_VERSION,
+        },
+    };
+    const { rollbackLearningReuseReceipt } = buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchReceiptStack(memory);
+
+    return `
+      <section class="command-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt-preview command-governance-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt command-governance-second-pilot-expansion-wider-launch-handoff-response-watch tone-${escapeHtml(rollbackLearningReuseReceipt.tone)}" aria-label="Governance second pilot expansion wider launch rollback learning reuse receipt preview">
+        <div class="command-governance-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt-head command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-head">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} Rollback Learning Reuse Receipt</span>
+          <strong>${escapeHtml(rollbackLearningReuseReceipt.reuseDecision)} / ${rollbackLearningReuseReceipt.reuseScore}%</strong>
+          <small>${escapeHtml(rollbackLearningReuseReceipt.nextAction)}</small>
+        </div>
+        <div class="command-governance-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt-grid command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-grid">
+          ${rollbackLearningReuseReceipt.cards
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt-outcome command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-watch">
+          ${rollbackLearningReuseReceipt.reuseRows
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 72))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 132))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt-controls command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-controls">
+          ${rollbackLearningReuseReceipt.reuseControls
+            .map(
+              ([label, value, note, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(compactText(String(value), 64))}</strong>
+                  <small>${escapeHtml(compactText(String(note), 112))}</small>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+        <div class="command-governance-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt-actions command-governance-second-pilot-expansion-wider-launch-handoff-response-watch-actions">
+          <button class="ghost-btn" type="button" data-action="copy-command-guidance-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt" data-copy-text="${escapeHtml(encodeURIComponent(rollbackLearningReuseReceipt.copyText))}">Copy reuse receipt</button>
+          <small>${escapeHtml(rollbackLearningReuseReceipt.reuseId)}</small>
         </div>
       </section>
     `;
@@ -45123,6 +45232,272 @@ const state = {
     return { acceptanceRows, cards, copyText, nextAction, receiptControls, receiptDecision, receiptGaps, receiptId, receiptOutcome, receiptRecommendation, receiptScore, receiptState, tone };
   }
 
+  function buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchRollbackLearningReuseReceipt(
+    seed = {},
+    evidenceLens = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatch = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchRollbackOutcomeReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchManagementReceiverRehearsal = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchRetrievalEvidenceHandoff = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchActivationRollbackDrill = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchOutcomeEvidencePack = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchArchiveRetrievalDrill = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchMarketReuseActivationReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchNextMarketOutcomeWatch = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchCloseoutArchive = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchMarketLearningReuseGate = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchNextMarketActionReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchApprovalCloseoutReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchApprovalOutcomeMonitor = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchMarketResponseLearningReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffOutcomeReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchMinutesApprovalReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchBuyerResponseWatch = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchCouncilMinutes = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchBuyerLaunchPack = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchMarketLaunchRoom = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchExpansionCouncil = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchLaunchReadinessLedger = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchMarketReadinessGate = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchLearningReceipt = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchOutcomeWatch = {},
+    guidanceGovernanceSecondPilotExpansionWiderLaunchReleaseRoom = {},
+    guidanceGovernanceSecondPilotExpansionSupportReceipt = {},
+    guidanceGovernanceSecondPilotExpansionLearningHandoff = {},
+  ) {
+    const toNumber = (value, fallback = 0) => {
+      const numeric = Number(value);
+      return Number.isFinite(numeric) ? numeric : fallback;
+    };
+    const receiverScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceipt.receiptScore);
+    const receiverGaps = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceipt.receiptGaps, 99);
+    const receiverOutcome = String(guidanceGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceipt.receiptOutcome || "Held");
+    const receiverDecision = String(guidanceGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceipt.receiptDecision || "Hold with owner");
+    const watchScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatch.watchScore);
+    const watchGaps = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatch.watchGaps, 99);
+    const rollbackReceiptScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchRollbackOutcomeReceipt.receiptScore);
+    const activationScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchActivationRollbackDrill.drillScore);
+    const evidenceScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchOutcomeEvidencePack.packScore);
+    const retrievalScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchArchiveRetrievalDrill.drillScore);
+    const closeoutScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchCloseoutArchive.archiveScore);
+    const marketReuseScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchMarketReuseActivationReceipt.activationScore);
+    const reuseGateScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchMarketLearningReuseGate.gateScore);
+    const nextMarketScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchNextMarketOutcomeWatch.watchScore);
+    const learningScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchLearningReceipt.learningScore);
+    const outcomeWatchScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchOutcomeWatch.watchScore);
+    const releaseScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchReleaseRoom.releaseScore);
+    const supportScore = toNumber(guidanceGovernanceSecondPilotExpansionSupportReceipt.receiptScore);
+    const expansionLearningScore = toNumber(guidanceGovernanceSecondPilotExpansionLearningHandoff.learningScore);
+    const responseScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchBuyerResponseWatch.responseScore);
+    const proofScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchMinutesApprovalReceipt.approvalScore);
+    const outcomeReceiptScore = toNumber(guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffOutcomeReceipt.outcomeScore);
+    const confidenceScore = toNumber(evidenceLens.score || evidenceLens.confidenceScore);
+    const source = [
+      guidanceGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatch.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchRollbackOutcomeReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchManagementReceiverRehearsal.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchRetrievalEvidenceHandoff.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchActivationRollbackDrill.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchOutcomeEvidencePack.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchArchiveRetrievalDrill.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchMarketReuseActivationReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchNextMarketOutcomeWatch.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchCloseoutArchive.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchMarketLearningReuseGate.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchNextMarketActionReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchApprovalCloseoutReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchApprovalOutcomeMonitor.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchMarketResponseLearningReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffOutcomeReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchMinutesApprovalReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchBuyerResponseWatch.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchCouncilMinutes.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchBuyerLaunchPack.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchMarketLaunchRoom.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchExpansionCouncil.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchLaunchReadinessLedger.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchMarketReadinessGate.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchLearningReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchOutcomeWatch.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchReleaseRoom.copyText,
+      guidanceGovernanceSecondPilotExpansionSupportReceipt.copyText,
+      guidanceGovernanceSecondPilotExpansionLearningHandoff.copyText,
+      guidanceGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceipt.receiptId,
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const hasSignal = (positive, negative) => positive.test(source) && !negative.test(source);
+    const receiverAccepted = receiverOutcome === "Accepted" || /Receiver accepted yes|Acceptance captured|Accept handoff/i.test(source);
+    const receiverReturned = receiverOutcome === "Returned" || /Receiver returned yes|Return for repair|returned handoff/i.test(source);
+    const receiverEscalated = receiverOutcome === "Escalated" || /Receiver escalated|Escalate owner|Escalation outcome named/i.test(source);
+    const restoredRollbackControls =
+      hasSignal(/Restored rollback controls|Rollback option ready|Rollback confidence ready|Rollback outcome receipt|rollback restored|Fallback guidance restored|reversible|rollback drill/i, /rollback option needed|rollback confidence needed|rollback needed|Repair receipt/i) ||
+      rollbackReceiptScore >= 38 ||
+      activationScore >= 36;
+    const proofResponse =
+      hasSignal(/Proof response captured|Proof acceptance confirmed|Proof acceptance accepted|proof accepted|accepted proof|Evidence match matched|Outcome proof/i, /Proof response needed|proof acceptance needed|proof needed|Repair proof|Evidence match needed/i) ||
+      proofScore >= 45 ||
+      outcomeReceiptScore >= 35;
+    const tenantSafeLearning =
+      hasSignal(/Tenant-safe learning|tenant-safe learning|Learning reuse line ready|Learning reuse readiness ready|Reusable learning|Reusable line visible|buyer-safe|commercial context stays guarded|Boundary still safe yes/i, /learning reuse needed|Learning line needed|boundary needed|privacy repair/i) ||
+      (learningScore >= 45 && confidenceScore >= 70);
+    const boundaryReason =
+      hasSignal(/Boundary reason|buyer-safe|tenant boundary safe|commercial context stays guarded|commercial privacy|privacy guard|tenant-safe proof/i, /boundary reason needed|boundary needed|privacy repair/i) ||
+      confidenceScore >= 72;
+    const localOnlyMemory =
+      /Local-only memory|local-only|tenant-only|tenant memory|stay local|private hold|private holds|local guidance|tenant-only memory/i.test(source) ||
+      (receiverOutcome === "Held" && receiverGaps > 4) ||
+      receiverEscalated;
+    const proofRepairWait =
+      receiverReturned ||
+      /Proof repair wait|proof repair|Return for repair|returned handoff|Proof response needed|Evidence match needed|Repair proof|Repair pack|Repair handoff/i.test(source) ||
+      (!proofResponse && (watchScore < 70 || evidenceScore < 35));
+    const reuseSurface =
+      hasSignal(/Reuse surface|market reuse|activation surface|Learning reuse line ready|Reusable line visible|Guidance surface|reuse activation|next market guidance/i, /reuse surface needed|activation hold|reuse needed/i) ||
+      marketReuseScore >= 38 ||
+      reuseGateScore >= 42;
+    const ownerApproval =
+      Boolean(seed.ownerReady && seed.dateReady) ||
+      hasSignal(/Owner approval|Owner acceptance visible|Owner acceptance Named|Acceptance owner Visible|owner accepted|sponsor approval|Sponsor signal ready/i, /owner approval needed|owner acceptance needed|Assign owner|owner needed/i);
+    const reviewLock =
+      Boolean(seed.dateReady) ||
+      hasSignal(/Review lock|Next review intact|Next review movement|Review lock restored|review date|review window|review locked/i, /review lock needed|next review needed|Review date needed|Set review/i);
+    const supportStable =
+      hasSignal(/Support stability|Support hold controlled|Support follow-through routed|support calm|support routed|support guardrail|support promise/i, /support hold needed|support follow-through needed|support needed/i) ||
+      supportScore >= 45;
+    const outcomeObserved =
+      nextMarketScore >= 35 ||
+      outcomeWatchScore >= 35 ||
+      /Outcome watch|outcome proof|Next-market outcome|proof movement|movement proof/i.test(source);
+    const reusableControls = [
+      restoredRollbackControls,
+      tenantSafeLearning,
+      boundaryReason,
+      reuseSurface,
+      ownerApproval,
+      reviewLock,
+      supportStable,
+      proofResponse,
+      outcomeObserved,
+      receiverAccepted,
+    ].filter(Boolean).length;
+    const reuseGaps = [
+      !restoredRollbackControls,
+      !tenantSafeLearning,
+      !boundaryReason,
+      !reuseSurface,
+      !ownerApproval,
+      !reviewLock,
+      !supportStable,
+      !proofResponse,
+      !outcomeObserved,
+      proofRepairWait,
+      receiverScore < 60,
+      watchScore < 65,
+      confidenceScore < 70,
+      evidenceScore < 35,
+      rollbackReceiptScore < 38,
+    ].filter(Boolean).length;
+    const reuseScore = Math.max(
+      0,
+      Math.min(
+        100,
+        Math.round(
+          receiverScore * 0.18 +
+            watchScore * 0.14 +
+            rollbackReceiptScore * 0.12 +
+            activationScore * 0.09 +
+            reuseGateScore * 0.1 +
+            marketReuseScore * 0.08 +
+            learningScore * 0.09 +
+            confidenceScore * 0.08 +
+            evidenceScore * 0.05 +
+            supportScore * 0.04 +
+            expansionLearningScore * 0.03 +
+            reusableControls * 1.45 -
+            reuseGaps * 0.9,
+        ),
+      ),
+    );
+    const reuseCandidate =
+      restoredRollbackControls &&
+      tenantSafeLearning &&
+      boundaryReason &&
+      reuseSurface &&
+      ownerApproval &&
+      reviewLock &&
+      supportStable &&
+      proofResponse &&
+      !proofRepairWait &&
+      (receiverAccepted || receiverScore >= 78) &&
+      reuseScore >= 80;
+    const reuseDecision = reuseCandidate
+      ? "Reuse tenant-safe learning"
+      : proofRepairWait
+        ? "Wait for proof repair"
+        : localOnlyMemory
+          ? "Keep local memory"
+          : "Hold reuse review";
+    const reuseState =
+      reuseDecision === "Reuse tenant-safe learning"
+        ? "Rollback learning reusable"
+        : reuseDecision === "Wait for proof repair"
+          ? "Rollback learning waits for proof repair"
+          : reuseDecision === "Keep local memory"
+            ? "Rollback learning stays local"
+            : "Rollback learning under review";
+    const tone = reuseDecision === "Reuse tenant-safe learning" ? "green" : reuseDecision === "Hold reuse review" ? "blue" : "amber";
+    const reuseRecommendation =
+      reuseDecision === "Reuse tenant-safe learning"
+        ? "Release reusable lesson"
+        : reuseDecision === "Wait for proof repair"
+          ? "Repair proof first"
+          : reuseDecision === "Keep local memory"
+            ? "Keep local"
+            : "Review calmly";
+    const nextAction =
+      reuseDecision === "Reuse tenant-safe learning"
+        ? "Release only the tenant-safe rollback lesson with boundary reason, owner approval, review lock, support stability, and reuse surface attached."
+        : reuseDecision === "Wait for proof repair"
+          ? "Wait for proof repair before wider reuse; keep the rollback lesson visible but out of reusable guidance."
+          : reuseDecision === "Keep local memory"
+            ? "Store the rollback learning as local-only memory with boundary reason, owner approval, and review lock."
+            : "Hold the rollback learning in reuse review until proof, boundary, owner, support, review, and reuse surface are explicit.";
+    const reuseId = `${guidanceGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceipt.receiptId || guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatch.watchId || BUILD_VERSION.toUpperCase()}-RLR`;
+    const cards = [
+      ["Reuse decision", reuseDecision, nextAction, tone],
+      ["Reuse score", `${reuseScore}%`, `Receiver ${receiverScore}% / rollback ${rollbackReceiptScore}% / learning ${learningScore}%.`, reuseScore >= 80 ? "green" : reuseScore >= 65 ? "blue" : "amber"],
+      ["Reuse gaps", `${reuseGaps}`, reuseGaps <= 2 ? "Rollback learning is calm." : "Proof, owner, boundary, support, review, and reuse surface stay visible.", reuseGaps <= 2 ? "green" : reuseGaps <= 6 ? "blue" : "amber"],
+      ["Recommendation", reuseRecommendation, "Prevents repaired rollback learning from becoming unsafe network guidance.", tone],
+    ];
+    const reuseRows = [
+      ["Restored rollback controls", restoredRollbackControls ? "Restored" : "Restore first", `Rollback receipt ${rollbackReceiptScore}% / activation ${activationScore}%.`, restoredRollbackControls ? "green" : "amber"],
+      ["Tenant-safe learning", tenantSafeLearning ? "Candidate" : "Not ready", `Learning ${learningScore}% / confidence ${confidenceScore}%.`, tenantSafeLearning ? "green" : "amber"],
+      ["Local-only memory", localOnlyMemory ? "Keep local" : "No local lock", `Receiver outcome ${receiverOutcome} / gaps ${receiverGaps}.`, localOnlyMemory ? "amber" : "green"],
+      ["Proof repair wait", proofRepairWait ? "Wait" : "Clear", `Proof ${proofScore}% / evidence ${evidenceScore}%.`, proofRepairWait ? "amber" : "green"],
+      ["Reuse surface", reuseSurface ? "Named" : "Name surface", `Market reuse ${marketReuseScore}% / gate ${reuseGateScore}%.`, reuseSurface ? "green" : "blue"],
+      ["Owner approval", ownerApproval ? "Visible" : "Approve owner", `Receiver decision ${receiverDecision}.`, ownerApproval ? "green" : "amber"],
+      ["Boundary reason", boundaryReason ? "Attached" : "Attach reason", "Explains why this lesson can or cannot travel beyond the tenant.", boundaryReason ? "green" : "amber"],
+      ["Review lock", reviewLock ? seed.date || "Locked" : "Set review", `Watch gaps ${watchGaps} / release ${releaseScore}%.`, reviewLock ? "green" : "amber"],
+      ["Support stability", supportStable ? "Stable" : "Stabilize support", `Support ${supportScore}% / closeout ${closeoutScore}%.`, supportStable ? "green" : "blue"],
+      ["Outcome observed", outcomeObserved ? "Observed" : "Observe outcome", `Next-market ${nextMarketScore}% / outcome ${outcomeWatchScore}%.`, outcomeObserved ? "green" : "blue"],
+    ];
+    const reuseControls = [
+      ["Acceptance receipt", receiverDecision, `${receiverOutcome} / ${receiverScore}% / gaps ${receiverGaps}.`, receiverScore >= 70 ? "blue" : "amber"],
+      ["Response watch", guidanceGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatch.watchDecision || "Watch response", `Watch ${watchScore}% / gaps ${watchGaps}.`, watchScore >= 65 ? "blue" : "amber"],
+      ["Rollback receipt", restoredRollbackControls ? "Reusable control" : "Control repair", `Receipt ${rollbackReceiptScore}% / drill ${activationScore}%.`, restoredRollbackControls ? "green" : "amber"],
+      ["Learning gate", reuseDecision, `Reuse gate ${reuseGateScore}% / market reuse ${marketReuseScore}%.`, tone],
+      ["Evidence proof", proofResponse ? "Proof present" : "Proof repair", `Proof ${proofScore}% / outcome receipt ${outcomeReceiptScore}% / retrieval ${retrievalScore}%.`, proofResponse ? "green" : "amber"],
+      ["Reuse id", reuseId, `Release ${releaseScore}% / response ${responseScore}%.`, "teal"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Governance Second Pilot Expansion Wider Launch Rollback Learning Reuse Receipt ${reuseId}: ${reuseState}. Decision ${reuseDecision}. Recommendation ${reuseRecommendation}. Reuse score ${reuseScore}%. Restored rollback controls ${restoredRollbackControls ? "yes" : "no"}. Tenant-safe learning ${tenantSafeLearning ? "candidate" : "not ready"}. Local-only memory ${localOnlyMemory ? "yes" : "no"}. Proof repair wait ${proofRepairWait ? "yes" : "no"}. Reuse surface ${reuseSurface ? "named" : "needed"}. Owner approval ${ownerApproval ? "visible" : "needed"}. Boundary reason ${boundaryReason ? "attached" : "needed"}. Review lock ${reviewLock ? seed.date || "locked" : "needed"}. Support stability ${supportStable ? "stable" : "needed"}. Outcome observed ${outcomeObserved ? "yes" : "needed"}. Receiver ${receiverOutcome} (${receiverScore}%). Reuse gaps ${reuseGaps}. Next: ${nextAction}`;
+    return { cards, copyText, nextAction, reuseControls, reuseDecision, reuseGaps, reuseId, reuseRecommendation, reuseRows, reuseScore, reuseState, tone };
+  }
+
   function buildCommandMemoryLearningChain(memory = {}) {
     const seed = buildCommandOutcomeMemorySeed(memory);
     const approvalLane = buildCommandLearningApprovalLane(seed, memory);
@@ -47948,6 +48323,7 @@ const state = {
         ${renderCommandGovernanceSecondPilotExpansionWiderLaunchRollbackOutcomeReceiptPreview(model, autopilot)}
         ${renderCommandGovernanceSecondPilotExpansionWiderLaunchHandoffResponseWatchPreview(model, autopilot)}
         ${renderCommandGovernanceSecondPilotExpansionWiderLaunchReceiverAcceptanceReceiptPreview(model, autopilot)}
+        ${renderCommandGovernanceSecondPilotExpansionWiderLaunchRollbackLearningReuseReceiptPreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -65400,12 +65776,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v530 Receiver Acceptance Receipt",
-      phase: "Receiver Acceptance Receipt",
+      version: "v531 Rollback Learning Reuse Receipt",
+      phase: "Rollback Learning Reuse Receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "511 meaningful versions since rebrand",
-      summary: "Command Center now records whether the receiver accepted, held, escalated, or returned the handoff with proof response, owner acceptance, support hold, rollback option, learning reuse line, and next review intact.",
+      pace: "512 meaningful versions since rebrand",
+      summary: "Command Center now decides whether restored rollback learning can become tenant-safe reuse, must remain local memory, or has to wait for proof repair before wider guidance.",
       tracks: [
+        ["v531 rollback learning reuse receipt", 100, "Command Center now decides whether restored rollback learning can become tenant-safe reuse, must remain local memory, or has to wait for proof repair before wider guidance.", "green"],
         ["v530 receiver acceptance receipt", 100, "Command Center now records whether the receiver accepted, held, escalated, or returned the handoff with proof response, owner acceptance, support hold, rollback option, learning reuse line, and next review intact.", "green"],
         ["v529 handoff response watch", 100, "Command Center now watches whether the evidence handoff produces receiver response, proof acceptance, rollback confidence, learning reuse readiness, next review movement, support follow-through, sponsor signal, evidence match, boundary safety, and escalation outcome.", "green"],
         ["v528 rollback outcome receipt", 100, "Command Center now records whether rollback rehearsal restored surface, owner, sponsor, tenant boundary, review lock, outcome watch, evidence pack, fallback guidance, drift check, and receiver notice without losing the management handoff.", "green"],
@@ -65916,9 +66293,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v531", "Governance rollout second pilot expansion wider launch rollback learning reuse receipt", "Capture which restored rollback controls can become tenant-safe learning, which stay local, and which must wait for proof repair before wider reuse."],
-        ["v532", "Governance rollout second pilot expansion wider launch response repair queue", "Route response-watch gaps into receiver follow-up, proof repair, rollback confidence repair, support task, sponsor nudge, or tenant-safe learning hold before acceptance."],
-        ["v533", "Governance rollout second pilot expansion wider launch acceptance repair desk", "Turn held, escalated, or returned receiver outcomes into one calm repair desk with owner, proof, support, rollback, learning, and review recovery paths."],
+        ["v532", "Governance rollout second pilot expansion wider launch response repair queue", "Route response-watch and reuse gaps into proof repair, receiver follow-up, rollback confidence repair, support task, sponsor nudge, or tenant-safe learning hold before acceptance."],
+        ["v533", "Governance rollout second pilot expansion wider launch acceptance repair desk", "Turn held, escalated, returned, or local-only learning outcomes into one calm repair desk with owner, proof, support, rollback, learning, and review recovery paths."],
+        ["v534", "Governance rollout second pilot expansion wider launch reuse approval lane", "Convert proof-repaired rollback learning into an approval lane with boundary reason, owner signoff, review lock, support stability, and tenant-safe release decision."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -66222,11 +66599,11 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now records whether the receiver accepted, held, escalated, or returned the handoff with proof response, owner acceptance, support hold, rollback option, learning reuse line, and next review intact.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now decides whether restored rollback learning can become tenant-safe reuse, must remain local memory, or has to wait for proof repair before wider guidance.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room copy, Proof Bridge copy, Launch Seal copy, Closeout Receipt copy, Outcome Watch copy, Activation Receipt copy, Decision Audit Pack copy, Learning Review Room copy, Reuse Gate copy, Sponsor Decision copy, Learning Receipt copy, Outcome Ledger copy, Sponsor Update copy, Rollout Proof copy, Expansion Support copy, Scaled Rollout copy, Expansion Receipt copy, Expansion Gate copy, Learning Release copy, Support Closeout copy, Decision Receipt copy, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
-      ["v530 smoke addendum", "Receiver Acceptance Receipt", "Confirm the v530 panel, copy action, Build Phase badge, and acceptance receipt controls before publishing.", "green"],
+      ["v531 smoke addendum", "Rollback Learning Reuse Receipt", "Confirm the v531 panel, copy action, Build Phase badge, and rollback learning reuse controls before publishing.", "green"],
     ];
     return `
       <section class="build-release-handoff">
@@ -79053,7 +79430,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v530.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v531.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -79075,7 +79452,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v530.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v531.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -79096,7 +79473,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v530.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v531.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -79116,7 +79493,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v530.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v531.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -79136,7 +79513,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v530.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v531.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -79164,7 +79541,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v530.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v531.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -79192,7 +79569,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v530.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v531.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -79223,7 +79600,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v530.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v531.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -117917,6 +118294,28 @@ const state = {
           ).receiverAcceptanceReceipt.copyText || "";
       }
       copyTextToClipboard(text, "Second pilot expansion wider launch receiver acceptance receipt copied.");
+      return;
+    }
+
+    if (action === "copy-command-guidance-second-pilot-expansion-wider-launch-rollback-learning-reuse-receipt") {
+      const encoded = button.dataset.copyText || "";
+      let text = encoded;
+      for (let decodeAttempt = 0; decodeAttempt < 3 && /%[0-9A-Fa-f]{2}/.test(text); decodeAttempt += 1) {
+        try {
+          const decoded = decodeURIComponent(text);
+          if (decoded === text) break;
+          text = decoded;
+        } catch (error) {
+          break;
+        }
+      }
+      if (!text) {
+        text =
+          buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchReceiptStack(
+            state.commandMemory || {},
+          ).rollbackLearningReuseReceipt.copyText || "";
+      }
+      copyTextToClipboard(text, "Second pilot expansion wider launch rollback learning reuse receipt copied.");
       return;
     }
 
