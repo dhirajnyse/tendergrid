@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v540 Release Decision Brief turns the handoff reuse outcome watch into approve, hold, rework, rollback, support, and next-market lanes before launch handoff.
 - v539 Handoff Reuse Outcome Watch separates what happened after the acceptance audit into accepted reuse, proof repair, support action, rollback learning, launch hold, and next-market movement before release handoff.
 - v538 Acceptance Release Audit Room audits the acceptance release receipt before launch handoff with proof trail, owner signoff, rollback option, support stability, reusable learning, boundary control, review lock, and launch handoff decision in one room.
 - v537 Acceptance Release Receipt turns the market handoff passport into a release receipt with owner signoff, boundary reason, review lock, support stability, market handoff proof, rollback option, buyer-safe release, and reuse release decision before launch handoff.
