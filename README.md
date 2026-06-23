@@ -21,6 +21,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
 - v541 Audit Outcome Release Receipt seals the release decision brief into owner acceptance, proof status, support action, rollback learning, reusable learning, and launch handoff rows.
 - v542 Next-Market Release Loop turns the audit receipt into sponsor movement, support recovery, proof carryover, learning reuse, rollback guard, and market release lanes.
+- v543 Decision Archive turns the next-market loop into launch-review archive lanes for sponsor movement, support recovery, proof carryover, learning reuse, rollback guard, market release, and audit trail.
 - v540 Release Decision Brief turns the handoff reuse outcome watch into approve, hold, rework, rollback, support, and next-market lanes before launch handoff.
 - v539 Handoff Reuse Outcome Watch separates what happened after the acceptance audit into accepted reuse, proof repair, support action, rollback learning, launch hold, and next-market movement before release handoff.
 - v538 Acceptance Release Audit Room audits the acceptance release receipt before launch handoff with proof trail, owner signoff, rollback option, support stability, reusable learning, boundary control, review lock, and launch handoff decision in one room.

@@ -117,6 +117,7 @@ Recovery cleanup in this copy:
 - v512 adds a Minutes Approval Receipt so sealed council minutes become a signoff receipt with signoff owner, accepted gaps, buyer-safe archive, rollback memory, and next-market approval window.
 - v541 adds an Audit Outcome Release Receipt so owner acceptance, proof status, support action, rollback learning, reusable learning, and launch handoff stay sealed before release movement.
 - v542 adds a Next-Market Release Loop so sponsor movement, support recovery, proof carryover, learning reuse, rollback guard, and market release decision stay visible before expansion.
+- v543 adds a Decision Archive so sponsor movement, support recovery, proof carryover, learning reuse, rollback guard, market release, and audit trail stay launch-review ready.
 - v540 adds a Release Decision Brief so approve, hold, rework, rollback, support, and next-market lanes stay separated before launch handoff.
 - v539 adds a Handoff Reuse Outcome Watch so accepted reuse, proof repair, support action, rollback learning, launch hold, and next-market movement stay visible after the acceptance audit.
 - v538 adds an Acceptance Release Audit Room so the acceptance release receipt is audited before launch handoff with proof trail, owner signoff, rollback option, support stability, reusable learning, boundary control, review lock, and launch handoff decision in one room.
