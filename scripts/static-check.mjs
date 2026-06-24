@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=551"), "index.html is missing the v551 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=551"), "index.html is missing the v551 data cache token.");
-assert(index.includes("app.js?v=551"), "index.html is missing the v551 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=551"), "index.html is missing the v551 icon cache token.");
+assert(index.includes("styles.css?v=552"), "index.html is missing the v552 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=552"), "index.html is missing the v552 data cache token.");
+assert(index.includes("app.js?v=552"), "index.html is missing the v552 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=552"), "index.html is missing the v552 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v551";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Launch Minutes";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=551'), "app.js is missing the v551 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=551'), "app.js is missing the v551 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v552";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Outcome Watch";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=552'), "app.js is missing the v552 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=552'), "app.js is missing the v552 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -418,6 +418,8 @@ assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchPubli
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchPublicationSealPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Publication Seal preview.");
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchLaunchMinutesPreview(model, autopilot)"), "Command Center is missing the Governance Second Pilot Expansion Wider Launch Launch Minutes preview.");
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchLaunchMinutesPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Launch Minutes preview.");
+assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchLaunchOutcomeWatchPreview(model, autopilot)"), "Command Center is missing the Governance Second Pilot Expansion Wider Launch Launch Outcome Watch preview.");
+assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchLaunchOutcomeWatchPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Launch Outcome Watch preview.");
 assert(app.includes("buildCommandGuidanceSignoffLoopGovernance"), "app.js is missing the Signoff Loop Governance model.");
 assert(app.includes("buildCommandGuidanceTrendLoopGovernance"), "app.js is missing the Trend Loop Governance model.");
 assert(app.includes("buildCommandGuidanceAppealLoopGovernance"), "app.js is missing the Appeal Loop Governance model.");
@@ -540,6 +542,7 @@ assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaun
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchReleaseCouncil"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Release Council model.");
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchPublicationSeal"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Publication Seal model.");
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchLaunchMinutes"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Launch Minutes model.");
+assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchLaunchOutcomeWatch"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Launch Outcome Watch model.");
 assert(app.includes("Proof acceptance"), "Buyer Response Watch should track proof acceptance.");
 assert(app.includes("Support asks"), "Buyer Response Watch should track support asks.");
 assert(app.includes("Rollback concerns"), "Buyer Response Watch should track rollback concerns.");
@@ -820,6 +823,15 @@ assert(app.includes("Owner acceptance"), "Launch Minutes should track owner acce
 assert(app.includes("Proof debt"), "Launch Minutes should track proof debt.");
 assert(app.includes("Support route"), "Launch Minutes should track the support route.");
 assert(app.includes("Next review"), "Launch Minutes should track next review.");
+assert(app.includes("Launch Outcome Watch"), "Launch Outcome Watch release label is missing.");
+assert(app.includes("Launch response"), "Launch Outcome Watch should track the launch response.");
+assert(app.includes("Sponsor movement"), "Launch Outcome Watch should track sponsor movement.");
+assert(app.includes("Proof acceptance"), "Launch Outcome Watch should track proof acceptance.");
+assert(app.includes("Support pressure"), "Launch Outcome Watch should track support pressure.");
+assert(app.includes("Rollback quiet"), "Launch Outcome Watch should track rollback quiet.");
+assert(app.includes("Owner cadence"), "Launch Outcome Watch should track owner cadence.");
+assert(app.includes("Next-market learning"), "Launch Outcome Watch should track next-market learning.");
+assert(app.includes("Minutes trail"), "Launch Outcome Watch should track the minutes trail.");
 assert(app.includes("buildCommandOutcomeMemorySeed"), "app.js is missing the Outcome Memory Seed model.");
 assert(app.includes("buildCommandLearningApprovalLane"), "app.js is missing the Learning Approval Lane model.");
 assert(app.includes("buildCommandLearningReleaseReceipt"), "app.js is missing the Learning Release Receipt model.");
@@ -1103,6 +1115,7 @@ assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wi
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-release-council"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Release Council copy action.");
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-publication-seal"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Publication Seal copy action.");
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-launch-minutes"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Launch Minutes copy action.");
+assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-launch-outcome-watch"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Launch Outcome Watch copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -2002,6 +2015,11 @@ assert(css.includes(".command-second-pilot-expansion-wider-launch-launch-minutes
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-launch-minutes-grid"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Launch Minutes grid.");
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-launch-minutes-lanes"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Launch Minutes lanes.");
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-launch-minutes-controls"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Launch Minutes controls.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-launch-outcome-watch"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Launch Outcome Watch panel.");
+assert(css.includes(".command-second-pilot-expansion-wider-launch-launch-outcome-watch-preview"), "styles.css is missing the top-level Governance Second Pilot Expansion Wider Launch Launch Outcome Watch preview.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-launch-outcome-watch-grid"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Launch Outcome Watch grid.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-launch-outcome-watch-signals"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Launch Outcome Watch signals.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-launch-outcome-watch-controls"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Launch Outcome Watch controls.");
 assert(css.includes(".build-launch-roadmap"), "styles.css is missing the Build Phase Launch Roadmap panel.");
 assert(css.includes(".build-launch-stage-grid"), "styles.css is missing the Build Phase Launch Roadmap stage grid.");
 assert(css.includes(".build-launch-gate-list"), "styles.css is missing the Build Phase Launch Roadmap gate list.");
