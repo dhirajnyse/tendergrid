@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=546"), "index.html is missing the v546 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=546"), "index.html is missing the v546 data cache token.");
-assert(index.includes("app.js?v=546"), "index.html is missing the v546 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=546"), "index.html is missing the v546 icon cache token.");
+assert(index.includes("styles.css?v=547"), "index.html is missing the v547 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=547"), "index.html is missing the v547 data cache token.");
+assert(index.includes("app.js?v=547"), "index.html is missing the v547 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=547"), "index.html is missing the v547 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v546";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Archive Review Room";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=546'), "app.js is missing the v546 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=546'), "app.js is missing the v546 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v547";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Learning Console";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=547'), "app.js is missing the v547 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=547'), "app.js is missing the v547 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -408,6 +408,8 @@ assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchMarke
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchMarketProofHandoffPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Market Proof Handoff preview.");
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchArchiveReviewRoomPreview(model, autopilot)"), "Command Center is missing the Governance Second Pilot Expansion Wider Launch Archive Review Room preview.");
 assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchArchiveReviewRoomPreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Archive Review Room preview.");
+assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchLearningConsolePreview(model, autopilot)"), "Command Center is missing the Governance Second Pilot Expansion Wider Launch Learning Console preview.");
+assert(app.includes("renderCommandGovernanceSecondPilotExpansionWiderLaunchLearningConsolePreview"), "app.js is missing the top-level Governance Second Pilot Expansion Wider Launch Learning Console preview.");
 assert(app.includes("buildCommandGuidanceSignoffLoopGovernance"), "app.js is missing the Signoff Loop Governance model.");
 assert(app.includes("buildCommandGuidanceTrendLoopGovernance"), "app.js is missing the Trend Loop Governance model.");
 assert(app.includes("buildCommandGuidanceAppealLoopGovernance"), "app.js is missing the Appeal Loop Governance model.");
@@ -525,6 +527,7 @@ assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaun
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchReceiptLearningLoop"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Receipt Learning Loop model.");
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchMarketProofHandoff"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Market Proof Handoff model.");
 assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchArchiveReviewRoom"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Archive Review Room model.");
+assert(app.includes("buildCommandGuidanceGovernanceSecondPilotExpansionWiderLaunchLearningConsole"), "app.js is missing the Governance Second Pilot Expansion Wider Launch Learning Console model.");
 assert(app.includes("Proof acceptance"), "Buyer Response Watch should track proof acceptance.");
 assert(app.includes("Support asks"), "Buyer Response Watch should track support asks.");
 assert(app.includes("Rollback concerns"), "Buyer Response Watch should track rollback concerns.");
@@ -774,6 +777,13 @@ assert(app.includes("Learning receipt"), "Archive Review Room should track the l
 assert(app.includes("Privacy gate"), "Archive Review Room should track the privacy gate.");
 assert(app.includes("Proof gate"), "Archive Review Room should track the proof gate.");
 assert(app.includes("Launch handoff"), "Archive Review Room should track launch handoff.");
+assert(app.includes("Learning Console"), "Learning Console release label is missing.");
+assert(app.includes("Archive lesson"), "Learning Console should track archive lessons.");
+assert(app.includes("Market lesson"), "Learning Console should track market lessons.");
+assert(app.includes("Sponsor proof"), "Learning Console should track sponsor proof.");
+assert(app.includes("Local-only memory"), "Learning Console should track local-only memory.");
+assert(app.includes("Proof debt"), "Learning Console should track proof debt.");
+assert(app.includes("Next-market review"), "Learning Console should track next-market review cadence.");
 assert(app.includes("buildCommandOutcomeMemorySeed"), "app.js is missing the Outcome Memory Seed model.");
 assert(app.includes("buildCommandLearningApprovalLane"), "app.js is missing the Learning Approval Lane model.");
 assert(app.includes("buildCommandLearningReleaseReceipt"), "app.js is missing the Learning Release Receipt model.");
@@ -1052,6 +1062,7 @@ assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wi
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-receipt-learning-loop"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Receipt Learning Loop copy action.");
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-market-proof-handoff"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Market Proof Handoff copy action.");
 assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-archive-review-room"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Archive Review Room copy action.");
+assert(app.includes('action === "copy-command-guidance-second-pilot-expansion-wider-launch-learning-console"'), "app.js is missing the Governance Second Pilot Expansion Wider Launch Learning Console copy action.");
 assert(app.includes("document.addEventListener(\"submit\""), "app.js is missing form event handling.");
 assert(app.includes("window.addEventListener(\"hashchange\""), "app.js is missing route synchronization.");
 
@@ -1926,6 +1937,11 @@ assert(css.includes(".command-second-pilot-expansion-wider-launch-archive-review
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-archive-review-room-grid"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Archive Review Room grid.");
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-archive-review-room-lanes"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Archive Review Room lanes.");
 assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-archive-review-room-controls"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Archive Review Room controls.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-learning-console"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Learning Console panel.");
+assert(css.includes(".command-second-pilot-expansion-wider-launch-learning-console-preview"), "styles.css is missing the top-level Governance Second Pilot Expansion Wider Launch Learning Console preview.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-learning-console-grid"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Learning Console grid.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-learning-console-lanes"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Learning Console lanes.");
+assert(css.includes(".command-governance-second-pilot-expansion-wider-launch-learning-console-controls"), "styles.css is missing the Governance Second Pilot Expansion Wider Launch Learning Console controls.");
 assert(css.includes(".build-launch-roadmap"), "styles.css is missing the Build Phase Launch Roadmap panel.");
 assert(css.includes(".build-launch-stage-grid"), "styles.css is missing the Build Phase Launch Roadmap stage grid.");
 assert(css.includes(".build-launch-gate-list"), "styles.css is missing the Build Phase Launch Roadmap gate list.");

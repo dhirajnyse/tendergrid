@@ -121,6 +121,7 @@ Recovery cleanup in this copy:
 - v544 adds a Receipt Learning Loop so the sealed decision archive can release reusable learning only after archive, outcome, sponsor, support, proof, rollback, privacy boundary, and review cadence checks are visible.
 - v545 adds a Market Proof Handoff so receipt learning becomes buyer/sponsor-ready proof only when sponsor proof, buyer story, blockers, reuse boundary, support, rollback, market packet, and review handoff are visible.
 - v546 adds an Archive Review Room so wider launch movement is held until decision archive, receipt learning, market proof, privacy gate, proof gate, rollback path, support path, and launch handoff are reviewed together.
+- v547 adds a Learning Console so archive review becomes tenant-safe lessons, reusable guidance, local-only memory, proof debt, and next-market review cadence before wider launch reuse moves.
 - v540 adds a Release Decision Brief so approve, hold, rework, rollback, support, and next-market lanes stay separated before launch handoff.
 - v539 adds a Handoff Reuse Outcome Watch so accepted reuse, proof repair, support action, rollback learning, launch hold, and next-market movement stay visible after the acceptance audit.
 - v538 adds an Acceptance Release Audit Room so the acceptance release receipt is audited before launch handoff with proof trail, owner signoff, rollback option, support stability, reusable learning, boundary control, review lock, and launch handoff decision in one room.
