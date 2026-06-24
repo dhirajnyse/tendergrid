@@ -123,6 +123,8 @@ Recovery cleanup in this copy:
 - v546 adds an Archive Review Room so wider launch movement is held until decision archive, receipt learning, market proof, privacy gate, proof gate, rollback path, support path, and launch handoff are reviewed together.
 - v547 adds a Learning Console so archive review becomes tenant-safe lessons, reusable guidance, local-only memory, proof debt, and next-market review cadence before wider launch reuse moves.
 - v553 adds a Learning Receipt so the launch outcome watch becomes tenant-safe learning with outcome evidence, proof repair, support retune, rollback memory, owner cadence, next-market guidance, and learning boundary checks.
+- v554 adds Closeout Archive so launch minutes, outcome watch, learning receipt, proof repair trail, support route, rollback memory, and next-market handoff stay retrievable after launch learning.
+- v553 adds Learning Receipt so the launch outcome watch becomes tenant-safe learning with outcome evidence, proof repair, support retune, rollback memory, owner cadence, next-market guidance, and learning boundary checks.
 - v552 adds Outcome Watch so the first launch response after Launch Minutes is watched for sponsor movement, proof acceptance, support pressure, rollback quiet, owner cadence, next-market learning, and minutes trail in one packet.
 - v551 adds Launch Minutes so the Publication Seal becomes meeting-ready minutes with sponsor decision, owner acceptance, proof debt, support route, rollback route, launch date, and next review in one packet.
 - v550 adds a Publication Seal so the Release Council decision becomes a publication-ready packet with owner acceptance, privacy boundary, proof debt, support readiness, rollback route, launch date, and publication packet posture.
