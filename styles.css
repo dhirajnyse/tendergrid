@@ -18053,6 +18053,74 @@ body.quiet-focus-mode .focus-mode-pill {
   line-height: 1.35;
 }
 
+.command-first-launch-go-no-go-room {
+  border-left-color: var(--teal);
+  margin: 0 0 14px;
+}
+
+.command-first-launch-go-no-go-room-head,
+.command-first-launch-go-no-go-room-controls,
+.command-first-launch-go-no-go-room-steps,
+.command-first-launch-go-no-go-room-actions {
+  min-width: 0;
+}
+
+.command-first-launch-go-no-go-room-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.command-first-launch-go-no-go-room-steps article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(42, 142, 119, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.command-first-launch-go-no-go-room-steps article:nth-child(1),
+.command-first-launch-go-no-go-room-steps article:nth-child(4),
+.command-first-launch-go-no-go-room-steps article:nth-child(7),
+.command-first-launch-go-no-go-room-steps article:nth-child(10) {
+  border-left-color: var(--teal);
+}
+
+.command-first-launch-go-no-go-room-steps article:nth-child(2),
+.command-first-launch-go-no-go-room-steps article:nth-child(5),
+.command-first-launch-go-no-go-room-steps article:nth-child(8) {
+  border-left-color: var(--blue);
+}
+
+.command-first-launch-go-no-go-room-steps article:nth-child(3),
+.command-first-launch-go-no-go-room-steps article:nth-child(6),
+.command-first-launch-go-no-go-room-steps article:nth-child(9) {
+  border-left-color: var(--amber);
+}
+
+.command-first-launch-go-no-go-room-steps span,
+.command-first-launch-go-no-go-room-steps small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.command-first-launch-go-no-go-room-steps strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-first-launch-go-no-go-room-steps p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -18062,7 +18130,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-live-tenant-learning-control-room-steps,
   .command-second-tenant-readiness-control-room-steps,
   .command-multi-tenant-launch-control-room-steps,
-  .command-production-pilot-control-room-steps {
+  .command-production-pilot-control-room-steps,
+  .command-first-launch-go-no-go-room-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -18082,7 +18151,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-live-tenant-learning-control-room-steps,
   .command-second-tenant-readiness-control-room-steps,
   .command-multi-tenant-launch-control-room-steps,
-  .command-production-pilot-control-room-steps {
+  .command-production-pilot-control-room-steps,
+  .command-first-launch-go-no-go-room-steps {
     grid-template-columns: 1fr;
   }
 
