@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v569-v578 Customer Launch Flywheel advances PursuitDesk from pilot contract room through implementation command map, first buyer evidence room, day-1 onboarding, adoption heatmap, success rhythm coach, expansion trigger lab, renewal confidence room, country rollout sandbox, and the Customer Launch Flywheel.
 - v559-v568 Ten-Build Release Train advances PursuitDesk from release receipt through market proof replay, buyer-safe proof route, sponsor launch script, country launch pack, pilot dry run, launch readiness lock, first-customer proof inbox, operating telemetry, and the Global Launch Control Tower.
 - v558 Reuse Receipt records the approver, reusable guidance, tenant-local memory, proof return, support return, next-market date, rollback guard, and receipt archive before the lesson travels.
 - v557 Retrieval Drill proves the launch archive can reopen by owner, date, proof trail, support route, rollback memory, archive index, retrieval receipt, and next-market handoff before reuse.
