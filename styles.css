@@ -17577,9 +17577,78 @@ body.quiet-focus-mode .focus-mode-pill {
   line-height: 1.35;
 }
 
+.command-customer-success-center {
+  border-left-color: var(--blue);
+  margin: 0 0 14px;
+}
+
+.command-customer-success-center-head,
+.command-customer-success-center-controls,
+.command-customer-success-center-steps,
+.command-customer-success-center-actions {
+  min-width: 0;
+}
+
+.command-customer-success-center-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.command-customer-success-center-steps article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(52, 99, 151, 0.18);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.command-customer-success-center-steps article:nth-child(1),
+.command-customer-success-center-steps article:nth-child(4),
+.command-customer-success-center-steps article:nth-child(7),
+.command-customer-success-center-steps article:nth-child(10) {
+  border-left-color: var(--green);
+}
+
+.command-customer-success-center-steps article:nth-child(2),
+.command-customer-success-center-steps article:nth-child(5),
+.command-customer-success-center-steps article:nth-child(8) {
+  border-left-color: var(--blue);
+}
+
+.command-customer-success-center-steps article:nth-child(3),
+.command-customer-success-center-steps article:nth-child(6),
+.command-customer-success-center-steps article:nth-child(9) {
+  border-left-color: var(--amber);
+}
+
+.command-customer-success-center-steps span,
+.command-customer-success-center-steps small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.command-customer-success-center-steps strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-customer-success-center-steps p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
-  .command-customer-launch-flywheel-steps {
+  .command-customer-launch-flywheel-steps,
+  .command-customer-success-center-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -17592,7 +17661,8 @@ body.quiet-focus-mode .focus-mode-pill {
 
 @media (max-width: 640px) {
   .command-ten-build-release-train-steps,
-  .command-customer-launch-flywheel-steps {
+  .command-customer-launch-flywheel-steps,
+  .command-customer-success-center-steps {
     grid-template-columns: 1fr;
   }
 
