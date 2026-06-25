@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v628";
-  const BUILD_LABEL = "Second Tenant Readiness Control Room";
+  const BUILD_VERSION = "v638";
+  const BUILD_LABEL = "Multi-Tenant Launch Control Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=628";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=628";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=638";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=638";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -54877,6 +54877,72 @@ const state = {
       </section>
     `;
   }
+
+  function buildCommandMultiTenantLaunchControlRoom(model, autopilot) {
+    const openCount = model.openRecords.length;
+    const actionCount = model.reminders.tasks.length;
+    const overdueCount = model.reminders.overdue;
+    const evidenceScore = model.evidenceScore;
+    const healthScore = model.healthScore;
+    const sourceCoverage = model.documents?.sourceCoverage || evidenceScore;
+    const totalValue = formatCompactMoney(model.totalValue);
+    const firstMove = model.priorityTasks[0]?.title || autopilot.signals[0]?.record.title || "Multi-tenant launch move";
+    const consentReadiness = Math.max(1, Math.min(100, Math.round(sourceCoverage * 0.34 + evidenceScore * 0.26 + healthScore * 0.18 + Math.max(0, 100 - overdueCount * 2) * 0.14 + 8)));
+    const environmentReadiness = Math.max(1, Math.min(100, Math.round(healthScore * 0.28 + evidenceScore * 0.22 + sourceCoverage * 0.2 + Math.min(100, actionCount) * 0.12 + 18)));
+    const multiTenantLaunchReadiness = Math.max(1, Math.min(100, Math.round(consentReadiness * 0.28 + environmentReadiness * 0.3 + healthScore * 0.18 + evidenceScore * 0.14 + 10)));
+    const stages = [
+      { version: "v629", label: "Second Tenant Import Handoff", signal: "Readiness turns into import owner, source pack, validation proof, rollback file, support route, and launch date.", owner: "Data", proof: "Import handoff", tone: "green" },
+      { version: "v630", label: "Cross-Tenant Learning Ledger", signal: "Lessons are classified as tenant-local, reusable, proof repair, product candidate, or blocked reuse across tenants.", owner: "Governance", proof: "Learning ledger", tone: "blue" },
+      { version: "v631", label: "Multi-Tenant Launch Governance", signal: "Policy, approval, audit, rollback, support, and sponsor language are ready before the second and third tenant widen.", owner: "Leadership", proof: "Launch governance", tone: "amber" },
+      { version: "v632", label: "Tenant Country Fit Matrix", signal: "Country rules, buyer language, currency posture, support hours, privacy fit, and rollout assumptions stay visible.", owner: "Country", proof: "Country fit", tone: "teal" },
+      { version: "v633", label: "Multi-Tenant Support Model", signal: "Support ownership, escalation, first-response promise, proof request path, and closeout receipt scale beyond one tenant.", owner: "Support", proof: "Support model", tone: "green" },
+      { version: "v634", label: "Shared Learning Consent Vault", signal: "Reusable learning is stored with consent state, redaction proof, expiry review, revocation path, and no-share holds.", owner: "Privacy", proof: "Consent vault", tone: "blue" },
+      { version: "v635", label: "Expansion Pricing Readiness", signal: "Seat plans, pilot-to-paid trigger, renewal checkpoint, country price note, and billing guardrails are ready for expansion.", owner: "Finance", proof: "Pricing readiness", tone: "amber" },
+      { version: "v636", label: "Multi-Environment Release Plan", signal: "Static demo, staging, production backend, customer pilot, rollback route, and release evidence are separated.", owner: "Engineering", proof: "Environment plan", tone: "teal" },
+      { version: "v637", label: "Launch Risk Simulation Room", signal: "Data leak, support overload, low adoption, billing hold, proof gap, and rollback scenarios are rehearsed before launch.", owner: "Risk", proof: "Risk simulation", tone: "amber" },
+      { version: "v638", label: "Multi-Tenant Launch Control Room", signal: "Import handoff, learning ledger, launch governance, country fit, support, consent, pricing, environment, and risk simulation become one launch room.", owner: "Founder", proof: "Launch control", tone: "green" },
+    ];
+    const controls = [
+      ["Launch readiness", `${multiTenantLaunchReadiness}%`, `Environment ${environmentReadiness}% / consent ${consentReadiness}% / evidence ${evidenceScore}%.`, multiTenantLaunchReadiness >= 76 ? "green" : "amber"],
+      ["Consent vault", `${consentReadiness}%`, "Reusable learning, redaction proof, revocation, expiry, and no-share holds stay separated.", consentReadiness >= 78 ? "green" : "blue"],
+      ["Environment plan", `${environmentReadiness}%`, "Static demo, staging, production backend, pilot workspace, and rollback route are visibly separated.", environmentReadiness >= 78 ? "teal" : "amber"],
+      ["First launch move", compactText(firstMove, 48), "One controlled move comes before multi-tenant import, pricing, country rollout, or support scale.", overdueCount ? "red" : "green"],
+    ];
+    const nextAction = overdueCount
+      ? "Clear overdue proof, import, consent, support, pricing, environment, or rollback items before multi-tenant launch moves."
+      : multiTenantLaunchReadiness < 78
+        ? "Use the consent vault, country fit, support model, and release plan to close the multi-tenant launch gap."
+        : "Prepare the multi-tenant launch review with import proof, consent boundary, environment plan, support model, pricing posture, and risk simulation visible.";
+    const roomId = `${BUILD_VERSION.toUpperCase()}-MULTI-TENANT-LAUNCH-CONTROL`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Multi-Tenant Launch Control Room ${roomId}: ${stages.map((stage) => `${stage.version} ${stage.label}`).join(" -> ")}. Launch readiness ${multiTenantLaunchReadiness}%. Consent vault ${consentReadiness}%. Environment plan ${environmentReadiness}%. Open work ${openCount}. Actions ${actionCount}. Value ${totalValue}. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { consentReadiness, controls, copyText, environmentReadiness, multiTenantLaunchReadiness, nextAction, roomId, stages };
+  }
+
+  function renderCommandMultiTenantLaunchControlRoomPreview(model, autopilot) {
+    const room = buildCommandMultiTenantLaunchControlRoom(model, autopilot);
+    return `
+      <section class="info-card command-multi-tenant-launch-control-room">
+        <div class="info-head compact command-multi-tenant-launch-control-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Multi-Tenant</span>
+            <strong>Multi-Tenant Launch Control Room / ${room.multiTenantLaunchReadiness}%</strong>
+            <p>${escapeHtml(room.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(room.roomId)}</span>
+        </div>
+        <div class="command-multi-tenant-launch-control-room-controls mini-card-grid">
+          ${room.controls.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-multi-tenant-launch-control-room-steps">
+          ${room.stages.map((stage) => `<article class="command-multi-tenant-launch-control-room-step tone-${escapeHtml(stage.tone)}"><span>${escapeHtml(stage.version)}</span><strong>${escapeHtml(stage.label)}</strong><p>${escapeHtml(stage.signal)}</p><small>${escapeHtml(stage.owner)} / ${escapeHtml(stage.proof)}</small></article>`).join("")}
+        </div>
+        <div class="command-multi-tenant-launch-control-room-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-multi-tenant-launch-control-room" data-copy-text="${escapeHtml(encodeURIComponent(room.copyText))}">Copy launch room</button>
+          <span>One calm launch room before multi-tenant import, country expansion, pricing, support scale, or production backend movement.</span>
+        </div>
+      </section>
+    `;
+  }
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
     const autopilot = buildPursuitAutopilotModel();
@@ -55040,6 +55106,7 @@ const state = {
         ${renderCommandFirstLiveTenantLaunchRoomPreview(model, autopilot)}
         ${renderCommandLiveTenantLearningControlRoomPreview(model, autopilot)}
         ${renderCommandSecondTenantReadinessControlRoomPreview(model, autopilot)}
+        ${renderCommandMultiTenantLaunchControlRoomPreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -72492,12 +72559,22 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v628 Second Tenant Readiness Control Room",
-      phase: "Second Tenant Readiness Control Room",
+      version: "v638 Multi-Tenant Launch Control Room",
+      phase: "Multi-Tenant Launch Control Room",
       lane: "Static product prototype on GitHub Pages",
-      pace: "609 meaningful versions since rebrand",
-      summary: "Command Center now carries the second-tenant readiness layer from learning reuse gate through roadmap evidence, readiness mirror, safety approval, product impact, pilot pack, cross-tenant boundary, release receipt, launch decision, and readiness control.",
+      pace: "619 meaningful versions since rebrand",
+      summary: "Command Center now carries the multi-tenant launch layer from second-tenant import through learning ledger, governance, country fit, support model, consent vault, pricing readiness, multi-environment release planning, risk simulation, and launch control.",
       tracks: [
+        ["v638 multi-tenant launch control room", 100, "Command Center now joins import handoff, learning ledger, launch governance, country fit, support model, consent vault, pricing readiness, environment plan, and risk simulation into one multi-tenant launch control room.", "green"],
+        ["v637 launch risk simulation room", 100, "Command Center now rehearses data leak, support overload, low adoption, billing hold, proof gap, and rollback scenarios before multi-tenant launch.", "green"],
+        ["v636 multi-environment release plan", 100, "Command Center now separates static demo, staging, production backend, customer pilot, rollback route, and release evidence before launch.", "green"],
+        ["v635 expansion pricing readiness", 100, "Command Center now keeps seat plans, pilot-to-paid trigger, renewal checkpoint, country price note, and billing guardrails ready for expansion.", "green"],
+        ["v634 shared learning consent vault", 100, "Command Center now stores reusable learning with consent state, redaction proof, expiry review, revocation path, and no-share holds.", "green"],
+        ["v633 multi-tenant support model", 100, "Command Center now scales support ownership, escalation, first-response promise, proof request path, and closeout receipt beyond one tenant.", "green"],
+        ["v632 tenant country fit matrix", 100, "Command Center now keeps country rules, buyer language, currency posture, support hours, privacy fit, and rollout assumptions visible.", "green"],
+        ["v631 multi-tenant launch governance", 100, "Command Center now prepares policy, approval, audit, rollback, support, and sponsor language before second and third tenant expansion.", "green"],
+        ["v630 cross-tenant learning ledger", 100, "Command Center now classifies lessons as tenant-local, reusable, proof repair, product candidate, or blocked reuse across tenants.", "green"],
+        ["v629 second tenant import handoff", 100, "Command Center now turns second-tenant readiness into import owner, source pack, validation proof, rollback file, support route, and launch date.", "green"],
         ["v628 second tenant readiness control room", 100, "Command Center now joins reuse gate, roadmap link, readiness mirror, safety lane, impact preview, pilot pack, boundary check, release receipt, and launch decision into one second-tenant readiness control room.", "green"],
         ["v627 second tenant launch decision", 100, "Command Center now separates go, hold, repair, reuse, rollback, support, and customer-message decisions before the second tenant launch.", "green"],
         ["v626 roadmap-to-release receipt", 100, "Command Center now records roadmap candidate, evidence link, owner acceptance, release route, support note, and rollback receipt before product change moves.", "green"],
@@ -73106,9 +73183,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v629", "Second Tenant Import Handoff", "Turn second-tenant readiness into import owner, source pack, rollback proof, support route, and launch date."],
-        ["v630", "Cross-Tenant Learning Ledger", "Track which lessons stayed local, which became reusable, and which returned to proof repair across tenants."],
-        ["v631", "Multi-Tenant Launch Governance", "Prepare governance for second and third tenant expansion with policy, approval, audit, and rollback lanes."],
+        ["v639", "Production Backend Bridge", "Turn the launch control room into backend repository scope, data model, auth, storage, audit, and deployment proof."],
+        ["v640", "Tenant Onboarding Evidence Vault", "Prepare import screenshots, owner signoffs, training proof, support receipt, and tenant acceptance evidence."],
+        ["v641", "Multi-Country Launch Readiness", "Move country fit, support hours, pricing note, consent policy, and rollout assumptions into a launch-ready country pack."],
       ],      blockers: [
         "Private production repository still needs to be created in GitHub",
         "Generated issues still need to be opened in the private repo",
@@ -73411,10 +73488,20 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now carries the second-tenant readiness layer across reuse gate, roadmap evidence, readiness mirror, safety approval, product impact, pilot pack, cross-tenant boundary, release receipt, launch decision, and readiness control.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now carries the multi-tenant launch layer across import handoff, learning ledger, launch governance, country fit, support model, consent vault, pricing readiness, multi-environment release plan, risk simulation, and launch control.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v638 smoke addendum", "Multi-Tenant Launch Control Room", "Confirm the v638 panel, copy action, Build Phase badge, roadmap queue, launch readiness, consent vault, environment plan, first launch move, and v629-v638 stage cards before publishing.", "green"],
+      ["v637 smoke addendum", "Launch Risk Simulation Room", "Confirm data leak, support overload, low adoption, billing hold, proof gap, and rollback scenarios are rehearsed before publishing.", "green"],
+      ["v636 smoke addendum", "Multi-Environment Release Plan", "Confirm static demo, staging, production backend, customer pilot, rollback route, and release evidence are separated before publishing.", "green"],
+      ["v635 smoke addendum", "Expansion Pricing Readiness", "Confirm seat plans, pilot-to-paid trigger, renewal checkpoint, country price note, and billing guardrails are ready before publishing.", "green"],
+      ["v634 smoke addendum", "Shared Learning Consent Vault", "Confirm consent state, redaction proof, expiry review, revocation path, and no-share holds are visible before publishing.", "green"],
+      ["v633 smoke addendum", "Multi-Tenant Support Model", "Confirm support ownership, escalation, response promise, proof request path, and closeout receipt are visible before publishing.", "green"],
+      ["v632 smoke addendum", "Tenant Country Fit Matrix", "Confirm country rules, buyer language, currency posture, support hours, privacy fit, and rollout assumptions are visible before publishing.", "green"],
+      ["v631 smoke addendum", "Multi-Tenant Launch Governance", "Confirm policy, approval, audit, rollback, support, and sponsor language are ready before publishing.", "green"],
+      ["v630 smoke addendum", "Cross-Tenant Learning Ledger", "Confirm tenant-local, reusable, proof repair, product candidate, and blocked reuse outcomes are separated before publishing.", "green"],
+      ["v629 smoke addendum", "Second Tenant Import Handoff", "Confirm import owner, source pack, validation proof, rollback file, support route, and launch date are visible before publishing.", "green"],
       ["v628 smoke addendum", "Second Tenant Readiness Control Room", "Confirm the v628 panel, copy action, Build Phase badge, roadmap queue, second tenant readiness, reuse safety, roadmap motion, second launch move, and v619-v628 stage cards before publishing.", "green"],
       ["v627 smoke addendum", "Second Tenant Launch Decision", "Confirm go, hold, repair, reuse, rollback, support, and customer-message decisions are separated before publishing.", "green"],
       ["v626 smoke addendum", "Roadmap-to-Release Receipt", "Confirm roadmap candidate, evidence link, owner acceptance, release route, support note, and rollback receipt are recorded before publishing.", "green"],
@@ -86335,7 +86422,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v628.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v638.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -86357,7 +86444,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v628.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v638.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -86378,7 +86465,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v628.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v638.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -86398,7 +86485,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v628.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v638.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -86418,7 +86505,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v628.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v638.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -86446,7 +86533,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v628.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v638.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -86474,7 +86561,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v628.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v638.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -86505,7 +86592,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v628.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v638.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -125847,6 +125934,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandSecondTenantReadinessControlRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeURIComponent(encoded) : fallback, "Second tenant room copied.");
+      return;
+    }
+    if (action === "copy-command-multi-tenant-launch-control-room") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandMultiTenantLaunchControlRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeURIComponent(encoded) : fallback, "Multi-tenant launch room copied.");
       return;
     }
     if (action === "copy-command-memory") {
