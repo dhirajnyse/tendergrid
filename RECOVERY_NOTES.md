@@ -122,6 +122,7 @@ Recovery cleanup in this copy:
 - v545 adds a Market Proof Handoff so receipt learning becomes buyer/sponsor-ready proof only when sponsor proof, buyer story, blockers, reuse boundary, support, rollback, market packet, and review handoff are visible.
 - v546 adds an Archive Review Room so wider launch movement is held until decision archive, receipt learning, market proof, privacy gate, proof gate, rollback path, support path, and launch handoff are reviewed together.
 - v547 adds a Learning Console so archive review becomes tenant-safe lessons, reusable guidance, local-only memory, proof debt, and next-market review cadence before wider launch reuse moves.
+- v556 adds a Learning Release Gate so approved learning is released, held, retuned, shelved locally, assigned a guidance surface, observed, rollback-guarded, and packaged before next-market influence.
 - v555 adds Reuse Gate so the launch closeout archive is classified into reusable guidance, tenant-local memory, proof repair return, support retune return, rollback rule, next-market fit, and approval cadence before the next market learns.
 - v554 adds Closeout Archive so launch minutes, outcome watch, learning receipt, proof repair trail, support route, rollback memory, and next-market handoff stay retrievable after launch learning.
 - v553 adds Learning Receipt so the launch outcome watch becomes tenant-safe learning with outcome evidence, proof repair, support retune, rollback memory, owner cadence, next-market guidance, and learning boundary checks.

@@ -17363,6 +17363,32 @@ body.quiet-focus-mode .focus-mode-pill {
   border-left-color: var(--green);
 }
 
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate {
+  border-left-color: var(--teal);
+}
+
+.command-second-pilot-expansion-wider-launch-launch-learning-release-gate-preview {
+  margin: 0 0 14px;
+}
+
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-grid,
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes,
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-controls,
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-actions {
+  min-width: 0;
+}
+
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes article:nth-child(1),
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes article:nth-child(2),
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes article:nth-child(3),
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes article:nth-child(4),
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes article:nth-child(5),
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes article:nth-child(6),
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes article:nth-child(7),
+.command-governance-second-pilot-expansion-wider-launch-launch-learning-release-gate-lanes article:nth-child(8) {
+  border-left-color: var(--teal);
+}
+
 @media (max-width: 980px) {
   .command-governance-rollout-outcome-ledger-grid,
   .command-governance-rollout-outcome-ledger-entries,

@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v556 Learning Release Gate approves, holds, retunes, shelves local memory, selects a guidance surface, sets observation, arms rollback, and builds the market release packet before next-market influence.
 - v555 Reuse Gate decides whether the launch closeout archive becomes reusable guidance, stays tenant-local memory, or returns to proof repair/support retune with rollback, next-market fit, and approval cadence visible.
 - v554 Closeout Archive seals the launch learning receipt into a retrievable archive with launch minutes, outcome watch, proof repair trail, support route, rollback memory, and next-market handoff.
 - v553 Learning Receipt converts the launch outcome watch into a tenant-safe learning receipt with outcome evidence, proof repair, support retune, rollback memory, owner cadence, next-market guidance, and learning boundary checks.
