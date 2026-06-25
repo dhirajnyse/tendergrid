@@ -17781,12 +17781,81 @@ body.quiet-focus-mode .focus-mode-pill {
   line-height: 1.35;
 }
 
+.command-live-tenant-learning-control-room {
+  border-left-color: var(--green);
+  margin: 0 0 14px;
+}
+
+.command-live-tenant-learning-control-room-head,
+.command-live-tenant-learning-control-room-controls,
+.command-live-tenant-learning-control-room-steps,
+.command-live-tenant-learning-control-room-actions {
+  min-width: 0;
+}
+
+.command-live-tenant-learning-control-room-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.command-live-tenant-learning-control-room-steps article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.command-live-tenant-learning-control-room-steps article:nth-child(1),
+.command-live-tenant-learning-control-room-steps article:nth-child(4),
+.command-live-tenant-learning-control-room-steps article:nth-child(7),
+.command-live-tenant-learning-control-room-steps article:nth-child(10) {
+  border-left-color: var(--green);
+}
+
+.command-live-tenant-learning-control-room-steps article:nth-child(2),
+.command-live-tenant-learning-control-room-steps article:nth-child(5),
+.command-live-tenant-learning-control-room-steps article:nth-child(8) {
+  border-left-color: var(--blue);
+}
+
+.command-live-tenant-learning-control-room-steps article:nth-child(3),
+.command-live-tenant-learning-control-room-steps article:nth-child(6),
+.command-live-tenant-learning-control-room-steps article:nth-child(9) {
+  border-left-color: var(--amber);
+}
+
+.command-live-tenant-learning-control-room-steps span,
+.command-live-tenant-learning-control-room-steps small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.command-live-tenant-learning-control-room-steps strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-live-tenant-learning-control-room-steps p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
   .command-customer-success-center-steps,
   .command-live-pilot-control-room-steps,
-  .command-first-live-tenant-launch-room-steps {
+  .command-first-live-tenant-launch-room-steps,
+  .command-live-tenant-learning-control-room-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -17802,7 +17871,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-customer-launch-flywheel-steps,
   .command-customer-success-center-steps,
   .command-live-pilot-control-room-steps,
-  .command-first-live-tenant-launch-room-steps {
+  .command-first-live-tenant-launch-room-steps,
+  .command-live-tenant-learning-control-room-steps {
     grid-template-columns: 1fr;
   }
 

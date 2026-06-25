@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v608";
-  const BUILD_LABEL = "First Live Tenant Launch Room";
+  const BUILD_VERSION = "v618";
+  const BUILD_LABEL = "Live Tenant Learning Control Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=608";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=608";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=618";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=618";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -54747,6 +54747,71 @@ const state = {
       </section>
     `;
   }
+
+  function buildCommandLiveTenantLearningControlRoom(model, autopilot) {
+    const openCount = model.openRecords.length;
+    const actionCount = model.reminders.tasks.length;
+    const overdueCount = model.reminders.overdue;
+    const evidenceScore = model.evidenceScore;
+    const healthScore = model.healthScore;
+    const sourceCoverage = model.documents?.sourceCoverage || evidenceScore;
+    const totalValue = formatCompactMoney(model.totalValue);
+    const firstMove = model.priorityTasks[0]?.title || autopilot.signals[0]?.record.title || "Live tenant learning move";
+    const learningReadiness = Math.max(1, Math.min(100, Math.round(evidenceScore * 0.28 + sourceCoverage * 0.24 + healthScore * 0.2 + Math.max(0, 100 - overdueCount * 2) * 0.16 + 12)));
+    const renewalSignal = Math.max(1, Math.min(100, Math.round(learningReadiness * 0.36 + healthScore * 0.24 + Math.min(100, actionCount) * 0.12 + evidenceScore * 0.16 + 12)));
+    const stages = [
+      { version: "v609", label: "Tenant Import Dry Run Evidence", signal: "Import dry-run outputs, rejected rows, rollback proof, and owner signoff are captured before real tenant data moves.", owner: "Data", proof: "Dry-run evidence", tone: "green" },
+      { version: "v610", label: "First Tenant Support Watch", signal: "Support response, first questions, proof requests, escalation holds, and customer calm are watched after launch starts.", owner: "Support", proof: "Support watch", tone: "blue" },
+      { version: "v611", label: "Live Tenant Learning Receipt", signal: "First tenant outcomes become bounded learning, tenant-local memory, proof repair, and next-market guidance.", owner: "Governance", proof: "Learning receipt", tone: "amber" },
+      { version: "v612", label: "Tenant Feedback Capture", signal: "Customer comments, friction, requested changes, wins, objections, and no-chase signals are classified before reuse.", owner: "Success", proof: "Feedback capture", tone: "teal" },
+      { version: "v613", label: "Live Tenant Retention Ledger", signal: "Usage proof, sponsor touch, support effort, payment posture, renewal risk, and expansion signal enter one ledger.", owner: "Success", proof: "Retention ledger", tone: "green" },
+      { version: "v614", label: "Usage Adoption Signal", signal: "Room visits, row movement, evidence touches, overdue recovery, weekly review usage, and export behavior become adoption signals.", owner: "Product", proof: "Adoption signal", tone: "blue" },
+      { version: "v615", label: "Tenant Health Recovery Queue", signal: "Low adoption, overdue pressure, proof gaps, support waits, billing holds, and sponsor silence route into recovery actions.", owner: "Operations", proof: "Recovery queue", tone: "amber" },
+      { version: "v616", label: "Support-to-Product Feedback Loop", signal: "Support pain becomes product feedback only after tenant boundary, proof quality, priority, and rollback effect are visible.", owner: "Product", proof: "Feedback loop", tone: "teal" },
+      { version: "v617", label: "First Tenant Renewal Signal", signal: "Renewal posture is formed from adoption, outcome proof, support calm, billing trust, sponsor response, and expansion fit.", owner: "Finance", proof: "Renewal signal", tone: "green" },
+      { version: "v618", label: "Live Tenant Learning Control Room", signal: "Dry run, support watch, learning receipt, feedback, retention, adoption, recovery, product loop, and renewal signal become one control room.", owner: "Founder", proof: "Learning control", tone: "green" },
+    ];
+    const controls = [
+      ["Learning readiness", `${learningReadiness}%`, `Evidence ${evidenceScore}% / source ${sourceCoverage}% / health ${healthScore}%.`, learningReadiness >= 76 ? "green" : "amber"],
+      ["Renewal signal", `${renewalSignal}%`, "Adoption, outcome proof, support calm, billing trust, sponsor response, and expansion fit stay visible.", renewalSignal >= 78 ? "green" : "blue"],
+      ["Recovery motion", `${Math.max(1, actionCount - overdueCount)} moves`, `${openCount} open records and ${actionCount} action lines show where tenant health can recover.`, actionCount > overdueCount ? "teal" : "amber"],
+      ["First learning move", compactText(firstMove, 48), "One bounded tenant lesson comes before product roadmap change or network reuse.", overdueCount ? "red" : "green"],
+    ];
+    const nextAction = overdueCount
+      ? "Clear overdue support, proof, adoption, billing, or recovery items before promoting tenant learning."
+      : learningReadiness < 78
+        ? "Use feedback capture, retention ledger, adoption signals, and recovery queue to strengthen the first tenant learning loop."
+        : "Prepare the first tenant learning review with support watch, product feedback, renewal signal, and reuse boundary visible.";
+    const roomId = `${BUILD_VERSION.toUpperCase()}-LIVE-TENANT-LEARNING-CONTROL`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Live Tenant Learning Control Room ${roomId}: ${stages.map((stage) => `${stage.version} ${stage.label}`).join(" -> ")}. Learning readiness ${learningReadiness}%. Renewal signal ${renewalSignal}%. Open work ${openCount}. Actions ${actionCount}. Value ${totalValue}. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { controls, copyText, learningReadiness, nextAction, renewalSignal, roomId, stages };
+  }
+
+  function renderCommandLiveTenantLearningControlRoomPreview(model, autopilot) {
+    const room = buildCommandLiveTenantLearningControlRoom(model, autopilot);
+    return `
+      <section class="info-card command-live-tenant-learning-control-room">
+        <div class="info-head compact command-live-tenant-learning-control-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Tenant Learning</span>
+            <strong>Live Tenant Learning Control Room / ${room.learningReadiness}%</strong>
+            <p>${escapeHtml(room.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(room.roomId)}</span>
+        </div>
+        <div class="command-live-tenant-learning-control-room-controls mini-card-grid">
+          ${room.controls.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-live-tenant-learning-control-room-steps">
+          ${room.stages.map((stage) => `<article class="command-live-tenant-learning-control-room-step tone-${escapeHtml(stage.tone)}"><span>${escapeHtml(stage.version)}</span><strong>${escapeHtml(stage.label)}</strong><p>${escapeHtml(stage.signal)}</p><small>${escapeHtml(stage.owner)} / ${escapeHtml(stage.proof)}</small></article>`).join("")}
+        </div>
+        <div class="command-live-tenant-learning-control-room-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-live-tenant-learning-control-room" data-copy-text="${escapeHtml(encodeURIComponent(room.copyText))}">Copy learning control room</button>
+          <span>One bounded learning gate before product change, renewal posture, or wider reuse.</span>
+        </div>
+      </section>
+    `;
+  }
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
     const autopilot = buildPursuitAutopilotModel();
@@ -54908,6 +54973,7 @@ const state = {
         ${renderCommandCustomerSuccessCenterPreview(model, autopilot)}
         ${renderCommandLivePilotControlRoomPreview(model, autopilot)}
         ${renderCommandFirstLiveTenantLaunchRoomPreview(model, autopilot)}
+        ${renderCommandLiveTenantLearningControlRoomPreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -72360,12 +72426,22 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v608 First Live Tenant Launch Room",
-      phase: "First Live Tenant Launch Room",
+      version: "v618 Live Tenant Learning Control Room",
+      phase: "Live Tenant Learning Control Room",
       lane: "Static product prototype on GitHub Pages",
-      pace: "589 meaningful versions since rebrand",
-      summary: "Command Center now carries the first live tenant launch layer from pilot data import through tenant shell, go/no-go, access activation, privacy receipt, support rhythm, billing trial, success pulse, risk closeout, and tenant launch room.",
+      pace: "599 meaningful versions since rebrand",
+      summary: "Command Center now carries the live tenant learning layer from import dry-run evidence through support watch, learning receipt, feedback capture, retention ledger, adoption signal, health recovery, product feedback loop, renewal signal, and tenant learning control.",
       tracks: [
+        ["v618 live tenant learning control room", 100, "Command Center now joins dry run, support watch, learning receipt, feedback, retention, adoption, recovery, product loop, and renewal signal into one live tenant learning control room.", "green"],
+        ["v617 first tenant renewal signal", 100, "Command Center now forms renewal posture from adoption, outcome proof, support calm, billing trust, sponsor response, and expansion fit.", "green"],
+        ["v616 support-to-product feedback loop", 100, "Command Center now turns support pain into product feedback only after tenant boundary, proof quality, priority, and rollback effect are visible.", "green"],
+        ["v615 tenant health recovery queue", 100, "Command Center now routes low adoption, overdue pressure, proof gaps, support waits, billing holds, and sponsor silence into recovery actions.", "green"],
+        ["v614 usage adoption signal", 100, "Command Center now turns room visits, row movement, evidence touches, overdue recovery, weekly review usage, and export behavior into adoption signals.", "green"],
+        ["v613 live tenant retention ledger", 100, "Command Center now places usage proof, sponsor touch, support effort, payment posture, renewal risk, and expansion signal into one tenant ledger.", "green"],
+        ["v612 tenant feedback capture", 100, "Command Center now classifies customer comments, friction, requested changes, wins, objections, and no-chase signals before reuse.", "green"],
+        ["v611 live tenant learning receipt", 100, "Command Center now turns first tenant outcomes into bounded learning, tenant-local memory, proof repair, and next-market guidance.", "green"],
+        ["v610 first tenant support watch", 100, "Command Center now watches support response, first questions, proof requests, escalation holds, and customer calm after launch starts.", "green"],
+        ["v609 tenant import dry run evidence", 100, "Command Center now captures import dry-run outputs, rejected rows, rollback proof, and owner signoff before real tenant data moves.", "green"],
         ["v608 first live tenant launch room", 100, "Command Center now joins pilot data import, tenant shell, go/no-go, access, privacy, support, billing, success pulse, risk closeout, and first tenant launch into one live tenant room.", "green"],
         ["v607 launch risk closeout", 100, "Command Center now closes or parks open launch risks, data gaps, access gaps, support pressure, billing holds, and rollback blockers before live tenant movement.", "green"],
         ["v606 first customer success pulse", 100, "Command Center now checks first login, row movement, evidence touch, sponsor response, support friction, and renewal signal after tenant launch starts.", "green"],
@@ -72954,9 +73030,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v609", "Tenant Import Dry Run Evidence", "Capture import dry-run outputs, rejected rows, rollback proof, and owner signoff before real tenant data moves."],
-        ["v610", "First Tenant Support Watch", "Watch support response, first questions, proof requests, escalation holds, and customer calm after launch starts."],
-        ["v611", "Live Tenant Learning Receipt", "Turn first tenant outcomes into bounded learning, tenant-local memory, proof repair, and next-market guidance."],
+        ["v619", "Tenant Learning Reuse Gate", "Decide which first-tenant lessons stay local, require proof repair, or become reusable product guidance."],
+        ["v620", "Product Roadmap Evidence Link", "Connect tenant feedback and support pain to roadmap candidates with proof, priority, rollback, and owner acceptance."],
+        ["v621", "Second Tenant Readiness Mirror", "Mirror first-tenant learning into a second-tenant readiness packet without leaking tenant-local memory."],
       ],      blockers: [
         "Private production repository still needs to be created in GitHub",
         "Generated issues still need to be opened in the private repo",
@@ -73259,10 +73335,20 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now carries the first live tenant launch layer across pilot data import, tenant shell, go/no-go receipt, access activation, privacy receipt, support rhythm, billing trial, success pulse, launch risk closeout, and first tenant launch room.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now carries the live tenant learning layer across import dry-run evidence, support watch, learning receipt, feedback capture, retention ledger, adoption signal, health recovery, product feedback loop, renewal signal, and learning control.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
-      ["Smoke check", "First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v618 smoke addendum", "Live Tenant Learning Control Room", "Confirm the v618 panel, copy action, Build Phase badge, roadmap queue, learning readiness, renewal signal, recovery motion, first learning move, and v609-v618 stage cards before publishing.", "green"],
+      ["v617 smoke addendum", "First Tenant Renewal Signal", "Confirm adoption, outcome proof, support calm, billing trust, sponsor response, and expansion fit are named before publishing.", "green"],
+      ["v616 smoke addendum", "Support-to-Product Feedback Loop", "Confirm support pain, tenant boundary, proof quality, priority, and rollback effect are named before publishing.", "green"],
+      ["v615 smoke addendum", "Tenant Health Recovery Queue", "Confirm low adoption, overdue pressure, proof gaps, support waits, billing holds, and sponsor silence route into recovery actions.", "green"],
+      ["v614 smoke addendum", "Usage Adoption Signal", "Confirm room visits, row movement, evidence touches, overdue recovery, weekly review usage, and export behavior are named before publishing.", "green"],
+      ["v613 smoke addendum", "Live Tenant Retention Ledger", "Confirm usage proof, sponsor touch, support effort, payment posture, renewal risk, and expansion signal are named before publishing.", "green"],
+      ["v612 smoke addendum", "Tenant Feedback Capture", "Confirm customer comments, friction, requested changes, wins, objections, and no-chase signals are classified before publishing.", "green"],
+      ["v611 smoke addendum", "Live Tenant Learning Receipt", "Confirm bounded learning, tenant-local memory, proof repair, and next-market guidance are named before publishing.", "green"],
+      ["v610 smoke addendum", "First Tenant Support Watch", "Confirm support response, first questions, proof requests, escalation holds, and customer calm are watched before publishing.", "green"],
+      ["v609 smoke addendum", "Tenant Import Dry Run Evidence", "Confirm import dry-run outputs, rejected rows, rollback proof, and owner signoff are named before publishing.", "green"],
       ["v608 smoke addendum", "First Live Tenant Launch Room", "Confirm the v608 panel, copy action, Build Phase badge, roadmap queue, tenant readiness, data guard, launch motion, first tenant move, and v599-v608 stage cards before publishing.", "green"],
       ["v607 smoke addendum", "Launch Risk Closeout", "Confirm launch risks, data gaps, access gaps, support pressure, billing holds, and rollback blockers are closed or parked before publishing.", "green"],
       ["v606 smoke addendum", "First Customer Success Pulse", "Confirm first login, row movement, evidence touch, sponsor response, support friction, and renewal signal are named before publishing.", "green"],
@@ -86163,7 +86249,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v608.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v618.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -86185,7 +86271,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v608.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v618.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -86206,7 +86292,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v608.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v618.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -86226,7 +86312,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v608.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v618.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -86246,7 +86332,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v608.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v618.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -86274,7 +86360,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v608.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v618.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -86302,7 +86388,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v608.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v618.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -86333,7 +86419,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v608.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v618.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -125663,6 +125749,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstLiveTenantLaunchRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeURIComponent(encoded) : fallback, "Tenant launch room copied.");
+      return;
+    }
+    if (action === "copy-command-live-tenant-learning-control-room") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandLiveTenantLearningControlRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeURIComponent(encoded) : fallback, "Tenant learning room copied.");
       return;
     }
     if (action === "copy-command-memory") {
