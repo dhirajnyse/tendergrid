@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v638";
-  const BUILD_LABEL = "Multi-Tenant Launch Control Room";
+  const BUILD_VERSION = "v648";
+  const BUILD_LABEL = "Production Pilot Control Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=638";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=638";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=648.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=648.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -8387,7 +8387,7 @@ const state = {
           </div>
           <div class="command-serenity-compass-actions">
             <small>${escapeHtml(footerLine)}</small>
-            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-text="${escapeHtml(encodedCopy)}">Copy handrail</button>
+            <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-message="Serenity handrail copied." data-copy-text="${escapeHtml(encodedCopy)}">Copy handrail</button>
           </div>
         </div>
       </details>
@@ -8425,7 +8425,7 @@ const state = {
             .join("")}
         </div>
         <div class="command-continuity-actions">
-          <small>Guardrail stays visible until the next production-safe milestone replaces it.</small>
+          <small>Guardrail stays visible inside Pilot Story for recovery continuity.</small>
           <button class="ghost-btn" type="button" data-action="copy-command-brief" data-copy-message="Continuity line copied." data-copy-text="${escapeHtml(encodeURIComponent(guardLine))}">Copy continuity line</button>
         </div>
       </section>
@@ -8508,7 +8508,7 @@ const state = {
       "",
       `Pilot ask: ${pilotAsk}`,
       `Proof already visible: ${model.openRecords.length} open records, ${model.reminders.tasks.length} routed actions, ${model.evidenceScore}% evidence health, and ${model.documents.sourceCoverage}% source coverage.`,
-      monthlyCost ? `Commercial frame: ${formatBilling(monthlyCost, company)}/month plus setup/import, with a ${roiMultiple}x monthly value case and ${paybackMonths}-month payback target.` : `Commercial frame: start with the recommended package and keep setup/import separately approved.`,
+      monthlyCost ? `Commercial frame: ${formatBilling(monthlyCost, company)}/month plus setup/import, with a ${roiMultiple}x monthly value case and ${paybackMonths}-month payback target.` : "Commercial frame: start with the recommended package and keep setup/import separately approved.",
       "",
       "Decision gate: after 30 days, renew, upgrade, pause, or move to production backend scope based on adoption and management proof.",
       "",
@@ -8662,57 +8662,43 @@ const state = {
   }
 
   function renderCommandPilotStoryFold(model, autopilot, pitch = buildPilotPitchModel()) {
-    const company = pitch.company || {};
-    const membership = pitch.membership || {};
+    const roi = pitch.roiPack || {};
     const feedback = pitch.feedbackPack || {};
-    const kickoff = pitch.kickoffControlPack || {};
-    const setupLanes = Array.isArray(kickoff.setupLanes) ? kickoff.setupLanes : [];
-    const workbookLane = setupLanes.find((lane) => /workbook/i.test(lane.label || "")) || {};
-    const reviewLane = setupLanes.find((lane) => /review/i.test(lane.label || "")) || {};
+    const membership = pitch.membership || {};
     const firstSignal = autopilot?.signals?.[0] || {};
-    const firstMove = firstSignal.action || firstSignal.title || model.priorityTasks?.[0]?.action || "Open the first priority room";
+    const firstTitle = firstSignal.title || firstSignal.action || model.priorityTasks?.[0]?.title || "First pilot proof";
     const storySections = [
       renderCommandContinuityGuard(),
       renderCommandWorldDemoScript(model, autopilot),
       renderCommandPilotClosePacket(model, pitch),
       renderCommandPilotLaunchBoard(model, pitch),
     ];
-    const feedbackScore = Number(feedback.score || 0);
-    const readinessScore = Math.max(
+    const storyScore = Math.max(
       1,
-      Math.min(
-        100,
-        Math.round(
-          model.evidenceScore * 0.26 +
-            model.documents.sourceCoverage * 0.18 +
-            Math.min(model.openRecords.length, 24) * 1.25 +
-            Math.min(model.reminders.tasks.length, 34) * 0.78 +
-            feedbackScore * 0.16,
-        ),
-      ),
+      Math.min(100, Math.round((Number(feedback.score) || model.evidenceScore || 55) * 0.42 + (Number(roi.confidence) || 65) * 0.32 + model.actionScore * 0.18 + 8)),
     );
-    const readinessState =
-      readinessScore >= 84 ? "Sponsor story is board-ready" : readinessScore >= 66 ? "Sponsor story is guided" : "Sponsor story needs one proof";
-    const pilotAsk = `${membership.seats || 15} users / one workbook / 30 days`;
-    const launchGate = reviewLane.date || kickoff.renewalGateDate || "Day 30";
-    const sponsor = company.name || model.portfolio?.topAccounts?.[0]?.label || "first sponsor";
-    const storyLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: recovery, demo, close, and launch proof stay folded into one sponsor story. ${readinessState}, readiness ${readinessScore}%. First move: ${compactText(firstMove, 96)}.`;
+    const storyLine = `${BRAND_NAME} ${BUILD_VERSION} Pilot Story Fold: ${compactText(firstTitle, 74)}. Keep buyer proof, ROI, adoption, and next action in one folded story before any launch conversation.`;
     const storyCards = [
-      ["Sponsor", compactText(sponsor, 40), `${pilotAsk}.`, "green"],
-      ["Readiness", `${readinessScore}%`, `${model.openRecords.length} open records, ${model.evidenceScore}% evidence health.`, readinessScore >= 84 ? "green" : readinessScore >= 66 ? "blue" : "amber"],
-      ["Launch gate", launchGate, workbookLane.date ? `Workbook by ${workbookLane.date}.` : "Confirm workbook before invites.", "blue"],
-      ["Hidden detail", `${storySections.length} panels`, "Recovery, demo, sponsor close, and day-one launch stay available on demand.", "teal"],
+      ["Buyer proof", compactText(firstTitle, 44), `${model.openRecords.length} live records can become the first demo story.`, "blue"],
+      ["ROI story", roi.roiMultiple ? `${roi.roiMultiple}x` : "Ready", roi.confidence ? `${roi.confidence}% confidence from the pilot model.` : "Use the pilot value model before pricing.", "green"],
+      ["Package", membership.label || "Team pilot", membership.seats ? `${membership.seats} seats ready for the first workspace.` : "Seat package stays adjustable.", "teal"],
+      ["Close cue", `${storyScore}%`, feedback.title || "Ask for one workbook, one owner, one review date.", storyScore >= 78 ? "green" : "amber"],
+    ];
+    const proofSteps = [
+      ["Show", "Real tracker movement", "Use Command, Advisor, Tenders, Projects, and Reports from one live workbook.", "blue"],
+      ["Prove", "Commercial privacy", "Keep values and negotiation context in management rooms while operations moves dates and owners.", "green"],
+      ["Decide", "30-day gate", "Renew, upgrade, pause, or move to backend scope only after the pilot review.", "amber"],
     ];
 
     return `
-      <details class="command-pilot-story-fold">
+      <details class="command-pilot-story-fold" aria-label="Pilot story fold">
         <summary>
           <span>
-            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Sponsor story</span>
-            <strong>Open recovery, demo, close, and launch proof</strong>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Pilot Story Fold</span>
+            <strong>Keep the buyer story folded until the room needs it.</strong>
             <small>${escapeHtml(storyLine)}</small>
           </span>
-          <b>Open</b>
+          <b>${escapeHtml(`${storyScore}% story`)}</b>
         </summary>
         <div class="command-pilot-story-fold-summary">
           ${storyCards
@@ -8728,6 +8714,26 @@ const state = {
             .join("")}
         </div>
         <div class="command-pilot-story-fold-body">
+          <div class="command-learning-loop-lanes">
+            ${proofSteps
+              .map(
+                ([label, value, note, tone]) => `
+                  <article class="tone-${escapeHtml(tone)}">
+                    <span>${escapeHtml(label)}</span>
+                    <strong>${escapeHtml(value)}</strong>
+                    <small>${escapeHtml(note)}</small>
+                  </article>
+                `,
+              )
+              .join("")}
+          </div>
+          <div class="command-learning-loop-actions">
+            <small>Story rule: do not sell the whole platform; sell the smallest proof path that shows calm operating control.</small>
+            <div>
+              <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open pitch</button>
+              <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Pilot story copied." data-copy-text="${escapeHtml(encodeURIComponent(storyLine))}">Copy story</button>
+            </div>
+          </div>
           ${storySections.join("")}
         </div>
       </details>
@@ -8735,62 +8741,29 @@ const state = {
   }
 
   function renderCommandLearningLoopBoard(model, autopilot, pitch = buildPilotPitchModel()) {
-    const twin = buildPursuitDecisionTwinModel();
-    const publisher = pitch.coachToCloseLearningPublisher || {};
-    const company = pitch.company || {};
-    const twinLearningItems = Array.isArray(twin.learningItems) ? twin.learningItems : [];
-    const localSignalCount =
-      model.reminders.tasks.length +
-      model.documents.totalGaps +
-      model.contractGaps.length +
-      autopilot.nowCount +
-      autopilot.delegateCount +
-      autopilot.decideCount;
-    const approvedRuleCount = twinLearningItems.length;
-    const publisherScore = Number(publisher.score) || 0;
-    const twinScore = Number(twin.learningScore) || 0;
-    const loopScore = Math.max(
-      1,
-      Math.min(100, Math.round(twinScore * 0.42 + publisherScore * 0.34 + model.evidenceScore * 0.24)),
-    );
-    const reusablePatterns = Math.max(0, (Number(publisher.founderReady) || 0) + (Number(publisher.replyMemory) || 0) + (Number(publisher.forecastTests) || 0));
-    const privacyLocks = Math.max(1, (Number(publisher.retiredRoutes) || 0) + model.evidenceGaps.length + model.contractGaps.length);
-    const crossOrgLift = Number(publisher.netCloseLift) || 0;
-    const loopLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${localSignalCount} local signals become tenant-approved learning before any anonymized pattern can improve another organization. Loop score ${loopScore}%, ${approvedRuleCount} rules, ${reusablePatterns} reusable patterns, privacy locks on.`;
-    const learningNote = [
-      `Subject: ${BRAND_NAME} closed-loop learning lane - ${company.name || state.data.company.name || "workspace"}`,
-      "",
-      "The platform is ready to learn from real work without leaking client data.",
-      "",
-      `Local signals: ${localSignalCount}`,
-      `Decision Twin memory: ${twinScore}% / ${approvedRuleCount} rules`,
-      `Coach-to-close publisher: ${publisherScore}% / ${reusablePatterns} reusable patterns`,
-      `Privacy locks: ${privacyLocks}`,
-      `Network lift candidate: ${crossOrgLift >= 0 ? "+" : ""}${crossOrgLift}`,
-      "",
-      "Operating rule: every learning move stays inside the tenant first, then management approves it, then privacy filters remove client names, values, documents, and commercial context before an anonymized pattern can help other workspaces.",
-      "",
-      "Regards,",
-      "PursuitDesk team",
-    ].join("\n");
+    const feedback = pitch.feedbackPack || {};
+    const evidenceConfidence = Math.max(1, Math.min(100, Math.round(model.evidenceScore * 0.56 + model.weeklyReview.reviewScore * 0.26 + model.contractScore * 0.18)));
+    const loopScore = Math.max(1, Math.min(100, Math.round(evidenceConfidence * 0.44 + model.actionScore * 0.28 + (Number(feedback.score) || 60) * 0.2 + 8)));
+    const firstMove = autopilot?.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Capture one outcome before changing guidance.";
+    const loopLine = `${BRAND_NAME} ${BUILD_VERSION} Learning Loop Board: ${loopScore}% ready. Outcome learning stays gated by evidence, owner review, and privacy filtering.`;
     const loopCards = [
-      ["Observe", `${localSignalCount} signals`, `${model.openRecords.length} open records feed actions, gaps, and outcomes.`, "teal"],
-      ["Score", `${loopScore}%`, `${twinScore}% Decision Twin memory with ${model.evidenceScore}% evidence health.`, "blue"],
-      ["Approve", `${approvedRuleCount} rules`, "Tenant management approves what can influence guidance.", "green"],
-      ["Share", `${reusablePatterns} patterns`, "Only anonymized playbooks can cross organizations.", "amber"],
+      ["Loop score", `${loopScore}%`, "Blended from evidence, action control, review readiness, and buyer feedback.", loopScore >= 78 ? "green" : "blue"],
+      ["Evidence", `${evidenceConfidence}%`, `${model.evidenceGaps.length} evidence gaps still visible before reuse.`, evidenceConfidence >= 78 ? "green" : "amber"],
+      ["Action memory", `${model.reminders.tasks.length}`, `${model.reminders.overdue} overdue actions still shape the next learning cycle.`, model.reminders.overdue ? "amber" : "green"],
+      ["Next cue", "One outcome", compactText(firstMove, 112), "teal"],
     ];
-    const learningLanes = [
-      ["Local tenant loop", "Actions, replies, delays, proof, and outcomes stay inside the organization first.", `${autopilot.nowCount} do-now / ${autopilot.delegateCount} delegate / ${autopilot.decideCount} decide`, "teal"],
-      ["Approval gate", "Admin and management decide which rules can influence Advisor, forecasts, and scripts.", `${approvedRuleCount} candidate rules`, "green"],
-      ["Privacy filter", "Client names, commercial values, files, emails, and project details are stripped before reuse.", `${privacyLocks} locks active`, "blue"],
-      ["Network playbook", "Shared learning becomes aggregate guidance that improves other tenants without exposing the source.", `${crossOrgLift >= 0 ? "+" : ""}${crossOrgLift} lift candidate`, "amber"],
+    const loopLanes = [
+      ["Observe", "Capture the result", "Record owner, date, proof, and the actual outcome after the meeting.", "blue"],
+      ["Approve", "Management review", "Do not reuse guidance until a manager confirms the result is real.", "amber"],
+      ["Filter", "Privacy first", "Remove tenant-specific commercial context before any pattern becomes reusable.", "green"],
+      ["Release", "Small update", "Promote only the calm next action, not a noisy rule change.", "teal"],
     ];
 
     return `
       <section class="command-learning-loop-board" aria-label="Learning loop board">
         <div class="command-learning-loop-head">
           <span class="metric-label">${escapeHtml(BUILD_VERSION)} Learning Loop Board</span>
-          <strong>Turn every action into governed learning, then scale only the safe pattern.</strong>
+          <strong>Let every real outcome improve the next calm move.</strong>
           <small>${escapeHtml(loopLine)}</small>
         </div>
         <div class="command-learning-loop-grid">
@@ -8807,12 +8780,12 @@ const state = {
             .join("")}
         </div>
         <div class="command-learning-loop-lanes">
-          ${learningLanes
+          ${loopLanes
             .map(
-              ([label, note, proof, tone]) => `
+              ([label, value, note, tone]) => `
                 <article class="tone-${escapeHtml(tone)}">
                   <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(proof)}</strong>
+                  <strong>${escapeHtml(value)}</strong>
                   <small>${escapeHtml(note)}</small>
                 </article>
               `,
@@ -8820,12 +8793,10 @@ const state = {
             .join("")}
         </div>
         <div class="command-learning-loop-actions">
-          <small>Closed loop: observe work, score impact, approve influence, strip private data, then reuse only the anonymized lesson.</small>
+          <small>Learning rule: no model guidance changes from opinions; only proven outcomes enter the reusable loop.</small>
           <div>
-            <button class="ghost-btn" type="button" data-view="Decision Twin">Open Decision Twin</button>
-            <button class="ghost-btn" type="button" data-view="Pilot Pitch">Open learning publisher</button>
-            <button class="ghost-btn" type="button" data-view="Reports">Open reports</button>
-            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Learning loop note copied." data-copy-text="${escapeHtml(encodeURIComponent(learningNote))}">Copy learning note</button>
+            <button class="ghost-btn" type="button" data-view="Weekly Review">Open review proof</button>
+            <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Learning loop copied." data-copy-text="${escapeHtml(encodeURIComponent(loopLine))}">Copy loop</button>
           </div>
         </div>
       </section>
@@ -8833,72 +8804,30 @@ const state = {
   }
 
   function renderCommandOutcomeFeedbackEngine(model, autopilot, pitch = buildPilotPitchModel()) {
-    const twin = buildPursuitDecisionTwinModel();
-    const publisher = pitch.coachToCloseLearningPublisher || {};
-    const replayRows = Array.isArray(twin.replayRows) ? twin.replayRows : [];
-    const publisherRows = Array.isArray(publisher.rows) ? publisher.rows : [];
-    const closedGoodRecords = model.records.filter((record) => ["Awarded", "Completed"].includes(record.status));
-    const closedStopRecords = model.records.filter((record) => ["Cancelled", "Regret"].includes(record.status));
-    const closedTotal = closedGoodRecords.length + closedStopRecords.length;
-    const matchedReplay = replayRows.filter((row) => row.status === "Matched").length;
-    const partialReplay = replayRows.filter((row) => row.status === "Partial").length;
-    const weakReplay = Math.max(0, replayRows.length - matchedReplay - partialReplay);
-    const predictedLift = Number(twin.expectedReplayLift) || 0;
-    const actualLift = Number(twin.actualReplayLift) || 0;
-    const liftVariance = Math.abs(Number(twin.varianceLift) || predictedLift - actualLift);
-    const forecastFit = Math.max(0, Math.min(100, 100 - Math.round(liftVariance * 2.6)));
-    const publisherScore = Number(publisher.score) || 0;
-    const outcomeScore = Number(twin.sponsorPlaybookOutcomeTrackerScore) || 0;
-    const rewardScore = Math.max(
-      1,
-      Math.min(
-        100,
-        Math.round(model.evidenceScore * 0.24 + (Number(twin.replayScore) || 0) * 0.22 + forecastFit * 0.18 + publisherScore * 0.18 + outcomeScore * 0.18),
-      ),
-    );
-    const feedbackEvents = Math.max(1, replayRows.length + publisherRows.length + closedTotal + model.reminders.tasks.length);
-    const reinforcementReady = Math.max(0, (Number(twin.approvedLearningRules) || 0) + (Number(twin.influenceEnabledGuidance) || 0) + (Number(publisher.founderReady) || 0));
-    const blockedSignals = Math.max(0, weakReplay + (Number(twin.sponsorOutcomeBlockedFollowUps) || 0) + model.evidenceGaps.length);
-    const privacyFilters = Math.max(1, blockedSignals + model.contractGaps.length + (Number(publisher.retiredRoutes) || 0));
-    const firstSignal = autopilot.signals[0] || {};
-    const firstRecord = firstSignal.record || model.openRecords[0] || {};
-    const rewardLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${feedbackEvents} feedback events compare predicted lift ${predictedLift} with actual lift ${actualLift}, score reward at ${rewardScore}%, and release only ${reinforcementReady} approved reinforcement paths through ${privacyFilters} privacy filters.`;
-    const feedbackNote = [
-      `Subject: ${BRAND_NAME} outcome feedback engine - ${state.data.company.name}`,
-      "",
-      "The closed loop now has a reward signal.",
-      "",
-      `Feedback events: ${feedbackEvents}`,
-      `Replay fit: ${forecastFit}% / matched ${matchedReplay} / partial ${partialReplay} / blocked ${weakReplay}`,
-      `Reward score: ${rewardScore}%`,
-      `Approved reinforcement paths: ${reinforcementReady}`,
-      `Privacy filters: ${privacyFilters}`,
-      `First signal: ${firstRecord.reference || firstRecord.title || "No urgent record"} / ${firstSignal.action || "Keep weekly review rhythm."}`,
-      "",
-      "Rule: actual outcomes can improve guidance only after proof exists, the tenant approves influence, and private commercial context is stripped before any anonymized pattern is reused.",
-      "",
-      "Regards,",
-      "PursuitDesk team",
-    ].join("\n");
+    const feedback = pitch.feedbackPack || {};
+    const roi = pitch.roiPack || {};
+    const wonOrClosed = (model.records || []).filter((record) => /awarded|completed|closed|won/i.test(String(record.status || ""))).length;
+    const feedbackScore = Math.max(1, Math.min(100, Math.round((Number(feedback.score) || 60) * 0.4 + model.evidenceScore * 0.26 + model.contractScore * 0.16 + Math.min(100, wonOrClosed * 5) * 0.18)));
+    const feedbackNote = `${BRAND_NAME} ${BUILD_VERSION} Outcome Feedback Engine: ${feedbackScore}% confidence. Capture outcome proof, compare the promised move with the actual result, then decide whether guidance should be reused, held, or retired.`;
     const feedbackCards = [
-      ["Capture", `${feedbackEvents} events`, `${closedGoodRecords.length} won/completed and ${closedStopRecords.length} stopped outcomes feed the loop.`, "teal"],
-      ["Compare", `${forecastFit}% fit`, `Predicted lift ${predictedLift} vs actual lift ${actualLift}; ${matchedReplay} replay rows matched.`, "blue"],
-      ["Reward", `${rewardScore}%`, `${model.evidenceScore}% evidence health and ${outcomeScore}% outcome tracker score shape the reward.`, "green"],
-      ["Reinforce", `${reinforcementReady} paths`, `${privacyFilters} filters block weak, private, or unapproved reuse.`, "amber"],
+      ["Feedback score", `${feedbackScore}%`, feedback.title || "Outcome signal is ready for controlled review.", feedbackScore >= 78 ? "green" : "blue"],
+      ["Closed proof", `${wonOrClosed}`, "Won, awarded, completed, or closed records can teach the next release only after review.", "teal"],
+      ["ROI context", roi.roiMultiple ? `${roi.roiMultiple}x` : "Pending", roi.confidence ? `${roi.confidence}% ROI confidence remains buyer-facing, not frontline guidance.` : "Use pricing proof carefully.", "amber"],
+      ["Safety gate", "On", "Tenant-specific detail stays out of reusable guidance until filtered.", "green"],
     ];
     const feedbackLanes = [
-      ["Outcome capture", "Record status movement, owner proof, date proof, and whether the action actually moved the pursuit.", `${closedTotal} closed outcomes`, "teal"],
-      ["Prediction replay", "Compare what Decision Twin expected against what the records later proved.", `${matchedReplay} matched / ${partialReplay} partial`, "blue"],
-      ["Reward signal", "Promote patterns that improved proof, confidence, close path, or delivery control; hold weak repeats.", `${rewardScore}% reward`, "green"],
-      ["Policy update", "Reinforcement reaches Advisor, Reports, and Pilot Pitch only through approved influence switches.", `${reinforcementReady} approved`, "amber"],
+      ["Actual result", "What changed after the recommendation?", "Proof before learning", "blue"],
+      ["Human review", "Was the result caused by the guidance?", "Manager confirms causality", "amber"],
+      ["Reuse fit", "Does this pattern help another team safely?", "Privacy-filtered reuse only", "green"],
+      ["Retire rule", "Did the advice create noise or delay?", "Hold or remove weak guidance", "teal"],
     ];
 
     return `
       <section class="command-outcome-feedback-engine" aria-label="Outcome feedback engine">
         <div class="command-outcome-feedback-head">
           <span class="metric-label">${escapeHtml(BUILD_VERSION)} Outcome Feedback Engine</span>
-          <strong>Give the learning loop a reward signal before the system reinforces anything.</strong>
-          <small>${escapeHtml(rewardLine)}</small>
+          <strong>Close the loop only when the outcome is proven.</strong>
+          <small>${escapeHtml(feedbackNote)}</small>
         </div>
         <div class="command-outcome-feedback-grid">
           ${feedbackCards
@@ -8930,7 +8859,6 @@ const state = {
           <small>Reinforcement rule: no outcome changes live guidance until the result is proven, approved, privacy-filtered, and auditable.</small>
           <div>
             <button class="ghost-btn" type="button" data-view="Decision Twin">Open replay</button>
-            <button class="ghost-btn" type="button" data-view="Weekly Review">Open review proof</button>
             <button class="ghost-btn" type="button" data-view="Reports">Open outcome report</button>
             <button class="secondary-btn" type="button" data-action="copy-command-brief" data-copy-message="Outcome feedback note copied." data-copy-text="${escapeHtml(encodeURIComponent(feedbackNote))}">Copy feedback note</button>
           </div>
@@ -54943,6 +54871,72 @@ const state = {
       </section>
     `;
   }
+  function buildCommandProductionPilotControlRoom(model, autopilot) {
+    const openCount = model.openRecords.length;
+    const actionCount = model.reminders.tasks.length;
+    const overdueCount = model.reminders.overdue;
+    const evidenceScore = model.evidenceScore;
+    const healthScore = model.healthScore;
+    const sourceCoverage = model.documents?.sourceCoverage || evidenceScore;
+    const totalValue = formatCompactMoney(model.totalValue);
+    const firstMove = model.priorityTasks[0]?.title || autopilot.signals[0]?.record.title || "Production pilot move";
+    const backendReadiness = Math.max(1, Math.min(100, Math.round(healthScore * 0.22 + evidenceScore * 0.2 + sourceCoverage * 0.18 + Math.max(0, 100 - overdueCount * 2) * 0.16 + 18)));
+    const pilotEvidenceReadiness = Math.max(1, Math.min(100, Math.round(sourceCoverage * 0.32 + evidenceScore * 0.28 + healthScore * 0.18 + Math.min(100, actionCount) * 0.08 + 14)));
+    const cutoverSafety = Math.max(1, Math.min(100, Math.round(backendReadiness * 0.3 + pilotEvidenceReadiness * 0.28 + healthScore * 0.16 + Math.max(0, 100 - overdueCount * 2) * 0.16 + 10)));
+    const stages = [
+      { version: "v639", label: "Production Backend Bridge", signal: "Launch control turns into backend repository scope, data model, auth, storage, audit, deployment, and rollback proof.", owner: "Engineering", proof: "Backend bridge", tone: "green" },
+      { version: "v640", label: "Tenant Onboarding Evidence Vault", signal: "Import screenshots, owner signoffs, training proof, support receipt, and tenant acceptance evidence are captured.", owner: "Success", proof: "Evidence vault", tone: "blue" },
+      { version: "v641", label: "Multi-Country Launch Readiness", signal: "Country fit, support hours, pricing note, consent policy, and rollout assumptions become one readiness pack.", owner: "Country", proof: "Country readiness", tone: "amber" },
+      { version: "v642", label: "Backend Data Model Blueprint", signal: "Companies, users, roles, records, reminders, documents, audit events, billing, and learning boundaries are mapped.", owner: "Platform", proof: "Data model", tone: "teal" },
+      { version: "v643", label: "Auth And Roles Readiness Gate", signal: "Admin, editor, viewer, finance, support, and governance roles are gated with invite, revoke, and fallback proof.", owner: "Security", proof: "Roles gate", tone: "green" },
+      { version: "v644", label: "Audit Trail Export Console", signal: "Import, edit, delete, access, approval, export, rollback, and learning-release events become export-ready.", owner: "Governance", proof: "Audit export", tone: "blue" },
+      { version: "v645", label: "Staging Smoke Test Board", signal: "Login, import, record edit, reminder routing, role access, report export, and rollback smoke tests are visible.", owner: "QA", proof: "Smoke board", tone: "amber" },
+      { version: "v646", label: "Production Rollback Drill", signal: "Data restore, access revoke, release undo, communication line, evidence recovery, and owner decision are rehearsed.", owner: "Risk", proof: "Rollback drill", tone: "teal" },
+      { version: "v647", label: "Pilot Cutover Decision Room", signal: "Go, hold, repair, rollback, invite, import, billing, support, and sponsor-message decisions are separated.", owner: "Leadership", proof: "Cutover decision", tone: "amber" },
+      { version: "v648", label: "Production Pilot Control Room", signal: "Backend bridge, onboarding evidence, country readiness, data model, roles, audit, staging, rollback, and cutover decision become one pilot room.", owner: "Founder", proof: "Pilot control", tone: "green" },
+    ];
+    const controls = [
+      ["Backend readiness", `${backendReadiness}%`, `Health ${healthScore}% / evidence ${evidenceScore}% / source coverage ${sourceCoverage}%.`, backendReadiness >= 78 ? "green" : "amber"],
+      ["Pilot evidence", `${pilotEvidenceReadiness}%`, "Onboarding proof, tenant acceptance, support receipt, import evidence, and audit export are kept visible.", pilotEvidenceReadiness >= 78 ? "green" : "blue"],
+      ["Cutover safety", `${cutoverSafety}%`, "Auth roles, staging smoke, rollback drill, billing posture, and sponsor message are checked before go-live.", cutoverSafety >= 78 ? "teal" : "amber"],
+      ["First pilot move", compactText(firstMove, 48), "One controlled cutover move comes before backend opening, tenant import, or production pilot launch.", overdueCount ? "red" : "green"],
+    ];
+    const nextAction = overdueCount
+      ? "Clear overdue backend, onboarding, role, audit, staging, rollback, or cutover proof before production pilot movement."
+      : cutoverSafety < 78
+        ? "Use the backend bridge, evidence vault, roles gate, staging smoke, and rollback drill to close the production pilot gap."
+        : "Prepare the production pilot cutover review with backend scope, tenant evidence, roles, audit export, staging smoke, rollback drill, and sponsor decision visible.";
+    const roomId = `${BUILD_VERSION.toUpperCase()}-PRODUCTION-PILOT-CONTROL`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Production Pilot Control Room ${roomId}: ${stages.map((stage) => `${stage.version} ${stage.label}`).join(" -> ")}. Backend readiness ${backendReadiness}%. Pilot evidence ${pilotEvidenceReadiness}%. Cutover safety ${cutoverSafety}%. Open work ${openCount}. Actions ${actionCount}. Value ${totalValue}. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { backendReadiness, controls, copyText, cutoverSafety, nextAction, pilotEvidenceReadiness, roomId, stages };
+  }
+
+  function renderCommandProductionPilotControlRoomPreview(model, autopilot) {
+    const room = buildCommandProductionPilotControlRoom(model, autopilot);
+    return `
+      <section class="info-card command-production-pilot-control-room">
+        <div class="info-head compact command-production-pilot-control-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Production Pilot</span>
+            <strong>Production Pilot Control Room / ${room.cutoverSafety}%</strong>
+            <p>${escapeHtml(room.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(room.roomId)}</span>
+        </div>
+        <div class="command-production-pilot-control-room-controls mini-card-grid">
+          ${room.controls.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-production-pilot-control-room-steps">
+          ${room.stages.map((stage) => `<article class="command-production-pilot-control-room-step tone-${escapeHtml(stage.tone)}"><span>${escapeHtml(stage.version)}</span><strong>${escapeHtml(stage.label)}</strong><p>${escapeHtml(stage.signal)}</p><small>${escapeHtml(stage.owner)} / ${escapeHtml(stage.proof)}</small></article>`).join("")}
+        </div>
+        <div class="command-production-pilot-control-room-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-production-pilot-control-room" data-copy-text="${escapeHtml(encodeURIComponent(room.copyText))}">Copy pilot room</button>
+          <span>One production pilot room before backend repository opening, tenant import, role activation, staging approval, or go-live cutover.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
     const autopilot = buildPursuitAutopilotModel();
@@ -55107,6 +55101,7 @@ const state = {
         ${renderCommandLiveTenantLearningControlRoomPreview(model, autopilot)}
         ${renderCommandSecondTenantReadinessControlRoomPreview(model, autopilot)}
         ${renderCommandMultiTenantLaunchControlRoomPreview(model, autopilot)}
+        ${renderCommandProductionPilotControlRoomPreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -72559,12 +72554,22 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v638 Multi-Tenant Launch Control Room",
-      phase: "Multi-Tenant Launch Control Room",
+      version: "v648 Production Pilot Control Room",
+      phase: "Production Pilot Control Room",
       lane: "Static product prototype on GitHub Pages",
-      pace: "619 meaningful versions since rebrand",
-      summary: "Command Center now carries the multi-tenant launch layer from second-tenant import through learning ledger, governance, country fit, support model, consent vault, pricing readiness, multi-environment release planning, risk simulation, and launch control.",
+      pace: "629 meaningful versions since rebrand",
+      summary: "Command Center now carries the production pilot layer from backend bridge through onboarding evidence, multi-country readiness, data model, auth and roles, audit export, staging smoke, rollback drill, cutover decision, and production pilot control.",
       tracks: [
+        ["v648 production pilot control room", 100, "Command Center now joins backend bridge, onboarding evidence, country readiness, data model, auth and roles, audit export, staging smoke, rollback drill, and cutover decision into one production pilot control room.", "green"],
+        ["v647 pilot cutover decision room", 100, "Command Center now separates go, hold, repair, rollback, invite, import, billing, support, and sponsor-message decisions before production cutover.", "green"],
+        ["v646 production rollback drill", 100, "Command Center now rehearses data restore, access revoke, release undo, communication line, evidence recovery, and owner decision before go-live.", "green"],
+        ["v645 staging smoke test board", 100, "Command Center now shows login, import, record edit, reminder routing, role access, report export, and rollback smoke tests before release.", "green"],
+        ["v644 audit trail export console", 100, "Command Center now makes import, edit, delete, access, approval, export, rollback, and learning-release events export-ready.", "green"],
+        ["v643 auth and roles readiness gate", 100, "Command Center now gates admin, editor, viewer, finance, support, and governance roles with invite, revoke, and fallback proof.", "green"],
+        ["v642 backend data model blueprint", 100, "Command Center now maps companies, users, roles, records, reminders, documents, audit events, billing, and learning boundaries.", "green"],
+        ["v641 multi-country launch readiness", 100, "Command Center now turns country fit, support hours, pricing note, consent policy, and rollout assumptions into one launch-ready pack.", "green"],
+        ["v640 tenant onboarding evidence vault", 100, "Command Center now captures import screenshots, owner signoffs, training proof, support receipt, and tenant acceptance evidence.", "green"],
+        ["v639 production backend bridge", 100, "Command Center now turns launch control into backend repository scope, data model, auth, storage, audit, deployment, and rollback proof.", "green"],
         ["v638 multi-tenant launch control room", 100, "Command Center now joins import handoff, learning ledger, launch governance, country fit, support model, consent vault, pricing readiness, environment plan, and risk simulation into one multi-tenant launch control room.", "green"],
         ["v637 launch risk simulation room", 100, "Command Center now rehearses data leak, support overload, low adoption, billing hold, proof gap, and rollback scenarios before multi-tenant launch.", "green"],
         ["v636 multi-environment release plan", 100, "Command Center now separates static demo, staging, production backend, customer pilot, rollback route, and release evidence before launch.", "green"],
@@ -73183,9 +73188,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v639", "Production Backend Bridge", "Turn the launch control room into backend repository scope, data model, auth, storage, audit, and deployment proof."],
-        ["v640", "Tenant Onboarding Evidence Vault", "Prepare import screenshots, owner signoffs, training proof, support receipt, and tenant acceptance evidence."],
-        ["v641", "Multi-Country Launch Readiness", "Move country fit, support hours, pricing note, consent policy, and rollout assumptions into a launch-ready country pack."],
+        ["v649", "Backend Repository Opening Pack", "Prepare private repo creation, issue wave, branch protection, environment variables, and first backend PR evidence."],
+        ["v650", "First Production Tenant Dry Run", "Run a controlled dry run for import, roles, reminders, reports, support, audit, and rollback before real users enter."],
+        ["v651", "Paid Pilot Readiness Gate", "Connect cutover proof to billing trigger, sponsor acceptance, support promise, renewal checkpoint, and launch decision."],
       ],      blockers: [
         "Private production repository still needs to be created in GitHub",
         "Generated issues still need to be opened in the private repo",
@@ -73488,10 +73493,20 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now carries the multi-tenant launch layer across import handoff, learning ledger, launch governance, country fit, support model, consent vault, pricing readiness, multi-environment release plan, risk simulation, and launch control.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now carries the production pilot layer across backend bridge, onboarding evidence, country readiness, data model, auth and roles, audit export, staging smoke, rollback drill, cutover decision, and pilot control.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v648 smoke addendum", "Production Pilot Control Room", "Confirm the v648 panel, copy action, Build Phase badge, roadmap queue, backend readiness, pilot evidence, cutover safety, first pilot move, and v639-v648 stage cards before publishing.", "green"],
+      ["v647 smoke addendum", "Pilot Cutover Decision Room", "Confirm go, hold, repair, rollback, invite, import, billing, support, and sponsor-message decisions are separated before publishing.", "green"],
+      ["v646 smoke addendum", "Production Rollback Drill", "Confirm data restore, access revoke, release undo, communication line, evidence recovery, and owner decision are rehearsed before publishing.", "green"],
+      ["v645 smoke addendum", "Staging Smoke Test Board", "Confirm login, import, record edit, reminder routing, role access, report export, and rollback smoke tests are visible before publishing.", "green"],
+      ["v644 smoke addendum", "Audit Trail Export Console", "Confirm import, edit, delete, access, approval, export, rollback, and learning-release events are export-ready before publishing.", "green"],
+      ["v643 smoke addendum", "Auth And Roles Readiness Gate", "Confirm admin, editor, viewer, finance, support, and governance roles have invite, revoke, and fallback proof before publishing.", "green"],
+      ["v642 smoke addendum", "Backend Data Model Blueprint", "Confirm companies, users, roles, records, reminders, documents, audit events, billing, and learning boundaries are mapped before publishing.", "green"],
+      ["v641 smoke addendum", "Multi-Country Launch Readiness", "Confirm country fit, support hours, pricing note, consent policy, and rollout assumptions are one readiness pack before publishing.", "green"],
+      ["v640 smoke addendum", "Tenant Onboarding Evidence Vault", "Confirm import screenshots, owner signoffs, training proof, support receipt, and tenant acceptance evidence are captured before publishing.", "green"],
+      ["v639 smoke addendum", "Production Backend Bridge", "Confirm backend repository scope, data model, auth, storage, audit, deployment, and rollback proof are visible before publishing.", "green"],
       ["v638 smoke addendum", "Multi-Tenant Launch Control Room", "Confirm the v638 panel, copy action, Build Phase badge, roadmap queue, launch readiness, consent vault, environment plan, first launch move, and v629-v638 stage cards before publishing.", "green"],
       ["v637 smoke addendum", "Launch Risk Simulation Room", "Confirm data leak, support overload, low adoption, billing hold, proof gap, and rollback scenarios are rehearsed before publishing.", "green"],
       ["v636 smoke addendum", "Multi-Environment Release Plan", "Confirm static demo, staging, production backend, customer pilot, rollback route, and release evidence are separated before publishing.", "green"],
@@ -86422,7 +86437,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v638.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v648.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -86444,7 +86459,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v638.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v648.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -86465,7 +86480,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v638.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v648.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -86485,7 +86500,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v638.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v648.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -86505,7 +86520,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v638.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v648.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -86533,7 +86548,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v638.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v648.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -86561,7 +86576,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v638.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v648.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -86592,7 +86607,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v638.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v648.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -125940,6 +125955,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandMultiTenantLaunchControlRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeURIComponent(encoded) : fallback, "Multi-tenant launch room copied.");
+      return;
+    }
+    if (action === "copy-command-production-pilot-control-room") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandProductionPilotControlRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeURIComponent(encoded) : fallback, "Production pilot room copied.");
       return;
     }
     if (action === "copy-command-memory") {
