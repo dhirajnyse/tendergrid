@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v701 Room Rhythm Polish tightens the whole UI/UX layer with quieter background texture, steadier page spacing, softer room heroes, aligned card density, and calmer tracker workbench balance before the next functional build.
 - v700 Calm Layout Polish makes the shell navigation calmer and groups the Command Center's daily operating path into one composed band before the working dashboard and folded AI archive.
 - v699 Calm UX Flow simplifies the Command Center by showing mission, KPIs, one four-step operating path, and daily work before the folded AI intelligence archive.
 - v679-v688 SaaS Tenant Scale Control Room advances PursuitDesk from second account import handoff through SaaS tenant admin console, production launch evidence vault, customer admin self-service, multi-tenant billing ledger, support knowledge ops, security access review cycle, tenant health SLA board, production expansion decision pack, and the SaaS Tenant Scale Control Room.
