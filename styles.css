@@ -18723,6 +18723,104 @@ body.quiet-focus-mode .focus-mode-pill {
   line-height: 1.35;
 }
 
+.command-customer-network-learning-council {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(232, 246, 240, 0.9));
+}
+
+.command-customer-network-learning-council.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.command-customer-network-learning-council.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-customer-network-learning-council-head,
+.command-customer-network-learning-council-grid,
+.command-customer-network-learning-council-stages,
+.command-customer-network-learning-council-playbooks,
+.command-customer-network-learning-council-actions {
+  min-width: 0;
+}
+
+.command-customer-network-learning-council-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-customer-network-learning-council-stages,
+.command-customer-network-learning-council-playbooks {
+  display: grid;
+  gap: 10px;
+}
+
+.command-customer-network-learning-council-stages {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.command-customer-network-learning-council-playbooks {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-customer-network-learning-council-stages article,
+.command-customer-network-learning-council-playbooks article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(13, 111, 97, 0.2);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.command-customer-network-learning-council-stages article:nth-child(2),
+.command-customer-network-learning-council-stages article:nth-child(4),
+.command-customer-network-learning-council-playbooks article:nth-child(2) {
+  border-left-color: var(--blue);
+}
+
+.command-customer-network-learning-council-stages article:nth-child(3),
+.command-customer-network-learning-council-playbooks article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-customer-network-learning-council-stages article:nth-child(5),
+.command-customer-network-learning-council-playbooks article:nth-child(1),
+.command-customer-network-learning-council-playbooks article:nth-child(3) {
+  border-left-color: var(--green);
+}
+
+.command-customer-network-learning-council-stages span,
+.command-customer-network-learning-council-stages small,
+.command-customer-network-learning-council-playbooks span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.command-customer-network-learning-council-stages strong,
+.command-customer-network-learning-council-playbooks strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-customer-network-learning-council-stages p,
+.command-customer-network-learning-council-playbooks p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-customer-network-learning-council-actions {
+  justify-content: flex-start;
+}
+
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -18737,7 +18835,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-live-pilot-operating-loop-steps,
   .command-production-saas-readiness-control-room-steps,
   .command-saas-tenant-scale-control-room-steps,
-  .command-customer-success-scale-nerve-center-steps {
+  .command-customer-success-scale-nerve-center-steps,
+  .command-customer-network-learning-council-grid,
+  .command-customer-network-learning-council-stages,
+  .command-customer-network-learning-council-playbooks {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -18762,7 +18863,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-live-pilot-operating-loop-steps,
   .command-production-saas-readiness-control-room-steps,
   .command-saas-tenant-scale-control-room-steps,
-  .command-customer-success-scale-nerve-center-steps {
+  .command-customer-success-scale-nerve-center-steps,
+  .command-customer-network-learning-council-grid,
+  .command-customer-network-learning-council-stages,
+  .command-customer-network-learning-council-playbooks {
     grid-template-columns: 1fr;
   }
 

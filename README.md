@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v702 Customer Network Learning Council adds a governed closed-loop learning layer for tenant consent, proof quality, privacy boundary, anonymization, council decision, reusable playbooks, and benefit return before lessons travel across organizations.
 - v701 Room Rhythm Polish tightens the whole UI/UX layer with quieter background texture, steadier page spacing, softer room heroes, aligned card density, and calmer tracker workbench balance before the next functional build.
 - v700 Calm Layout Polish makes the shell navigation calmer and groups the Command Center's daily operating path into one composed band before the working dashboard and folded AI archive.
 - v699 Calm UX Flow simplifies the Command Center by showing mission, KPIs, one four-step operating path, and daily work before the folded AI intelligence archive.
