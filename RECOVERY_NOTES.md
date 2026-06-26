@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v706 adds a Private Backend Issue Wave so backend launch work is grouped into owner-ready issues with acceptance checks, blockers, and proof artifacts.
 - v705 adds a Customer Learning Sandbox so reusable playbooks are replayed against redacted scenarios, scored, held, or retired before live guidance changes.
 - v704 adds a Role-Based Home Console so Admin, Commercial, Operations, Management, and Governance users each have one calm default start while the daily Command Center stays uncluttered.
 - v703 adds an Enterprise Control Plane Blueprint so backend foundation, tenant operations, billing access, support SLA, audit evidence, rollout control, and private-repo launch gates are visible before SaaS execution.
