@@ -5,8 +5,8 @@
   const BUILD_LABEL = "SaaS Tenant Scale Control Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=688.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=688.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=688.2";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=688.2";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -94817,6 +94817,31 @@ const state = {
         <strong>${escapeHtml(value)}</strong>
         <small>${escapeHtml(note)}</small>
       </div>
+    `;
+  }
+
+  function renderRoomFocusStrip(cards = [], className = "", label = "Room focus strip") {
+    const rows = Array.isArray(cards) ? cards : [];
+    if (!rows.length) return "";
+    const extraClass = String(className || "").trim();
+    const classes = ["room-focus-strip", extraClass].filter(Boolean).join(" ");
+    return `
+      <section class="${escapeHtml(classes)}" aria-label="${escapeHtml(label)}">
+        ${rows
+          .map((card) => {
+            const row = Array.isArray(card)
+              ? { label: card[0], value: card[1], note: card[2], tone: card[3] }
+              : card || {};
+            return `
+              <article class="room-focus-card tone-${escapeHtml(row.tone || "teal")}">
+                <span>${escapeHtml(row.label || "Signal")}</span>
+                <strong>${escapeHtml(row.value ?? "-")}</strong>
+                <small>${escapeHtml(row.note || "")}</small>
+              </article>
+            `;
+          })
+          .join("")}
+      </section>
     `;
   }
 
