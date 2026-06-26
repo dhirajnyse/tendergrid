@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v703 adds an Enterprise Control Plane Blueprint so backend foundation, tenant operations, billing access, support SLA, audit evidence, rollout control, and private-repo launch gates are visible before SaaS execution.
 - v702 adds a Customer Network Learning Council so tenant-approved outcomes must pass consent, proof, privacy, anonymization, council review, reusable-playbook, and benefit-return checks before helping other organizations.
 - v701 adds Room Rhythm Polish so the app uses quieter background texture, steadier page spacing, softer room heroes, aligned card density, and calmer tracker workbench balance before the next functional build.
 - v320 adds a Command Center Continuity Guard so the recovered baseline, health check, run path, and next-safe-build line stay visible inside the product.
