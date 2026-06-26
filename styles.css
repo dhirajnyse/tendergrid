@@ -18918,6 +18918,104 @@ body.quiet-focus-mode .focus-mode-pill {
   justify-content: flex-start;
 }
 
+.command-role-based-home-console {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(220, 243, 236, 0.9));
+}
+
+.command-role-based-home-console.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.command-role-based-home-console.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-role-based-home-console-head,
+.command-role-based-home-console-grid,
+.command-role-based-home-console-roles,
+.command-role-based-home-console-flow,
+.command-role-based-home-console-actions {
+  min-width: 0;
+}
+
+.command-role-based-home-console-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-role-based-home-console-roles,
+.command-role-based-home-console-flow {
+  display: grid;
+  gap: 10px;
+}
+
+.command-role-based-home-console-roles {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.command-role-based-home-console-flow {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-role-based-home-console-roles article,
+.command-role-based-home-console-flow article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(12, 125, 105, 0.22);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.command-role-based-home-console-roles article:nth-child(2),
+.command-role-based-home-console-flow article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-role-based-home-console-roles article:nth-child(4),
+.command-role-based-home-console-flow article:nth-child(2) {
+  border-left-color: var(--blue);
+}
+
+.command-role-based-home-console-roles article:nth-child(1),
+.command-role-based-home-console-roles article:nth-child(5),
+.command-role-based-home-console-flow article:nth-child(1) {
+  border-left-color: var(--green);
+}
+
+.command-role-based-home-console-roles span,
+.command-role-based-home-console-roles small,
+.command-role-based-home-console-flow span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-role-based-home-console-roles strong,
+.command-role-based-home-console-flow strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-role-based-home-console-roles p,
+.command-role-based-home-console-flow p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-role-based-home-console-actions {
+  justify-content: flex-start;
+}
+
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -18938,7 +19036,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-customer-network-learning-council-playbooks,
   .command-enterprise-control-plane-blueprint-grid,
   .command-enterprise-control-plane-blueprint-stages,
-  .command-enterprise-control-plane-blueprint-gates {
+  .command-enterprise-control-plane-blueprint-gates,
+  .command-role-based-home-console-grid,
+  .command-role-based-home-console-roles,
+  .command-role-based-home-console-flow {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -18969,7 +19070,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-customer-network-learning-council-playbooks,
   .command-enterprise-control-plane-blueprint-grid,
   .command-enterprise-control-plane-blueprint-stages,
-  .command-enterprise-control-plane-blueprint-gates {
+  .command-enterprise-control-plane-blueprint-gates,
+  .command-role-based-home-console-grid,
+  .command-role-based-home-console-roles,
+  .command-role-based-home-console-flow {
     grid-template-columns: 1fr;
   }
 

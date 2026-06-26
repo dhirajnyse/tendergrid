@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v703";
-  const BUILD_LABEL = "Enterprise Control Plane Blueprint";
+  const BUILD_VERSION = "v704";
+  const BUILD_LABEL = "Role-Based Home Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=703.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=703.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=704.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=704.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -55463,6 +55463,81 @@ const state = {
     `;
   }
 
+  function buildCommandRoleBasedHomeConsole(model, autopilot) {
+    const plane = buildCommandEnterpriseControlPlaneBlueprint(model, autopilot);
+    const openCount = model.openRecords.length;
+    const actionCount = model.reminders.tasks.length;
+    const overdueCount = model.reminders.overdue || 0;
+    const evidenceScore = model.evidenceScore || 0;
+    const healthScore = model.healthScore || 0;
+    const weeklyScore = model.weeklyReview?.reviewScore || healthScore;
+    const sourceCoverage = model.documents?.sourceCoverage || evidenceScore;
+    const contractScore = model.contractScore || Math.max(1, 100 - (model.contractGaps?.length || 0) * 8);
+    const firstMove = model.priorityTasks[0]?.title || autopilot.signals[0]?.record.title || "Role-based home move";
+    const totalValue = formatCompactMoney(model.totalValue);
+    const roleClarity = Math.max(1, Math.min(100, Math.round(plane.tenantOperations * 0.22 + weeklyScore * 0.2 + Math.max(0, 100 - overdueCount * 2) * 0.18 + healthScore * 0.16 + 10)));
+    const homeFocus = Math.max(1, Math.min(100, Math.round(Math.max(0, 100 - actionCount * 0.25) * 0.2 + plane.rolloutControl * 0.2 + plane.supportOperations * 0.16 + plane.billingAccess * 0.14 + 10)));
+    const accessFit = Math.max(1, Math.min(100, Math.round(plane.backendFoundation * 0.22 + plane.auditEvidence * 0.2 + plane.billingAccess * 0.18 + sourceCoverage * 0.16 + contractScore * 0.08 + 8)));
+    const calmScore = Math.max(1, Math.min(100, Math.round(roleClarity * 0.28 + homeFocus * 0.26 + accessFit * 0.22 + plane.planeScore * 0.24)));
+    const consoleState = calmScore >= 84 && overdueCount === 0 ? "Role-based home can become the default start" : calmScore >= 72 ? "Role-based home can pilot with guarded defaults" : "Role-based home should stay as an admin preview";
+    const controls = [
+      ["Role clarity", `${roleClarity}%`, "Home defaults now explain who starts where.", roleClarity >= 80 ? "green" : "amber"],
+      ["Home focus", `${homeFocus}%`, `${openCount} open records and ${actionCount} actions stay compressed into role entry points.`, homeFocus >= 80 ? "teal" : "blue"],
+      ["Access fit", `${accessFit}%`, "Role starts align to future access templates and audit proof.", accessFit >= 80 ? "green" : "amber"],
+      ["Calm score", `${calmScore}%`, `${overdueCount} overdue follow-ups still influence how aggressive the start screen can be.`, calmScore >= 80 ? "blue" : "red"],
+    ];
+    const roleCards = [
+      ["Admin", "Build Phase", "Resolve release, access, billing, and private-repo gates.", `Control plane ${plane.planeScore}%`, "green"],
+      ["Commercial", "Tenders Insights", "Start with bid movement, value exposure, renewal posture, and client pressure.", `${totalValue} value`, "amber"],
+      ["Operations", "Command", "Work reminders, owners, due dates, proof, and daily movement before analysis.", `${actionCount} actions`, "teal"],
+      ["Management", "Weekly Review", "Read the management brief, owner load, decision queue, and report readiness.", `${weeklyScore}% review`, "blue"],
+      ["Governance", "Reports", "Check evidence, audit, privacy, release gates, and reusable learning before sharing.", `${evidenceScore}% evidence`, "green"],
+    ];
+    const consoleFlow = [
+      ["1", "Recognize role", "Default start adapts to user responsibility, not a generic landing page.", "green"],
+      ["2", "Show one room", "Each role gets one room, one watch metric, and one next action first.", "blue"],
+      ["3", "Keep routes visible", "Command, Rooms, Admin Tools, and Reports remain reachable without hunting.", "teal"],
+      ["4", "Protect scope", "Commercial, governance, and management views stay separated from frontline work.", "amber"],
+    ];
+    const nextAction = calmScore >= 84 && overdueCount === 0
+      ? "Make role-based home the next default start and keep specialist rooms one click away."
+      : calmScore >= 72
+        ? "Pilot role defaults in Admin Tools while keeping Command as the safe fallback."
+        : "Keep Command as default, repair overdue pressure, and preview role starts only for admins.";
+    const consoleId = `${BUILD_VERSION.toUpperCase()}-ROLE-HOME-CONSOLE`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Role-Based Home Console ${consoleId}: ${consoleState}. Calm ${calmScore}%. Role clarity ${roleClarity}%. Home focus ${homeFocus}%. Access fit ${accessFit}%. Control plane ${plane.planeScore}%. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { accessFit, calmScore, consoleFlow, consoleId, consoleState, controls, copyText, homeFocus, nextAction, roleCards, roleClarity };
+  }
+
+  function renderCommandRoleBasedHomeConsolePreview(model, autopilot) {
+    const console = buildCommandRoleBasedHomeConsole(model, autopilot);
+    return `
+      <section class="info-card command-role-based-home-console tone-${escapeHtml(console.calmScore >= 84 ? "green" : console.calmScore >= 72 ? "blue" : "amber")}" aria-label="Role-Based Home Console">
+        <div class="info-head compact command-role-based-home-console-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Role Home</span>
+            <strong>Role-Based Home Console / ${console.calmScore}%</strong>
+            <p>${escapeHtml(console.consoleState)}. ${escapeHtml(console.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(console.consoleId)}</span>
+        </div>
+        <div class="command-role-based-home-console-grid mini-card-grid">
+          ${console.controls.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-role-based-home-console-roles">
+          ${console.roleCards.map(([role, start, note, metric, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(role)}</span><strong>${escapeHtml(start)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(metric)}</small></article>`).join("")}
+        </div>
+        <div class="command-role-based-home-console-flow">
+          ${console.consoleFlow.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-role-based-home-console-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-role-based-home-console" data-copy-text="${escapeHtml(encodeURIComponent(console.copyText))}">Copy role home</button>
+          <span>Five role starts, one calm shell: Admin, Commercial, Operations, Management, and Governance each get a clear default without crowding Command.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -55843,6 +55918,7 @@ const state = {
         ${renderCommandCustomerSuccessScaleNerveCenterPreview(model, autopilot)}
         ${renderCommandCustomerNetworkLearningCouncilPreview(model, autopilot)}
         ${renderCommandEnterpriseControlPlaneBlueprintPreview(model, autopilot)}
+        ${renderCommandRoleBasedHomeConsolePreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -73174,12 +73250,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v703 Enterprise Control Plane Blueprint",
-      phase: "Enterprise Control Plane Blueprint",
+      version: "v704 Role-Based Home Console",
+      phase: "Role-Based Home Console",
       lane: "Static product prototype on GitHub Pages",
-      pace: "684 meaningful versions since rebrand",
-      summary: "PursuitDesk now maps the real SaaS operating rails: backend foundation, tenant operations, billing access, support SLA, audit evidence, and rollout control in one admin blueprint.",
+      pace: "685 meaningful versions since rebrand",
+      summary: "PursuitDesk now maps role-specific home starts for Admin, Commercial, Operations, Management, and Governance users without crowding the calm daily Command Center.",
       tracks: [
+        ["v704 role-based home console", 100, "Admin, Commercial, Operations, Management, and Governance now get role-specific home starts without changing the calm shell.", "green"],
         ["v703 enterprise control plane blueprint", 100, "Backend, tenant operations, billing, support, audit, and rollout now sit in one launch-control blueprint before private SaaS execution.", "green"],
         ["v702 customer network learning council", 100, "Tenant-approved outcomes now move through consent, proof quality, privacy boundary, reuse readiness, council decision, and benefit-return lanes before cross-organization influence.", "green"],
         ["v701 room rhythm polish", 100, "Global spacing, cards, room heroes, header summaries, tracker workbench, and mobile rhythm now feel calmer before the next functional build.", "green"],
@@ -73863,9 +73940,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v704", "Role-Based Home Console", "Tailor the first screen by admin, commercial, operations, management, and governance roles without adding complexity."],
         ["v705", "Customer Learning Sandbox", "Test reusable playbooks against sample tenant scenarios before any live guidance changes."],
         ["v706", "Private Backend Issue Wave", "Turn the enterprise control plane into private-repo issues, acceptance checks, owners, and staging proof."],
+        ["v707", "Role Access Template Pack", "Turn role starts into future access templates, grants, audit events, and default room policy."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -74169,10 +74246,11 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Enterprise launch now has one admin blueprint for backend, tenant operations, billing access, support SLA, audit evidence, and rollout control.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Role-based home now gives Admin, Commercial, Operations, Management, and Governance one calm starting room each while Command stays focused on daily work.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v704 smoke addendum", "Role-Based Home Console", "Confirm the v704 role home panel, five role starts, four flow steps, copy action, Build Phase badge, cache tokens, route rendering, and mobile overflow before publishing.", "green"],
       ["v703 smoke addendum", "Enterprise Control Plane Blueprint", "Confirm the v703 control plane panel, six control lanes, six blueprint stages, four launch gates, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v702 smoke addendum", "Customer Network Learning Council", "Confirm the v702 council panel, consent/proof/privacy/reuse lanes, five council stages, playbook cards, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v701 smoke addendum", "Room Rhythm Polish", "Confirm the v701 compact shell, quieter background, room hero rhythm, card density, tracker workbench, Build Phase badge, cache tokens, route rendering, and mobile overflow before publishing.", "green"],
@@ -87168,7 +87246,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v703.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v704.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -87190,7 +87268,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v703.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v704.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -87211,7 +87289,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v703.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v704.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -87231,7 +87309,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v703.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v704.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -87251,7 +87329,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v703.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v704.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -87279,7 +87357,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v703.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v704.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -87307,7 +87385,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v703.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v704.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -87338,7 +87416,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v703.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v704.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -126759,6 +126837,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandEnterpriseControlPlaneBlueprint(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Enterprise control plane blueprint copied.");
+      return;
+    }
+    if (action === "copy-command-role-based-home-console") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandRoleBasedHomeConsole(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Role-based home console copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {
