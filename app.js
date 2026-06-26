@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v688";
-  const BUILD_LABEL = "SaaS Tenant Scale Control Room";
+  const BUILD_VERSION = "v698";
+  const BUILD_LABEL = "Customer Success Scale Nerve Center";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=688.2";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=688.2";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=698.2";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=698.2";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1941,6 +1941,20 @@ const state = {
       return;
     }
     fallbackCopy();
+  }
+
+  function decodeCopyPayload(value) {
+    let text = String(value || "");
+    for (let index = 0; index < 8; index += 1) {
+      try {
+        const decoded = decodeURIComponent(text);
+        if (decoded === text) break;
+        text = decoded;
+      } catch (error) {
+        break;
+      }
+    }
+    return text;
   }
 
   function normalize(value) {
@@ -55222,6 +55236,75 @@ const state = {
       </section>
     `;
   }
+
+  function buildCommandCustomerSuccessScaleNerveCenter(model, autopilot) {
+    const openCount = model.openRecords.length;
+    const actionCount = model.reminders.tasks.length;
+    const overdueCount = model.reminders.overdue || 0;
+    const evidenceScore = model.evidenceScore || 0;
+    const healthScore = model.healthScore || 0;
+    const weeklyScore = model.weeklyReview?.reviewScore || healthScore;
+    const sourceCoverage = model.documents?.sourceCoverage || evidenceScore;
+    const contractScore = model.contractScore || Math.max(1, 100 - (model.contractGaps?.length || 0) * 8);
+    const totalValue = formatCompactMoney(model.totalValue);
+    const topClient = model.topClients?.[0]?.client || model.priorityTasks?.[0]?.client || "First customer";
+    const firstMove = model.priorityTasks[0]?.title || autopilot.signals[0]?.record.title || "Customer success scale move";
+    const evidenceDigest = Math.max(1, Math.min(100, Math.round(sourceCoverage * 0.24 + evidenceScore * 0.24 + contractScore * 0.16 + healthScore * 0.14 + Math.max(0, 100 - overdueCount * 2) * 0.14 + 8)));
+    const portfolioSignal = Math.max(1, Math.min(100, Math.round(healthScore * 0.24 + weeklyScore * 0.2 + evidenceDigest * 0.18 + Math.min(100, openCount) * 0.12 + Math.max(0, 100 - actionCount * 0.3) * 0.14 + 8)));
+    const renewalConfidence = Math.max(1, Math.min(100, Math.round(contractScore * 0.22 + evidenceDigest * 0.22 + portfolioSignal * 0.18 + healthScore * 0.14 + Math.max(0, 100 - overdueCount * 3) * 0.14 + 8)));
+    const supportCalm = Math.max(1, Math.min(100, Math.round(Math.max(0, 100 - overdueCount * 2) * 0.24 + weeklyScore * 0.2 + healthScore * 0.18 + Math.max(0, 100 - actionCount * 0.4) * 0.16 + 12)));
+    const launchReadiness = Math.max(1, Math.min(100, Math.round(portfolioSignal * 0.22 + renewalConfidence * 0.22 + supportCalm * 0.18 + evidenceDigest * 0.18 + sourceCoverage * 0.1 + 6)));
+    const scaleScore = Math.max(1, Math.min(100, Math.round(evidenceDigest * 0.22 + portfolioSignal * 0.22 + renewalConfidence * 0.22 + supportCalm * 0.16 + launchReadiness * 0.18)));
+    const scaleState = scaleScore >= 84 && overdueCount === 0 ? "Customer success scale can widen with controlled proof" : scaleScore >= 72 ? "Customer success scale can widen after launch repairs" : "Customer success scale should stay in focused proof recovery";
+    const stages = [
+      { version: "v689", label: "Scale Launch Evidence Digest", signal: "Import, admin, evidence, billing, support, access, and SLA proof become one board-ready scale digest.", owner: "Governance", proof: "Evidence digest", tone: "green" },
+      { version: "v690", label: "Customer Success Portfolio View", signal: "Tenant health, expansion posture, support load, billing trust, and proof movement group by account.", owner: "Success", proof: "Portfolio view", tone: "blue" },
+      { version: "v691", label: "Multi-Tenant Release Governance", signal: "Release approvals, rollback locks, tenant notices, access review, and evidence vault updates stay governed.", owner: "Release", proof: "Governance pack", tone: "teal" },
+      { version: "v692", label: "Pilot Account Health Radar", signal: "Pilot account movement, adoption friction, proof age, support wait, and sponsor signal become health radar.", owner: "Customer Success", proof: "Health radar", tone: "amber" },
+      { version: "v693", label: "Customer Success Renewal Brief", signal: "Renewal proof, adoption trend, support calm, billing posture, and expansion ask become one brief.", owner: "Commercial", proof: "Renewal brief", tone: "green" },
+      { version: "v694", label: "Tenant Expansion Signal Map", signal: "Value concentration, user growth, second-team pull, country fit, and blocked scope form expansion signals.", owner: "Revenue", proof: "Signal map", tone: "blue" },
+      { version: "v695", label: "Support Risk Early Warning", signal: "Late replies, repeated questions, missing proof, incident risk, and escalation load surface before trust drops.", owner: "Support", proof: "Risk warning", tone: "red" },
+      { version: "v696", label: "Admin Adoption Control Loop", signal: "Admin visits, owner changes, invite cleanup, export use, and weekly review rhythm become adoption controls.", owner: "Admin", proof: "Adoption loop", tone: "teal" },
+      { version: "v697", label: "Multi-Country Launch Readiness Board", signal: "Country assumptions, support hours, currency note, privacy fit, pilot proof, and rollout owner stay visible.", owner: "Market", proof: "Country board", tone: "amber" },
+      { version: "v698", label: "Customer Success Scale Nerve Center", signal: "Evidence, portfolio, governance, health, renewal, expansion, support risk, adoption, and country launch resolve into one nerve center.", owner: "Founder", proof: "Scale nerve center", tone: "green" },
+    ];
+    const controls = [
+      ["Evidence digest", `${evidenceDigest}%`, `Source coverage ${sourceCoverage}% / evidence ${evidenceScore}% / contract ${contractScore}%.`, evidenceDigest >= 80 ? "green" : "amber"],
+      ["Portfolio signal", `${portfolioSignal}%`, `${openCount} open records and ${actionCount} actions shape account movement.`, portfolioSignal >= 80 ? "teal" : "blue"],
+      ["Renewal confidence", `${renewalConfidence}%`, `Top account pressure starts with ${compactText(topClient, 34)}.`, renewalConfidence >= 80 ? "green" : "amber"],
+      ["Support calm", `${supportCalm}%`, `${overdueCount} overdue follow-ups set the support risk floor.`, supportCalm >= 78 ? "blue" : "red"],
+    ];
+    const nextAction = overdueCount ? "Clear overdue customer proof before widening portfolio, renewal, or multi-country launch decisions." : scaleScore < 80 ? "Repair the weakest customer success scale lane before treating v698 as launch-ready." : "Use the nerve center to run portfolio review, renewal posture, support risk, adoption loop, and multi-country launch readiness from one calm surface.";
+    const roomId = `${BUILD_VERSION.toUpperCase()}-CUSTOMER-SUCCESS-SCALE`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Customer Success Scale Nerve Center ${roomId}: ${stages.map((stage) => `${stage.version} ${stage.label}`).join(" -> ")}. State ${scaleState}. Score ${scaleScore}%. Evidence digest ${evidenceDigest}%. Portfolio ${portfolioSignal}%. Renewal ${renewalConfidence}%. Support calm ${supportCalm}%. Launch readiness ${launchReadiness}%. Value ${totalValue}. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { controls, copyText, evidenceDigest, launchReadiness, nextAction, portfolioSignal, renewalConfidence, roomId, scaleScore, scaleState, stages, supportCalm };
+  }
+
+  function renderCommandCustomerSuccessScaleNerveCenterPreview(model, autopilot) {
+    const room = buildCommandCustomerSuccessScaleNerveCenter(model, autopilot);
+    return `
+      <section class="info-card command-customer-success-scale-nerve-center">
+        <div class="info-head compact command-customer-success-scale-nerve-center-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Success Scale</span>
+            <strong>Customer Success Scale Nerve Center / ${room.scaleScore}%</strong>
+            <p>${escapeHtml(room.scaleState)}. ${escapeHtml(room.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(room.roomId)}</span>
+        </div>
+        <div class="command-customer-success-scale-nerve-center-controls mini-card-grid">
+          ${room.controls.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-customer-success-scale-nerve-center-steps">
+          ${room.stages.map((stage) => `<article class="command-customer-success-scale-nerve-center-step tone-${escapeHtml(stage.tone)}"><span>${escapeHtml(stage.version)}</span><strong>${escapeHtml(stage.label)}</strong><p>${escapeHtml(stage.signal)}</p><small>${escapeHtml(stage.owner)} / ${escapeHtml(stage.proof)}</small></article>`).join("")}
+        </div>
+        <div class="command-customer-success-scale-nerve-center-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-customer-success-scale-nerve-center" data-copy-text="${escapeHtml(encodeURIComponent(room.copyText))}">Copy scale nerve center</button>
+          <span>One customer-success control surface before launch, renewal, expansion, support risk, adoption, or country rollout decisions.</span>
+        </div>
+      </section>
+    `;
+  }
   function renderCommandCenterPage() {
     const model = buildCommandCenterModel();
     const autopilot = buildPursuitAutopilotModel();
@@ -55391,6 +55474,7 @@ const state = {
         ${renderCommandLivePilotOperatingLoopPreview(model, autopilot)}
         ${renderCommandProductionSaasReadinessControlRoomPreview(model, autopilot)}
         ${renderCommandSaasTenantScaleControlRoomPreview(model, autopilot)}
+        ${renderCommandCustomerSuccessScaleNerveCenterPreview(model, autopilot)}
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
@@ -72843,12 +72927,22 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v688 SaaS Tenant Scale Control Room",
-      phase: "SaaS Tenant Scale Control Room",
+      version: "v698 Customer Success Scale Nerve Center",
+      phase: "Customer Success Scale Nerve Center",
       lane: "Static product prototype on GitHub Pages",
-      pace: "669 meaningful versions since rebrand",
-      summary: "Command Center now turns second-account import, tenant admin controls, production launch evidence vault, customer admin self-service, multi-tenant billing ledger, support knowledge operations, access review, tenant health SLA, expansion decision, and the final tenant scale room into one SaaS scale surface.",
+      pace: "679 meaningful versions since rebrand",
+      summary: "Command Center now turns scale launch evidence, customer success portfolio health, multi-tenant release governance, pilot account health, renewal posture, expansion signals, support risk, admin adoption, and multi-country readiness into one customer success scale nerve center.",
       tracks: [
+        ["v698 customer success scale nerve center", 100, "Command Center now joins evidence digest, portfolio view, release governance, health radar, renewal brief, expansion signals, support warning, admin adoption loop, and country readiness into one nerve center.", "green"],
+        ["v697 multi-country launch readiness board", 100, "Command Center now keeps country assumptions, support hours, currency note, privacy fit, pilot proof, and rollout owner visible before rollout.", "green"],
+        ["v696 admin adoption control loop", 100, "Command Center now turns admin visits, owner changes, invite cleanup, export use, and weekly review rhythm into adoption controls.", "green"],
+        ["v695 support risk early warning", 100, "Command Center now surfaces late replies, repeated questions, missing proof, incident risk, and escalation load before trust drops.", "green"],
+        ["v694 tenant expansion signal map", 100, "Command Center now maps value concentration, user growth, second-team pull, country fit, and blocked scope into expansion signals.", "green"],
+        ["v693 customer success renewal brief", 100, "Command Center now collects renewal proof, adoption trend, support calm, billing posture, and expansion ask into one brief.", "green"],
+        ["v692 pilot account health radar", 100, "Command Center now turns pilot movement, adoption friction, proof age, support wait, and sponsor signal into account health radar.", "green"],
+        ["v691 multi-tenant release governance", 100, "Command Center now governs release approvals, rollback locks, tenant notices, access review, and evidence vault updates.", "green"],
+        ["v690 customer success portfolio view", 100, "Command Center now groups tenant health, expansion posture, support load, billing trust, and proof movement by account.", "green"],
+        ["v689 scale launch evidence digest", 100, "Command Center now turns import, admin, evidence, billing, support, access, and SLA proof into a board-ready scale digest.", "green"],
         ["v688 saas tenant scale control room", 100, "Command Center now joins import handoff, tenant admin, evidence vault, self-service, billing ledger, support ops, access review, health SLA, expansion pack, and tenant scale decision into one room.", "green"],
         ["v687 production expansion decision pack", 100, "Command Center now decides expansion posture from second account, billing, support, security, evidence, and tenant health.", "green"],
         ["v686 tenant health sla board", 100, "Command Center now turns usage, overdue pressure, support waits, proof gaps, billing trust, and sponsor response into tenant health SLA signals.", "green"],
@@ -73517,9 +73611,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v689", "Scale Launch Evidence Digest", "Turn tenant scale control into a board-ready digest of import, admin, evidence, billing, support, access, and SLA proof."],
-        ["v690", "Customer Success Portfolio View", "Group tenant health, expansion posture, support load, billing trust, and proof movement across accounts."],
-        ["v691", "Multi-Tenant Release Governance", "Prepare release approvals, rollback locks, tenant notices, access review, and evidence vault updates for scale releases."],
+        ["v699", "Expansion Revenue Confidence Room", "Turn customer success scale proof into expansion revenue confidence with no-chase guardrails and renewal evidence."],
+        ["v700", "Customer Network Learning Council", "Prepare tenant-approved learning, cross-account lessons, governance review, and reusable playbooks for the next product leap."],
+        ["v701", "Enterprise Control Plane Blueprint", "Map production backend, tenant operations, billing, support, audit, and rollout control into the enterprise launch plane."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -73823,10 +73917,20 @@ const state = {
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now carries the SaaS tenant scale room across second-account import, tenant admin controls, launch evidence vault, customer admin self-service, multi-tenant billing ledger, support knowledge operations, security access review, tenant health SLA, expansion decision, and scale control.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Command Center now carries the customer success scale nerve center across scale evidence, portfolio health, release governance, pilot health, renewal proof, expansion signals, support risk, admin adoption, and multi-country readiness.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v698 smoke addendum", "Customer Success Scale Nerve Center", "Confirm the v698 panel, copy action, Build Phase badge, roadmap queue, evidence digest, portfolio signal, renewal confidence, support calm, and v689-v698 stage cards before publishing.", "green"],
+      ["v697 smoke addendum", "Multi-Country Launch Readiness Board", "Confirm country assumptions, support hours, currency note, privacy fit, pilot proof, and rollout owner stay visible before publishing.", "green"],
+      ["v696 smoke addendum", "Admin Adoption Control Loop", "Confirm admin visits, owner changes, invite cleanup, export use, and weekly review rhythm become adoption controls before publishing.", "green"],
+      ["v695 smoke addendum", "Support Risk Early Warning", "Confirm late replies, repeated questions, missing proof, incident risk, and escalation load surface before publishing.", "green"],
+      ["v694 smoke addendum", "Tenant Expansion Signal Map", "Confirm value concentration, user growth, second-team pull, country fit, and blocked scope form expansion signals before publishing.", "green"],
+      ["v693 smoke addendum", "Customer Success Renewal Brief", "Confirm renewal proof, adoption trend, support calm, billing posture, and expansion ask become one brief before publishing.", "green"],
+      ["v692 smoke addendum", "Pilot Account Health Radar", "Confirm pilot account movement, adoption friction, proof age, support wait, and sponsor signal become health radar before publishing.", "green"],
+      ["v691 smoke addendum", "Multi-Tenant Release Governance", "Confirm approvals, rollback locks, tenant notices, access review, and evidence vault updates stay governed before publishing.", "green"],
+      ["v690 smoke addendum", "Customer Success Portfolio View", "Confirm tenant health, expansion posture, support load, billing trust, and proof movement group by account before publishing.", "green"],
+      ["v689 smoke addendum", "Scale Launch Evidence Digest", "Confirm import, admin, evidence, billing, support, access, and SLA proof become a board-ready digest before publishing.", "green"],
       ["v688 smoke addendum", "SaaS Tenant Scale Control Room", "Confirm the v688 panel, copy action, Build Phase badge, roadmap queue, import readiness, admin control, evidence vault, scale health, and v679-v688 stage cards before publishing.", "green"],
       ["v687 smoke addendum", "Production Expansion Decision Pack", "Confirm second account, billing, support, security, evidence, and tenant health decide expansion posture before publishing.", "green"],
       ["v686 smoke addendum", "Tenant Health SLA Board", "Confirm usage, overdue pressure, support waits, proof gaps, billing trust, and sponsor response become health SLA signals before publishing.", "green"],
@@ -86807,7 +86911,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v688.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v698.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -86829,7 +86933,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v688.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v698.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -86850,7 +86954,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v688.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v698.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -86870,7 +86974,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v688.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v698.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -86890,7 +86994,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v688.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v698.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -86918,7 +87022,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v688.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v698.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -86946,7 +87050,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v688.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v698.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -86977,7 +87081,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v688.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v698.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -126380,6 +126484,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandSaasTenantScaleControlRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeURIComponent(encoded) : fallback, "SaaS tenant scale room copied.");
+      return;
+    }
+    if (action === "copy-command-customer-success-scale-nerve-center") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandCustomerSuccessScaleNerveCenter(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Customer success scale room copied.");
       return;
     }
     if (action === "copy-command-memory") {
