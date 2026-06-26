@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v705 adds a Customer Learning Sandbox so reusable playbooks are replayed against redacted scenarios, scored, held, or retired before live guidance changes.
 - v704 adds a Role-Based Home Console so Admin, Commercial, Operations, Management, and Governance users each have one calm default start while the daily Command Center stays uncluttered.
 - v703 adds an Enterprise Control Plane Blueprint so backend foundation, tenant operations, billing access, support SLA, audit evidence, rollout control, and private-repo launch gates are visible before SaaS execution.
 - v702 adds a Customer Network Learning Council so tenant-approved outcomes must pass consent, proof, privacy, anonymization, council review, reusable-playbook, and benefit-return checks before helping other organizations.

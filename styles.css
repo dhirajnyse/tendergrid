@@ -19016,6 +19016,102 @@ body.quiet-focus-mode .focus-mode-pill {
   justify-content: flex-start;
 }
 
+.command-customer-learning-sandbox {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(229, 239, 251, 0.9));
+}
+
+.command-customer-learning-sandbox.tone-green {
+  border-left-color: var(--teal);
+}
+
+.command-customer-learning-sandbox.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-customer-learning-sandbox-head,
+.command-customer-learning-sandbox-grid,
+.command-customer-learning-sandbox-scenarios,
+.command-customer-learning-sandbox-gates,
+.command-customer-learning-sandbox-actions {
+  min-width: 0;
+}
+
+.command-customer-learning-sandbox-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-customer-learning-sandbox-scenarios,
+.command-customer-learning-sandbox-gates {
+  display: grid;
+  gap: 10px;
+}
+
+.command-customer-learning-sandbox-scenarios {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.command-customer-learning-sandbox-gates {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-customer-learning-sandbox-scenarios article,
+.command-customer-learning-sandbox-gates article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(43, 98, 150, 0.22);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.command-customer-learning-sandbox-scenarios article:nth-child(1),
+.command-customer-learning-sandbox-scenarios article:nth-child(5),
+.command-customer-learning-sandbox-gates article:nth-child(1) {
+  border-left-color: var(--green);
+}
+
+.command-customer-learning-sandbox-scenarios article:nth-child(3),
+.command-customer-learning-sandbox-gates article:nth-child(3) {
+  border-left-color: var(--teal);
+}
+
+.command-customer-learning-sandbox-scenarios article:nth-child(4),
+.command-customer-learning-sandbox-gates article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-customer-learning-sandbox-scenarios span,
+.command-customer-learning-sandbox-gates span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-customer-learning-sandbox-scenarios strong,
+.command-customer-learning-sandbox-gates strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-customer-learning-sandbox-scenarios p,
+.command-customer-learning-sandbox-gates p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-customer-learning-sandbox-actions {
+  justify-content: flex-start;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -19039,7 +19135,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-enterprise-control-plane-blueprint-gates,
   .command-role-based-home-console-grid,
   .command-role-based-home-console-roles,
-  .command-role-based-home-console-flow {
+  .command-role-based-home-console-flow,
+  .command-customer-learning-sandbox-grid,
+  .command-customer-learning-sandbox-scenarios,
+  .command-customer-learning-sandbox-gates {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -19073,7 +19172,10 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-enterprise-control-plane-blueprint-gates,
   .command-role-based-home-console-grid,
   .command-role-based-home-console-roles,
-  .command-role-based-home-console-flow {
+  .command-role-based-home-console-flow,
+  .command-customer-learning-sandbox-grid,
+  .command-customer-learning-sandbox-scenarios,
+  .command-customer-learning-sandbox-gates {
     grid-template-columns: 1fr;
   }
 
