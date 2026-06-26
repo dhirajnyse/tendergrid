@@ -18255,6 +18255,73 @@ body.quiet-focus-mode .focus-mode-pill {
   font-size: 13px;
   line-height: 1.35;
 }
+.command-saas-tenant-scale-control-room {
+  border-left-color: var(--blue);
+  margin: 0 0 14px;
+}
+
+.command-saas-tenant-scale-control-room-head,
+.command-saas-tenant-scale-control-room-controls,
+.command-saas-tenant-scale-control-room-steps,
+.command-saas-tenant-scale-control-room-actions {
+  min-width: 0;
+}
+
+.command-saas-tenant-scale-control-room-steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.command-saas-tenant-scale-control-room-steps article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(47, 100, 158, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.command-saas-tenant-scale-control-room-steps article:nth-child(1),
+.command-saas-tenant-scale-control-room-steps article:nth-child(4),
+.command-saas-tenant-scale-control-room-steps article:nth-child(7),
+.command-saas-tenant-scale-control-room-steps article:nth-child(10) {
+  border-left-color: var(--teal);
+}
+
+.command-saas-tenant-scale-control-room-steps article:nth-child(2),
+.command-saas-tenant-scale-control-room-steps article:nth-child(5),
+.command-saas-tenant-scale-control-room-steps article:nth-child(8) {
+  border-left-color: var(--blue);
+}
+
+.command-saas-tenant-scale-control-room-steps article:nth-child(3),
+.command-saas-tenant-scale-control-room-steps article:nth-child(6),
+.command-saas-tenant-scale-control-room-steps article:nth-child(9) {
+  border-left-color: var(--amber);
+}
+
+.command-saas-tenant-scale-control-room-steps span,
+.command-saas-tenant-scale-control-room-steps small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.command-saas-tenant-scale-control-room-steps strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-saas-tenant-scale-control-room-steps p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
 
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
@@ -18268,7 +18335,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-production-pilot-control-room-steps,
   .command-first-launch-go-no-go-room-steps,
   .command-live-pilot-operating-loop-steps,
-  .command-production-saas-readiness-control-room-steps {
+  .command-production-saas-readiness-control-room-steps,
+  .command-saas-tenant-scale-control-room-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -18291,7 +18359,8 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-production-pilot-control-room-steps,
   .command-first-launch-go-no-go-room-steps,
   .command-live-pilot-operating-loop-steps,
-  .command-production-saas-readiness-control-room-steps {
+  .command-production-saas-readiness-control-room-steps,
+  .command-saas-tenant-scale-control-room-steps {
     grid-template-columns: 1fr;
   }
 
