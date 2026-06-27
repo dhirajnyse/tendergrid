@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v710 adds a Tenant Invite Workflow so tenant users move through invite draft, role grant approval, acceptance or hold, revoke safety, and audit receipts before live access opens.
 - v709 adds a Staging Proof Sprint Board so staging smoke checks, rollback rehearsal, evidence receipts, blocker holds, and pilot decisions are visible before launch movement.
 - v708 adds a Sandbox Graduation Gate so tested learning candidates graduate to approval, stay tenant-local, return to proof repair, or retire before live guidance changes.
 - v707 adds a Role Access Template Pack so role starts become grantable templates with scoped access, revoke receipts, and audit events before tenant invites.

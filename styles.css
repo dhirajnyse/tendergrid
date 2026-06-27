@@ -19537,6 +19537,118 @@ body.quiet-focus-mode .focus-mode-pill {
 .command-staging-proof-sprint-board-actions {
   justify-content: flex-start;
 }
+
+.command-tenant-invite-workflow {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(227, 243, 239, 0.92));
+}
+
+.command-tenant-invite-workflow.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.command-tenant-invite-workflow.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-tenant-invite-workflow-head,
+.command-tenant-invite-workflow-grid,
+.command-tenant-invite-workflow-lanes,
+.command-tenant-invite-workflow-invites,
+.command-tenant-invite-workflow-receipts,
+.command-tenant-invite-workflow-actions {
+  min-width: 0;
+}
+
+.command-tenant-invite-workflow-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-tenant-invite-workflow-lanes,
+.command-tenant-invite-workflow-invites,
+.command-tenant-invite-workflow-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-tenant-invite-workflow-lanes,
+.command-tenant-invite-workflow-receipts {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-tenant-invite-workflow-invites {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-tenant-invite-workflow-lanes article,
+.command-tenant-invite-workflow-invites article,
+.command-tenant-invite-workflow-receipts article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(12, 125, 105, 0.22);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-tenant-invite-workflow-lanes article:nth-child(2),
+.command-tenant-invite-workflow-invites article:nth-child(2),
+.command-tenant-invite-workflow-invites article:nth-child(6),
+.command-tenant-invite-workflow-receipts article:nth-child(2) {
+  border-left-color: var(--blue);
+}
+
+.command-tenant-invite-workflow-lanes article:nth-child(3),
+.command-tenant-invite-workflow-invites article:nth-child(4),
+.command-tenant-invite-workflow-receipts article:nth-child(3) {
+  border-left-color: var(--teal);
+}
+
+.command-tenant-invite-workflow-lanes article:nth-child(4),
+.command-tenant-invite-workflow-invites article:nth-child(5),
+.command-tenant-invite-workflow-receipts article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-tenant-invite-workflow-lanes span,
+.command-tenant-invite-workflow-invites span,
+.command-tenant-invite-workflow-receipts span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-tenant-invite-workflow-lanes strong,
+.command-tenant-invite-workflow-invites strong,
+.command-tenant-invite-workflow-receipts strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-tenant-invite-workflow-lanes p,
+.command-tenant-invite-workflow-invites p,
+.command-tenant-invite-workflow-receipts p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-tenant-invite-workflow-invites small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.command-tenant-invite-workflow-actions {
+  justify-content: flex-start;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -19577,7 +19689,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-staging-proof-sprint-board-grid,
   .command-staging-proof-sprint-board-lanes,
   .command-staging-proof-sprint-board-checks,
-  .command-staging-proof-sprint-board-receipts {
+  .command-staging-proof-sprint-board-receipts,
+  .command-tenant-invite-workflow-grid,
+  .command-tenant-invite-workflow-lanes,
+  .command-tenant-invite-workflow-invites,
+  .command-tenant-invite-workflow-receipts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -19628,7 +19744,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-staging-proof-sprint-board-grid,
   .command-staging-proof-sprint-board-lanes,
   .command-staging-proof-sprint-board-checks,
-  .command-staging-proof-sprint-board-receipts {
+  .command-staging-proof-sprint-board-receipts,
+  .command-tenant-invite-workflow-grid,
+  .command-tenant-invite-workflow-lanes,
+  .command-tenant-invite-workflow-invites,
+  .command-tenant-invite-workflow-receipts {
     grid-template-columns: 1fr;
   }
 
