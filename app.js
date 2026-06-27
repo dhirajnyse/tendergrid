@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v717";
-  const BUILD_LABEL = "Learning Release Approval Room";
+  const BUILD_VERSION = "v718";
+  const BUILD_LABEL = "First Pilot Success Pulse";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=717.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=717.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=718.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=718.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -56669,6 +56669,105 @@ const state = {
     `;
   }
 
+  function buildCommandFirstPilotSuccessPulse(model, autopilot) {
+    const approval = buildCommandLearningReleaseApprovalRoom(model, autopilot);
+    const runbook = buildCommandTenantLaunchDayRunbook(model, autopilot);
+    const tenantAdmin = buildCommandFirstTenantAdminConsole(model, autopilot);
+    const safety = buildCommandLiveLearningSafetyMonitor(model, autopilot);
+    const signoff = buildCommandPilotSignoffEvidencePack(model, autopilot);
+    const decision = buildCommandPilotLaunchDecisionRoom(model, autopilot);
+    const actionCount = model.reminders.tasks.length;
+    const overdueCount = model.reminders.overdue || 0;
+    const evidenceScore = model.evidenceScore || 0;
+    const sourceCoverage = model.documents?.sourceCoverage || evidenceScore;
+    const totalValue = formatCompactMoney(model.totalValue || 0);
+    const firstTask = model.priorityTasks[0] || {};
+    const firstMove = firstTask.title || autopilot.signals[0]?.record.title || "Measure the first pilot success signal";
+    const adoptionMovement = Math.max(1, Math.min(100, Math.round(tenantAdmin.userRoster * 0.28 + runbook.accessCheck * 0.24 + decision.launchReadiness * 0.18 + Math.max(0, 100 - overdueCount * 2) * 0.14 + 6)));
+    const sponsorResponse = Math.max(1, Math.min(100, Math.round(signoff.sponsorConfidence * 0.32 + approval.ownerApproval * 0.24 + decision.decisionClarity * 0.2 + runbook.billingProof * 0.08 + 6)));
+    const supportCalm = Math.max(1, Math.min(100, Math.round(safety.supportPressure * 0.3 + runbook.supportWatch * 0.24 + tenantAdmin.supportAudit * 0.2 + Math.max(0, 100 - actionCount * 0.12) * 0.1 + 6)));
+    const proofQuality = Math.max(1, Math.min(100, Math.round(signoff.evidenceIndex * 0.28 + safety.outcomeProof * 0.24 + evidenceScore * 0.22 + sourceCoverage * 0.12 + 6)));
+    const commercialNext = Math.max(1, Math.min(100, Math.round(approval.approvalScore * 0.24 + signoff.sponsorConfidence * 0.22 + runbook.billingProof * 0.2 + decision.decisionScore * 0.18 + (model.totalValue ? 8 : 0))));
+    const pulseScore = Math.max(1, Math.min(100, Math.round(adoptionMovement * 0.22 + sponsorResponse * 0.2 + supportCalm * 0.18 + proofQuality * 0.2 + commercialNext * 0.2)));
+    const movementCount = Math.max(1, Math.min(10, Math.ceil((runbook.accessSteps + runbook.supportChecks + signoff.signoffCount + approval.approveCount + 1) / 2)));
+    const successProofs = Math.max(4, Math.min(14, signoff.proofCount + runbook.auditReceipts + approval.approveCount));
+    const riskHolds = Math.max(1, Math.min(8, Math.ceil(Math.max(0, 84 - pulseScore) / 12) + Math.min(3, overdueCount > 0 ? 2 : 0)));
+    const nextReviewDays = pulseScore >= 84 ? 7 : pulseScore >= 72 ? 14 : 21;
+    const pulseState = pulseScore >= 84 && overdueCount === 0
+      ? "First pilot is ready for a success review"
+      : pulseScore >= 72
+        ? "First pilot is moving with visible success holds"
+        : "Keep the pilot in recovery until movement, sponsor response, support calm, and proof improve";
+    const controls = [
+      ["Adoption movement", `${adoptionMovement}%`, "Users, first room, row movement, owner clarity, and due-date recovery show whether the pilot is being used.", adoptionMovement >= 82 ? "green" : "amber"],
+      ["Sponsor response", `${sponsorResponse}%`, "Sponsor confidence, owner approval, decision clarity, and billing proof show whether leadership is engaged.", sponsorResponse >= 82 ? "teal" : "blue"],
+      ["Support calm", `${supportCalm}%`, "Support pressure, launch-day watch, support audit, and open action load show whether the pilot feels calm.", supportCalm >= 82 ? "green" : "amber"],
+      ["Proof quality", `${proofQuality}%`, "Outcome proof, evidence index, source coverage, and document health show whether success can be trusted.", proofQuality >= 82 ? "blue" : "amber"],
+      ["Commercial next", `${commercialNext}%`, `Success pulse protects ${totalValue} while the next review and paid-pilot question stay visible.`, commercialNext >= 82 ? "green" : "red"],
+    ];
+    const pulses = [
+      ["First login", `${tenantAdmin.activeSeats}/${tenantAdmin.seatCount} users`, "Active users and pending invites show whether the tenant opened the workspace.", tenantAdmin.activeSeats >= 5 ? "green" : "amber"],
+      ["Row movement", `${movementCount} moves`, "Record movement, owner updates, due dates, and proof touches show adoption beyond login.", movementCount >= 5 ? "teal" : "blue"],
+      ["Evidence touch", `${successProofs} proofs`, "Screenshots, audit exports, source coverage, and outcome proof support the success story.", proofQuality >= 82 ? "green" : "amber"],
+      ["Sponsor reply", `${sponsorResponse}%`, "Sponsor response decides whether the next meeting is success review, repair, or pause.", sponsorResponse >= 82 ? "blue" : "amber"],
+      ["Support friction", `${riskHolds} holds`, "Questions, overdue actions, weak evidence, and rollback gaps stay visible before scale.", riskHolds <= 2 ? "green" : "red"],
+    ];
+    const outcomes = [
+      ["First movement visible", "Operations", "Open one live record, confirm owner, date, proof, and next action before the review.", "Movement receipt", adoptionMovement >= 78 ? "green" : "amber"],
+      ["Sponsor signal captured", "Sponsor", "Capture sponsor reply, review date, decision ask, and objection or expansion note.", "Sponsor reply", sponsorResponse >= 78 ? "teal" : "blue"],
+      ["Support stayed calm", "Support", "Record first questions, SLA posture, escalation route, and knowledge note.", "Support note", supportCalm >= 78 ? "green" : "amber"],
+      ["Outcome proof attached", "Governance", "Attach before/after outcome proof, source coverage, audit export, and privacy boundary.", "Outcome proof", proofQuality >= 78 ? "blue" : "amber"],
+      ["Learning release watched", "Product", "Approved lessons stay under observation before they influence another tenant.", "Learning watch", approval.approvalScore >= 78 ? "teal" : "blue"],
+      ["Next commercial step", "Commercial", `Use ${totalValue} value context to choose renewal, expansion, paid pilot, or repair.`, "Review ask", commercialNext >= 78 ? "green" : "red"],
+    ];
+    const receipts = [
+      ["1", "Pulse opened", "Tenant, owner, first movement, sponsor response, support state, and proof target are named.", "green"],
+      ["2", "Movement measured", "Login, row movement, evidence touch, support calm, and sponsor reply are checked together.", "blue"],
+      ["3", "Success decision", "Decide success review, repair sprint, quiet extension, or stop/pause with proof.", "teal"],
+      ["4", "Next review booked", `Book the next review within ${nextReviewDays} days with one outcome proof and one commercial ask.`, "amber"],
+    ];
+    const nextAction = pulseScore >= 84 && overdueCount === 0
+      ? "Book the first success review, show the movement receipt, and ask for the next commercial step."
+      : pulseScore >= 72
+        ? "Run a short repair sprint, close support and proof holds, then reopen the success review."
+        : "Hold scale, recover adoption movement and sponsor response, then rebuild the success pulse.";
+    const pulseId = `${BUILD_VERSION.toUpperCase()}-FIRST-PILOT-SUCCESS-PULSE`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} First Pilot Success Pulse ${pulseId}: ${pulseState}. Score ${pulseScore}%. Adoption ${adoptionMovement}%. Sponsor ${sponsorResponse}%. Support calm ${supportCalm}%. Proof ${proofQuality}%. Commercial next ${commercialNext}%. Movement ${movementCount}, proofs ${successProofs}, holds ${riskHolds}, next review ${nextReviewDays} days. Value ${totalValue}. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { adoptionMovement, commercialNext, controls, copyText, outcomes, proofQuality, pulseId, pulseScore, pulseState, pulses, receipts, riskHolds, sponsorResponse, supportCalm, nextAction, nextReviewDays, successProofs, totalValue, movementCount };
+  }
+
+  function renderCommandFirstPilotSuccessPulsePreview(model, autopilot) {
+    const pulse = buildCommandFirstPilotSuccessPulse(model, autopilot);
+    return `
+      <section class="info-card command-first-pilot-success-pulse tone-${escapeHtml(pulse.pulseScore >= 84 ? "green" : pulse.pulseScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Success Pulse">
+        <div class="info-head compact command-first-pilot-success-pulse-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Success Pulse</span>
+            <strong>First Pilot Success Pulse / ${pulse.pulseScore}%</strong>
+            <p>${escapeHtml(pulse.pulseState)}. ${escapeHtml(pulse.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(pulse.pulseId)}</span>
+        </div>
+        <div class="command-first-pilot-success-pulse-grid mini-card-grid">
+          ${pulse.controls.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-first-pilot-success-pulse-pulses">
+          ${pulse.pulses.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-first-pilot-success-pulse-outcomes">
+          ${pulse.outcomes.map(([label, owner, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(owner)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(proof)}</small></article>`).join("")}
+        </div>
+        <div class="command-first-pilot-success-pulse-receipts">
+          ${pulse.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-first-pilot-success-pulse-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-success-pulse" data-copy-text="${escapeHtml(encodeURIComponent(pulse.copyText))}">Copy success pulse</button>
+          <span>Pilot success stays honest when adoption, sponsor response, support calm, proof quality, and commercial next step are measured together.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -56791,6 +56890,7 @@ const state = {
         ${renderCommandPilotLaunchDecisionRoomPreview(model, autopilot)}
         ${renderCommandTenantLaunchDayRunbookPreview(model, autopilot)}
         ${renderCommandLearningReleaseApprovalRoomPreview(model, autopilot)}
+        ${renderCommandFirstPilotSuccessPulsePreview(model, autopilot)}
 
         <div class="command-layout">
           <section class="command-main">
@@ -74395,12 +74495,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v717 Learning Release Approval Room",
-      phase: "Learning Release Approval Room",
+      version: "v718 First Pilot Success Pulse",
+      phase: "First Pilot Success Pulse",
       lane: "Static product prototype on GitHub Pages",
-      pace: "698 meaningful versions since rebrand",
-      summary: "PursuitDesk now promotes only watched, proven, tenant-safe lessons into reusable guidance with owner approval, tenant boundary, rollback proof, and release receipts.",
+      pace: "699 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns launch outcome, sponsor response, support calm, adoption movement, proof quality, and commercial next step into one first-pilot success pulse.",
       tracks: [
+        ["v718 first pilot success pulse", 100, "First pilot success now measures adoption movement, sponsor response, support calm, proof quality, commercial next step, success receipts, and next review timing in one calm pulse.", "green"],
         ["v717 learning release approval room", 100, "Watched launch lessons now move through approve release, tenant-only hold, retune lesson, or retire safely decisions with owner approval, tenant safety, rollback proof, and release receipt.", "green"],
         ["v716 tenant launch day runbook", 100, "Tenant launch day now runs through access check, support watch, billing proof, audit export, safety and rollback review, first movement, first review, and launch receipts.", "green"],
         ["v715 pilot launch decision room", 100, "Pilot launch now moves through go, hold, repair, rollback, no-go, and launch-owner decisions with evidence, date, proof, support, billing, and safety receipts.", "green"],
@@ -75098,9 +75199,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v718", "First Pilot Success Pulse", "Turn launch outcome, sponsor response, support calm, adoption movement, and proof quality into the first pilot success pulse."],
         ["v719", "Tenant Day-One Evidence Export", "Package launch-day screenshots, support notes, billing proof, access checks, first movement, and audit receipts into one exportable evidence pack."],
         ["v720", "Guidance Reuse Ledger", "Track which approved lessons became reusable guidance, where they influenced users, and which rollback or outcome receipt supports them."],
+        ["v721", "Pilot Renewal Signal Room", "Turn success pulse, sponsor response, support calm, billing posture, and proof movement into renewal or expansion signal."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -75405,11 +75506,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Watched learning now moves through approve release, tenant-only, retune, or retire decisions with owner approval, tenant safety, rollback proof, and release receipts.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "First pilot success now has one pulse for adoption movement, sponsor response, support calm, proof quality, commercial next step, and next review timing.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v718 smoke addendum", "First Pilot Success Pulse", "Confirm the v718 success pulse panel, five control signals, five pulse lanes, six outcome cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v717 smoke addendum", "Learning Release Approval Room", "Confirm the v717 learning release panel, four control lanes, four approval lanes, six approval cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v716 smoke addendum", "Tenant Launch Day Runbook", "Confirm the v716 launch-day runbook panel, four control lanes, four launch lanes, six timed runbook steps, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v715 smoke addendum", "Pilot Launch Decision Room", "Confirm the v715 launch decision room panel, four control lanes, four decision lanes, six decision cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -88419,7 +88521,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v717.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v718.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -88441,7 +88543,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v717.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v718.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -88462,7 +88564,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v717.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v718.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -88482,7 +88584,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v717.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v718.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -88502,7 +88604,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v717.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v718.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -88530,7 +88632,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v717.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v718.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -88558,7 +88660,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v717.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v718.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -88589,7 +88691,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v717.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v718.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -128094,6 +128196,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandLearningReleaseApprovalRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Learning release approval room copied.");
+      return;
+    }
+    if (action === "copy-command-first-pilot-success-pulse") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandFirstPilotSuccessPulse(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot success pulse copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {
