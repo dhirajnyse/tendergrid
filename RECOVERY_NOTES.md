@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v721 adds a Pilot Renewal Signal Room so first pilot proof, sponsor response, support calm, billing trust, proof movement, and expansion posture become a controlled renewal decision.
 - v720 adds a Guidance Reuse Ledger so approved lessons can be traced through reuse, influence, outcome proof, rollback, and tenant boundary decisions.
 - v719 adds a Tenant Day-One Evidence Export so launch screenshots, access checks, support notes, billing proof, first movement, sponsor handoff, and audit receipts can leave as one sponsor-safe pack.
 - v718 adds a First Pilot Success Pulse so launch outcome, sponsor response, support calm, adoption movement, proof quality, commercial next step, and next review timing are measured together.
