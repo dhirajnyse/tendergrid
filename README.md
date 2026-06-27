@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v715 Pilot Launch Decision Room turns signoff, tenant admin, safety, rollback, support, billing, and evidence signals into go, hold, repair, rollback, no-go, and launch-owner decisions.
 - v714 Live Learning Safety Monitor watches live learning for drift, support pressure, outcome proof, rollback route, privacy boundary, and reuse decision before guidance expands.
 - v713 First Tenant Admin Console turns invite and signoff receipts into an admin-ready view for users, roles, billing posture, support route, audit export, and launch state.
 - v712 Pilot Signoff Evidence Pack turns staging, invite, rollback, support, governance, and billing proof into six launch signoff receipts before pilot go/no-go.
