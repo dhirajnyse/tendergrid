@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v725 adds a Sponsor Expansion Proposal Pack so sponsor ask, proof story, scope offer, commercial terms, support guardrails, learning boundary, and decision receipt become one sponsor-safe expansion approval packet.
 - v724 adds an Expansion Scope Decision Desk so pilot proof, role demand, country fit, billing trust, support calm, and tenant boundary decide which expansion scope can open before sponsor proposal.
 - v723 adds a Reuse Outcome Confidence Room so reusable guidance is checked against outcome proof, sponsor response, support calm, rollback safety, tenant boundary, and sponsor-review evidence before wider launch.
 - v722 adds a Tenant Sponsor Review Pack so renewal signal, day-one evidence, sponsor questions, billing path, support calm, and learning boundary become one sponsor-ready review pack.
