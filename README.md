@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v724 Expansion Scope Decision Desk turns pilot proof, role demand, country fit, billing trust, support calm, and tenant boundary into a controlled expansion scope decision before sponsor proposal.
 - v723 Reuse Outcome Confidence Room compares reused guidance against outcome proof, sponsor response, support calm, rollback safety, tenant boundary, and sponsor-review evidence before wider launch.
 - v722 Tenant Sponsor Review Pack turns renewal signal, day-one evidence, sponsor questions, billing path, support calm, and learning boundary into one sponsor-ready review pack.
 - v721 Pilot Renewal Signal Room turns first pilot proof, sponsor response, support calm, billing trust, proof momentum, and expansion posture into a controlled renew, expand, review, or hold decision.
