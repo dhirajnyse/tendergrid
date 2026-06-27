@@ -19418,6 +19418,125 @@ body.quiet-focus-mode .focus-mode-pill {
 .command-sandbox-graduation-gate-actions {
   justify-content: flex-start;
 }
+
+.command-staging-proof-sprint-board {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(233, 241, 250, 0.9));
+}
+
+.command-staging-proof-sprint-board.tone-green {
+  border-left-color: var(--teal);
+}
+
+.command-staging-proof-sprint-board.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-staging-proof-sprint-board-head,
+.command-staging-proof-sprint-board-grid,
+.command-staging-proof-sprint-board-lanes,
+.command-staging-proof-sprint-board-checks,
+.command-staging-proof-sprint-board-receipts,
+.command-staging-proof-sprint-board-actions {
+  min-width: 0;
+}
+
+.command-staging-proof-sprint-board-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-staging-proof-sprint-board-lanes,
+.command-staging-proof-sprint-board-checks,
+.command-staging-proof-sprint-board-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-staging-proof-sprint-board-lanes,
+.command-staging-proof-sprint-board-receipts {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-staging-proof-sprint-board-checks {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-staging-proof-sprint-board-lanes article,
+.command-staging-proof-sprint-board-checks article,
+.command-staging-proof-sprint-board-receipts article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(46, 95, 148, 0.22);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-staging-proof-sprint-board-lanes article:nth-child(1),
+.command-staging-proof-sprint-board-checks article:nth-child(1),
+.command-staging-proof-sprint-board-checks article:nth-child(5),
+.command-staging-proof-sprint-board-receipts article:nth-child(1) {
+  border-left-color: var(--teal);
+}
+
+.command-staging-proof-sprint-board-lanes article:nth-child(2),
+.command-staging-proof-sprint-board-checks article:nth-child(2),
+.command-staging-proof-sprint-board-checks article:nth-child(6),
+.command-staging-proof-sprint-board-receipts article:nth-child(2) {
+  border-left-color: var(--blue);
+}
+
+.command-staging-proof-sprint-board-lanes article:nth-child(3),
+.command-staging-proof-sprint-board-checks article:nth-child(4),
+.command-staging-proof-sprint-board-receipts article:nth-child(3) {
+  border-left-color: var(--teal);
+}
+
+.command-staging-proof-sprint-board-lanes article:nth-child(4),
+.command-staging-proof-sprint-board-checks article:nth-child(3),
+.command-staging-proof-sprint-board-receipts article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-staging-proof-sprint-board-lanes span,
+.command-staging-proof-sprint-board-checks span,
+.command-staging-proof-sprint-board-receipts span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-staging-proof-sprint-board-lanes strong,
+.command-staging-proof-sprint-board-checks strong,
+.command-staging-proof-sprint-board-receipts strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-staging-proof-sprint-board-lanes p,
+.command-staging-proof-sprint-board-checks p,
+.command-staging-proof-sprint-board-receipts p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-staging-proof-sprint-board-checks small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.command-staging-proof-sprint-board-actions {
+  justify-content: flex-start;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -19454,7 +19573,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-sandbox-graduation-gate-grid,
   .command-sandbox-graduation-gate-lanes,
   .command-sandbox-graduation-gate-candidates,
-  .command-sandbox-graduation-gate-receipts {
+  .command-sandbox-graduation-gate-receipts,
+  .command-staging-proof-sprint-board-grid,
+  .command-staging-proof-sprint-board-lanes,
+  .command-staging-proof-sprint-board-checks,
+  .command-staging-proof-sprint-board-receipts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -19501,7 +19624,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-sandbox-graduation-gate-grid,
   .command-sandbox-graduation-gate-lanes,
   .command-sandbox-graduation-gate-candidates,
-  .command-sandbox-graduation-gate-receipts {
+  .command-sandbox-graduation-gate-receipts,
+  .command-staging-proof-sprint-board-grid,
+  .command-staging-proof-sprint-board-lanes,
+  .command-staging-proof-sprint-board-checks,
+  .command-staging-proof-sprint-board-receipts {
     grid-template-columns: 1fr;
   }
 

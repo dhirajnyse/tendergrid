@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v709 Staging Proof Sprint Board turns staging into smoke checks, rollback rehearsal, evidence receipts, blocker holds, and a pilot gate before live users arrive.
 - v708 Sandbox Graduation Gate decides whether tested learning candidates graduate to approval, stay tenant-local, return to proof repair, or retire safely.
 - v707 Role Access Template Pack turns role starts into access templates with grant scope, revoke receipts, and audit-ready change history.
 - v706 Private Backend Issue Wave turns the launch/control-plane plan into owner-ready private backend issues with acceptance, blocker, and proof cues.
