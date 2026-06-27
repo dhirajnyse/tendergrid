@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v707 Role Access Template Pack turns role starts into access templates with grant scope, revoke receipts, and audit-ready change history.
 - v706 Private Backend Issue Wave turns the launch/control-plane plan into owner-ready private backend issues with acceptance, blocker, and proof cues.
 - v705 Customer Learning Sandbox tests reusable playbooks against redacted customer scenarios before any lesson can influence live guidance.
 - v704 Role-Based Home Console gives Admin, Commercial, Operations, Management, and Governance users one calm starting room each while keeping Command focused on daily operating work.
