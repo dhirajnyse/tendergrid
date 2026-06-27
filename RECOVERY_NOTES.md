@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v717 adds a Learning Release Approval Room so watched pilot lessons are approved, kept tenant-only, retuned, or retired with owner approval, tenant safety, rollback proof, and release receipts.
 - v716 adds a Tenant Launch Day Runbook so launch decisions become day-one access checks, support watch, billing proof, safety review, first movement, first review, and audit export receipts.
 - v715 adds a Pilot Launch Decision Room so signoff, tenant admin, safety, rollback, support, billing, and evidence signals turn into clear go, hold, repair, rollback, no-go, and launch-owner decisions.
 - v714 adds a Live Learning Safety Monitor so live learning is watched for drift, support pressure, outcome proof, rollback route, privacy boundary, and reuse decision before expansion.
