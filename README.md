@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v722 Tenant Sponsor Review Pack turns renewal signal, day-one evidence, sponsor questions, billing path, support calm, and learning boundary into one sponsor-ready review pack.
 - v721 Pilot Renewal Signal Room turns first pilot proof, sponsor response, support calm, billing trust, proof momentum, and expansion posture into a controlled renew, expand, review, or hold decision.
 - v720 Guidance Reuse Ledger traces approved lessons into reusable guidance, influence paths, outcome proof, rollback receipts, and tenant-only holds before guidance travels.
 - v719 Tenant Day-One Evidence Export packages launch screenshots, access checks, support notes, billing proof, first movement, sponsor handoff, and audit receipts into one exportable pack.
