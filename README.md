@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v711 Learning Rollback Console gives live guidance a rollback watch, owner review, evidence comparison, retire/keep decision, and audit receipt after learning reaches users.
 - v710 Tenant Invite Workflow turns role templates into invite draft, grant approval, accept/hold, revoke, and audit receipts before live users arrive.
 - v709 Staging Proof Sprint Board turns staging into smoke checks, rollback rehearsal, evidence receipts, blocker holds, and a pilot gate before live users arrive.
 - v708 Sandbox Graduation Gate decides whether tested learning candidates graduate to approval, stay tenant-local, return to proof repair, or retire safely.

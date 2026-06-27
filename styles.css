@@ -19649,6 +19649,120 @@ body.quiet-focus-mode .focus-mode-pill {
 .command-tenant-invite-workflow-actions {
   justify-content: flex-start;
 }
+
+.command-learning-rollback-console {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(232, 241, 250, 0.9));
+}
+
+.command-learning-rollback-console.tone-green {
+  border-left-color: var(--green);
+}
+
+.command-learning-rollback-console.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-learning-rollback-console-head,
+.command-learning-rollback-console-grid,
+.command-learning-rollback-console-lanes,
+.command-learning-rollback-console-guidance,
+.command-learning-rollback-console-receipts,
+.command-learning-rollback-console-actions {
+  min-width: 0;
+}
+
+.command-learning-rollback-console-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-learning-rollback-console-lanes,
+.command-learning-rollback-console-guidance,
+.command-learning-rollback-console-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-learning-rollback-console-lanes,
+.command-learning-rollback-console-receipts {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-learning-rollback-console-guidance {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-learning-rollback-console-lanes article,
+.command-learning-rollback-console-guidance article,
+.command-learning-rollback-console-receipts article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(46, 101, 154, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-learning-rollback-console-lanes article:nth-child(1),
+.command-learning-rollback-console-guidance article:nth-child(1),
+.command-learning-rollback-console-guidance article:nth-child(6),
+.command-learning-rollback-console-receipts article:nth-child(1) {
+  border-left-color: var(--green);
+}
+
+.command-learning-rollback-console-lanes article:nth-child(2),
+.command-learning-rollback-console-guidance article:nth-child(3),
+.command-learning-rollback-console-receipts article:nth-child(3) {
+  border-left-color: var(--teal);
+}
+
+.command-learning-rollback-console-lanes article:nth-child(3),
+.command-learning-rollback-console-guidance article:nth-child(5),
+.command-learning-rollback-console-receipts article:nth-child(2) {
+  border-left-color: var(--blue);
+}
+
+.command-learning-rollback-console-lanes article:nth-child(4),
+.command-learning-rollback-console-guidance article:nth-child(2),
+.command-learning-rollback-console-guidance article:nth-child(4),
+.command-learning-rollback-console-receipts article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-learning-rollback-console-lanes span,
+.command-learning-rollback-console-guidance span,
+.command-learning-rollback-console-receipts span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-learning-rollback-console-lanes strong,
+.command-learning-rollback-console-guidance strong,
+.command-learning-rollback-console-receipts strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-learning-rollback-console-lanes p,
+.command-learning-rollback-console-guidance p,
+.command-learning-rollback-console-receipts p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-learning-rollback-console-actions {
+  justify-content: flex-start;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -19693,7 +19807,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-tenant-invite-workflow-grid,
   .command-tenant-invite-workflow-lanes,
   .command-tenant-invite-workflow-invites,
-  .command-tenant-invite-workflow-receipts {
+  .command-tenant-invite-workflow-receipts,
+  .command-learning-rollback-console-grid,
+  .command-learning-rollback-console-lanes,
+  .command-learning-rollback-console-guidance,
+  .command-learning-rollback-console-receipts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -19748,7 +19866,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-tenant-invite-workflow-grid,
   .command-tenant-invite-workflow-lanes,
   .command-tenant-invite-workflow-invites,
-  .command-tenant-invite-workflow-receipts {
+  .command-tenant-invite-workflow-receipts,
+  .command-learning-rollback-console-grid,
+  .command-learning-rollback-console-lanes,
+  .command-learning-rollback-console-guidance,
+  .command-learning-rollback-console-receipts {
     grid-template-columns: 1fr;
   }
 

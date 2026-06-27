@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v711 adds a Learning Rollback Console so live guidance is watched, owner-reviewed, compared against evidence, and either kept, retuned, rolled back, or retired with audit proof.
 - v710 adds a Tenant Invite Workflow so tenant users move through invite draft, role grant approval, acceptance or hold, revoke safety, and audit receipts before live access opens.
 - v709 adds a Staging Proof Sprint Board so staging smoke checks, rollback rehearsal, evidence receipts, blocker holds, and pilot decisions are visible before launch movement.
 - v708 adds a Sandbox Graduation Gate so tested learning candidates graduate to approval, stay tenant-local, return to proof repair, or retire before live guidance changes.
