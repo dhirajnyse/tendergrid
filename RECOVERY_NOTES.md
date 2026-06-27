@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v727 adds an Expansion Pilot Operating Plan so selected scope, owners, access changes, support guardrails, billing line, and first review proof become one pilot execution receipt.
 - v726 adds a Reuse Release Decision Gate so sponsor evidence, support safety, rollback proof, tenant boundary, and reuse confidence decide whether learning can release, canary, retune, stay tenant-only, or hold.
 - v725 adds a Sponsor Expansion Proposal Pack so sponsor ask, proof story, scope offer, commercial terms, support guardrails, learning boundary, and decision receipt become one sponsor-safe expansion approval packet.
 - v724 adds an Expansion Scope Decision Desk so pilot proof, role demand, country fit, billing trust, support calm, and tenant boundary decide which expansion scope can open before sponsor proposal.

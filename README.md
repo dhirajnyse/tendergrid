@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v727 Expansion Pilot Operating Plan turns the selected expansion scope into owner plan, access changes, support guardrails, billing line, first review proof, and one copyable pilot operating receipt.
 - v726 Reuse Release Decision Gate turns sponsor evidence, support safety, rollback proof, tenant boundary, and reuse confidence into a release, canary, retune, tenant-only, or hold decision before learning spreads.
 - v725 Sponsor Expansion Proposal Pack turns sponsor ask, proof story, scope offer, commercial terms, support guardrails, learning boundary, and decision receipt into one sponsor-safe expansion approval packet.
 - v724 Expansion Scope Decision Desk turns pilot proof, role demand, country fit, billing trust, support calm, and tenant boundary into a controlled expansion scope decision before sponsor proposal.
