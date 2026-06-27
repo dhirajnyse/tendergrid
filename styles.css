@@ -19763,6 +19763,118 @@ body.quiet-focus-mode .focus-mode-pill {
 .command-learning-rollback-console-actions {
   justify-content: flex-start;
 }
+
+.command-pilot-signoff-evidence-pack {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(231, 246, 238, 0.9));
+}
+
+.command-pilot-signoff-evidence-pack.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.command-pilot-signoff-evidence-pack.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-pilot-signoff-evidence-pack-head,
+.command-pilot-signoff-evidence-pack-grid,
+.command-pilot-signoff-evidence-pack-lanes,
+.command-pilot-signoff-evidence-pack-signoffs,
+.command-pilot-signoff-evidence-pack-receipts,
+.command-pilot-signoff-evidence-pack-actions {
+  min-width: 0;
+}
+
+.command-pilot-signoff-evidence-pack-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-pilot-signoff-evidence-pack-lanes,
+.command-pilot-signoff-evidence-pack-signoffs,
+.command-pilot-signoff-evidence-pack-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-pilot-signoff-evidence-pack-lanes,
+.command-pilot-signoff-evidence-pack-receipts {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-pilot-signoff-evidence-pack-signoffs {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-pilot-signoff-evidence-pack-lanes article,
+.command-pilot-signoff-evidence-pack-signoffs article,
+.command-pilot-signoff-evidence-pack-receipts article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(30, 119, 84, 0.2);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-pilot-signoff-evidence-pack-lanes article:nth-child(2),
+.command-pilot-signoff-evidence-pack-signoffs article:nth-child(2),
+.command-pilot-signoff-evidence-pack-signoffs article:nth-child(5),
+.command-pilot-signoff-evidence-pack-receipts article:nth-child(2) {
+  border-left-color: var(--teal);
+}
+
+.command-pilot-signoff-evidence-pack-lanes article:nth-child(3),
+.command-pilot-signoff-evidence-pack-signoffs article:nth-child(4),
+.command-pilot-signoff-evidence-pack-receipts article:nth-child(3) {
+  border-left-color: var(--blue);
+}
+
+.command-pilot-signoff-evidence-pack-lanes article:nth-child(4),
+.command-pilot-signoff-evidence-pack-signoffs article:nth-child(6),
+.command-pilot-signoff-evidence-pack-receipts article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-pilot-signoff-evidence-pack-lanes span,
+.command-pilot-signoff-evidence-pack-signoffs span,
+.command-pilot-signoff-evidence-pack-receipts span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-pilot-signoff-evidence-pack-lanes strong,
+.command-pilot-signoff-evidence-pack-signoffs strong,
+.command-pilot-signoff-evidence-pack-receipts strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-pilot-signoff-evidence-pack-lanes p,
+.command-pilot-signoff-evidence-pack-signoffs p,
+.command-pilot-signoff-evidence-pack-receipts p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-pilot-signoff-evidence-pack-signoffs small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.command-pilot-signoff-evidence-pack-actions {
+  justify-content: flex-start;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -19811,7 +19923,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-learning-rollback-console-grid,
   .command-learning-rollback-console-lanes,
   .command-learning-rollback-console-guidance,
-  .command-learning-rollback-console-receipts {
+  .command-learning-rollback-console-receipts,
+  .command-pilot-signoff-evidence-pack-grid,
+  .command-pilot-signoff-evidence-pack-lanes,
+  .command-pilot-signoff-evidence-pack-signoffs,
+  .command-pilot-signoff-evidence-pack-receipts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -19870,7 +19986,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-learning-rollback-console-grid,
   .command-learning-rollback-console-lanes,
   .command-learning-rollback-console-guidance,
-  .command-learning-rollback-console-receipts {
+  .command-learning-rollback-console-receipts,
+  .command-pilot-signoff-evidence-pack-grid,
+  .command-pilot-signoff-evidence-pack-lanes,
+  .command-pilot-signoff-evidence-pack-signoffs,
+  .command-pilot-signoff-evidence-pack-receipts {
     grid-template-columns: 1fr;
   }
 
