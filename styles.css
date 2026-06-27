@@ -19311,6 +19311,113 @@ body.quiet-focus-mode .focus-mode-pill {
 .command-role-access-template-pack-actions {
   justify-content: flex-start;
 }
+
+.command-sandbox-graduation-gate {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--teal);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(226, 243, 236, 0.9));
+}
+
+.command-sandbox-graduation-gate.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.command-sandbox-graduation-gate.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-sandbox-graduation-gate-head,
+.command-sandbox-graduation-gate-grid,
+.command-sandbox-graduation-gate-lanes,
+.command-sandbox-graduation-gate-candidates,
+.command-sandbox-graduation-gate-receipts,
+.command-sandbox-graduation-gate-actions {
+  min-width: 0;
+}
+
+.command-sandbox-graduation-gate-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-sandbox-graduation-gate-lanes,
+.command-sandbox-graduation-gate-candidates,
+.command-sandbox-graduation-gate-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-sandbox-graduation-gate-lanes,
+.command-sandbox-graduation-gate-receipts {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-sandbox-graduation-gate-candidates {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.command-sandbox-graduation-gate-lanes article,
+.command-sandbox-graduation-gate-candidates article,
+.command-sandbox-graduation-gate-receipts article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(12, 125, 105, 0.22);
+  border-left: 4px solid var(--teal);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.command-sandbox-graduation-gate-lanes article:nth-child(2),
+.command-sandbox-graduation-gate-candidates article:nth-child(2),
+.command-sandbox-graduation-gate-candidates article:nth-child(4),
+.command-sandbox-graduation-gate-receipts article:nth-child(2) {
+  border-left-color: var(--blue);
+}
+
+.command-sandbox-graduation-gate-lanes article:nth-child(3),
+.command-sandbox-graduation-gate-candidates article:nth-child(3),
+.command-sandbox-graduation-gate-receipts article:nth-child(3) {
+  border-left-color: var(--teal);
+}
+
+.command-sandbox-graduation-gate-lanes article:nth-child(4),
+.command-sandbox-graduation-gate-candidates article:nth-child(5),
+.command-sandbox-graduation-gate-receipts article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-sandbox-graduation-gate-lanes span,
+.command-sandbox-graduation-gate-candidates span,
+.command-sandbox-graduation-gate-receipts span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-sandbox-graduation-gate-lanes strong,
+.command-sandbox-graduation-gate-candidates strong,
+.command-sandbox-graduation-gate-receipts strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-sandbox-graduation-gate-lanes p,
+.command-sandbox-graduation-gate-candidates p,
+.command-sandbox-graduation-gate-receipts p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-sandbox-graduation-gate-actions {
+  justify-content: flex-start;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -19343,7 +19450,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-private-backend-issue-wave-gates,
   .command-role-access-template-pack-grid,
   .command-role-access-template-pack-templates,
-  .command-role-access-template-pack-rules {
+  .command-role-access-template-pack-rules,
+  .command-sandbox-graduation-gate-grid,
+  .command-sandbox-graduation-gate-lanes,
+  .command-sandbox-graduation-gate-candidates,
+  .command-sandbox-graduation-gate-receipts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -19386,7 +19497,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-private-backend-issue-wave-gates,
   .command-role-access-template-pack-grid,
   .command-role-access-template-pack-templates,
-  .command-role-access-template-pack-rules {
+  .command-role-access-template-pack-rules,
+  .command-sandbox-graduation-gate-grid,
+  .command-sandbox-graduation-gate-lanes,
+  .command-sandbox-graduation-gate-candidates,
+  .command-sandbox-graduation-gate-receipts {
     grid-template-columns: 1fr;
   }
 

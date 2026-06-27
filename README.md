@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v708 Sandbox Graduation Gate decides whether tested learning candidates graduate to approval, stay tenant-local, return to proof repair, or retire safely.
 - v707 Role Access Template Pack turns role starts into access templates with grant scope, revoke receipts, and audit-ready change history.
 - v706 Private Backend Issue Wave turns the launch/control-plane plan into owner-ready private backend issues with acceptance, blocker, and proof cues.
 - v705 Customer Learning Sandbox tests reusable playbooks against redacted customer scenarios before any lesson can influence live guidance.
