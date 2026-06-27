@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v714 adds a Live Learning Safety Monitor so live learning is watched for drift, support pressure, outcome proof, rollback route, privacy boundary, and reuse decision before expansion.
 - v713 adds a First Tenant Admin Console so invite and signoff receipts become a clean admin surface for users, role templates, billing posture, support route, audit export, and launch state.
 - v712 adds a Pilot Signoff Evidence Pack so sponsor, admin, operations, governance, support, and billing signoffs are collected with proof, exceptions, and a pilot decision receipt.
 - v711 adds a Learning Rollback Console so live guidance is watched, owner-reviewed, compared against evidence, and either kept, retuned, rolled back, or retired with audit proof.

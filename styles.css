@@ -19988,6 +19988,119 @@ body.quiet-focus-mode .focus-mode-pill {
 .command-first-tenant-admin-console-actions {
   justify-content: flex-start;
 }
+
+.command-live-learning-safety-monitor {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(230, 239, 249, 0.9));
+}
+
+.command-live-learning-safety-monitor.tone-green {
+  border-left-color: var(--green);
+}
+
+.command-live-learning-safety-monitor.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-live-learning-safety-monitor-head,
+.command-live-learning-safety-monitor-grid,
+.command-live-learning-safety-monitor-lanes,
+.command-live-learning-safety-monitor-monitors,
+.command-live-learning-safety-monitor-receipts,
+.command-live-learning-safety-monitor-actions {
+  min-width: 0;
+}
+
+.command-live-learning-safety-monitor-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-live-learning-safety-monitor-lanes,
+.command-live-learning-safety-monitor-monitors,
+.command-live-learning-safety-monitor-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-live-learning-safety-monitor-lanes,
+.command-live-learning-safety-monitor-receipts {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-live-learning-safety-monitor-monitors {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-live-learning-safety-monitor-lanes article,
+.command-live-learning-safety-monitor-monitors article,
+.command-live-learning-safety-monitor-receipts article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(55, 103, 154, 0.22);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.command-live-learning-safety-monitor-lanes article:nth-child(2),
+.command-live-learning-safety-monitor-monitors article:nth-child(2),
+.command-live-learning-safety-monitor-monitors article:nth-child(5),
+.command-live-learning-safety-monitor-receipts article:nth-child(2) {
+  border-left-color: var(--teal);
+}
+
+.command-live-learning-safety-monitor-lanes article:nth-child(3),
+.command-live-learning-safety-monitor-monitors article:nth-child(3),
+.command-live-learning-safety-monitor-monitors article:nth-child(6),
+.command-live-learning-safety-monitor-receipts article:nth-child(3) {
+  border-left-color: var(--green);
+}
+
+.command-live-learning-safety-monitor-lanes article:nth-child(4),
+.command-live-learning-safety-monitor-monitors article:nth-child(4),
+.command-live-learning-safety-monitor-receipts article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-live-learning-safety-monitor-lanes span,
+.command-live-learning-safety-monitor-monitors span,
+.command-live-learning-safety-monitor-receipts span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-live-learning-safety-monitor-lanes strong,
+.command-live-learning-safety-monitor-monitors strong,
+.command-live-learning-safety-monitor-receipts strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-live-learning-safety-monitor-lanes p,
+.command-live-learning-safety-monitor-monitors p,
+.command-live-learning-safety-monitor-receipts p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-live-learning-safety-monitor-monitors small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.command-live-learning-safety-monitor-actions {
+  justify-content: flex-start;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -20044,7 +20157,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-first-tenant-admin-console-grid,
   .command-first-tenant-admin-console-lanes,
   .command-first-tenant-admin-console-admin-cards,
-  .command-first-tenant-admin-console-receipts {
+  .command-first-tenant-admin-console-receipts,
+  .command-live-learning-safety-monitor-grid,
+  .command-live-learning-safety-monitor-lanes,
+  .command-live-learning-safety-monitor-monitors,
+  .command-live-learning-safety-monitor-receipts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -20111,7 +20228,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-first-tenant-admin-console-grid,
   .command-first-tenant-admin-console-lanes,
   .command-first-tenant-admin-console-admin-cards,
-  .command-first-tenant-admin-console-receipts {
+  .command-first-tenant-admin-console-receipts,
+  .command-live-learning-safety-monitor-grid,
+  .command-live-learning-safety-monitor-lanes,
+  .command-live-learning-safety-monitor-monitors,
+  .command-live-learning-safety-monitor-receipts {
     grid-template-columns: 1fr;
   }
 
