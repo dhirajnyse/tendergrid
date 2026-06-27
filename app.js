@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v718";
-  const BUILD_LABEL = "First Pilot Success Pulse";
+  const BUILD_VERSION = "v719";
+  const BUILD_LABEL = "Tenant Day-One Evidence Export";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=718.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=718.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=719.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=719.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -56768,6 +56768,105 @@ const state = {
     `;
   }
 
+  function buildCommandTenantDayOneEvidenceExport(model, autopilot) {
+    const pulse = buildCommandFirstPilotSuccessPulse(model, autopilot);
+    const runbook = buildCommandTenantLaunchDayRunbook(model, autopilot);
+    const tenantAdmin = buildCommandFirstTenantAdminConsole(model, autopilot);
+    const safety = buildCommandLiveLearningSafetyMonitor(model, autopilot);
+    const signoff = buildCommandPilotSignoffEvidencePack(model, autopilot);
+    const decision = buildCommandPilotLaunchDecisionRoom(model, autopilot);
+    const totalValue = formatCompactMoney(model.totalValue || 0);
+    const overdueCount = model.reminders.overdue || 0;
+    const actionCount = model.reminders.tasks.length;
+    const evidenceScore = model.evidenceScore || 0;
+    const sourceCoverage = model.documents?.sourceCoverage || evidenceScore;
+    const firstTask = model.priorityTasks[0] || {};
+    const firstMove = firstTask.title || autopilot.signals[0]?.record.title || "Export the tenant day-one proof pack";
+    const launchDate = runbook.launchDate || decision.launchDate || firstTask.dueDate || "Launch day";
+    const launchOwner = decision.launchOwner || "Sponsor + Admin";
+    const launchScreenshots = Math.max(1, Math.min(100, Math.round(signoff.evidenceIndex * 0.28 + runbook.accessCheck * 0.22 + pulse.proofQuality * 0.2 + sourceCoverage * 0.14 + 6)));
+    const accessChecks = Math.max(1, Math.min(100, Math.round(runbook.accessCheck * 0.3 + tenantAdmin.roleControl * 0.24 + tenantAdmin.userRoster * 0.18 + Math.max(0, 100 - overdueCount * 1.6) * 0.12 + 6)));
+    const supportNotes = Math.max(1, Math.min(100, Math.round(runbook.supportWatch * 0.3 + safety.supportPressure * 0.24 + tenantAdmin.supportAudit * 0.22 + Math.max(0, 100 - actionCount * 0.14) * 0.08 + 6)));
+    const billingProof = Math.max(1, Math.min(100, Math.round(runbook.billingProof * 0.3 + tenantAdmin.billingPosture * 0.24 + signoff.sponsorConfidence * 0.2 + decision.decisionClarity * 0.1 + 6)));
+    const firstMovement = Math.max(1, Math.min(100, Math.round(pulse.adoptionMovement * 0.34 + decision.launchReadiness * 0.22 + runbook.runbookScore * 0.18 + Math.max(0, 100 - overdueCount * 2) * 0.1 + 6)));
+    const auditReceipts = Math.max(4, Math.min(22, Math.ceil((runbook.auditReceipts + tenantAdmin.auditEvents + signoff.receipts.length + safety.receipts.length) / 2)));
+    const exportReadiness = Math.max(1, Math.min(100, Math.round(launchScreenshots * 0.2 + accessChecks * 0.2 + supportNotes * 0.18 + billingProof * 0.2 + firstMovement * 0.22)));
+    const hardHolds = Math.max(1, Math.min(8, Math.ceil(Math.max(0, 86 - exportReadiness) / 12) + (tenantAdmin.billingState === "Hold" ? 2 : 0)));
+    const evidenceItems = Math.max(8, Math.min(28, auditReceipts + signoff.signoffCount + runbook.accessSteps + Math.ceil(pulse.successProofs / 3)));
+    const exportState = exportReadiness >= 84 && hardHolds <= 2
+      ? "Tenant day-one export is sponsor-ready"
+      : exportReadiness >= 72
+        ? "Tenant day-one export can ship with visible holds"
+        : "Hold tenant export until screenshots, access, support, billing, and first movement improve";
+    const controls = [
+      ["Launch screenshots", `${launchScreenshots}%`, "Home, Command, access, first record, report, and sponsor view screenshots are tied to launch date and owner.", launchScreenshots >= 82 ? "green" : "amber"],
+      ["Access checks", `${accessChecks}%`, "User roster, roles, invite status, revoke path, and first-room access are export-ready.", accessChecks >= 82 ? "teal" : "blue"],
+      ["Support notes", `${supportNotes}%`, "Support route, first questions, SLA posture, escalation owner, and closeout note stay visible.", supportNotes >= 82 ? "green" : "amber"],
+      ["Billing proof", `${billingProof}%`, "Plan, seats, invoice trigger, grace rule, access lock, and sponsor acceptance are packaged.", billingProof >= 82 ? "blue" : "amber"],
+      ["First movement", `${firstMovement}%`, `First live movement protects ${totalValue} and shows the day-one outcome path.`, firstMovement >= 82 ? "green" : "red"],
+    ];
+    const lanes = [
+      ["Screenshot pack", `${evidenceItems} items`, "Collect launch screenshots and annotate owner, date, room, and proof reason.", launchScreenshots >= 80 ? "green" : "amber"],
+      ["Access receipt", `${tenantAdmin.activeSeats}/${tenantAdmin.seatCount} users`, "Export role, first-room, invite, expiry, and revoke proof for tenant admin.", accessChecks >= 80 ? "teal" : "blue"],
+      ["First movement receipt", `${pulse.movementCount} moves`, "Show the first record moved, owner confirmed, date set, proof attached, and next review booked.", firstMovement >= 80 ? "green" : "amber"],
+      ["Support note", `${safety.supportHolds} holds`, "Name the support owner, support route, open questions, escalation promise, and first closeout path.", supportNotes >= 80 ? "blue" : "amber"],
+      ["Audit receipts", `${auditReceipts} receipts`, "Attach launch, access, billing, support, signoff, learning safety, and export audit events.", auditReceipts >= 10 ? "green" : "red"],
+    ];
+    const evidenceCards = [
+      ["Launch screenshot set", "Workspace proof", "Show home, Command Center, tracker view, and first room without exposing sensitive commercial context.", "Screenshot index", launchScreenshots >= 78 ? "green" : "amber"],
+      ["Access and role proof", "Tenant admin", "Show active users, pending invites, role template, revoke path, and audit owner.", "Access export", accessChecks >= 78 ? "teal" : "blue"],
+      ["First movement proof", "Operations", "Show the first owner/date/proof movement and why it matters before the sponsor review.", "Movement receipt", firstMovement >= 78 ? "green" : "amber"],
+      ["Support readiness note", "Support", "Show first-response owner, questions, escalation route, knowledge gap, and closeout rule.", "Support note", supportNotes >= 78 ? "blue" : "amber"],
+      ["Billing acceptance line", "Commercial", "Show plan, seats, billing state, invoice trigger, grace rule, access lock, and renewal checkpoint.", "Billing proof", billingProof >= 78 ? "teal" : "blue"],
+      ["Sponsor handoff", "Sponsor", `Show launch date ${compactText(launchDate, 28)}, owner ${compactText(launchOwner, 28)}, next review, and one commercial ask.`, "Sponsor packet", exportReadiness >= 78 ? "green" : "red"],
+    ];
+    const receipts = [
+      ["1", "Evidence packed", "Screenshots, access checks, support notes, billing proof, first movement, and audit receipts are listed.", "green"],
+      ["2", "Tenant reviewed", "Tenant admin can see what is ready, what is held, and which owner clears each hold.", "blue"],
+      ["3", "Sponsor handoff", "Sponsor copy has launch date, value context, first movement, support route, and next review.", "teal"],
+      ["4", "Export locked", "Pack is copied with build, owner, date, score, holds, and next action for audit history.", "amber"],
+    ];
+    const nextAction = exportReadiness >= 84 && hardHolds <= 2
+      ? "Send the day-one export to the sponsor and tenant admin with one review date and one commercial ask."
+      : exportReadiness >= 72
+        ? "Ship the export internally, clear the visible holds, then send the sponsor handoff."
+        : "Hold the external export, recover access, proof, support, and billing signals, then rebuild the pack.";
+    const exportId = `${BUILD_VERSION.toUpperCase()}-TENANT-DAY-ONE-EVIDENCE-EXPORT`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Tenant Day-One Evidence Export ${exportId}: ${exportState}. Score ${exportReadiness}%. Launch screenshots ${launchScreenshots}%. Access checks ${accessChecks}%. Support notes ${supportNotes}%. Billing proof ${billingProof}%. First movement ${firstMovement}%. Audit receipts ${auditReceipts}, evidence items ${evidenceItems}, holds ${hardHolds}. Owner ${launchOwner}. Date ${launchDate}. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { accessChecks, auditReceipts, billingProof, controls, copyText, evidenceCards, evidenceItems, exportId, exportReadiness, exportState, firstMovement, hardHolds, lanes, launchDate, launchOwner, launchScreenshots, nextAction, receipts, supportNotes, totalValue };
+  }
+
+  function renderCommandTenantDayOneEvidenceExportPreview(model, autopilot) {
+    const exportPack = buildCommandTenantDayOneEvidenceExport(model, autopilot);
+    return `
+      <section class="info-card command-tenant-day-one-evidence-export tone-${escapeHtml(exportPack.exportReadiness >= 84 ? "green" : exportPack.exportReadiness >= 72 ? "blue" : "amber")}" aria-label="Tenant Day-One Evidence Export">
+        <div class="info-head compact command-tenant-day-one-evidence-export-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Evidence Export</span>
+            <strong>Tenant Day-One Evidence Export / ${exportPack.exportReadiness}%</strong>
+            <p>${escapeHtml(exportPack.exportState)}. ${escapeHtml(exportPack.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(exportPack.exportId)}</span>
+        </div>
+        <div class="command-tenant-day-one-evidence-export-grid mini-card-grid">
+          ${exportPack.controls.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-tenant-day-one-evidence-export-lanes">
+          ${exportPack.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-tenant-day-one-evidence-export-cards">
+          ${exportPack.evidenceCards.map(([label, owner, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(owner)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(proof)}</small></article>`).join("")}
+        </div>
+        <div class="command-tenant-day-one-evidence-export-receipts">
+          ${exportPack.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-tenant-day-one-evidence-export-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-tenant-day-one-evidence-export" data-copy-text="${escapeHtml(encodeURIComponent(exportPack.copyText))}">Copy evidence export</button>
+          <span>Day-one launch feels calmer when screenshots, access checks, support notes, billing proof, first movement, and audit receipts leave as one sponsor-safe pack.</span>
+        </div>
+      </section>
+    `;
+  }
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -56891,6 +56990,7 @@ const state = {
         ${renderCommandTenantLaunchDayRunbookPreview(model, autopilot)}
         ${renderCommandLearningReleaseApprovalRoomPreview(model, autopilot)}
         ${renderCommandFirstPilotSuccessPulsePreview(model, autopilot)}
+        ${renderCommandTenantDayOneEvidenceExportPreview(model, autopilot)}
 
         <div class="command-layout">
           <section class="command-main">
@@ -74495,12 +74595,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v718 First Pilot Success Pulse",
-      phase: "First Pilot Success Pulse",
+      version: "v719 Tenant Day-One Evidence Export",
+      phase: "Tenant Day-One Evidence Export",
       lane: "Static product prototype on GitHub Pages",
-      pace: "699 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns launch outcome, sponsor response, support calm, adoption movement, proof quality, and commercial next step into one first-pilot success pulse.",
+      pace: "700 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns launch-day screenshots, support notes, billing proof, access checks, first movement, and audit receipts into one tenant-ready evidence export.",
       tracks: [
+        ["v719 tenant day-one evidence export", 100, "Tenant day-one proof now packages launch screenshots, access checks, support notes, billing proof, first movement, sponsor handoff, and audit receipts into one exportable pack.", "green"],
         ["v718 first pilot success pulse", 100, "First pilot success now measures adoption movement, sponsor response, support calm, proof quality, commercial next step, success receipts, and next review timing in one calm pulse.", "green"],
         ["v717 learning release approval room", 100, "Watched launch lessons now move through approve release, tenant-only hold, retune lesson, or retire safely decisions with owner approval, tenant safety, rollback proof, and release receipt.", "green"],
         ["v716 tenant launch day runbook", 100, "Tenant launch day now runs through access check, support watch, billing proof, audit export, safety and rollback review, first movement, first review, and launch receipts.", "green"],
@@ -75199,9 +75300,10 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v719", "Tenant Day-One Evidence Export", "Package launch-day screenshots, support notes, billing proof, access checks, first movement, and audit receipts into one exportable evidence pack."],
+
         ["v720", "Guidance Reuse Ledger", "Track which approved lessons became reusable guidance, where they influenced users, and which rollback or outcome receipt supports them."],
         ["v721", "Pilot Renewal Signal Room", "Turn success pulse, sponsor response, support calm, billing posture, and proof movement into renewal or expansion signal."],
+        ["v722", "Tenant Sponsor Review Pack", "Turn day-one evidence, renewal signal, launch value, and sponsor questions into a calm review pack for the next customer conversation."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -75506,11 +75608,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "First pilot success now has one pulse for adoption movement, sponsor response, support calm, proof quality, commercial next step, and next review timing.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Tenant day-one proof now exports launch screenshots, access checks, support notes, billing proof, first movement, sponsor handoff, and audit receipts.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v719 smoke addendum", "Tenant Day-One Evidence Export", "Confirm the v719 evidence export panel, five control signals, five export lanes, six evidence cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v718 smoke addendum", "First Pilot Success Pulse", "Confirm the v718 success pulse panel, five control signals, five pulse lanes, six outcome cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v717 smoke addendum", "Learning Release Approval Room", "Confirm the v717 learning release panel, four control lanes, four approval lanes, six approval cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v716 smoke addendum", "Tenant Launch Day Runbook", "Confirm the v716 launch-day runbook panel, four control lanes, four launch lanes, six timed runbook steps, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -88521,7 +88624,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v718.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v719.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -88543,7 +88646,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v718.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v719.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -88564,7 +88667,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v718.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v719.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -88584,7 +88687,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v718.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v719.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -88604,7 +88707,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v718.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v719.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -88632,7 +88735,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v718.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v719.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -88660,7 +88763,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v718.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v719.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -88691,7 +88794,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v718.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v719.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -128204,7 +128307,12 @@ const state = {
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot success pulse copied.");
       return;
     }
-    if (action === "copy-command-calm-ux-flow") {
+    if (action === "copy-command-tenant-day-one-evidence-export") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandTenantDayOneEvidenceExport(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Tenant day-one evidence export copied.");
+      return;
+    }    if (action === "copy-command-calm-ux-flow") {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandCalmUxFlow(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Calm UX flow copied.");
