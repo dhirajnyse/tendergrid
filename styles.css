@@ -20684,6 +20684,132 @@ body.quiet-focus-mode .focus-mode-pill {
 .command-tenant-day-one-evidence-export-actions {
   justify-content: flex-start;
 }
+
+.command-guidance-reuse-ledger {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(223, 236, 249, 0.72));
+}
+
+.command-guidance-reuse-ledger.tone-green {
+  border-left-color: var(--green);
+}
+
+.command-guidance-reuse-ledger.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-guidance-reuse-ledger-head,
+.command-guidance-reuse-ledger-grid,
+.command-guidance-reuse-ledger-lanes,
+.command-guidance-reuse-ledger-rows,
+.command-guidance-reuse-ledger-receipts,
+.command-guidance-reuse-ledger-actions {
+  min-width: 0;
+}
+
+.command-guidance-reuse-ledger-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.command-guidance-reuse-ledger-lanes,
+.command-guidance-reuse-ledger-rows,
+.command-guidance-reuse-ledger-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-guidance-reuse-ledger-lanes {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.command-guidance-reuse-ledger-rows {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-guidance-reuse-ledger-receipts {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.command-guidance-reuse-ledger-lanes article,
+.command-guidance-reuse-ledger-rows article,
+.command-guidance-reuse-ledger-receipts article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(49, 101, 158, 0.22);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.command-guidance-reuse-ledger-lanes article:nth-child(1),
+.command-guidance-reuse-ledger-rows article:nth-child(1),
+.command-guidance-reuse-ledger-receipts article:nth-child(1) {
+  border-left-color: var(--green);
+}
+
+.command-guidance-reuse-ledger-lanes article:nth-child(2),
+.command-guidance-reuse-ledger-rows article:nth-child(2),
+.command-guidance-reuse-ledger-rows article:nth-child(5),
+.command-guidance-reuse-ledger-receipts article:nth-child(2) {
+  border-left-color: var(--teal);
+}
+
+.command-guidance-reuse-ledger-lanes article:nth-child(3),
+.command-guidance-reuse-ledger-rows article:nth-child(3),
+.command-guidance-reuse-ledger-receipts article:nth-child(3) {
+  border-left-color: var(--blue);
+}
+
+.command-guidance-reuse-ledger-lanes article:nth-child(4),
+.command-guidance-reuse-ledger-rows article:nth-child(4),
+.command-guidance-reuse-ledger-receipts article:nth-child(4) {
+  border-left-color: var(--amber);
+}
+
+.command-guidance-reuse-ledger-lanes article:nth-child(5),
+.command-guidance-reuse-ledger-rows article:nth-child(6) {
+  border-left-color: var(--red);
+}
+
+.command-guidance-reuse-ledger-lanes span,
+.command-guidance-reuse-ledger-rows span,
+.command-guidance-reuse-ledger-receipts span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-guidance-reuse-ledger-lanes strong,
+.command-guidance-reuse-ledger-rows strong,
+.command-guidance-reuse-ledger-receipts strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-guidance-reuse-ledger-lanes p,
+.command-guidance-reuse-ledger-rows p,
+.command-guidance-reuse-ledger-receipts p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-guidance-reuse-ledger-rows small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.command-guidance-reuse-ledger-actions {
+  justify-content: flex-start;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -20764,7 +20890,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-tenant-day-one-evidence-export-grid,
   .command-tenant-day-one-evidence-export-lanes,
   .command-tenant-day-one-evidence-export-cards,
-  .command-tenant-day-one-evidence-export-receipts {
+  .command-tenant-day-one-evidence-export-receipts,
+  .command-guidance-reuse-ledger-grid,
+  .command-guidance-reuse-ledger-lanes,
+  .command-guidance-reuse-ledger-rows,
+  .command-guidance-reuse-ledger-receipts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -20855,7 +20985,11 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-tenant-day-one-evidence-export-grid,
   .command-tenant-day-one-evidence-export-lanes,
   .command-tenant-day-one-evidence-export-cards,
-  .command-tenant-day-one-evidence-export-receipts {
+  .command-tenant-day-one-evidence-export-receipts,
+  .command-guidance-reuse-ledger-grid,
+  .command-guidance-reuse-ledger-lanes,
+  .command-guidance-reuse-ledger-rows,
+  .command-guidance-reuse-ledger-receipts {
     grid-template-columns: 1fr;
   }
 

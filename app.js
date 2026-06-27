@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v719";
-  const BUILD_LABEL = "Tenant Day-One Evidence Export";
+  const BUILD_VERSION = "v720";
+  const BUILD_LABEL = "Guidance Reuse Ledger";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=719.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=719.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=720.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=720.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -56867,6 +56867,100 @@ const state = {
       </section>
     `;
   }
+
+  function buildCommandGuidanceReuseLedger(model, autopilot) {
+    const approval = buildCommandLearningReleaseApprovalRoom(model, autopilot);
+    const safety = buildCommandLiveLearningSafetyMonitor(model, autopilot);
+    const dayOne = buildCommandTenantDayOneEvidenceExport(model, autopilot);
+    const pulse = buildCommandFirstPilotSuccessPulse(model, autopilot);
+    const evidenceScore = model.evidenceScore || 0;
+    const sourceCoverage = model.documents?.sourceCoverage || evidenceScore;
+    const overdueCount = model.reminders.overdue || 0;
+    const firstTask = model.priorityTasks[0] || {};
+    const firstMove = firstTask.title || autopilot.signals[0]?.record.title || "Trace the safest approved guidance";
+    const approvedLessons = Math.max(1, Math.min(12, (approval.approveCount || 0) + (safety.releaseCandidates || 0)));
+    const influencePaths = Math.max(1, Math.min(10, Math.ceil(((dayOne.evidenceItems || 0) + (pulse.movementCount || 0) + (approval.approveCount || 0)) / 5)));
+    const rollbackReceipts = Math.max(1, Math.min(8, (approval.retireCount || 0) + (approval.retuneCount || 0) + (safety.proofHolds || 0) + Math.ceil((dayOne.hardHolds || 0) / 2)));
+    const outcomeReceipts = Math.max(2, Math.min(14, Math.ceil(((dayOne.auditReceipts || 0) + (pulse.successProofs || 0) + (safety.releaseCandidates || 0)) / 3)));
+    const reuseFit = Math.max(1, Math.min(100, Math.round((approval.approvalScore || 0) * 0.3 + (safety.reuseBoundary || 0) * 0.26 + (pulse.proofQuality || 0) * 0.22 + (dayOne.exportReadiness || 0) * 0.12 + 6)));
+    const influenceConfidence = Math.max(1, Math.min(100, Math.round((dayOne.firstMovement || 0) * 0.3 + (pulse.pulseScore || 0) * 0.22 + (approval.ownerApproval || 0) * 0.2 + (safety.monitorScore || 0) * 0.14 + 6)));
+    const proofTrace = Math.max(1, Math.min(100, Math.round((safety.outcomeProof || 0) * 0.28 + Math.min(100, (dayOne.auditReceipts || 0) * 5) * 0.18 + evidenceScore * 0.2 + sourceCoverage * 0.18 + 6)));
+    const rollbackSafety = Math.max(1, Math.min(100, Math.round((approval.rollbackProof || 0) * 0.3 + (safety.reuseBoundary || 0) * 0.24 + Math.max(0, 100 - rollbackReceipts * 6) * 0.2 + Math.max(0, 100 - overdueCount * 1.4) * 0.12 + 6)));
+    const ledgerScore = Math.max(1, Math.min(100, Math.round(reuseFit * 0.28 + influenceConfidence * 0.24 + proofTrace * 0.24 + rollbackSafety * 0.24)));
+    const ledgerState = ledgerScore >= 84 && rollbackSafety >= 78
+      ? "Guidance reuse is ready with proof and rollback"
+      : ledgerScore >= 72
+        ? "Guidance reuse can continue with visible review holds"
+        : "Hold reuse until influence, outcome proof, and rollback safety improve";
+    const controls = [
+      ["Approved lessons", approvedLessons, "Only owner-approved lessons enter the reusable guidance ledger.", approvedLessons >= 4 ? "green" : "amber"],
+      ["Influence paths", influencePaths, "Each reusable lesson shows where it influenced a room, prompt, review, or next move.", influencePaths >= 4 ? "teal" : "blue"],
+      ["Outcome proof", `${proofTrace}%`, "Outcome receipts, evidence score, and source coverage stay tied to every reuse decision.", proofTrace >= 80 ? "green" : "amber"],
+      ["Rollback proof", `${rollbackSafety}%`, "Every reused lesson keeps a retune, rollback, retire, or tenant-only path.", rollbackSafety >= 80 ? "blue" : "amber"],
+      ["Reuse boundary", `${reuseFit}%`, "Tenant privacy, owner approval, and evidence readiness decide how far the lesson can travel.", reuseFit >= 80 ? "green" : "red"],
+    ];
+    const lanes = [
+      ["Approve guidance", `${approval.approveCount || 0} approved`, "Reusable guidance starts only after the learning release room says yes.", (approval.approveCount || 0) ? "green" : "amber"],
+      ["Trace influence", `${influencePaths} paths`, "Show the room, surface, prompt, or report where guidance changed behavior.", influenceConfidence >= 78 ? "teal" : "blue"],
+      ["Attach outcome", `${outcomeReceipts} receipts`, "Movement, sponsor response, support calm, and proof quality attach to the lesson.", proofTrace >= 78 ? "green" : "amber"],
+      ["Hold rollback", `${rollbackReceipts} receipts`, "Retune, rollback, and retirement options stay available after reuse.", rollbackSafety >= 78 ? "blue" : "red"],
+      ["Reuse decision", ledgerScore >= 84 ? "Release" : ledgerScore >= 72 ? "Review" : "Hold", "Decide release, tenant-only, retune, retire, or proof repair before wider learning.", ledgerScore >= 84 ? "green" : ledgerScore >= 72 ? "amber" : "red"],
+    ];
+    const ledgerRows = [
+      ["Advisor action reused", "Advisor", "A proven next-best action can appear again only with owner and evidence trace.", "Owner approval", reuseFit >= 78 ? "green" : "amber"],
+      ["Weekly review wording", "Weekly Review", "Management language can be reused when outcome and sponsor response are attached.", "Outcome receipt", proofTrace >= 78 ? "blue" : "amber"],
+      ["Evidence prompt", "Documents", "Proof prompts improve only when missing-source recovery is observed.", "Source proof", sourceCoverage >= 80 ? "green" : "amber"],
+      ["Support response pattern", "Support", "Repeated support questions become guidance only after support calm improves.", "Support closeout", safety.supportPressure >= 70 ? "teal" : "blue"],
+      ["Sponsor review line", "Reports", "Sponsor-ready lines reuse launch proof without exposing private commercial context.", "Sponsor handoff", dayOne.exportReadiness >= 78 ? "green" : "amber"],
+      ["Tenant-only hold", "Privacy", "Sensitive local memory stays tenant-only until boundary, consent, and proof are clean.", "Boundary lock", safety.reuseBoundary >= 78 ? "blue" : "red"],
+    ];
+    const receipts = [
+      ["1", "Lesson approved", "Owner, source, tenant boundary, and release state are captured.", "green"],
+      ["2", "Influence traced", "The reused guidance surface and affected room are named.", "blue"],
+      ["3", "Outcome attached", "Observed movement, proof, sponsor signal, or support calm is linked.", "teal"],
+      ["4", "Rollback ready", "Keep, retune, rollback, retire, or tenant-only decision is auditable.", "amber"],
+    ];
+    const nextAction = ledgerScore >= 84 && rollbackSafety >= 78
+      ? "Release the highest-confidence reusable guidance and attach the outcome receipt before the next review."
+      : ledgerScore >= 72
+        ? "Keep reuse in review, attach missing outcome proof, and hold weak lessons tenant-only."
+        : "Pause wider reuse, repair proof trace and rollback receipts, then reopen the ledger.";
+    const ledgerId = `${BUILD_VERSION.toUpperCase()}-GUIDANCE-REUSE-LEDGER`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Guidance Reuse Ledger ${ledgerId}: ${ledgerState}. Score ${ledgerScore}%. Approved lessons ${approvedLessons}. Influence paths ${influencePaths}. Outcome proof ${proofTrace}%. Outcome receipts ${outcomeReceipts}. Rollback proof ${rollbackSafety}%. Rollback receipts ${rollbackReceipts}. Reuse boundary ${reuseFit}%. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { controls, copyText, influenceConfidence, influencePaths, ledgerId, ledgerRows, ledgerScore, ledgerState, lanes, nextAction, outcomeReceipts, proofTrace, receipts, reuseFit, rollbackReceipts, rollbackSafety };
+  }
+
+  function renderCommandGuidanceReuseLedgerPreview(model, autopilot) {
+    const ledger = buildCommandGuidanceReuseLedger(model, autopilot);
+    return `
+      <section class="info-card command-guidance-reuse-ledger tone-${escapeHtml(ledger.ledgerScore >= 84 ? "green" : ledger.ledgerScore >= 72 ? "blue" : "amber")}" aria-label="Guidance Reuse Ledger">
+        <div class="info-head compact command-guidance-reuse-ledger-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Reuse Ledger</span>
+            <strong>Guidance Reuse Ledger / ${ledger.ledgerScore}%</strong>
+            <p>${escapeHtml(ledger.ledgerState)}. ${escapeHtml(ledger.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(ledger.ledgerId)}</span>
+        </div>
+        <div class="command-guidance-reuse-ledger-grid mini-card-grid">
+          ${ledger.controls.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-guidance-reuse-ledger-lanes">
+          ${ledger.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-guidance-reuse-ledger-rows">
+          ${ledger.ledgerRows.map(([label, room, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(room)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(proof)}</small></article>`).join("")}
+        </div>
+        <div class="command-guidance-reuse-ledger-receipts">
+          ${ledger.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-guidance-reuse-ledger-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-guidance-reuse-ledger" data-copy-text="${escapeHtml(encodeURIComponent(ledger.copyText))}">Copy reuse ledger</button>
+          <span>Reusable guidance earns trust only when influence, outcome proof, rollback safety, and tenant boundary are visible together.</span>
+        </div>
+      </section>
+    `;
+  }
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -56991,6 +57085,7 @@ const state = {
         ${renderCommandLearningReleaseApprovalRoomPreview(model, autopilot)}
         ${renderCommandFirstPilotSuccessPulsePreview(model, autopilot)}
         ${renderCommandTenantDayOneEvidenceExportPreview(model, autopilot)}
+        ${renderCommandGuidanceReuseLedgerPreview(model, autopilot)}
 
         <div class="command-layout">
           <section class="command-main">
@@ -74595,12 +74690,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v719 Tenant Day-One Evidence Export",
-      phase: "Tenant Day-One Evidence Export",
+      version: "v720 Guidance Reuse Ledger",
+      phase: "Guidance Reuse Ledger",
       lane: "Static product prototype on GitHub Pages",
-      pace: "700 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns launch-day screenshots, support notes, billing proof, access checks, first movement, and audit receipts into one tenant-ready evidence export.",
+      pace: "701 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns approved lessons into a reuse ledger with influence paths, outcome receipts, rollback proof, and tenant boundary decisions.",
       tracks: [
+        ["v720 guidance reuse ledger", 100, "Approved learning now becomes traceable reusable guidance with influence paths, outcome receipts, rollback proof, tenant-only holds, and reuse decisions.", "green"],
         ["v719 tenant day-one evidence export", 100, "Tenant day-one proof now packages launch screenshots, access checks, support notes, billing proof, first movement, sponsor handoff, and audit receipts into one exportable pack.", "green"],
         ["v718 first pilot success pulse", 100, "First pilot success now measures adoption movement, sponsor response, support calm, proof quality, commercial next step, success receipts, and next review timing in one calm pulse.", "green"],
         ["v717 learning release approval room", 100, "Watched launch lessons now move through approve release, tenant-only hold, retune lesson, or retire safely decisions with owner approval, tenant safety, rollback proof, and release receipt.", "green"],
@@ -75301,9 +75397,9 @@ const state = {
       ],
       nextBuilds: [
 
-        ["v720", "Guidance Reuse Ledger", "Track which approved lessons became reusable guidance, where they influenced users, and which rollback or outcome receipt supports them."],
         ["v721", "Pilot Renewal Signal Room", "Turn success pulse, sponsor response, support calm, billing posture, and proof movement into renewal or expansion signal."],
         ["v722", "Tenant Sponsor Review Pack", "Turn day-one evidence, renewal signal, launch value, and sponsor questions into a calm review pack for the next customer conversation."],
+        ["v723", "Reuse Outcome Confidence Room", "Compare reused guidance against outcome proof, support calm, sponsor response, and rollback decisions before wider launch."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -75608,11 +75704,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Tenant day-one proof now exports launch screenshots, access checks, support notes, billing proof, first movement, sponsor handoff, and audit receipts.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Approved lessons now show influence paths, outcome proof, rollback receipts, tenant-only holds, and reuse decisions before guidance travels.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v720 smoke addendum", "Guidance Reuse Ledger", "Confirm the v720 reuse ledger panel, five control signals, five reuse lanes, six ledger rows, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v719 smoke addendum", "Tenant Day-One Evidence Export", "Confirm the v719 evidence export panel, five control signals, five export lanes, six evidence cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v718 smoke addendum", "First Pilot Success Pulse", "Confirm the v718 success pulse panel, five control signals, five pulse lanes, six outcome cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v717 smoke addendum", "Learning Release Approval Room", "Confirm the v717 learning release panel, four control lanes, four approval lanes, six approval cards, four receipt steps, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -88624,7 +88721,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v719.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v720.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -88646,7 +88743,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v719.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v720.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -88667,7 +88764,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v719.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v720.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -88687,7 +88784,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v719.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v720.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -88707,7 +88804,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v719.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v720.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -88735,7 +88832,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v719.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v720.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -88763,7 +88860,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v719.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v720.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -88794,7 +88891,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v719.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v720.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -128312,7 +128409,14 @@ const state = {
       const fallback = buildCommandTenantDayOneEvidenceExport(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Tenant day-one evidence export copied.");
       return;
-    }    if (action === "copy-command-calm-ux-flow") {
+    }
+    if (action === "copy-command-guidance-reuse-ledger") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandGuidanceReuseLedger(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Guidance reuse ledger copied.");
+      return;
+    }
+    if (action === "copy-command-calm-ux-flow") {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandCalmUxFlow(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Calm UX flow copied.");
