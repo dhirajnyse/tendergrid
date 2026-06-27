@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v713 adds a First Tenant Admin Console so invite and signoff receipts become a clean admin surface for users, role templates, billing posture, support route, audit export, and launch state.
 - v712 adds a Pilot Signoff Evidence Pack so sponsor, admin, operations, governance, support, and billing signoffs are collected with proof, exceptions, and a pilot decision receipt.
 - v711 adds a Learning Rollback Console so live guidance is watched, owner-reviewed, compared against evidence, and either kept, retuned, rolled back, or retired with audit proof.
 - v710 adds a Tenant Invite Workflow so tenant users move through invite draft, role grant approval, acceptance or hold, revoke safety, and audit receipts before live access opens.

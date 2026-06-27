@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v713 First Tenant Admin Console turns invite and signoff receipts into an admin-ready view for users, roles, billing posture, support route, audit export, and launch state.
 - v712 Pilot Signoff Evidence Pack turns staging, invite, rollback, support, governance, and billing proof into six launch signoff receipts before pilot go/no-go.
 - v711 Learning Rollback Console gives live guidance a rollback watch, owner review, evidence comparison, retire/keep decision, and audit receipt after learning reaches users.
 - v710 Tenant Invite Workflow turns role templates into invite draft, grant approval, accept/hold, revoke, and audit receipts before live users arrive.
