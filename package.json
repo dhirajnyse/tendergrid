@@ -1,6 +1,6 @@
 {
   "name": "tendergrid-pursuitdesk",
-  "version": "7.2.8",
+  "version": "7.2.9",
   "private": true,
   "description": "PursuitDesk static workspace for EOI, tender, and project tracking.",
   "type": "module",

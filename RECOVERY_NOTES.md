@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v729 adds a Reusable Learning Passport so approved learning carries tenant boundary, source proof, support guardrail, rollback route, reuse limits, owner, and review path before it can travel.
 - v728 adds a Sponsor Decision Receipt Room so approve, edit, hold, or rollback decisions carry owner, date, proof, commercial term, next review, and rollback route in one sponsor-safe receipt.
 - v727 adds an Expansion Pilot Operating Plan so selected scope, owners, access changes, support guardrails, billing line, and first review proof become one pilot execution receipt.
 - v726 adds a Reuse Release Decision Gate so sponsor evidence, support safety, rollback proof, tenant boundary, and reuse confidence decide whether learning can release, canary, retune, stay tenant-only, or hold.
