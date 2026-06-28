@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v738";
-  const BUILD_LABEL = "Renewal Outcome Memory Room";
+  const BUILD_VERSION = "v739";
+  const BUILD_LABEL = "Commercial Expansion Learning Release Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=738.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=738.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=739.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=739.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15646,6 +15646,7 @@ const state = {
     "${renderCommandFirstExpansionOutcomeWatchPreview(model, autopilot)}",
     "${renderCommandCommercialRenewalSignalRoomPreview(model, autopilot)}",
     "${renderCommandRenewalOutcomeMemoryRoomPreview(model, autopilot)}",
+    "${renderCommandCommercialExpansionLearningReleaseRoomPreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -15747,10 +15748,11 @@ const state = {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
     const renewalMemory = buildCommandRenewalOutcomeMemoryRoom(model, autopilot);
+    const expansionLearning = buildCommandCommercialExpansionLearningReleaseRoom(model, autopilot);
     const railCards = [
       ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
       ["Renewal memory", `${renewalMemory.memoryScore}%`, `${renewalMemory.memoryDecision}: ${renewalMemory.nextAction}`, renewalMemory.memoryScore >= 78 ? "green" : "amber", "Reports"],
-      ["Decision control", `${model.actionScore}%`, "Use Advisor for the next move instead of browsing every proof room.", "green", "Advisor"],
+      ["Expansion learning", `${expansionLearning.releaseScore}%`, `${expansionLearning.releaseDecision}: ${expansionLearning.nextAction}`, expansionLearning.releaseScore >= 78 ? "green" : "amber", "Reports"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
     ];
     return `
@@ -15787,6 +15789,17 @@ const state = {
             ${renewalMemory.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
           </div>
           <button class="ghost-btn" type="button" data-action="copy-command-renewal-outcome-memory-room" data-copy-text="${escapeHtml(encodeURIComponent(renewalMemory.copyText))}">Copy outcome memory</button>
+        </div>
+        <div class="command-commercial-expansion-learning-release-strip tone-${escapeHtml(expansionLearning.releaseScore >= 84 ? "green" : expansionLearning.releaseScore >= 72 ? "blue" : "amber")}" aria-label="Commercial Expansion Learning Release Room summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} learning release</span>
+            <strong>${escapeHtml(expansionLearning.releaseDecision)} / ${expansionLearning.releaseScore}%</strong>
+            <p>${escapeHtml(expansionLearning.releaseState)}. ${escapeHtml(expansionLearning.nextAction)}</p>
+          </div>
+          <div class="command-commercial-expansion-learning-release-strip-signals">
+            ${expansionLearning.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-commercial-expansion-learning-release-room" data-copy-text="${escapeHtml(encodeURIComponent(expansionLearning.copyText))}">Copy release room</button>
         </div>
       </section>
     `;
@@ -58913,6 +58926,124 @@ const state = {
     `;
   }
 
+  function buildCommandCommercialExpansionLearningReleaseRoom(model, autopilot) {
+    const memory = buildCommandRenewalOutcomeMemoryRoom(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(value)));
+    const safeScore = (value, penalty = 4) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const reusablePattern = score(memory.learningReadiness * 0.28 + memory.proofCaptured * 0.22 + memory.sponsorResponse * 0.18 + (model.evidenceScore || 0) * 0.16 + (model.contractScore || 0) * 0.1 + 6);
+    const tenantBoundary = score(safeScore(model.evidenceGaps?.length, 7) * 0.28 + safeScore(model.contractGaps?.length, 8) * 0.2 + safeScore(autopilot?.delegateCount, 6) * 0.18 + (model.evidenceScore || 0) * 0.16 + 18);
+    const retuneReadiness = score(memory.supportOutcome * 0.26 + model.actionScore * 0.22 + safeScore(model.reminders?.overdue, 3) * 0.2 + safeScore(model.reminders?.missingData, 2) * 0.18 + 8);
+    const commercialLift = score(memory.billingOutcome * 0.24 + memory.sponsorResponse * 0.22 + Math.min(100, Number(model.topOpenValues?.length || 0) * 13 + 38) * 0.18 + (model.winRate || 64) * 0.14 + (model.healthScore || 0) * 0.12 + 6);
+    const releaseReceipts = score(memory.memoryScore * 0.22 + reusablePattern * 0.2 + tenantBoundary * 0.18 + retuneReadiness * 0.18 + commercialLift * 0.16 + 5);
+    const releaseScore = score(reusablePattern * 0.24 + tenantBoundary * 0.22 + retuneReadiness * 0.18 + commercialLift * 0.18 + releaseReceipts * 0.18);
+    const tenantOnlyCount = [
+      memory.proofCaptured < 72,
+      memory.sponsorResponse < 72,
+      tenantBoundary < 74,
+      retuneReadiness < 70,
+    ].filter(Boolean).length;
+    const retuneTask = retuneReadiness < 70 || memory.supportOutcome < 68 ? "Retune before release" : releaseScore >= 84 ? "No retune" : "Canary retune watch";
+    const releaseDecision = releaseScore >= 86 && tenantOnlyCount === 0
+      ? "Release reusable learning"
+      : releaseScore >= 78 && tenantBoundary >= 74
+        ? "Canary first"
+        : tenantBoundary < 68
+          ? "Tenant-only hold"
+          : retuneReadiness < 70
+            ? "Retune task"
+            : "Block release";
+    const releaseState = releaseDecision === "Release reusable learning"
+      ? "Commercial outcome can become reusable learning with receipts, tenant boundary, and rollback language attached"
+      : releaseDecision === "Canary first"
+        ? "Commercial learning can run as a controlled canary before wider release"
+        : releaseDecision === "Tenant-only hold"
+          ? "Commercial learning must stay tenant-local until privacy, proof, or boundary signals improve"
+          : releaseDecision === "Retune task"
+            ? "Commercial learning needs retune work before it can influence the next account"
+            : "Commercial learning is blocked until proof, boundary, support, and commercial receipts recover";
+    const firstMove = firstTask.title || firstRecord.title || memory.firstMove || "Select the safest commercial learning release path";
+    const owner = firstTask.owner || firstTask.assignee || memory.owner || "Commercial owner";
+    const reviewWindow = firstTask.dueDate || firstTask.due || memory.reviewWindow || "Learning release review";
+    const valueLine = memory.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const signals = [
+      ["Learning release score", `${releaseScore}%`, "Blends reusable pattern, tenant boundary, retune readiness, commercial lift, and release receipts.", releaseScore >= 84 ? "green" : releaseScore >= 72 ? "blue" : "amber"],
+      ["Reusable pattern", `${reusablePattern}%`, "Checks whether the renewal outcome is strong enough to teach another commercial cycle.", reusablePattern >= 78 ? "green" : "amber"],
+      ["Tenant-only holds", tenantOnlyCount, "Counts proof, sponsor, boundary, and retune holds that keep learning local.", tenantOnlyCount ? "amber" : "green"],
+      ["Retune task", retuneTask, "Decides whether the pattern needs adjustment before reuse.", retuneTask === "No retune" ? "green" : retuneTask === "Canary retune watch" ? "blue" : "red"],
+      ["Release receipts", `${releaseReceipts}%`, "Confirms copyable proof, owner, review, boundary, rollback, and learning receipts.", releaseReceipts >= 78 ? "teal" : "amber"],
+      ["Commercial lift", `${commercialLift}%`, "Reads billing outcome, sponsor response, value exposure, win rate, and health as the commercial benefit signal.", commercialLift >= 78 ? "blue" : "amber"],
+    ];
+    const lanes = [
+      ["Release reusable learning", releaseDecision === "Release reusable learning" ? "Selected" : "Needs receipts", "Publish the commercial pattern with proof, boundary, rollback, and owner review visible.", releaseDecision === "Release reusable learning" ? "green" : "amber"],
+      ["Canary first", releaseDecision === "Canary first" ? "Selected" : "Controlled option", "Try the learning in one controlled account before it becomes general guidance.", releaseDecision === "Canary first" ? "teal" : "blue"],
+      ["Tenant-only hold", releaseDecision === "Tenant-only hold" ? "Selected" : "Privacy fallback", "Keep the learning local when proof or tenant boundary is not strong enough.", releaseDecision === "Tenant-only hold" ? "amber" : "blue"],
+      ["Retune task", releaseDecision === "Retune task" ? "Selected" : "Repair option", "Create a retune task when support, action, or missing-data pressure would teach the wrong lesson.", releaseDecision === "Retune task" ? "red" : "amber"],
+      ["Block release", releaseDecision === "Block release" ? "Selected" : "Last gate", "Block the release until proof, sponsor response, support outcome, and release receipts recover.", releaseDecision === "Block release" ? "red" : "amber"],
+    ];
+    const cards = [
+      ["Source outcome", memory.memoryDecision, `Starts from v738 outcome memory: ${memory.memoryScore}% and ${memory.memoryDecision}.`, "Outcome", memory.memoryScore >= 78 ? "green" : "amber"],
+      ["Pattern to publish", `${reusablePattern}%`, `Reusable pattern reads proof ${memory.proofCaptured}% and learning readiness ${memory.learningReadiness}%.`, "Reusable pattern", reusablePattern >= 78 ? "green" : "amber"],
+      ["Tenant boundary", `${tenantBoundary}%`, `Boundary uses evidence gaps, contract gaps, delegated cleanup, and evidence health before release.`, "Tenant boundary", tenantBoundary >= 78 ? "teal" : "amber"],
+      ["Retune task", retuneTask, `Retune readiness ${retuneReadiness}% protects support outcome ${memory.supportOutcome}% before guidance spreads.`, "Retune", retuneReadiness >= 78 ? "blue" : "red"],
+      ["Commercial release", releaseDecision, `Commercial lift ${commercialLift}% with value ${valueLine}; owner ${owner}; review ${reviewWindow}.`, "Commercial lift", commercialLift >= 78 ? "blue" : "amber"],
+      ["Release receipt", `${releaseReceipts}%`, `Receipts decide if the pattern can release, canary, stay local, retune, or block.`, "Release receipts", releaseReceipts >= 78 ? "green" : "amber"],
+    ];
+    const receipts = [
+      ["1", "Outcome linked", `Reuse starts only from the v738 outcome memory: ${memory.memoryDecision} / ${memory.memoryScore}%.`, memory.memoryScore >= 78 ? "green" : "blue"],
+      ["2", "Boundary checked", `Tenant boundary ${tenantBoundary}% decides whether commercial learning can leave the account.`, tenantBoundary >= 78 ? "teal" : "amber"],
+      ["3", "Retune decided", `${retuneTask} with retune readiness ${retuneReadiness}%.`, retuneReadiness >= 78 ? "blue" : "red"],
+      ["4", "Commercial lift read", `Commercial lift ${commercialLift}% keeps release tied to billing, sponsor, and value signals.`, commercialLift >= 78 ? "green" : "amber"],
+      ["5", "Release decision", `${releaseDecision} with ${tenantOnlyCount} tenant-only holds and ${releaseReceipts}% receipt readiness.`, releaseScore >= 78 ? "green" : "red"],
+    ];
+    const nextAction = releaseDecision === "Release reusable learning"
+      ? "Publish the commercial pattern with proof, boundary, rollback, and release receipt attached."
+      : releaseDecision === "Canary first"
+        ? "Run the learning as one controlled canary and watch sponsor, support, and billing response before wider release."
+        : releaseDecision === "Tenant-only hold"
+          ? "Keep the learning tenant-local and repair proof, sponsor response, or boundary before reuse."
+          : releaseDecision === "Retune task"
+            ? "Create a retune task for support, action, or missing-data pressure before release."
+            : "Block commercial learning release until the outcome memory and release receipts recover.";
+    const releaseId = `${BUILD_VERSION.toUpperCase()}-COMMERCIAL-EXPANSION-LEARNING-RELEASE-ROOM`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Commercial Expansion Learning Release Room ${releaseId}: ${releaseState}. Score ${releaseScore}%. Reusable pattern ${reusablePattern}%. Tenant boundary ${tenantBoundary}%. Tenant-only holds ${tenantOnlyCount}. Retune task ${retuneTask}. Release receipts ${releaseReceipts}%. Commercial lift ${commercialLift}%. Decision ${releaseDecision}. Owner ${owner}. Review ${reviewWindow}. Value ${valueLine}. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { cards, commercialLift, copyText, firstMove, lanes, owner, receipts, releaseDecision, releaseId, releaseReceipts, releaseScore, releaseState, retuneReadiness, retuneTask, reusablePattern, reviewWindow, signals, tenantBoundary, tenantOnlyCount, valueLine, nextAction };
+  }
+
+  function renderCommandCommercialExpansionLearningReleaseRoomPreview(model, autopilot) {
+    const room = buildCommandCommercialExpansionLearningReleaseRoom(model, autopilot);
+    return `
+      <section class="info-card command-commercial-expansion-learning-release-room tone-${escapeHtml(room.releaseScore >= 84 ? "green" : room.releaseScore >= 72 ? "blue" : "amber")}" aria-label="Commercial Expansion Learning Release Room">
+        <div class="info-head compact command-commercial-expansion-learning-release-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Expansion Learning</span>
+            <strong>Commercial Expansion Learning Release Room / ${room.releaseScore}%</strong>
+            <p>${escapeHtml(room.releaseState)}. ${escapeHtml(room.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(room.releaseId)}</span>
+        </div>
+        <div class="command-commercial-expansion-learning-release-room-grid mini-card-grid">
+          ${room.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-commercial-expansion-learning-release-room-lanes">
+          ${room.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-commercial-expansion-learning-release-room-cards">
+          ${room.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(value)}</small></article>`).join("")}
+        </div>
+        <div class="command-commercial-expansion-learning-release-room-receipts">
+          ${room.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-commercial-expansion-learning-release-room-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-commercial-expansion-learning-release-room" data-copy-text="${escapeHtml(encodeURIComponent(room.copyText))}">Copy release room</button>
+          <span>Commercial learning releases only when reusable pattern, tenant boundary, retune decision, commercial lift, and release receipts are visible together.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -59054,6 +59185,7 @@ const state = {
         ${renderCommandFirstExpansionOutcomeWatchPreview(model, autopilot)}
         ${renderCommandCommercialRenewalSignalRoomPreview(model, autopilot)}
         ${renderCommandRenewalOutcomeMemoryRoomPreview(model, autopilot)}
+        ${renderCommandCommercialExpansionLearningReleaseRoomPreview(model, autopilot)}
         ` : renderCommandReleaseRailPreview(model, autopilot)}
 
         <div class="command-layout">
@@ -76661,12 +76793,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v738 Renewal Outcome Memory Room",
-      phase: "Renewal Outcome Memory Room",
+      version: "v739 Commercial Expansion Learning Release Room",
+      phase: "Commercial Expansion Learning Release Room",
       lane: "Static product prototype on GitHub Pages",
-      pace: "719 meaningful versions since rebrand",
-      summary: "PursuitDesk now remembers what happened after the renewal decision: proof captured, billing outcome, sponsor response, support outcome, learning readiness, and whether the outcome can teach the next cycle.",
+      pace: "720 meaningful versions since rebrand",
+      summary: "PursuitDesk now decides whether a strong commercial renewal outcome can become reusable expansion learning, must run as a canary, should stay tenant-local, needs a retune task, or must be blocked.",
       tracks: [
+        ["v739 commercial expansion learning release room", 100, "Commercial renewal outcomes now become a release decision across reusable pattern, tenant boundary, tenant-only holds, retune task, release receipts, commercial lift, owner, review window, and one copyable release room.", "green"],
         ["v738 renewal outcome memory room", 100, "Renewal decisions now produce outcome memory: proof captured, billing outcome, sponsor response, support outcome, learning readiness, reuse decision, owner, review window, and one copyable outcome memory.", "green"],
         ["v737 calm navigation flow", 100, "Every room now shows a compact Start, Move, Prove, Launch path; the side rail carries a Now/Next focus card; and the Hyrvia-inspired layout gets clearer navigation without reopening heavy Command render paths.", "green"],
         ["v736 side rail click stability hotfix", 100, "Command Center now opens the daily operating path first, hidden AI archive panels are indexed instead of pre-rendered, same-room rail clicks avoid full rebuilds, and route hydration stays on startup/hashchange only.", "green"],
@@ -77385,9 +77518,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v739", "Commercial Expansion Learning Release Room", "Convert commercial renewal outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
         ["v740", "Sponsor Value Proof Pack", "Package renewal value proof, billing movement, sponsor quote, support calm, and next expansion ask into a buyer-safe pack."],
         ["v741", "Renewal Learning Release Gate", "Decide which renewal memories can become reusable guidance, stay tenant-local, or wait for more evidence."],
+        ["v742", "Commercial Learning Canary Watch", "Watch the first controlled reuse of a commercial learning pattern before wider guidance release."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -77692,11 +77825,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Renewal decisions now carry outcome memory across proof captured, billing outcome, sponsor response, support outcome, learning readiness, and reuse decision.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Commercial renewal outcomes now become release decisions across reusable pattern, tenant boundary, retune task, release receipts, and commercial lift.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v739 smoke addendum", "Commercial Expansion Learning Release Room", "Confirm the v739 commercial expansion learning strip, full hidden release room, six release signals, five release lanes, six release cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v738 smoke addendum", "Renewal Outcome Memory Room", "Confirm the v738 renewal outcome memory strip, full hidden release room, six outcome signals, five learning lanes, six memory cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v736 smoke addendum", "Side Rail Click Stability Hotfix", "Confirm Command opens without a browser hang from Tenders Insights, same-room rail clicks do not rebuild, hidden archive rooms are indexed, route hydration stays out of renderShell, cache tokens show v736.1, and the Build badge shows v736.", "green"],
       ["v735 smoke addendum", "Side Rail Workspace Shell", "Confirm the v735 side rail groups, left/right rail toggle, top Rooms utility, Admin Tools, build badge, focus badge, serenity badge, account controls, cache tokens, and mobile rail overflow before publishing.", "green"],
@@ -130517,6 +130651,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandRenewalOutcomeMemoryRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Renewal outcome memory copied.");
+      return;
+    }
+    if (action === "copy-command-commercial-expansion-learning-release-room") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandCommercialExpansionLearningReleaseRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Commercial expansion learning release room copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {
