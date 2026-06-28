@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v733";
-  const BUILD_LABEL = "First Expansion Outcome Watch";
+  const BUILD_VERSION = "v734";
+  const BUILD_LABEL = "Commercial Renewal Signal Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=733.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=733.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=734.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=734.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -58301,6 +58301,116 @@ const state = {
     `;
   }
 
+  function buildCommandCommercialRenewalSignalRoom(model, autopilot) {
+    const outcomeWatch = buildCommandFirstExpansionOutcomeWatch(model, autopilot);
+    const renewal = buildCommandPilotRenewalSignalRoom(model, autopilot);
+    const sponsorPack = buildCommandTenantSponsorReviewPack(model, autopilot);
+    const commercialLedger = buildCommandPilotCommercialActivationLedger(model, autopilot);
+    const sponsorReceipt = buildCommandSponsorDecisionReceiptRoom(model, autopilot);
+    const firstTask = model.priorityTasks[0] || {};
+    const firstMove = firstTask.title || outcomeWatch.firstMove || autopilot.signals[0]?.record.title || "Prepare the commercial renewal signal";
+    const score = (value) => Math.max(1, Math.min(100, Math.round(value)));
+    const renewalProof = score((outcomeWatch.promisedProof || 0) * 0.28 + (sponsorPack.proofClarity || 0) * 0.2 + (renewal.proofMomentum || 0) * 0.2 + (commercialLedger.proofReceipt || 0) * 0.16 + (sponsorReceipt.proofAttached || 0) * 0.1 + 6);
+    const billingConfidence = score((outcomeWatch.billingMovement || 0) * 0.26 + (renewal.billingTrust || 0) * 0.22 + (commercialLedger.billingTrigger || 0) * 0.2 + (sponsorReceipt.commercialTerm || 0) * 0.14 + (sponsorPack.decisionPath || 0) * 0.1 + 6);
+    const sponsorMomentum = score((sponsorPack.sponsorReadiness || 0) * 0.26 + (renewal.renewalConfidence || 0) * 0.22 + (sponsorReceipt.decisionClarity || 0) * 0.18 + (outcomeWatch.watchScore || 0) * 0.16 + (renewal.expansionSignal || 0) * 0.1 + 6);
+    const expansionEconomics = score((renewal.expansionSignal || 0) * 0.24 + (outcomeWatch.reusePassportUpdate || 0) * 0.2 + (commercialLedger.accessActivation || 0) * 0.16 + (sponsorPack.questionCoverage || 0) * 0.14 + (commercialLedger.commercialAuditTrail || 0) * 0.12 + 6);
+    const retentionRiskShield = score((outcomeWatch.rollbackEvidence || 0) * 0.24 + (outcomeWatch.supportLoad || 0) * 0.2 + (renewal.supportCalm || 0) * 0.18 + (sponsorPack.reviewCalm || 0) * 0.16 + (commercialLedger.supportWatch || 0) * 0.12 + 6);
+    const commercialScore = score(renewalProof * 0.22 + billingConfidence * 0.22 + sponsorMomentum * 0.2 + expansionEconomics * 0.18 + retentionRiskShield * 0.18);
+    const commercialDecision = commercialScore >= 84 && billingConfidence >= 78 && renewalProof >= 78
+      ? "Renew and expand"
+      : commercialScore >= 76 && retentionRiskShield >= 72
+        ? "Renew controlled"
+        : commercialScore >= 68 && sponsorMomentum >= 68
+          ? "Executive review"
+          : commercialScore >= 58
+            ? "Commercial repair"
+            : "Hold renewal";
+    const roomState = commercialDecision === "Renew and expand"
+      ? "Commercial renewal is ready to move with proof, billing, sponsor momentum, expansion economics, and risk shield aligned"
+      : commercialDecision === "Renew controlled"
+        ? "Commercial renewal can proceed with controlled expansion and a visible support and billing watch"
+        : commercialDecision === "Executive review"
+          ? "Commercial renewal needs executive review before the expansion story is promised"
+          : commercialDecision === "Commercial repair"
+            ? "Commercial renewal needs proof, billing, or sponsor repair before asking for commitment"
+            : "Commercial renewal should stay on hold until proof and sponsor confidence recover";
+    const owner = commercialLedger.owner || sponsorReceipt.decisionOwner || outcomeWatch.owner || "Commercial owner";
+    const reviewWindow = sponsorPack.reviewWindow || outcomeWatch.reviewWindow || renewal.sponsorWindow || "Commercial review";
+    const valueLine = formatCompactMoney(model.totalValue || 0);
+    const signals = [
+      ["Renewal proof", `${renewalProof}%`, "Outcome proof, sponsor proof clarity, proof momentum, receipt proof, and activation proof decide the renewal story.", renewalProof >= 78 ? "green" : "amber"],
+      ["Billing confidence", `${billingConfidence}%`, "Billing movement, billing trust, invoice trigger, commercial term, and decision path decide commercial readiness.", billingConfidence >= 78 ? "blue" : "amber"],
+      ["Sponsor momentum", `${sponsorMomentum}%`, "Sponsor readiness, renewal confidence, decision clarity, outcome score, and expansion signal decide how direct the ask can be.", sponsorMomentum >= 78 ? "teal" : "blue"],
+      ["Expansion economics", `${expansionEconomics}%`, "Expansion signal, reuse update, access activation, question coverage, and audit trail decide if expansion belongs in the renewal.", expansionEconomics >= 78 ? "green" : "amber"],
+      ["Retention risk shield", `${retentionRiskShield}%`, "Rollback evidence, support load, support calm, review calm, and support watch protect the renewal from overreach.", retentionRiskShield >= 78 ? "teal" : "red"],
+    ];
+    const lanes = [
+      ["Renew and expand", commercialDecision === "Renew and expand" ? "Selected" : "Needs full proof", "Send one sponsor-ready renewal and expansion ask when proof, billing, sponsor, economics, and risk shield agree.", commercialDecision === "Renew and expand" ? "green" : "amber"],
+      ["Renew controlled", commercialDecision === "Renew controlled" ? "Selected" : "Controlled option", "Renew the account, keep expansion scoped, and watch billing, support, and proof before widening.", commercialDecision === "Renew controlled" ? "teal" : "blue"],
+      ["Executive review", commercialDecision === "Executive review" ? "Selected" : "Use for sponsor risk", "Bring the sponsor story to leadership when proof is visible but the commercial ask needs judgment.", commercialDecision === "Executive review" ? "blue" : "amber"],
+      ["Commercial repair", commercialDecision === "Commercial repair" ? "Selected" : "Use for weak proof", "Repair the proof story, billing line, sponsor response, or support posture before commercial follow-up.", commercialDecision === "Commercial repair" ? "amber" : "blue"],
+      ["Hold renewal", commercialDecision === "Hold renewal" ? "Selected" : "Fallback", "Hold the renewal ask when proof, billing, or sponsor confidence cannot support a calm conversation.", commercialDecision === "Hold renewal" ? "red" : "amber"],
+    ];
+    const cards = [
+      ["Proof story", owner, `Renewal proof ${renewalProof}%; first expansion decision ${outcomeWatch.outcomeDecision}; sponsor proof ${sponsorPack.proofClarity}%.`, "Renewal proof", renewalProof >= 78 ? "green" : "amber"],
+      ["Billing line", "Finance", `Billing confidence ${billingConfidence}%; trigger ${commercialLedger.billingTrigger}%; billing trust ${renewal.billingTrust}%.`, "Billing confidence", billingConfidence >= 78 ? "blue" : "amber"],
+      ["Sponsor motion", "Sponsor owner", `Sponsor momentum ${sponsorMomentum}%; sponsor ask ${sponsorPack.sponsorAsk}; window ${reviewWindow}.`, "Sponsor momentum", sponsorMomentum >= 78 ? "teal" : "blue"],
+      ["Expansion option", "Commercial", `Expansion economics ${expansionEconomics}%; expansion signal ${renewal.expansionSignal}%; scope ${outcomeWatch.scope}.`, "Expansion economics", expansionEconomics >= 78 ? "green" : "amber"],
+      ["Retention shield", "Customer success", `Retention risk shield ${retentionRiskShield}%; support load ${outcomeWatch.supportLoad}%; support calm ${renewal.supportCalm}%.`, "Retention risk", retentionRiskShield >= 78 ? "teal" : "red"],
+      ["Decision receipt", commercialDecision, `Commercial score ${commercialScore}%; value ${valueLine}; owner ${owner}.`, "Commercial receipt", commercialScore >= 78 ? "green" : "blue"],
+    ];
+    const receipts = [
+      ["1", "Proof receipt", `Renewal proof ${renewalProof}% keeps outcome evidence and sponsor proof in the same story.`, renewalProof >= 78 ? "green" : "amber"],
+      ["2", "Billing receipt", `Billing confidence ${billingConfidence}% keeps invoice trigger and commercial term visible before the ask.`, billingConfidence >= 78 ? "blue" : "amber"],
+      ["3", "Sponsor receipt", `Sponsor momentum ${sponsorMomentum}% sets the review window ${reviewWindow} and owner ${owner}.`, sponsorMomentum >= 78 ? "teal" : "blue"],
+      ["4", "Risk receipt", `Retention risk shield ${retentionRiskShield}% preserves support calm and rollback evidence during renewal.`, retentionRiskShield >= 78 ? "green" : "red"],
+    ];
+    const nextAction = commercialDecision === "Renew and expand"
+      ? "Send a renewal-and-expansion brief with proof, billing line, sponsor date, risk shield, and one decision receipt."
+      : commercialDecision === "Renew controlled"
+        ? "Renew the account, keep expansion scoped, and watch billing, support, and proof before widening."
+        : commercialDecision === "Executive review"
+          ? "Prepare the executive review with proof story, commercial options, sponsor question, and risk shield."
+          : commercialDecision === "Commercial repair"
+            ? "Repair proof, billing, sponsor answer, or support posture before asking for renewal."
+            : "Hold the renewal ask, recover proof and sponsor confidence, then reopen the commercial signal.";
+    const roomId = `${BUILD_VERSION.toUpperCase()}-COMMERCIAL-RENEWAL-SIGNAL-ROOM`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Commercial Renewal Signal Room ${roomId}: ${roomState}. Score ${commercialScore}%. Renewal proof ${renewalProof}%. Billing confidence ${billingConfidence}%. Sponsor momentum ${sponsorMomentum}%. Expansion economics ${expansionEconomics}%. Retention risk shield ${retentionRiskShield}%. Decision ${commercialDecision}. Owner ${owner}. Review ${reviewWindow}. Value ${valueLine}. First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { billingConfidence, cards, commercialDecision, commercialScore, copyText, expansionEconomics, firstMove, lanes, nextAction, owner, receipts, retentionRiskShield, renewalProof, reviewWindow, roomId, roomState, signals, sponsorMomentum, valueLine };
+  }
+
+  function renderCommandCommercialRenewalSignalRoomPreview(model, autopilot) {
+    const room = buildCommandCommercialRenewalSignalRoom(model, autopilot);
+    return `
+      <section class="info-card command-commercial-renewal-signal-room tone-${escapeHtml(room.commercialScore >= 84 ? "green" : room.commercialScore >= 72 ? "blue" : "amber")}" aria-label="Commercial Renewal Signal Room">
+        <div class="info-head compact command-commercial-renewal-signal-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Commercial Renewal</span>
+            <strong>Commercial Renewal Signal Room / ${room.commercialScore}%</strong>
+            <p>${escapeHtml(room.roomState)}. ${escapeHtml(room.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(room.roomId)}</span>
+        </div>
+        <div class="command-commercial-renewal-signal-room-grid mini-card-grid">
+          ${room.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-commercial-renewal-signal-room-lanes">
+          ${room.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-commercial-renewal-signal-room-cards">
+          ${room.cards.map(([label, owner, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(owner)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(proof)}</small></article>`).join("")}
+        </div>
+        <div class="command-commercial-renewal-signal-room-receipts">
+          ${room.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-commercial-renewal-signal-room-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-commercial-renewal-signal-room" data-copy-text="${escapeHtml(encodeURIComponent(room.copyText))}">Copy renewal room</button>
+          <span>Commercial renewal opens only when outcome proof, billing confidence, sponsor momentum, expansion economics, and retention risk are visible together.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -58439,6 +58549,7 @@ const state = {
         ${renderCommandPilotCommercialActivationLedgerPreview(model, autopilot)}
         ${renderCommandTenantPassportActivationGatePreview(model, autopilot)}
         ${renderCommandFirstExpansionOutcomeWatchPreview(model, autopilot)}
+        ${renderCommandCommercialRenewalSignalRoomPreview(model, autopilot)}
 
         <div class="command-layout">
           <section class="command-main">
@@ -76043,12 +76154,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v733 First Expansion Outcome Watch",
-      phase: "First Expansion Outcome Watch",
+      version: "v734 Commercial Renewal Signal Room",
+      phase: "Commercial Renewal Signal Room",
       lane: "Static product prototype on GitHub Pages",
-      pace: "714 meaningful versions since rebrand",
-      summary: "PursuitDesk now watches the first expansion outcome against promised proof, support load, billing movement, reuse-passport update, rollback evidence, and one copyable outcome watch.",
+      pace: "715 meaningful versions since rebrand",
+      summary: "PursuitDesk now converts expansion outcome proof into renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, and one copyable commercial decision.",
       tracks: [
+        ["v734 commercial renewal signal room", 100, "Expansion outcome proof now becomes renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, owner, review window, value line, and one copyable commercial decision.", "green"],
         ["v733 first expansion outcome watch", 100, "Activated expansion now carries promised proof, support load, billing movement, reuse-passport update, rollback evidence, owner, review window, scope, and one copyable outcome watch.", "green"],
         ["v732 tenant passport activation gate", 100, "Passported learning now moves through tenant activation, canary watch, rollback lock, support note, outcome proof, owner, activation date, scope, and one copyable activation gate.", "green"],
         ["v731 pilot commercial activation ledger", 100, "Approved pilot movement now carries access activation, billing trigger, support watch, proof receipt, commercial audit trail, owner, activation date, scope, and one copyable activation ledger.", "green"],
@@ -76762,9 +76874,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v734", "Commercial Renewal Signal Room", "Turn activated commercial evidence into renewal confidence, billing health, support calm, sponsor proof, and next-commercial action."],
-        ["v735", "Activation Outcome Memory Room", "Turn tenant activation proof into reusable outcome memory, support learning, rollback evidence, and renewal-ready confidence."],
-        ["v736", "Expansion Learning Release Room", "Convert watched expansion outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
+        ["v735", "Renewal Outcome Memory Room", "Capture what happened after the renewal decision so proof, billing, sponsor response, and support outcomes can teach the next cycle."],
+        ["v736", "Commercial Expansion Learning Release Room", "Convert commercial renewal outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
+        ["v737", "Sponsor Value Proof Pack", "Package renewal value proof, billing movement, sponsor quote, support calm, and next expansion ask into a buyer-safe pack."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -77069,11 +77181,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "First expansion outcome now carries promised proof, support load, billing movement, reuse-passport update, rollback evidence, owner, review window, and scope.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Commercial renewal now carries renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, owner, review window, and value line.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v734 smoke addendum", "Commercial Renewal Signal Room", "Confirm the v734 commercial renewal panel, five commercial signals, five renewal decision lanes, six commercial cards, four receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v733 smoke addendum", "First Expansion Outcome Watch", "Confirm the v733 expansion outcome panel, five watch signals, five outcome lanes, six watch cards, four receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v732 smoke addendum", "Tenant Passport Activation Gate", "Confirm the v732 tenant activation panel, five gate signals, five activation lanes, six activation cards, four proof receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v731 smoke addendum", "Pilot Commercial Activation Ledger", "Confirm the v731 commercial activation panel, five ledger signals, five activation lanes, six ledger cards, four audit receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -90099,7 +90212,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v733.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v734.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -90121,7 +90234,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v733.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v734.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -90142,7 +90255,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v733.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v734.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -90162,7 +90275,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v733.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v734.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -90182,7 +90295,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v733.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v734.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -90210,7 +90323,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v733.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v734.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -90238,7 +90351,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v733.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v734.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -90269,7 +90382,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v733.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v734.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -129870,6 +129983,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstExpansionOutcomeWatch(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First expansion outcome watch copied.");
+      return;
+    }
+    if (action === "copy-command-commercial-renewal-signal-room") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandCommercialRenewalSignalRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Commercial renewal signal room copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {

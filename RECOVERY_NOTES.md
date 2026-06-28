@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v734 adds a Commercial Renewal Signal Room so expansion outcome proof becomes renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, and one copyable commercial decision.
 - v733 adds a First Expansion Outcome Watch so activated expansion is checked against promised proof, support load, billing movement, reuse-passport update, rollback evidence, review window, and scope before reuse.
 - v732 adds a Tenant Passport Activation Gate so passported learning can activate, canary, hold tenant-only, or rollback with support note, outcome proof, tenant scope, owner, and one activation receipt.
 - v731 adds a Pilot Commercial Activation Ledger so approved pilot movement carries access activation, billing trigger, support watch, proof receipt, commercial audit trail, owner, activation date, and scope in one activation receipt.
