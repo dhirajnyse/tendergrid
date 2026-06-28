@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v740";
-  const BUILD_LABEL = "Sponsor Value Proof Pack";
+  const BUILD_VERSION = "v741";
+  const BUILD_LABEL = "Renewal Learning Release Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=740.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=740.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=741.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=741.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15648,6 +15648,7 @@ const state = {
     "${renderCommandRenewalOutcomeMemoryRoomPreview(model, autopilot)}",
     "${renderCommandCommercialExpansionLearningReleaseRoomPreview(model, autopilot)}",
     "${renderCommandSponsorValueProofPackPreview(model, autopilot)}",
+    "${renderCommandRenewalLearningReleaseGatePreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -15751,11 +15752,13 @@ const state = {
     const renewalMemory = buildCommandRenewalOutcomeMemoryRoom(model, autopilot);
     const expansionLearning = buildCommandCommercialExpansionLearningReleaseRoom(model, autopilot);
     const sponsorProof = buildCommandSponsorValueProofPack(model, autopilot);
+    const renewalGate = buildCommandRenewalLearningReleaseGate(model, autopilot);
     const railCards = [
       ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
       ["Renewal memory", `${renewalMemory.memoryScore}%`, `${renewalMemory.memoryDecision}: ${renewalMemory.nextAction}`, renewalMemory.memoryScore >= 78 ? "green" : "amber", "Reports"],
       ["Expansion learning", `${expansionLearning.releaseScore}%`, `${expansionLearning.releaseDecision}: ${expansionLearning.nextAction}`, expansionLearning.releaseScore >= 78 ? "green" : "amber", "Reports"],
       ["Sponsor proof", `${sponsorProof.packScore}%`, `${sponsorProof.packDecision}: ${sponsorProof.nextAction}`, sponsorProof.packScore >= 78 ? "green" : "amber", "Reports"],
+      ["Renewal gate", `${renewalGate.gateScore}%`, `${renewalGate.gateDecision}: ${renewalGate.nextAction}`, renewalGate.gateScore >= 78 ? "green" : "amber", "Reports"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
     ];
     return `
@@ -15814,6 +15817,17 @@ const state = {
             ${sponsorProof.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
           </div>
           <button class="ghost-btn" type="button" data-action="copy-command-sponsor-value-proof-pack" data-copy-text="${escapeHtml(encodeURIComponent(sponsorProof.copyText))}">Copy sponsor pack</button>
+        </div>
+        <div class="command-renewal-learning-release-gate-strip tone-${escapeHtml(renewalGate.gateScore >= 84 ? "green" : renewalGate.gateScore >= 72 ? "blue" : "amber")}" aria-label="Renewal Learning Release Gate summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} renewal gate</span>
+            <strong>${escapeHtml(renewalGate.gateDecision)} / ${renewalGate.gateScore}%</strong>
+            <p>${escapeHtml(renewalGate.gateState)}. ${escapeHtml(renewalGate.nextAction)}</p>
+          </div>
+          <div class="command-renewal-learning-release-gate-strip-signals">
+            ${renewalGate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-renewal-learning-release-gate" data-copy-text="${escapeHtml(encodeURIComponent(renewalGate.copyText))}">Copy gate</button>
         </div>
       </section>
     `;
@@ -59177,6 +59191,135 @@ const state = {
       </section>
     `;
   }
+
+  function buildCommandRenewalLearningReleaseGate(model, autopilot) {
+    const memory = buildCommandRenewalOutcomeMemoryRoom(model, autopilot);
+    const release = buildCommandCommercialExpansionLearningReleaseRoom(model, autopilot);
+    const sponsorProof = buildCommandSponsorValueProofPack(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(value)));
+    const safeScore = (value, penalty = 4) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const account = sponsorProof.account || model.topClients?.[0]?.label || firstRecord.client || state.data.company.name || "Renewal account";
+    const firstMove = firstTask.title || firstRecord.title || memory.firstMove || "Gate the renewal learning before reuse";
+    const owner = firstTask.owner || firstTask.assignee || sponsorProof.owner || release.owner || memory.owner || "Learning owner";
+    const reviewWindow = firstTask.dueDate || firstTask.due || sponsorProof.reviewWindow || release.reviewWindow || memory.reviewWindow || "Learning review";
+    const valueLine = sponsorProof.valueLine || release.valueLine || memory.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const proofCompleteness = score(memory.proofCaptured * 0.22 + sponsorProof.valueProof * 0.2 + release.releaseReceipts * 0.16 + (model.evidenceScore || 0) * 0.16 + sponsorProof.buyerSafeProof * 0.14 + 8);
+    const tenantSafety = score(release.tenantBoundary * 0.24 + sponsorProof.buyerSafeProof * 0.2 + safeScore(release.tenantOnlyCount, 11) * 0.16 + sponsorProof.supportCalm * 0.14 + memory.supportOutcome * 0.12 + (model.contractScore || 0) * 0.08 + 6);
+    const learningSignal = score(memory.learningReadiness * 0.24 + release.reusablePattern * 0.22 + sponsorProof.expansionAsk * 0.16 + sponsorProof.sponsorQuote * 0.14 + release.commercialLift * 0.14 + 8);
+    const outcomeReliability = score(memory.memoryScore * 0.24 + sponsorProof.billingMovement * 0.18 + memory.billingOutcome * 0.16 + (model.weeklyReview?.reviewScore || 50) * 0.14 + safeScore(model.reminders?.overdue, 2) * 0.12 + 8);
+    const gateReceipts = score(release.releaseReceipts * 0.22 + proofCompleteness * 0.18 + tenantSafety * 0.18 + outcomeReliability * 0.14 + (model.contractScore || 0) * 0.12 + sponsorProof.packScore * 0.1 + 6);
+    const retunePressure = score(safeScore(sponsorProof.supportCalm, 1) * 0.24 + safeScore(release.retuneReadiness, 1) * 0.2 + Number(model.reminders?.missingData || 0) * 1.8 + Number(model.reminders?.overdue || 0) * 1.2 + Number(autopilot?.delegateCount || 0) * 3);
+    const gateScore = score(proofCompleteness * 0.2 + tenantSafety * 0.2 + learningSignal * 0.2 + outcomeReliability * 0.16 + gateReceipts * 0.16 + sponsorProof.packScore * 0.08);
+    const blockerCount = [
+      proofCompleteness < 70,
+      tenantSafety < 72,
+      learningSignal < 72,
+      outcomeReliability < 72,
+      gateReceipts < 72,
+      release.tenantOnlyCount > 1,
+      retunePressure > 46,
+    ].filter(Boolean).length;
+    const gateDecision = gateScore >= 86 && proofCompleteness >= 78 && tenantSafety >= 80 && blockerCount === 0
+      ? "Release reusable guidance"
+      : gateScore >= 78 && tenantSafety >= 76 && proofCompleteness >= 72 && release.tenantOnlyCount <= 1
+        ? "Release with tenant guardrails"
+        : tenantSafety < 70 || release.tenantOnlyCount > 1
+          ? "Keep tenant-local"
+          : proofCompleteness < 70 || gateReceipts < 70
+            ? "Wait for more proof"
+            : "Retune before reuse";
+    const gateState = gateDecision === "Release reusable guidance"
+      ? "Renewal learning is safe to reuse with proof, boundary, receipts, and outcome reliability aligned"
+      : gateDecision === "Release with tenant guardrails"
+        ? "Renewal learning can move only with tenant boundary, owner review, and rollback wording attached"
+        : gateDecision === "Keep tenant-local"
+          ? "Renewal learning should stay inside this tenant until privacy and tenant-only holds clear"
+          : gateDecision === "Wait for more proof"
+            ? "Renewal learning needs stronger proof receipts before it can influence guidance"
+            : "Renewal learning needs retune work before it can safely teach the next account";
+    const releaseLine = `${account}: ${gateDecision.toLowerCase()} from ${memory.memoryDecision.toLowerCase()} with ${proofCompleteness}% proof, ${tenantSafety}% tenant safety, and ${gateReceipts}% gate receipts.`;
+    const signals = [
+      ["Gate score", `${gateScore}%`, "Blends proof completeness, tenant safety, learning signal, outcome reliability, receipts, and sponsor proof.", gateScore >= 84 ? "green" : gateScore >= 72 ? "blue" : "amber"],
+      ["Proof completeness", `${proofCompleteness}%`, "Checks outcome proof, sponsor value proof, release receipts, evidence health, and buyer-safe boundary.", proofCompleteness >= 78 ? "green" : "amber"],
+      ["Tenant safety", `${tenantSafety}%`, "Keeps tenant-only holds, contract health, boundary, support calm, and buyer-safe proof visible before reuse.", tenantSafety >= 78 ? "teal" : "amber"],
+      ["Learning signal", `${learningSignal}%`, "Reads learning readiness, reusable pattern, expansion ask, sponsor quote, and commercial lift.", learningSignal >= 78 ? "blue" : "amber"],
+      ["Outcome reliability", `${outcomeReliability}%`, "Protects the release with billing movement, weekly review, overdue pressure, and renewal memory quality.", outcomeReliability >= 78 ? "green" : "amber"],
+      ["Gate receipts", `${gateReceipts}%`, "Confirms proof, owner, boundary, rollback, and release receipts before learning travels.", gateReceipts >= 78 ? "teal" : "red"],
+    ];
+    const lanes = [
+      ["Release reusable guidance", gateDecision === "Release reusable guidance" ? "Selected" : "Needs clean gate", "Allow renewal learning to influence future guidance with proof, boundary, and receipt trail attached.", gateDecision === "Release reusable guidance" ? "green" : "amber"],
+      ["Release with tenant guardrails", gateDecision === "Release with tenant guardrails" ? "Selected" : "Controlled option", "Release only with tenant boundary wording, owner review, rollback route, and conservative scope.", gateDecision === "Release with tenant guardrails" ? "teal" : "blue"],
+      ["Keep tenant-local", gateDecision === "Keep tenant-local" ? "Selected" : "Privacy fallback", "Keep the learning inside this tenant when boundary or tenant-only holds are not ready.", gateDecision === "Keep tenant-local" ? "amber" : "blue"],
+      ["Wait for more proof", gateDecision === "Wait for more proof" ? "Selected" : "Evidence fallback", "Hold release until proof receipts, sponsor response, and buyer-safe evidence become strong enough.", gateDecision === "Wait for more proof" ? "red" : "amber"],
+      ["Retune before reuse", gateDecision === "Retune before reuse" ? "Selected" : "Repair option", "Retune support, action, missing-data, or review pressure before this lesson teaches anyone else.", gateDecision === "Retune before reuse" ? "red" : "amber"],
+    ];
+    const cards = [
+      ["Source memory", memory.memoryDecision, `Outcome memory ${memory.memoryScore}% and learning readiness ${memory.learningReadiness}% are the starting proof.`, "Outcome memory", memory.memoryScore >= 78 ? "green" : "amber"],
+      ["Proof completeness", `${proofCompleteness}%`, `Value ${valueLine}, evidence ${model.evidenceScore}%, and sponsor proof ${sponsorProof.valueProof}% create the release proof base.`, "Proof base", proofCompleteness >= 78 ? "green" : "amber"],
+      ["Tenant safety", `${tenantSafety}%`, `Tenant boundary ${release.tenantBoundary}% with ${release.tenantOnlyCount} tenant-only hold(s) and buyer-safe proof ${sponsorProof.buyerSafeProof}%.`, "Tenant boundary", tenantSafety >= 78 ? "teal" : "amber"],
+      ["Learning signal", `${learningSignal}%`, `Reusable pattern ${release.reusablePattern}% and expansion ask ${sponsorProof.expansionAsk}% decide whether the lesson should travel.`, "Learning signal", learningSignal >= 78 ? "blue" : "amber"],
+      ["Outcome reliability", `${outcomeReliability}%`, `Billing movement ${sponsorProof.billingMovement}% and weekly review ${model.weeklyReview?.reviewScore || 50}% protect the release from wishful learning.`, "Reliability", outcomeReliability >= 78 ? "green" : "amber"],
+      ["Retune pressure", `${retunePressure}%`, `Support calm ${sponsorProof.supportCalm}% and retune readiness ${release.retuneReadiness}% decide if the lesson needs repair first.`, "Retune pressure", retunePressure <= 42 ? "green" : "red"],
+    ];
+    const receipts = [
+      ["1", "Memory receipt", `${memory.memoryDecision} is linked with ${memory.memoryScore}% source memory quality.`, memory.memoryScore >= 78 ? "green" : "amber"],
+      ["2", "Boundary receipt", `Tenant safety ${tenantSafety}% and ${release.tenantOnlyCount} tenant-only hold(s) define how far the lesson may travel.`, tenantSafety >= 78 ? "teal" : "amber"],
+      ["3", "Proof receipt", `Proof completeness ${proofCompleteness}% and gate receipts ${gateReceipts}% decide whether guidance can reuse this outcome.`, proofCompleteness >= 78 ? "blue" : "red"],
+      ["4", "Outcome receipt", `Outcome reliability ${outcomeReliability}% ties the lesson to billing, review, and overdue recovery.`, outcomeReliability >= 78 ? "green" : "amber"],
+      ["5", "Release receipt", `${gateDecision} with ${blockerCount} blocker(s), owner ${owner}, and review ${reviewWindow}.`, gateScore >= 78 ? "green" : "red"],
+    ];
+    const nextAction = gateDecision === "Release reusable guidance"
+      ? "Release the renewal learning with proof, tenant boundary, owner review, rollback route, and receipt trail attached."
+      : gateDecision === "Release with tenant guardrails"
+        ? "Release the lesson with conservative tenant guardrails and a required owner review."
+        : gateDecision === "Keep tenant-local"
+          ? "Keep the learning tenant-local until boundary, proof, and tenant-only holds are repaired."
+          : gateDecision === "Wait for more proof"
+            ? "Collect stronger proof receipts before this renewal lesson influences future guidance."
+            : "Create the retune task before releasing the renewal learning.";
+    const gateId = `${BUILD_VERSION.toUpperCase()}-RENEWAL-LEARNING-RELEASE-GATE`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Renewal Learning Release Gate ${gateId}: ${gateState}. Gate ${gateScore}%. Proof completeness ${proofCompleteness}%. Tenant safety ${tenantSafety}%. Learning signal ${learningSignal}%. Outcome reliability ${outcomeReliability}%. Gate receipts ${gateReceipts}%. Retune pressure ${retunePressure}%. Decision ${gateDecision}. Blockers ${blockerCount}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Release line: ${releaseLine} Next: ${nextAction}`;
+    return { account, blockerCount, cards, copyText, gateDecision, gateId, gateReceipts, gateScore, gateState, lanes, learningSignal, nextAction, outcomeReliability, owner, proofCompleteness, receipts, releaseLine, retunePressure, reviewWindow, signals, tenantSafety, valueLine };
+  }
+
+  function renderCommandRenewalLearningReleaseGatePreview(model, autopilot) {
+    const gate = buildCommandRenewalLearningReleaseGate(model, autopilot);
+    return `
+      <section class="info-card command-renewal-learning-release-gate-room tone-${escapeHtml(gate.gateScore >= 84 ? "green" : gate.gateScore >= 72 ? "blue" : "amber")}" aria-label="Renewal Learning Release Gate">
+        <div class="info-head compact command-renewal-learning-release-gate-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Renewal Gate</span>
+            <strong>Renewal Learning Release Gate / ${gate.gateScore}%</strong>
+            <p>${escapeHtml(gate.gateState)}. ${escapeHtml(gate.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(gate.gateId)}</span>
+        </div>
+        <div class="command-renewal-learning-release-gate-quote tone-teal">
+          <span>Reusable learning line</span>
+          <strong>${escapeHtml(gate.releaseLine)}</strong>
+        </div>
+        <div class="command-renewal-learning-release-gate-grid mini-card-grid">
+          ${gate.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-renewal-learning-release-gate-lanes">
+          ${gate.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-renewal-learning-release-gate-cards">
+          ${gate.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(value)}</small></article>`).join("")}
+        </div>
+        <div class="command-renewal-learning-release-gate-receipts">
+          ${gate.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-renewal-learning-release-gate-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-renewal-learning-release-gate" data-copy-text="${escapeHtml(encodeURIComponent(gate.copyText))}">Copy learning gate</button>
+          <span>Renewal learning can influence future guidance only after memory, proof, tenant boundary, receipts, and outcome reliability pass one visible gate.</span>
+        </div>
+      </section>
+    `;
+  }
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -59320,6 +59463,7 @@ const state = {
         ${renderCommandRenewalOutcomeMemoryRoomPreview(model, autopilot)}
         ${renderCommandCommercialExpansionLearningReleaseRoomPreview(model, autopilot)}
         ${renderCommandSponsorValueProofPackPreview(model, autopilot)}
+        ${renderCommandRenewalLearningReleaseGatePreview(model, autopilot)}
         ` : renderCommandReleaseRailPreview(model, autopilot)}
 
         <div class="command-layout">
@@ -76927,12 +77071,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v740 Sponsor Value Proof Pack",
-      phase: "Sponsor Value Proof Pack",
+      version: "v741 Renewal Learning Release Gate",
+      phase: "Renewal Learning Release Gate",
       lane: "Static product prototype on GitHub Pages",
-      pace: "721 meaningful versions since rebrand",
-      summary: "PursuitDesk now packages commercial expansion learning into a buyer-safe sponsor proof pack with value proof, billing movement, sponsor quote, support calm, expansion ask, and send posture.",
+      pace: "722 meaningful versions since rebrand",
+      summary: "PursuitDesk now gates renewal outcome learning before reuse, separating reusable guidance, guarded release, tenant-local holds, proof waits, and retune-before-reuse decisions.",
       tracks: [
+        ["v741 renewal learning release gate", 100, "Renewal outcome learning now passes through one gate across proof completeness, tenant safety, learning signal, outcome reliability, gate receipts, retune pressure, owner, review window, and one copyable release decision.", "green"],
         ["v740 sponsor value proof pack", 100, "Sponsor-ready expansion proof now packages value proof, billing movement, sponsor quote, support calm, expansion ask, buyer-safe boundary, owner, review window, and one copyable sponsor pack.", "green"],
         ["v739 commercial expansion learning release room", 100, "Commercial renewal outcomes now become a release decision across reusable pattern, tenant boundary, tenant-only holds, retune task, release receipts, commercial lift, owner, review window, and one copyable release room.", "green"],
         ["v738 renewal outcome memory room", 100, "Renewal decisions now produce outcome memory: proof captured, billing outcome, sponsor response, support outcome, learning readiness, reuse decision, owner, review window, and one copyable outcome memory.", "green"],
@@ -77653,9 +77798,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v741", "Renewal Learning Release Gate", "Decide which renewal memories can become reusable guidance, stay tenant-local, or wait for more evidence."],
         ["v742", "Commercial Learning Canary Watch", "Watch the first controlled reuse of a commercial learning pattern before wider guidance release."],
         ["v743", "Sponsor Proof Reply Watch", "Watch sponsor reactions to the value proof pack and route approve, finance note, support hold, proof repair, or executive review outcomes."],
+        ["v744", "Tenant Learning Release Receipt", "Package released, guarded, tenant-local, proof-wait, and retune decisions into audit-ready learning receipts."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -77960,11 +78105,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Sponsor-ready expansion proof now carries value proof, billing movement, sponsor quote, support calm, expansion ask, and buyer-safe send posture.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Renewal outcome learning now moves through one release gate before it can influence future guidance.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v741 smoke addendum", "Renewal Learning Release Gate", "Confirm the v741 renewal learning gate strip, full hidden gate room, six gate signals, five release lanes, six proof cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v740 smoke addendum", "Sponsor Value Proof Pack", "Confirm the v740 sponsor value proof strip, full hidden proof pack, six sponsor signals, five send lanes, six proof cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v739 smoke addendum", "Commercial Expansion Learning Release Room", "Confirm the v739 commercial expansion learning strip, full hidden release room, six release signals, five release lanes, six release cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v738 smoke addendum", "Renewal Outcome Memory Room", "Confirm the v738 renewal outcome memory strip, full hidden release room, six outcome signals, five learning lanes, six memory cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -130799,6 +130945,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandSponsorValueProofPack(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Sponsor value proof pack copied.");
+      return;
+    }
+    if (action === "copy-command-renewal-learning-release-gate") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandRenewalLearningReleaseGate(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Renewal learning release gate copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {
