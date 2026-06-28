@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v742";
-  const BUILD_LABEL = "Commercial Learning Canary Watch";
+  const BUILD_VERSION = "v743";
+  const BUILD_LABEL = "Sponsor Proof Reply Watch";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=742.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=742.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=743.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=743.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15650,6 +15650,7 @@ const state = {
     "${renderCommandSponsorValueProofPackPreview(model, autopilot)}",
     "${renderCommandRenewalLearningReleaseGatePreview(model, autopilot)}",
     "${renderCommandCommercialLearningCanaryWatchPreview(model, autopilot)}",
+    "${renderCommandSponsorProofReplyWatchPreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -15755,6 +15756,7 @@ const state = {
     const sponsorProof = buildCommandSponsorValueProofPack(model, autopilot);
     const renewalGate = buildCommandRenewalLearningReleaseGate(model, autopilot);
     const canaryWatch = buildCommandCommercialLearningCanaryWatch(model, autopilot);
+    const replyWatch = buildCommandSponsorProofReplyWatch(model, autopilot);
     const railCards = [
       ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
       ["Renewal memory", `${renewalMemory.memoryScore}%`, `${renewalMemory.memoryDecision}: ${renewalMemory.nextAction}`, renewalMemory.memoryScore >= 78 ? "green" : "amber", "Reports"],
@@ -15762,6 +15764,7 @@ const state = {
       ["Sponsor proof", `${sponsorProof.packScore}%`, `${sponsorProof.packDecision}: ${sponsorProof.nextAction}`, sponsorProof.packScore >= 78 ? "green" : "amber", "Reports"],
       ["Renewal gate", `${renewalGate.gateScore}%`, `${renewalGate.gateDecision}: ${renewalGate.nextAction}`, renewalGate.gateScore >= 78 ? "green" : "amber", "Reports"],
       ["Canary watch", `${canaryWatch.watchScore}%`, `${canaryWatch.watchDecision}: ${canaryWatch.nextAction}`, canaryWatch.watchScore >= 78 ? "green" : "amber", "Reports"],
+      ["Sponsor reply", `${replyWatch.replyScore}%`, `${replyWatch.replyDecision}: ${replyWatch.nextAction}`, replyWatch.replyScore >= 78 ? "green" : "amber", "Reports"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
     ];
     return `
@@ -15842,6 +15845,17 @@ const state = {
             ${canaryWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
           </div>
           <button class="ghost-btn" type="button" data-action="copy-command-commercial-learning-canary-watch" data-copy-text="${escapeHtml(encodeURIComponent(canaryWatch.copyText))}">Copy canary</button>
+        </div>
+        <div class="command-sponsor-proof-reply-watch-strip tone-${escapeHtml(replyWatch.replyScore >= 84 ? "green" : replyWatch.replyScore >= 72 ? "blue" : "amber")}" aria-label="Sponsor Proof Reply Watch summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} sponsor reply</span>
+            <strong>${escapeHtml(replyWatch.replyDecision)} / ${replyWatch.replyScore}%</strong>
+            <p>${escapeHtml(replyWatch.replyState)}. ${escapeHtml(replyWatch.nextAction)}</p>
+          </div>
+          <div class="command-sponsor-proof-reply-watch-strip-signals">
+            ${replyWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-sponsor-proof-reply-watch" data-copy-text="${escapeHtml(encodeURIComponent(replyWatch.copyText))}">Copy reply watch</button>
         </div>
       </section>
     `;
@@ -59463,6 +59477,136 @@ const state = {
       </section>
     `;
   }
+  function buildCommandSponsorProofReplyWatch(model, autopilot) {
+    const sponsorProof = buildCommandSponsorValueProofPack(model, autopilot);
+    const canaryWatch = buildCommandCommercialLearningCanaryWatch(model, autopilot);
+    const gate = buildCommandRenewalLearningReleaseGate(model, autopilot);
+    const memory = buildCommandRenewalOutcomeMemoryRoom(model, autopilot);
+    const release = buildCommandCommercialExpansionLearningReleaseRoom(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(value)));
+    const safeScore = (value, penalty = 4) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const account = sponsorProof.account || canaryWatch.account || model.topClients?.[0]?.label || firstRecord.client || state.data.company.name || "Sponsor account";
+    const owner = firstTask.owner || firstTask.assignee || sponsorProof.owner || canaryWatch.owner || gate.owner || "Sponsor owner";
+    const reviewWindow = firstTask.dueDate || firstTask.due || sponsorProof.reviewWindow || canaryWatch.reviewWindow || gate.reviewWindow || "Sponsor reply review";
+    const valueLine = sponsorProof.valueLine || canaryWatch.valueLine || gate.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const firstMove = firstTask.title || firstRecord.title || "Watch the sponsor reply before the next commercial move";
+    const sponsorSignal = score(sponsorProof.sponsorQuote * 0.24 + memory.sponsorResponse * 0.22 + sponsorProof.expansionAsk * 0.18 + canaryWatch.liveResponse * 0.14 + gate.learningSignal * 0.12 + 8);
+    const financeNote = score(sponsorProof.billingMovement * 0.24 + memory.billingOutcome * 0.2 + canaryWatch.outcomeSignal * 0.18 + release.commercialLift * 0.16 + gate.outcomeReliability * 0.12 + 8);
+    const supportPosture = score(sponsorProof.supportCalm * 0.26 + memory.supportOutcome * 0.22 + canaryWatch.supportLoad * 0.2 + safeScore(model.reminders?.overdue, 2) * 0.12 + safeScore(autopilot?.delegateCount, 5) * 0.1 + 8);
+    const proofRepair = score(safeScore(sponsorProof.valueProof, 1) * 0.24 + safeScore(sponsorProof.buyerSafeProof, 1) * 0.2 + Number(model.evidenceGaps?.length || 0) * 4 + Number(model.reminders?.missingData || 0) * 1.1 + Math.max(0, 75 - gate.proofCompleteness) * 0.46);
+    const executiveClarity = score(canaryWatch.graduationReadiness * 0.2 + gate.gateReceipts * 0.18 + sponsorProof.expansionAsk * 0.18 + (model.weeklyReview?.reviewScore || 50) * 0.16 + sponsorProof.sponsorQuote * 0.12 + 8);
+    const replyConfidence = score(sponsorSignal * 0.2 + financeNote * 0.18 + supportPosture * 0.18 + Math.max(0, 100 - proofRepair) * 0.18 + executiveClarity * 0.18 + canaryWatch.watchScore * 0.08);
+    const replyScore = score(replyConfidence * 0.3 + sponsorSignal * 0.2 + financeNote * 0.16 + supportPosture * 0.14 + Math.max(0, 100 - proofRepair) * 0.12 + executiveClarity * 0.08);
+    const riskCount = [
+      sponsorSignal < 72,
+      financeNote < 70,
+      supportPosture < 68,
+      proofRepair > 46,
+      executiveClarity < 70,
+      replyConfidence < 72,
+      canaryWatch.privacyGuard < 72,
+    ].filter(Boolean).length;
+    const replyDecision = replyScore >= 86 && sponsorSignal >= 80 && financeNote >= 78 && proofRepair <= 35 && riskCount === 0
+      ? "Approve sponsor path"
+      : financeNote < 70 || sponsorProof.billingMovement < 68
+        ? "Request finance note"
+        : supportPosture < 68 || sponsorProof.supportCalm < 66
+          ? "Hold for support"
+          : proofRepair > 46 || gate.proofCompleteness < 70
+            ? "Repair proof"
+            : "Executive review";
+    const replyState = replyDecision === "Approve sponsor path"
+      ? "Sponsor response is clean enough to move into the next commercial path with proof, finance, support, and executive context attached"
+      : replyDecision === "Request finance note"
+        ? "Sponsor response needs a finance note before commercial movement can be represented clearly"
+        : replyDecision === "Hold for support"
+          ? "Sponsor response should pause until support load is visible and the next customer-safe support statement is ready"
+          : replyDecision === "Repair proof"
+            ? "Sponsor response exposed proof gaps that should be repaired before the pack travels further"
+            : "Sponsor response needs executive review before approval, finance, support, or repair work is released";
+    const replyLine = `${account}: ${replyDecision.toLowerCase()} with ${sponsorSignal}% sponsor signal, ${financeNote}% finance note, ${supportPosture}% support posture, and ${proofRepair}% proof repair pressure.`;
+    const signals = [
+      ["Sponsor reply score", `${replyScore}%`, "Blends sponsor signal, finance note, support posture, proof repair pressure, executive clarity, and canary confidence.", replyScore >= 84 ? "green" : replyScore >= 72 ? "blue" : "amber"],
+      ["Sponsor signal", `${sponsorSignal}%`, "Reads sponsor quote, sponsor response, expansion ask, live response, and learning signal after the proof pack is shared.", sponsorSignal >= 78 ? "green" : "amber"],
+      ["Finance note", `${financeNote}%`, "Checks billing movement, billing outcome, outcome signal, commercial lift, and renewal reliability before approval.", financeNote >= 78 ? "blue" : "amber"],
+      ["Support posture", `${supportPosture}%`, "Keeps support calm, support outcome, live support load, overdue pressure, and delegation burden visible.", supportPosture >= 76 ? "teal" : "red"],
+      ["Proof repair", `${proofRepair}%`, "Lower is better: value proof, buyer-safe proof, evidence gaps, missing data, and gate completeness decide repair pressure.", proofRepair <= 38 ? "green" : proofRepair <= 50 ? "amber" : "red"],
+      ["Executive clarity", `${executiveClarity}%`, "Decides whether the reply can be explained to leadership with canary, receipts, expansion ask, and review context.", executiveClarity >= 78 ? "teal" : "amber"],
+    ];
+    const lanes = [
+      ["Approve sponsor path", replyDecision === "Approve sponsor path" ? "Selected" : "Needs clean reply", "Move the sponsor path forward with proof, finance note, support posture, and executive clarity attached.", replyDecision === "Approve sponsor path" ? "green" : "amber"],
+      ["Request finance note", replyDecision === "Request finance note" ? "Selected" : "Finance fallback", "Ask finance to clarify billing movement, value timing, and payment-safe wording before the next move.", replyDecision === "Request finance note" ? "amber" : "blue"],
+      ["Hold for support", replyDecision === "Hold for support" ? "Selected" : "Support fallback", "Hold the sponsor path until support posture, owner response, and customer-safe support wording are ready.", replyDecision === "Hold for support" ? "red" : "amber"],
+      ["Repair proof", replyDecision === "Repair proof" ? "Selected" : "Evidence fallback", "Repair value proof, buyer-safe evidence, missing data, or source gaps before another sponsor touch.", replyDecision === "Repair proof" ? "red" : "amber"],
+      ["Executive review", replyDecision === "Executive review" ? "Selected" : "Escalation option", "Send a concise executive review line when approval is not clean but the signal is too important to ignore.", replyDecision === "Executive review" ? "teal" : "blue"],
+    ];
+    const cards = [
+      ["Source proof", sponsorProof.packDecision, `Sponsor proof pack ${sponsorProof.packScore}% and gate ${gate.gateScore}% are the source context.`, "Proof pack", sponsorProof.packScore >= 78 ? "green" : "amber"],
+      ["Reply intent", `${sponsorSignal}%`, `Sponsor response ${memory.sponsorResponse}% and expansion ask ${sponsorProof.expansionAsk}% shape the next business move.`, "Sponsor reply", sponsorSignal >= 78 ? "teal" : "amber"],
+      ["Finance note", `${financeNote}%`, `Billing movement ${sponsorProof.billingMovement}% and value ${valueLine} decide whether finance needs a note.`, "Finance", financeNote >= 78 ? "blue" : "amber"],
+      ["Support posture", `${supportPosture}%`, `Support calm ${sponsorProof.supportCalm}% and support load ${canaryWatch.supportLoad}% decide whether the reply should pause.`, "Support", supportPosture >= 76 ? "green" : "red"],
+      ["Proof repair", `${proofRepair}%`, `Evidence gaps ${model.evidenceGaps?.length || 0} and missing-data reminders ${model.reminders?.missingData || 0} decide repair pressure.`, "Repair", proofRepair <= 38 ? "green" : "red"],
+      ["Executive review", `${executiveClarity}%`, `Executive clarity carries canary readiness ${canaryWatch.graduationReadiness}% and review health ${model.weeklyReview?.reviewScore || 50}%.`, "Executive", executiveClarity >= 78 ? "teal" : "amber"],
+    ];
+    const receipts = [
+      ["1", "Sponsor reply", `${account} reply is read against sponsor signal ${sponsorSignal}% and reply confidence ${replyConfidence}%.`, sponsorSignal >= 78 ? "green" : "amber"],
+      ["2", "Finance note", `Finance note ${financeNote}% decides whether billing and value movement are clear enough.`, financeNote >= 78 ? "blue" : "amber"],
+      ["3", "Support hold", `Support posture ${supportPosture}% decides whether the customer path should move or pause.`, supportPosture >= 76 ? "teal" : "red"],
+      ["4", "Proof repair", `Proof repair pressure ${proofRepair}% decides whether the sponsor proof pack needs repair before reuse.`, proofRepair <= 38 ? "green" : "red"],
+      ["5", "Executive route", `${replyDecision} with ${riskCount} risk flag(s), owner ${owner}, and review ${reviewWindow}.`, replyScore >= 78 ? "green" : "amber"],
+    ];
+    const nextAction = replyDecision === "Approve sponsor path"
+      ? "Approve the sponsor path with proof, finance note, support posture, executive context, and reply receipt attached."
+      : replyDecision === "Request finance note"
+        ? "Ask finance for one buyer-safe note that explains value timing, billing movement, and next commercial step."
+        : replyDecision === "Hold for support"
+          ? "Hold the sponsor path until support posture, owner response, and customer-safe support wording are repaired."
+          : replyDecision === "Repair proof"
+            ? "Repair proof gaps, missing data, and buyer-safe evidence before another sponsor touch."
+            : "Route the reply to executive review with the proof, finance, support, and canary context summarized.";
+    const replyId = `${BUILD_VERSION.toUpperCase()}-SPONSOR-PROOF-REPLY-WATCH`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Sponsor Proof Reply Watch ${replyId}: ${replyState}. Reply ${replyScore}%. Sponsor signal ${sponsorSignal}%. Finance note ${financeNote}%. Support posture ${supportPosture}%. Proof repair ${proofRepair}%. Executive clarity ${executiveClarity}%. Reply confidence ${replyConfidence}%. Decision ${replyDecision}. Risk flags ${riskCount}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Reply line: ${replyLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, cards, copyText, executiveClarity, financeNote, firstMove, lanes, nextAction, owner, proofRepair, receipts, replyConfidence, replyDecision, replyId, replyLine, replyScore, replyState, reviewWindow, riskCount, signals, sponsorSignal, supportPosture, valueLine };
+  }
+
+  function renderCommandSponsorProofReplyWatchPreview(model, autopilot) {
+    const reply = buildCommandSponsorProofReplyWatch(model, autopilot);
+    return `
+      <section class="info-card command-sponsor-proof-reply-watch-room tone-${escapeHtml(reply.replyScore >= 84 ? "green" : reply.replyScore >= 72 ? "blue" : "amber")}" aria-label="Sponsor Proof Reply Watch">
+        <div class="info-head compact command-sponsor-proof-reply-watch-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Sponsor Reply</span>
+            <strong>Sponsor Proof Reply Watch / ${reply.replyScore}%</strong>
+            <p>${escapeHtml(reply.replyState)}. ${escapeHtml(reply.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(reply.replyId)}</span>
+        </div>
+        <div class="command-sponsor-proof-reply-watch-quote tone-amber">
+          <span>Reply routing line</span>
+          <strong>${escapeHtml(reply.replyLine)}</strong>
+        </div>
+        <div class="command-sponsor-proof-reply-watch-grid mini-card-grid">
+          ${reply.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-sponsor-proof-reply-watch-lanes">
+          ${reply.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-sponsor-proof-reply-watch-cards">
+          ${reply.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(value)}</small></article>`).join("")}
+        </div>
+        <div class="command-sponsor-proof-reply-watch-receipts">
+          ${reply.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-sponsor-proof-reply-watch-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-sponsor-proof-reply-watch" data-copy-text="${escapeHtml(encodeURIComponent(reply.copyText))}">Copy sponsor reply watch</button>
+          <span>Sponsor replies now route through approval, finance note, support hold, proof repair, or executive review before the next commercial move.</span>
+        </div>
+      </section>
+    `;
+  }
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -59608,6 +59752,7 @@ const state = {
         ${renderCommandSponsorValueProofPackPreview(model, autopilot)}
         ${renderCommandRenewalLearningReleaseGatePreview(model, autopilot)}
         ${renderCommandCommercialLearningCanaryWatchPreview(model, autopilot)}
+        ${renderCommandSponsorProofReplyWatchPreview(model, autopilot)}
         ` : renderCommandReleaseRailPreview(model, autopilot)}
 
         <div class="command-layout">
@@ -77215,12 +77360,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v742 Commercial Learning Canary Watch",
-      phase: "Commercial Learning Canary Watch",
+      version: "v743 Sponsor Proof Reply Watch",
+      phase: "Sponsor Proof Reply Watch",
       lane: "Static product prototype on GitHub Pages",
-      pace: "723 meaningful versions since rebrand",
-      summary: "PursuitDesk now watches the first controlled reuse of commercial renewal learning before wider guidance, separating continue, graduate, hold, rollback, and retune canary outcomes.",
+      pace: "724 meaningful versions since rebrand",
+      summary: "PursuitDesk now watches sponsor proof replies and routes them into approve, finance note, support hold, proof repair, or executive review outcomes before the next commercial move.",
       tracks: [
+        ["v743 sponsor proof reply watch", 100, "Sponsor proof replies now route through sponsor signal, finance note, support posture, proof repair pressure, executive clarity, reply confidence, owner, review window, and one copyable reply decision.", "green"],
         ["v742 commercial learning canary watch", 100, "Commercial renewal learning now runs through a controlled canary watch with canary fit, live response, support load, privacy guard, outcome signal, graduation readiness, owner, review window, and one copyable canary decision.", "green"],
         ["v741 renewal learning release gate", 100, "Renewal outcome learning now passes through one gate across proof completeness, tenant safety, learning signal, outcome reliability, gate receipts, retune pressure, owner, review window, and one copyable release decision.", "green"],
         ["v740 sponsor value proof pack", 100, "Sponsor-ready expansion proof now packages value proof, billing movement, sponsor quote, support calm, expansion ask, buyer-safe boundary, owner, review window, and one copyable sponsor pack.", "green"],
@@ -77943,9 +78089,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v743", "Sponsor Proof Reply Watch", "Watch sponsor reactions to the value proof pack and route approve, finance note, support hold, proof repair, or executive review outcomes."],
         ["v744", "Tenant Learning Release Receipt", "Package released, guarded, tenant-local, proof-wait, and retune decisions into audit-ready learning receipts."],
         ["v745", "Canary Graduation Decision Room", "Decide whether watched commercial learning should graduate, extend the canary, stay tenant-local, roll back, or retune."],
+        ["v746", "Sponsor Reply Learning Receipt", "Package sponsor reply outcomes into receipts that feed renewal learning, finance movement, support holds, and next executive review."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -78250,11 +78396,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Commercial learning now runs through a controlled canary watch before it can widen into future guidance.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Sponsor proof replies now route into the next safe commercial move before approval, finance, support, or proof work widens.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v743 smoke addendum", "Sponsor Proof Reply Watch", "Confirm the v743 sponsor reply strip, full hidden reply room, six reply signals, five reply lanes, six reply cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v742 smoke addendum", "Commercial Learning Canary Watch", "Confirm the v742 canary watch strip, full hidden watch room, six canary signals, five watch lanes, six watch cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v741 smoke addendum", "Renewal Learning Release Gate", "Confirm the v741 renewal learning gate strip, full hidden gate room, six gate signals, five release lanes, six proof cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v740 smoke addendum", "Sponsor Value Proof Pack", "Confirm the v740 sponsor value proof strip, full hidden proof pack, six sponsor signals, five send lanes, six proof cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -131103,6 +131250,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandCommercialLearningCanaryWatch(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Commercial learning canary watch copied.");
+      return;
+    }
+    if (action === "copy-command-sponsor-proof-reply-watch") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandSponsorProofReplyWatch(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Sponsor proof reply watch copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {
