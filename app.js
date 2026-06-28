@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v749";
-  const BUILD_LABEL = "Quiet Launch Proof Ledger";
+  const BUILD_VERSION = "v750";
+  const BUILD_LABEL = "Pilot Launch Trust Snapshot";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=749.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=749.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=750.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=750.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15657,6 +15657,7 @@ const state = {
     "${renderCommandLearningReceiptAuditTrailPreview(model, autopilot)}",
     "${renderCommandLaunchTrustControlBoardPreview(model, autopilot)}",
     "${renderCommandQuietLaunchProofLedgerPreview(model, autopilot)}",
+    "${renderCommandPilotLaunchTrustSnapshotPreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -15769,6 +15770,7 @@ const state = {
     const auditTrail = buildCommandLearningReceiptAuditTrail(model, autopilot);
     const launchTrust = buildCommandLaunchTrustControlBoard(model, autopilot);
     const proofLedger = buildCommandQuietLaunchProofLedger(model, autopilot);
+    const launchSnapshot = buildCommandPilotLaunchTrustSnapshot(model, autopilot);
     const railCards = [
       ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
       ["Renewal memory", `${renewalMemory.memoryScore}%`, `${renewalMemory.memoryDecision}: ${renewalMemory.nextAction}`, renewalMemory.memoryScore >= 78 ? "green" : "amber", "Reports"],
@@ -15783,6 +15785,7 @@ const state = {
       ["Audit trail", `${auditTrail.auditScore}%`, `${auditTrail.auditDecision}: ${auditTrail.nextAction}`, auditTrail.auditScore >= 78 ? "green" : "amber", "Reports"],
       ["Launch trust", `${launchTrust.trustScore}%`, `${launchTrust.launchDecision}: ${launchTrust.nextAction}`, launchTrust.trustScore >= 78 ? "green" : "amber", "Build Phase"],
       ["Proof ledger", `${proofLedger.ledgerScore}%`, `${proofLedger.ledgerDecision}: ${proofLedger.nextAction}`, proofLedger.ledgerScore >= 78 ? "green" : "amber", "Build Phase"],
+      ["Launch snapshot", `${launchSnapshot.snapshotScore}%`, `${launchSnapshot.snapshotDecision}: ${launchSnapshot.nextAction}`, launchSnapshot.snapshotScore >= 78 ? "green" : "amber", "Build Phase"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
     ];
     return `
@@ -15940,6 +15943,17 @@ const state = {
             ${proofLedger.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
           </div>
           <button class="ghost-btn" type="button" data-action="copy-command-quiet-launch-proof-ledger" data-copy-text="${escapeHtml(encodeURIComponent(proofLedger.copyText))}">Copy proof ledger</button>
+        </div>
+        <div class="command-pilot-launch-trust-snapshot-strip tone-${escapeHtml(launchSnapshot.snapshotScore >= 84 ? "green" : launchSnapshot.snapshotScore >= 72 ? "blue" : "amber")}" aria-label="Pilot Launch Trust Snapshot summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} launch snapshot</span>
+            <strong>${escapeHtml(launchSnapshot.snapshotDecision)} / ${launchSnapshot.snapshotScore}%</strong>
+            <p>${escapeHtml(launchSnapshot.snapshotState)}. ${escapeHtml(launchSnapshot.nextAction)}</p>
+          </div>
+          <div class="command-pilot-launch-trust-snapshot-strip-signals">
+            ${launchSnapshot.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-pilot-launch-trust-snapshot" data-copy-text="${escapeHtml(encodeURIComponent(launchSnapshot.copyText))}">Copy launch snapshot</button>
         </div>
       </section>
     `;
@@ -60538,6 +60552,132 @@ const state = {
       </section>
     `;
   }
+
+  function buildCommandPilotLaunchTrustSnapshot(model, autopilot) {
+    const launchTrust = buildCommandLaunchTrustControlBoard(model, autopilot);
+    const proofLedger = buildCommandQuietLaunchProofLedger(model, autopilot);
+    const sponsorProof = buildCommandSponsorValueProofPack(model, autopilot);
+    const sponsorReceipt = buildCommandSponsorReplyLearningReceipt(model, autopilot);
+    const graduationRoom = buildCommandCanaryGraduationDecisionRoom(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const safeScore = (value, penalty = 4) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const account = proofLedger.account || launchTrust.account || sponsorProof.account || firstRecord.client || state.data.company.name || "Pilot account";
+    const owner = firstTask.owner || firstTask.assignee || proofLedger.owner || launchTrust.owner || sponsorProof.owner || "Pilot owner";
+    const reviewWindow = firstTask.dueDate || firstTask.due || proofLedger.reviewWindow || launchTrust.reviewWindow || "Pilot council review";
+    const firstMove = firstTask.title || firstRecord.title || proofLedger.firstMove || launchTrust.firstMove || "Close the pilot launch trust snapshot";
+    const valueLine = proofLedger.valueLine || launchTrust.valueLine || sponsorProof.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const decisionPosture = score(launchTrust.trustScore * 0.26 + proofLedger.ledgerScore * 0.24 + proofLedger.handoffEvidence * 0.18 + safeScore(launchTrust.hardBlockers, 12) * 0.16 + 8);
+    const proofConfidence = score(proofLedger.proofSource * 0.26 + launchTrust.pilotProof * 0.22 + sponsorProof.valueProof * 0.18 + proofLedger.handoffEvidence * 0.16 + 8);
+    const sponsorSignal = score(proofLedger.sponsorReply * 0.26 + sponsorReceipt.executiveHandoff * 0.22 + sponsorProof.sponsorQuote * 0.18 + sponsorReceipt.proofConfidence * 0.16 + 6);
+    const financeSignal = score(proofLedger.financeReceipt * 0.3 + launchTrust.billingReady * 0.24 + sponsorProof.billingMovement * 0.18 + sponsorReceipt.financeClarity * 0.16 + 6);
+    const supportSignal = score(proofLedger.supportReadiness * 0.3 + launchTrust.supportReady * 0.24 + sponsorProof.supportCalm * 0.18 + safeScore(model.reminders?.missingData, 2) * 0.16 + 6);
+    const rollbackSignal = score(proofLedger.rollbackEvidence * 0.28 + launchTrust.rollbackReady * 0.24 + graduationRoom.rollbackReady * 0.18 + safeScore(proofLedger.riskCount, 11) * 0.16 + 6);
+    const councilAsk = score(decisionPosture * 0.2 + proofConfidence * 0.18 + sponsorSignal * 0.16 + financeSignal * 0.16 + supportSignal * 0.14 + rollbackSignal * 0.14 + 6);
+    const snapshotScore = score(decisionPosture * 0.2 + proofConfidence * 0.18 + sponsorSignal * 0.16 + financeSignal * 0.16 + supportSignal * 0.14 + rollbackSignal * 0.14 + councilAsk * 0.12);
+    const snapshotDecision = snapshotScore >= 86 && decisionPosture >= 80 && proofConfidence >= 78 && sponsorSignal >= 76 && financeSignal >= 74 && supportSignal >= 74 && rollbackSignal >= 72 && launchTrust.hardBlockers === 0 && proofLedger.riskCount <= 1
+      ? "Board ready"
+      : proofConfidence < 72
+        ? "Repair proof"
+        : sponsorSignal < 72 || financeSignal < 70
+          ? "Commercial wait"
+          : supportSignal < 70 || rollbackSignal < 70
+            ? "Support/rollback wait"
+            : "Council review";
+    const snapshotState = snapshotDecision === "Board ready"
+      ? "Pilot launch trust is board-ready with decision, proof, sponsor, finance, support, rollback, and council ask in one snapshot"
+      : snapshotDecision === "Repair proof"
+        ? "Pilot launch should pause until source proof and proof confidence become easier to defend"
+        : snapshotDecision === "Commercial wait"
+          ? "Pilot launch should pause until sponsor response, finance receipt, and billing proof are clearer"
+          : snapshotDecision === "Support/rollback wait"
+            ? "Pilot launch should pause until support route and rollback safety are calm enough for a first customer"
+            : "Pilot launch needs one management council review before the next handoff";
+    const snapshotLine = `${account}: ${snapshotDecision.toLowerCase()} with ${decisionPosture}% decision posture, ${proofConfidence}% proof confidence, ${sponsorSignal}% sponsor signal, ${financeSignal}% finance signal, ${supportSignal}% support, ${rollbackSignal}% rollback, and ${councilAsk}% council ask.`;
+    const signals = [
+      ["Snapshot score", `${snapshotScore}%`, "Blends launch trust, proof ledger, sponsor response, finance receipt, support route, rollback safety, and council ask.", snapshotScore >= 84 ? "green" : snapshotScore >= 72 ? "blue" : "amber"],
+      ["Decision posture", `${decisionPosture}%`, "Reads launch trust, proof ledger, handoff evidence, and hard blockers before the board view moves.", decisionPosture >= 80 ? "green" : "amber"],
+      ["Proof confidence", `${proofConfidence}%`, "Connects proof source, pilot proof, sponsor value proof, and handoff evidence.", proofConfidence >= 78 ? "teal" : "amber"],
+      ["Sponsor signal", `${sponsorSignal}%`, "Checks sponsor reply, executive handoff, sponsor quote, and proof confidence.", sponsorSignal >= 76 ? "green" : "amber"],
+      ["Finance signal", `${financeSignal}%`, "Keeps finance receipt, billing readiness, billing movement, and finance clarity visible.", financeSignal >= 74 ? "blue" : "amber"],
+      ["Support signal", `${supportSignal}%`, "Protects the first pilot with support readiness, support calm, and missing-data recovery.", supportSignal >= 74 ? "green" : "red"],
+      ["Rollback signal", `${rollbackSignal}%`, "Keeps rollback evidence, rollback readiness, graduation rollback, and ledger risk together.", rollbackSignal >= 72 ? "blue" : "red"],
+      ["Council ask", `${councilAsk}%`, "Summarizes whether a board reviewer can approve, wait, or request proof repair.", councilAsk >= 78 ? "teal" : "amber"],
+    ];
+    const lanes = [
+      ["Board ready", snapshotDecision === "Board ready" ? "Selected" : "Target", "Proceed only when decision, proof, sponsor, finance, support, rollback, and council ask are clean.", snapshotDecision === "Board ready" ? "green" : "blue"],
+      ["Repair proof", snapshotDecision === "Repair proof" ? "Selected" : "Proof fallback", "Close source proof and proof confidence before the pilot story travels.", snapshotDecision === "Repair proof" ? "red" : "amber"],
+      ["Commercial wait", snapshotDecision === "Commercial wait" ? "Selected" : "Commercial fallback", "Wait for sponsor reply, billing proof, finance receipt, or commercial wording.", snapshotDecision === "Commercial wait" ? "amber" : "blue"],
+      ["Support/rollback wait", snapshotDecision === "Support/rollback wait" ? "Selected" : "Safety fallback", "Wait for support route, missing-data cleanup, rollback proof, or retune safety.", snapshotDecision === "Support/rollback wait" ? "red" : "amber"],
+      ["Council review", snapshotDecision === "Council review" ? "Selected" : "Management option", "Use council review when the snapshot is mostly ready but still needs one leadership decision.", snapshotDecision === "Council review" ? "teal" : "blue"],
+    ];
+    const cards = [
+      ["Decision", `${decisionPosture}%`, `Trust ${launchTrust.trustScore}% and ledger ${proofLedger.ledgerScore}% decide whether the story is stable.`, "Posture", decisionPosture >= 80 ? "green" : "amber"],
+      ["Proof", `${proofConfidence}%`, `Proof source ${proofLedger.proofSource}% and pilot proof ${launchTrust.pilotProof}% anchor the claim.`, "Evidence", proofConfidence >= 78 ? "teal" : "amber"],
+      ["Sponsor", `${sponsorSignal}%`, `Sponsor reply ${proofLedger.sponsorReply}% and executive handoff ${sponsorReceipt.executiveHandoff}% carry the buyer voice.`, "Sponsor", sponsorSignal >= 76 ? "green" : "amber"],
+      ["Finance", `${financeSignal}%`, `Finance receipt ${proofLedger.financeReceipt}% and billing ${launchTrust.billingReady}% decide commercial readiness.`, "Finance", financeSignal >= 74 ? "blue" : "amber"],
+      ["Support", `${supportSignal}%`, `Support readiness ${proofLedger.supportReadiness}% and support calm ${sponsorProof.supportCalm}% protect the first customer.`, "Support", supportSignal >= 74 ? "green" : "red"],
+      ["Rollback", `${rollbackSignal}%`, `Rollback evidence ${proofLedger.rollbackEvidence}% and ${proofLedger.riskCount} ledger risk flag(s) decide launch safety.`, "Rollback", rollbackSignal >= 72 ? "blue" : "red"],
+    ];
+    const receipts = [
+      ["1", "Decision attached", `${decisionPosture}% decision posture keeps the board view honest.`, decisionPosture >= 80 ? "green" : "amber"],
+      ["2", "Proof attached", `${proofConfidence}% proof confidence keeps the pilot claim defensible.`, proofConfidence >= 78 ? "teal" : "amber"],
+      ["3", "Commercial attached", `${sponsorSignal}% sponsor and ${financeSignal}% finance keep buyer and billing readiness visible.`, sponsorSignal >= 76 && financeSignal >= 74 ? "green" : "amber"],
+      ["4", "Safety attached", `${supportSignal}% support and ${rollbackSignal}% rollback keep the launch reversible.`, supportSignal >= 74 && rollbackSignal >= 72 ? "blue" : "red"],
+      ["5", "Council attached", `${councilAsk}% council ask points to ${snapshotDecision.toLowerCase()}.`, councilAsk >= 78 ? "teal" : "amber"],
+    ];
+    const nextAction = snapshotDecision === "Board ready"
+      ? "Package the pilot launch trust snapshot for council approval with decision, proof, sponsor, finance, support, rollback, and council receipts attached."
+      : snapshotDecision === "Repair proof"
+        ? "Attach stronger source proof, pilot proof, and sponsor value proof before the snapshot moves."
+        : snapshotDecision === "Commercial wait"
+          ? "Close sponsor reply, finance receipt, billing movement, and commercial wording before the snapshot moves."
+          : snapshotDecision === "Support/rollback wait"
+            ? "Close support route, missing data, rollback evidence, and retune safety before the snapshot moves."
+            : "Run council review and decide whether the snapshot becomes a launch approval, proof repair, commercial wait, or support rollback wait.";
+    const snapshotId = `${BUILD_VERSION.toUpperCase()}-PILOT-LAUNCH-TRUST-SNAPSHOT`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Pilot Launch Trust Snapshot ${snapshotId}: ${snapshotState}. Snapshot ${snapshotScore}%. Decision posture ${decisionPosture}%. Proof confidence ${proofConfidence}%. Sponsor signal ${sponsorSignal}%. Finance signal ${financeSignal}%. Support signal ${supportSignal}%. Rollback signal ${rollbackSignal}%. Council ask ${councilAsk}%. Decision ${snapshotDecision}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Snapshot line: ${snapshotLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, cards, copyText, councilAsk, decisionPosture, financeSignal, firstMove, lanes, nextAction, owner, proofConfidence, receipts, reviewWindow, rollbackSignal, signals, snapshotDecision, snapshotId, snapshotLine, snapshotScore, snapshotState, sponsorSignal, supportSignal, valueLine };
+  }
+
+  function renderCommandPilotLaunchTrustSnapshotPreview(model, autopilot) {
+    const snapshot = buildCommandPilotLaunchTrustSnapshot(model, autopilot);
+    return `
+      <section class="info-card command-pilot-launch-trust-snapshot-room tone-${escapeHtml(snapshot.snapshotScore >= 84 ? "green" : snapshot.snapshotScore >= 72 ? "blue" : "amber")}" aria-label="Pilot Launch Trust Snapshot">
+        <div class="info-head compact command-pilot-launch-trust-snapshot-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Launch Snapshot</span>
+            <strong>Pilot Launch Trust Snapshot / ${snapshot.snapshotScore}%</strong>
+            <p>${escapeHtml(snapshot.snapshotState)}. ${escapeHtml(snapshot.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(snapshot.snapshotId)}</span>
+        </div>
+        <div class="command-pilot-launch-trust-snapshot-quote tone-teal">
+          <span>Board launch snapshot line</span>
+          <strong>${escapeHtml(snapshot.snapshotLine)}</strong>
+        </div>
+        <div class="command-pilot-launch-trust-snapshot-grid mini-card-grid">
+          ${snapshot.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-pilot-launch-trust-snapshot-lanes">
+          ${snapshot.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-pilot-launch-trust-snapshot-cards">
+          ${snapshot.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-pilot-launch-trust-snapshot-receipts">
+          ${snapshot.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-pilot-launch-trust-snapshot-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-pilot-launch-trust-snapshot" data-copy-text="${escapeHtml(encodeURIComponent(snapshot.copyText))}">Copy launch snapshot</button>
+          <span>One board-ready view: decision, proof, sponsor, finance, support, rollback, and council ask before private SaaS handoff.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandCalmUxFlow(model, autopilot) {
     const flow = buildCommandCalmUxFlow(model, autopilot);
     return `
@@ -78271,12 +78411,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v749 Quiet Launch Proof Ledger",
-      phase: "Quiet Launch Proof Ledger",
+      version: "v750 Pilot Launch Trust Snapshot",
+      phase: "Pilot Launch Trust Snapshot",
       lane: "Static product prototype on GitHub Pages",
-      pace: "730 meaningful versions since rebrand",
-      summary: "PursuitDesk now keeps launch proof in one quiet ledger across proof source, sponsor reply, finance receipt, support readiness, rollback evidence, owner review, and handoff evidence.",
+      pace: "731 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns launch trust and proof ledger evidence into one board-ready pilot snapshot with decision, proof, sponsor, finance, support, rollback, and council ask.",
       tracks: [
+        ["v750 pilot launch trust snapshot", 100, "Launch trust and proof ledger evidence now become one board-ready snapshot across decision posture, proof confidence, sponsor signal, finance signal, support signal, rollback signal, council ask, and one copyable launch snapshot.", "green"],
         ["v749 quiet launch proof ledger", 100, "Launch proof now sits in one quiet ledger across proof source, sponsor reply, finance receipt, support readiness, rollback evidence, owner review, handoff evidence, and one copyable proof ledger receipt.", "green"],
         ["v748 launch trust control board", 100, "Launch trust now reads as one calm board across pilot proof, staging proof, billing readiness, access ownership, support posture, rollback evidence, hard blockers, and one copyable launch trust receipt.", "green"],
         ["v747 learning receipt audit trail", 100, "Learning receipts now become searchable audit rows across source decision, guardrail, proof wait, retune, owner readiness, review evidence, account, value, and one copyable audit trail.", "green"],
@@ -79006,9 +79147,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v750", "Pilot Launch Trust Snapshot", "Summarize launch trust, proof ledger, sponsor response, support readiness, and rollback posture into one board-ready launch snapshot."],
         ["v751", "Launch Council Decision Room", "Convert launch trust into a management decision room for go, staged pilot, hold, rollback repair, or billing/access support."],
         ["v752", "Private SaaS Handoff Pack", "Gather launch trust, proof ledger, council decision, access plan, billing proof, support route, and rollback evidence into a private SaaS handoff pack."],
+        ["v753", "Pilot Readiness Board Pack", "Package launch snapshot, council decision, SaaS handoff, first-pilot gates, owner route, billing proof, and rollback receipt into one pilot board pack."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -79313,11 +79454,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Launch proof now sits in one quiet ledger before the product moves closer to private SaaS handoff, council approval, or pilot launch.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Launch trust now reads as a board-ready pilot snapshot before council approval, private SaaS handoff, or first pilot launch.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v750 smoke addendum", "Pilot Launch Trust Snapshot", "Confirm the v750 launch snapshot strip, full hidden snapshot room, eight snapshot signals, five decision lanes, six board cards, five snapshot receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v749 smoke addendum", "Quiet Launch Proof Ledger", "Confirm the v749 proof ledger strip, full hidden proof ledger room, eight ledger signals, six ledger lanes, six proof cards, five ledger receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v748 smoke addendum", "Launch Trust Control Board", "Confirm the v748 launch trust strip, full hidden launch trust room, seven launch signals, six launch lanes, six trust cards, five receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v747 smoke addendum", "Learning Receipt Audit Trail", "Confirm the v747 audit trail strip, full hidden audit room, seven audit signals, five audit lanes, six source rows, six audit cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -132215,6 +132357,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandQuietLaunchProofLedger(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Quiet launch proof ledger copied.");
+      return;
+    }
+    if (action === "copy-command-pilot-launch-trust-snapshot") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandPilotLaunchTrustSnapshot(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Pilot launch trust snapshot copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {
