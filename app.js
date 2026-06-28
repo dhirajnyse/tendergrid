@@ -1,12 +1,12 @@
 ﻿(function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v736";
-  const BUILD_LABEL = "Side Rail Click Stability Hotfix";
+  const BUILD_VERSION = "v737";
+  const BUILD_LABEL = "Calm Navigation Flow";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=736.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=736.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=737.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=737.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -146,6 +146,41 @@
     { label: "AI Labs", views: ["Time Machine", "Win Lab", "Decision Twin"] },
     { label: "Admin", views: ["Pilot Pitch", "Membership", "Build Phase"] },
   ];
+  const CALM_NAV_FLOW_STEPS = [
+    { key: "start", label: "Start", fallbackView: "Command", note: "Begin with one operating screen." },
+    { key: "move", label: "Move", fallbackView: "Advisor", note: "Choose the next best room." },
+    { key: "prove", label: "Prove", fallbackView: "Reports", note: "Keep management evidence ready." },
+    { key: "launch", label: "Launch", fallbackView: "Build Phase", note: "Keep roadmap distance visible." },
+  ];
+  const CALM_NAV_FLOW_BY_VIEW = {
+    Command: ["Command", "Advisor", "Reminders", "Reports"],
+    Autopilot: ["Autopilot", "Advisor", "Weekly Review", "Reports"],
+    Advisor: ["Advisor", "Risk", "Bid Desk", "Reports"],
+    "Weekly Review": ["Weekly Review", "Advisor", "Reports", "Build Phase"],
+    Tenders: ["Tenders", "Tenders Insights", "Reminders", "Reports"],
+    Projects: ["Projects", "Project Insights", "Reminders", "Reports"],
+    Reports: ["Reports", "Weekly Review", "Documents", "Build Phase"],
+    "Tenders Insights": ["Tenders Insights", "Tenders", "Reminders", "Reports"],
+    "Project Insights": ["Project Insights", "Projects", "Reminders", "Reports"],
+    Forecast: ["Forecast", "Advisor", "Reports", "Build Phase"],
+    Clients: ["Clients", "Contracts", "Reports", "Build Phase"],
+    Contracts: ["Contracts", "Documents", "Reports", "Build Phase"],
+    Documents: ["Documents", "Reports", "Governance", "Build Phase"],
+    Reminders: ["Reminders", "Advisor", "Weekly Review", "Reports"],
+    "Bid Desk": ["Bid Desk", "Risk", "Calendar", "Reports"],
+    Calendar: ["Calendar", "Reminders", "Weekly Review", "Reports"],
+    Risk: ["Risk", "Advisor", "Weekly Review", "Reports"],
+    Intake: ["Intake", "Import", "Tenders", "Reports"],
+    Import: ["Import", "Governance", "Tenders", "Reports"],
+    Governance: ["Governance", "Documents", "Reports", "Build Phase"],
+    Closeout: ["Closeout", "Documents", "Reports", "Build Phase"],
+    "Time Machine": ["Time Machine", "Decision Twin", "Advisor", "Reports"],
+    "Win Lab": ["Win Lab", "Bid Desk", "Decision Twin", "Reports"],
+    "Decision Twin": ["Decision Twin", "Advisor", "Reports", "Build Phase"],
+    "Pilot Pitch": ["Pilot Pitch", "Membership", "Reports", "Build Phase"],
+    Membership: ["Membership", "Pilot Pitch", "Reports", "Build Phase"],
+    "Build Phase": ["Build Phase", "Reports", "Command", "Pilot Pitch"],
+  };
   const ROOM_NAVIGATOR_GROUPS = [
     {
       label: "Run today",
@@ -2302,6 +2337,7 @@ const state = {
             <small>${escapeHtml(company.name)}</small>
           </span>
         </button>
+        ${renderSideRailFocusPanel()}
         <div class="side-rail-scroll">
           ${groups
             .map((group) => `
@@ -2763,6 +2799,85 @@ const state = {
   function simpleRoomLabel(view) {
     const section = ACCESS_SECTIONS.find((item) => item.view === view);
     return section ? navSectionLabel(section) : String(view || "");
+  }
+
+  function calmNavAccessibleView(view) {
+    const cleanView = normalizeViewName(view);
+    const section = ACCESS_SECTIONS.find((item) => item.view === cleanView);
+    if (!section || !hasSectionAccess(section.key)) return null;
+    return section.view;
+  }
+
+  function calmNavFlowForView(view = state.view) {
+    const cleanView = normalizeViewName(view);
+    const plannedViews = [
+      cleanView,
+      ...(CALM_NAV_FLOW_BY_VIEW[cleanView] || ["Command", "Advisor", "Reports", "Build Phase"]),
+      ...CALM_NAV_FLOW_STEPS.map((step) => step.fallbackView),
+    ];
+    const used = new Set();
+    const flowViews = plannedViews.reduce((acc, candidate) => {
+      const accessible = calmNavAccessibleView(candidate);
+      if (accessible && !used.has(accessible)) {
+        used.add(accessible);
+        acc.push(accessible);
+      }
+      return acc;
+    }, []);
+    const safeFallback = calmNavAccessibleView("Command") || flowViews[0] || cleanView;
+    return CALM_NAV_FLOW_STEPS.map((step, index) => {
+      const flowView = flowViews[index] || calmNavAccessibleView(step.fallbackView) || safeFallback;
+      return {
+        ...step,
+        view: flowView,
+        title: simpleRoomLabel(flowView),
+        active: flowView === cleanView,
+      };
+    });
+  }
+
+  function calmNavNextStep(flow, view = state.view) {
+    const cleanView = normalizeViewName(view);
+    const activeIndex = flow.findIndex((step) => step.view === cleanView);
+    return flow[activeIndex + 1] || flow.find((step) => step.view !== cleanView) || flow[0];
+  }
+
+  function renderSideRailFocusPanel() {
+    const flow = calmNavFlowForView();
+    const nextStep = calmNavNextStep(flow);
+    return `
+      <section class="side-rail-focus" aria-label="${escapeHtml(BUILD_VERSION)} calm navigation focus">
+        <span>${escapeHtml(BUILD_VERSION)} calm path</span>
+        <strong>${escapeHtml(simpleRoomLabel(state.view))}</strong>
+        <small>${escapeHtml(roomNavNote(state.view))}</small>
+        <button type="button" data-view="${escapeHtml(nextStep.view)}">Next: ${escapeHtml(nextStep.title)}</button>
+      </section>
+    `;
+  }
+
+  function renderCalmNavigationPath() {
+    const flow = calmNavFlowForView();
+    const nextStep = calmNavNextStep(flow);
+    return `
+      <nav class="calm-nav-path" aria-label="${escapeHtml(BRAND_NAME)} calm navigation path">
+        <div class="calm-nav-path-copy">
+          <span>${escapeHtml(BUILD_LABEL)}</span>
+          <strong>Now: ${escapeHtml(simpleRoomLabel(state.view))}</strong>
+          <small>Next: ${escapeHtml(nextStep.label)} - ${escapeHtml(nextStep.title)}</small>
+        </div>
+        <div class="calm-nav-path-steps">
+          ${flow
+            .map((step, index) => `
+              <button class="calm-nav-step ${step.active ? "active" : ""}" type="button" data-view="${escapeHtml(step.view)}" aria-pressed="${step.active ? "true" : "false"}">
+                <span>${index + 1}</span>
+                <strong>${escapeHtml(step.label)}</strong>
+                <small>${escapeHtml(step.title)}</small>
+              </button>
+            `)
+            .join("")}
+        </div>
+      </nav>
+    `;
   }
 
   function isRenderableNavSection(section) {
@@ -3324,6 +3439,8 @@ const state = {
             </div>
           </div>
         </header>
+
+        ${renderCalmNavigationPath()}
 
         <main class="main">
           ${renderPreviewBanner()}
@@ -76381,12 +76498,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v736 Side Rail Click Stability Hotfix",
-      phase: "Side Rail Click Stability Hotfix",
+      version: "v737 Calm Navigation Flow",
+      phase: "Calm Navigation Flow",
       lane: "Static product prototype on GitHub Pages",
-      pace: "717 meaningful versions since rebrand",
-      summary: "PursuitDesk now keeps the v735 side-rail shell but prevents Command clicks from pre-rendering hidden archive rooms, avoids same-room rebuilds, and keeps route hydration out of the hot render path.",
+      pace: "718 meaningful versions since rebrand",
+      summary: "PursuitDesk now adds a calm path above every room and a side-rail focus card, so users can see where they are, what opens next, and how daily work connects to proof and launch readiness without adding complexity.",
       tracks: [
+        ["v737 calm navigation flow", 100, "Every room now shows a compact Start, Move, Prove, Launch path; the side rail carries a Now/Next focus card; and the Hyrvia-inspired layout gets clearer navigation without reopening heavy Command render paths.", "green"],
         ["v736 side rail click stability hotfix", 100, "Command Center now opens the daily operating path first, hidden AI archive panels are indexed instead of pre-rendered, same-room rail clicks avoid full rebuilds, and route hydration stays on startup/hashchange only.", "green"],
         ["v735 side rail workspace shell", 100, "Primary navigation now lives in a grouped side rail, the rail can switch left or right, Rooms and Admin utilities stay on top, and the workspace reads with a calmer Hyrvia-inspired flow.", "green"],
         ["v734 commercial renewal signal room", 100, "Expansion outcome proof now becomes renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, owner, review window, value line, and one copyable commercial decision.", "green"],
@@ -77103,9 +77221,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v737", "Renewal Outcome Memory Room", "Capture what happened after the renewal decision so proof, billing, sponsor response, and support outcomes can teach the next cycle."],
-        ["v738", "Commercial Expansion Learning Release Room", "Convert commercial renewal outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
-        ["v739", "Sponsor Value Proof Pack", "Package renewal value proof, billing movement, sponsor quote, support calm, and next expansion ask into a buyer-safe pack."],
+        ["v738", "Renewal Outcome Memory Room", "Capture what happened after the renewal decision so proof, billing, sponsor response, and support outcomes can teach the next cycle."],
+        ["v739", "Commercial Expansion Learning Release Room", "Convert commercial renewal outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
+        ["v740", "Sponsor Value Proof Pack", "Package renewal value proof, billing movement, sponsor quote, support calm, and next expansion ask into a buyer-safe pack."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",

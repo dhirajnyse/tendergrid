@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=736.1"), "index.html is missing the v736.1 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=736.1"), "index.html is missing the v736.1 data cache token.");
-assert(index.includes("app.js?v=736.1"), "index.html is missing the v736.1 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=736.1"), "index.html is missing the v736.1 icon cache token.");
+assert(index.includes("styles.css?v=737.1"), "index.html is missing the v737.1 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=737.1"), "index.html is missing the v737.1 data cache token.");
+assert(index.includes("app.js?v=737.1"), "index.html is missing the v737.1 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=737.1"), "index.html is missing the v737.1 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v736";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Side Rail Click Stability Hotfix";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=736.1'), "app.js is missing the v736.1 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=736.1'), "app.js is missing the v736.1 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v737";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Calm Navigation Flow";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=737.1'), "app.js is missing the v737.1 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=737.1'), "app.js is missing the v737.1 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -1499,6 +1499,13 @@ assert(app.includes("function renderCommandIntelligenceArchivePreview"), "app.js
 assert(app.includes("function renderCommandReleaseRailPreview"), "app.js is missing the lightweight command release rail preview.");
 assert(app.includes("${false ? `"), "Command Center should keep archived release render paths out of first paint.");
 assert(app.includes("v736 side rail click stability hotfix"), "Build Phase is missing the v736 side rail click stability hotfix track.");
+assert(app.includes("Calm Navigation Flow"), "Calm Navigation Flow release label is missing.");
+assert(app.includes("CALM_NAV_FLOW_STEPS"), "app.js is missing the calm navigation flow steps.");
+assert(app.includes("CALM_NAV_FLOW_BY_VIEW"), "app.js is missing the calm navigation flow map.");
+assert(app.includes("function renderSideRailFocusPanel"), "app.js is missing the side rail focus panel.");
+assert(app.includes("function renderCalmNavigationPath"), "app.js is missing the calm navigation path renderer.");
+assert(app.includes("${renderCalmNavigationPath()}"), "renderShell is missing the calm navigation path.");
+assert(app.includes("v737 calm navigation flow"), "Build Phase is missing the v737 calm navigation flow track.");
 assert(app.includes("Calm Layout Polish"), "Calm Layout Polish release label is missing.");
 assert(app.includes("command-daily-flow"), "Command Center is missing the v700 daily-flow wrapper.");
 assert(app.includes("command-daily-flow-rail"), "Command Center is missing the v700 daily-flow rail.");
@@ -1631,6 +1638,10 @@ assert(css.includes(".workspace-frame"), "styles.css is missing the workspace fr
 assert(css.includes(".shell-rail-right"), "styles.css is missing the right-side rail layout.");
 assert(css.includes(".topbar-current"), "styles.css is missing the topbar current view block.");
 assert(css.includes(".rail-side-toggle"), "styles.css is missing the side rail toggle button.");
+assert(css.includes("v737 calm navigation flow"), "styles.css is missing the v737 calm navigation flow block.");
+assert(css.includes(".side-rail-focus"), "styles.css is missing the side rail focus panel styles.");
+assert(css.includes(".calm-nav-path"), "styles.css is missing the calm navigation path styles.");
+assert(css.includes(".calm-nav-step"), "styles.css is missing the calm navigation step styles.");
 assert(css.includes("v736 side rail click stability hotfix"), "styles.css is missing the v736 side rail click stability hotfix block.");
 assert(css.includes(".command-intelligence-archive-light"), "styles.css is missing the lightweight command archive styles.");
 assert(css.includes(".command-release-rail-light"), "styles.css is missing the lightweight command release rail styles.");
