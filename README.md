@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v731 Pilot Commercial Activation Ledger turns approved pilot movement into access activation, billing trigger, support watch, proof receipt, commercial audit trail, owner, activation date, scope, and one copyable activation ledger.
 - v730 Expansion Pilot First Review Room turns the first expansion review into minutes, outcome proof, support posture, billing signal, next-scope decision, owner, passport state, and one copyable review receipt.
 - v729 Reusable Learning Passport packages approved learning with tenant boundary, source proof, support guardrail, rollback route, reuse limits, owner, review path, and one copyable passport before it can travel.
 - v728 Sponsor Decision Receipt Room records sponsor approve, edit, hold, or rollback decisions with owner, date, proof, commercial term, next review, and rollback route in one copyable receipt.
