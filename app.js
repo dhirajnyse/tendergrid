@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v744";
-  const BUILD_LABEL = "Tenant Learning Release Receipt";
+  const BUILD_VERSION = "v745";
+  const BUILD_LABEL = "Canary Graduation Decision Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=744.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=744.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=745.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=745.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15652,6 +15652,7 @@ const state = {
     "${renderCommandCommercialLearningCanaryWatchPreview(model, autopilot)}",
     "${renderCommandSponsorProofReplyWatchPreview(model, autopilot)}",
     "${renderCommandTenantLearningReleaseReceiptPreview(model, autopilot)}",
+    "${renderCommandCanaryGraduationDecisionRoomPreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -15759,6 +15760,7 @@ const state = {
     const canaryWatch = buildCommandCommercialLearningCanaryWatch(model, autopilot);
     const replyWatch = buildCommandSponsorProofReplyWatch(model, autopilot);
     const releaseReceipt = buildCommandTenantLearningReleaseReceipt(model, autopilot);
+    const graduationRoom = buildCommandCanaryGraduationDecisionRoom(model, autopilot);
     const railCards = [
       ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
       ["Renewal memory", `${renewalMemory.memoryScore}%`, `${renewalMemory.memoryDecision}: ${renewalMemory.nextAction}`, renewalMemory.memoryScore >= 78 ? "green" : "amber", "Reports"],
@@ -15768,6 +15770,7 @@ const state = {
       ["Canary watch", `${canaryWatch.watchScore}%`, `${canaryWatch.watchDecision}: ${canaryWatch.nextAction}`, canaryWatch.watchScore >= 78 ? "green" : "amber", "Reports"],
       ["Sponsor reply", `${replyWatch.replyScore}%`, `${replyWatch.replyDecision}: ${replyWatch.nextAction}`, replyWatch.replyScore >= 78 ? "green" : "amber", "Reports"],
       ["Release receipt", `${releaseReceipt.receiptScore}%`, `${releaseReceipt.receiptDecision}: ${releaseReceipt.nextAction}`, releaseReceipt.receiptScore >= 78 ? "green" : "amber", "Reports"],
+      ["Graduation room", `${graduationRoom.graduationScore}%`, `${graduationRoom.graduationDecision}: ${graduationRoom.nextAction}`, graduationRoom.graduationScore >= 78 ? "green" : "amber", "Reports"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
     ];
     return `
@@ -15870,6 +15873,17 @@ const state = {
             ${releaseReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
           </div>
           <button class="ghost-btn" type="button" data-action="copy-command-tenant-learning-release-receipt" data-copy-text="${escapeHtml(encodeURIComponent(releaseReceipt.copyText))}">Copy receipt</button>
+        </div>
+        <div class="command-canary-graduation-decision-room-strip tone-${escapeHtml(graduationRoom.graduationScore >= 84 ? "green" : graduationRoom.graduationScore >= 72 ? "blue" : "amber")}" aria-label="Canary Graduation Decision Room summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} graduation room</span>
+            <strong>${escapeHtml(graduationRoom.graduationDecision)} / ${graduationRoom.graduationScore}%</strong>
+            <p>${escapeHtml(graduationRoom.graduationState)}. ${escapeHtml(graduationRoom.nextAction)}</p>
+          </div>
+          <div class="command-canary-graduation-decision-room-strip-signals">
+            ${graduationRoom.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-canary-graduation-decision-room" data-copy-text="${escapeHtml(encodeURIComponent(graduationRoom.copyText))}">Copy graduation</button>
         </div>
       </section>
     `;
@@ -59752,6 +59766,137 @@ const state = {
       </section>
     `;
   }
+
+  function buildCommandCanaryGraduationDecisionRoom(model, autopilot) {
+    const canaryWatch = buildCommandCommercialLearningCanaryWatch(model, autopilot);
+    const releaseReceipt = buildCommandTenantLearningReleaseReceipt(model, autopilot);
+    const replyWatch = buildCommandSponsorProofReplyWatch(model, autopilot);
+    const gate = buildCommandRenewalLearningReleaseGate(model, autopilot);
+    const sponsorProof = buildCommandSponsorValueProofPack(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(value)));
+    const inverse = (value) => Math.max(0, 100 - Number(value || 0));
+    const account = canaryWatch.account || releaseReceipt.account || replyWatch.account || firstRecord.client || state.data.company.name || "Tenant account";
+    const owner = firstTask.owner || firstTask.assignee || canaryWatch.owner || releaseReceipt.owner || replyWatch.owner || "Graduation owner";
+    const reviewWindow = firstTask.dueDate || firstTask.due || canaryWatch.reviewWindow || releaseReceipt.reviewWindow || "Graduation review";
+    const firstMove = firstTask.title || firstRecord.title || releaseReceipt.firstMove || "Decide the canary graduation path";
+    const valueLine = canaryWatch.valueLine || releaseReceipt.valueLine || replyWatch.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const proofComplete = score(releaseReceipt.releaseProof * 0.24 + releaseReceipt.auditReady * 0.2 + canaryWatch.outcomeSignal * 0.18 + replyWatch.replyConfidence * 0.14 + gate.gateReceipts * 0.14 + 8);
+    const safetyBoundary = score(releaseReceipt.guardrailReceipt * 0.24 + canaryWatch.privacyGuard * 0.22 + gate.tenantSafety * 0.18 + sponsorProof.buyerSafeProof * 0.14 + inverse(releaseReceipt.tenantLocalState) * 0.12 + 8);
+    const adoptionSignal = score(canaryWatch.liveResponse * 0.24 + replyWatch.sponsorSignal * 0.2 + replyWatch.financeNote * 0.16 + sponsorProof.expansionAsk * 0.14 + (model.weeklyReview?.reviewScore || 50) * 0.12 + 8);
+    const rollbackReady = score(canaryWatch.privacyGuard * 0.2 + releaseReceipt.guardrailReceipt * 0.2 + gate.tenantSafety * 0.16 + inverse((canaryWatch.riskCount || 0) * 13) * 0.14 + inverse((releaseReceipt.riskCount || 0) * 14) * 0.14 + 10);
+    const simplicityScore = score(canaryWatch.supportLoad * 0.24 + replyWatch.supportPosture * 0.18 + inverse(releaseReceipt.retuneInstruction) * 0.18 + inverse(model.reminders?.overdue * 1.4) * 0.16 + inverse(model.reminders?.missingData * 1.2) * 0.14 + 8);
+    const graduationScore = score(proofComplete * 0.22 + safetyBoundary * 0.22 + adoptionSignal * 0.18 + rollbackReady * 0.18 + simplicityScore * 0.14 + canaryWatch.graduationReadiness * 0.06);
+    const riskCount = [
+      proofComplete < 76,
+      safetyBoundary < 78,
+      adoptionSignal < 70,
+      rollbackReady < 74,
+      simplicityScore < 68,
+      canaryWatch.watchDecision === "Rollback learning",
+      releaseReceipt.receiptDecision === "Keep tenant-local receipt",
+      releaseReceipt.receiptDecision === "Wait for proof receipt",
+    ].filter(Boolean).length;
+    const graduationDecision = graduationScore >= 86 && proofComplete >= 80 && safetyBoundary >= 82 && rollbackReady >= 78 && riskCount === 0
+      ? "Graduate lesson"
+      : graduationScore >= 76 && safetyBoundary >= 76 && adoptionSignal >= 68 && rollbackReady >= 70
+        ? "Extend canary"
+        : safetyBoundary < 74 || releaseReceipt.tenantLocalState > 48
+          ? "Keep tenant-local"
+          : rollbackReady < 68 || canaryWatch.watchDecision === "Rollback learning"
+            ? "Roll back lesson"
+            : "Retune lesson";
+    const graduationState = graduationDecision === "Graduate lesson"
+      ? "The watched lesson is ready to graduate with proof, safety boundary, rollback language, and a calm owner review"
+      : graduationDecision === "Extend canary"
+        ? "The lesson is useful, but one more controlled canary cycle should confirm adoption and support load"
+        : graduationDecision === "Keep tenant-local"
+          ? "The lesson should stay inside this tenant until privacy, boundary, or tenant-local pressure improves"
+          : graduationDecision === "Roll back lesson"
+            ? "The lesson should step back from reuse until rollback proof, safety, or support pressure is repaired"
+            : "The lesson needs a smaller scope, clearer proof, or simpler operating path before graduation";
+    const graduationLine = `${account}: ${graduationDecision.toLowerCase()} with ${proofComplete}% proof, ${safetyBoundary}% safety boundary, ${adoptionSignal}% adoption signal, ${rollbackReady}% rollback readiness, and ${simplicityScore}% simplicity.`;
+    const signals = [
+      ["Graduation score", `${graduationScore}%`, "Blends proof, safety, adoption, rollback readiness, simplicity, and canary readiness.", graduationScore >= 84 ? "green" : graduationScore >= 74 ? "blue" : "amber"],
+      ["Proof complete", `${proofComplete}%`, "Uses release proof, audit readiness, outcome signal, reply confidence, and gate receipts.", proofComplete >= 80 ? "green" : "amber"],
+      ["Safety boundary", `${safetyBoundary}%`, "Keeps guardrails, privacy, tenant safety, buyer-safe proof, and tenant-local pressure visible.", safetyBoundary >= 80 ? "teal" : "red"],
+      ["Adoption signal", `${adoptionSignal}%`, "Reads live response, sponsor signal, finance note, expansion ask, and weekly review posture.", adoptionSignal >= 76 ? "blue" : "amber"],
+      ["Rollback ready", `${rollbackReady}%`, "Confirms the canary can safely reverse if the lesson underperforms after graduation.", rollbackReady >= 76 ? "green" : "red"],
+      ["Simplicity score", `${simplicityScore}%`, "Rewards low support load, low retune pressure, fewer overdue actions, and fewer missing fields.", simplicityScore >= 76 ? "teal" : "amber"],
+    ];
+    const lanes = [
+      ["Graduate lesson", graduationDecision === "Graduate lesson" ? "Selected" : "Needs clean gate", "Promote the watched lesson with receipt, owner, rollback wording, and audit trail.", graduationDecision === "Graduate lesson" ? "green" : "amber"],
+      ["Extend canary", graduationDecision === "Extend canary" ? "Selected" : "Controlled option", "Run one more account-safe watch cycle before teaching the wider guidance layer.", graduationDecision === "Extend canary" ? "teal" : "blue"],
+      ["Keep tenant-local", graduationDecision === "Keep tenant-local" ? "Selected" : "Privacy fallback", "Keep the lesson inside the tenant when boundary or local pressure is still high.", graduationDecision === "Keep tenant-local" ? "amber" : "blue"],
+      ["Roll back lesson", graduationDecision === "Roll back lesson" ? "Selected" : "Safety fallback", "Remove the lesson from reuse until rollback proof and support posture recover.", graduationDecision === "Roll back lesson" ? "red" : "amber"],
+      ["Retune lesson", graduationDecision === "Retune lesson" ? "Selected" : "Repair option", "Shrink the rule, improve proof, clarify owner, or simplify the next move.", graduationDecision === "Retune lesson" ? "red" : "amber"],
+    ];
+    const cards = [
+      ["Source canary", canaryWatch.watchDecision, `Watch score ${canaryWatch.watchScore}% and graduation readiness ${canaryWatch.graduationReadiness}% define the candidate.`, "Canary", canaryWatch.watchScore >= 78 ? "green" : "amber"],
+      ["Release receipt", releaseReceipt.receiptDecision, `Receipt score ${releaseReceipt.receiptScore}% and audit ready ${releaseReceipt.auditReady}% decide if proof travels.`, "Receipt", releaseReceipt.receiptScore >= 78 ? "teal" : "amber"],
+      ["Sponsor reply", replyWatch.replyDecision, `Sponsor signal ${replyWatch.sponsorSignal}% and finance note ${replyWatch.financeNote}% show buyer-side response.`, "Sponsor", replyWatch.replyScore >= 78 ? "blue" : "amber"],
+      ["Safety boundary", `${safetyBoundary}%`, `Privacy guard ${canaryWatch.privacyGuard}% and guardrail receipt ${releaseReceipt.guardrailReceipt}% define reuse width.`, "Safety", safetyBoundary >= 80 ? "green" : "red"],
+      ["Rollback posture", `${rollbackReady}%`, `${riskCount} risk flag(s) and rollback wording decide whether graduation is reversible.`, "Rollback", rollbackReady >= 76 ? "teal" : "red"],
+      ["Quiet path", `${simplicityScore}%`, `Owner ${owner}, review ${reviewWindow}, and first move ${compactText(firstMove, 58)} keep the decision calm.`, "Calm UX", simplicityScore >= 76 ? "green" : "amber"],
+    ];
+    const receipts = [
+      ["1", "Candidate named", `${canaryWatch.watchDecision} enters graduation review from Commercial Learning Canary Watch.`, canaryWatch.watchScore >= 78 ? "green" : "amber"],
+      ["2", "Proof checked", `${proofComplete}% proof complete with ${releaseReceipt.auditReady}% audit readiness and ${gate.gateReceipts}% gate receipts.`, proofComplete >= 80 ? "teal" : "amber"],
+      ["3", "Boundary checked", `${safetyBoundary}% safety boundary keeps tenant, privacy, and buyer-safe proof visible.`, safetyBoundary >= 80 ? "blue" : "red"],
+      ["4", "Rollback checked", `${rollbackReady}% rollback readiness keeps graduation reversible and accountable.`, rollbackReady >= 76 ? "green" : "red"],
+      ["5", "Decision ready", `${graduationDecision} for ${account}, owner ${owner}, review ${reviewWindow}, value ${valueLine}.`, graduationScore >= 78 ? "green" : "amber"],
+    ];
+    const nextAction = graduationDecision === "Graduate lesson"
+      ? "Graduate the lesson with proof, owner review, rollback language, and audit receipt attached."
+      : graduationDecision === "Extend canary"
+        ? "Run one more narrow canary cycle and review adoption, support load, proof, and rollback posture again."
+        : graduationDecision === "Keep tenant-local"
+          ? "Keep the lesson tenant-local until privacy boundary and tenant-local pressure are repaired."
+          : graduationDecision === "Roll back lesson"
+            ? "Roll back the lesson from reuse and create the repair path before another canary attempt."
+            : "Retune the lesson into a smaller, clearer, easier-to-prove rule before graduation.";
+    const graduationId = `${BUILD_VERSION.toUpperCase()}-CANARY-GRADUATION-DECISION-ROOM`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Canary Graduation Decision Room ${graduationId}: ${graduationState}. Graduation ${graduationScore}%. Proof ${proofComplete}%. Safety boundary ${safetyBoundary}%. Adoption ${adoptionSignal}%. Rollback ${rollbackReady}%. Simplicity ${simplicityScore}%. Decision ${graduationDecision}. Risk flags ${riskCount}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Graduation line: ${graduationLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, adoptionSignal, cards, copyText, firstMove, graduationDecision, graduationId, graduationLine, graduationScore, graduationState, lanes, nextAction, owner, proofComplete, receipts, reviewWindow, riskCount, rollbackReady, safetyBoundary, signals, simplicityScore, valueLine };
+  }
+
+  function renderCommandCanaryGraduationDecisionRoomPreview(model, autopilot) {
+    const graduation = buildCommandCanaryGraduationDecisionRoom(model, autopilot);
+    return `
+      <section class="info-card command-canary-graduation-decision-room tone-${escapeHtml(graduation.graduationScore >= 84 ? "green" : graduation.graduationScore >= 72 ? "blue" : "amber")}" aria-label="Canary Graduation Decision Room">
+        <div class="info-head compact command-canary-graduation-decision-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Canary Graduation</span>
+            <strong>Canary Graduation Decision Room / ${graduation.graduationScore}%</strong>
+            <p>${escapeHtml(graduation.graduationState)}. ${escapeHtml(graduation.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(graduation.graduationId)}</span>
+        </div>
+        <div class="command-canary-graduation-decision-room-quote tone-teal">
+          <span>Graduation decision line</span>
+          <strong>${escapeHtml(graduation.graduationLine)}</strong>
+        </div>
+        <div class="command-canary-graduation-decision-room-grid mini-card-grid">
+          ${graduation.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-canary-graduation-decision-room-lanes">
+          ${graduation.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-canary-graduation-decision-room-cards">
+          ${graduation.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(value)}</small></article>`).join("")}
+        </div>
+        <div class="command-canary-graduation-decision-room-receipts">
+          ${graduation.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-canary-graduation-decision-room-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-canary-graduation-decision-room" data-copy-text="${escapeHtml(encodeURIComponent(graduation.copyText))}">Copy graduation decision</button>
+          <span>Watched learning now graduates only when proof, safety, adoption, rollback readiness, and simplicity are visible in one calm decision.</span>
+        </div>
+      </section>
+    `;
+  }
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -59899,6 +60044,7 @@ const state = {
         ${renderCommandCommercialLearningCanaryWatchPreview(model, autopilot)}
         ${renderCommandSponsorProofReplyWatchPreview(model, autopilot)}
         ${renderCommandTenantLearningReleaseReceiptPreview(model, autopilot)}
+        ${renderCommandCanaryGraduationDecisionRoomPreview(model, autopilot)}
         ` : renderCommandReleaseRailPreview(model, autopilot)}
 
         <div class="command-layout">
@@ -77506,12 +77652,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v744 Tenant Learning Release Receipt",
-      phase: "Tenant Learning Release Receipt",
+      version: "v745 Canary Graduation Decision Room",
+      phase: "Canary Graduation Decision Room",
       lane: "Static product prototype on GitHub Pages",
-      pace: "725 meaningful versions since rebrand",
-      summary: "PursuitDesk now packages tenant learning release decisions into audit-ready receipts across release proof, guardrails, tenant-local holds, proof waits, retune instructions, and owner review.",
+      pace: "726 meaningful versions since rebrand",
+      summary: "PursuitDesk now decides whether watched learning should graduate, extend, stay tenant-local, roll back, or retune through one calm canary graduation room.",
       tracks: [
+        ["v745 canary graduation decision room", 100, "Watched learning now routes through one graduation decision across proof completeness, safety boundary, adoption signal, rollback readiness, simplicity, owner, review window, and one copyable graduation receipt.", "green"],
         ["v744 tenant learning release receipt", 100, "Tenant learning release decisions now become receipts across release proof, guardrail receipt, tenant-local pressure, proof wait, retune instruction, audit readiness, owner, review window, and one copyable release receipt.", "green"],
         ["v743 sponsor proof reply watch", 100, "Sponsor proof replies now route through sponsor signal, finance note, support posture, proof repair pressure, executive clarity, reply confidence, owner, review window, and one copyable reply decision.", "green"],
         ["v742 commercial learning canary watch", 100, "Commercial renewal learning now runs through a controlled canary watch with canary fit, live response, support load, privacy guard, outcome signal, graduation readiness, owner, review window, and one copyable canary decision.", "green"],
@@ -78236,9 +78383,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v745", "Canary Graduation Decision Room", "Decide whether watched commercial learning should graduate, extend the canary, stay tenant-local, roll back, or retune."],
         ["v746", "Sponsor Reply Learning Receipt", "Package sponsor reply outcomes into receipts that feed renewal learning, finance movement, support holds, and next executive review."],
         ["v747", "Learning Receipt Audit Trail", "Turn release receipts into a searchable audit trail with source decision, guardrail, proof wait, retune, owner, and review evidence."],
+        ["v748", "Launch Trust Control Board", "Show launch trust as one simple board across pilot proof, staging proof, billing, access, support, and rollback readiness."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -78543,11 +78690,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Tenant learning decisions now become audit-ready receipts before reuse, executive review, or wider guidance.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Watched learning now has one visible graduate, extend, tenant-local, rollback, or retune decision before reuse.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v745 smoke addendum", "Canary Graduation Decision Room", "Confirm the v745 graduation strip, full hidden graduation room, six graduation signals, five graduation lanes, six decision cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v744 smoke addendum", "Tenant Learning Release Receipt", "Confirm the v744 tenant learning receipt strip, full hidden receipt room, six receipt signals, five receipt lanes, six receipt cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v743 smoke addendum", "Sponsor Proof Reply Watch", "Confirm the v743 sponsor reply strip, full hidden reply room, six reply signals, five reply lanes, six reply cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v742 smoke addendum", "Commercial Learning Canary Watch", "Confirm the v742 canary watch strip, full hidden watch room, six canary signals, five watch lanes, six watch cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -131410,6 +131558,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandTenantLearningReleaseReceipt(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Tenant learning release receipt copied.");
+      return;
+    }
+    if (action === "copy-command-canary-graduation-decision-room") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandCanaryGraduationDecisionRoom(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Canary graduation decision copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {
