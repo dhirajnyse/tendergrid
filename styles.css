@@ -88093,3 +88093,109 @@ body.serenity-mode {
     grid-template-columns: 1fr;
   }
 }
+/* v746 sponsor reply learning receipt */
+.command-sponsor-reply-learning-receipt-strip,
+.command-sponsor-reply-learning-receipt-room {
+  border: 1px solid rgba(20, 126, 110, 0.28);
+  background: linear-gradient(135deg, rgba(236, 252, 246, 0.98), rgba(244, 248, 255, 0.94));
+  box-shadow: 0 18px 48px rgba(11, 47, 55, 0.08);
+}
+
+.command-sponsor-reply-learning-receipt-strip {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.9fr) minmax(320px, 1.4fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-sponsor-reply-learning-receipt-strip > div:first-child,
+.command-sponsor-reply-learning-receipt-room-head,
+.command-sponsor-reply-learning-receipt-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-sponsor-reply-learning-receipt-strip span,
+.command-sponsor-reply-learning-receipt-room .metric-label,
+.command-sponsor-reply-learning-receipt-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-sponsor-reply-learning-receipt-strip strong,
+.command-sponsor-reply-learning-receipt-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.6vw, 1.24rem);
+  line-height: 1.2;
+}
+
+.command-sponsor-reply-learning-receipt-strip p,
+.command-sponsor-reply-learning-receipt-strip small,
+.command-sponsor-reply-learning-receipt-room p,
+.command-sponsor-reply-learning-receipt-room small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-sponsor-reply-learning-receipt-strip-signals,
+.command-sponsor-reply-learning-receipt-grid,
+.command-sponsor-reply-learning-receipt-lanes,
+.command-sponsor-reply-learning-receipt-cards,
+.command-sponsor-reply-learning-receipt-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-sponsor-reply-learning-receipt-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-sponsor-reply-learning-receipt-lanes,
+.command-sponsor-reply-learning-receipt-cards {
+  grid-template-columns: repeat(5, minmax(160px, 1fr));
+}
+
+.command-sponsor-reply-learning-receipt-receipts {
+  grid-template-columns: repeat(5, minmax(150px, 1fr));
+}
+
+.command-sponsor-reply-learning-receipt-strip article,
+.command-sponsor-reply-learning-receipt-grid article,
+.command-sponsor-reply-learning-receipt-lanes article,
+.command-sponsor-reply-learning-receipt-cards article,
+.command-sponsor-reply-learning-receipt-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-sponsor-reply-learning-receipt-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-sponsor-reply-learning-receipt-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-sponsor-reply-learning-receipt-strip-signals,
+  .command-sponsor-reply-learning-receipt-lanes,
+  .command-sponsor-reply-learning-receipt-cards,
+  .command-sponsor-reply-learning-receipt-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-sponsor-reply-learning-receipt-strip-signals,
+  .command-sponsor-reply-learning-receipt-lanes,
+  .command-sponsor-reply-learning-receipt-cards,
+  .command-sponsor-reply-learning-receipt-receipts {
+    grid-template-columns: 1fr;
+  }
+}
