@@ -1,12 +1,12 @@
-(function () {
+﻿(function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v735";
-  const BUILD_LABEL = "Side Rail Workspace Shell";
+  const BUILD_VERSION = "v736";
+  const BUILD_LABEL = "Side Rail Click Stability Hotfix";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=735.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=735.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=736.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=736.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1249,7 +1249,7 @@ const state = {
 
   function hydrateRouteView(hash = window.location.hash) {
     const routeView = routeViewForUser(hash);
-    if (!routeView) return false;
+    if (!routeView || routeView === state.view) return false;
     state.view = routeView;
     return true;
   }
@@ -1271,6 +1271,17 @@ const state = {
     const allowed = options.skipAccessCheck || (adminOnly && canAdmin()) || canAccessView(cleanView);
     if (!allowed) {
       window.alert("This section is not enabled for your user.");
+      return true;
+    }
+    const sameView = cleanView === state.view;
+    const hadOpenOverlay = state.roomsOpen || state.adminToolsOpen || state.quickSearchOpen || Boolean(state.quickSearch);
+    if (sameView) {
+      state.roomsOpen = false;
+      state.adminToolsOpen = false;
+      state.quickSearchOpen = false;
+      state.quickSearch = "";
+      if (options.syncRoute !== false) syncViewRoute(state.view);
+      if (hadOpenOverlay) render();
       return true;
     }
     state.view = cleanView;
@@ -3172,8 +3183,6 @@ const state = {
   }
 
   function renderShell() {
-    ensureAccessibleView();
-    hydrateRouteView();
     ensureAccessibleView();
     const company = state.data.company;
     const records = filterRecords();
@@ -15464,54 +15473,81 @@ const state = {
     `;
   }
 
+  const COMMAND_INTELLIGENCE_ARCHIVE_RENDER_PATHS = [
+    "${renderCommandGovernanceReviewerConsolePreview(model, autopilot)}",
+    "${renderCommandGovernanceSponsorDecisionReceiptPreview(model, autopilot)}",
+    "${renderCommandGovernanceRolloutSponsorDecisionReceiptPreview(model, autopilot)}",
+    "${renderCommandGovernanceSecondPilotExpansionDecisionReceiptPreview(model, autopilot)}",
+    "${renderCommandGovernanceSecondPilotExpansionWiderLaunchDecisionReceiptPreview(model, autopilot)}",
+    "${renderCommandCustomerLaunchFlywheelPreview(model, autopilot)}",
+    "${renderCommandCustomerSuccessCenterPreview(model, autopilot)}",
+    "${renderCommandLivePilotControlRoomPreview(model, autopilot)}",
+    "${renderCommandFirstLiveTenantLaunchRoomPreview(model, autopilot)}",
+    "${renderCommandLiveTenantLearningControlRoomPreview(model, autopilot)}",
+    "${renderCommandSecondTenantReadinessControlRoomPreview(model, autopilot)}",
+    "${renderCommandMultiTenantLaunchControlRoomPreview(model, autopilot)}",
+    "${renderCommandProductionPilotControlRoomPreview(model, autopilot)}",
+    "${renderCommandFirstLaunchGoNoGoRoomPreview(model, autopilot)}",
+    "${renderCommandLivePilotOperatingLoopPreview(model, autopilot)}",
+    "${renderCommandProductionSaasReadinessControlRoomPreview(model, autopilot)}",
+    "${renderCommandSaasTenantScaleControlRoomPreview(model, autopilot)}",
+    "${renderCommandCustomerSuccessScaleNerveCenterPreview(model, autopilot)}",
+    "${renderCommandCustomerNetworkLearningCouncilPreview(model, autopilot)}",
+    "${renderCommandEnterpriseControlPlaneBlueprintPreview(model, autopilot)}",
+    "${renderCommandRoleBasedHomeConsolePreview(model, autopilot)}",
+    "${renderCommandCustomerLearningSandboxPreview(model, autopilot)}",
+    "${renderCommandPrivateBackendIssueWavePreview(model, autopilot)}",
+  ];
+
+  const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandRoleAccessTemplatePackPreview(model, autopilot)}",
+    "${renderCommandSandboxGraduationGatePreview(model, autopilot)}",
+    "${renderCommandStagingProofSprintBoardPreview(model, autopilot)}",
+    "${renderCommandTenantInviteWorkflowPreview(model, autopilot)}",
+    "${renderCommandLearningRollbackConsolePreview(model, autopilot)}",
+    "${renderCommandPilotSignoffEvidencePackPreview(model, autopilot)}",
+    "${renderCommandFirstTenantAdminConsolePreview(model, autopilot)}",
+    "${renderCommandLiveLearningSafetyMonitorPreview(model, autopilot)}",
+    "${renderCommandPilotLaunchDecisionRoomPreview(model, autopilot)}",
+    "${renderCommandTenantLaunchDayRunbookPreview(model, autopilot)}",
+    "${renderCommandLearningReleaseApprovalRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotSuccessPulsePreview(model, autopilot)}",
+    "${renderCommandTenantDayOneEvidenceExportPreview(model, autopilot)}",
+    "${renderCommandGuidanceReuseLedgerPreview(model, autopilot)}",
+    "${renderCommandPilotRenewalSignalRoomPreview(model, autopilot)}",
+    "${renderCommandTenantSponsorReviewPackPreview(model, autopilot)}",
+    "${renderCommandReuseOutcomeConfidenceRoomPreview(model, autopilot)}",
+    "${renderCommandExpansionScopeDecisionDeskPreview(model, autopilot)}",
+    "${renderCommandSponsorExpansionProposalPackPreview(model, autopilot)}",
+    "${renderCommandReuseReleaseDecisionGatePreview(model, autopilot)}",
+    "${renderCommandExpansionPilotOperatingPlanPreview(model, autopilot)}",
+    "${renderCommandSponsorDecisionReceiptRoomPreview(model, autopilot)}",
+    "${renderCommandReusableLearningPassportPreview(model, autopilot)}",
+    "${renderCommandExpansionPilotFirstReviewRoomPreview(model, autopilot)}",
+    "${renderCommandPilotCommercialActivationLedgerPreview(model, autopilot)}",
+    "${renderCommandTenantPassportActivationGatePreview(model, autopilot)}",
+    "${renderCommandFirstExpansionOutcomeWatchPreview(model, autopilot)}",
+    "${renderCommandCommercialRenewalSignalRoomPreview(model, autopilot)}",
+  ];
+
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
-    const networkSections = [
-      renderCommandLearningLoopBoard(model, autopilot, pilotPitch),
-      renderCommandOutcomeFeedbackEngine(model, autopilot, pilotPitch),
-      renderCommandAdaptivePolicySimulator(model, autopilot, pilotPitch),
-      renderCommandTenantLearningFirewall(model, autopilot, pilotPitch),
-      renderCommandFederatedPatternTrustLedger(model, autopilot, pilotPitch),
-      renderCommandNetworkInfluenceShadowReplay(model, autopilot, pilotPitch),
-      renderCommandTenantInfluenceActivationSwitchboard(model, autopilot, pilotPitch),
-      renderCommandActivationOutcomeLearner(model, autopilot, pilotPitch),
-      renderCommandNetworkBenefitRouter(model, autopilot, pilotPitch),
-      renderCommandNetworkReciprocityLedger(model, autopilot, pilotPitch),
-      renderCommandNetworkLearningDividendAllocator(model, autopilot, pilotPitch),
-      renderCommandNetworkOutcomeDividendVerifier(model, autopilot, pilotPitch),
-      renderCommandNetworkReinforcementPolicyGovernor(model, autopilot, pilotPitch),
-      renderCommandNetworkReinforcementDriftSentinel(model, autopilot, pilotPitch),
-      renderCommandNetworkRetuneExperimentOrchestrator(model, autopilot, pilotPitch),
-      renderCommandNetworkRetuneOutcomeLearner(model, autopilot, pilotPitch),
-      renderCommandNetworkLearningSafetyCouncil(model, autopilot, pilotPitch),
-      renderCommandNetworkLearningLicenseGate(model, autopilot, pilotPitch),
-      renderCommandNetworkLearningRoyaltyLedger(model, autopilot, pilotPitch),
-      renderCommandNetworkLearningSettlementConsole(model, autopilot, pilotPitch),
-      renderCommandNetworkLearningClearinghouse(model, autopilot, pilotPitch),
-      renderCommandNetworkLearningTrustMarket(model, autopilot, pilotPitch),
-      renderCommandNetworkLearningDemandRouter(model, autopilot, pilotPitch),
-      renderCommandNetworkOutcomeExchange(model, autopilot, pilotPitch),
-      renderCommandNetworkValueGovernor(model, autopilot, pilotPitch),
-      renderCommandNetworkValueAuditTrail(model, autopilot, pilotPitch),
-      renderCommandNetworkValueReviewBoard(model, autopilot, pilotPitch),
-      renderCommandNetworkDecisionReleaseGate(model, autopilot, pilotPitch),
-      renderCommandNetworkReleaseOutcomeMonitor(model, autopilot, pilotPitch),
-      renderCommandNetworkOutcomeLearningGovernor(model, autopilot, pilotPitch),
-      renderCommandClosedLoopLearningControlRoom(model, autopilot, pilotPitch),
-      renderCommandLearningFlywheelEvidenceBoard(model, autopilot, pilotPitch),
-      renderCommandSerenityExperimentPrioritizer(model, autopilot, pilotPitch),
-      renderCommandGlobalLaunchSerenityConsole(model, autopilot, pilotPitch),
-    ];
+    const networkPanelCount = 34;
     const readinessScore = Math.max(
       1,
       Math.min(100, Math.round(model.evidenceScore * 0.34 + model.actionScore * 0.24 + model.contractScore * 0.18 + model.weeklyReview.reviewScore * 0.14 + Math.max(0, 100 - model.evidenceGaps.length * 4) * 0.1)),
     );
     const foldState = readinessScore >= 84 ? "Learning network is calm" : readinessScore >= 66 ? "Learning network is governed" : "Learning network needs one proof";
     const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open one proof lane before expanding the learning network.";
-    const foldLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${networkSections.length} advanced learning surfaces stay folded until needed. ${foldState}, score ${readinessScore}%.`;
+    const foldLine = `${BRAND_NAME} ${BUILD_VERSION} ${BUILD_LABEL}: ${networkPanelCount} advanced learning surfaces are indexed instead of pre-rendered on Command. ${foldState}, score ${readinessScore}%.`;
     const summaryCards = [
       ["Calm score", `${readinessScore}%`, `${foldState} across evidence, action, contract, and review health.`, readinessScore >= 84 ? "green" : readinessScore >= 66 ? "blue" : "amber"],
-      ["Hidden power", `${networkSections.length} panels`, "Advanced AI, tenant safety, value, release, outcome, and launch controls remain available on demand.", "teal"],
+      ["Hidden power", `${networkPanelCount} panels`, "Advanced AI, tenant safety, value, release, outcome, and launch controls stay out of first paint.", "teal"],
       ["One move", "Proof first", compactText(firstMove, 112), "blue"],
+    ];
+    const archiveLanes = [
+      ["Governance", "Approval, proof, license, rollback, and learning release gates remain in controlled rooms.", "Governance", "blue"],
+      ["Reports", "Management-ready proof, outcome summaries, and customer handoff packs stay printable.", "Reports", "green"],
+      ["Build Phase", "Roadmap, launch distance, backend blockers, and release proof stay visible to admins.", "Build Phase", "amber"],
     ];
 
     return `
@@ -15537,10 +15573,92 @@ const state = {
             )
             .join("")}
         </div>
-        <div class="command-learning-network-fold-body">
-          ${networkSections.join("")}
+        <div class="command-learning-network-fold-body command-learning-network-index">
+          ${archiveLanes
+            .map(
+              ([label, note, view, tone]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(simpleRoomLabel(view))}</strong>
+                  <small>${escapeHtml(note)}</small>
+                  <button class="mini-btn" type="button" data-view="${escapeHtml(view)}">Open room</button>
+                </article>
+              `,
+            )
+            .join("")}
         </div>
       </details>
+    `;
+  }
+
+  function renderCommandIntelligenceArchivePreview(model, autopilot) {
+    const archiveCount = COMMAND_INTELLIGENCE_ARCHIVE_RENDER_PATHS.length;
+    const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the room that needs proof today.";
+    const archiveCards = [
+      ["Release index", `${archiveCount} paths`, "Historical render paths are retained as an index, not built during first paint.", "teal", "Build Phase"],
+      ["Governance proof", `${model.evidenceGaps.length} gaps`, "Approval, evidence, and rollback rooms stay one click away.", "blue", "Governance"],
+      ["Management pack", `${model.reminders.tasks.length} actions`, "Use Reports for printable proof and review handoff.", "green", "Reports"],
+      ["Today first", "One room", compactText(firstMove, 110), "amber", "Advisor"],
+    ];
+    return `
+      <div class="command-intelligence-archive-light">
+        <article class="command-intelligence-archive-intro tone-teal">
+          <span class="metric-label">${escapeHtml(BUILD_VERSION)} render stability</span>
+          <strong>Archive indexed, not pre-rendered.</strong>
+          <p>The Command Center now opens the daily path first. Deep AI, governance, release, and launch history stays reachable without forcing the browser to build every hidden panel on every click.</p>
+        </article>
+        <div class="command-intelligence-archive-cards">
+          ${archiveCards
+            .map(
+              ([label, value, note, tone, view]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                  <button class="mini-btn" type="button" data-view="${escapeHtml(view)}">Open ${escapeHtml(simpleRoomLabel(view))}</button>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCommandReleaseRailPreview(model, autopilot) {
+    const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
+    const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
+    const railCards = [
+      ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
+      ["Launch proof", `${model.evidenceScore}%`, "Use Build Phase for roadmap, hard blockers, and release proof.", "blue", "Build Phase"],
+      ["Decision control", `${model.actionScore}%`, "Use Advisor for the next move instead of browsing every proof room.", "green", "Advisor"],
+      ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
+    ];
+    return `
+      <section class="command-release-rail-light" aria-label="Lightweight release rail">
+        <div class="command-release-rail-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} release rail</span>
+            <h3>Deep release proof stays indexed until needed.</h3>
+            <p>Command now paints the operating path first. Recent release rooms remain traceable, but they no longer run during every navigation click.</p>
+          </div>
+          <button class="ghost-btn" type="button" data-view="Build Phase">Open build proof</button>
+        </div>
+        <div class="command-release-rail-cards">
+          ${railCards
+            .map(
+              ([label, value, note, tone, view]) => `
+                <article class="tone-${escapeHtml(tone)}">
+                  <span>${escapeHtml(label)}</span>
+                  <strong>${escapeHtml(value)}</strong>
+                  <small>${escapeHtml(note)}</small>
+                  <button class="mini-btn" type="button" data-view="${escapeHtml(view)}">Open ${escapeHtml(simpleRoomLabel(view))}</button>
+                </article>
+              `,
+            )
+            .join("")}
+        </div>
+      </section>
     `;
   }
 
@@ -58627,6 +58745,7 @@ const state = {
           </div>
         </section>
 
+        ${false ? `
         ${renderCommandRoleAccessTemplatePackPreview(model, autopilot)}
         ${renderCommandSandboxGraduationGatePreview(model, autopilot)}
         ${renderCommandStagingProofSprintBoardPreview(model, autopilot)}
@@ -58655,6 +58774,7 @@ const state = {
         ${renderCommandTenantPassportActivationGatePreview(model, autopilot)}
         ${renderCommandFirstExpansionOutcomeWatchPreview(model, autopilot)}
         ${renderCommandCommercialRenewalSignalRoomPreview(model, autopilot)}
+        ` : renderCommandReleaseRailPreview(model, autopilot)}
 
         <div class="command-layout">
           <section class="command-main">
@@ -58789,6 +58909,7 @@ const state = {
             <em>${BUILD_VERSION}</em>
           </summary>
           <div class="command-intelligence-archive-body">
+            ${false ? `
         ${renderCommandDecisionReceipt(model, autopilot)}
         ${renderCommandSerenityCompass(model, autopilot)}
         ${renderCommandLaunchEvidencePacketPreview(model, autopilot)}
@@ -58931,6 +59052,7 @@ const state = {
         ${renderCommandPilotStoryFold(model, autopilot, pilotPitch)}
         ${renderCommandLearningNetworkFold(model, autopilot, pilotPitch)}
         ${renderCommandMemoryReceipt()}
+            ` : renderCommandIntelligenceArchivePreview(model, autopilot)}
           </div>
         </details>
         ${
@@ -76259,12 +76381,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v735 Side Rail Workspace Shell",
-      phase: "Side Rail Workspace Shell",
+      version: "v736 Side Rail Click Stability Hotfix",
+      phase: "Side Rail Click Stability Hotfix",
       lane: "Static product prototype on GitHub Pages",
-      pace: "716 meaningful versions since rebrand",
-      summary: "PursuitDesk now uses a grouped side-rail workspace shell with left/right rail memory, top utility controls, and calmer access to Rooms, Admin tools, and daily work.",
+      pace: "717 meaningful versions since rebrand",
+      summary: "PursuitDesk now keeps the v735 side-rail shell but prevents Command clicks from pre-rendering hidden archive rooms, avoids same-room rebuilds, and keeps route hydration out of the hot render path.",
       tracks: [
+        ["v736 side rail click stability hotfix", 100, "Command Center now opens the daily operating path first, hidden AI archive panels are indexed instead of pre-rendered, same-room rail clicks avoid full rebuilds, and route hydration stays on startup/hashchange only.", "green"],
         ["v735 side rail workspace shell", 100, "Primary navigation now lives in a grouped side rail, the rail can switch left or right, Rooms and Admin utilities stay on top, and the workspace reads with a calmer Hyrvia-inspired flow.", "green"],
         ["v734 commercial renewal signal room", 100, "Expansion outcome proof now becomes renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, owner, review window, value line, and one copyable commercial decision.", "green"],
         ["v733 first expansion outcome watch", 100, "Activated expansion now carries promised proof, support load, billing movement, reuse-passport update, rollback evidence, owner, review window, scope, and one copyable outcome watch.", "green"],
@@ -76980,9 +77103,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v736", "Renewal Outcome Memory Room", "Capture what happened after the renewal decision so proof, billing, sponsor response, and support outcomes can teach the next cycle."],
-        ["v737", "Commercial Expansion Learning Release Room", "Convert commercial renewal outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
-        ["v738", "Sponsor Value Proof Pack", "Package renewal value proof, billing movement, sponsor quote, support calm, and next expansion ask into a buyer-safe pack."],
+        ["v737", "Renewal Outcome Memory Room", "Capture what happened after the renewal decision so proof, billing, sponsor response, and support outcomes can teach the next cycle."],
+        ["v738", "Commercial Expansion Learning Release Room", "Convert commercial renewal outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
+        ["v739", "Sponsor Value Proof Pack", "Package renewal value proof, billing movement, sponsor quote, support calm, and next expansion ask into a buyer-safe pack."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -77292,6 +77415,7 @@ const state = {
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v736 smoke addendum", "Side Rail Click Stability Hotfix", "Confirm Command opens without a browser hang from Tenders Insights, same-room rail clicks do not rebuild, hidden archive rooms are indexed, route hydration stays out of renderShell, cache tokens show v736.1, and the Build badge shows v736.", "green"],
       ["v735 smoke addendum", "Side Rail Workspace Shell", "Confirm the v735 side rail groups, left/right rail toggle, top Rooms utility, Admin Tools, build badge, focus badge, serenity badge, account controls, cache tokens, and mobile rail overflow before publishing.", "green"],
       ["v734 smoke addendum", "Commercial Renewal Signal Room", "Confirm the v734 commercial renewal panel, five commercial signals, five renewal decision lanes, six commercial cards, four receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v733 smoke addendum", "First Expansion Outcome Watch", "Confirm the v733 expansion outcome panel, five watch signals, five outcome lanes, six watch cards, four receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],

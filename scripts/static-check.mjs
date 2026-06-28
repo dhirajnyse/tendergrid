@@ -68,10 +68,10 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=735.1"), "index.html is missing the v735.1 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=735.1"), "index.html is missing the v735.1 data cache token.");
-assert(index.includes("app.js?v=735.1"), "index.html is missing the v735.1 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=735.1"), "index.html is missing the v735.1 icon cache token.");
+assert(index.includes("styles.css?v=736.1"), "index.html is missing the v736.1 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=736.1"), "index.html is missing the v736.1 data cache token.");
+assert(index.includes("app.js?v=736.1"), "index.html is missing the v736.1 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=736.1"), "index.html is missing the v736.1 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
@@ -80,10 +80,10 @@ assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v735";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "Side Rail Workspace Shell";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=735.1'), "app.js is missing the v735.1 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=735.1'), "app.js is missing the v735.1 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v736";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "Side Rail Click Stability Hotfix";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=736.1'), "app.js is missing the v736.1 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=736.1'), "app.js is missing the v736.1 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -151,7 +151,7 @@ assert(app.includes("function routeViewForUser"), "app.js is missing the route a
 assert(app.includes("function hydrateRouteView"), "app.js is missing route hydration after session refresh.");
 assert(app.includes("const routeView = routeViewForUser(window.location.hash, initialUser);"), "Initial session load should honor #build-phase.");
 assert(app.includes("const routeView = routeViewForUser(window.location.hash, state.user);"), "Login should honor #build-phase after authentication.");
-assert(app.includes("hydrateRouteView();"), "renderShell should re-apply the current hash route after refreshing the session.");
+assert(app.includes("if (routeView) openView(routeView, { syncRoute: false });"), "Hashchange should re-apply the current route without renderShell hydration.");
 assert(app.includes("if (action === \"open-build-phase\")"), "Build badge is missing its Build Phase click action.");
 assert(app.includes("v514 build phase route repair"), "Build Phase route repair history is missing.");
 assert(app.includes("Handoff Reuse Outcome Watch"), "Handoff reuse outcome watch release label is missing.");
@@ -1489,6 +1489,16 @@ assert(app.includes('shell shell-rail-${escapeHtml(state.navRailSide)}'), "app.j
 assert(app.includes('navRailSide: initialUiPrefs.navRailSide === "right" ? "right" : "left"'), "app.js is missing side rail preference memory.");
 assert(app.includes('action === "toggle-nav-rail-side"'), "app.js is missing the side rail toggle action.");
 assert(app.includes("Rail: ${state.navRailSide === \"right\" ? \"Right\" : \"Left\"}"), "app.js is missing the side rail toggle label.");
+assert(app.includes("Side Rail Click Stability Hotfix"), "Side Rail Click Stability Hotfix release label is missing.");
+assert(app.includes("const sameView = cleanView === state.view"), "openView is missing the same-view render guard.");
+assert(app.includes("const hadOpenOverlay = state.roomsOpen || state.adminToolsOpen || state.quickSearchOpen || Boolean(state.quickSearch);"), "openView is missing overlay-aware same-view handling.");
+assert(!app.includes("function renderShell() {\n    ensureAccessibleView();\n    hydrateRouteView();"), "renderShell should not hydrate the route during every render.");
+assert(app.includes("COMMAND_INTELLIGENCE_ARCHIVE_RENDER_PATHS"), "app.js is missing the command archive render-path index.");
+assert(app.includes("COMMAND_RELEASE_RAIL_RENDER_PATHS"), "app.js is missing the command release rail render-path index.");
+assert(app.includes("function renderCommandIntelligenceArchivePreview"), "app.js is missing the lightweight command archive preview.");
+assert(app.includes("function renderCommandReleaseRailPreview"), "app.js is missing the lightweight command release rail preview.");
+assert(app.includes("${false ? `"), "Command Center should keep archived release render paths out of first paint.");
+assert(app.includes("v736 side rail click stability hotfix"), "Build Phase is missing the v736 side rail click stability hotfix track.");
 assert(app.includes("Calm Layout Polish"), "Calm Layout Polish release label is missing.");
 assert(app.includes("command-daily-flow"), "Command Center is missing the v700 daily-flow wrapper.");
 assert(app.includes("command-daily-flow-rail"), "Command Center is missing the v700 daily-flow rail.");
@@ -1535,7 +1545,7 @@ assert(app.includes("function renderCommandCalmUxFlow"), "app.js is missing the 
 assert(app.includes("${renderCommandCalmUxFlow(model, autopilot)}"), "Command Center is missing the Calm UX Flow preview call.");
 assert(app.includes("command-intelligence-archive-fold"), "Command Center is missing the folded AI intelligence archive.");
 assert(app.includes('action === "copy-command-calm-ux-flow"'), "app.js is missing the Calm UX Flow copy action.");
-assert(app.includes("v736"), "Build Phase next queue should include v736.");
+assert(app.includes("v737"), "Build Phase next queue should include v737.");
 assert(app.includes("v737"), "Build Phase next queue should include v737.");
 assert(app.includes("v738"), "Build Phase next queue should include v738.");
 assert(css.includes("command-guidance-reuse-ledger"), "styles.css is missing the Guidance Reuse Ledger shell.");
@@ -1621,6 +1631,10 @@ assert(css.includes(".workspace-frame"), "styles.css is missing the workspace fr
 assert(css.includes(".shell-rail-right"), "styles.css is missing the right-side rail layout.");
 assert(css.includes(".topbar-current"), "styles.css is missing the topbar current view block.");
 assert(css.includes(".rail-side-toggle"), "styles.css is missing the side rail toggle button.");
+assert(css.includes("v736 side rail click stability hotfix"), "styles.css is missing the v736 side rail click stability hotfix block.");
+assert(css.includes(".command-intelligence-archive-light"), "styles.css is missing the lightweight command archive styles.");
+assert(css.includes(".command-release-rail-light"), "styles.css is missing the lightweight command release rail styles.");
+assert(css.includes(".command-learning-network-index"), "styles.css is missing the lightweight learning network index styles.");
 assert(app.includes("buildCommandOutcomeMemorySeed"), "app.js is missing the Outcome Memory Seed model.");
 assert(app.includes("buildCommandLearningApprovalLane"), "app.js is missing the Learning Approval Lane model.");
 assert(app.includes("buildCommandLearningReleaseReceipt"), "app.js is missing the Learning Release Receipt model.");

@@ -85689,3 +85689,139 @@ body.serenity-mode {
     left: auto;
   }
 }
+
+/* v736 side rail click stability hotfix */
+.command-intelligence-archive-light {
+  display: grid;
+  gap: 12px;
+}
+
+.command-intelligence-archive-intro {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.command-intelligence-archive-intro strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.15;
+}
+
+.command-intelligence-archive-intro p {
+  max-width: 940px;
+  margin: 8px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.command-intelligence-archive-cards,
+.command-release-rail-cards,
+.command-learning-network-index {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.command-release-rail-light {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid rgba(13, 111, 97, 0.18);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: rgba(237, 250, 246, 0.72);
+}
+
+.command-release-rail-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.command-release-rail-head h3 {
+  margin: 5px 0 0;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 1.14;
+}
+
+.command-release-rail-head p {
+  max-width: 900px;
+  margin: 7px 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.command-intelligence-archive-cards article,
+.command-release-rail-cards article,
+.command-learning-network-index article {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-height: 154px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--teal);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.command-intelligence-archive-cards article > span,
+.command-release-rail-cards article > span,
+.command-learning-network-index article > span {
+  color: var(--teal);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.command-intelligence-archive-cards strong,
+.command-release-rail-cards strong,
+.command-learning-network-index strong {
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.18;
+}
+
+.command-intelligence-archive-cards small,
+.command-release-rail-cards small,
+.command-learning-network-index small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.command-intelligence-archive-cards .mini-btn,
+.command-release-rail-cards .mini-btn,
+.command-learning-network-index .mini-btn {
+  align-self: end;
+  justify-self: start;
+  margin-top: 4px;
+}
+
+@media (max-width: 980px) {
+  .command-intelligence-archive-cards,
+  .command-release-rail-cards,
+  .command-learning-network-index {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .command-release-rail-head {
+    display: grid;
+  }
+}
+
+@media (max-width: 620px) {
+  .command-intelligence-archive-cards,
+  .command-release-rail-cards,
+  .command-learning-network-index {
+    grid-template-columns: 1fr;
+  }
+}
