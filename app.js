@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v746";
-  const BUILD_LABEL = "Sponsor Reply Learning Receipt";
+  const BUILD_VERSION = "v747";
+  const BUILD_LABEL = "Learning Receipt Audit Trail";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=746.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=746.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=747.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=747.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15654,6 +15654,7 @@ const state = {
     "${renderCommandTenantLearningReleaseReceiptPreview(model, autopilot)}",
     "${renderCommandCanaryGraduationDecisionRoomPreview(model, autopilot)}",
     "${renderCommandSponsorReplyLearningReceiptPreview(model, autopilot)}",
+    "${renderCommandLearningReceiptAuditTrailPreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -15763,6 +15764,7 @@ const state = {
     const releaseReceipt = buildCommandTenantLearningReleaseReceipt(model, autopilot);
     const graduationRoom = buildCommandCanaryGraduationDecisionRoom(model, autopilot);
     const sponsorReceipt = buildCommandSponsorReplyLearningReceipt(model, autopilot);
+    const auditTrail = buildCommandLearningReceiptAuditTrail(model, autopilot);
     const railCards = [
       ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
       ["Renewal memory", `${renewalMemory.memoryScore}%`, `${renewalMemory.memoryDecision}: ${renewalMemory.nextAction}`, renewalMemory.memoryScore >= 78 ? "green" : "amber", "Reports"],
@@ -15774,6 +15776,7 @@ const state = {
       ["Release receipt", `${releaseReceipt.receiptScore}%`, `${releaseReceipt.receiptDecision}: ${releaseReceipt.nextAction}`, releaseReceipt.receiptScore >= 78 ? "green" : "amber", "Reports"],
       ["Graduation room", `${graduationRoom.graduationScore}%`, `${graduationRoom.graduationDecision}: ${graduationRoom.nextAction}`, graduationRoom.graduationScore >= 78 ? "green" : "amber", "Reports"],
       ["Sponsor receipt", `${sponsorReceipt.receiptScore}%`, `${sponsorReceipt.receiptDecision}: ${sponsorReceipt.nextAction}`, sponsorReceipt.receiptScore >= 78 ? "green" : "amber", "Reports"],
+      ["Audit trail", `${auditTrail.auditScore}%`, `${auditTrail.auditDecision}: ${auditTrail.nextAction}`, auditTrail.auditScore >= 78 ? "green" : "amber", "Reports"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
     ];
     return `
@@ -15898,6 +15901,17 @@ const state = {
             ${sponsorReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
           </div>
           <button class="ghost-btn" type="button" data-action="copy-command-sponsor-reply-learning-receipt" data-copy-text="${escapeHtml(encodeURIComponent(sponsorReceipt.copyText))}">Copy sponsor receipt</button>
+        </div>
+        <div class="command-learning-receipt-audit-trail-strip tone-${escapeHtml(auditTrail.auditScore >= 84 ? "green" : auditTrail.auditScore >= 72 ? "blue" : "amber")}" aria-label="Learning Receipt Audit Trail summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} audit trail</span>
+            <strong>${escapeHtml(auditTrail.auditDecision)} / ${auditTrail.auditScore}%</strong>
+            <p>${escapeHtml(auditTrail.auditState)}. ${escapeHtml(auditTrail.nextAction)}</p>
+          </div>
+          <div class="command-learning-receipt-audit-trail-strip-signals">
+            ${auditTrail.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-learning-receipt-audit-trail" data-copy-text="${escapeHtml(encodeURIComponent(auditTrail.copyText))}">Copy audit trail</button>
         </div>
       </section>
     `;
@@ -60043,6 +60057,149 @@ const state = {
       </section>
     `;
   }
+  function buildCommandLearningReceiptAuditTrail(model, autopilot) {
+    const sponsorReceipt = buildCommandSponsorReplyLearningReceipt(model, autopilot);
+    const releaseReceipt = buildCommandTenantLearningReleaseReceipt(model, autopilot);
+    const graduationRoom = buildCommandCanaryGraduationDecisionRoom(model, autopilot);
+    const replyWatch = buildCommandSponsorProofReplyWatch(model, autopilot);
+    const canaryWatch = buildCommandCommercialLearningCanaryWatch(model, autopilot);
+    const gate = buildCommandRenewalLearningReleaseGate(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const inverse = (value) => Math.max(0, 100 - Number(value || 0));
+    const account = sponsorReceipt.account || releaseReceipt.account || graduationRoom.account || firstRecord.client || state.data.company.name || "Learning account";
+    const owner = firstTask.owner || firstTask.assignee || sponsorReceipt.owner || releaseReceipt.owner || graduationRoom.owner || "Audit owner";
+    const reviewWindow = firstTask.dueDate || firstTask.due || sponsorReceipt.reviewWindow || releaseReceipt.reviewWindow || graduationRoom.reviewWindow || "Audit review";
+    const firstMove = firstTask.title || firstRecord.title || sponsorReceipt.firstMove || "Publish the learning receipt audit trail after source and proof checks pass";
+    const valueLine = sponsorReceipt.valueLine || releaseReceipt.valueLine || graduationRoom.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const sourceDecision = score(sponsorReceipt.learningSignal * 0.22 + releaseReceipt.releaseProof * 0.18 + canaryWatch.outcomeSignal * 0.16 + replyWatch.replyScore * 0.14 + graduationRoom.graduationScore * 0.12 + 10);
+    const guardrail = score(releaseReceipt.guardrailReceipt * 0.24 + graduationRoom.safetyBoundary * 0.2 + canaryWatch.privacyGuard * 0.18 + gate.tenantSafety * 0.14 + sponsorReceipt.executiveHandoff * 0.1 + 8);
+    const proofWait = score(Math.max(0, 78 - sponsorReceipt.proofConfidence) * 0.7 + releaseReceipt.proofWait * 0.44 + Math.max(0, 76 - releaseReceipt.auditReady) * 0.5 + Number(model.evidenceGaps?.length || 0) * 3 + Number(model.reminders?.missingData || 0) * 0.75 + Math.max(0, replyWatch.proofRepair - 38) * 0.48);
+    const retune = score(releaseReceipt.retuneInstruction * 0.3 + Math.max(0, 74 - sponsorReceipt.supportReadiness) * 0.5 + Math.max(0, 76 - canaryWatch.supportLoad) * 0.4 + Number(sponsorReceipt.riskCount || 0) * 9 + Number(graduationRoom.riskCount || 0) * 6);
+    const ownerReadiness = score((owner && owner !== "Audit owner" ? 26 : 10) + (reviewWindow && reviewWindow !== "Audit review" ? 18 : 8) + (model.weeklyReview?.reviewScore || 50) * 0.22 + inverse((model.reminders?.overdue || 0) * 1.2) * 0.18 + inverse((autopilot?.delegateCount || 0) * 6) * 0.12);
+    const reviewEvidence = score(releaseReceipt.auditReady * 0.24 + sponsorReceipt.proofConfidence * 0.2 + (model.evidenceScore || 0) * 0.18 + (model.contractScore || 0) * 0.12 + gate.gateReceipts * 0.12 + 8);
+    const auditScore = score(sourceDecision * 0.18 + guardrail * 0.18 + inverse(proofWait) * 0.16 + inverse(retune) * 0.14 + ownerReadiness * 0.16 + reviewEvidence * 0.18);
+    const riskCount = [
+      sourceDecision < 72,
+      guardrail < 74,
+      proofWait > 46,
+      retune > 48,
+      ownerReadiness < 70,
+      reviewEvidence < 74,
+      sponsorReceipt.riskCount > 2,
+    ].filter(Boolean).length;
+    const auditDecision = auditScore >= 86 && sourceDecision >= 78 && guardrail >= 78 && proofWait <= 38 && retune <= 42 && reviewEvidence >= 80 && riskCount === 0
+      ? "Publish audit trail"
+      : guardrail < 74
+        ? "Hold for guardrail"
+        : proofWait > 46
+          ? "Wait for proof"
+          : retune > 48
+            ? "Retune before reuse"
+            : "Review audit trail";
+    const auditState = auditDecision === "Publish audit trail"
+      ? "Learning receipts are ready to become searchable audit rows with source, guardrail, proof, owner, and review evidence attached"
+      : auditDecision === "Hold for guardrail"
+        ? "Learning receipts should pause until guardrail, privacy, tenant safety, and executive handoff are stronger"
+        : auditDecision === "Wait for proof"
+          ? "Learning receipts need more proof before they can be trusted as reusable audit history"
+          : auditDecision === "Retune before reuse"
+            ? "Learning receipts should be narrowed or retuned before the audit trail can support reuse"
+            : "Learning receipts need management review before audit publication, hold, proof wait, or retune can be closed";
+    const auditLine = `${account}: ${auditDecision.toLowerCase()} with ${sourceDecision}% source decision, ${guardrail}% guardrail, ${proofWait}% proof wait, ${retune}% retune, ${ownerReadiness}% owner, and ${reviewEvidence}% review evidence.`;
+    const signals = [
+      ["Audit score", `${auditScore}%`, "Blends source decision, guardrail, proof wait, retune pressure, owner readiness, and review evidence.", auditScore >= 84 ? "green" : auditScore >= 72 ? "blue" : "amber"],
+      ["Source decision", `${sourceDecision}%`, "Connects sponsor learning, release proof, outcome signal, reply watch, and graduation score.", sourceDecision >= 78 ? "green" : "amber"],
+      ["Guardrail", `${guardrail}%`, "Keeps guardrail receipt, safety boundary, privacy guard, tenant safety, and executive handoff visible.", guardrail >= 78 ? "teal" : "red"],
+      ["Proof wait", `${proofWait}%`, "Lower is better: proof confidence, audit readiness, evidence gaps, missing data, and repair pressure decide wait.", proofWait <= 38 ? "green" : proofWait <= 48 ? "amber" : "red"],
+      ["Retune", `${retune}%`, "Lower is better: retune instruction, support readiness, support load, and risk flags decide reuse repair.", retune <= 40 ? "green" : retune <= 50 ? "amber" : "red"],
+      ["Owner", `${ownerReadiness}%`, "Confirms owner, review window, weekly review posture, overdue pressure, and delegation load.", ownerReadiness >= 76 ? "blue" : "amber"],
+      ["Review evidence", `${reviewEvidence}%`, "Checks audit ready, proof confidence, evidence health, contract health, and gate receipts.", reviewEvidence >= 78 ? "teal" : "amber"],
+    ];
+    const lanes = [
+      ["Publish audit trail", auditDecision === "Publish audit trail" ? "Selected" : "Needs clean proof", "Publish searchable audit rows only when source, guardrail, proof, owner, and evidence are ready.", auditDecision === "Publish audit trail" ? "green" : "amber"],
+      ["Hold for guardrail", auditDecision === "Hold for guardrail" ? "Selected" : "Safety fallback", "Pause audit publication when privacy, boundary, tenant safety, or executive handoff is weak.", auditDecision === "Hold for guardrail" ? "red" : "blue"],
+      ["Wait for proof", auditDecision === "Wait for proof" ? "Selected" : "Proof fallback", "Keep the receipt waiting until source proof, audit readiness, and missing data are repaired.", auditDecision === "Wait for proof" ? "amber" : "blue"],
+      ["Retune before reuse", auditDecision === "Retune before reuse" ? "Selected" : "Reuse fallback", "Narrow the learning, support route, or reuse scope before the audit trail can influence guidance.", auditDecision === "Retune before reuse" ? "red" : "amber"],
+      ["Review audit trail", auditDecision === "Review audit trail" ? "Selected" : "Management option", "Ask management to review the receipt trail with owner, review window, value, and next action.", auditDecision === "Review audit trail" ? "teal" : "blue"],
+    ];
+    const rows = [
+      ["Source decision", sponsorReceipt.receiptDecision, `${sourceDecision}%`, `Source receipt ${sponsorReceipt.receiptScore}% and release proof ${releaseReceipt.releaseProof}%`, "Source", sourceDecision >= 78 ? "green" : "amber"],
+      ["Guardrail", releaseReceipt.receiptDecision, `${guardrail}%`, `Guardrail ${releaseReceipt.guardrailReceipt}% and safety boundary ${graduationRoom.safetyBoundary}%`, "Safety", guardrail >= 78 ? "teal" : "red"],
+      ["Proof wait", releaseReceipt.receiptDecision, `${proofWait}%`, `Proof wait ${releaseReceipt.proofWait}% with ${model.evidenceGaps?.length || 0} evidence gap(s)`, "Proof", proofWait <= 38 ? "green" : "amber"],
+      ["Retune", canaryWatch.watchDecision, `${retune}%`, `Retune instruction ${releaseReceipt.retuneInstruction}% and ${riskCount} audit risk flag(s)`, "Retune", retune <= 40 ? "green" : "red"],
+      ["Owner", owner, `${ownerReadiness}%`, `Review window ${reviewWindow} and first move ${compactText(firstMove, 72)}`, "Owner", ownerReadiness >= 76 ? "blue" : "amber"],
+      ["Review evidence", valueLine, `${reviewEvidence}%`, `Audit ready ${releaseReceipt.auditReady}% and review evidence ${reviewEvidence}%`, "Review", reviewEvidence >= 78 ? "teal" : "amber"],
+    ];
+    const cards = [
+      ["Audit readiness", `${auditScore}%`, `The trail is ${auditDecision.toLowerCase()} with ${riskCount} risk flag(s).`, "Audit", auditScore >= 78 ? "green" : "amber"],
+      ["Source link", sponsorReceipt.receiptId, `Sponsor receipt ${sponsorReceipt.receiptScore}% is the current source anchor.`, "Source", sourceDecision >= 78 ? "teal" : "amber"],
+      ["Guardrail lock", `${guardrail}%`, `Guardrail, safety boundary, privacy, tenant safety, and executive handoff protect reuse.`, "Guardrail", guardrail >= 78 ? "blue" : "red"],
+      ["Proof wait", `${proofWait}%`, `Proof waits when evidence, audit readiness, or repair pressure is not calm enough.`, "Proof", proofWait <= 38 ? "green" : "amber"],
+      ["Retune lock", `${retune}%`, `Retune pressure prevents weak lessons from becoming stronger than the proof.`, "Retune", retune <= 40 ? "teal" : "red"],
+      ["Owner review", `${ownerReadiness}%`, `Owner ${owner} and review ${reviewWindow} keep the audit row accountable.`, "Owner", ownerReadiness >= 76 ? "blue" : "amber"],
+    ];
+    const receipts = [
+      ["1", "Source linked", `${sponsorReceipt.receiptId} is attached to the audit trail.`, "green"],
+      ["2", "Guardrail checked", `${guardrail}% guardrail protects privacy, boundary, and tenant safety before publication.`, guardrail >= 78 ? "teal" : "red"],
+      ["3", "Proof checked", `${proofWait}% proof wait and ${reviewEvidence}% review evidence decide if the row can publish.`, proofWait <= 38 ? "green" : "amber"],
+      ["4", "Retune checked", `${retune}% retune pressure keeps weak reusable learning out of the audit trail.`, retune <= 40 ? "blue" : "red"],
+      ["5", "Owner checked", `${owner} owns review ${reviewWindow} for ${account}.`, ownerReadiness >= 76 ? "green" : "amber"],
+    ];
+    const nextAction = auditDecision === "Publish audit trail"
+      ? "Publish the searchable audit trail with source decision, guardrail, proof wait, retune, owner, and review evidence attached."
+      : auditDecision === "Hold for guardrail"
+        ? "Hold the audit trail until guardrail, privacy, tenant safety, and executive handoff are clear."
+        : auditDecision === "Wait for proof"
+          ? "Wait for source proof, audit readiness, missing-data cleanup, and repair pressure to improve."
+          : auditDecision === "Retune before reuse"
+            ? "Retune the learning scope, support route, and reuse path before publishing this receipt trail."
+            : "Review the audit trail with management and close the publish, hold, proof-wait, or retune decision.";
+    const auditId = `${BUILD_VERSION.toUpperCase()}-LEARNING-RECEIPT-AUDIT-TRAIL`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Learning Receipt Audit Trail ${auditId}: ${auditState}. Audit ${auditScore}%. Source decision ${sourceDecision}%. Guardrail ${guardrail}%. Proof wait ${proofWait}%. Retune ${retune}%. Owner ${ownerReadiness}%. Review evidence ${reviewEvidence}%. Decision ${auditDecision}. Risk flags ${riskCount}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Audit line: ${auditLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, auditDecision, auditId, auditLine, auditScore, auditState, cards, copyText, firstMove, guardrail, lanes, nextAction, owner, ownerReadiness, proofWait, receipts, retune, reviewEvidence, reviewWindow, riskCount, rows, signals, sourceDecision, valueLine };
+  }
+
+  function renderCommandLearningReceiptAuditTrailPreview(model, autopilot) {
+    const audit = buildCommandLearningReceiptAuditTrail(model, autopilot);
+    return `
+      <section class="info-card command-learning-receipt-audit-trail-room tone-${escapeHtml(audit.auditScore >= 84 ? "green" : audit.auditScore >= 72 ? "blue" : "amber")}" aria-label="Learning Receipt Audit Trail">
+        <div class="info-head compact command-learning-receipt-audit-trail-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Audit Trail</span>
+            <strong>Learning Receipt Audit Trail / ${audit.auditScore}%</strong>
+            <p>${escapeHtml(audit.auditState)}. ${escapeHtml(audit.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(audit.auditId)}</span>
+        </div>
+        <div class="command-learning-receipt-audit-trail-quote tone-teal">
+          <span>Searchable audit line</span>
+          <strong>${escapeHtml(audit.auditLine)}</strong>
+        </div>
+        <div class="command-learning-receipt-audit-trail-grid mini-card-grid">
+          ${audit.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-learning-receipt-audit-trail-lanes">
+          ${audit.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-learning-receipt-audit-trail-rows">
+          ${audit.rows.map(([label, decision, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p><small>${escapeHtml(decision)}</small></article>`).join("")}
+        </div>
+        <div class="command-learning-receipt-audit-trail-cards">
+          ${audit.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p><small>${escapeHtml(value)}</small></article>`).join("")}
+        </div>
+        <div class="command-learning-receipt-audit-trail-receipts">
+          ${audit.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-learning-receipt-audit-trail-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-learning-receipt-audit-trail" data-copy-text="${escapeHtml(encodeURIComponent(audit.copyText))}">Copy audit trail</button>
+          <span>Learning receipts now become audit rows only when source decision, guardrail, proof wait, retune, owner, and review evidence are visible.</span>
+        </div>
+      </section>
+    `;
+  }
   function buildCommandCalmUxFlow(model, autopilot) {
     const openCount = model.openRecords.length;
     const actionCount = model.reminders.tasks.length;
@@ -77798,12 +77955,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v746 Sponsor Reply Learning Receipt",
-      phase: "Sponsor Reply Learning Receipt",
+      version: "v747 Learning Receipt Audit Trail",
+      phase: "Learning Receipt Audit Trail",
       lane: "Static product prototype on GitHub Pages",
-      pace: "727 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns sponsor reply outcomes into learning receipts across sponsor signal, finance clarity, support readiness, proof confidence, executive handoff, and reuse learning.",
+      pace: "728 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns learning receipts into searchable audit rows across source decision, guardrail, proof wait, retune, owner, and review evidence.",
       tracks: [
+        ["v747 learning receipt audit trail", 100, "Learning receipts now become searchable audit rows across source decision, guardrail, proof wait, retune, owner readiness, review evidence, account, value, and one copyable audit trail.", "green"],
         ["v746 sponsor reply learning receipt", 100, "Sponsor replies now become learning receipts across learning signal, finance clarity, support readiness, proof confidence, executive handoff, reuse learning, owner, review window, and one copyable sponsor receipt.", "green"],
         ["v745 canary graduation decision room", 100, "Watched learning now routes through one graduation decision across proof completeness, safety boundary, adoption signal, rollback readiness, simplicity, owner, review window, and one copyable graduation receipt.", "green"],
         ["v744 tenant learning release receipt", 100, "Tenant learning release decisions now become receipts across release proof, guardrail receipt, tenant-local pressure, proof wait, retune instruction, audit readiness, owner, review window, and one copyable release receipt.", "green"],
@@ -78530,9 +78688,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v747", "Learning Receipt Audit Trail", "Turn release receipts into a searchable audit trail with source decision, guardrail, proof wait, retune, owner, and review evidence."],
         ["v748", "Launch Trust Control Board", "Show launch trust as one simple board across pilot proof, staging proof, billing, access, support, and rollback readiness."],
         ["v749", "Quiet Launch Proof Ledger", "Keep launch proof, sponsor reply, finance receipt, support readiness, and rollback evidence in one calm proof ledger before the private SaaS handoff."],
+        ["v750", "Pilot Launch Trust Snapshot", "Summarize launch trust, proof ledger, sponsor response, support readiness, and rollback posture into one board-ready launch snapshot."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -78837,11 +78995,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Sponsor replies now close into one learning receipt before they can influence renewal, expansion, finance, support, or executive review guidance.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Learning receipts now become searchable audit rows before they can influence renewal, expansion, support, launch, or executive review guidance.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v747 smoke addendum", "Learning Receipt Audit Trail", "Confirm the v747 audit trail strip, full hidden audit room, seven audit signals, five audit lanes, six source rows, six audit cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v746 smoke addendum", "Sponsor Reply Learning Receipt", "Confirm the v746 sponsor receipt strip, full hidden receipt room, six receipt signals, five receipt lanes, six receipt cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v745 smoke addendum", "Canary Graduation Decision Room", "Confirm the v745 graduation strip, full hidden graduation room, six graduation signals, five graduation lanes, six decision cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v744 smoke addendum", "Tenant Learning Release Receipt", "Confirm the v744 tenant learning receipt strip, full hidden receipt room, six receipt signals, five receipt lanes, six receipt cards, five receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -131718,6 +131877,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandSponsorReplyLearningReceipt(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Sponsor reply learning receipt copied.");
+      return;
+    }
+    if (action === "copy-command-learning-receipt-audit-trail") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandLearningReceiptAuditTrail(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Learning receipt audit trail copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {
