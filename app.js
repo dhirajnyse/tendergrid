@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v734";
-  const BUILD_LABEL = "Commercial Renewal Signal Room";
+  const BUILD_VERSION = "v735";
+  const BUILD_LABEL = "Side Rail Workspace Shell";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=734.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=734.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=735.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=735.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -137,6 +137,14 @@
     { key: "pitch", label: "Pilot Pitch", view: "Pilot Pitch" },
     { key: "buildPhase", label: "Build Phase", view: "Build Phase" },
     { key: "membership", label: "Membership Model", view: "Membership" },
+  ];
+  const SIDE_RAIL_GROUPS = [
+    { label: "Run", views: ["Command", "Autopilot", "Advisor", "Weekly Review"] },
+    { label: "Work", views: ["Tenders", "Projects", "Reports"] },
+    { label: "Intelligence", views: ["Tenders Insights", "Project Insights", "Forecast", "Clients", "Contracts"] },
+    { label: "Control", views: ["Bid Desk", "Calendar", "Risk", "Documents", "Reminders", "Closeout", "Governance", "Import", "Intake"] },
+    { label: "AI Labs", views: ["Time Machine", "Win Lab", "Decision Twin"] },
+    { label: "Admin", views: ["Pilot Pitch", "Membership", "Build Phase"] },
   ];
   const ROOM_NAVIGATOR_GROUPS = [
     {
@@ -637,6 +645,7 @@ const state = {
     detailCollapsed: false,
   quietFocus: Boolean(initialUiPrefs.quietFocus),
   serenityMode: Boolean(initialUiPrefs.serenityMode),
+  navRailSide: initialUiPrefs.navRailSide === "right" ? "right" : "left",
   commandMemory: initialCommandMemory,
   peaceProgress: initialPeaceProgress,
   importText: "",
@@ -2249,6 +2258,101 @@ const state = {
     `;
   }
 
+  function sideRailSectionForView(view) {
+    return ACCESS_SECTIONS.find((section) => section.view === normalizeViewName(view));
+  }
+
+  function renderSideRailItem(view) {
+    const section = sideRailSectionForView(view);
+    if (!section || !hasSectionAccess(section.key)) return "";
+    const active = state.view === section.view;
+    const label = navSectionLabel(section);
+    return `
+      <button class="side-rail-link tone-${escapeHtml(roomNavTone(section.view))} ${active ? "active" : ""}" type="button" data-view="${escapeHtml(section.view)}" aria-label="${escapeHtml(label)}">
+        <span>${escapeHtml(label)}</span>
+        <small>${escapeHtml(roomNavNote(section.view))}</small>
+      </button>
+    `;
+  }
+
+  function renderSideNavigation(company) {
+    const groups = SIDE_RAIL_GROUPS
+      .map((group) => {
+        const items = group.views.map(renderSideRailItem).filter(Boolean);
+        return items.length ? { ...group, items } : null;
+      })
+      .filter(Boolean);
+    return `
+      <aside class="side-rail" aria-label="${BRAND_NAME} workspace navigation">
+        <button class="side-rail-brand brand-home-btn" type="button" data-action="go-home" aria-label="Open ${BRAND_NAME} Command home">
+          <span class="brand-mark"><img src="${BRAND_MARK}" alt=""></span>
+          <span>
+            <strong>${BRAND_NAME}</strong>
+            <small>${escapeHtml(company.name)}</small>
+          </span>
+        </button>
+        <div class="side-rail-scroll">
+          ${groups
+            .map((group) => `
+              <section class="side-rail-group" aria-label="${escapeHtml(group.label)} navigation">
+                <span class="side-rail-group-label">${escapeHtml(group.label)}</span>
+                <div class="side-rail-group-links">
+                  ${group.items.join("")}
+                </div>
+              </section>
+            `)
+            .join("")}
+        </div>
+      </aside>
+    `;
+  }
+
+  function renderRoomsTopUtility() {
+    const visibleSections = ACCESS_SECTIONS.filter((section) => isRenderableNavSection(section) && !ADMIN_ONLY_SECTION_KEYS.includes(section.key) && hasSectionAccess(section.key));
+    const roomSections = visibleSections.filter((section) => !PRIMARY_NAV_KEYS.includes(section.key));
+    const roomsActive = roomSections.some((section) => section.view === state.view);
+    if (!roomSections.length) return "";
+    return `
+      <div class="rooms-launcher top-rooms-launcher">
+        <button class="ghost-btn top-utility-btn rooms-btn ${roomsActive || state.roomsOpen ? "active" : ""}" type="button" data-action="toggle-rooms" aria-expanded="${state.roomsOpen ? "true" : "false"}">
+          Rooms
+        </button>
+        ${
+          state.roomsOpen
+            ? `
+              <div class="rooms-menu" role="menu" aria-label="${BRAND_NAME} specialist rooms">
+                <div class="rooms-menu-head">
+                  <span>Specialist rooms</span>
+                  <button class="mini-btn" type="button" data-action="close-rooms">Close</button>
+                </div>
+                ${renderRoomMemoryStrip()}
+                ${renderNavigationPreferenceControls(roomSections)}
+                ${renderSimpleRoomsNavigator()}
+                <div class="rooms-menu-divider">
+                  <span>All specialist rooms</span>
+                </div>
+                <div class="rooms-menu-grid">
+                  ${roomSections
+                    .map((section) => {
+                      const active = state.view === section.view;
+                      const label = navSectionLabel(section);
+                      return `
+                        <button class="rooms-menu-card tone-${escapeHtml(roomNavTone(section.view))} ${active ? "active" : ""}" type="button" data-view="${escapeHtml(section.view)}" role="menuitem" aria-label="${escapeHtml(label)}">
+                          <span>${escapeHtml(label)}</span>
+                          <small>${escapeHtml(roomNavNote(section.view))}</small>
+                        </button>
+                      `;
+                    })
+                    .join("")}
+                </div>
+              </div>
+            `
+            : ""
+        }
+      </div>
+    `;
+  }
+
   function renderRoomMemoryStrip() {
     const memory = normalizeRoomMemory(state.roomMemory);
     const recentViews = memory.recentViews.filter((view) => canAccessView(view));
@@ -3185,15 +3289,14 @@ const state = {
           ? "Manage launch pricing, seats, subscription packaging, and the upgrade path from demo workspace to paid company plan."
         : `${records.length} records in view. Track references, clients, owners, dates, categories, and status without losing the spreadsheet speed.`;
     app.innerHTML = `
-      <div class="shell">
+      <div class="shell shell-rail-${escapeHtml(state.navRailSide)}">
+        ${renderSideNavigation(company)}
+        <div class="workspace-frame">
         <header class="topbar">
-          <button class="brand-row topbar-brand brand-home-btn" type="button" data-action="go-home" aria-label="Open ${BRAND_NAME} Command home">
-            <span class="brand-mark"><img src="${BRAND_MARK}" alt=""></span>
-            <span class="brand-copy">
-              <span class="brand-name">${BRAND_NAME}</span>
-              <span class="company-pill">${escapeHtml(company.name)}</span>
-            </span>
-          </button>
+          <div class="topbar-current">
+            <span>${escapeHtml(BUILD_VERSION)} workspace</span>
+            <strong>${escapeHtml(viewTitle)}</strong>
+          </div>
           <div class="status-strip">
             ${
               canAdmin()
@@ -3205,7 +3308,8 @@ const state = {
             <span class="status-pill is-live">Live demo</span>
           </div>
           <div class="topbar-actions">
-            ${renderModeButtons()}
+            ${renderRoomsTopUtility()}
+            <button class="ghost-btn top-utility-btn rail-side-toggle" type="button" data-action="toggle-nav-rail-side" title="Switch the navigation rail side">Rail: ${state.navRailSide === "right" ? "Right" : "Left"}</button>
             <div class="account-actions">
               ${renderAccountActions()}
             </div>
@@ -3276,6 +3380,7 @@ const state = {
                 : renderTracker(records, selected, stats)
           }
         </main>
+        </div>
         ${renderFloatingTools()}
         ${renderQuickSearchOverlay()}
       </div>
@@ -76154,12 +76259,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v734 Commercial Renewal Signal Room",
-      phase: "Commercial Renewal Signal Room",
+      version: "v735 Side Rail Workspace Shell",
+      phase: "Side Rail Workspace Shell",
       lane: "Static product prototype on GitHub Pages",
-      pace: "715 meaningful versions since rebrand",
-      summary: "PursuitDesk now converts expansion outcome proof into renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, and one copyable commercial decision.",
+      pace: "716 meaningful versions since rebrand",
+      summary: "PursuitDesk now uses a grouped side-rail workspace shell with left/right rail memory, top utility controls, and calmer access to Rooms, Admin tools, and daily work.",
       tracks: [
+        ["v735 side rail workspace shell", 100, "Primary navigation now lives in a grouped side rail, the rail can switch left or right, Rooms and Admin utilities stay on top, and the workspace reads with a calmer Hyrvia-inspired flow.", "green"],
         ["v734 commercial renewal signal room", 100, "Expansion outcome proof now becomes renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, owner, review window, value line, and one copyable commercial decision.", "green"],
         ["v733 first expansion outcome watch", 100, "Activated expansion now carries promised proof, support load, billing movement, reuse-passport update, rollback evidence, owner, review window, scope, and one copyable outcome watch.", "green"],
         ["v732 tenant passport activation gate", 100, "Passported learning now moves through tenant activation, canary watch, rollback lock, support note, outcome proof, owner, activation date, scope, and one copyable activation gate.", "green"],
@@ -76874,9 +76980,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v735", "Renewal Outcome Memory Room", "Capture what happened after the renewal decision so proof, billing, sponsor response, and support outcomes can teach the next cycle."],
-        ["v736", "Commercial Expansion Learning Release Room", "Convert commercial renewal outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
-        ["v737", "Sponsor Value Proof Pack", "Package renewal value proof, billing movement, sponsor quote, support calm, and next expansion ask into a buyer-safe pack."],
+        ["v736", "Renewal Outcome Memory Room", "Capture what happened after the renewal decision so proof, billing, sponsor response, and support outcomes can teach the next cycle."],
+        ["v737", "Commercial Expansion Learning Release Room", "Convert commercial renewal outcomes into reusable learning, tenant-only holds, retune tasks, and release receipts."],
+        ["v738", "Sponsor Value Proof Pack", "Package renewal value proof, billing movement, sponsor quote, support calm, and next expansion ask into a buyer-safe pack."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -77181,11 +77287,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Commercial renewal now carries renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, owner, review window, and value line.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "Workspace navigation now lives in a grouped side rail with left/right memory, top Rooms utility, Admin tools, build badge, focus, serenity, and account controls.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v735 smoke addendum", "Side Rail Workspace Shell", "Confirm the v735 side rail groups, left/right rail toggle, top Rooms utility, Admin Tools, build badge, focus badge, serenity badge, account controls, cache tokens, and mobile rail overflow before publishing.", "green"],
       ["v734 smoke addendum", "Commercial Renewal Signal Room", "Confirm the v734 commercial renewal panel, five commercial signals, five renewal decision lanes, six commercial cards, four receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v733 smoke addendum", "First Expansion Outcome Watch", "Confirm the v733 expansion outcome panel, five watch signals, five outcome lanes, six watch cards, four receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
       ["v732 smoke addendum", "Tenant Passport Activation Gate", "Confirm the v732 tenant activation panel, five gate signals, five activation lanes, six activation cards, four proof receipts, copy action, Build Phase badge, cache tokens, and mobile overflow before publishing.", "green"],
@@ -90212,7 +90319,7 @@ const state = {
       heading: "Send the backend handoff with proof, owners, and holds.",
       body: "This pack turns the evidence board and review gate matrix into a calm reviewer handoff email with owner lanes, proof links, decision asks, and open holds.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v734.json",
+      downloadName: "pursuitdesk-private-repo-handoff-email-pack-v735.json",
       scoreLabel: "Email readiness",
       score: model.handoffEmailScore,
       scoreNote: `${model.recipientMatrix.length} recipient lanes / ${model.emailBlocks.length} email blocks.`,
@@ -90234,7 +90341,7 @@ const state = {
       heading: "Turn reviewer responses into structured approve, hold, and block comments.",
       body: "This pack gives each reviewer lane reusable language, response timing, and escalation rules so the first backend PR does not drift during review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v734.json",
+      downloadName: "pursuitdesk-first-backend-pr-review-comment-pack-v735.json",
       scoreLabel: "Comment readiness",
       score: model.firstBackendPrCommentScore,
       scoreNote: `${model.reviewerCommentPackets.length} reviewer packets / ${model.replyHandlingCadence.length} cadence rules.`,
@@ -90255,7 +90362,7 @@ const state = {
       heading: "Close the first backend evidence loop before implementation depth starts.",
       body: "This pack records what passed, what is held, what blocks trust, and who owns the next move after the first private backend PR review.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v734.json",
+      downloadName: "pursuitdesk-private-repo-evidence-closeout-pack-v735.json",
       scoreLabel: "Closeout readiness",
       score: model.evidenceCloseoutScore,
       scoreNote: `${model.ownerCloseoutQueue.length} owner lanes / ${model.closeoutChecklist.length} closeout checks.`,
@@ -90275,7 +90382,7 @@ const state = {
       heading: "Run the private repo day as a decision meeting.",
       body: "This pack gives the repo day a short agenda, evidence review path, reviewer decision prompts, and closeout language for management.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v734.json",
+      downloadName: "pursuitdesk-backend-repo-day-meeting-pack-v735.json",
       scoreLabel: "Meeting readiness",
       score: model.backendRepoDayMeetingScore,
       scoreNote: `${model.agendaBlocks.length} agenda blocks / ${model.decisionPrompts.length} decision prompts.`,
@@ -90295,7 +90402,7 @@ const state = {
       heading: "Capture reviewer replies before they fade into chat.",
       body: "This board keeps reviewer replies, requested changes, approval readiness, merge posture, SLA cadence, and management lines in one closeout view.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-private-repo-reply-capture-board-v734.json",
+      downloadName: "pursuitdesk-private-repo-reply-capture-board-v735.json",
       scoreLabel: "Reply readiness",
       score: model.replyCaptureScore,
       scoreNote: `${model.reviewerReplyLanes.length} reply lanes / ${model.replySlaCadence.length} SLA rules.`,
@@ -90323,7 +90430,7 @@ const state = {
       heading: "Package closeout proof into a management-safe PDF.",
       body: "This export plan defines the pages, redaction checks, distribution rules, archive names, and management lines for the private repo closeout pack.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v734.json",
+      downloadName: "pursuitdesk-evidence-closeout-pdf-export-plan-v735.json",
       scoreLabel: "PDF readiness",
       score: model.pdfExportScore,
       scoreNote: `${model.pageBlueprint.length} pages / ${model.redactionChecks.length} redaction checks.`,
@@ -90351,7 +90458,7 @@ const state = {
       heading: "Write the repo-day decisions while the meeting is still fresh.",
       body: "This exporter turns attendance, evidence reviewed, decisions, action queue, privacy checks, and management email into minutes that can survive handoff.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v734.json",
+      downloadName: "pursuitdesk-backend-meeting-minutes-exporter-v735.json",
       scoreLabel: "Minutes readiness",
       score: model.meetingMinutesScore,
       scoreNote: `${model.attendanceLog.length} attendance rows / ${model.actionQueue.length} actions.`,
@@ -90382,7 +90489,7 @@ const state = {
       heading: "Ask every reviewer for one clear decision.",
       body: "This pack gives reviewer-specific decision emails, response triggers, send checks, escalation cadence, privacy guardrails, and management summaries for the first backend closeout loop.",
       downloadHref: model.downloadHref,
-      downloadName: "pursuitdesk-reviewer-decision-email-pack-v734.json",
+      downloadName: "pursuitdesk-reviewer-decision-email-pack-v735.json",
       scoreLabel: "Decision email readiness",
       score: model.reviewerDecisionEmailScore,
       scoreNote: `${model.reviewerEmailLanes.length} reviewer lanes / ${model.decisionEmailTemplates.length} templates.`,
@@ -123455,6 +123562,14 @@ const state = {
       state.serenityMode = !state.serenityMode;
       persistUiPrefs({ ...loadUiPrefs(), serenityMode: state.serenityMode });
       showTransientNotice(state.serenityMode ? "Serenity mode on." : "Serenity mode off.");
+      render();
+      return;
+    }
+
+    if (action === "toggle-nav-rail-side") {
+      state.navRailSide = state.navRailSide === "right" ? "left" : "right";
+      persistUiPrefs({ ...loadUiPrefs(), navRailSide: state.navRailSide });
+      showTransientNotice(state.navRailSide === "right" ? "Navigation rail moved right." : "Navigation rail moved left.");
       render();
       return;
     }

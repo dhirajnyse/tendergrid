@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v735 Side Rail Workspace Shell moves primary navigation into a grouped left/right rail, keeps Rooms and Admin utilities on top, and remembers the rail side preference for a calmer workspace.
 - v734 Commercial Renewal Signal Room turns expansion outcome proof into renewal proof, billing confidence, sponsor momentum, expansion economics, retention risk shield, and one copyable commercial decision.
 - v733 First Expansion Outcome Watch measures activated expansion against promised proof, support load, billing movement, reuse-passport update, rollback evidence, review window, scope, and one copyable outcome watch.
 - v732 Tenant Passport Activation Gate turns passported learning into controlled tenant activation with canary watch, rollback lock, support note, outcome proof, tenant scope, owner, and one copyable activation gate.
