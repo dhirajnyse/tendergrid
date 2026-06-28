@@ -19,6 +19,7 @@ A small static MVP for tracking EOI, tenders, and ongoing projects in a spreadsh
 
 - Company-scoped records seeded from the two supplied Excel workbooks.
 - Command Center home screen with operating health score, priority queue, module cockpit, admin build tracker, management brief, evidence gaps, contract gaps, client heat, and largest open values.
+- v733 First Expansion Outcome Watch measures activated expansion against promised proof, support load, billing movement, reuse-passport update, rollback evidence, review window, scope, and one copyable outcome watch.
 - v732 Tenant Passport Activation Gate turns passported learning into controlled tenant activation with canary watch, rollback lock, support note, outcome proof, tenant scope, owner, and one copyable activation gate.
 - v731 Pilot Commercial Activation Ledger turns approved pilot movement into access activation, billing trigger, support watch, proof receipt, commercial audit trail, owner, activation date, scope, and one copyable activation ledger.
 - v730 Expansion Pilot First Review Room turns the first expansion review into minutes, outcome proof, support posture, billing signal, next-scope decision, owner, passport state, and one copyable review receipt.
