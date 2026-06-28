@@ -23611,6 +23611,253 @@ body.quiet-focus-mode .focus-mode-pill {
   font-size: 13px;
   line-height: 1.35;
 }
+/* v742 commercial learning canary watch */
+.command-commercial-learning-canary-watch-strip {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.82fr) minmax(0, 1.18fr) auto;
+  gap: 10px;
+  align-items: stretch;
+  padding: 12px;
+  border: 1px solid rgba(31, 107, 142, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(236, 249, 246, 0.96), rgba(255, 255, 255, 0.96));
+}
+
+.command-commercial-learning-canary-watch-strip.tone-green {
+  border-left-color: var(--green);
+}
+
+.command-commercial-learning-canary-watch-strip.tone-blue {
+  border-left-color: var(--blue);
+}
+
+.command-commercial-learning-canary-watch-strip.tone-amber {
+  border-left-color: var(--amber);
+}
+
+.command-commercial-learning-canary-watch-strip > div:first-child {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  min-width: 0;
+}
+
+.command-commercial-learning-canary-watch-strip > div:first-child span,
+.command-commercial-learning-canary-watch-strip-signals span {
+  color: var(--teal-dark);
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.command-commercial-learning-canary-watch-strip > div:first-child strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.14;
+}
+
+.command-commercial-learning-canary-watch-strip > div:first-child p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.command-commercial-learning-canary-watch-strip-signals {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.command-commercial-learning-canary-watch-strip-signals article {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(12, 119, 108, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.command-commercial-learning-canary-watch-strip-signals strong {
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.command-commercial-learning-canary-watch-strip-signals small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.command-commercial-learning-canary-watch-strip .ghost-btn {
+  align-self: center;
+}
+
+.command-commercial-learning-canary-watch-room {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 14px;
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 237, 248, 0.82));
+}
+
+.command-commercial-learning-canary-watch-room.tone-green {
+  border-left-color: var(--green);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(229, 247, 242, 0.84));
+}
+
+.command-commercial-learning-canary-watch-room.tone-blue {
+  border-left-color: var(--blue);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(224, 237, 248, 0.8));
+}
+
+.command-commercial-learning-canary-watch-room.tone-amber {
+  border-left-color: var(--amber);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 242, 220, 0.82));
+}
+
+.command-commercial-learning-canary-watch-room-head,
+.command-commercial-learning-canary-watch-quote,
+.command-commercial-learning-canary-watch-grid,
+.command-commercial-learning-canary-watch-lanes,
+.command-commercial-learning-canary-watch-cards,
+.command-commercial-learning-canary-watch-receipts,
+.command-commercial-learning-canary-watch-actions {
+  min-width: 0;
+}
+
+.command-commercial-learning-canary-watch-quote {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border: 1px solid rgba(31, 107, 142, 0.18);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(231, 242, 250, 0.9);
+}
+
+.command-commercial-learning-canary-watch-quote span {
+  color: var(--blue-dark);
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.command-commercial-learning-canary-watch-quote strong {
+  color: var(--ink);
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.command-commercial-learning-canary-watch-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.command-commercial-learning-canary-watch-lanes,
+.command-commercial-learning-canary-watch-cards,
+.command-commercial-learning-canary-watch-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-commercial-learning-canary-watch-lanes,
+.command-commercial-learning-canary-watch-receipts {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.command-commercial-learning-canary-watch-cards {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.command-commercial-learning-canary-watch-lanes article,
+.command-commercial-learning-canary-watch-cards article,
+.command-commercial-learning-canary-watch-receipts article {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid rgba(31, 107, 142, 0.2);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.command-commercial-learning-canary-watch-lanes article:nth-child(1),
+.command-commercial-learning-canary-watch-cards article:nth-child(1),
+.command-commercial-learning-canary-watch-receipts article:nth-child(1) {
+  border-left-color: var(--green);
+}
+
+.command-commercial-learning-canary-watch-lanes article:nth-child(2),
+.command-commercial-learning-canary-watch-cards article:nth-child(2),
+.command-commercial-learning-canary-watch-receipts article:nth-child(2) {
+  border-left-color: var(--teal);
+}
+
+.command-commercial-learning-canary-watch-lanes article:nth-child(3),
+.command-commercial-learning-canary-watch-cards article:nth-child(3),
+.command-commercial-learning-canary-watch-receipts article:nth-child(3) {
+  border-left-color: var(--amber);
+}
+
+.command-commercial-learning-canary-watch-lanes article:nth-child(4),
+.command-commercial-learning-canary-watch-cards article:nth-child(4),
+.command-commercial-learning-canary-watch-receipts article:nth-child(4) {
+  border-left-color: var(--red);
+}
+
+.command-commercial-learning-canary-watch-lanes article:nth-child(5),
+.command-commercial-learning-canary-watch-cards article:nth-child(5),
+.command-commercial-learning-canary-watch-cards article:nth-child(6),
+.command-commercial-learning-canary-watch-receipts article:nth-child(5) {
+  border-left-color: var(--blue);
+}
+
+.command-commercial-learning-canary-watch-lanes span,
+.command-commercial-learning-canary-watch-cards span,
+.command-commercial-learning-canary-watch-receipts span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.command-commercial-learning-canary-watch-lanes strong,
+.command-commercial-learning-canary-watch-cards strong,
+.command-commercial-learning-canary-watch-receipts strong {
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.command-commercial-learning-canary-watch-lanes p,
+.command-commercial-learning-canary-watch-cards p,
+.command-commercial-learning-canary-watch-receipts p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.command-commercial-learning-canary-watch-cards small {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.command-commercial-learning-canary-watch-actions {
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.command-commercial-learning-canary-watch-actions span {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
 @media (max-width: 980px) {
   .command-ten-build-release-train-steps,
   .command-customer-launch-flywheel-steps,
@@ -23767,21 +24014,27 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-renewal-learning-release-gate-grid,
   .command-renewal-learning-release-gate-lanes,
   .command-renewal-learning-release-gate-cards,
-  .command-renewal-learning-release-gate-receipts {
+  .command-renewal-learning-release-gate-receipts,
+  .command-commercial-learning-canary-watch-grid,
+  .command-commercial-learning-canary-watch-lanes,
+  .command-commercial-learning-canary-watch-cards,
+  .command-commercial-learning-canary-watch-receipts {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .command-renewal-outcome-memory-strip,
   .command-commercial-expansion-learning-release-strip,
   .command-sponsor-value-proof-pack-strip,
-  .command-renewal-learning-release-gate-strip {
+  .command-renewal-learning-release-gate-strip,
+  .command-commercial-learning-canary-watch-strip {
     grid-template-columns: 1fr;
   }
 
   .command-renewal-outcome-memory-strip-signals,
   .command-commercial-expansion-learning-release-strip-signals,
   .command-sponsor-value-proof-pack-strip-signals,
-  .command-renewal-learning-release-gate-strip-signals {
+  .command-renewal-learning-release-gate-strip-signals,
+  .command-commercial-learning-canary-watch-strip-signals {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -23954,7 +24207,13 @@ body.quiet-focus-mode .focus-mode-pill {
   .command-renewal-learning-release-gate-cards,
   .command-renewal-learning-release-gate-receipts,
   .command-renewal-learning-release-gate-strip-signals,
-  .command-renewal-learning-release-gate-quote {
+  .command-renewal-learning-release-gate-quote,
+  .command-commercial-learning-canary-watch-grid,
+  .command-commercial-learning-canary-watch-lanes,
+  .command-commercial-learning-canary-watch-cards,
+  .command-commercial-learning-canary-watch-receipts,
+  .command-commercial-learning-canary-watch-strip-signals,
+  .command-commercial-learning-canary-watch-quote {
     grid-template-columns: 1fr;
   }
 
