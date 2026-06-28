@@ -17,6 +17,7 @@ Recovery cleanup in this copy:
 - Updated `site.webmanifest` to PursuitDesk.
 - Fixed the local static server so `/` serves `index.html` correctly on Windows.
 - Removed the bad root-level `sample-data.js`; the app uses `data/sample-data.js`.
+- v732 adds a Tenant Passport Activation Gate so passported learning can activate, canary, hold tenant-only, or rollback with support note, outcome proof, tenant scope, owner, and one activation receipt.
 - v731 adds a Pilot Commercial Activation Ledger so approved pilot movement carries access activation, billing trigger, support watch, proof receipt, commercial audit trail, owner, activation date, and scope in one activation receipt.
 - v730 adds an Expansion Pilot First Review Room so minutes, outcome proof, support posture, billing signal, next-scope decision, owner, review window, and passport state travel together after the first expansion review.
 - v729 adds a Reusable Learning Passport so approved learning carries tenant boundary, source proof, support guardrail, rollback route, reuse limits, owner, and review path before it can travel.
