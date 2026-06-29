@@ -88436,6 +88436,118 @@ body.serenity-mode {
   }
 }
 
+/* v754 first pilot launch rehearsal */
+.command-first-pilot-launch-rehearsal-strip,
+.command-first-pilot-launch-rehearsal-room {
+  border: 1px solid rgba(15, 118, 110, 0.24);
+  background: linear-gradient(135deg, rgba(240, 253, 250, 0.99), rgba(248, 250, 252, 0.98));
+  box-shadow: 0 18px 48px rgba(12, 45, 50, 0.08);
+}
+
+.command-first-pilot-launch-rehearsal-strip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-first-pilot-launch-rehearsal-strip > div:first-child,
+.command-first-pilot-launch-rehearsal-room-head,
+.command-first-pilot-launch-rehearsal-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-first-pilot-launch-rehearsal-strip span,
+.command-first-pilot-launch-rehearsal-room .metric-label,
+.command-first-pilot-launch-rehearsal-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-first-pilot-launch-rehearsal-strip strong,
+.command-first-pilot-launch-rehearsal-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.command-first-pilot-launch-rehearsal-strip p,
+.command-first-pilot-launch-rehearsal-strip small,
+.command-first-pilot-launch-rehearsal-room p,
+.command-first-pilot-launch-rehearsal-room small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-first-pilot-launch-rehearsal-strip-signals,
+.command-first-pilot-launch-rehearsal-grid,
+.command-first-pilot-launch-rehearsal-lanes,
+.command-first-pilot-launch-rehearsal-cards,
+.command-first-pilot-launch-rehearsal-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-first-pilot-launch-rehearsal-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-first-pilot-launch-rehearsal-lanes,
+.command-first-pilot-launch-rehearsal-cards,
+.command-first-pilot-launch-rehearsal-receipts {
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+
+.command-first-pilot-launch-rehearsal-strip article,
+.command-first-pilot-launch-rehearsal-grid article,
+.command-first-pilot-launch-rehearsal-lanes article,
+.command-first-pilot-launch-rehearsal-cards article,
+.command-first-pilot-launch-rehearsal-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-first-pilot-launch-rehearsal-cards article b {
+  display: block;
+  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.command-first-pilot-launch-rehearsal-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-first-pilot-launch-rehearsal-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-first-pilot-launch-rehearsal-strip-signals,
+  .command-first-pilot-launch-rehearsal-lanes,
+  .command-first-pilot-launch-rehearsal-cards,
+  .command-first-pilot-launch-rehearsal-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-first-pilot-launch-rehearsal-strip-signals,
+  .command-first-pilot-launch-rehearsal-lanes,
+  .command-first-pilot-launch-rehearsal-cards,
+  .command-first-pilot-launch-rehearsal-receipts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* v753 pilot readiness board pack */
 .command-pilot-readiness-board-pack-strip,
 .command-pilot-readiness-board-pack-room {
