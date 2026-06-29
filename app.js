@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v752";
-  const BUILD_LABEL = "Private SaaS Handoff Pack";
+  const BUILD_VERSION = "v753";
+  const BUILD_LABEL = "Pilot Readiness Board Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=752.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=752.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=753.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=753.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15660,6 +15660,7 @@ const state = {
     "${renderCommandPilotLaunchTrustSnapshotPreview(model, autopilot)}",
     "${renderCommandLaunchCouncilDecisionRoomPreview(model, autopilot)}",
     "${renderCommandPrivateSaasHandoffPackPreview(model, autopilot)}",
+    "${renderCommandPilotReadinessBoardPackPreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -15775,6 +15776,7 @@ const state = {
     const launchSnapshot = buildCommandPilotLaunchTrustSnapshot(model, autopilot);
     const launchCouncil = buildCommandLaunchCouncilDecisionRoom(model, autopilot);
     const saasHandoff = buildCommandPrivateSaasHandoffPack(model, autopilot);
+    const pilotBoard = buildCommandPilotReadinessBoardPack(model, autopilot);
     const railCards = [
       ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
       ["Renewal memory", `${renewalMemory.memoryScore}%`, `${renewalMemory.memoryDecision}: ${renewalMemory.nextAction}`, renewalMemory.memoryScore >= 78 ? "green" : "amber", "Reports"],
@@ -15792,6 +15794,7 @@ const state = {
       ["Launch snapshot", `${launchSnapshot.snapshotScore}%`, `${launchSnapshot.snapshotDecision}: ${launchSnapshot.nextAction}`, launchSnapshot.snapshotScore >= 78 ? "green" : "amber", "Build Phase"],
       ["Launch council", `${launchCouncil.councilScore}%`, `${launchCouncil.councilDecision}: ${launchCouncil.nextAction}`, launchCouncil.councilScore >= 78 ? "green" : "amber", "Build Phase"],
       ["SaaS handoff", `${saasHandoff.handoffScore}%`, `${saasHandoff.handoffDecision}: ${saasHandoff.nextAction}`, saasHandoff.handoffScore >= 78 ? "green" : "amber", "Build Phase"],
+      ["Pilot board", `${pilotBoard.boardScore}%`, `${pilotBoard.boardDecision}: ${pilotBoard.nextAction}`, pilotBoard.boardScore >= 78 ? "green" : "amber", "Build Phase"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
     ];
     return `
@@ -15982,6 +15985,17 @@ const state = {
             ${saasHandoff.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
           </div>
           <button class="ghost-btn" type="button" data-action="copy-command-private-saas-handoff-pack" data-copy-text="${escapeHtml(encodeURIComponent(saasHandoff.copyText))}">Copy SaaS handoff</button>
+        </div>
+        <div class="command-pilot-readiness-board-pack-strip tone-${escapeHtml(pilotBoard.boardScore >= 84 ? "green" : pilotBoard.boardScore >= 72 ? "blue" : "amber")}" aria-label="Pilot Readiness Board Pack summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} pilot board</span>
+            <strong>${escapeHtml(pilotBoard.boardDecision)} / ${pilotBoard.boardScore}%</strong>
+            <p>${escapeHtml(pilotBoard.boardState)}. ${escapeHtml(pilotBoard.nextAction)}</p>
+          </div>
+          <div class="command-pilot-readiness-board-pack-strip-signals">
+            ${pilotBoard.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-pilot-readiness-board-pack" data-copy-text="${escapeHtml(encodeURIComponent(pilotBoard.copyText))}">Copy pilot board</button>
         </div>
       </section>
     `;
@@ -60986,6 +61000,149 @@ const state = {
     `;
   }
 
+  function buildCommandPilotReadinessBoardPack(model, autopilot) {
+    const saasHandoff = buildCommandPrivateSaasHandoffPack(model, autopilot);
+    const launchCouncil = buildCommandLaunchCouncilDecisionRoom(model, autopilot);
+    const launchSnapshot = buildCommandPilotLaunchTrustSnapshot(model, autopilot);
+    const launchTrust = buildCommandLaunchTrustControlBoard(model, autopilot);
+    const proofLedger = buildCommandQuietLaunchProofLedger(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const safeScore = (value, penalty = 4) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const metric = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
+    const account = saasHandoff.account || launchCouncil.account || launchSnapshot.account || firstRecord.client || state.data.company.name || "Pilot account";
+    const owner = saasHandoff.owner || launchCouncil.owner || launchSnapshot.owner || firstTask.owner || firstTask.assignee || "Pilot board owner";
+    const reviewWindow = saasHandoff.reviewWindow || launchCouncil.reviewWindow || launchSnapshot.reviewWindow || firstTask.dueDate || firstTask.due || "Pilot readiness board review";
+    const firstMove = saasHandoff.firstMove || launchCouncil.firstMove || launchSnapshot.firstMove || firstTask.title || firstRecord.title || "Close the pilot readiness board pack";
+    const valueLine = saasHandoff.valueLine || launchCouncil.valueLine || launchSnapshot.valueLine || proofLedger.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const hardBlockers = Number(saasHandoff.hardBlockers || launchCouncil.hardBlockers || launchTrust.hardBlockers || 0);
+    const proofConfidence = metric(launchSnapshot.proofConfidence, launchSnapshot.snapshotScore || proofLedger.ledgerScore || 0);
+    const financeSignal = metric(launchSnapshot.financeSignal, saasHandoff.billingProof || launchTrust.billingReady || 0);
+    const rollbackSignal = metric(launchSnapshot.rollbackSignal, saasHandoff.rollbackProof || launchTrust.rollbackReady || 0);
+    const gateReadiness = score(saasHandoff.handoffScore * 0.22 + launchCouncil.councilScore * 0.18 + launchCouncil.goReadiness * 0.16 + launchSnapshot.snapshotScore * 0.16 + saasHandoff.pilotPack * 0.14 + safeScore(hardBlockers, 12) * 0.08 + 4);
+    const ownerRoute = score(proofLedger.ownerReview * 0.28 + launchTrust.accessReady * 0.22 + saasHandoff.accessPlan * 0.18 + launchCouncil.stagedPilot * 0.14 + safeScore(model.reminders?.missingData, 2) * 0.1 + 5);
+    const billingRoute = score(saasHandoff.billingProof * 0.32 + launchTrust.billingReady * 0.22 + proofLedger.financeReceipt * 0.18 + financeSignal * 0.16 + 5);
+    const rollbackRoute = score(saasHandoff.rollbackProof * 0.3 + proofLedger.rollbackEvidence * 0.22 + launchTrust.rollbackReady * 0.18 + rollbackSignal * 0.14 + safeScore(proofLedger.riskCount, 10) * 0.1 + 4);
+    const proofRoute = score(proofConfidence * 0.24 + proofLedger.proofSource * 0.22 + proofLedger.handoffEvidence * 0.18 + metric(launchTrust.pilotProof, launchTrust.trustScore || 0) * 0.16 + launchSnapshot.councilAsk * 0.12 + 5);
+    const meetingRoute = score(launchCouncil.councilScore * 0.22 + saasHandoff.supportRoute * 0.18 + ownerRoute * 0.16 + billingRoute * 0.14 + rollbackRoute * 0.14 + proofRoute * 0.12 + 4);
+    const boardScore = score(gateReadiness * 0.18 + ownerRoute * 0.16 + billingRoute * 0.16 + rollbackRoute * 0.15 + proofRoute * 0.15 + meetingRoute * 0.14 + safeScore(hardBlockers, 10) * 0.06);
+    const boardDecision = hardBlockers >= 3
+      ? "Blocker hold"
+      : boardScore >= 84 && gateReadiness >= 78 && ownerRoute >= 72 && billingRoute >= 70 && rollbackRoute >= 70 && proofRoute >= 72
+        ? "Board ready"
+        : proofRoute < 62
+          ? "Proof repair"
+          : billingRoute < 62
+            ? "Billing repair"
+            : ownerRoute < 62
+              ? "Owner route repair"
+              : rollbackRoute < 62
+                ? "Rollback repair"
+                : "Board review";
+    const boardState = boardDecision === "Board ready"
+      ? "Pilot readiness board is ready with gates, owner, billing, rollback, proof, and agenda receipts attached"
+      : boardDecision === "Proof repair"
+        ? "Pilot readiness board should pause until proof source, handoff evidence, and council ask are clearer"
+        : boardDecision === "Billing repair"
+          ? "Pilot readiness board should pause until billing proof, finance receipt, and commercial trigger are clearer"
+          : boardDecision === "Owner route repair"
+            ? "Pilot readiness board should pause until accountable owner, role access, and review route are clearer"
+            : boardDecision === "Rollback repair"
+              ? "Pilot readiness board should pause until rollback receipt and safety proof are calmer"
+              : boardDecision === "Blocker hold"
+                ? "Pilot readiness board should stay held until hard blockers are reduced before launch rehearsal"
+                : "Pilot readiness board needs one calm review to confirm launch gates, owner route, billing proof, rollback receipt, proof route, and board agenda";
+    const nextAction = boardDecision === "Board ready"
+      ? "Use this pack to run the pilot readiness board and approve the first pilot launch rehearsal."
+      : boardDecision === "Proof repair"
+        ? "Attach proof source, handoff evidence, launch snapshot, and council ask before board approval."
+        : boardDecision === "Billing repair"
+          ? "Close billing trigger, finance receipt, and commercial wording before board approval."
+          : boardDecision === "Owner route repair"
+            ? "Name accountable owner, tenant role route, access fallback, and review window before board approval."
+            : boardDecision === "Rollback repair"
+              ? "Attach rollback receipt, restore/revoke route, and customer-safe fallback before board approval."
+              : boardDecision === "Blocker hold"
+                ? "Reduce hard blockers before first pilot rehearsal or board approval."
+                : "Run one board review and decide whether the pack becomes launch rehearsal, proof repair, billing repair, owner repair, rollback repair, or blocker hold.";
+    const boardLine = `${account}: ${boardDecision.toLowerCase()} at ${boardScore}% with ${gateReadiness}% first-pilot gates, ${ownerRoute}% owner route, ${billingRoute}% billing route, ${rollbackRoute}% rollback receipt, ${proofRoute}% proof route, and ${meetingRoute}% board agenda.`;
+    const signals = [
+      ["Board score", `${boardScore}%`, "Blends first-pilot gates, owner route, billing route, rollback receipt, proof route, board agenda, and blocker shield.", boardScore >= 84 ? "green" : boardScore >= 72 ? "blue" : "amber"],
+      ["First-pilot gates", `${gateReadiness}%`, "Reads SaaS handoff, council score, go readiness, launch snapshot, pilot pack, and hard blockers.", gateReadiness >= 78 ? "green" : gateReadiness >= 64 ? "amber" : "red"],
+      ["Owner route", `${ownerRoute}%`, "Connects owner review, tenant access readiness, access plan, staged pilot path, and missing-data cleanup.", ownerRoute >= 72 ? "teal" : ownerRoute >= 62 ? "amber" : "red"],
+      ["Billing route", `${billingRoute}%`, "Checks billing proof, billing readiness, finance receipt, and launch finance signal.", billingRoute >= 70 ? "green" : billingRoute >= 62 ? "amber" : "red"],
+      ["Rollback receipt", `${rollbackRoute}%`, "Joins rollback proof, rollback evidence, launch rollback readiness, risk flags, and blocker shield.", rollbackRoute >= 70 ? "blue" : rollbackRoute >= 62 ? "amber" : "red"],
+      ["Proof route", `${proofRoute}%`, "Combines proof confidence, source proof, handoff evidence, pilot proof, and council ask.", proofRoute >= 72 ? "green" : proofRoute >= 62 ? "amber" : "red"],
+      ["Board agenda", `${meetingRoute}%`, "Keeps council decision, support route, owner route, billing route, rollback route, and proof route in one meeting path.", meetingRoute >= 72 ? "teal" : "amber"],
+      ["Hard blockers", `${hardBlockers}`, "Keeps hard blockers visible before the board approves launch rehearsal.", hardBlockers === 0 ? "green" : hardBlockers <= 2 ? "amber" : "red"],
+    ];
+    const lanes = [
+      ["Pilot gates", boardDecision === "Board ready" ? "Ready" : boardDecision === "Blocker hold" ? "Held" : "Review", "Confirm SaaS handoff, council decision, launch snapshot, go readiness, pilot pack, and blocker state.", gateReadiness >= 78 ? "green" : gateReadiness >= 64 ? "amber" : "red"],
+      ["Owner route", boardDecision === "Owner route repair" ? "Selected" : "Ready lane", "Name accountable owner, tenant access owner, review window, role fallback, and escalation path.", ownerRoute >= 72 ? "teal" : ownerRoute >= 62 ? "amber" : "red"],
+      ["Billing proof", boardDecision === "Billing repair" ? "Selected" : "Ready lane", "Attach billing trigger, invoice posture, finance receipt, grace rule, and buyer-safe wording.", billingRoute >= 70 ? "green" : billingRoute >= 62 ? "amber" : "red"],
+      ["Rollback receipt", boardDecision === "Rollback repair" ? "Selected" : "Ready lane", "Attach restore, revoke, undo, customer notice, owner, and proof route before rehearsal.", rollbackRoute >= 70 ? "blue" : rollbackRoute >= 62 ? "amber" : "red"],
+      ["Proof pack", boardDecision === "Proof repair" ? "Selected" : "Ready lane", "Bundle proof source, launch snapshot, handoff evidence, council ask, and pilot proof into the board minute.", proofRoute >= 72 ? "green" : proofRoute >= 62 ? "amber" : "red"],
+      ["Board agenda", boardDecision === "Board review" || boardDecision === "Board ready" ? "Selected" : "Ready lane", "Run the board with decision, owner, review window, value line, first move, and six receipts.", meetingRoute >= 72 ? "teal" : "amber"],
+    ];
+    const cards = [
+      ["Gate", `${gateReadiness}%`, `Handoff ${saasHandoff.handoffScore}% and council ${launchCouncil.councilScore}% decide whether the first pilot can rehearse.`, "First-pilot gates", gateReadiness >= 78 ? "green" : gateReadiness >= 64 ? "amber" : "red"],
+      ["Owner", `${ownerRoute}%`, `Owner review ${proofLedger.ownerReview}% and access plan ${saasHandoff.accessPlan}% decide accountability.`, "Owner route", ownerRoute >= 72 ? "teal" : "amber"],
+      ["Billing", `${billingRoute}%`, `Billing proof ${saasHandoff.billingProof}% and finance receipt ${proofLedger.financeReceipt}% decide commercial readiness.`, "Billing route", billingRoute >= 70 ? "green" : "red"],
+      ["Rollback", `${rollbackRoute}%`, `Rollback proof ${saasHandoff.rollbackProof}% and rollback evidence ${proofLedger.rollbackEvidence}% keep rehearsal reversible.`, "Rollback receipt", rollbackRoute >= 70 ? "blue" : "red"],
+      ["Proof", `${proofRoute}%`, `Proof confidence ${proofConfidence}% and handoff evidence ${proofLedger.handoffEvidence}% decide board confidence.`, "Proof route", proofRoute >= 72 ? "green" : "amber"],
+      ["Board", `${meetingRoute}%`, `Council ${launchCouncil.councilScore}% and support route ${saasHandoff.supportRoute}% define the meeting path.`, "Board agenda", meetingRoute >= 72 ? "teal" : "amber"],
+    ];
+    const receipts = [
+      ["1", "Gate receipt", `${gateReadiness}% first-pilot gates decide whether rehearsal can start.`, gateReadiness >= 78 ? "green" : gateReadiness >= 64 ? "amber" : "red"],
+      ["2", "Owner receipt", `${ownerRoute}% owner route keeps accountability, access, and review window visible.`, ownerRoute >= 72 ? "teal" : "amber"],
+      ["3", "Billing receipt", `${billingRoute}% billing route keeps invoice, finance, and commercial language controlled.`, billingRoute >= 70 ? "green" : "red"],
+      ["4", "Rollback receipt", `${rollbackRoute}% rollback receipt keeps launch rehearsal reversible.`, rollbackRoute >= 70 ? "blue" : "red"],
+      ["5", "Proof receipt", `${proofRoute}% proof route keeps source, handoff, and board confidence together.`, proofRoute >= 72 ? "green" : "amber"],
+      ["6", "Board receipt", `${meetingRoute}% board agenda keeps decision, owner, value, first move, and receipts in one minute.`, meetingRoute >= 72 ? "teal" : "amber"],
+    ];
+    const boardId = `${BUILD_VERSION.toUpperCase()}-PILOT-BOARD-PACK`;
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} Pilot Readiness Board Pack ${boardId}: ${boardState}. Board ${boardScore}%. First-pilot gates ${gateReadiness}%. Owner route ${ownerRoute}%. Billing route ${billingRoute}%. Rollback receipt ${rollbackRoute}%. Proof route ${proofRoute}%. Board agenda ${meetingRoute}%. Hard blockers ${hardBlockers}. Handoff decision ${saasHandoff.handoffDecision}. Council decision ${launchCouncil.councilDecision}. Board decision ${boardDecision}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Board line: ${boardLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, billingRoute, boardDecision, boardId, boardLine, boardScore, boardState, cards, copyText, firstMove, gateReadiness, hardBlockers, lanes, meetingRoute, nextAction, owner, ownerRoute, proofRoute, receipts, reviewWindow, rollbackRoute, signals, valueLine };
+  }
+
+  function renderCommandPilotReadinessBoardPackPreview(model, autopilot) {
+    const board = buildCommandPilotReadinessBoardPack(model, autopilot);
+    return `
+      <section class="info-card command-pilot-readiness-board-pack-room tone-${escapeHtml(board.boardScore >= 84 ? "green" : board.boardScore >= 72 ? "blue" : "amber")}" aria-label="Pilot Readiness Board Pack">
+        <div class="info-head compact command-pilot-readiness-board-pack-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Pilot Board</span>
+            <strong>Pilot Readiness Board Pack / ${board.boardScore}%</strong>
+            <p>${escapeHtml(board.boardState)}. ${escapeHtml(board.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(board.boardId)}</span>
+        </div>
+        <div class="command-pilot-readiness-board-pack-quote tone-teal">
+          <span>Pilot readiness board line</span>
+          <strong>${escapeHtml(board.boardLine)}</strong>
+        </div>
+        <div class="command-pilot-readiness-board-pack-grid mini-card-grid">
+          ${board.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-pilot-readiness-board-pack-lanes">
+          ${board.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-pilot-readiness-board-pack-cards">
+          ${board.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-pilot-readiness-board-pack-receipts">
+          ${board.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}
+        </div>
+        <div class="command-pilot-readiness-board-pack-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-pilot-readiness-board-pack" data-copy-text="${escapeHtml(encodeURIComponent(board.copyText))}">Copy pilot board</button>
+          <span>One board-ready pack before launch rehearsal: gates, owner, billing, rollback, proof, and agenda receipts stay together.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandCalmUxFlow(model, autopilot) {
     const flow = buildCommandCalmUxFlow(model, autopilot);
     return `
@@ -78719,12 +78876,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v752 Private SaaS Handoff Pack",
-      phase: "Private SaaS Handoff Pack",
+      version: "v753 Pilot Readiness Board Pack",
+      phase: "Pilot Readiness Board Pack",
       lane: "Static product prototype on GitHub Pages",
-      pace: "733 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns the launch council decision into one private SaaS handoff across backend, access, billing, support, rollback, pilot pack, blockers, and a copyable handoff receipt.",
+      pace: "734 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns the private SaaS handoff into one pilot readiness board pack across first-pilot gates, owner route, billing proof, rollback receipt, proof route, board agenda, blockers, and a copyable board receipt.",
       tracks: [
+        ["v753 pilot readiness board pack", 100, "Private SaaS handoffs now become one pilot readiness board pack across first-pilot gates, owner route, billing route, rollback receipt, proof route, board agenda, blockers, owner, review window, and one copyable board receipt.", "green"],
         ["v752 private saas handoff pack", 100, "Council decisions now become one private SaaS handoff across backend foundation, access plan, billing proof, support route, rollback proof, pilot pack, blockers, owner, review window, and one copyable handoff receipt.", "green"],
         ["v751 launch council decision room", 100, "Pilot launch snapshots now become one council decision across go readiness, staged pilot path, proof repair pressure, commercial hold pressure, support rollback pressure, hard blockers, owner, review window, and one copyable council receipt.", "green"],
         ["v750 pilot launch trust snapshot", 100, "Launch trust and proof ledger evidence now become one board-ready snapshot across decision posture, proof confidence, sponsor signal, finance signal, support signal, rollback signal, council ask, and one copyable launch snapshot.", "green"],
@@ -79457,9 +79615,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v753", "Pilot Readiness Board Pack", "Package launch snapshot, council decision, SaaS handoff, first-pilot gates, owner route, billing proof, and rollback receipt into one pilot board pack."],
         ["v754", "First Pilot Launch Rehearsal", "Turn council decision, SaaS handoff, board pack, owner route, support route, rollback receipt, and first-review proof into one launch rehearsal."],
         ["v755", "First Pilot Launch Evidence Locker", "Lock launch rehearsal proof, pilot board decision, access activation, billing receipt, support route, rollback proof, and day-one evidence into one evidence locker."],
+        ["v756", "Pilot Launch Day Control Room", "Turn rehearsal, evidence locker, owner route, billing proof, support route, rollback proof, and day-one watch into one launch-day control room."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -79764,11 +79922,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The council decision now becomes a private SaaS handoff pack before pilot readiness, first launch rehearsal, or evidence locker work.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The private SaaS handoff now becomes a pilot readiness board pack before first launch rehearsal, evidence locker, or launch-day control work.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v753 smoke addendum", "Pilot Readiness Board Pack", "Confirm the v753 pilot board strip, full hidden board room, eight board signals, six board lanes, six board cards, six board receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v752 smoke addendum", "Private SaaS Handoff Pack", "Confirm the v752 SaaS handoff strip, full hidden handoff room, eight handoff signals, six handoff lanes, six handoff cards, six handoff receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v751 smoke addendum", "Launch Council Decision Room", "Confirm the v751 launch council strip, full hidden council room, eight council signals, six decision lanes, six council cards, five council receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v750 smoke addendum", "Pilot Launch Trust Snapshot", "Confirm the v750 launch snapshot strip, full hidden snapshot room, eight snapshot signals, five decision lanes, six board cards, five snapshot receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
@@ -132687,6 +132846,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandPrivateSaasHandoffPack(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Private SaaS handoff copied.");
+      return;
+    }
+    if (action === "copy-command-pilot-readiness-board-pack") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandPilotReadinessBoardPack(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Pilot readiness board copied.");
       return;
     }
     if (action === "copy-command-calm-ux-flow") {

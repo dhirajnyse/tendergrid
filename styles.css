@@ -88436,6 +88436,118 @@ body.serenity-mode {
   }
 }
 
+/* v753 pilot readiness board pack */
+.command-pilot-readiness-board-pack-strip,
+.command-pilot-readiness-board-pack-room {
+  border: 1px solid rgba(15, 118, 110, 0.24);
+  background: linear-gradient(135deg, rgba(240, 253, 250, 0.99), rgba(248, 250, 252, 0.98));
+  box-shadow: 0 18px 48px rgba(12, 45, 50, 0.08);
+}
+
+.command-pilot-readiness-board-pack-strip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-pilot-readiness-board-pack-strip > div:first-child,
+.command-pilot-readiness-board-pack-room-head,
+.command-pilot-readiness-board-pack-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-pilot-readiness-board-pack-strip span,
+.command-pilot-readiness-board-pack-room .metric-label,
+.command-pilot-readiness-board-pack-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-pilot-readiness-board-pack-strip strong,
+.command-pilot-readiness-board-pack-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.command-pilot-readiness-board-pack-strip p,
+.command-pilot-readiness-board-pack-strip small,
+.command-pilot-readiness-board-pack-room p,
+.command-pilot-readiness-board-pack-room small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-pilot-readiness-board-pack-strip-signals,
+.command-pilot-readiness-board-pack-grid,
+.command-pilot-readiness-board-pack-lanes,
+.command-pilot-readiness-board-pack-cards,
+.command-pilot-readiness-board-pack-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-pilot-readiness-board-pack-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-pilot-readiness-board-pack-lanes,
+.command-pilot-readiness-board-pack-cards,
+.command-pilot-readiness-board-pack-receipts {
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+}
+
+.command-pilot-readiness-board-pack-strip article,
+.command-pilot-readiness-board-pack-grid article,
+.command-pilot-readiness-board-pack-lanes article,
+.command-pilot-readiness-board-pack-cards article,
+.command-pilot-readiness-board-pack-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-pilot-readiness-board-pack-cards article b {
+  display: block;
+  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.command-pilot-readiness-board-pack-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-pilot-readiness-board-pack-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-pilot-readiness-board-pack-strip-signals,
+  .command-pilot-readiness-board-pack-lanes,
+  .command-pilot-readiness-board-pack-cards,
+  .command-pilot-readiness-board-pack-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-pilot-readiness-board-pack-strip-signals,
+  .command-pilot-readiness-board-pack-lanes,
+  .command-pilot-readiness-board-pack-cards,
+  .command-pilot-readiness-board-pack-receipts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* v752 private saas handoff pack */
 .command-private-saas-handoff-pack-strip,
 .command-private-saas-handoff-pack-room {
