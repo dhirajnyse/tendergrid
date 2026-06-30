@@ -88436,6 +88436,118 @@ body.serenity-mode {
   }
 }
 
+/* v759 first pilot outcome watch room */
+.command-first-pilot-outcome-watch-room-strip,
+.command-first-pilot-outcome-watch-room-room {
+  border: 1px solid rgba(15, 118, 110, 0.24);
+  background: linear-gradient(135deg, rgba(239, 253, 246, 0.99), rgba(248, 250, 252, 0.98));
+  box-shadow: 0 18px 48px rgba(12, 45, 50, 0.08);
+}
+
+.command-first-pilot-outcome-watch-room-strip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-first-pilot-outcome-watch-room-strip > div:first-child,
+.command-first-pilot-outcome-watch-room-room-head,
+.command-first-pilot-outcome-watch-room-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-first-pilot-outcome-watch-room-strip span,
+.command-first-pilot-outcome-watch-room-room .metric-label,
+.command-first-pilot-outcome-watch-room-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-first-pilot-outcome-watch-room-strip strong,
+.command-first-pilot-outcome-watch-room-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.command-first-pilot-outcome-watch-room-strip p,
+.command-first-pilot-outcome-watch-room-strip small,
+.command-first-pilot-outcome-watch-room-room p,
+.command-first-pilot-outcome-watch-room-room small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-first-pilot-outcome-watch-room-strip-signals,
+.command-first-pilot-outcome-watch-room-grid,
+.command-first-pilot-outcome-watch-room-lanes,
+.command-first-pilot-outcome-watch-room-cards,
+.command-first-pilot-outcome-watch-room-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-first-pilot-outcome-watch-room-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-first-pilot-outcome-watch-room-lanes,
+.command-first-pilot-outcome-watch-room-cards,
+.command-first-pilot-outcome-watch-room-receipts {
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+}
+
+.command-first-pilot-outcome-watch-room-strip article,
+.command-first-pilot-outcome-watch-room-grid article,
+.command-first-pilot-outcome-watch-room-lanes article,
+.command-first-pilot-outcome-watch-room-cards article,
+.command-first-pilot-outcome-watch-room-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-first-pilot-outcome-watch-room-cards article b {
+  display: block;
+  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.command-first-pilot-outcome-watch-room-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-first-pilot-outcome-watch-room-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-first-pilot-outcome-watch-room-strip-signals,
+  .command-first-pilot-outcome-watch-room-lanes,
+  .command-first-pilot-outcome-watch-room-cards,
+  .command-first-pilot-outcome-watch-room-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-first-pilot-outcome-watch-room-strip-signals,
+  .command-first-pilot-outcome-watch-room-lanes,
+  .command-first-pilot-outcome-watch-room-cards,
+  .command-first-pilot-outcome-watch-room-receipts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* v758 first pilot learning memory seed */
 .command-first-pilot-learning-memory-seed-strip,
 .command-first-pilot-learning-memory-seed-room {
