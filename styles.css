@@ -88436,6 +88436,118 @@ body.serenity-mode {
   }
 }
 
+/* v756 pilot launch day control room */
+.command-pilot-launch-day-control-room-strip,
+.command-pilot-launch-day-control-room-room {
+  border: 1px solid rgba(15, 118, 110, 0.24);
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.99), rgba(248, 250, 252, 0.98));
+  box-shadow: 0 18px 48px rgba(12, 45, 50, 0.08);
+}
+
+.command-pilot-launch-day-control-room-strip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-pilot-launch-day-control-room-strip > div:first-child,
+.command-pilot-launch-day-control-room-room-head,
+.command-pilot-launch-day-control-room-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-pilot-launch-day-control-room-strip span,
+.command-pilot-launch-day-control-room-room .metric-label,
+.command-pilot-launch-day-control-room-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-pilot-launch-day-control-room-strip strong,
+.command-pilot-launch-day-control-room-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.command-pilot-launch-day-control-room-strip p,
+.command-pilot-launch-day-control-room-strip small,
+.command-pilot-launch-day-control-room-room p,
+.command-pilot-launch-day-control-room-room small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-pilot-launch-day-control-room-strip-signals,
+.command-pilot-launch-day-control-room-grid,
+.command-pilot-launch-day-control-room-lanes,
+.command-pilot-launch-day-control-room-cards,
+.command-pilot-launch-day-control-room-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-pilot-launch-day-control-room-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-pilot-launch-day-control-room-lanes,
+.command-pilot-launch-day-control-room-cards,
+.command-pilot-launch-day-control-room-receipts {
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+}
+
+.command-pilot-launch-day-control-room-strip article,
+.command-pilot-launch-day-control-room-grid article,
+.command-pilot-launch-day-control-room-lanes article,
+.command-pilot-launch-day-control-room-cards article,
+.command-pilot-launch-day-control-room-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-pilot-launch-day-control-room-cards article b {
+  display: block;
+  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.command-pilot-launch-day-control-room-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-pilot-launch-day-control-room-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-pilot-launch-day-control-room-strip-signals,
+  .command-pilot-launch-day-control-room-lanes,
+  .command-pilot-launch-day-control-room-cards,
+  .command-pilot-launch-day-control-room-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-pilot-launch-day-control-room-strip-signals,
+  .command-pilot-launch-day-control-room-lanes,
+  .command-pilot-launch-day-control-room-cards,
+  .command-pilot-launch-day-control-room-receipts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* v755 first pilot launch evidence locker */
 .command-first-pilot-launch-evidence-locker-strip,
 .command-first-pilot-launch-evidence-locker-room {
