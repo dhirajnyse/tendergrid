@@ -88436,6 +88436,118 @@ body.serenity-mode {
   }
 }
 
+/* v758 first pilot learning memory seed */
+.command-first-pilot-learning-memory-seed-strip,
+.command-first-pilot-learning-memory-seed-room {
+  border: 1px solid rgba(15, 118, 110, 0.24);
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.99), rgba(248, 250, 252, 0.98));
+  box-shadow: 0 18px 48px rgba(12, 45, 50, 0.08);
+}
+
+.command-first-pilot-learning-memory-seed-strip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-first-pilot-learning-memory-seed-strip > div:first-child,
+.command-first-pilot-learning-memory-seed-room-head,
+.command-first-pilot-learning-memory-seed-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-first-pilot-learning-memory-seed-strip span,
+.command-first-pilot-learning-memory-seed-room .metric-label,
+.command-first-pilot-learning-memory-seed-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-first-pilot-learning-memory-seed-strip strong,
+.command-first-pilot-learning-memory-seed-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.command-first-pilot-learning-memory-seed-strip p,
+.command-first-pilot-learning-memory-seed-strip small,
+.command-first-pilot-learning-memory-seed-room p,
+.command-first-pilot-learning-memory-seed-room small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-first-pilot-learning-memory-seed-strip-signals,
+.command-first-pilot-learning-memory-seed-grid,
+.command-first-pilot-learning-memory-seed-lanes,
+.command-first-pilot-learning-memory-seed-cards,
+.command-first-pilot-learning-memory-seed-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-first-pilot-learning-memory-seed-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-first-pilot-learning-memory-seed-lanes,
+.command-first-pilot-learning-memory-seed-cards,
+.command-first-pilot-learning-memory-seed-receipts {
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+}
+
+.command-first-pilot-learning-memory-seed-strip article,
+.command-first-pilot-learning-memory-seed-grid article,
+.command-first-pilot-learning-memory-seed-lanes article,
+.command-first-pilot-learning-memory-seed-cards article,
+.command-first-pilot-learning-memory-seed-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-first-pilot-learning-memory-seed-cards article b {
+  display: block;
+  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.command-first-pilot-learning-memory-seed-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-first-pilot-learning-memory-seed-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-first-pilot-learning-memory-seed-strip-signals,
+  .command-first-pilot-learning-memory-seed-lanes,
+  .command-first-pilot-learning-memory-seed-cards,
+  .command-first-pilot-learning-memory-seed-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-first-pilot-learning-memory-seed-strip-signals,
+  .command-first-pilot-learning-memory-seed-lanes,
+  .command-first-pilot-learning-memory-seed-cards,
+  .command-first-pilot-learning-memory-seed-receipts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* v757 first pilot sponsor readout pack */
 .command-first-pilot-sponsor-readout-pack-strip,
 .command-first-pilot-sponsor-readout-pack-room {
