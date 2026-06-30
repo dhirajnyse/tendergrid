@@ -88436,6 +88436,118 @@ body.serenity-mode {
   }
 }
 
+/* v762 first pilot renewal signal thread */
+.command-first-pilot-renewal-signal-thread-strip,
+.command-first-pilot-renewal-signal-thread-room {
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  background: linear-gradient(135deg, rgba(239, 246, 255, 0.99), rgba(236, 253, 245, 0.98));
+  box-shadow: 0 18px 48px rgba(15, 50, 80, 0.08);
+}
+
+.command-first-pilot-renewal-signal-thread-strip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-first-pilot-renewal-signal-thread-strip > div:first-child,
+.command-first-pilot-renewal-signal-thread-room-head,
+.command-first-pilot-renewal-signal-thread-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-first-pilot-renewal-signal-thread-strip span,
+.command-first-pilot-renewal-signal-thread-room .metric-label,
+.command-first-pilot-renewal-signal-thread-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-first-pilot-renewal-signal-thread-strip strong,
+.command-first-pilot-renewal-signal-thread-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.command-first-pilot-renewal-signal-thread-strip p,
+.command-first-pilot-renewal-signal-thread-strip small,
+.command-first-pilot-renewal-signal-thread-room p,
+.command-first-pilot-renewal-signal-thread-room small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-first-pilot-renewal-signal-thread-strip-signals,
+.command-first-pilot-renewal-signal-thread-grid,
+.command-first-pilot-renewal-signal-thread-lanes,
+.command-first-pilot-renewal-signal-thread-cards,
+.command-first-pilot-renewal-signal-thread-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-first-pilot-renewal-signal-thread-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-first-pilot-renewal-signal-thread-lanes,
+.command-first-pilot-renewal-signal-thread-cards,
+.command-first-pilot-renewal-signal-thread-receipts {
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+}
+
+.command-first-pilot-renewal-signal-thread-strip article,
+.command-first-pilot-renewal-signal-thread-grid article,
+.command-first-pilot-renewal-signal-thread-lanes article,
+.command-first-pilot-renewal-signal-thread-cards article,
+.command-first-pilot-renewal-signal-thread-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-first-pilot-renewal-signal-thread-cards article b {
+  display: block;
+  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.command-first-pilot-renewal-signal-thread-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-first-pilot-renewal-signal-thread-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-first-pilot-renewal-signal-thread-strip-signals,
+  .command-first-pilot-renewal-signal-thread-lanes,
+  .command-first-pilot-renewal-signal-thread-cards,
+  .command-first-pilot-renewal-signal-thread-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-first-pilot-renewal-signal-thread-strip-signals,
+  .command-first-pilot-renewal-signal-thread-lanes,
+  .command-first-pilot-renewal-signal-thread-cards,
+  .command-first-pilot-renewal-signal-thread-receipts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* v761 first pilot learning release gate */
 .command-first-pilot-learning-release-gate-strip,
 .command-first-pilot-learning-release-gate-room {
