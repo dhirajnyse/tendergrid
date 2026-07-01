@@ -88436,6 +88436,118 @@ body.serenity-mode {
   }
 }
 
+/* v777 first pilot expansion rollout first review room */
+.command-first-pilot-expansion-rollout-first-review-room-strip,
+.command-first-pilot-expansion-rollout-first-review-room {
+  border: 1px solid rgba(20, 120, 105, 0.24);
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.99), rgba(239, 246, 255, 0.98));
+  box-shadow: 0 18px 48px rgba(10, 45, 58, 0.08);
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-strip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-strip > div:first-child,
+.command-first-pilot-expansion-rollout-first-review-room-head,
+.command-first-pilot-expansion-rollout-first-review-room-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-strip span,
+.command-first-pilot-expansion-rollout-first-review-room .metric-label,
+.command-first-pilot-expansion-rollout-first-review-room-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-strip strong,
+.command-first-pilot-expansion-rollout-first-review-room-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-strip p,
+.command-first-pilot-expansion-rollout-first-review-room-strip small,
+.command-first-pilot-expansion-rollout-first-review-room p,
+.command-first-pilot-expansion-rollout-first-review-room small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-strip-signals,
+.command-first-pilot-expansion-rollout-first-review-room-grid,
+.command-first-pilot-expansion-rollout-first-review-room-lanes,
+.command-first-pilot-expansion-rollout-first-review-room-cards,
+.command-first-pilot-expansion-rollout-first-review-room-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-lanes,
+.command-first-pilot-expansion-rollout-first-review-room-cards,
+.command-first-pilot-expansion-rollout-first-review-room-receipts {
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-strip article,
+.command-first-pilot-expansion-rollout-first-review-room-grid article,
+.command-first-pilot-expansion-rollout-first-review-room-lanes article,
+.command-first-pilot-expansion-rollout-first-review-room-cards article,
+.command-first-pilot-expansion-rollout-first-review-room-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-cards article b {
+  display: block;
+  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.command-first-pilot-expansion-rollout-first-review-room-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-first-pilot-expansion-rollout-first-review-room-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-first-pilot-expansion-rollout-first-review-room-strip-signals,
+  .command-first-pilot-expansion-rollout-first-review-room-lanes,
+  .command-first-pilot-expansion-rollout-first-review-room-cards,
+  .command-first-pilot-expansion-rollout-first-review-room-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-first-pilot-expansion-rollout-first-review-room-strip-signals,
+  .command-first-pilot-expansion-rollout-first-review-room-lanes,
+  .command-first-pilot-expansion-rollout-first-review-room-cards,
+  .command-first-pilot-expansion-rollout-first-review-room-receipts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* v776 first pilot expansion rollout launch gate */
 .command-first-pilot-expansion-rollout-launch-gate-strip,
 .command-first-pilot-expansion-rollout-launch-gate-room {
