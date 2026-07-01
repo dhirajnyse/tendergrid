@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v765";
-  const BUILD_LABEL = "First Pilot Renewal Proof Pack";
+  const BUILD_VERSION = "v766";
+  const BUILD_LABEL = "First Pilot Expansion Scope Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=765.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=765.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=766.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=766.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15696,6 +15696,7 @@ const state = {
     "${renderCommandFirstPilotSponsorRenewalBridgePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionSafetyGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotRenewalProofPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionScopeReceiptPreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -15993,17 +15994,88 @@ const state = {
     return { account, boundaryLock, buyerSafeLine, copyText, firstMove, nextAction, nextReview, outcomeEvidence, owner, packDecision, packGaps, packId, packLine, packScore, packState, proofReadiness, renewalCalm, reviewWindow, signals, sponsorAnswer, supportCalm, valueLine, valueLineReady };
   }
 
+  function buildCommandFirstPilotExpansionScopeReceiptSummary(model, autopilot) {
+    const pack = buildCommandFirstPilotRenewalProofPackSummary(model, autopilot);
+    const gate = buildCommandFirstPilotExpansionSafetyGateSummary(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const safeScore = (value, penalty = 5) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const account = pack.account || gate.account || state.data.company.name || "First pilot expansion account";
+    const owner = pack.owner || gate.owner || firstTask.owner || firstTask.assignee || "Commercial";
+    const reviewWindow = pack.reviewWindow || gate.reviewWindow || firstTask.dueDate || firstTask.due || model.weeklyReview?.reviewDate || "Next expansion review";
+    const firstMove = pack.firstMove || gate.firstMove || firstSignal.action || firstTask.action || "Prepare the expansion scope receipt";
+    const valueLine = pack.valueLine || gate.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const scopeFit = score((gate.expansionScope || 0) * 0.24 + (pack.packScore || 0) * 0.18 + (pack.valueLineReady || 0) * 0.14 + safeScore(model.missingValues?.length, 3) * 0.12 + 8);
+    const sponsorBoundary = score((pack.sponsorAnswer || 0) * 0.26 + (gate.sponsorConsent || 0) * 0.22 + (pack.boundaryLock || 0) * 0.18 + 8);
+    const renewalProof = score((pack.proofReadiness || 0) * 0.28 + (pack.outcomeEvidence || 0) * 0.22 + (model.evidenceScore || 0) * 0.18 + 6);
+    const rolloutOwner = score((model.actionScore || 0) * 0.24 + (pack.nextReview || 0) * 0.22 + safeScore(model.reminders?.overdue, 1.2) * 0.18 + 8);
+    const supportPromise = score((pack.supportCalm || 0) * 0.3 + (gate.supportCapacity || 0) * 0.2 + safeScore(model.reminders?.overdue, 1.3) * 0.15 + 8);
+    const rollbackRoute = score((gate.rollbackReadiness || 0) * 0.3 + (pack.boundaryLock || 0) * 0.22 + (gate.tenantSafety || 0) * 0.16 + 8);
+    const commercialLimit = score((pack.valueLineReady || 0) * 0.24 + (model.contractScore || 0) * 0.22 + (model.totalValue > 0 ? 82 : 44) * 0.18 + safeScore(model.missingValues?.length, 3) * 0.1 + 6);
+    const scopeCalm = score(Math.min(scopeFit, sponsorBoundary, renewalProof, rolloutOwner, supportPromise, rollbackRoute, commercialLimit));
+    const receiptScore = score(scopeFit * 0.15 + sponsorBoundary * 0.15 + renewalProof * 0.16 + rolloutOwner * 0.13 + supportPromise * 0.13 + rollbackRoute * 0.13 + commercialLimit * 0.11 + scopeCalm * 0.04);
+    const receiptGaps = [scopeFit < 72, sponsorBoundary < 72, renewalProof < 72, rolloutOwner < 70, supportPromise < 70, rollbackRoute < 70, commercialLimit < 68, scopeCalm < 70].filter(Boolean).length;
+    const receiptDecision =
+      receiptScore >= 86 && receiptGaps <= 1
+        ? "Issue expansion scope receipt"
+        : receiptScore >= 78 && receiptGaps <= 3
+          ? "Issue guarded scope receipt"
+          : sponsorBoundary < 66
+            ? "Repair sponsor boundary"
+            : rollbackRoute < 66 || supportPromise < 66
+              ? "Hold rollout scope"
+              : "Observe one review";
+    const receiptState =
+      receiptDecision === "Issue expansion scope receipt"
+        ? "Expansion scope can be received with scope fit, sponsor boundary, renewal proof, rollout owner, support promise, rollback route, and commercial limit visible"
+        : receiptDecision === "Issue guarded scope receipt"
+          ? "Expansion scope can be received only with a narrow lane, visible guardrails, and support plus rollback proof attached"
+          : receiptDecision === "Repair sponsor boundary"
+            ? "Expansion scope waits until sponsor boundary and buyer-safe wording are clearer"
+            : receiptDecision === "Hold rollout scope"
+              ? "Expansion scope stays held until support promise and rollback route can carry the widened pilot"
+              : "Expansion scope should observe one more review before the first pilot widens";
+    const nextAction =
+      receiptDecision === "Issue expansion scope receipt"
+        ? "Copy the expansion scope receipt, name the exact scope, and keep rollback, support, and commercial limits attached."
+        : receiptDecision === "Issue guarded scope receipt"
+          ? "Copy the guarded scope receipt and keep the expansion lane narrow until sponsor boundary and rollback proof improve."
+          : receiptDecision === "Repair sponsor boundary"
+            ? "Repair sponsor boundary and buyer-safe wording before accepting expansion scope."
+            : receiptDecision === "Hold rollout scope"
+              ? "Hold the widened rollout and repair support promise or rollback route before scope is received."
+              : "Observe one review, keep the proof pack attached, and rerun the expansion scope receipt.";
+    const receiptId = `${BUILD_VERSION.toUpperCase()}-FIRST-PILOT-EXPANSION-SCOPE-RECEIPT`;
+    const receiptLine = `${account}: ${receiptDecision.toLowerCase()} at ${receiptScore}% with ${receiptGaps} scope gap signal(s), owner ${owner}, review ${reviewWindow}, and ${valueLine} protected.`;
+    const signals = [
+      ["Expansion scope receipt", `${receiptScore}%`, "Fast Command summary across scope fit, sponsor boundary, renewal proof, rollout owner, support promise, rollback route, and commercial limit.", receiptScore >= 84 ? "green" : receiptScore >= 72 ? "blue" : "amber"],
+      ["Scope fit", `${scopeFit}%`, "Checks whether the next pilot lane is narrow enough to accept without adding operating noise.", scopeFit >= 72 ? "green" : "amber"],
+      ["Sponsor boundary", `${sponsorBoundary}%`, "Keeps sponsor consent, buyer-safe wording, boundary lock, and review window attached to the scope.", sponsorBoundary >= 72 ? "blue" : "red"],
+      ["Renewal proof", `${renewalProof}%`, "Confirms the renewal proof pack can support the expansion ask without overstating outcomes.", renewalProof >= 72 ? "teal" : "amber"],
+      ["Rollout owner", `${rolloutOwner}%`, "Ensures one accountable owner, due rhythm, and review path exist before expansion starts.", rolloutOwner >= 70 ? "green" : "amber"],
+      ["Support promise", `${supportPromise}%`, "Checks that support pressure is calm enough before another group receives the workflow.", supportPromise >= 70 ? "teal" : "amber"],
+      ["Rollback route", `${rollbackRoute}%`, "Confirms the expansion can stop cleanly if support, proof, or sponsor response changes.", rollbackRoute >= 70 ? "blue" : "red"],
+      ["Commercial limit", `${commercialLimit}%`, "Keeps value, contract posture, and commercial scope inside a clear buyer-safe limit.", commercialLimit >= 68 ? "green" : "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} First Pilot Expansion Scope Receipt ${receiptId}: ${receiptState}. Receipt score ${receiptScore}%. Scope fit ${scopeFit}%. Sponsor boundary ${sponsorBoundary}%. Renewal proof ${renewalProof}%. Rollout owner ${rolloutOwner}%. Support promise ${supportPromise}%. Rollback route ${rollbackRoute}%. Commercial limit ${commercialLimit}%. Scope calm ${scopeCalm}%. Decision ${receiptDecision}. Gaps ${receiptGaps}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Receipt line: ${receiptLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, commercialLimit, copyText, firstMove, nextAction, owner, receiptDecision, receiptGaps, receiptId, receiptLine, receiptScore, receiptState, renewalProof, reviewWindow, rollbackRoute, rolloutOwner, scopeCalm, scopeFit, signals, sponsorBoundary, supportPromise, valueLine };
+  }
+
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
     const lightSponsorBridge = buildCommandFirstPilotSponsorRenewalBridgeSummary(model, autopilot);
     const lightExpansionGate = buildCommandFirstPilotExpansionSafetyGateSummary(model, autopilot);
     const lightRenewalPack = buildCommandFirstPilotRenewalProofPackSummary(model, autopilot);
+    const lightScopeReceipt = buildCommandFirstPilotExpansionScopeReceiptSummary(model, autopilot);
     const lightBridgeTone = lightSponsorBridge.bridgeScore >= 84 ? "green" : lightSponsorBridge.bridgeScore >= 72 ? "blue" : "amber";
     const lightGateTone = lightExpansionGate.gateScore >= 84 ? "green" : lightExpansionGate.gateScore >= 72 ? "blue" : "amber";
     const lightPackTone = lightRenewalPack.packScore >= 84 ? "green" : lightRenewalPack.packScore >= 72 ? "blue" : "amber";
+    const lightScopeTone = lightScopeReceipt.receiptScore >= 84 ? "green" : lightScopeReceipt.receiptScore >= 72 ? "blue" : "amber";
     const lightRailCards = [
       ["Latest release rail", `${railCount} paths`, "Deep release rooms stay indexed for proof without running during every Command render.", "teal", "Build Phase"],
+      ["Scope receipt", `${lightScopeReceipt.receiptScore}%`, `${lightScopeReceipt.receiptDecision}: ${lightScopeReceipt.nextAction}`, lightScopeReceipt.receiptScore >= 78 ? "green" : "amber", "Build Phase"],
       ["Renewal pack", `${lightRenewalPack.packScore}%`, `${lightRenewalPack.packDecision}: ${lightRenewalPack.nextAction}`, lightRenewalPack.packScore >= 78 ? "green" : "amber", "Build Phase"],
       ["Expansion gate", `${lightExpansionGate.gateScore}%`, `${lightExpansionGate.gateDecision}: ${lightExpansionGate.nextAction}`, lightExpansionGate.gateScore >= 78 ? "green" : "amber", "Build Phase"],
       ["Sponsor bridge", `${lightSponsorBridge.bridgeScore}%`, `${lightSponsorBridge.bridgeDecision}: ${lightSponsorBridge.nextAction}`, lightSponsorBridge.bridgeScore >= 78 ? "green" : "amber", "Build Phase"],
@@ -16034,6 +16106,17 @@ const state = {
             )
             .join("")}
         </div>
+        <div class="command-first-pilot-expansion-scope-receipt-strip tone-${escapeHtml(lightScopeTone)}" aria-label="First Pilot Expansion Scope Receipt summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} expansion scope receipt</span>
+            <strong>${escapeHtml(lightScopeReceipt.receiptDecision)} / ${lightScopeReceipt.receiptScore}%</strong>
+            <p>${escapeHtml(lightScopeReceipt.receiptState)}. ${escapeHtml(lightScopeReceipt.nextAction)}</p>
+          </div>
+          <div class="command-first-pilot-expansion-scope-receipt-strip-signals">
+            ${lightScopeReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-scope-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightScopeReceipt.copyText))}">Copy scope receipt</button>
+        </div>
         <div class="command-first-pilot-renewal-proof-pack-strip tone-${escapeHtml(lightPackTone)}" aria-label="First Pilot Renewal Proof Pack summary">
           <div>
             <span>${escapeHtml(BUILD_VERSION)} renewal proof pack</span>
@@ -16044,7 +16127,8 @@ const state = {
             ${lightRenewalPack.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
           </div>
           <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-renewal-proof-pack" data-copy-text="${escapeHtml(encodeURIComponent(lightRenewalPack.copyText))}">Copy proof pack</button>
-        </div>        <div class="command-first-pilot-expansion-safety-gate-strip tone-${escapeHtml(lightGateTone)}" aria-label="First Pilot Expansion Safety Gate summary">
+        </div>
+        <div class="command-first-pilot-expansion-safety-gate-strip tone-${escapeHtml(lightGateTone)}" aria-label="First Pilot Expansion Safety Gate summary">
           <div>
             <span>${escapeHtml(BUILD_VERSION)} expansion safety gate</span>
             <strong>${escapeHtml(lightExpansionGate.gateDecision)} / ${lightExpansionGate.gateScore}%</strong>
@@ -63002,6 +63086,69 @@ const state = {
     `;
   }
 
+  function buildCommandFirstPilotExpansionScopeReceipt(model, autopilot, seed = {}) {
+    const summary = seed.summary || buildCommandFirstPilotExpansionScopeReceiptSummary(model, autopilot);
+    const signalValue = (label) => summary.signals.find(([name]) => name === label)?.[1] || "0%";
+    const signalNote = (label) => summary.signals.find(([name]) => name === label)?.[2] || "Signal pending.";
+    const scopeMode =
+      summary.receiptDecision === "Issue expansion scope receipt"
+        ? "Scope received"
+        : summary.receiptDecision === "Issue guarded scope receipt"
+          ? "Guarded scope"
+          : summary.receiptDecision === "Repair sponsor boundary"
+            ? "Boundary repair"
+            : summary.receiptDecision === "Hold rollout scope"
+              ? "Rollout hold"
+              : "Observe";
+    const lanes = [
+      ["Receipt decision", scopeMode, "Choose received, guarded scope, boundary repair, rollout hold, or observe before the pilot widens.", summary.receiptScore >= 78 ? "green" : "amber"],
+      ["Scope fit", signalValue("Scope fit"), signalNote("Scope fit"), summary.scopeFit >= 72 ? "green" : "amber"],
+      ["Sponsor boundary", signalValue("Sponsor boundary"), signalNote("Sponsor boundary"), summary.sponsorBoundary >= 72 ? "blue" : "red"],
+      ["Renewal proof", signalValue("Renewal proof"), signalNote("Renewal proof"), summary.renewalProof >= 72 ? "teal" : "amber"],
+      ["Rollout owner", signalValue("Rollout owner"), signalNote("Rollout owner"), summary.rolloutOwner >= 70 ? "green" : "amber"],
+      ["Support promise", signalValue("Support promise"), signalNote("Support promise"), summary.supportPromise >= 70 ? "teal" : "amber"],
+      ["Rollback route", signalValue("Rollback route"), signalNote("Rollback route"), summary.rollbackRoute >= 70 ? "blue" : "red"],
+      ["Commercial limit", signalValue("Commercial limit"), signalNote("Commercial limit"), summary.commercialLimit >= 68 ? "green" : "amber"],
+    ];
+    const cards = [
+      ["Decision", scopeMode, "The expansion scope answer is explicit before any new rollout lane opens.", "Decision", summary.receiptScore >= 78 ? "green" : "amber"],
+      ["Scope", signalValue("Scope fit"), "The next scope stays narrow and named.", "Scope", summary.scopeFit >= 72 ? "green" : "amber"],
+      ["Sponsor", signalValue("Sponsor boundary"), "Sponsor boundary travels with the receipt.", "Sponsor", summary.sponsorBoundary >= 72 ? "blue" : "red"],
+      ["Proof", signalValue("Renewal proof"), "Renewal proof supports the expansion ask.", "Proof", summary.renewalProof >= 72 ? "teal" : "amber"],
+      ["Owner", summary.owner, "One accountable rollout owner is named.", "Owner", summary.rolloutOwner >= 70 ? "green" : "amber"],
+      ["Support", signalValue("Support promise"), "Support promise is checked before pressure rises.", "Support", summary.supportPromise >= 70 ? "teal" : "amber"],
+      ["Rollback", signalValue("Rollback route"), "Rollback route remains visible before the scope widens.", "Rollback", summary.rollbackRoute >= 70 ? "blue" : "red"],
+      ["Limit", signalValue("Commercial limit"), "Commercial limit keeps the buyer promise contained.", "Limit", summary.commercialLimit >= 68 ? "green" : "amber"],
+    ];
+    const receipts = lanes.map(([label, value, note, tone], index) => [`${index + 1}`, `${label} expansion scope receipt`, `${value}: ${note}`, tone]);
+    return { ...summary, cards, lanes, receipts, scopeMode };
+  }
+
+  function renderCommandFirstPilotExpansionScopeReceiptPreview(model, autopilot) {
+    const receipt = buildCommandFirstPilotExpansionScopeReceipt(model, autopilot);
+    return `
+      <section class="info-card command-first-pilot-expansion-scope-receipt-room tone-${escapeHtml(receipt.receiptScore >= 84 ? "green" : receipt.receiptScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Expansion Scope Receipt">
+        <div class="info-head compact command-first-pilot-expansion-scope-receipt-room-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Scope Receipt</span>
+            <strong>First Pilot Expansion Scope Receipt / ${receipt.receiptScore}%</strong>
+            <p>${escapeHtml(receipt.receiptState)}. ${escapeHtml(receipt.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(receipt.receiptId)}</span>
+        </div>
+        <div class="command-first-pilot-expansion-scope-receipt-quote tone-teal"><span>First pilot expansion scope line</span><strong>${escapeHtml(receipt.receiptLine)}</strong></div>
+        <div class="command-first-pilot-expansion-scope-receipt-grid mini-card-grid">${receipt.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-scope-receipt-lanes">${receipt.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-scope-receipt-cards">${receipt.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-scope-receipt-receipts">${receipt.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-scope-receipt-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-scope-receipt" data-copy-text="${escapeHtml(encodeURIComponent(receipt.copyText))}">Copy scope receipt</button>
+          <span>One expansion scope receipt before the first pilot widens: scope fit, sponsor boundary, renewal proof, rollout owner, support promise, rollback route, and commercial limit stay together.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandCalmUxFlow(model, autopilot) {
     const flow = buildCommandCalmUxFlow(model, autopilot);
     return `
@@ -80734,12 +80881,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v765 First Pilot Renewal Proof Pack",
-      phase: "First Pilot Renewal Proof Pack",
+      version: "v766 First Pilot Expansion Scope Receipt",
+      phase: "First Pilot Expansion Scope Receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "746 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns the first pilot expansion safety gate into one renewal proof pack across proof readiness, sponsor answer, outcome evidence, support calm, value line, boundary lock, next review, buyer-safe wording, owner, review window, and one copyable proof pack receipt.",
+      pace: "747 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns the first pilot renewal proof pack into one expansion scope receipt across scope fit, sponsor boundary, renewal proof, rollout owner, support promise, rollback route, commercial limit, scope calm, owner, review window, and one copyable expansion scope receipt.",
       tracks: [
+        ["v766 first pilot expansion scope receipt", 100, "Renewal proof packs now become one controlled expansion scope receipt across scope fit, sponsor boundary, renewal proof, rollout owner, support promise, rollback route, commercial limit, scope calm, owner, review window, and one copyable scope receipt.", "green"],
         ["v765 first pilot renewal proof pack", 100, "Expansion safety gates now become one sponsor-ready renewal proof pack across proof readiness, sponsor answer, outcome evidence, support calm, value line, boundary lock, next review, buyer-safe wording, owner, review window, and one copyable proof receipt.", "green"],
         ["v764 first pilot expansion safety gate", 100, "Sponsor renewal bridges now become one expansion safety gate across expansion scope, sponsor consent, proof boundary, support capacity, tenant safety, rollback readiness, learning boundary, expansion calm, owner, review window, and one copyable gate receipt.", "green"],
         ["v763 first pilot sponsor renewal bridge", 100, "First pilot renewal signal threads now become one sponsor renewal bridge across sponsor ask, renewal proof, value case, support promise, boundary promise, expansion guard, proof repair lane, sponsor bridge calm, owner, review window, and one copyable bridge receipt.", "green"],
@@ -81485,9 +81633,9 @@ const state = {
         ["200", "Pilot Pitch route fallback", "Active", "Admin-only route links now open Pilot Pitch, Build Phase, and Membership through both click actions and URL hashes for GitHub Pages cache safety."],
       ],
       nextBuilds: [
-        ["v766", "First Pilot Expansion Scope Receipt", "Package the expansion scope, sponsor boundary, renewal proof, rollout owner, support promise, and rollback route into one controlled expansion receipt."],
         ["v767", "First Pilot Expansion Pilot Launch Pack", "Turn an approved expansion scope into pilot users, rollout owner, support promise, rollback route, and first-review launch proof."],
         ["v768", "First Pilot Sponsor Decision Watch", "Watch sponsor response to the renewal proof pack and expansion scope before launch work widens."],
+        ["v769", "First Pilot Expansion Outcome Brief", "Convert the first expansion launch into buyer-safe outcome proof, support learning, rollback posture, and next-scope guidance."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -81792,11 +81940,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The expansion safety gate now becomes a buyer-safe renewal proof pack before expansion scope, sponsor decision watch, or launch-pack work opens.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The renewal proof pack now becomes a controlled expansion scope receipt before launch-pack or sponsor decision watch work opens.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v766 smoke addendum", "First Pilot Expansion Scope Receipt", "Confirm the v766 expansion scope strip, full hidden scope receipt room, eight scope signals, eight scope lanes, eight scope cards, eight scope receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v765 smoke addendum", "First Pilot Renewal Proof Pack", "Confirm the v765 renewal proof strip, full hidden proof pack room, eight proof-pack signals, eight proof-pack lanes, eight proof cards, eight proof receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v764 smoke addendum", "First Pilot Expansion Safety Gate", "Confirm the v764 expansion safety strip, full hidden expansion safety room, eight expansion safety signals, eight safety lanes, eight safety cards, eight safety receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v763 smoke addendum", "First Pilot Sponsor Renewal Bridge", "Confirm the v763 sponsor bridge strip, full hidden sponsor bridge room, eight sponsor bridge signals, eight sponsor bridge lanes, eight sponsor bridge cards, eight sponsor bridge receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
@@ -134801,17 +134950,25 @@ const state = {
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot sponsor renewal bridge copied.");
       return;
     }
+    if (action === "copy-command-first-pilot-expansion-scope-receipt") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandFirstPilotExpansionScopeReceipt(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion scope receipt copied.");
+      return;
+    }
     if (action === "copy-command-first-pilot-renewal-proof-pack") {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstPilotRenewalProofPack(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot renewal proof pack copied.");
       return;
-    }    if (action === "copy-command-first-pilot-expansion-safety-gate") {
+    }
+    if (action === "copy-command-first-pilot-expansion-safety-gate") {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstPilotExpansionSafetyGate(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion safety gate copied.");
       return;
-    }    if (action === "copy-command-calm-ux-flow") {
+    }
+    if (action === "copy-command-calm-ux-flow") {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandCalmUxFlow(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "Calm UX flow copied.");
