@@ -26,6 +26,7 @@ function assertFile(path) {
   "index.html",
   "styles.css",
   "app.js",
+  "package.json",
   "data/sample-data.js",
   "site.webmanifest",
   "assets/favicon.svg",
@@ -42,6 +43,7 @@ assert(!existsSync(projectPath("sample-data.js")), "Root sample-data.js should n
 const index = read("index.html");
 const css = read("styles.css");
 const app = read("app.js");
+const pkg = JSON.parse(read("package.json"));
 const seedScript = read("data/sample-data.js");
 const manifest = JSON.parse(read("site.webmanifest"));
 
@@ -68,22 +70,23 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=763.1"), "index.html is missing the v763.1 CSS cache token.");
-assert(index.includes("data/sample-data.js?v=763.1"), "index.html is missing the v763.1 data cache token.");
-assert(index.includes("app.js?v=763.1"), "index.html is missing the v763.1 app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=763.1"), "index.html is missing the v763.1 icon cache token.");
+assert(index.includes("styles.css?v=764.1"), "index.html is missing the v764.1 CSS cache token.");
+assert(index.includes("data/sample-data.js?v=764.1"), "index.html is missing the v764.1 data cache token.");
+assert(index.includes("app.js?v=764.1"), "index.html is missing the v764.1 app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=764.1"), "index.html is missing the v764.1 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
 
 assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name.");
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
+assert(pkg.version === "7.6.4", "package.json has the wrong release version.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v763";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "First Pilot Sponsor Renewal Bridge";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=763.1'), "app.js is missing the v763.1 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=763.1'), "app.js is missing the v763.1 3D logo cache token.");
+assert(app.includes('const BUILD_VERSION = "v764";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Safety Gate";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=764.1'), "app.js is missing the v764.1 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=764.1'), "app.js is missing the v764.1 3D logo cache token.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");
@@ -1744,6 +1747,22 @@ assert(app.includes("Expansion guard"), "First Pilot Sponsor Renewal Bridge shou
 assert(app.includes("Proof repair lane"), "First Pilot Sponsor Renewal Bridge should include the proof repair lane signal.");
 assert(app.includes("Open sponsor bridge"), "First Pilot Sponsor Renewal Bridge should include the open sponsor bridge option.");
 assert(app.includes("v763 first pilot sponsor renewal bridge"), "Build Phase is missing the v763 first pilot sponsor renewal bridge track.");
+assert(app.includes("First Pilot Expansion Safety Gate"), "First Pilot Expansion Safety Gate release label is missing.");
+assert(app.includes("function buildCommandFirstPilotExpansionSafetyGateSummary"), "app.js is missing the First Pilot Expansion Safety Gate summary model.");
+assert(app.includes("function buildCommandFirstPilotExpansionSafetyGate"), "app.js is missing the First Pilot Expansion Safety Gate model.");
+assert(app.includes("function renderCommandFirstPilotExpansionSafetyGatePreview"), "app.js is missing the First Pilot Expansion Safety Gate render path.");
+assert(app.includes("${renderCommandFirstPilotExpansionSafetyGatePreview(model, autopilot)}"), "Command Center is missing the First Pilot Expansion Safety Gate hidden render path.");
+assert(app.includes("copy-command-first-pilot-expansion-safety-gate"), "app.js is missing the First Pilot Expansion Safety Gate copy action.");
+assert(app.includes("Expansion safety"), "First Pilot Expansion Safety Gate should include the expansion safety signal.");
+assert(app.includes("Expansion scope"), "First Pilot Expansion Safety Gate should include the expansion scope signal.");
+assert(app.includes("Sponsor consent"), "First Pilot Expansion Safety Gate should include the sponsor consent signal.");
+assert(app.includes("Proof boundary"), "First Pilot Expansion Safety Gate should include the proof boundary signal.");
+assert(app.includes("Support capacity"), "First Pilot Expansion Safety Gate should include the support capacity signal.");
+assert(app.includes("Tenant safety"), "First Pilot Expansion Safety Gate should include the tenant safety signal.");
+assert(app.includes("Rollback readiness"), "First Pilot Expansion Safety Gate should include the rollback readiness signal.");
+assert(app.includes("Learning boundary"), "First Pilot Expansion Safety Gate should include the learning boundary signal.");
+assert(app.includes("Open expansion gate"), "First Pilot Expansion Safety Gate should include the open expansion gate option.");
+assert(app.includes("v764 first pilot expansion safety gate"), "Build Phase is missing the v764 first pilot expansion safety gate track.");
 assert(app.includes("let renderModelCache = null;"), "app.js is missing the per-render model cache used for route stability.");
 assert(app.includes('cachedRenderModel("pursuitAutopilot", () => buildPursuitAutopilotModel())'), "Autopilot route should reuse the cached render model.");
 assert(app.includes("const healthScore = Math.round(actionScore * 0.3 + evidenceScore * 0.25 + contractScore * 0.25 + outcomeScore * 0.2);"), "Autopilot should compute lightweight command health without building the full Command Center model.");
@@ -1968,6 +1987,7 @@ assert(app.includes("v763"), "Build Phase next queue should include v763.");
 assert(app.includes("v764"), "Build Phase next queue should include v764.");
 assert(app.includes("v765"), "Build Phase next queue should include v765.");
 assert(app.includes("v766"), "Build Phase next queue should include v766.");
+assert(app.includes("v767"), "Build Phase next queue should include v767.");
 assert(css.includes("command-guidance-reuse-ledger"), "styles.css is missing the Guidance Reuse Ledger shell.");
 assert(css.includes("command-guidance-reuse-ledger-grid"), "styles.css is missing the Guidance Reuse Ledger control grid.");
 assert(css.includes("command-guidance-reuse-ledger-lanes"), "styles.css is missing the Guidance Reuse Ledger lanes.");
@@ -2106,6 +2126,13 @@ assert(css.includes("command-sponsor-reply-learning-receipt-grid"), "styles.css 
 assert(css.includes("command-sponsor-reply-learning-receipt-lanes"), "styles.css is missing the Sponsor Reply Learning Receipt lanes.");
 assert(css.includes("command-sponsor-reply-learning-receipt-cards"), "styles.css is missing the Sponsor Reply Learning Receipt cards.");
 assert(css.includes("command-sponsor-reply-learning-receipt-receipts"), "styles.css is missing the Sponsor Reply Learning Receipt receipts.");
+assert(css.includes("v764 first pilot expansion safety gate"), "styles.css is missing the v764 first pilot expansion safety gate block.");
+assert(css.includes("command-first-pilot-expansion-safety-gate-strip"), "styles.css is missing the First Pilot Expansion Safety Gate strip.");
+assert(css.includes("command-first-pilot-expansion-safety-gate-room"), "styles.css is missing the First Pilot Expansion Safety Gate shell.");
+assert(css.includes("command-first-pilot-expansion-safety-gate-grid"), "styles.css is missing the First Pilot Expansion Safety Gate control grid.");
+assert(css.includes("command-first-pilot-expansion-safety-gate-lanes"), "styles.css is missing the First Pilot Expansion Safety Gate lanes.");
+assert(css.includes("command-first-pilot-expansion-safety-gate-cards"), "styles.css is missing the First Pilot Expansion Safety Gate cards.");
+assert(css.includes("command-first-pilot-expansion-safety-gate-receipts"), "styles.css is missing the First Pilot Expansion Safety Gate receipts.");
 assert(css.includes("v763 first pilot sponsor renewal bridge"), "styles.css is missing the v763 first pilot sponsor renewal bridge block.");
 assert(css.includes("command-first-pilot-sponsor-renewal-bridge-strip"), "styles.css is missing the First Pilot Sponsor Renewal Bridge strip.");
 assert(css.includes("command-first-pilot-sponsor-renewal-bridge-room"), "styles.css is missing the First Pilot Sponsor Renewal Bridge shell.");
