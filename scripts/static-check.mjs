@@ -23,6 +23,7 @@ function assertFile(path) {
 }
 
 [
+  "_config.yml",
   "index.html",
   "styles.css",
   "styles.min.css",
@@ -42,6 +43,7 @@ function assertFile(path) {
 
 assert(!existsSync(projectPath("sample-data.js")), "Root sample-data.js should not exist; the app loads data/sample-data.js.");
 
+const pagesConfig = read("_config.yml");
 const index = read("index.html");
 const css = read("styles.css");
 const cssMin = read("styles.min.css");
@@ -103,6 +105,17 @@ assert(appMin.includes("copy-command-first-pilot-expansion-rollout-support-watch
 assert(appMin.includes("v779 first pilot expansion rollout support watch"), "app.min.js is missing the v779 current Build Phase track.");
 assert(appMin.includes("v780") && appMin.includes("v781") && appMin.includes("v782"), "app.min.js is missing the v780-v782 next queue.");
 assert(cssMin.includes("command-first-pilot-expansion-rollout-support-watch"), "styles.min.css is missing the v779 support watch class.");
+[
+  "app.js",
+  "styles.css",
+  "*.log",
+  "docs/",
+  "scripts/",
+  "source-excels/",
+  "RECOVERY_NOTES.md"
+].forEach((entry) => {
+  assert(pagesConfig.includes(entry), `_config.yml should exclude ${entry} from GitHub Pages.`);
+});
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");

@@ -1,7 +1,15 @@
 exclude:
   - app.js
   - styles.css
+  - "*.log"
+  - "*.txt"
+  - chrome-build-route-profile/
+  - chrome-build-route-profile-2/
+  - docs/
   - scripts/
+  - source-excels/
+  - LICENSE
   - package.json
   - package-lock.json
   - README.md
+  - RECOVERY_NOTES.md
