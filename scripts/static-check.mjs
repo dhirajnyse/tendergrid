@@ -25,7 +25,9 @@ function assertFile(path) {
 [
   "index.html",
   "styles.css",
+  "styles.min.css",
   "app.js",
+  "app.min.js",
   "package.json",
   "data/sample-data.js",
   "site.webmanifest",
@@ -42,7 +44,9 @@ assert(!existsSync(projectPath("sample-data.js")), "Root sample-data.js should n
 
 const index = read("index.html");
 const css = read("styles.css");
+const cssMin = read("styles.min.css");
 const app = read("app.js");
+const appMin = read("app.min.js");
 const pkg = JSON.parse(read("package.json"));
 const seedScript = read("data/sample-data.js");
 const manifest = JSON.parse(read("site.webmanifest"));
@@ -51,6 +55,12 @@ try {
   new Function(app);
 } catch (error) {
   failures.push(`app.js has a syntax error: ${error.message}`);
+}
+
+try {
+  new Function(appMin);
+} catch (error) {
+  failures.push(`app.min.js has a syntax error: ${error.message}`);
 }
 
 try {
@@ -70,9 +80,9 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.css?v=779.1"), "index.html is missing the v779.1 CSS cache token.");
+assert(index.includes("styles.min.css?v=779.1"), "index.html is missing the v779.1 minified CSS cache token.");
 assert(index.includes("data/sample-data.js?v=779.1"), "index.html is missing the v779.1 data cache token.");
-assert(index.includes("app.js?v=779.1"), "index.html is missing the v779.1 app cache token.");
+assert(index.includes("app.min.js?v=779.1"), "index.html is missing the v779.1 minified app cache token.");
 assert(index.includes("assets/pursuitdesk-mark.svg?v=779.1"), "index.html is missing the v779.1 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
@@ -87,6 +97,12 @@ assert(app.includes('const BUILD_VERSION = "v779";'), "app.js has the wrong buil
 assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Support Watch";'), "app.js has the wrong build label.");
 assert(app.includes('assets/pursuitdesk-mark.svg?v=779.1'), "app.js is missing the v779.1 brand mark cache token.");
 assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=779.1'), "app.js is missing the v779.1 3D logo cache token.");
+assert(appMin.includes("v779"), "app.min.js is missing the v779 build marker.");
+assert(appMin.includes("First Pilot Expansion Rollout Support Watch"), "app.min.js is missing the v779 build label.");
+assert(appMin.includes("copy-command-first-pilot-expansion-rollout-support-watch"), "app.min.js is missing the v779 copy action.");
+assert(appMin.includes("v779 first pilot expansion rollout support watch"), "app.min.js is missing the v779 current Build Phase track.");
+assert(appMin.includes("v780") && appMin.includes("v781") && appMin.includes("v782"), "app.min.js is missing the v780-v782 next queue.");
+assert(cssMin.includes("command-first-pilot-expansion-rollout-support-watch"), "styles.min.css is missing the v779 support watch class.");
 assert(app.includes("RECOVERY_BASELINE_SHA"), "app.js is missing the recovery baseline guard.");
 assert(app.includes('const STORE_KEY = "pursuitDesk:data:v1";'), "app.js is missing the PursuitDesk storage key.");
 assert(app.includes("localStorage"), "app.js should persist prototype state locally.");

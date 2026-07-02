@@ -1,4 +1,6 @@
 exclude:
+  - app.js
+  - styles.css
   - scripts/
   - package.json
   - package-lock.json
