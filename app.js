@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v786";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Graduation Gate";
+  const BUILD_VERSION = "v787";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Confidence Ledger";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=786.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=786.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=787.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=787.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15717,6 +15717,7 @@ const state = {
     "${renderCommandFirstPilotExpansionRolloutReuseActivationReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseOutcomeMonitorPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseGraduationGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseConfidenceLedgerPreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -18112,6 +18113,137 @@ const state = {
     `;
   }
 
+  function buildCommandFirstPilotExpansionRolloutReuseConfidenceLedgerSummary(model, autopilot) {
+    const gate = buildCommandFirstPilotExpansionRolloutReuseGraduationGateSummary(model, autopilot);
+    const monitor = buildCommandFirstPilotExpansionRolloutReuseOutcomeMonitorSummary(model, autopilot);
+    const activation = buildCommandFirstPilotExpansionRolloutReuseActivationReceiptSummary(model, autopilot);
+    const passport = buildCommandFirstPilotExpansionRolloutLearningPassportSummary(model, autopilot);
+    const supportWatch = buildCommandFirstPilotExpansionRolloutSupportWatchSummary(model, autopilot);
+    const sponsorPulse = buildCommandFirstPilotExpansionRolloutSponsorPulseSummary(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const safeScore = (value, penalty = 5) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const account = gate.account || monitor.account || activation.account || firstRecord.client || state.data.company.name || "Confidence ledger account";
+    const owner = gate.owner || monitor.owner || activation.owner || firstTask.owner || firstTask.assignee || firstRecord.owner || "Confidence ledger owner";
+    const reviewWindow = gate.reviewWindow || monitor.reviewWindow || activation.reviewWindow || firstTask.dueDate || firstTask.due || model.weeklyReview?.reviewDate || "Confidence ledger review";
+    const firstMove = gate.firstMove || monitor.firstMove || activation.firstMove || firstSignal.action || firstTask.action || "Record the reuse confidence ledger";
+    const valueLine = gate.valueLine || monitor.valueLine || activation.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const exceptionCount = Math.max(0, Math.round(Number(gate.gateGaps || 0) + Math.min(4, Number(model.evidenceGaps?.length || 0)) + Math.min(3, Number(model.reminders?.missingData || 0))));
+    const proofAgeDays = Math.max(1, Math.round(Number(model.noDateRecords?.length || 0) * 3 + Number(model.reminders?.overdue || 0) * 0.6 + Number(gate.gateGaps || 0) * 4));
+    const ledgerConfidence = score((gate.gateScore || 0) * 0.28 + (gate.graduationReadiness || 0) * 0.18 + (gate.learningProof || 0) * 0.16 + (monitor.learningConfidence || 0) * 0.14 + safeScore(gate.gateGaps, 6) * 0.08 + 8);
+    const proofAge = score((gate.reviewProof || 0) * 0.3 + safeScore(proofAgeDays, 1.4) * 0.2 + (activation.reviewTimer || 0) * 0.15 + (supportWatch.responseWindow || 0) * 0.1 + 8);
+    const exceptionNotes = score(safeScore(gate.gateGaps, 9) * 0.26 + safeScore(model.evidenceGaps?.length, 3.4) * 0.18 + safeScore(model.reminders?.missingData, 2) * 0.16 + (gate.supportProof || 0) * 0.12 + 8);
+    const sponsorSafeEntry = score((gate.sponsorProof || 0) * 0.28 + (sponsorPulse.learningConsent || 0) * 0.18 + (sponsorPulse.valueProof || 0) * 0.14 + (sponsorPulse.executiveClarity || 0) * 0.12 + 8);
+    const rollbackBoundary = score((gate.rollbackProof || 0) * 0.3 + (activation.rollbackLock || 0) * 0.18 + (supportWatch.rollbackReadiness || 0) * 0.16 + (gate.reviewProof || 0) * 0.1 + 8);
+    const reuseBoundary = score((gate.learningProof || 0) * 0.24 + (passport.tenantBoundary || 0) * 0.16 + (passport.consentScope || 0) * 0.14 + (gate.graduationReadiness || 0) * 0.12 + 8);
+    const nextReuseDecision = score((gate.gateScore || 0) * 0.2 + reuseBoundary * 0.18 + sponsorSafeEntry * 0.16 + rollbackBoundary * 0.14 + exceptionNotes * 0.1 + 8);
+    const ledgerScore = score(ledgerConfidence * 0.18 + proofAge * 0.14 + exceptionNotes * 0.14 + sponsorSafeEntry * 0.15 + rollbackBoundary * 0.15 + reuseBoundary * 0.14 + nextReuseDecision * 0.1);
+    const ledgerGaps = [ledgerConfidence < 76, proofAge < 72, exceptionNotes < 70, sponsorSafeEntry < 72, rollbackBoundary < 72, reuseBoundary < 74, nextReuseDecision < 74].filter(Boolean).length + Math.max(0, Math.min(3, gate.gateGaps || 0));
+    const ledgerDecision = ledgerScore >= 88 && ledgerGaps <= 1 && gate.gateDecision === "Graduate reusable learning"
+      ? "Store reusable confidence"
+      : ledgerScore >= 80 && reuseBoundary >= 74 && rollbackBoundary >= 72
+        ? "Store guarded confidence"
+        : sponsorSafeEntry >= 76 && reuseBoundary < 74
+          ? "Store tenant-local confidence"
+          : exceptionNotes < 68 || proofAge < 68
+            ? "Repair ledger evidence"
+            : rollbackBoundary < 68
+              ? "Hold confidence ledger"
+              : "Observe before ledger release";
+    const ledgerState = ledgerDecision === "Store reusable confidence"
+      ? "Graduated reuse can be stored as reusable confidence with proof age, exceptions, sponsor-safe entry, rollback boundary, reuse boundary, and next reuse decision attached"
+      : ledgerDecision === "Store guarded confidence"
+        ? "Graduated reuse can be stored as guarded confidence while exceptions, proof age, and rollback boundary stay visible"
+        : ledgerDecision === "Store tenant-local confidence"
+          ? "The learning is valuable but remains tenant-local until reuse boundary confidence improves"
+          : ledgerDecision === "Repair ledger evidence"
+            ? "The confidence ledger waits while proof age or exception notes are repaired"
+            : ledgerDecision === "Hold confidence ledger"
+              ? "The confidence ledger is held until rollback boundary proof can protect future reuse"
+              : "The confidence ledger should observe one more cycle before release into wider learning";
+    const nextAction = ledgerDecision === "Store reusable confidence"
+      ? "Copy the confidence ledger and open the exception review with proof age, exception notes, and rollback boundary already named."
+      : ledgerDecision === "Store guarded confidence"
+        ? "Store the guarded ledger entry and tag every exception before the review widens."
+        : ledgerDecision === "Store tenant-local confidence"
+          ? "Store the confidence locally and name what would make the reuse boundary safe."
+          : ledgerDecision === "Repair ledger evidence"
+            ? "Repair stale proof or exception notes before releasing the ledger."
+            : ledgerDecision === "Hold confidence ledger"
+              ? "Hold the ledger until rollback proof is strong enough for reuse."
+              : "Observe one more cycle and rerun the confidence ledger after the next review.";
+    const ledgerLine = `${ledgerDecision}: confidence ${ledgerConfidence}%, proof age ${proofAgeDays} days/${proofAge}%, exceptions ${exceptionCount}/${exceptionNotes}%, sponsor-safe ${sponsorSafeEntry}%, rollback ${rollbackBoundary}%, reuse boundary ${reuseBoundary}%, next reuse ${nextReuseDecision}%.`;
+    const ledgerId = `${BUILD_VERSION.toUpperCase()}-FIRST-PILOT-EXPANSION-ROLLOUT-REUSE-CONFIDENCE-LEDGER`;
+    const signals = [
+      ["Reuse confidence ledger", `${ledgerScore}%`, "Stores the graduation decision as confidence before exception review or broader learning opens.", ledgerScore >= 80 ? "green" : "amber"],
+      ["Ledger confidence", `${ledgerConfidence}%`, "Combines gate score, readiness, learning proof, monitor confidence, and gap pressure.", ledgerConfidence >= 76 ? "green" : "amber"],
+      ["Proof age", `${proofAge}%`, `${proofAgeDays} days of age pressure are checked before the ledger can influence reuse.`, proofAge >= 72 ? "blue" : "amber"],
+      ["Exception notes", `${exceptionNotes}%`, `${exceptionCount} open exception notes are summarized before the next review.`, exceptionNotes >= 70 ? "teal" : "red"],
+      ["Sponsor-safe entry", `${sponsorSafeEntry}%`, "Keeps sponsor proof, learning consent, value proof, and executive clarity safe for reuse.", sponsorSafeEntry >= 72 ? "green" : "amber"],
+      ["Rollback boundary", `${rollbackBoundary}%`, "Attaches rollback proof, rollback lock, support readiness, and review proof to the ledger.", rollbackBoundary >= 72 ? "blue" : "red"],
+      ["Reuse boundary", `${reuseBoundary}%`, "Checks learning proof, tenant boundary, consent scope, and graduation readiness before learning travels.", reuseBoundary >= 74 ? "green" : "amber"],
+      ["Next reuse decision", `${nextReuseDecision}%`, "Names whether the next step should be reusable, guarded, tenant-local, repair, hold, or observe.", nextReuseDecision >= 74 ? "green" : "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} First Pilot Expansion Rollout Reuse Confidence Ledger ${ledgerId}: ${ledgerState}. Ledger score ${ledgerScore}%. Ledger confidence ${ledgerConfidence}%. Proof age ${proofAgeDays} days / ${proofAge}%. Exception notes ${exceptionCount} / ${exceptionNotes}%. Sponsor-safe entry ${sponsorSafeEntry}%. Rollback boundary ${rollbackBoundary}%. Reuse boundary ${reuseBoundary}%. Next reuse decision ${nextReuseDecision}%. Ledger decision ${ledgerDecision}. Ledger gaps ${ledgerGaps}. Graduation decision ${gate.gateDecision}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Ledger line: ${ledgerLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, copyText, exceptionCount, exceptionNotes, firstMove, ledgerConfidence, ledgerDecision, ledgerGaps, ledgerId, ledgerLine, ledgerScore, ledgerState, nextAction, nextReuseDecision, owner, proofAge, proofAgeDays, reuseBoundary, reviewWindow, rollbackBoundary, signals, sponsorSafeEntry, valueLine };
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseConfidenceLedger(model, autopilot, seed = {}) {
+    const summary = seed.summary || buildCommandFirstPilotExpansionRolloutReuseConfidenceLedgerSummary(model, autopilot);
+    const signalValue = (label) => summary.signals.find(([name]) => name === label)?.[1] || "0%";
+    const signalNote = (label) => summary.signals.find(([name]) => name === label)?.[2] || "Signal pending.";
+    const ledgerMode =
+      summary.ledgerDecision === "Store reusable confidence"
+        ? "Reusable"
+        : summary.ledgerDecision === "Store guarded confidence"
+          ? "Guarded"
+          : summary.ledgerDecision === "Store tenant-local confidence"
+            ? "Tenant-local"
+            : summary.ledgerDecision === "Repair ledger evidence"
+              ? "Repair"
+              : summary.ledgerDecision === "Hold confidence ledger"
+                ? "Hold"
+                : "Observe";
+    const lanes = [
+      ["Ledger decision", ledgerMode, "Choose reusable, guarded, tenant-local, repair, hold, or observe before exception review opens.", summary.ledgerScore >= 80 ? "green" : "amber"],
+      ["Ledger confidence", signalValue("Ledger confidence"), signalNote("Ledger confidence"), summary.ledgerConfidence >= 76 ? "green" : "amber"],
+      ["Proof age", `${summary.proofAgeDays} days / ${signalValue("Proof age")}`, signalNote("Proof age"), summary.proofAge >= 72 ? "blue" : "amber"],
+      ["Exception notes", `${summary.exceptionCount} open / ${signalValue("Exception notes")}`, signalNote("Exception notes"), summary.exceptionNotes >= 70 ? "teal" : "red"],
+      ["Sponsor-safe entry", signalValue("Sponsor-safe entry"), signalNote("Sponsor-safe entry"), summary.sponsorSafeEntry >= 72 ? "green" : "amber"],
+      ["Rollback boundary", signalValue("Rollback boundary"), signalNote("Rollback boundary"), summary.rollbackBoundary >= 72 ? "blue" : "red"],
+      ["Reuse boundary", signalValue("Reuse boundary"), signalNote("Reuse boundary"), summary.reuseBoundary >= 74 ? "green" : "amber"],
+      ["Next reuse decision", signalValue("Next reuse decision"), signalNote("Next reuse decision"), summary.nextReuseDecision >= 74 ? "green" : "amber"],
+    ];
+    const cards = lanes.map(([label, value, note, tone], index) => [label, value, note, index === 0 ? "Ledger" : "Confidence", tone]);
+    const receipts = lanes.map(([label, value, note, tone], index) => [`${index + 1}`, `${label} confidence ledger`, `${value}: ${note}`, tone]);
+    return { ...summary, cards, lanes, ledgerMode, receipts };
+  }
+  function renderCommandFirstPilotExpansionRolloutReuseConfidenceLedgerPreview(model, autopilot) {
+    const ledger = buildCommandFirstPilotExpansionRolloutReuseConfidenceLedger(model, autopilot);
+    return `
+      <section class="info-card command-first-pilot-expansion-rollout-reuse-confidence-ledger tone-${escapeHtml(ledger.ledgerScore >= 84 ? "green" : ledger.ledgerScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Expansion Rollout Reuse Confidence Ledger">
+        <div class="info-head compact command-first-pilot-expansion-rollout-reuse-confidence-ledger-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Confidence Ledger</span>
+            <strong>First Pilot Expansion Rollout Reuse Confidence Ledger / ${ledger.ledgerScore}%</strong>
+            <p>${escapeHtml(ledger.ledgerState)}. ${escapeHtml(ledger.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(ledger.ledgerId)}</span>
+        </div>
+        <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-quote tone-teal"><span>First pilot expansion rollout reuse confidence ledger line</span><strong>${escapeHtml(ledger.ledgerLine)}</strong></div>
+        <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-grid mini-card-grid">${ledger.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-lanes">${ledger.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-cards">${ledger.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-receipts">${ledger.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-confidence-ledger" data-copy-text="${escapeHtml(encodeURIComponent(ledger.copyText))}">Copy confidence ledger</button>
+          <span>One ledger before exception review: confidence, proof age, exception notes, sponsor-safe entry, rollback boundary, reuse boundary, and next reuse decision stay together.</span>
+        </div>
+      </section>
+    `;
+  }
+
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
@@ -18139,6 +18271,7 @@ const state = {
     const lightReuseActivationReceipt = buildCommandFirstPilotExpansionRolloutReuseActivationReceiptSummary(model, autopilot);
     const lightReuseOutcomeMonitor = buildCommandFirstPilotExpansionRolloutReuseOutcomeMonitorSummary(model, autopilot);
     const lightReuseGraduationGate = buildCommandFirstPilotExpansionRolloutReuseGraduationGateSummary(model, autopilot);
+    const lightReuseConfidenceLedger = buildCommandFirstPilotExpansionRolloutReuseConfidenceLedgerSummary(model, autopilot);
     const lightBridgeTone = lightSponsorBridge.bridgeScore >= 84 ? "green" : lightSponsorBridge.bridgeScore >= 72 ? "blue" : "amber";
     const lightGateTone = lightExpansionGate.gateScore >= 84 ? "green" : lightExpansionGate.gateScore >= 72 ? "blue" : "amber";
     const lightPackTone = lightRenewalPack.packScore >= 84 ? "green" : lightRenewalPack.packScore >= 72 ? "blue" : "amber";
@@ -18163,8 +18296,10 @@ const state = {
     const lightReuseActivationReceiptTone = lightReuseActivationReceipt.receiptScore >= 84 ? "green" : lightReuseActivationReceipt.receiptScore >= 72 ? "blue" : "amber";
     const lightReuseOutcomeMonitorTone = lightReuseOutcomeMonitor.monitorScore >= 84 ? "green" : lightReuseOutcomeMonitor.monitorScore >= 72 ? "blue" : "amber";
     const lightReuseGraduationGateTone = lightReuseGraduationGate.gateScore >= 84 ? "green" : lightReuseGraduationGate.gateScore >= 72 ? "blue" : "amber";
+    const lightReuseConfidenceLedgerTone = lightReuseConfidenceLedger.ledgerScore >= 84 ? "green" : lightReuseConfidenceLedger.ledgerScore >= 72 ? "blue" : "amber";
     const lightRailCards = [
       ["Latest release rail", `${railCount} paths`, "Deep release rooms stay indexed for proof without running during every Command render.", "teal", "Build Phase"],
+      ["Reuse confidence", `${lightReuseConfidenceLedger.ledgerScore}%`, `${lightReuseConfidenceLedger.ledgerDecision}: ${lightReuseConfidenceLedger.nextAction}`, lightReuseConfidenceLedger.ledgerScore >= 80 ? "green" : "amber", "Build Phase"],
       ["Reuse graduation", `${lightReuseGraduationGate.gateScore}%`, `${lightReuseGraduationGate.gateDecision}: ${lightReuseGraduationGate.nextAction}`, lightReuseGraduationGate.gateScore >= 80 ? "green" : "amber", "Build Phase"],
       ["Reuse outcome", `${lightReuseOutcomeMonitor.monitorScore}%`, `${lightReuseOutcomeMonitor.monitorDecision}: ${lightReuseOutcomeMonitor.nextAction}`, lightReuseOutcomeMonitor.monitorScore >= 80 ? "green" : "amber", "Build Phase"],
       ["Reuse activation", `${lightReuseActivationReceipt.receiptScore}%`, `${lightReuseActivationReceipt.activationDecision}: ${lightReuseActivationReceipt.nextAction}`, lightReuseActivationReceipt.receiptScore >= 80 ? "green" : "amber", "Build Phase"],
@@ -18215,6 +18350,17 @@ const state = {
               `,
             )
             .join("")}
+        </div>
+        <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-strip tone-${escapeHtml(lightReuseConfidenceLedgerTone)}" aria-label="First Pilot Expansion Rollout Reuse Confidence Ledger summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} rollout reuse confidence</span>
+            <strong>${escapeHtml(lightReuseConfidenceLedger.ledgerDecision)} / ${lightReuseConfidenceLedger.ledgerScore}%</strong>
+            <p>${escapeHtml(lightReuseConfidenceLedger.ledgerState)}. ${escapeHtml(lightReuseConfidenceLedger.nextAction)}</p>
+          </div>
+          <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-strip-signals">
+            ${lightReuseConfidenceLedger.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-confidence-ledger" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseConfidenceLedger.copyText))}">Copy confidence ledger</button>
         </div>
         <div class="command-first-pilot-expansion-rollout-reuse-graduation-gate-strip tone-${escapeHtml(lightReuseGraduationGateTone)}" aria-label="First Pilot Expansion Rollout Reuse Graduation Gate summary">
           <div>
@@ -83462,12 +83608,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v786 First Pilot Expansion Rollout Reuse Graduation Gate",
-      phase: "First Pilot Expansion Rollout Reuse Graduation Gate",
+      version: "v787 First Pilot Expansion Rollout Reuse Confidence Ledger",
+      phase: "First Pilot Expansion Rollout Reuse Confidence Ledger",
       lane: "Static product prototype on GitHub Pages",
-      pace: "767 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns the first pilot expansion rollout reuse outcome monitor into one graduation gate across graduation readiness, movement proof, activation proof, support proof, sponsor proof, rollback proof, learning proof, review proof, owner, review window, and one copyable graduation gate.",
+      pace: "768 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns the first pilot expansion rollout reuse graduation gate into one confidence ledger across ledger confidence, proof age, exception notes, sponsor-safe entry, rollback boundary, reuse boundary, next reuse decision, owner, review window, and one copyable confidence ledger.",
       tracks: [
+        ["v787 first pilot expansion rollout reuse confidence ledger", 100, "Reuse graduation gates now become one confidence ledger across ledger confidence, proof age, exception notes, sponsor-safe entry, rollback boundary, reuse boundary, next reuse decision, owner, review window, and one copyable confidence ledger.", "green"],
         ["v786 first pilot expansion rollout reuse graduation gate", 100, "Reuse outcome monitors now become one graduation gate across graduation readiness, movement proof, activation proof, support proof, sponsor proof, rollback proof, learning proof, review proof, owner, review window, and one copyable gate.", "green"],
         ["v785 first pilot expansion rollout reuse outcome monitor", 100, "Reuse activation receipts now become one outcome monitor across outcome movement, activation proof, support signal, sponsor signal, rollback watch, learning confidence, review cadence, owner, review window, and one copyable monitor.", "green"],
         ["v784 first pilot expansion rollout reuse activation receipt", 100, "Learning passports now become one activation receipt across activation route, passport proof, owner acceptance, support lock, rollback lock, review timer, activation calm, owner, review window, and one copyable activation receipt.", "green"],
@@ -84241,13 +84388,14 @@ const state = {
         ["207", "First pilot expansion rollout learning passport", "Done", "Learning reuse decisions now become one passport with passport route, tenant boundary, proof bundle, consent scope, support guardrail, rollback anchor, and expiry review."],
         ["208", "First pilot expansion rollout reuse activation receipt", "Done", "Learning passports now become one activation receipt with activation route, passport proof, owner acceptance, support lock, rollback lock, review timer, and activation calm."],
         ["209", "First pilot expansion rollout reuse outcome monitor", "Done", "Activation receipts now become one outcome monitor with outcome movement, activation proof, support signal, sponsor signal, rollback watch, learning confidence, and review cadence."],
-        ["210", "First pilot expansion rollout reuse graduation gate", "Active", "Outcome monitors now become one graduation gate with readiness, movement proof, activation proof, support proof, sponsor proof, rollback proof, learning proof, and review proof."],
+        ["210", "First pilot expansion rollout reuse graduation gate", "Done", "Outcome monitors now become one graduation gate with readiness, movement proof, activation proof, support proof, sponsor proof, rollback proof, learning proof, and review proof."],
+        ["211", "First pilot expansion rollout reuse confidence ledger", "Active", "Graduation gates now become one confidence ledger with confidence, proof age, exception notes, sponsor-safe entry, rollback boundary, reuse boundary, and next reuse decision."],
       ],
       nextBuilds: [
 
-        ["v787", "First Pilot Expansion Rollout Reuse Confidence Ledger", "Record activated reuse confidence, exception notes, proof age, and sponsor-safe learning ledger entries."],
         ["v788", "First Pilot Expansion Rollout Reuse Exception Review", "Review monitored exceptions, proof holes, support rollback asks, and sponsor-safe retune work before wider rollout."],
         ["v789", "First Pilot Expansion Rollout Reuse Learning Ledger", "Store graduation outcomes, confidence, exceptions, proof age, and next reuse boundary in one learning ledger."],
+        ["v790", "First Pilot Expansion Rollout Reuse Council Packet", "Package confidence, exceptions, learning ledger, rollback boundary, and sponsor-safe decision into one release council packet."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -84552,11 +84700,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The outcome monitor now becomes a graduation gate before learning can widen.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The graduation gate now becomes a confidence ledger before exception review opens.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v787 smoke addendum", "First Pilot Expansion Rollout Reuse Confidence Ledger", "Confirm the v787 reuse confidence strip, full hidden confidence ledger room, eight confidence signals, eight ledger lanes, eight ledger cards, eight ledger receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v786 smoke addendum", "First Pilot Expansion Rollout Reuse Graduation Gate", "Confirm the v786 reuse graduation strip, full hidden graduation gate room, nine graduation signals, nine gate lanes, nine gate cards, nine gate receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v785 smoke addendum", "First Pilot Expansion Rollout Reuse Outcome Monitor", "Confirm the v785 reuse outcome strip, full hidden outcome monitor room, eight outcome signals, eight monitor lanes, eight monitor cards, eight monitor receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v784 smoke addendum", "First Pilot Expansion Rollout Reuse Activation Receipt", "Confirm the v784 reuse activation strip, full hidden activation receipt room, eight activation signals, eight activation lanes, eight activation cards, eight activation receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
@@ -137640,6 +137789,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstPilotExpansionRolloutLearningPassport(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout learning passport copied.");
+      return;
+    }
+    if (action === "copy-command-first-pilot-expansion-rollout-reuse-confidence-ledger") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandFirstPilotExpansionRolloutReuseConfidenceLedger(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout reuse confidence ledger copied.");
       return;
     }
     if (action === "copy-command-first-pilot-expansion-rollout-reuse-graduation-gate") {
