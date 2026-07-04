@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v790";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Council Packet";
+  const BUILD_VERSION = "v791";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Release Candidate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=790.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=790.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=791.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=791.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15721,6 +15721,7 @@ const state = {
     "${renderCommandFirstPilotExpansionRolloutReuseExceptionReviewPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseLearningLedgerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseCouncilPacketPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseReleaseCandidatePreview(model, autopilot)}",
   ];
 
   function renderCommandLearningNetworkFold(model, autopilot, pilotPitch) {
@@ -18666,6 +18667,145 @@ const state = {
       </section>
     `;
   }
+  function buildCommandFirstPilotExpansionRolloutReuseReleaseCandidateSummary(model, autopilot) {
+    const council = buildCommandFirstPilotExpansionRolloutReuseCouncilPacketSummary(model, autopilot);
+    const ledger = buildCommandFirstPilotExpansionRolloutReuseLearningLedgerSummary(model, autopilot);
+    const review = buildCommandFirstPilotExpansionRolloutReuseExceptionReviewSummary(model, autopilot);
+    const gate = buildCommandFirstPilotExpansionRolloutReuseGraduationGateSummary(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const safeScore = (value, penalty = 5) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const account = council.account || ledger.account || firstRecord.client || state.data.company.name || "Release candidate account";
+    const owner = council.owner || ledger.owner || firstTask.owner || firstTask.assignee || firstRecord.owner || "Release candidate owner";
+    const reviewWindow = council.reviewWindow || ledger.reviewWindow || firstTask.dueDate || firstTask.due || model.weeklyReview?.reviewDate || "Release candidate review";
+    const firstMove = council.firstMove || ledger.firstMove || firstSignal.action || firstTask.action || "Name the reusable release candidate";
+    const valueLine = council.valueLine || ledger.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const proofDebt = Math.max(0, Math.round(Number(council.proofDebt || 0) + Number(council.councilGaps || 0) + Math.min(4, Number(model.evidenceGaps?.length || 0))));
+    const limitDebt = Math.max(0, Math.round(Math.max(0, 76 - Number(council.releaseCandidateRoute || 0)) / 8 + Math.max(0, 74 - Number(council.sponsorSafeStory || 0)) / 8 + Math.max(0, 74 - Number(council.rollbackBoundary || 0)) / 8));
+    const candidateReadiness = score((council.packetScore || 0) * 0.18 + (council.packetClosure || 0) * 0.16 + (council.releaseCandidateRoute || 0) * 0.16 + (ledger.learningScore || 0) * 0.12 + 10);
+    const launchLimit = score((council.releaseCandidateRoute || 0) * 0.2 + (council.tenantBoundary || 0) * 0.16 + (council.sponsorSafeStory || 0) * 0.14 + safeScore(limitDebt, 8) * 0.14 + 10);
+    const rollbackProof = score((council.rollbackBoundary || 0) * 0.24 + (review.rollbackReview || 0) * 0.18 + (gate.rollbackProof || 0) * 0.16 + (ledger.rollbackMemory || 0) * 0.14 + 8);
+    const sponsorHandoff = score((council.sponsorSafeStory || 0) * 0.22 + (council.councilReadiness || 0) * 0.16 + (ledger.sponsorLearningSafety || 0) * 0.16 + safeScore(council.decisionDebt || 0, 8) * 0.12 + 8);
+    const tenantSafeRelease = score((council.tenantBoundary || 0) * 0.24 + (ledger.tenantLearningBoundary || 0) * 0.18 + (council.proofBundle || 0) * 0.14 + 8);
+    const proofFreeze = score((council.proofBundle || 0) * 0.22 + (council.exceptionClearance || 0) * 0.18 + (ledger.evidenceWeight || 0) * 0.16 + safeScore(proofDebt, 5) * 0.12 + 8);
+    const launchRoute = score(candidateReadiness * 0.16 + launchLimit * 0.16 + rollbackProof * 0.14 + sponsorHandoff * 0.14 + tenantSafeRelease * 0.14 + proofFreeze * 0.14 + (council.releaseCandidateRoute || 0) * 0.12);
+    const candidateClosure = score(candidateReadiness * 0.16 + launchLimit * 0.14 + rollbackProof * 0.14 + sponsorHandoff * 0.14 + tenantSafeRelease * 0.14 + proofFreeze * 0.14 + launchRoute * 0.14);
+    const candidateScore = score(candidateReadiness * 0.16 + launchLimit * 0.14 + rollbackProof * 0.14 + sponsorHandoff * 0.14 + tenantSafeRelease * 0.14 + proofFreeze * 0.14 + launchRoute * 0.1 + candidateClosure * 0.1);
+    const candidateGaps = [candidateReadiness < 78, launchLimit < 76, rollbackProof < 72, sponsorHandoff < 74, tenantSafeRelease < 76, proofFreeze < 74, launchRoute < 74, candidateClosure < 74].filter(Boolean).length + Math.max(0, Math.min(3, limitDebt));
+    const candidateDecision = candidateScore >= 88 && candidateGaps <= 1 && council.councilDecision === "Open release candidate"
+      ? "Name release candidate"
+      : candidateScore >= 82 && launchLimit >= 76 && rollbackProof >= 72
+        ? "Name guarded candidate"
+        : tenantSafeRelease >= 78 && sponsorHandoff < 72
+          ? "Hold tenant-local candidate"
+          : proofFreeze < 68 || candidateReadiness < 70
+            ? "Repair candidate proof"
+            : rollbackProof < 68
+              ? "Attach rollback proof"
+              : sponsorHandoff < 68
+                ? "Retune sponsor handoff"
+                : "Observe candidate";
+    const candidateState = candidateDecision === "Name release candidate"
+      ? "The council packet is ready to become a reusable release candidate with launch limits, rollback proof, tenant boundary, and sponsor handoff attached"
+      : candidateDecision === "Name guarded candidate"
+        ? "The release candidate can be named with guardrails while rollback and launch limits stay visible"
+        : candidateDecision === "Hold tenant-local candidate"
+          ? "The candidate stays tenant-local until sponsor handoff and consent are strong enough to widen"
+          : candidateDecision === "Repair candidate proof"
+            ? "Release-candidate work pauses until proof freeze and candidate readiness are repaired"
+            : candidateDecision === "Attach rollback proof"
+              ? "The candidate waits for rollback proof, recovery owner, and support route"
+              : candidateDecision === "Retune sponsor handoff"
+                ? "The candidate needs calmer sponsor-safe handoff language before naming"
+                : "The candidate should be observed for one more review before launch handoff opens";
+    const nextAction = candidateDecision === "Name release candidate"
+      ? "Name the release candidate and open launch handoff with limits, rollback proof, tenant boundary, and sponsor-safe handoff attached."
+      : candidateDecision === "Name guarded candidate"
+        ? "Name the guarded candidate with launch limits, owner, review date, and rollback proof."
+        : candidateDecision === "Hold tenant-local candidate"
+          ? "Keep the candidate tenant-local and collect sponsor-safe approval before widening."
+          : candidateDecision === "Repair candidate proof"
+            ? "Repair proof freeze, evidence notes, and candidate readiness before naming."
+            : candidateDecision === "Attach rollback proof"
+              ? "Attach rollback proof, support route, recovery note, and escalation date before naming."
+              : candidateDecision === "Retune sponsor handoff"
+                ? "Retune the sponsor handoff and rerun council packet review before naming."
+                : "Observe one more candidate signal and rerun after the next review window.";
+    const candidateLine = `${candidateDecision}: readiness ${candidateReadiness}%, limits ${launchLimit}%, rollback ${rollbackProof}%, sponsor handoff ${sponsorHandoff}%, tenant release ${tenantSafeRelease}%, proof freeze ${proofFreeze}%, route ${launchRoute}%, closure ${candidateClosure}%.`;
+    const candidateId = `${BUILD_VERSION.toUpperCase()}-FIRST-PILOT-EXPANSION-ROLLOUT-REUSE-RELEASE-CANDIDATE`;
+    const signals = [
+      ["Reuse release candidate", `${candidateScore}%`, "Turns the council packet into a named reusable-release candidate with launch limits, rollback proof, tenant boundary, and sponsor handoff.", candidateScore >= 82 ? "green" : "amber"],
+      ["Candidate readiness", `${candidateReadiness}%`, "Checks whether council packet, learning ledger, and release route are ready for candidate naming.", candidateReadiness >= 78 ? "green" : "amber"],
+      ["Launch limit", `${launchLimit}%`, `${limitDebt} limit-debt items decide how tightly the candidate must be bounded.`, launchLimit >= 76 ? "blue" : "amber"],
+      ["Rollback proof", `${rollbackProof}%`, "Keeps rollback proof, support route, and recovery memory attached before launch handoff.", rollbackProof >= 72 ? "blue" : "red"],
+      ["Sponsor handoff", `${sponsorHandoff}%`, "Confirms the candidate story is sponsor-safe and ready to travel into handoff.", sponsorHandoff >= 74 ? "green" : "amber"],
+      ["Tenant-safe release", `${tenantSafeRelease}%`, "Confirms tenant boundary, consent, and proof bundle before any reusable release widens.", tenantSafeRelease >= 76 ? "green" : "amber"],
+      ["Proof freeze", `${proofFreeze}%`, `${proofDebt} proof-debt items decide whether candidate evidence can be frozen.`, proofFreeze >= 74 ? "teal" : "amber"],
+      ["Launch route", `${launchRoute}%`, "Names whether launch handoff can open, stay guarded, hold local, repair, retune, or observe.", launchRoute >= 74 ? "teal" : "amber"],
+      ["Candidate closure", `${candidateClosure}%`, "Confirms the candidate can close without losing limits, proof, rollback, tenant boundary, or sponsor handoff.", candidateClosure >= 74 ? "green" : "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} First Pilot Expansion Rollout Reuse Release Candidate ${candidateId}: ${candidateState}. Candidate score ${candidateScore}%. Candidate readiness ${candidateReadiness}%. Launch limit ${launchLimit}%. Rollback proof ${rollbackProof}%. Sponsor handoff ${sponsorHandoff}%. Tenant-safe release ${tenantSafeRelease}%. Proof freeze ${proofFreeze}%. Launch route ${launchRoute}%. Candidate closure ${candidateClosure}%. Proof debt ${proofDebt}. Limit debt ${limitDebt}. Candidate decision ${candidateDecision}. Candidate gaps ${candidateGaps}. Council decision ${council.councilDecision}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Candidate line: ${candidateLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, candidateClosure, candidateDecision, candidateGaps, candidateId, candidateLine, candidateReadiness, candidateScore, candidateState, copyText, firstMove, launchLimit, launchRoute, limitDebt, nextAction, owner, proofDebt, proofFreeze, reviewWindow, rollbackProof, signals, sponsorHandoff, tenantSafeRelease, valueLine };
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseReleaseCandidate(model, autopilot, seed = {}) {
+    const summary = seed.summary || buildCommandFirstPilotExpansionRolloutReuseReleaseCandidateSummary(model, autopilot);
+    const signalValue = (label) => summary.signals.find(([name]) => name === label)?.[1] || "0%";
+    const signalNote = (label) => summary.signals.find(([name]) => name === label)?.[2] || "Signal pending.";
+    const candidateMode =
+      summary.candidateDecision === "Name release candidate"
+        ? "Named RC"
+        : summary.candidateDecision === "Name guarded candidate"
+          ? "Guarded"
+          : summary.candidateDecision === "Hold tenant-local candidate"
+            ? "Tenant-local"
+            : summary.candidateDecision === "Repair candidate proof"
+              ? "Proof repair"
+              : summary.candidateDecision === "Attach rollback proof"
+                ? "Rollback"
+                : summary.candidateDecision === "Retune sponsor handoff"
+                  ? "Retune"
+                  : "Observe";
+    const lanes = [
+      ["Candidate decision", candidateMode, "Choose named RC, guarded candidate, tenant-local hold, proof repair, rollback proof, retune, or observe before launch handoff.", summary.candidateScore >= 82 ? "green" : "amber"],
+      ["Candidate readiness", signalValue("Candidate readiness"), signalNote("Candidate readiness"), summary.candidateReadiness >= 78 ? "green" : "amber"],
+      ["Launch limit", `${summary.limitDebt} debt / ${signalValue("Launch limit")}`, signalNote("Launch limit"), summary.launchLimit >= 76 ? "blue" : "amber"],
+      ["Rollback proof", signalValue("Rollback proof"), signalNote("Rollback proof"), summary.rollbackProof >= 72 ? "blue" : "red"],
+      ["Sponsor handoff", signalValue("Sponsor handoff"), signalNote("Sponsor handoff"), summary.sponsorHandoff >= 74 ? "green" : "amber"],
+      ["Tenant-safe release", signalValue("Tenant-safe release"), signalNote("Tenant-safe release"), summary.tenantSafeRelease >= 76 ? "green" : "amber"],
+      ["Proof freeze", `${summary.proofDebt} debt / ${signalValue("Proof freeze")}`, signalNote("Proof freeze"), summary.proofFreeze >= 74 ? "teal" : "amber"],
+      ["Launch route", signalValue("Launch route"), signalNote("Launch route"), summary.launchRoute >= 74 ? "teal" : "amber"],
+      ["Candidate closure", signalValue("Candidate closure"), signalNote("Candidate closure"), summary.candidateClosure >= 74 ? "green" : "amber"],
+    ];
+    const cards = lanes.map(([label, value, note, tone], index) => [label, value, note, index === 0 ? "Candidate" : "Release", tone]);
+    const receipts = lanes.map(([label, value, note, tone], index) => [`${index + 1}`, `${label} release candidate`, `${value}: ${note}`, tone]);
+    return { ...summary, candidateMode, cards, lanes, receipts };
+  }
+  function renderCommandFirstPilotExpansionRolloutReuseReleaseCandidatePreview(model, autopilot) {
+    const candidate = buildCommandFirstPilotExpansionRolloutReuseReleaseCandidate(model, autopilot);
+    return `
+      <section class="info-card command-first-pilot-expansion-rollout-reuse-release-candidate tone-${escapeHtml(candidate.candidateScore >= 84 ? "green" : candidate.candidateScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Expansion Rollout Reuse Release Candidate">
+        <div class="info-head compact command-first-pilot-expansion-rollout-reuse-release-candidate-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Release Candidate</span>
+            <strong>First Pilot Expansion Rollout Reuse Release Candidate / ${candidate.candidateScore}%</strong>
+            <p>${escapeHtml(candidate.candidateState)}. ${escapeHtml(candidate.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(candidate.candidateId)}</span>
+        </div>
+        <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-quote tone-teal"><span>First pilot expansion rollout reuse release candidate line</span><strong>${escapeHtml(candidate.candidateLine)}</strong></div>
+        <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-grid mini-card-grid">${candidate.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-lanes">${candidate.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-cards">${candidate.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-receipts">${candidate.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-release-candidate" data-copy-text="${escapeHtml(encodeURIComponent(candidate.copyText))}">Copy release candidate</button>
+          <span>One candidate before launch handoff: readiness, launch limits, rollback proof, sponsor handoff, tenant safety, proof freeze, launch route, and closure stay together.</span>
+        </div>
+      </section>
+    `;
+  }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
@@ -18697,6 +18837,7 @@ const state = {
     const lightReuseExceptionReview = buildCommandFirstPilotExpansionRolloutReuseExceptionReviewSummary(model, autopilot);
     const lightReuseLearningLedger = buildCommandFirstPilotExpansionRolloutReuseLearningLedgerSummary(model, autopilot);
     const lightReuseCouncilPacket = buildCommandFirstPilotExpansionRolloutReuseCouncilPacketSummary(model, autopilot);
+    const lightReuseReleaseCandidate = buildCommandFirstPilotExpansionRolloutReuseReleaseCandidateSummary(model, autopilot);
     const lightBridgeTone = lightSponsorBridge.bridgeScore >= 84 ? "green" : lightSponsorBridge.bridgeScore >= 72 ? "blue" : "amber";
     const lightGateTone = lightExpansionGate.gateScore >= 84 ? "green" : lightExpansionGate.gateScore >= 72 ? "blue" : "amber";
     const lightPackTone = lightRenewalPack.packScore >= 84 ? "green" : lightRenewalPack.packScore >= 72 ? "blue" : "amber";
@@ -18725,8 +18866,10 @@ const state = {
     const lightReuseExceptionReviewTone = lightReuseExceptionReview.reviewScore >= 84 ? "green" : lightReuseExceptionReview.reviewScore >= 72 ? "blue" : "amber";
     const lightReuseLearningLedgerTone = lightReuseLearningLedger.learningScore >= 84 ? "green" : lightReuseLearningLedger.learningScore >= 72 ? "blue" : "amber";
     const lightReuseCouncilPacketTone = lightReuseCouncilPacket.packetScore >= 84 ? "green" : lightReuseCouncilPacket.packetScore >= 72 ? "blue" : "amber";
+    const lightReuseReleaseCandidateTone = lightReuseReleaseCandidate.candidateScore >= 84 ? "green" : lightReuseReleaseCandidate.candidateScore >= 72 ? "blue" : "amber";
     const lightRailCards = [
       ["Latest release rail", `${railCount} paths`, "Deep release rooms stay indexed for proof without running during every Command render.", "teal", "Build Phase"],
+      ["Reuse candidate", `${lightReuseReleaseCandidate.candidateScore}%`, `${lightReuseReleaseCandidate.candidateDecision}: ${lightReuseReleaseCandidate.nextAction}`, lightReuseReleaseCandidate.candidateScore >= 82 ? "green" : "amber", "Build Phase"],
       ["Reuse council", `${lightReuseCouncilPacket.packetScore}%`, `${lightReuseCouncilPacket.councilDecision}: ${lightReuseCouncilPacket.nextAction}`, lightReuseCouncilPacket.packetScore >= 82 ? "green" : "amber", "Build Phase"],
       ["Reuse learning", `${lightReuseLearningLedger.learningScore}%`, `${lightReuseLearningLedger.learningDecision}: ${lightReuseLearningLedger.nextAction}`, lightReuseLearningLedger.learningScore >= 80 ? "green" : "amber", "Build Phase"],
       ["Reuse exception", `${lightReuseExceptionReview.reviewScore}%`, `${lightReuseExceptionReview.reviewDecision}: ${lightReuseExceptionReview.nextAction}`, lightReuseExceptionReview.reviewScore >= 80 ? "green" : "amber", "Build Phase"],
@@ -18781,6 +18924,17 @@ const state = {
               `,
             )
             .join("")}
+        </div>
+        <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-strip tone-${escapeHtml(lightReuseReleaseCandidateTone)}" aria-label="First Pilot Expansion Rollout Reuse Release Candidate summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} rollout reuse candidate</span>
+            <strong>${escapeHtml(lightReuseReleaseCandidate.candidateDecision)} / ${lightReuseReleaseCandidate.candidateScore}%</strong>
+            <p>${escapeHtml(lightReuseReleaseCandidate.candidateState)}. ${escapeHtml(lightReuseReleaseCandidate.nextAction)}</p>
+          </div>
+          <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-strip-signals">
+            ${lightReuseReleaseCandidate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-release-candidate" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseReleaseCandidate.copyText))}">Copy release candidate</button>
         </div>
         <div class="command-first-pilot-expansion-rollout-reuse-council-packet-strip tone-${escapeHtml(lightReuseCouncilPacketTone)}" aria-label="First Pilot Expansion Rollout Reuse Council Packet summary">
           <div>
@@ -84071,12 +84225,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v790 First Pilot Expansion Rollout Reuse Council Packet",
-      phase: "First Pilot Expansion Rollout Reuse Council Packet",
+      version: "v791 First Pilot Expansion Rollout Reuse Release Candidate",
+      phase: "First Pilot Expansion Rollout Reuse Release Candidate",
       lane: "Static product prototype on GitHub Pages",
-      pace: "771 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns the first pilot expansion rollout reuse learning ledger into one council packet across council readiness, proof bundle, exception clearance, rollback boundary, tenant boundary, sponsor-safe story, release candidate route, packet closure, owner, review window, and one copyable council packet.",
+      pace: "772 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns the first pilot expansion rollout reuse council packet into one release candidate across candidate readiness, launch limit, rollback proof, sponsor handoff, tenant-safe release, proof freeze, launch route, candidate closure, owner, review window, and one copyable release candidate.",
       tracks: [
+        ["v791 first pilot expansion rollout reuse release candidate", 100, "Reuse council packets now become one release candidate across candidate readiness, launch limit, rollback proof, sponsor handoff, tenant-safe release, proof freeze, launch route, candidate closure, owner, review window, and one copyable release candidate.", "green"],
         ["v790 first pilot expansion rollout reuse council packet", 100, "Reuse learning ledgers now become one council packet across council readiness, proof bundle, exception clearance, rollback boundary, tenant boundary, sponsor-safe story, release candidate route, packet closure, owner, review window, and one copyable council packet.", "green"],
         ["v789 first pilot expansion rollout reuse learning ledger", 100, "Reuse exception reviews now become one learning ledger across reusable learning, evidence weight, exception memory, rollback memory, tenant learning boundary, sponsor learning safety, next learning use, ledger closure, owner, review window, and one copyable learning ledger.", "green"],
         ["v788 first pilot expansion rollout reuse exception review", 100, "Reuse confidence ledgers now become one exception review across exception control, proof holes, support rollback, sponsor-safe retune, tenant boundary, decision route, exception closure, owner, review window, and one copyable exception review.", "green"],
@@ -84858,13 +85013,14 @@ const state = {
         ["211", "First pilot expansion rollout reuse confidence ledger", "Done", "Graduation gates now become one confidence ledger with confidence, proof age, exception notes, sponsor-safe entry, rollback boundary, reuse boundary, and next reuse decision."],
         ["212", "First pilot expansion rollout reuse exception review", "Done", "Confidence ledgers now become one exception review with exception control, proof holes, support rollback, sponsor-safe retune, tenant boundary, decision route, and closure."],
         ["213", "First pilot expansion rollout reuse learning ledger", "Done", "Exception reviews now become one learning ledger with reusable learning, evidence weight, exception memory, rollback memory, tenant boundary, sponsor safety, next use, and closure."],
-        ["214", "First pilot expansion rollout reuse council packet", "Active", "Learning ledgers now become one council packet with readiness, proof bundle, exception clearance, rollback boundary, tenant boundary, sponsor-safe story, candidate route, and closure."],
+        ["214", "First pilot expansion rollout reuse council packet", "Done", "Learning ledgers now become one council packet with readiness, proof bundle, exception clearance, rollback boundary, tenant boundary, sponsor-safe story, candidate route, and closure."],
+        ["215", "First pilot expansion rollout reuse release candidate", "Active", "Council packets now become one release candidate with readiness, launch limits, rollback proof, sponsor handoff, tenant-safe release, proof freeze, launch route, and closure."],
       ],
       nextBuilds: [
 
-        ["v791", "First Pilot Expansion Rollout Reuse Release Candidate", "Turn the council packet into one reusable-release candidate with launch limits, rollback proof, and sponsor-safe learning handoff."],
         ["v792", "First Pilot Expansion Rollout Reuse Launch Handoff", "Convert the release candidate into launch handoff limits, owner receipt, rollback proof, and next reuse route."],
         ["v793", "First Pilot Expansion Rollout Reuse Launch Outcome Watch", "Watch the launch handoff against outcome proof, support calm, rollback readiness, and next reusable learning route."],
+        ["v794", "First Pilot Expansion Rollout Reuse Closeout Receipt", "Close the launch outcome watch into signed reusable outcome proof, rollback memory, and next-market learning route."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -85169,11 +85325,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The learning ledger now becomes a council packet before release-candidate work opens.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The council packet now becomes a release candidate before launch handoff opens.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v791 smoke addendum", "First Pilot Expansion Rollout Reuse Release Candidate", "Confirm the v791 reuse candidate strip, full hidden release candidate room, nine candidate signals, nine candidate lanes, nine candidate cards, nine candidate receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v790 smoke addendum", "First Pilot Expansion Rollout Reuse Council Packet", "Confirm the v790 reuse council strip, full hidden council packet room, nine council signals, nine council lanes, nine council cards, nine council receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v789 smoke addendum", "First Pilot Expansion Rollout Reuse Learning Ledger", "Confirm the v789 reuse learning strip, full hidden learning ledger room, nine learning signals, nine learning lanes, nine learning cards, nine learning receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v788 smoke addendum", "First Pilot Expansion Rollout Reuse Exception Review", "Confirm the v788 reuse exception strip, full hidden exception review room, eight exception signals, eight review lanes, eight review cards, eight review receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
@@ -138261,6 +138418,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstPilotExpansionRolloutLearningPassport(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout learning passport copied.");
+      return;
+    }
+    if (action === "copy-command-first-pilot-expansion-rollout-reuse-release-candidate") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandFirstPilotExpansionRolloutReuseReleaseCandidate(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout reuse release candidate copied.");
       return;
     }
     if (action === "copy-command-first-pilot-expansion-rollout-reuse-council-packet") {
