@@ -82,29 +82,29 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.min.css?v=791.1"), "index.html is missing the v791.1 minified CSS cache token.");
-assert(index.includes("data/sample-data.js?v=791.1"), "index.html is missing the v791.1 data cache token.");
-assert(index.includes("app.min.js?v=791.1"), "index.html is missing the v791.1 minified app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=791.1"), "index.html is missing the v791.1 icon cache token.");
+assert(index.includes("styles.min.css?v=792.1"), "index.html is missing the v792.1 minified CSS cache token.");
+assert(index.includes("data/sample-data.js?v=792.1"), "index.html is missing the v792.1 data cache token.");
+assert(index.includes("app.min.js?v=792.1"), "index.html is missing the v792.1 minified app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=792.1"), "index.html is missing the v792.1 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
 
 assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name.");
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
-assert(pkg.version === "7.9.1", "package.json has the wrong release version.");
+assert(pkg.version === "7.9.2", "package.json has the wrong release version.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v791";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Release Candidate";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=791.1'), "app.js is missing the v791.1 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=791.1'), "app.js is missing the v791.1 3D logo cache token.");
-assert(appMin.includes("v791"), "app.min.js is missing the v791 build marker.");
-assert(appMin.includes("First Pilot Expansion Rollout Reuse Release Candidate"), "app.min.js is missing the v791 build label.");
-assert(appMin.includes("copy-command-first-pilot-expansion-rollout-reuse-release-candidate"), "app.min.js is missing the v791 copy action.");
-assert(appMin.includes("v791 first pilot expansion rollout reuse release candidate"), "app.min.js is missing the v791 current Build Phase track.");
-assert(appMin.includes("v792") && appMin.includes("v793") && appMin.includes("v794"), "app.min.js is missing the v792-v794 next queue.");
-assert(cssMin.includes("command-first-pilot-expansion-rollout-reuse-release-candidate"), "styles.min.css is missing the v791 reuse release candidate class.");
+assert(app.includes('const BUILD_VERSION = "v792";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Launch Handoff";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=792.1'), "app.js is missing the v792.1 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=792.1'), "app.js is missing the v792.1 3D logo cache token.");
+assert(appMin.includes("v792"), "app.min.js is missing the v792 build marker.");
+assert(appMin.includes("First Pilot Expansion Rollout Reuse Launch Handoff"), "app.min.js is missing the v792 build label.");
+assert(appMin.includes("copy-command-first-pilot-expansion-rollout-reuse-launch-handoff"), "app.min.js is missing the v792 copy action.");
+assert(appMin.includes("v792 first pilot expansion rollout reuse launch handoff"), "app.min.js is missing the v792 current Build Phase track.");
+assert(appMin.includes("v793") && appMin.includes("v794") && appMin.includes("v795"), "app.min.js is missing the v793-v795 next queue.");
+assert(cssMin.includes("command-first-pilot-expansion-rollout-reuse-launch-handoff"), "styles.min.css is missing the v792 reuse launch handoff class.");
 [
   "app.js",
   "styles.css",
@@ -1840,6 +1840,23 @@ assert(app.includes("Access start"), "First Pilot Expansion Pilot Launch Pack sh
 assert(app.includes("Commercial start"), "First Pilot Expansion Pilot Launch Pack should include the commercial start signal.");
 assert(app.includes("Launch expansion pilot"), "First Pilot Expansion Pilot Launch Pack should include the launch expansion pilot option.");
 assert(app.includes("v767 first pilot expansion pilot launch pack"), "Build Phase is missing the v767 first pilot expansion pilot launch pack track.");
+assert(app.includes("First Pilot Expansion Rollout Reuse Launch Handoff"), "First Pilot Expansion Rollout Reuse Launch Handoff release label is missing.");
+assert(app.includes("function buildCommandFirstPilotExpansionRolloutReuseLaunchHandoffSummary"), "app.js is missing the First Pilot Expansion Rollout Reuse Launch Handoff summary model.");
+assert(app.includes("function buildCommandFirstPilotExpansionRolloutReuseLaunchHandoff"), "app.js is missing the First Pilot Expansion Rollout Reuse Launch Handoff model.");
+assert(app.includes("function renderCommandFirstPilotExpansionRolloutReuseLaunchHandoffPreview"), "app.js is missing the First Pilot Expansion Rollout Reuse Launch Handoff render path.");
+assert(app.includes("${renderCommandFirstPilotExpansionRolloutReuseLaunchHandoffPreview(model, autopilot)}"), "Command Center is missing the First Pilot Expansion Rollout Reuse Launch Handoff hidden render path.");
+assert(app.includes("copy-command-first-pilot-expansion-rollout-reuse-launch-handoff"), "app.js is missing the First Pilot Expansion Rollout Reuse Launch Handoff copy action.");
+assert(app.includes("Reuse launch handoff"), "First Pilot Expansion Rollout Reuse Launch Handoff should include the reuse launch handoff signal.");
+assert(app.includes("Handoff readiness"), "First Pilot Expansion Rollout Reuse Launch Handoff should include handoff readiness.");
+assert(app.includes("Owner receipt"), "First Pilot Expansion Rollout Reuse Launch Handoff should include owner receipt.");
+assert(app.includes("Rollback handoff"), "First Pilot Expansion Rollout Reuse Launch Handoff should include rollback handoff.");
+assert(app.includes("Launch limit lock"), "First Pilot Expansion Rollout Reuse Launch Handoff should include launch limit lock.");
+assert(app.includes("Sponsor transfer"), "First Pilot Expansion Rollout Reuse Launch Handoff should include sponsor transfer.");
+assert(app.includes("Tenant boundary lock"), "First Pilot Expansion Rollout Reuse Launch Handoff should include tenant boundary lock.");
+assert(app.includes("Next reuse route"), "First Pilot Expansion Rollout Reuse Launch Handoff should include next reuse route.");
+assert(app.includes("Handoff closure"), "First Pilot Expansion Rollout Reuse Launch Handoff should include handoff closure.");
+assert(app.includes("Open launch handoff"), "First Pilot Expansion Rollout Reuse Launch Handoff should include the open launch handoff option.");
+assert(app.includes("v792 first pilot expansion rollout reuse launch handoff"), "Build Phase is missing the v792 first pilot expansion rollout reuse launch handoff track.");
 assert(app.includes("First Pilot Expansion Rollout Reuse Release Candidate"), "First Pilot Expansion Rollout Reuse Release Candidate release label is missing.");
 assert(app.includes("function buildCommandFirstPilotExpansionRolloutReuseReleaseCandidateSummary"), "app.js is missing the First Pilot Expansion Rollout Reuse Release Candidate summary model.");
 assert(app.includes("function buildCommandFirstPilotExpansionRolloutReuseReleaseCandidate"), "app.js is missing the First Pilot Expansion Rollout Reuse Release Candidate model.");
@@ -2472,10 +2489,11 @@ assert(app.includes("v787 first pilot expansion rollout reuse confidence ledger"
 assert(app.includes("v788 first pilot expansion rollout reuse exception review"), "Build Phase history should include v788.");
 assert(app.includes("v789 first pilot expansion rollout reuse learning ledger"), "Build Phase history should include v789.");
 assert(app.includes("v790 first pilot expansion rollout reuse council packet"), "Build Phase history should include v790.");
-assert(app.includes("v791 first pilot expansion rollout reuse release candidate"), "Build Phase current track should include v791.");
-assert(app.includes("v792"), "Build Phase next queue should include v792.");
+assert(app.includes("v791 first pilot expansion rollout reuse release candidate"), "Build Phase history should include v791.");
+assert(app.includes("v792 first pilot expansion rollout reuse launch handoff"), "Build Phase current track should include v792.");
 assert(app.includes("v793"), "Build Phase next queue should include v793.");
 assert(app.includes("v794"), "Build Phase next queue should include v794.");
+assert(app.includes("v795"), "Build Phase next queue should include v795.");
 assert(css.includes("command-guidance-reuse-ledger"), "styles.css is missing the Guidance Reuse Ledger shell.");
 assert(css.includes("command-guidance-reuse-ledger-grid"), "styles.css is missing the Guidance Reuse Ledger control grid.");
 assert(css.includes("command-guidance-reuse-ledger-lanes"), "styles.css is missing the Guidance Reuse Ledger lanes.");
@@ -2615,6 +2633,13 @@ assert(css.includes("command-sponsor-reply-learning-receipt-lanes"), "styles.css
 assert(css.includes("command-sponsor-reply-learning-receipt-cards"), "styles.css is missing the Sponsor Reply Learning Receipt cards.");
 assert(css.includes("command-sponsor-reply-learning-receipt-receipts"), "styles.css is missing the Sponsor Reply Learning Receipt receipts.");
 assert(css.includes("v775 first pilot expansion rollout plan receipt"), "styles.css is missing the v775 first pilot expansion rollout plan receipt block.");
+assert(css.includes("v792 first pilot expansion rollout reuse launch handoff"), "styles.css is missing the v792 first pilot expansion rollout reuse launch handoff block.");
+assert(css.includes("command-first-pilot-expansion-rollout-reuse-launch-handoff-strip"), "styles.css is missing the First Pilot Expansion Rollout Reuse Launch Handoff strip.");
+assert(css.includes("command-first-pilot-expansion-rollout-reuse-launch-handoff"), "styles.css is missing the First Pilot Expansion Rollout Reuse Launch Handoff shell.");
+assert(css.includes("command-first-pilot-expansion-rollout-reuse-launch-handoff-grid"), "styles.css is missing the First Pilot Expansion Rollout Reuse Launch Handoff control grid.");
+assert(css.includes("command-first-pilot-expansion-rollout-reuse-launch-handoff-lanes"), "styles.css is missing the First Pilot Expansion Rollout Reuse Launch Handoff lanes.");
+assert(css.includes("command-first-pilot-expansion-rollout-reuse-launch-handoff-cards"), "styles.css is missing the First Pilot Expansion Rollout Reuse Launch Handoff cards.");
+assert(css.includes("command-first-pilot-expansion-rollout-reuse-launch-handoff-receipts"), "styles.css is missing the First Pilot Expansion Rollout Reuse Launch Handoff receipts.");
 assert(css.includes("v791 first pilot expansion rollout reuse release candidate"), "styles.css is missing the v791 first pilot expansion rollout reuse release candidate block.");
 assert(css.includes("command-first-pilot-expansion-rollout-reuse-release-candidate-strip"), "styles.css is missing the First Pilot Expansion Rollout Reuse Release Candidate strip.");
 assert(css.includes("command-first-pilot-expansion-rollout-reuse-release-candidate"), "styles.css is missing the First Pilot Expansion Rollout Reuse Release Candidate shell.");
