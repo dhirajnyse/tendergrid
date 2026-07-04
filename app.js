@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v793";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Launch Outcome Watch";
+  const BUILD_VERSION = "v794";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Closeout Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=793.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=793.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=794.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=794.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15723,6 +15723,7 @@ const state = {
     "${renderCommandFirstPilotExpansionRolloutReuseCouncilPacketPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseReleaseCandidatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseLaunchHandoffPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseCloseoutReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseLaunchOutcomeWatchPreview(model, autopilot)}",
   ];
 
@@ -19088,6 +19089,146 @@ const state = {
       </section>
     `;
   }
+  function buildCommandFirstPilotExpansionRolloutReuseCloseoutReceiptSummary(model, autopilot) {
+    const watch = buildCommandFirstPilotExpansionRolloutReuseLaunchOutcomeWatchSummary(model, autopilot);
+    const handoff = buildCommandFirstPilotExpansionRolloutReuseLaunchHandoffSummary(model, autopilot);
+    const ledger = buildCommandFirstPilotExpansionRolloutReuseLearningLedgerSummary(model, autopilot);
+    const supportWatch = buildCommandFirstPilotExpansionRolloutSupportWatchSummary(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const safeScore = (value, penalty = 5) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const account = watch.account || handoff.account || ledger.account || firstRecord.client || state.data.company.name || "Closeout receipt account";
+    const owner = watch.owner || handoff.owner || firstTask.owner || firstTask.assignee || firstRecord.owner || "Closeout receipt owner";
+    const reviewWindow = watch.reviewWindow || handoff.reviewWindow || firstTask.dueDate || firstTask.due || model.weeklyReview?.reviewDate || "Closeout receipt review";
+    const firstMove = watch.firstMove || handoff.firstMove || firstSignal.action || firstTask.action || "Sign the reusable closeout receipt";
+    const valueLine = watch.valueLine || handoff.valueLine || ledger.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const proofDebt = Math.max(0, Math.round(Number(watch.proofDebt || 0) + Math.min(5, Number(model.evidenceGaps?.length || 0))));
+    const supportDebt = Math.max(0, Math.round(Number(watch.supportDebt || 0) + Math.max(0, 74 - Number(supportWatch.supportCalm || 0)) / 10));
+    const closeoutDebt = Math.max(0, Math.round(Number(watch.watchGaps || 0) + Math.max(0, 76 - Number(watch.closeoutReadiness || 0)) / 8 + Math.max(0, 74 - Number(ledger.learningScore || 0)) / 8));
+    const outcomeProofSeal = score((watch.outcomeProof || 0) * 0.24 + (watch.closeoutReadiness || 0) * 0.18 + safeScore(proofDebt, 6) * 0.14 + (handoff.handoffClosure || 0) * 0.12 + 10);
+    const supportCloseout = score((watch.supportCalm || 0) * 0.22 + (supportWatch.watchScore || 0) * 0.16 + safeScore(supportDebt, 5) * 0.14 + (handoff.ownerReceipt || 0) * 0.12 + 10);
+    const rollbackMemory = score((watch.rollbackReadiness || 0) * 0.24 + (handoff.rollbackHandoff || 0) * 0.18 + (ledger.rollbackMemory || 0) * 0.18 + (supportWatch.rollbackReadiness || 0) * 0.12 + 8);
+    const sponsorClosure = score((watch.sponsorResponse || 0) * 0.24 + (handoff.sponsorTransfer || 0) * 0.18 + (ledger.sponsorLearningSafety || 0) * 0.16 + safeScore(watch.watchGaps || 0, 7) * 0.12 + 8);
+    const tenantBoundaryReceipt = score((watch.tenantBoundaryWatch || 0) * 0.24 + (handoff.tenantBoundaryLock || 0) * 0.18 + (ledger.tenantLearningBoundary || 0) * 0.16 + 8);
+    const nextMarketLearning = score((watch.learningReuseRoute || 0) * 0.22 + (ledger.nextLearningUse || 0) * 0.2 + tenantBoundaryReceipt * 0.14 + sponsorClosure * 0.1 + 8);
+    const receiptAcceptance = score(outcomeProofSeal * 0.18 + supportCloseout * 0.14 + rollbackMemory * 0.14 + sponsorClosure * 0.14 + tenantBoundaryReceipt * 0.14 + nextMarketLearning * 0.14 + safeScore(closeoutDebt, 5) * 0.12);
+    const marketTransferReadiness = score(receiptAcceptance * 0.18 + nextMarketLearning * 0.18 + tenantBoundaryReceipt * 0.16 + outcomeProofSeal * 0.14 + supportCloseout * 0.12 + rollbackMemory * 0.12 + sponsorClosure * 0.1);
+    const receiptScore = score(outcomeProofSeal * 0.16 + supportCloseout * 0.14 + rollbackMemory * 0.14 + sponsorClosure * 0.14 + tenantBoundaryReceipt * 0.14 + nextMarketLearning * 0.12 + receiptAcceptance * 0.08 + marketTransferReadiness * 0.08);
+    const receiptGaps = [outcomeProofSeal < 78, supportCloseout < 74, rollbackMemory < 72, sponsorClosure < 72, tenantBoundaryReceipt < 76, nextMarketLearning < 74, receiptAcceptance < 74, marketTransferReadiness < 74].filter(Boolean).length + Math.max(0, Math.min(3, closeoutDebt));
+    const receiptDecision = receiptScore >= 88 && receiptGaps <= 1 && /Open|guarded/i.test(watch.watchDecision || "")
+      ? "Open market transfer packet"
+      : receiptScore >= 82 && outcomeProofSeal >= 76 && rollbackMemory >= 72
+        ? "Close with guardrails"
+        : outcomeProofSeal < 68
+          ? "Repair outcome proof seal"
+          : supportCloseout < 68
+            ? "Close support route"
+            : rollbackMemory < 68
+              ? "Attach rollback memory"
+              : tenantBoundaryReceipt < 68 || nextMarketLearning < 68
+                ? "Hold tenant boundary"
+                : "Observe closeout receipt";
+    const receiptState = receiptDecision === "Open market transfer packet"
+      ? "The launch outcome watch can close into a reusable receipt because outcome proof, support closeout, rollback memory, sponsor closure, tenant boundary, and next-market learning are attached"
+      : receiptDecision === "Close with guardrails"
+        ? "The closeout receipt can be signed with guardrails while market transfer proof remains visible"
+        : receiptDecision === "Repair outcome proof seal"
+          ? "Closeout pauses until outcome proof, before-and-after evidence, and accepted owner seal are repaired"
+          : receiptDecision === "Close support route"
+            ? "Support closeout needs owner, response window, and customer-safe support note before receipt signing"
+            : receiptDecision === "Attach rollback memory"
+              ? "Rollback memory needs one recovery note, owner, and trigger before closeout can sign"
+              : receiptDecision === "Hold tenant boundary"
+                ? "Next-market learning stays held until tenant boundary receipt and proof fit are stronger"
+                : "Closeout should be observed for one more review window before market transfer";
+    const nextAction = receiptDecision === "Open market transfer packet"
+      ? "Open the market transfer packet and attach the signed closeout receipt, outcome proof seal, support closeout, rollback memory, sponsor closure, tenant boundary, and next-market learning route."
+      : receiptDecision === "Close with guardrails"
+        ? "Sign the guarded closeout receipt with owner, review window, boundary, rollback memory, and market-transfer limits."
+        : receiptDecision === "Repair outcome proof seal"
+          ? "Repair the outcome proof seal with owner, source, date, before-after evidence, and acceptance note."
+          : receiptDecision === "Close support route"
+            ? "Name support owner, closeout response window, escalation line, and customer-safe support note."
+            : receiptDecision === "Attach rollback memory"
+              ? "Attach rollback owner, trigger, rehearsal result, and recovery memory before closeout."
+              : receiptDecision === "Hold tenant boundary"
+                ? "Hold market learning tenant-local until boundary receipt, sponsor consent, and proof fit are safe."
+                : "Observe the closeout receipt through the next review window and rerun scoring.";
+    const receiptLine = `${receiptDecision}: proof seal ${outcomeProofSeal}%, support closeout ${supportCloseout}%, rollback memory ${rollbackMemory}%, sponsor closure ${sponsorClosure}%, boundary receipt ${tenantBoundaryReceipt}%, next-market learning ${nextMarketLearning}%, acceptance ${receiptAcceptance}%, transfer readiness ${marketTransferReadiness}%.`;
+    const receiptId = `${BUILD_VERSION.toUpperCase()}-FIRST-PILOT-EXPANSION-ROLLOUT-REUSE-CLOSEOUT-RECEIPT`;
+    const signals = [
+      ["Reuse closeout receipt", `${receiptScore}%`, "Turns the outcome watch into a reusable closeout receipt with proof, support, rollback memory, sponsor closure, tenant boundary, and next-market route.", receiptScore >= 82 ? "green" : "amber"],
+      ["Outcome proof seal", `${outcomeProofSeal}%`, `${proofDebt} proof-debt items decide whether the closeout outcome can be sealed.`, outcomeProofSeal >= 78 ? "green" : "amber"],
+      ["Support closeout", `${supportCloseout}%`, `${supportDebt} support-debt items decide whether support can close calmly.`, supportCloseout >= 74 ? "blue" : "amber"],
+      ["Rollback memory", `${rollbackMemory}%`, "Keeps rollback owner, recovery trigger, support route, and learning memory attached.", rollbackMemory >= 72 ? "blue" : "red"],
+      ["Sponsor closure", `${sponsorClosure}%`, "Confirms sponsor answer and commercial story are safe enough for closeout acceptance.", sponsorClosure >= 72 ? "green" : "amber"],
+      ["Tenant boundary receipt", `${tenantBoundaryReceipt}%`, "Confirms tenant-local limits and reusable learning boundary are signed into the closeout.", tenantBoundaryReceipt >= 76 ? "green" : "amber"],
+      ["Next-market learning", `${nextMarketLearning}%`, "Names whether learning can transfer, stay guarded, hold tenant-local, repair, retune, or observe.", nextMarketLearning >= 74 ? "teal" : "amber"],
+      ["Receipt acceptance", `${receiptAcceptance}%`, "Confirms owner, review window, proof, support, rollback, sponsor, and boundary are accepted.", receiptAcceptance >= 74 ? "blue" : "amber"],
+      ["Market transfer readiness", `${marketTransferReadiness}%`, "Confirms the next market transfer packet can open without losing closeout proof or safety.", marketTransferReadiness >= 74 ? "green" : "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} First Pilot Expansion Rollout Reuse Closeout Receipt ${receiptId}: ${receiptState}. Receipt score ${receiptScore}%. Outcome proof seal ${outcomeProofSeal}%. Support closeout ${supportCloseout}%. Rollback memory ${rollbackMemory}%. Sponsor closure ${sponsorClosure}%. Tenant boundary receipt ${tenantBoundaryReceipt}%. Next-market learning ${nextMarketLearning}%. Receipt acceptance ${receiptAcceptance}%. Market transfer readiness ${marketTransferReadiness}%. Proof debt ${proofDebt}. Support debt ${supportDebt}. Closeout debt ${closeoutDebt}. Receipt decision ${receiptDecision}. Receipt gaps ${receiptGaps}. Watch decision ${watch.watchDecision}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Receipt line: ${receiptLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, closeoutDebt, copyText, firstMove, marketTransferReadiness, nextAction, nextMarketLearning, outcomeProofSeal, owner, proofDebt, receiptAcceptance, receiptDecision, receiptGaps, receiptId, receiptLine, receiptScore, receiptState, reviewWindow, rollbackMemory, signals, sponsorClosure, supportCloseout, supportDebt, tenantBoundaryReceipt, valueLine };
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseCloseoutReceipt(model, autopilot, seed = {}) {
+    const summary = seed.summary || buildCommandFirstPilotExpansionRolloutReuseCloseoutReceiptSummary(model, autopilot);
+    const signalValue = (label) => summary.signals.find(([name]) => name === label)?.[1] || "0%";
+    const signalNote = (label) => summary.signals.find(([name]) => name === label)?.[2] || "Signal pending.";
+    const receiptMode =
+      summary.receiptDecision === "Open market transfer packet"
+        ? "Transfer"
+        : summary.receiptDecision === "Close with guardrails"
+          ? "Guarded"
+          : summary.receiptDecision === "Repair outcome proof seal"
+            ? "Proof repair"
+            : summary.receiptDecision === "Close support route"
+              ? "Support close"
+              : summary.receiptDecision === "Attach rollback memory"
+                ? "Rollback"
+                : summary.receiptDecision === "Hold tenant boundary"
+                  ? "Tenant-local"
+                  : "Observe";
+    const lanes = [
+      ["Receipt decision", receiptMode, "Choose market transfer, guarded closeout, proof repair, support close, rollback memory, tenant-boundary hold, or observe.", summary.receiptScore >= 82 ? "green" : "amber"],
+      ["Outcome proof seal", `${summary.proofDebt} debt / ${signalValue("Outcome proof seal")}`, signalNote("Outcome proof seal"), summary.outcomeProofSeal >= 78 ? "green" : "amber"],
+      ["Support closeout", `${summary.supportDebt} debt / ${signalValue("Support closeout")}`, signalNote("Support closeout"), summary.supportCloseout >= 74 ? "blue" : "amber"],
+      ["Rollback memory", signalValue("Rollback memory"), signalNote("Rollback memory"), summary.rollbackMemory >= 72 ? "blue" : "red"],
+      ["Sponsor closure", signalValue("Sponsor closure"), signalNote("Sponsor closure"), summary.sponsorClosure >= 72 ? "green" : "amber"],
+      ["Tenant boundary receipt", signalValue("Tenant boundary receipt"), signalNote("Tenant boundary receipt"), summary.tenantBoundaryReceipt >= 76 ? "green" : "amber"],
+      ["Next-market learning", signalValue("Next-market learning"), signalNote("Next-market learning"), summary.nextMarketLearning >= 74 ? "teal" : "amber"],
+      ["Receipt acceptance", `${summary.closeoutDebt} debt / ${signalValue("Receipt acceptance")}`, signalNote("Receipt acceptance"), summary.receiptAcceptance >= 74 ? "blue" : "amber"],
+      ["Market transfer readiness", signalValue("Market transfer readiness"), signalNote("Market transfer readiness"), summary.marketTransferReadiness >= 74 ? "green" : "amber"],
+    ];
+    const cards = lanes.map(([label, value, note, tone], index) => [label, value, note, index === 0 ? "Receipt" : "Closeout", tone]);
+    const receipts = lanes.map(([label, value, note, tone], index) => [`${index + 1}`, `${label} closeout receipt`, `${value}: ${note}`, tone]);
+    return { ...summary, cards, lanes, receiptMode, receipts };
+  }
+  function renderCommandFirstPilotExpansionRolloutReuseCloseoutReceiptPreview(model, autopilot) {
+    const receipt = buildCommandFirstPilotExpansionRolloutReuseCloseoutReceipt(model, autopilot);
+    return `
+      <section class="info-card command-first-pilot-expansion-rollout-reuse-closeout-receipt tone-${escapeHtml(receipt.receiptScore >= 84 ? "green" : receipt.receiptScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Expansion Rollout Reuse Closeout Receipt">
+        <div class="info-head compact command-first-pilot-expansion-rollout-reuse-closeout-receipt-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Closeout Receipt</span>
+            <strong>First Pilot Expansion Rollout Reuse Closeout Receipt / ${receipt.receiptScore}%</strong>
+            <p>${escapeHtml(receipt.receiptState)}. ${escapeHtml(receipt.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(receipt.receiptId)}</span>
+        </div>
+        <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-quote tone-teal"><span>First pilot expansion rollout reuse closeout receipt line</span><strong>${escapeHtml(receipt.receiptLine)}</strong></div>
+        <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-grid mini-card-grid">${receipt.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-lanes">${receipt.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-cards">${receipt.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-receipts">${receipt.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-closeout-receipt" data-copy-text="${escapeHtml(encodeURIComponent(receipt.copyText))}">Copy closeout receipt</button>
+          <span>One receipt before market transfer: proof seal, support closeout, rollback memory, sponsor closure, tenant boundary, next-market learning, acceptance, and transfer readiness stay together.</span>
+        </div>
+      </section>
+    `;
+  }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
@@ -19122,6 +19263,7 @@ const state = {
     const lightReuseReleaseCandidate = buildCommandFirstPilotExpansionRolloutReuseReleaseCandidateSummary(model, autopilot);
     const lightReuseLaunchHandoff = buildCommandFirstPilotExpansionRolloutReuseLaunchHandoffSummary(model, autopilot);
     const lightReuseLaunchOutcomeWatch = buildCommandFirstPilotExpansionRolloutReuseLaunchOutcomeWatchSummary(model, autopilot);
+    const lightReuseCloseoutReceipt = buildCommandFirstPilotExpansionRolloutReuseCloseoutReceiptSummary(model, autopilot);
     const lightBridgeTone = lightSponsorBridge.bridgeScore >= 84 ? "green" : lightSponsorBridge.bridgeScore >= 72 ? "blue" : "amber";
     const lightGateTone = lightExpansionGate.gateScore >= 84 ? "green" : lightExpansionGate.gateScore >= 72 ? "blue" : "amber";
     const lightPackTone = lightRenewalPack.packScore >= 84 ? "green" : lightRenewalPack.packScore >= 72 ? "blue" : "amber";
@@ -19153,8 +19295,10 @@ const state = {
     const lightReuseReleaseCandidateTone = lightReuseReleaseCandidate.candidateScore >= 84 ? "green" : lightReuseReleaseCandidate.candidateScore >= 72 ? "blue" : "amber";
     const lightReuseLaunchHandoffTone = lightReuseLaunchHandoff.handoffScore >= 84 ? "green" : lightReuseLaunchHandoff.handoffScore >= 72 ? "blue" : "amber";
     const lightReuseLaunchOutcomeWatchTone = lightReuseLaunchOutcomeWatch.watchScore >= 84 ? "green" : lightReuseLaunchOutcomeWatch.watchScore >= 72 ? "blue" : "amber";
+    const lightReuseCloseoutReceiptTone = lightReuseCloseoutReceipt.receiptScore >= 84 ? "green" : lightReuseCloseoutReceipt.receiptScore >= 72 ? "blue" : "amber";
     const lightRailCards = [
       ["Latest release rail", `${railCount} paths`, "Deep release rooms stay indexed for proof without running during every Command render.", "teal", "Build Phase"],
+      ["Reuse closeout receipt", `${lightReuseCloseoutReceipt.receiptScore}%`, `${lightReuseCloseoutReceipt.receiptDecision}: ${lightReuseCloseoutReceipt.nextAction}`, lightReuseCloseoutReceipt.receiptScore >= 82 ? "green" : "amber", "Build Phase"],
       ["Reuse outcome watch", `${lightReuseLaunchOutcomeWatch.watchScore}%`, `${lightReuseLaunchOutcomeWatch.watchDecision}: ${lightReuseLaunchOutcomeWatch.nextAction}`, lightReuseLaunchOutcomeWatch.watchScore >= 82 ? "green" : "amber", "Build Phase"],
       ["Reuse handoff", `${lightReuseLaunchHandoff.handoffScore}%`, `${lightReuseLaunchHandoff.handoffDecision}: ${lightReuseLaunchHandoff.nextAction}`, lightReuseLaunchHandoff.handoffScore >= 82 ? "green" : "amber", "Build Phase"],
       ["Reuse candidate", `${lightReuseReleaseCandidate.candidateScore}%`, `${lightReuseReleaseCandidate.candidateDecision}: ${lightReuseReleaseCandidate.nextAction}`, lightReuseReleaseCandidate.candidateScore >= 82 ? "green" : "amber", "Build Phase"],
@@ -19213,7 +19357,17 @@ const state = {
             )
             .join("")}
         </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-launch-outcome-watch-strip tone-${escapeHtml(lightReuseLaunchOutcomeWatchTone)}" aria-label="First Pilot Expansion Rollout Reuse Launch Outcome Watch summary">
+        <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-strip tone-${escapeHtml(lightReuseCloseoutReceiptTone)}" aria-label="First Pilot Expansion Rollout Reuse Closeout Receipt summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} rollout reuse closeout receipt</span>
+            <strong>${escapeHtml(lightReuseCloseoutReceipt.receiptDecision)} / ${lightReuseCloseoutReceipt.receiptScore}%</strong>
+            <p>${escapeHtml(lightReuseCloseoutReceipt.receiptState)}. ${escapeHtml(lightReuseCloseoutReceipt.nextAction)}</p>
+          </div>
+          <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-strip-signals">
+            ${lightReuseCloseoutReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-closeout-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseCloseoutReceipt.copyText))}">Copy closeout receipt</button>
+        </div>        <div class="command-first-pilot-expansion-rollout-reuse-launch-outcome-watch-strip tone-${escapeHtml(lightReuseLaunchOutcomeWatchTone)}" aria-label="First Pilot Expansion Rollout Reuse Launch Outcome Watch summary">
           <div>
             <span>${escapeHtml(BUILD_VERSION)} rollout reuse outcome watch</span>
             <strong>${escapeHtml(lightReuseLaunchOutcomeWatch.watchDecision)} / ${lightReuseLaunchOutcomeWatch.watchScore}%</strong>
@@ -84534,12 +84688,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v793 First Pilot Expansion Rollout Reuse Launch Outcome Watch",
-      phase: "First Pilot Expansion Rollout Reuse Launch Outcome Watch",
+      version: "v794 First Pilot Expansion Rollout Reuse Closeout Receipt",
+      phase: "First Pilot Expansion Rollout Reuse Closeout Receipt",
       lane: "Static product prototype on GitHub Pages",
-      pace: "774 meaningful versions since rebrand",
-      summary: "PursuitDesk now watches the first pilot expansion rollout reuse launch handoff against outcome proof, support calm, rollback readiness, sponsor response, tenant boundary watch, learning reuse route, watch cadence, closeout readiness, owner, review window, and one copyable outcome watch.",
+      pace: "775 meaningful versions since rebrand",
+      summary: "PursuitDesk now closes the first pilot expansion rollout reuse outcome watch into a signed closeout receipt with outcome proof seal, support closeout, rollback memory, sponsor closure, tenant boundary receipt, next-market learning, receipt acceptance, transfer readiness, owner, review window, and one copyable closeout receipt.",
       tracks: [
+        ["v794 first pilot expansion rollout reuse closeout receipt", 100, "Outcome watches now become one signed closeout receipt across outcome proof seal, support closeout, rollback memory, sponsor closure, tenant boundary receipt, next-market learning, receipt acceptance, transfer readiness, owner, review window, and one copyable closeout receipt.", "green"],
         ["v793 first pilot expansion rollout reuse launch outcome watch", 100, "Launch handoffs now become one outcome watch across outcome proof, support calm, rollback readiness, sponsor response, tenant boundary watch, learning reuse route, watch cadence, closeout readiness, owner, review window, and one copyable outcome watch.", "green"],
         ["v792 first pilot expansion rollout reuse launch handoff", 100, "Reuse release candidates now become one launch handoff across handoff readiness, owner receipt, rollback handoff, launch limit lock, sponsor transfer, tenant boundary lock, next reuse route, handoff closure, owner, review window, and one copyable launch handoff.", "green"],
         ["v791 first pilot expansion rollout reuse release candidate", 100, "Reuse council packets now become one release candidate across candidate readiness, launch limit, rollback proof, sponsor handoff, tenant-safe release, proof freeze, launch route, candidate closure, owner, review window, and one copyable release candidate.", "green"],
@@ -85327,13 +85482,14 @@ const state = {
         ["214", "First pilot expansion rollout reuse council packet", "Done", "Learning ledgers now become one council packet with readiness, proof bundle, exception clearance, rollback boundary, tenant boundary, sponsor-safe story, candidate route, and closure."],
         ["215", "First pilot expansion rollout reuse release candidate", "Done", "Council packets now become one release candidate with readiness, launch limits, rollback proof, sponsor handoff, tenant-safe release, proof freeze, launch route, and closure."],
         ["216", "First pilot expansion rollout reuse launch handoff", "Done", "Release candidates now become one launch handoff with readiness, owner receipt, rollback proof, launch limits, sponsor transfer, tenant boundary, next reuse route, and closure."],
-        ["217", "First pilot expansion rollout reuse launch outcome watch", "Active", "Launch handoffs now become one outcome watch with outcome proof, support calm, rollback readiness, sponsor response, tenant boundary, learning route, cadence, and closeout readiness."],
+        ["217", "First pilot expansion rollout reuse launch outcome watch", "Done", "Launch handoffs now become one outcome watch with outcome proof, support calm, rollback readiness, sponsor response, tenant boundary, learning route, cadence, and closeout readiness."],
+        ["218", "First pilot expansion rollout reuse closeout receipt", "Active", "Outcome watches now become one signed closeout receipt with proof seal, support closeout, rollback memory, sponsor closure, tenant boundary receipt, next-market learning, acceptance, and transfer readiness."],
       ],
       nextBuilds: [
 
-        ["v794", "First Pilot Expansion Rollout Reuse Closeout Receipt", "Close the launch outcome watch into signed reusable outcome proof, rollback memory, and next-market learning route."],
         ["v795", "First Pilot Expansion Rollout Reuse Market Transfer Packet", "Transfer the closeout receipt into next-market scope, tenant boundary, and reusable learning proof."],
         ["v796", "First Pilot Expansion Rollout Reuse Market Transfer Outcome Watch", "Watch the market transfer packet against next-market proof, tenant boundary, support calm, and reusable learning fit."],
+        ["v797", "First Pilot Expansion Rollout Reuse Market Learning Receipt", "Close the market transfer outcome into reusable learning receipt, local proof, rollback memory, and next expansion route."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -85638,11 +85794,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The launch handoff now opens an outcome watch before closeout receipt.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The outcome watch now closes into a reusable receipt before market transfer.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v794 smoke addendum", "First Pilot Expansion Rollout Reuse Closeout Receipt", "Confirm the v794 reuse closeout receipt strip, full hidden closeout receipt room, nine receipt signals, nine receipt lanes, nine receipt cards, nine closeout receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v793 smoke addendum", "First Pilot Expansion Rollout Reuse Launch Outcome Watch", "Confirm the v793 reuse outcome watch strip, full hidden launch outcome watch room, nine watch signals, nine watch lanes, nine watch cards, nine watch receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v792 smoke addendum", "First Pilot Expansion Rollout Reuse Launch Handoff", "Confirm the v792 reuse handoff strip, full hidden launch handoff room, nine handoff signals, nine handoff lanes, nine handoff cards, nine handoff receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v791 smoke addendum", "First Pilot Expansion Rollout Reuse Release Candidate", "Confirm the v791 reuse candidate strip, full hidden release candidate room, nine candidate signals, nine candidate lanes, nine candidate cards, nine candidate receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
@@ -138735,7 +138892,12 @@ const state = {
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout learning passport copied.");
       return;
     }
-    if (action === "copy-command-first-pilot-expansion-rollout-reuse-launch-outcome-watch") {
+    if (action === "copy-command-first-pilot-expansion-rollout-reuse-closeout-receipt") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandFirstPilotExpansionRolloutReuseCloseoutReceipt(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout reuse closeout receipt copied.");
+      return;
+    }    if (action === "copy-command-first-pilot-expansion-rollout-reuse-launch-outcome-watch") {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstPilotExpansionRolloutReuseLaunchOutcomeWatch(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout reuse launch outcome watch copied.");
