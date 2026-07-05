@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v800";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Launch Passport";
+  const BUILD_VERSION = "v801";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Envelope";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=800.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=800.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=801.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=801.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -15723,6 +15723,7 @@ const state = {
     "${renderCommandFirstPilotExpansionRolloutReuseCouncilPacketPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseReleaseCandidatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseLaunchHandoffPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelopePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketLaunchPassportPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketDecisionRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketExpansionGatePreview(model, autopilot)}",
@@ -20130,6 +20131,150 @@ const state = {
       </section>
     `;
   }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelopeSummary(model, autopilot) {
+    const passport = buildCommandFirstPilotExpansionRolloutReuseMarketLaunchPassportSummary(model, autopilot);
+    const room = buildCommandFirstPilotExpansionRolloutReuseMarketDecisionRoomSummary(model, autopilot);
+    const firstTask = model.priorityTasks?.[0] || {};
+    const firstSignal = autopilot?.signals?.[0] || {};
+    const firstRecord = firstSignal.record || {};
+    const score = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const safeScore = (value, penalty = 7) => Math.max(0, 100 - Number(value || 0) * penalty);
+    const openCount = Number(model.openRecords?.length || model.openWork || model.totalOpen || 0);
+    const actionCount = Number(model.priorityActions || model.actionCount || model.actions?.length || 0);
+    const account = passport.account || room.account || firstRecord.client || state.data.company.name || "Pilot envelope account";
+    const owner = passport.owner || room.owner || firstTask.owner || firstTask.assignee || firstRecord.owner || "Pilot envelope owner";
+    const reviewWindow = passport.reviewWindow || room.reviewWindow || firstTask.dueDate || firstTask.due || model.weeklyReview?.reviewDate || "Pilot envelope review";
+    const firstMove = passport.firstMove || room.firstMove || firstSignal.action || firstTask.action || "Open the pilot envelope";
+    const valueLine = passport.valueLine || room.valueLine || formatCompactMoney(autopilot?.protectedValue || model.totalValue || 0);
+    const allowedRecordCount = Math.max(3, Math.min(12, Math.round((openCount || 36) / 12)));
+    const proofDebt = Number(passport.proofDebt || 0);
+    const supportDebt = Number(passport.supportDebt || 0);
+    const rollbackDebt = Number(passport.rollbackDebt || 0);
+    const boundaryDebt = Number(passport.boundaryDebt || 0);
+    const closureDebt = Number(passport.closureDebt || 0);
+    const actionPressure = Math.max(0, Math.round(actionCount / 38));
+    const allowedRecords = score(passport.pilotEnvelopeReadiness * 0.24 + passport.boundaryLimitSeal * 0.18 + room.openNextMarketDecision * 0.14 + safeScore(actionPressure, 4.5) * 0.14 + safeScore(boundaryDebt, 5.5) * 0.14 + 9);
+    const proofLimit = score(passport.passportProofSeal * 0.28 + passport.reviewCadenceSeal * 0.14 + passport.passportClosure * 0.12 + safeScore(proofDebt, 6) * 0.18 + (model.evidenceScore || 0) * 0.12 + 7);
+    const supportPromise = score(passport.supportCalmSeal * 0.3 + passport.reviewCadenceSeal * 0.14 + safeScore(supportDebt, 6) * 0.18 + (model.healthScore || 0) * 0.12 + 7);
+    const rollbackPath = score(passport.rollbackRouteSeal * 0.32 + passport.boundaryLimitSeal * 0.14 + safeScore(rollbackDebt, 6) * 0.2 + passport.passportClosure * 0.12 + 6);
+    const reviewWindowLock = score(passport.reviewCadenceSeal * 0.3 + passport.passportClosure * 0.18 + safeScore(closureDebt, 5.6) * 0.18 + (model.weeklyReview?.readiness || model.healthScore || 0) * 0.12 + 6);
+    const boundaryLock = score(passport.boundaryLimitSeal * 0.32 + room.tenantLocalHoldDecision * 0.16 + safeScore(boundaryDebt, 6) * 0.18 + passport.pilotEnvelopeReadiness * 0.12 + 6);
+    const sponsorAcceptance = score(passport.sponsorApprovalSeal * 0.32 + room.sponsorPermissionDecision * 0.16 + safeScore(passport.sponsorDebt || 0, 6) * 0.18 + passport.passportClosure * 0.12 + 6);
+    const envelopeClosure = score(allowedRecords * 0.14 + proofLimit * 0.15 + supportPromise * 0.13 + rollbackPath * 0.13 + reviewWindowLock * 0.13 + boundaryLock * 0.14 + sponsorAcceptance * 0.1 + passport.passportClosure * 0.08);
+    const envelopeScore = score(allowedRecords * 0.14 + proofLimit * 0.16 + supportPromise * 0.13 + rollbackPath * 0.13 + reviewWindowLock * 0.13 + boundaryLock * 0.14 + sponsorAcceptance * 0.1 + envelopeClosure * 0.07);
+    const envelopeGaps = [allowedRecords < 78, proofLimit < 78, supportPromise < 76, rollbackPath < 74, reviewWindowLock < 74, boundaryLock < 76, sponsorAcceptance < 76, envelopeClosure < 76].filter(Boolean).length + Math.max(0, Math.min(4, proofDebt + supportDebt + rollbackDebt + boundaryDebt + closureDebt - 5));
+    const envelopeDecision = envelopeScore >= 88 && envelopeGaps <= 2
+      ? "Open pilot envelope"
+      : envelopeScore >= 82 && proofLimit >= 78 && boundaryLock >= 76
+        ? "Open guarded pilot envelope"
+        : proofLimit < 70 || proofDebt >= 3
+          ? "Reduce proof limit"
+          : supportPromise < 70 || supportDebt >= 3
+            ? "Name support promise"
+            : rollbackPath < 70 || rollbackDebt >= 2
+              ? "Attach rollback path"
+              : boundaryLock < 72 || boundaryDebt >= 3
+                ? "Lock pilot boundary"
+                : "Hold envelope review";
+    const envelopeState = envelopeDecision === "Open pilot envelope"
+      ? "The launch passport can become a small pilot envelope with records, proof, support, rollback, review, and boundary locked"
+      : envelopeDecision === "Open guarded pilot envelope"
+        ? "The pilot envelope can open with a narrower record set while proof and boundary limits stay visible"
+        : envelopeDecision === "Reduce proof limit"
+          ? "The envelope must reduce proof scope before pilot users see the work"
+          : envelopeDecision === "Name support promise"
+            ? "Support promise needs one named owner, response window, and escalation note before opening"
+            : envelopeDecision === "Attach rollback path"
+              ? "Rollback path must carry trigger, owner, recovery note, and decision route before opening"
+              : envelopeDecision === "Lock pilot boundary"
+                ? "Pilot boundary needs a tighter allowed-record, market, tenant, and data limit"
+                : "The envelope should hold for one review window before pilot exposure";
+    const nextAction = envelopeDecision === "Open pilot envelope"
+      ? `Open a ${allowedRecordCount}-record pilot envelope with owner, proof limit, support promise, rollback path, review window, and boundary receipt.`
+      : envelopeDecision === "Open guarded pilot envelope"
+        ? `Open a guarded ${Math.max(2, allowedRecordCount - 2)}-record envelope and keep proof, sponsor, support, rollback, and boundary receipts attached.`
+        : envelopeDecision === "Reduce proof limit"
+          ? "Reduce proof limit to accepted evidence sources, named owner, dated receipt, and one buyer-safe readback."
+          : envelopeDecision === "Name support promise"
+            ? "Name support promise with owner, response window, escalation route, and calm support note."
+            : envelopeDecision === "Attach rollback path"
+              ? "Attach rollback path with trigger, route owner, recovery note, and safe closeout action."
+              : envelopeDecision === "Lock pilot boundary"
+                ? "Lock pilot boundary across allowed records, market, account, proof types, data handling, and review cadence."
+                : "Hold the envelope, run one review window, and rerun readiness before opening pilot users.";
+    const envelopeLine = `${envelopeDecision}: allowed records ${allowedRecordCount}, proof ${proofLimit}%, support ${supportPromise}%, rollback ${rollbackPath}%, review ${reviewWindowLock}%, boundary ${boundaryLock}%, sponsor ${sponsorAcceptance}%, closure ${envelopeClosure}%.`;
+    const envelopeId = `${BUILD_VERSION.toUpperCase()}-FIRST-PILOT-EXPANSION-ROLLOUT-REUSE-MARKET-PILOT-ENVELOPE`;
+    const signals = [
+      ["Pilot envelope", `${envelopeScore}%`, "Turns the launch passport into one small controlled pilot envelope.", envelopeScore >= 82 ? "green" : "amber"],
+      ["Allowed records", `${allowedRecordCount} records`, "Keeps pilot scope small enough for first users and support to absorb calmly.", allowedRecords >= 78 ? "green" : "amber"],
+      ["Proof limit", `${proofLimit}%`, `${proofDebt} proof debts decide how much evidence can enter the pilot envelope.`, proofLimit >= 78 ? "green" : "amber"],
+      ["Support promise", `${supportPromise}%`, `${supportDebt} support debts decide whether the envelope can open calmly.`, supportPromise >= 76 ? "teal" : "amber"],
+      ["Rollback path", `${rollbackPath}%`, `${rollbackDebt} rollback debts keep trigger, route owner, and recovery note attached.`, rollbackPath >= 74 ? "blue" : "red"],
+      ["Review window", `${reviewWindowLock}%`, `${closureDebt} closure debts keep the pilot review window honest.`, reviewWindowLock >= 74 ? "blue" : "amber"],
+      ["Boundary lock", `${boundaryLock}%`, `${boundaryDebt} boundary debts keep account, market, proof, and data limits visible.`, boundaryLock >= 76 ? "green" : "amber"],
+      ["Sponsor acceptance", `${sponsorAcceptance}%`, "Sponsor approval stays attached before pilot exposure widens.", sponsorAcceptance >= 76 ? "green" : "amber"],
+      ["Envelope closure", `${envelopeClosure}%`, `${envelopeGaps} gaps remain before the envelope is launch-clean.`, envelopeClosure >= 76 ? "green" : "amber"],
+    ];
+    const copyText = `${BRAND_NAME} ${BUILD_VERSION} First Pilot Expansion Rollout Reuse Market Pilot Envelope ${envelopeId}: ${envelopeState}. Envelope score ${envelopeScore}%. Allowed records ${allowedRecordCount}. Proof limit ${proofLimit}%. Support promise ${supportPromise}%. Rollback path ${rollbackPath}%. Review window ${reviewWindowLock}%. Boundary lock ${boundaryLock}%. Sponsor acceptance ${sponsorAcceptance}%. Envelope closure ${envelopeClosure}%. Envelope gaps ${envelopeGaps}. Envelope decision ${envelopeDecision}. Passport decision ${passport.passportDecision}. Owner ${owner}. Review ${reviewWindow}. Account ${account}. Value ${valueLine}. Envelope line: ${envelopeLine} First move: ${compactText(firstMove, 96)}. Next: ${nextAction}`;
+    return { account, allowedRecordCount, allowedRecords, boundaryLock, copyText, envelopeClosure, envelopeDecision, envelopeGaps, envelopeId, envelopeLine, envelopeScore, envelopeState, firstMove, nextAction, owner, proofLimit, reviewWindow, reviewWindowLock, rollbackPath, signals, sponsorAcceptance, supportPromise, valueLine };
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelope(model, autopilot, seed = {}) {
+    const summary = seed.summary || buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelopeSummary(model, autopilot);
+    const signalValue = (label) => summary.signals.find(([name]) => name === label)?.[1] || "0%";
+    const signalNote = (label) => summary.signals.find(([name]) => name === label)?.[2] || "Signal pending.";
+    const envelopeMode =
+      summary.envelopeDecision === "Open pilot envelope"
+        ? "Open"
+        : summary.envelopeDecision === "Open guarded pilot envelope"
+          ? "Guarded"
+          : summary.envelopeDecision === "Reduce proof limit"
+            ? "Proof limit"
+            : summary.envelopeDecision === "Name support promise"
+              ? "Support promise"
+              : summary.envelopeDecision === "Attach rollback path"
+                ? "Rollback"
+                : summary.envelopeDecision === "Lock pilot boundary"
+                  ? "Boundary"
+                  : "Review";
+    const lanes = [
+      ["Envelope decision", envelopeMode, "Choose open, guarded, proof limit, support promise, rollback, boundary, or review.", summary.envelopeScore >= 82 ? "green" : "amber"],
+      ["Allowed records", signalValue("Allowed records"), signalNote("Allowed records"), summary.allowedRecords >= 78 ? "green" : "amber"],
+      ["Proof limit", signalValue("Proof limit"), signalNote("Proof limit"), summary.proofLimit >= 78 ? "green" : "amber"],
+      ["Support promise", signalValue("Support promise"), signalNote("Support promise"), summary.supportPromise >= 76 ? "teal" : "amber"],
+      ["Rollback path", signalValue("Rollback path"), signalNote("Rollback path"), summary.rollbackPath >= 74 ? "blue" : "red"],
+      ["Review window", signalValue("Review window"), signalNote("Review window"), summary.reviewWindowLock >= 74 ? "blue" : "amber"],
+      ["Boundary lock", signalValue("Boundary lock"), signalNote("Boundary lock"), summary.boundaryLock >= 76 ? "green" : "amber"],
+      ["Sponsor acceptance", signalValue("Sponsor acceptance"), signalNote("Sponsor acceptance"), summary.sponsorAcceptance >= 76 ? "green" : "amber"],
+      ["Envelope closure", `${summary.envelopeGaps} gaps / ${signalValue("Envelope closure")}`, signalNote("Envelope closure"), summary.envelopeClosure >= 76 ? "green" : "amber"],
+    ];
+    const cards = lanes.map(([label, value, note, tone], index) => [label, value, note, index === 0 ? "Envelope" : "Pilot", tone]);
+    const receipts = lanes.map(([label, value, note, tone], index) => [`${index + 1}`, `${label} envelope receipt`, `${value}: ${note}`, tone]);
+    return { ...summary, cards, envelopeMode, lanes, receipts };
+  }
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelopePreview(model, autopilot) {
+    const envelope = buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelope(model, autopilot);
+    return `
+      <section class="info-card command-first-pilot-expansion-rollout-reuse-market-pilot-envelope tone-${escapeHtml(envelope.envelopeScore >= 84 ? "green" : envelope.envelopeScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Expansion Rollout Reuse Market Pilot Envelope">
+        <div class="info-head compact command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-head">
+          <div>
+            <span class="metric-label">${escapeHtml(BUILD_VERSION)} Pilot Envelope</span>
+            <strong>First Pilot Expansion Rollout Reuse Market Pilot Envelope / ${envelope.envelopeScore}%</strong>
+            <p>${escapeHtml(envelope.envelopeState)}. ${escapeHtml(envelope.nextAction)}</p>
+          </div>
+          <span>${escapeHtml(envelope.envelopeId)}</span>
+        </div>
+        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-quote tone-teal"><span>First pilot expansion rollout reuse market pilot envelope line</span><strong>${escapeHtml(envelope.envelopeLine)}</strong></div>
+        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-grid mini-card-grid">${envelope.signals.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-lanes">${envelope.lanes.map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-cards">${envelope.cards.map(([label, value, note, proof, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-receipts">${envelope.receipts.map(([number, label, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-actions action-row">
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-pilot-envelope" data-copy-text="${escapeHtml(encodeURIComponent(envelope.copyText))}">Copy pilot envelope</button>
+          <span>One envelope before pilot exposure: allowed records, proof limit, support promise, rollback path, review window, boundary lock, sponsor acceptance, and closure stay together.</span>
+        </div>
+      </section>
+    `;
+  }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
@@ -20171,6 +20316,7 @@ const state = {
     const lightReuseMarketExpansionGate = buildCommandFirstPilotExpansionRolloutReuseMarketExpansionGateSummary(model, autopilot);
     const lightReuseMarketDecisionRoom = buildCommandFirstPilotExpansionRolloutReuseMarketDecisionRoomSummary(model, autopilot);
     const lightReuseMarketLaunchPassport = buildCommandFirstPilotExpansionRolloutReuseMarketLaunchPassportSummary(model, autopilot);
+    const lightReuseMarketPilotEnvelope = buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelopeSummary(model, autopilot);
     const lightBridgeTone = lightSponsorBridge.bridgeScore >= 84 ? "green" : lightSponsorBridge.bridgeScore >= 72 ? "blue" : "amber";
     const lightGateTone = lightExpansionGate.gateScore >= 84 ? "green" : lightExpansionGate.gateScore >= 72 ? "blue" : "amber";
     const lightPackTone = lightRenewalPack.packScore >= 84 ? "green" : lightRenewalPack.packScore >= 72 ? "blue" : "amber";
@@ -20209,8 +20355,10 @@ const state = {
     const lightReuseMarketExpansionGateTone = lightReuseMarketExpansionGate.gateScore >= 84 ? "green" : lightReuseMarketExpansionGate.gateScore >= 72 ? "blue" : "amber";
     const lightReuseMarketDecisionRoomTone = lightReuseMarketDecisionRoom.decisionScore >= 84 ? "green" : lightReuseMarketDecisionRoom.decisionScore >= 72 ? "blue" : "amber";
     const lightReuseMarketLaunchPassportTone = lightReuseMarketLaunchPassport.passportScore >= 84 ? "green" : lightReuseMarketLaunchPassport.passportScore >= 72 ? "blue" : "amber";
+    const lightReuseMarketPilotEnvelopeTone = lightReuseMarketPilotEnvelope.envelopeScore >= 84 ? "green" : lightReuseMarketPilotEnvelope.envelopeScore >= 72 ? "blue" : "amber";
     const lightRailCards = [
       ["Latest release rail", `${railCount} paths`, "Deep release rooms stay indexed for proof without running during every Command render.", "teal", "Build Phase"],
+      ["Reuse market envelope", `${lightReuseMarketPilotEnvelope.envelopeScore}%`, `${lightReuseMarketPilotEnvelope.envelopeDecision}: ${lightReuseMarketPilotEnvelope.nextAction}`, lightReuseMarketPilotEnvelope.envelopeScore >= 82 ? "green" : "amber", "Build Phase"],
       ["Reuse market passport", `${lightReuseMarketLaunchPassport.passportScore}%`, `${lightReuseMarketLaunchPassport.passportDecision}: ${lightReuseMarketLaunchPassport.nextAction}`, lightReuseMarketLaunchPassport.passportScore >= 82 ? "green" : "amber", "Build Phase"],
       ["Reuse market decision", `${lightReuseMarketDecisionRoom.decisionScore}%`, `${lightReuseMarketDecisionRoom.decisionChoice}: ${lightReuseMarketDecisionRoom.nextAction}`, lightReuseMarketDecisionRoom.decisionScore >= 82 ? "green" : "amber", "Build Phase"],
       ["Reuse market gate", `${lightReuseMarketExpansionGate.gateScore}%`, `${lightReuseMarketExpansionGate.gateDecision}: ${lightReuseMarketExpansionGate.nextAction}`, lightReuseMarketExpansionGate.gateScore >= 82 ? "green" : "amber", "Build Phase"],
@@ -20275,6 +20423,17 @@ const state = {
               `,
             )
             .join("")}
+        </div>
+        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-strip tone-${escapeHtml(lightReuseMarketPilotEnvelopeTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Pilot Envelope summary">
+          <div>
+            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market envelope</span>
+            <strong>${escapeHtml(lightReuseMarketPilotEnvelope.envelopeDecision)} / ${lightReuseMarketPilotEnvelope.envelopeScore}%</strong>
+            <p>${escapeHtml(lightReuseMarketPilotEnvelope.envelopeState)}. ${escapeHtml(lightReuseMarketPilotEnvelope.nextAction)}</p>
+          </div>
+          <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-strip-signals">
+            ${lightReuseMarketPilotEnvelope.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
+          </div>
+          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-pilot-envelope" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketPilotEnvelope.copyText))}">Copy pilot envelope</button>
         </div>
         <div class="command-first-pilot-expansion-rollout-reuse-market-launch-passport-strip tone-${escapeHtml(lightReuseMarketLaunchPassportTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Launch Passport summary">
           <div>
@@ -85667,12 +85826,13 @@ const state = {
 
   function buildProductBuildTracker() {
     return {
-      version: "v800 First Pilot Expansion Rollout Reuse Market Launch Passport",
-      phase: "First Pilot Expansion Rollout Reuse Market Launch Passport",
+      version: "v801 First Pilot Expansion Rollout Reuse Market Pilot Envelope",
+      phase: "First Pilot Expansion Rollout Reuse Market Pilot Envelope",
       lane: "Static product prototype on GitHub Pages",
-      pace: "781 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns the first pilot expansion rollout reuse market decision room into a launch passport with proof seal, sponsor approval seal, support calm seal, rollback route seal, boundary limit seal, pilot envelope readiness, review cadence seal, passport closure, owner, review window, and one copyable launch passport.",
+      pace: "782 meaningful versions since rebrand",
+      summary: "PursuitDesk now turns the market launch passport into a small pilot envelope with allowed records, proof limit, support promise, rollback path, review window, boundary lock, sponsor acceptance, envelope closure, owner, review window, and one copyable pilot envelope.",
       tracks: [
+        ["v801 first pilot expansion rollout reuse market pilot envelope", 100, "Market launch passports now become one small pilot envelope across allowed records, proof limit, support promise, rollback path, review window, boundary lock, sponsor acceptance, envelope closure, owner, review window, and one copyable pilot envelope.", "green"],
         ["v800 first pilot expansion rollout reuse market launch passport", 100, "Market decision rooms now become one launch passport across proof seal, sponsor approval seal, support calm seal, rollback route seal, boundary limit seal, pilot envelope readiness, review cadence seal, passport closure, owner, review window, and one copyable launch passport.", "green"],
         ["v799 first pilot expansion rollout reuse market decision room", 100, "Market expansion gates now become one decision room across open-next-market decision, guarded expansion decision, proof repair decision, sponsor permission decision, support calm decision, rollback-safe decision, tenant-local hold decision, launch passport readiness, owner, review window, and one copyable decision room.", "green"],
         ["v798 first pilot expansion rollout reuse market expansion gate", 100, "Market learning receipts now become one guarded expansion gate across local proof gate, sponsor permission gate, support readiness gate, rollback route gate, boundary safety gate, expansion scope gate, decision room readiness, gate closure, owner, review window, and one copyable expansion gate.", "green"],
@@ -86474,13 +86634,14 @@ const state = {
         ["221", "First pilot expansion rollout reuse market learning receipt", "Done", "Market transfer outcome watches now become one learning receipt with outcome proof, boundary learning, sponsor acceptance, support calm, rollback memory, reusable route, expansion readiness, and receipt closure."],
         ["222", "First pilot expansion rollout reuse market expansion gate", "Done", "Market learning receipts now become one guarded expansion gate with local proof, sponsor permission, support readiness, rollback route, boundary safety, expansion scope, decision room readiness, and gate closure."],
         ["223", "First pilot expansion rollout reuse market decision room", "Done", "Market expansion gates now become one decision room with open-next-market decision, guarded expansion decision, proof repair decision, sponsor permission decision, support calm decision, rollback-safe decision, tenant-local hold decision, and launch passport readiness."],
-        ["224", "First pilot expansion rollout reuse market launch passport", "Active", "Market decision rooms now become one launch passport with proof seal, sponsor approval seal, support calm seal, rollback route seal, boundary limit seal, pilot envelope readiness, review cadence, and passport closure."],
+        ["224", "First pilot expansion rollout reuse market launch passport", "Done", "Market decision rooms now become one launch passport with proof seal, sponsor approval seal, support calm seal, rollback route seal, boundary limit seal, pilot envelope readiness, review cadence, and passport closure."],
+        ["225", "First pilot expansion rollout reuse market pilot envelope", "Active", "Market launch passports now become one small pilot envelope with allowed records, proof limit, support promise, rollback path, review window, boundary lock, sponsor acceptance, and envelope closure."],
       ],
       nextBuilds: [
 
-        ["v801", "First Pilot Expansion Rollout Reuse Market Pilot Envelope", "Turn the launch passport into a small pilot envelope with allowed records, proof limits, support promise, rollback path, and review window."],
         ["v802", "First Pilot Expansion Rollout Reuse Market Pilot Readiness Receipt", "Confirm the pilot envelope with readiness receipt, support promise, sponsor acceptance, rollback proof, and launch boundary."],
         ["v803", "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock", "Lock the pilot scope across records, proof, sponsor acceptance, support promise, rollback route, and tenant boundary."],
+        ["v804", "First Pilot Expansion Rollout Reuse Market Pilot Launch Guard", "Guard the first pilot launch moment with owner, support, rollback, proof, sponsor, review, and boundary checks."],
       ],
       blockers: [
         "Private production repository still needs to be created in GitHub",
@@ -86785,11 +86946,12 @@ const state = {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The market decision room now issues a launch passport before pilot envelope work.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The launch passport now opens a small pilot envelope before first pilot exposure widens.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
       ["Smoke check", "Live Tenant Learning Control Room, First Tenant Renewal Signal, Support-to-Product Feedback Loop, Tenant Health Recovery Queue, Usage Adoption Signal, Live Tenant Retention Ledger, Tenant Feedback Capture, Live Tenant Learning Receipt, First Tenant Support Watch, Tenant Import Dry Run Evidence, First Live Tenant Launch Room, Launch Risk Closeout, First Customer Success Pulse, Billing Trial Activation, Support Launch Rhythm, Pilot Data Privacy Receipt, Tenant Access Activation, Live Pilot Go-No-Go Receipt, First Live Tenant Shell, Pilot Data Import Runbook, Live Pilot Control Room, Launch Decision Room, Production Data Guard, Private Backend Handoff, Support SLA Console, Billing Access Gate, Staging Pilot Mirror, Customer Learning Release Gate, Launch Evidence Vault, Pilot Customer Board, Customer Success Command Center, Renewal Expansion Board, Country Pilot Pack, Implementation Learning Loop, Customer Outcome Studio, Reference Approval Lane, Account Health Map, Launch Cohort Control, Reference Readiness Room, Customer Proof Scorecard, Customer Launch Flywheel, Country Rollout Sandbox, Renewal Confidence Room, Expansion Trigger Lab, Success Rhythm Coach, Adoption Heatmap, Day-1 Onboarding Console, First Buyer Evidence Room, Implementation Command Map, Pilot Contract Room, Logo home, build badge, Focus badge, Serenity badge, Quiet mode, Ten-Build Release Train, Global Launch Control Tower, Operating Telemetry Board, First-Customer Proof Inbox, Launch Readiness Lock, Pilot Dry Run Board, Country Launch Pack, Sponsor Launch Script, Buyer-Safe Proof Route, Market Proof Replay, Release Receipt, Reuse Receipt, Retrieval Drill, Learning Release Gate, Launch Reuse Gate, Launch Closeout Archive, Launch Learning Receipt, Launch Outcome Watch, Launch Minutes, Publication Seal, Release Council, Sponsor Launch Gate, Learning Console, Archive Review Room, Market Proof Handoff, Receipt Learning Loop, Decision Archive, Next-Market Release Loop, Audit Outcome Release Receipt, Release Decision Brief, Handoff Reuse Outcome Watch, Acceptance Release Audit Room, Acceptance Release Receipt, Market Handoff Acceptance Passport, Launch Acceptance Recovery Board, Launch Roadmap, Launch-Readiness Ledger, Expansion Council, Market Launch Room, Buyer Launch Pack, Council Minutes, Handoff Receipt, Buyer Response Watch, Minutes Approval Receipt, Handoff Outcome Receipt, Market Response Learning Receipt, Approval Outcome Monitor, Approval Closeout Receipt, Next-Market Action Receipt, Market Learning Reuse Gate, Closeout Archive, Next-Market Outcome Watch, Market Reuse Activation Receipt, Archive Retrieval Drill, Outcome Evidence Pack, Activation Rollback Drill, Retrieval Evidence Handoff, Management Receiver Rehearsal, Rollback Outcome Receipt, Signoff Loop Governance, Trend Loop Governance, Appeal Loop Governance, Governance Release Receipt, Governance Outcome Monitor, Governance Rollback Lane, Governance Release Archive, Governance Proof Repair Queue, Governance Calm Closeout, Governance Audit Export, Governance Proof SLA, Governance Launch Evidence Packet, Governance Reviewer Console, Governance Launch Gate Score, Governance Pilot Handoff Board, Governance Launch Rehearsal Room, Governance First Pilot Readiness Room, Governance Pilot Acceptance Receipt, Governance Launch Proof Board, Governance First Pilot Operating Rhythm, Governance Pilot Sponsor Update, Governance Launch Support Desk, Governance Pilot Outcome Ledger, Governance Sponsor Decision Receipt, Governance Pilot Support Closeout, Governance Pilot Learning Release, Governance Sponsor Expansion Gate, Governance Launch Expansion Receipt, Governance Scaled Rollout Board, Governance Expansion Support Desk, Governance Scaled Rollout Proof Board, Governance Rollout Sponsor Update, Governance Rollout Outcome Ledger, Governance Rollout Learning Receipt, Governance Rollout Sponsor Decision Receipt, Governance Rollout Reuse Gate, Governance Rollout Learning Review Room, Governance Rollout Decision Audit Pack, Governance Rollout Reuse Activation Receipt, Governance Rollout Activation Outcome Watch, Governance Rollout Audit Closeout Receipt, Governance Rollout Launch Readiness Seal, Governance First Pilot Proof Bridge, Governance First Pilot Command Room, Governance First Pilot Outcome Watch, Governance First Pilot Support Receipt, Governance First Pilot Learning Room, Governance First Pilot Expansion Decision, Governance Second Pilot Readiness, Governance Second Pilot Launch Room, Governance Second Pilot Outcome Watch, Governance Second Pilot Support Receipt, Governance Second Pilot Learning Room, Governance Second Pilot Expansion Gate, Governance Second Pilot Decision Audit Pack, Governance Second Pilot Reuse Activation, Governance Second Pilot Activation Outcome Watch, Governance Second Pilot Audit Closeout Receipt, Governance Second Pilot Launch Readiness Seal, Governance Second Pilot Support Readiness Closeout, Governance Second Pilot Launch Handoff Pack, Governance Second Pilot First Review Bridge, Governance Second Pilot First Review Outcome Watch, Governance Second Pilot Review Learning Receipt, Second Pilot Review Learning Receipt copy, Second Pilot First Review Outcome Watch copy, Second Pilot First Review Bridge copy, Second Pilot Launch Handoff copy, Second Pilot Support Closeout copy, Second Pilot Launch Seal copy, Second Pilot Closeout copy, Second Pilot Outcome Watch copy, Second Pilot Activation copy, Second Pilot Audit copy, Second Pilot Gate copy, Second Pilot Learning copy, Second Pilot Support copy, Second Pilot Outcome copy, Second Pilot Launch copy, Second Pilot Readiness copy, First Pilot Expansion Decision copy, First Pilot Learning Room copy, First Pilot Support Receipt copy, First Pilot Outcome Watch copy, Pilot Room, Proof Bridge, Launch Seal, Closeout Receipt, Outcome Watch, Activation Receipt, Decision Audit Pack, Learning Review Room, Reuse Gate, Sponsor Decision, Learning Receipt, Outcome Ledger, Sponsor Update, Rollout Proof, Expansion Support, Scaled Rollout, Expansion Receipt, Expansion Gate, Learning Release, Support Closeout, Decision Receipt, Serenity Handrail, Outcome Memory Seed, Learning Approval Lane, Learning Release Receipt, Learning Review Cue, Evidence Confidence Lens, Confidence History Ribbon, Observation Outcome Slot, Outcome Proof Attachment Cue, Proof Review Decision Gate, Learning Reuse Readiness Lock, Local Guidance Influence Preview, Local Influence Feedback Pulse, Local Guidance Activation Gate, Local Guidance Canary Monitor, Local Canary Graduation Gate, Learning Ledger, Learning Safety Receipt, Global Learning Passport, Market Fit Gate, Country Launch Receipt, Second Country Expansion Gate, Country Transfer Delta Map, Transfer Readiness Score, Transfer Action Packet, Transfer Launch Receipt, Transfer Outcome Monitor, Transfer Learning Trust Gate, Tenant Learning Policy Studio, Tenant Policy Impact Preview, Tenant Outcome Learning Loop, Tenant Reinforcement Reward Gate, Tenant Reinforcement Canary Plan, Tenant Reinforcement Canary Watch, Tenant Reinforcement Graduation Gate, Tenant Reinforcement Reuse Passport, Tenant Reinforcement Reuse Fit Preview, Tenant Reinforcement Reuse Activation Receipt, Guidance Flight Deck, Guidance Flight Recorder, Guidance Review Radar, Guidance Decision Brief, Guidance Commitment Receipt, Guidance Outcome Watch, Guidance Learning Capture, Guidance Release Queue, Guidance Council Intake, Guidance Council Decision Gate, Guidance License Receipt, License Expiry Watch, Consent Renewal Lane, Receipt Outcome Review, License Retirement Receipt, Renewal Audit Pack, Outcome Renewal Ledger, Retirement Appeal Lane, Audit Signoff Trail, Ledger Trend Watch, Appeal Decision Receipt, Signoff Outcome Receipt, Trend Outcome Receipt, Appeal Decision Outcome Watch, Signoff Learning Loop, Trend Learning Loop, Appeal Learning Loop, Pilot Story Fold, Pilot Story Runtime Guard, Continuity Guard, World Demo Script, Pilot Close Packet, Pilot Launch Board, Serenity Network Fold, Learning Loop Board, Outcome Feedback Engine, Adaptive Policy Simulator, Tenant Learning Firewall, Federated Pattern Trust Ledger, Network Influence Shadow Replay, Tenant Influence Activation Switchboard, Activation Outcome Learner, Network Benefit Router, Network Reciprocity Ledger, Network Learning Dividend Allocator, Network Outcome Dividend Verifier, Network Reinforcement Policy Governor, Network Reinforcement Drift Sentinel, Network Retune Experiment Orchestrator, Network Retune Outcome Learner, Network Learning Safety Council, Network Learning License Gate, Network Learning Royalty Ledger, Network Learning Settlement Console, Network Learning Clearinghouse, Network Learning Trust Market, Network Learning Demand Router, Network Outcome Exchange, Network Value Governor, Network Value Audit Trail, Network Value Review Board, Network Decision Release Gate, Network Release Outcome Monitor, Network Outcome Learning Governor, Closed-Loop Learning Control Room, Learning Flywheel Evidence Board, Serenity Experiment Prioritizer, Global Launch Serenity Console, Admin Tools, Pilot Pitch", "After publishing, use Ctrl+F5 if GitHub Pages shows an older cached version.", "green"],
+      ["v801 smoke addendum", "First Pilot Expansion Rollout Reuse Market Pilot Envelope", "Confirm the v801 reuse market pilot envelope strip, full hidden market pilot envelope room, nine envelope signals, nine envelope lanes, nine envelope cards, nine envelope receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v800 smoke addendum", "First Pilot Expansion Rollout Reuse Market Launch Passport", "Confirm the v800 reuse market passport strip, full hidden market launch passport room, nine passport signals, nine passport lanes, nine passport cards, nine passport receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v799 smoke addendum", "First Pilot Expansion Rollout Reuse Market Decision Room", "Confirm the v799 reuse market decision strip, full hidden market decision room, nine decision signals, nine decision lanes, nine decision cards, nine decision receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
       ["v798 smoke addendum", "First Pilot Expansion Rollout Reuse Market Expansion Gate", "Confirm the v798 reuse market gate strip, full hidden market expansion gate room, nine gate signals, nine gate lanes, nine gate cards, nine expansion gate receipts, copy action, Build Phase badge, cache tokens, and side-rail route stability before publishing.", "green"],
@@ -139893,6 +140055,12 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstPilotExpansionRolloutReuseMarketTransferPacket(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout reuse market transfer packet copied.");
+      return;
+    }
+    if (action === "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-envelope") {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelope(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout reuse market pilot envelope copied.");
       return;
     }
     if (action === "copy-command-first-pilot-expansion-rollout-reuse-market-launch-passport") {
