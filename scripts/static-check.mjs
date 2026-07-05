@@ -24,6 +24,7 @@ function assertFile(path) {
 
 [
   "_config.yml",
+  ".nojekyll",
   "index.html",
   "styles.css",
   "styles.min.css",
