@@ -1,5 +1,134 @@
 # Changelog
 
+## v814 - First Pilot Expansion Rollout Reuse Market Pilot Launch QA Issue Wave
+
+### Changes Made
+- Activated the pilot launch QA issue wave as the current build.
+- Converted launch blockers into a QA issue wave with customer-story, staging, and governance next-build handoffs.
+- Kept the v814 Build Phase track and v815-v817 next queue aligned with the release model.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v814.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: authenticated desktop side-rail visual QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: authenticated mobile Command visual QA with no document or body horizontal overflow.
+
+### Known Risks
+- The QA issue wave is still a static prototype; production launch issue tracking will need persisted owners, status history, evidence uploads, and audit trails.
+- Next-build handoffs are modeled in Build Phase but not yet connected to a live staging or governance system.
+
+## v813 - First Pilot Expansion Rollout Reuse Market Pilot Evidence Export
+
+### Changes Made
+- Activated the pilot evidence export stage during the batch.
+- Added a release checkpoint for packaging launch proof, readout evidence, support notes, and sponsor-safe export language before launch QA.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v813.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Evidence export is currently copy-ready static output; signed files, storage, and retrieval permissions remain future backend work.
+
+## v812 - First Pilot Expansion Rollout Reuse Market Pilot Renewal Trigger
+
+### Changes Made
+- Activated the pilot renewal trigger stage during the batch.
+- Added a release checkpoint for renewal intent, sponsor thread, outcome proof, support calm, expansion option, and proof repair before evidence export.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v812.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Renewal trigger scoring is prototype-derived and still needs real pilot activity, sponsor response, and renewal evidence persistence.
+
+## v811 - First Pilot Expansion Rollout Reuse Market Pilot Support Handoff
+
+### Changes Made
+- Activated the pilot support handoff stage during the batch.
+- Added a release checkpoint for support owner, escalation route, response promise, rollback support, sponsor note, and first-review coverage.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v811.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Support handoff remains demo-state guidance until connected to real support users, SLA timers, and incident history.
+
+## v810 - First Pilot Expansion Rollout Reuse Market Pilot Sponsor Readout
+
+### Changes Made
+- Activated the pilot sponsor readout stage during the batch.
+- Added a release checkpoint for sponsor score, executive story, value proof, launch control, billing confidence, support calm, and decision ask.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v810.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Sponsor readout is static-demo material and still needs a real sponsor response, signed decision receipt, and persisted commercial boundary proof.
+
 ## v809 - First Pilot Expansion Rollout Reuse Market Pilot Closeout Pack
 
 ### Changes Made

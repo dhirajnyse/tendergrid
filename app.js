@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v809";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Closeout Pack";
+  const BUILD_VERSION = "v814";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch QA Issue Wave";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=809.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=809.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=814.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=814.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -232,7 +232,201 @@
         ["Closeout closure", "guardClosure", 0.72, 4, "The pack closes the pilot without hidden follow-up debt."],
       ],
     },
-  ];
+    {
+      key: "sponsor-readout",
+      version: "v810",
+      number: 810,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Readout",
+      shortLabel: "Sponsor Readout",
+      phase: "First pilot expansion rollout reuse market pilot sponsor readout",
+      track: "v810 first pilot expansion rollout reuse market pilot sponsor readout",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-sponsor-readout",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-sponsor-readout",
+      idSuffix: "SPONSOR-READOUT",
+      scoreKey: "readoutScore",
+      decisionKey: "readoutDecision",
+      stateKey: "readoutState",
+      lineKey: "readoutLine",
+      primarySignal: "Pilot sponsor readout",
+      primaryNote: "Turns closeout proof into one sponsor-safe executive summary.",
+      summary: "Convert the closeout pack into a sponsor readout with value proof, support calm, risk posture, renewal ask, and expansion boundary.",
+      trackSummary: "Closeout packs now become one sponsor readout across value proof, executive story, support calm, risk posture, renewal ask, expansion boundary, sponsor decision, and readout closure.",
+      stageSummary: "Closeout packs now become one sponsor readout with value proof, executive story, support calm, risk posture, renewal ask, expansion boundary, sponsor decision, and closure.",
+      openDecision: "Send sponsor readout",
+      guardedDecision: "Send guarded sponsor readout",
+      holdDecision: "Hold sponsor readout",
+      repairDecision: "Repair sponsor story",
+      nextOpen: "Send the sponsor readout and keep value proof, support calm, risk posture, renewal ask, and expansion boundary together.",
+      nextGuarded: "Send a guarded sponsor readout while one proof or decision lane stays under review.",
+      nextHold: "Hold the sponsor readout until the value proof, support posture, and renewal ask are safe to read back.",
+      nextRepair: "Repair the sponsor story before the next customer conversation.",
+      axes: [
+        ["Value proof", "proofGuard", 0.76, 6, "Sponsor can see the business value without reading raw tracker rows."],
+        ["Executive story", "sponsorGuard", 0.74, 5, "The readout has a short decision story for leadership."],
+        ["Support calm", "supportGuard", 0.72, 5, "Support load is calm enough for sponsor review."],
+        ["Risk posture", "rollbackGuard", 0.7, 5, "Remaining risk and rollback memory are named."],
+        ["Renewal ask", "reviewGuard", 0.64, 8, "The renewal or next-step ask is visible and timed."],
+        ["Expansion boundary", "tenantGuard", 0.72, 5, "Expansion stays inside tenant-safe and sponsor-approved limits."],
+        ["Sponsor decision", "sponsorGuard", 0.7, 5, "Sponsor answer path is explicit."],
+        ["Readout closure", "guardClosure", 0.72, 4, "The readout closes with owner, date, proof, and next action."],
+      ],
+    },
+    {
+      key: "support-handoff",
+      version: "v811",
+      number: 811,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Support Handoff",
+      shortLabel: "Support Handoff",
+      phase: "First pilot expansion rollout reuse market pilot support handoff",
+      track: "v811 first pilot expansion rollout reuse market pilot support handoff",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-support-handoff",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-support-handoff",
+      idSuffix: "SUPPORT-HANDOFF",
+      scoreKey: "handoffScore",
+      decisionKey: "handoffDecision",
+      stateKey: "handoffState",
+      lineKey: "handoffLine",
+      primarySignal: "Pilot support handoff",
+      primaryNote: "Turns sponsor readout questions into owner, SLA, support route, and rollback handoff.",
+      summary: "Route remaining support work into named owner, response window, escalation route, evidence need, rollback note, and next review.",
+      trackSummary: "Sponsor readouts now become one support handoff across support owner, response window, escalation route, evidence request, rollback note, customer promise, next review, and support closure.",
+      stageSummary: "Sponsor readouts now become one support handoff with owner, response window, escalation route, evidence request, rollback note, customer promise, next review, and closure.",
+      openDecision: "Release support handoff",
+      guardedDecision: "Release guarded support handoff",
+      holdDecision: "Hold support handoff",
+      repairDecision: "Repair support route",
+      nextOpen: "Release the support handoff and keep owner, SLA, escalation, proof request, rollback note, and next review visible.",
+      nextGuarded: "Release a guarded support handoff while one route or proof lane needs confirmation.",
+      nextHold: "Hold the support handoff until the owner, response window, escalation, and rollback note are safe.",
+      nextRepair: "Repair the support route before sponsor or customer follow-up widens.",
+      axes: [
+        ["Support owner", "ownerCommand", 0.72, 6, "One accountable support owner is named."],
+        ["Response window", "supportGuard", 0.74, 5, "Support response timing is visible."],
+        ["Escalation route", "supportGuard", 0.68, 7, "Escalation path is named before pressure rises."],
+        ["Evidence request", "proofGuard", 0.7, 5, "Support knows which proof to request and protect."],
+        ["Rollback note", "rollbackGuard", 0.72, 5, "Rollback and workaround memory stay attached."],
+        ["Customer promise", "sponsorGuard", 0.68, 6, "Customer-facing promise stays sponsor-safe."],
+        ["Next review", "reviewGuard", 0.68, 6, "Next support review date is visible."],
+        ["Support closure", "guardClosure", 0.72, 4, "Support handoff closes without hidden follow-up debt."],
+      ],
+    },
+    {
+      key: "renewal-trigger",
+      version: "v812",
+      number: 812,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Renewal Trigger",
+      shortLabel: "Renewal Trigger",
+      phase: "First pilot expansion rollout reuse market pilot renewal trigger",
+      track: "v812 first pilot expansion rollout reuse market pilot renewal trigger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-trigger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-trigger",
+      idSuffix: "RENEWAL-TRIGGER",
+      scoreKey: "renewalScore",
+      decisionKey: "renewalDecision",
+      stateKey: "renewalState",
+      lineKey: "renewalLine",
+      primarySignal: "Pilot renewal trigger",
+      primaryNote: "Turns support closure and sponsor readout into renewal timing and expansion signal.",
+      summary: "Convert the support handoff into renewal trigger timing, value continuity, sponsor readiness, expansion signal, support calm, and billing boundary.",
+      trackSummary: "Support handoffs now become one renewal trigger across renewal timing, value continuity, sponsor readiness, expansion signal, support calm, billing boundary, decision date, and trigger closure.",
+      stageSummary: "Support handoffs now become one renewal trigger with timing, value continuity, sponsor readiness, expansion signal, support calm, billing boundary, decision date, and closure.",
+      openDecision: "Open renewal trigger",
+      guardedDecision: "Open guarded renewal trigger",
+      holdDecision: "Hold renewal trigger",
+      repairDecision: "Repair renewal proof",
+      nextOpen: "Open the renewal trigger and keep timing, value continuity, sponsor readiness, expansion signal, support calm, and billing boundary together.",
+      nextGuarded: "Open a guarded renewal trigger while billing or sponsor proof is still watched.",
+      nextHold: "Hold renewal until value continuity, sponsor readiness, and billing boundary are clearer.",
+      nextRepair: "Repair renewal proof before creating a buyer-facing renewal moment.",
+      axes: [
+        ["Renewal timing", "reviewGuard", 0.72, 6, "Renewal decision timing is visible."],
+        ["Value continuity", "proofGuard", 0.74, 5, "Pilot value proof continues into the next period."],
+        ["Sponsor readiness", "sponsorGuard", 0.74, 5, "Sponsor is ready for the renewal conversation."],
+        ["Expansion signal", "launchMoment", 0.62, 8, "Expansion interest is separated from renewal risk."],
+        ["Support calm", "supportGuard", 0.72, 5, "Support pressure does not block renewal confidence."],
+        ["Billing boundary", "tenantGuard", 0.68, 6, "Billing and access boundaries stay controlled."],
+        ["Decision date", "reviewGuard", 0.7, 5, "One decision date is named."],
+        ["Trigger closure", "guardClosure", 0.72, 4, "The renewal trigger closes with owner, proof, and next step."],
+      ],
+    },
+    {
+      key: "evidence-export",
+      version: "v813",
+      number: 813,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Evidence Export",
+      shortLabel: "Evidence Export",
+      phase: "First pilot expansion rollout reuse market pilot evidence export",
+      track: "v813 first pilot expansion rollout reuse market pilot evidence export",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-evidence-export",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-evidence-export",
+      idSuffix: "EVIDENCE-EXPORT",
+      scoreKey: "exportScore",
+      decisionKey: "exportDecision",
+      stateKey: "exportState",
+      lineKey: "exportLine",
+      primarySignal: "Pilot evidence export",
+      primaryNote: "Turns renewal proof into a buyer-safe export boundary with hidden/internal proof separated.",
+      summary: "Collect buyer-safe proof, hidden internal proof, redaction guard, expiry review, source trace, and export decision before launch evidence is shared.",
+      trackSummary: "Renewal triggers now become one evidence export across buyer-safe proof, hidden proof, redaction guard, expiry review, source trace, export decision, receiver route, and export closure.",
+      stageSummary: "Renewal triggers now become one evidence export with buyer-safe proof, hidden proof, redaction guard, expiry review, source trace, export decision, receiver route, and closure.",
+      openDecision: "Export pilot evidence",
+      guardedDecision: "Export guarded evidence",
+      holdDecision: "Hold evidence export",
+      repairDecision: "Repair export proof",
+      nextOpen: "Export pilot evidence and keep buyer-safe proof, hidden proof, redaction, expiry, source trace, and receiver route together.",
+      nextGuarded: "Export guarded evidence while one proof, redaction, or expiry lane stays under review.",
+      nextHold: "Hold export until buyer-safe proof, hidden fields, redaction, and source trace are clean.",
+      nextRepair: "Repair export proof before any buyer-facing evidence leaves the workspace.",
+      axes: [
+        ["Buyer-safe proof", "proofGuard", 0.76, 6, "Evidence can be shown without exposing private fields."],
+        ["Hidden proof", "tenantGuard", 0.72, 5, "Internal-only proof stays separated."],
+        ["Redaction guard", "tenantGuard", 0.74, 5, "Redaction is explicit before export."],
+        ["Expiry review", "reviewGuard", 0.68, 6, "Export has a review and expiry rule."],
+        ["Source trace", "proofGuard", 0.72, 5, "Every exported claim has a source trace."],
+        ["Export decision", "sponsorGuard", 0.68, 6, "The decision to share evidence is named."],
+        ["Receiver route", "ownerCommand", 0.66, 7, "Receiver, owner, and delivery route are clear."],
+        ["Export closure", "guardClosure", 0.72, 4, "The export closes with proof, owner, date, and review."],
+      ],
+    },
+    {
+      key: "launch-qa-issue-wave",
+      version: "v814",
+      number: 814,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch QA Issue Wave",
+      shortLabel: "Launch QA Issue Wave",
+      phase: "First pilot expansion rollout reuse market pilot launch qa issue wave",
+      track: "v814 first pilot expansion rollout reuse market pilot launch qa issue wave",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-qa-issue-wave",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-qa-issue-wave",
+      idSuffix: "LAUNCH-QA-ISSUE-WAVE",
+      scoreKey: "qaScore",
+      decisionKey: "qaDecision",
+      stateKey: "qaState",
+      lineKey: "qaLine",
+      primarySignal: "Pilot launch QA issue wave",
+      primaryNote: "Turns export readiness into a focused issue wave before production launch work widens.",
+      summary: "Convert evidence export and launch blockers into scoped QA issues, owners, acceptance proof, smoke targets, rollback notes, and release decision.",
+      trackSummary: "Evidence exports now become one launch QA issue wave across issue scope, owners, acceptance proof, smoke targets, rollback notes, release decision, blocker burn-down, and QA closure.",
+      stageSummary: "Evidence exports now become one launch QA issue wave with issue scope, owners, acceptance proof, smoke targets, rollback notes, release decision, blocker burn-down, and closure.",
+      openDecision: "Open launch QA wave",
+      guardedDecision: "Open guarded QA wave",
+      holdDecision: "Hold launch QA wave",
+      repairDecision: "Repair QA issue wave",
+      nextOpen: "Open the launch QA issue wave and keep scope, owners, acceptance proof, smoke targets, rollback notes, and release decision together.",
+      nextGuarded: "Open a guarded QA wave while one blocker or acceptance lane needs proof.",
+      nextHold: "Hold the QA wave until scope, owner, smoke target, and rollback proof are clearer.",
+      nextRepair: "Repair the QA issue wave before launch work moves into a broader release plan.",
+      axes: [
+        ["Issue scope", "reviewGuard", 0.72, 6, "QA issues are scoped tightly enough to execute."],
+        ["Owners", "ownerCommand", 0.74, 5, "Each QA lane has an accountable owner."],
+        ["Acceptance proof", "proofGuard", 0.76, 5, "Acceptance proof is explicit before release movement."],
+        ["Smoke targets", "launchMoment", 0.68, 7, "Smoke targets are visible and route-safe."],
+        ["Rollback notes", "rollbackGuard", 0.74, 5, "Rollback notes are attached to the QA wave."],
+        ["Release decision", "sponsorGuard", 0.68, 6, "Release decision is named before widening."],
+        ["Blocker burn-down", "supportGuard", 0.7, 5, "Blockers have a burn-down route and owner."],
+        ["QA closure", "guardClosure", 0.72, 4, "The QA wave closes with owner, proof, and next release gate."],
+      ],
+    },  ];
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
   const BILLING_MANAGER_SEAT_PRICE = 15;
@@ -15836,7 +16030,12 @@ const state = {
     "${renderCommandPrivateBackendIssueWavePreview(model, autopilot)}",
   ];
 
-  const COMMAND_RELEASE_RAIL_RENDER_PATHS = [    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCloseoutPackPreview(model, autopilot)}",
+  const COMMAND_RELEASE_RAIL_RENDER_PATHS = [    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchQaIssueWavePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceExportPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalTriggerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportHandoffPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorReadoutPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCloseoutPackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionDecisionGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningProofPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeWatchPreview(model, autopilot)}",
@@ -21102,6 +21301,66 @@ const state = {
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCloseoutPackPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "closeout-pack");
   }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorReadoutSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "sponsor-readout");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorReadout(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "sponsor-readout", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorReadoutPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "sponsor-readout");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSupportHandoffSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "support-handoff");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSupportHandoff(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "support-handoff", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportHandoffPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "support-handoff");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalTriggerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "renewal-trigger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalTrigger(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "renewal-trigger", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalTriggerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "renewal-trigger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceExportSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "evidence-export");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceExport(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "evidence-export", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceExportPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "evidence-export");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchQaIssueWaveSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-qa-issue-wave");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchQaIssueWave(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-qa-issue-wave", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchQaIssueWavePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-qa-issue-wave");
+  }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const buildNumber = getBuildNumber();
@@ -21124,7 +21383,7 @@ const state = {
     const railCards = [
       ["Indexed proof", `${railCount} paths`, "Deep release proof stays indexed until needed; Command paints only the current runway.", "teal", "Build Phase"],
       currentRelease ? [currentRelease.shortLabel, "Current", currentRelease.summary, "green", "Build Phase"] : null,
-      ["Next queue", `v${buildNumber + 1}`, "The next launch runway gate waits in Build Phase after this closeout pack.", "blue", "Build Phase"],
+      ["Next queue", `v${buildNumber + 1}`, "The next launch runway gate waits in Build Phase after the current pilot runway proof.", "blue", "Build Phase"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
     ].filter(Boolean);
 
@@ -86665,9 +86924,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v810", "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Readout", "Turn closeout proof into one sponsor-safe readout for renewal, expansion, and support ownership."],
-        ["v811", "First Pilot Expansion Rollout Reuse Market Pilot Support Handoff", "Route remaining support lessons into owner, SLA, rollback, and next-review handoff."],
-        ["v812", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Trigger", "Convert closeout learning into a renewal trigger with value proof and buyer-safe next steps."],
+        ["v815", "First Pilot Expansion Rollout Reuse Market Pilot Customer Story Room", "Turn QA proof into one buyer-safe customer story for first launch conversations."],
+        ["v816", "First Pilot Expansion Rollout Reuse Market Pilot Staging Backlog", "Move launch QA issues into staging tasks, test owners, and proof gates."],
+        ["v817", "First Pilot Expansion Rollout Reuse Market Pilot Launch Governance Pack", "Close the staging backlog with governance acceptance, rollback proof, and launch handoff."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",
