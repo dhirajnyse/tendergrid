@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v804";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Guard";
+  const BUILD_VERSION = "v809";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Closeout Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=804.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=804.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=809.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=809.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -35,6 +35,203 @@
     "Missing category",
     "Missing reference",
     "Ready rhythm",
+  ];
+  const PILOT_REUSE_MARKET_RUNWAY_RELEASES = [
+    {
+      key: "first-review-receipt",
+      version: "v805",
+      number: 805,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Review Receipt",
+      shortLabel: "First Review Receipt",
+      phase: "First pilot expansion rollout reuse market pilot first review receipt",
+      track: "v805 first pilot expansion rollout reuse market pilot first review receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-review-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-review-receipt",
+      idSuffix: "FIRST-REVIEW-RECEIPT",
+      scoreKey: "receiptScore",
+      decisionKey: "receiptDecision",
+      stateKey: "receiptState",
+      lineKey: "receiptLine",
+      primarySignal: "First review receipt",
+      primaryNote: "Turns launch guard readiness into a management-readable first review receipt.",
+      summary: "Capture the first pilot review with outcome proof, user signal, support calm, rollback status, sponsor response, and next-scope decision.",
+      trackSummary: "Pilot launch guards now become one first-review receipt across outcome proof, user signal, support calm, rollback status, sponsor response, next-scope decision, review closure, and pilot receipt proof.",
+      stageSummary: "Launch guard moves into one first review receipt with proof, user signal, support, rollback, sponsor, next-scope decision, closure, and receipt controls.",
+      openDecision: "Issue first review receipt",
+      guardedDecision: "Issue guarded review receipt",
+      holdDecision: "Hold first review",
+      repairDecision: "Repair review proof",
+      nextOpen: "Issue the first review receipt and keep outcome proof, support calm, rollback status, sponsor response, and next-scope decision together.",
+      nextGuarded: "Issue a guarded review receipt with one owner and keep proof, sponsor, support, rollback, and review closure visible.",
+      nextHold: "Hold the first review until proof, support, sponsor, and rollback posture are calm enough to share.",
+      nextRepair: "Repair the first review proof before the pilot story moves into outcome watch.",
+      axes: [
+        ["Outcome proof", "proofGuard", 0.72, 6, "Accepted evidence can be read back in the first review."],
+        ["User signal", "launchMoment", 0.6, 8, "Pilot user movement is visible enough for a first review."],
+        ["Support calm", "supportGuard", 0.72, 5, "Support response stays calm during the review window."],
+        ["Rollback status", "rollbackGuard", 0.72, 4, "Rollback condition remains known and reversible."],
+        ["Sponsor response", "sponsorGuard", 0.7, 5, "Sponsor response is visible before outcome claims expand."],
+        ["Next-scope decision", "tenantGuard", 0.58, 7, "The next scope is decided without crossing tenant boundaries."],
+        ["Review closure", "reviewGuard", 0.66, 6, "Review owner, agenda, and close rule stay visible."],
+        ["Pilot receipt", "guardClosure", 0.72, 5, "The receipt closes one calm first-review loop."],
+      ],
+    },
+    {
+      key: "outcome-watch",
+      version: "v806",
+      number: 806,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Outcome Watch",
+      shortLabel: "Outcome Watch",
+      phase: "First pilot expansion rollout reuse market pilot outcome watch",
+      track: "v806 first pilot expansion rollout reuse market pilot outcome watch",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-outcome-watch",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-outcome-watch",
+      idSuffix: "OUTCOME-WATCH",
+      scoreKey: "watchScore",
+      decisionKey: "watchDecision",
+      stateKey: "watchState",
+      lineKey: "watchLine",
+      primarySignal: "Pilot outcome watch",
+      primaryNote: "Watches whether the first pilot review creates visible, safe movement.",
+      summary: "Watch the first pilot outcome with user movement, support calm, sponsor response, rollback status, proof age, and next-scope learning.",
+      trackSummary: "First-review receipts now become one outcome watch across user movement, support calm watch, sponsor response watch, rollback status watch, proof age, next-scope learning, outcome cadence, and watch closure.",
+      stageSummary: "First review receipts now become one watched outcome with user movement, support, sponsor, rollback, proof age, learning, cadence, and closure.",
+      openDecision: "Open outcome watch",
+      guardedDecision: "Open guarded outcome watch",
+      holdDecision: "Hold outcome watch",
+      repairDecision: "Repair outcome proof",
+      nextOpen: "Open the outcome watch and record movement, support, sponsor response, rollback status, proof age, and learning cadence.",
+      nextGuarded: "Open a guarded outcome watch with narrow exposure and keep support, sponsor, rollback, and proof-age signals visible.",
+      nextHold: "Hold outcome watch until the first review receipt has enough movement proof and safe rollback posture.",
+      nextRepair: "Repair outcome proof before learning is trusted beyond the pilot room.",
+      axes: [
+        ["User movement", "launchMoment", 0.68, 7, "Pilot users moved in a way the review can trust."],
+        ["Support calm watch", "supportGuard", 0.72, 5, "Support stays calm while the outcome is watched."],
+        ["Sponsor response watch", "sponsorGuard", 0.68, 5, "Sponsor response is captured before the story widens."],
+        ["Rollback status watch", "rollbackGuard", 0.72, 4, "Rollback status stays visible while the pilot is observed."],
+        ["Proof age", "proofGuard", 0.64, 4, "Outcome proof is fresh enough for management readback."],
+        ["Next-scope learning", "tenantGuard", 0.58, 8, "Learning stays bounded before next-scope movement."],
+        ["Outcome cadence", "reviewGuard", 0.64, 6, "The watch has a review cadence and close rule."],
+        ["Watch closure", "guardClosure", 0.72, 5, "The watch can close without leaving a hidden risk."],
+      ],
+    },
+    {
+      key: "learning-proof",
+      version: "v807",
+      number: 807,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Learning Proof",
+      shortLabel: "Learning Proof",
+      phase: "First pilot expansion rollout reuse market pilot learning proof",
+      track: "v807 first pilot expansion rollout reuse market pilot learning proof",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-learning-proof",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-learning-proof",
+      idSuffix: "LEARNING-PROOF",
+      scoreKey: "learningScore",
+      decisionKey: "learningDecision",
+      stateKey: "learningState",
+      lineKey: "learningLine",
+      primarySignal: "Pilot learning proof",
+      primaryNote: "Converts watched pilot outcomes into tenant-safe learning evidence.",
+      summary: "Turn first pilot outcomes into tenant-safe proof, learning boundary, sponsor readback, support lesson, and next-scope reuse evidence.",
+      trackSummary: "Outcome watches now become one learning proof across tenant-safe proof, learning boundary, sponsor readback, support lesson, next-scope reuse, proof confidence, learning closure, and review memory.",
+      stageSummary: "Outcome watches now become one learning proof with tenant safety, boundary, sponsor readback, support lesson, reuse evidence, confidence, and closure.",
+      openDecision: "Accept learning proof",
+      guardedDecision: "Accept guarded learning proof",
+      holdDecision: "Hold learning proof",
+      repairDecision: "Repair learning evidence",
+      nextOpen: "Accept the learning proof and keep tenant boundary, sponsor readback, support lesson, and next-scope reuse evidence attached.",
+      nextGuarded: "Accept guarded learning proof and keep reuse limited until proof confidence and sponsor readback settle.",
+      nextHold: "Hold learning proof until tenant safety, sponsor readback, and support lesson are clearer.",
+      nextRepair: "Repair learning evidence before it influences the next pilot scope.",
+      axes: [
+        ["Tenant-safe proof", "tenantGuard", 0.72, 5, "Learning stays inside tenant-safe proof boundaries."],
+        ["Learning boundary", "proofGuard", 0.62, 7, "Proof, privacy, and reuse boundary are explicit."],
+        ["Sponsor readback", "sponsorGuard", 0.7, 5, "Sponsor can read back what changed and what did not."],
+        ["Support lesson", "supportGuard", 0.68, 6, "Support lesson is captured without overload."],
+        ["Next-scope reuse", "launchMoment", 0.54, 8, "The next scope can reuse only what the pilot proved."],
+        ["Proof confidence", "proofGuard", 0.74, 4, "Proof confidence is high enough for reuse discussion."],
+        ["Learning closure", "guardClosure", 0.7, 5, "Learning closes with owner, date, proof, and rollback memory."],
+        ["Review memory", "reviewGuard", 0.66, 6, "The learning proof can be re-opened in a later review."],
+      ],
+    },
+    {
+      key: "expansion-decision-gate",
+      version: "v808",
+      number: 808,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Expansion Decision Gate",
+      shortLabel: "Expansion Decision Gate",
+      phase: "First pilot expansion rollout reuse market pilot expansion decision gate",
+      track: "v808 first pilot expansion rollout reuse market pilot expansion decision gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-decision-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-decision-gate",
+      idSuffix: "EXPANSION-DECISION-GATE",
+      scoreKey: "decisionScore",
+      decisionKey: "gateDecision",
+      stateKey: "gateState",
+      lineKey: "decisionLine",
+      primarySignal: "Pilot expansion decision gate",
+      primaryNote: "Decides whether the pilot proof opens the next expansion scope or waits.",
+      summary: "Decide whether pilot evidence can open next scope or must hold, repair proof, confirm sponsor permission, or protect support capacity.",
+      trackSummary: "Learning proofs now become one expansion decision gate across open expansion decision, guarded rollout, proof repair, sponsor permission, support capacity, rollback safety, tenant boundary, and decision closure.",
+      stageSummary: "Learning proofs now become one decision gate with expansion decision, guarded rollout, proof repair, sponsor permission, support capacity, rollback safety, tenant boundary, and closure.",
+      openDecision: "Open expansion gate",
+      guardedDecision: "Open guarded expansion gate",
+      holdDecision: "Hold expansion gate",
+      repairDecision: "Repair expansion decision",
+      nextOpen: "Open the expansion gate and keep proof, sponsor permission, support capacity, rollback safety, and tenant boundary visible.",
+      nextGuarded: "Open a guarded expansion gate with limited scope and a visible proof-repair path.",
+      nextHold: "Hold expansion until sponsor permission, support capacity, rollback safety, and proof repair are calm.",
+      nextRepair: "Repair the decision evidence before any next-scope rollout begins.",
+      axes: [
+        ["Open expansion decision", "tenantGuard", 0.66, 7, "Decision can open only inside the tenant-safe boundary."],
+        ["Guarded rollout", "launchMoment", 0.58, 8, "The next rollout stays narrow, reversible, and reviewable."],
+        ["Proof repair", "proofGuard", 0.7, 5, "Known proof gaps have a repair path before expansion."],
+        ["Sponsor permission", "sponsorGuard", 0.72, 5, "Sponsor permission is explicit before the gate opens."],
+        ["Support capacity", "supportGuard", 0.72, 4, "Support capacity remains calm enough for next scope."],
+        ["Rollback safety", "rollbackGuard", 0.72, 4, "Rollback safety is ready before scope changes."],
+        ["Tenant boundary", "tenantGuard", 0.74, 4, "Tenant boundary remains the hard line."],
+        ["Decision closure", "guardClosure", 0.7, 5, "Decision closes with owner, review, proof, and next action."],
+      ],
+    },
+    {
+      key: "closeout-pack",
+      version: "v809",
+      number: 809,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Closeout Pack",
+      shortLabel: "Pilot Closeout Pack",
+      phase: "First pilot expansion rollout reuse market pilot closeout pack",
+      track: "v809 first pilot expansion rollout reuse market pilot closeout pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-closeout-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-closeout-pack",
+      idSuffix: "CLOSEOUT-PACK",
+      scoreKey: "closeoutScore",
+      decisionKey: "closeoutDecision",
+      stateKey: "closeoutState",
+      lineKey: "closeoutLine",
+      primarySignal: "Pilot closeout pack",
+      primaryNote: "Packages proof, decisions, risks, lessons, and the next roadmap into one handoff.",
+      summary: "Package the pilot proof archive, decision receipt, risk notes, support lessons, reusable learning, and next roadmap handoff.",
+      trackSummary: "Expansion decision gates now become one closeout pack across proof archive, decision receipt, risk notes, support lessons, next roadmap, sponsor closeout, reusable learning, and closeout closure.",
+      stageSummary: "Decision gates now become one closeout pack with proof archive, decision receipt, risk notes, support lessons, next roadmap, sponsor closeout, reusable learning, and closure.",
+      openDecision: "Publish closeout pack",
+      guardedDecision: "Publish guarded closeout pack",
+      holdDecision: "Hold closeout pack",
+      repairDecision: "Repair closeout evidence",
+      nextOpen: "Publish the closeout pack and carry proof archive, decision receipt, risk notes, support lessons, reusable learning, and next roadmap together.",
+      nextGuarded: "Publish a guarded closeout pack while evidence or sponsor closeout still needs one more review.",
+      nextHold: "Hold the closeout pack until proof archive, risks, support lessons, sponsor closeout, and next roadmap are clear.",
+      nextRepair: "Repair closeout evidence before the pilot story becomes reusable launch proof.",
+      axes: [
+        ["Proof archive", "proofGuard", 0.74, 5, "Proof archive is ready for future review."],
+        ["Decision receipt", "guardClosure", 0.7, 5, "Decision receipt names the outcome, owner, and next action."],
+        ["Risk notes", "rollbackGuard", 0.66, 6, "Risk notes include rollback memory and unresolved exposure."],
+        ["Support lessons", "supportGuard", 0.7, 5, "Support lessons are captured without operational noise."],
+        ["Next roadmap", "reviewGuard", 0.62, 8, "The next roadmap is visible from Build Phase."],
+        ["Sponsor closeout", "sponsorGuard", 0.72, 4, "Sponsor closeout can be read back cleanly."],
+        ["Reusable learning", "tenantGuard", 0.72, 5, "Reusable learning stays tenant-safe and bounded."],
+        ["Closeout closure", "guardClosure", 0.72, 4, "The pack closes the pilot without hidden follow-up debt."],
+      ],
+    },
   ];
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
@@ -15639,7 +15836,11 @@ const state = {
     "${renderCommandPrivateBackendIssueWavePreview(model, autopilot)}",
   ];
 
-  const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+  const COMMAND_RELEASE_RAIL_RENDER_PATHS = [    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCloseoutPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionDecisionGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningProofPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeWatchPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstReviewReceiptPreview(model, autopilot)}",
     "${renderCommandRoleAccessTemplatePackPreview(model, autopilot)}",
     "${renderCommandSandboxGraduationGatePreview(model, autopilot)}",
     "${renderCommandStagingProofSprintBoardPreview(model, autopilot)}",
@@ -20727,682 +20928,213 @@ const state = {
       </section>
     `;
   }
-  function renderCommandReleaseRailPreview(model, autopilot) {
-    const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
-    const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
-    const lightSponsorBridge = buildCommandFirstPilotSponsorRenewalBridgeSummary(model, autopilot);
-    const lightExpansionGate = buildCommandFirstPilotExpansionSafetyGateSummary(model, autopilot);
-    const lightRenewalPack = buildCommandFirstPilotRenewalProofPackSummary(model, autopilot);
-    const lightScopeReceipt = buildCommandFirstPilotExpansionScopeReceiptSummary(model, autopilot);
-    const lightLaunchPack = buildCommandFirstPilotExpansionPilotLaunchPackSummary(model, autopilot);
-    const lightDecisionWatch = buildCommandFirstPilotSponsorDecisionWatchSummary(model, autopilot);
-    const lightOutcomeBrief = buildCommandFirstPilotExpansionOutcomeBriefSummary(model, autopilot);
-    const lightLearningGate = buildCommandFirstPilotExpansionLearningReleaseGateSummary(model, autopilot);
-    const lightSponsorOutcome = buildCommandFirstPilotExpansionSponsorOutcomeReceiptSummary(model, autopilot);
-    const lightRenewalBridge = buildCommandFirstPilotExpansionRenewalProofBridgeSummary(model, autopilot);
-    const lightRenewalReadiness = buildCommandFirstPilotExpansionRenewalReadinessRoomSummary(model, autopilot);
-    const lightRenewalDecision = buildCommandFirstPilotExpansionRenewalDecisionReceiptSummary(model, autopilot);
-    const lightRolloutPlan = buildCommandFirstPilotExpansionRolloutPlanReceiptSummary(model, autopilot);
-    const lightRolloutLaunchGate = buildCommandFirstPilotExpansionRolloutLaunchGateSummary(model, autopilot);
-    const lightFirstReview = buildCommandFirstPilotExpansionRolloutFirstReviewRoomSummary(model, autopilot);
-    const lightOutcomeReceipt = buildCommandFirstPilotExpansionRolloutOutcomeLearningReceiptSummary(model, autopilot);
-    const lightSupportWatch = buildCommandFirstPilotExpansionRolloutSupportWatchSummary(model, autopilot);
-    const lightSponsorPulse = buildCommandFirstPilotExpansionRolloutSponsorPulseSummary(model, autopilot);
-    const lightReuseBoundaryGate = buildCommandFirstPilotExpansionRolloutReuseBoundaryGateSummary(model, autopilot);
-    const lightLearningReuseDecision = buildCommandFirstPilotExpansionRolloutLearningReuseDecisionSummary(model, autopilot);
-    const lightLearningPassport = buildCommandFirstPilotExpansionRolloutLearningPassportSummary(model, autopilot);
-    const lightReuseActivationReceipt = buildCommandFirstPilotExpansionRolloutReuseActivationReceiptSummary(model, autopilot);
-    const lightReuseOutcomeMonitor = buildCommandFirstPilotExpansionRolloutReuseOutcomeMonitorSummary(model, autopilot);
-    const lightReuseGraduationGate = buildCommandFirstPilotExpansionRolloutReuseGraduationGateSummary(model, autopilot);
-    const lightReuseConfidenceLedger = buildCommandFirstPilotExpansionRolloutReuseConfidenceLedgerSummary(model, autopilot);
-    const lightReuseExceptionReview = buildCommandFirstPilotExpansionRolloutReuseExceptionReviewSummary(model, autopilot);
-    const lightReuseLearningLedger = buildCommandFirstPilotExpansionRolloutReuseLearningLedgerSummary(model, autopilot);
-    const lightReuseCouncilPacket = buildCommandFirstPilotExpansionRolloutReuseCouncilPacketSummary(model, autopilot);
-    const lightReuseReleaseCandidate = buildCommandFirstPilotExpansionRolloutReuseReleaseCandidateSummary(model, autopilot);
-    const lightReuseLaunchHandoff = buildCommandFirstPilotExpansionRolloutReuseLaunchHandoffSummary(model, autopilot);
-    const lightReuseLaunchOutcomeWatch = buildCommandFirstPilotExpansionRolloutReuseLaunchOutcomeWatchSummary(model, autopilot);
-    const lightReuseCloseoutReceipt = buildCommandFirstPilotExpansionRolloutReuseCloseoutReceiptSummary(model, autopilot);
-    const lightReuseMarketTransferPacket = buildCommandFirstPilotExpansionRolloutReuseMarketTransferPacketSummary(model, autopilot);
-    const lightReuseMarketTransferOutcomeWatch = buildCommandFirstPilotExpansionRolloutReuseMarketTransferOutcomeWatchSummary(model, autopilot);
-    const lightReuseMarketLearningReceipt = buildCommandFirstPilotExpansionRolloutReuseMarketLearningReceiptSummary(model, autopilot);
-    const lightReuseMarketExpansionGate = buildCommandFirstPilotExpansionRolloutReuseMarketExpansionGateSummary(model, autopilot);
-    const lightReuseMarketDecisionRoom = buildCommandFirstPilotExpansionRolloutReuseMarketDecisionRoomSummary(model, autopilot);
-    const lightReuseMarketLaunchPassport = buildCommandFirstPilotExpansionRolloutReuseMarketLaunchPassportSummary(model, autopilot);
-    const lightReuseMarketPilotEnvelope = buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelopeSummary(model, autopilot);
-    const lightReuseMarketPilotReadinessReceipt = buildCommandFirstPilotExpansionRolloutReuseMarketPilotReadinessReceiptSummary(model, autopilot);
-    const lightReuseMarketPilotScopeLock = buildCommandFirstPilotExpansionRolloutReuseMarketPilotScopeLockSummary(model, autopilot);
-    const lightReuseMarketPilotLaunchGuard = buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchGuardSummary(model, autopilot);
-    const lightBridgeTone = lightSponsorBridge.bridgeScore >= 84 ? "green" : lightSponsorBridge.bridgeScore >= 72 ? "blue" : "amber";
-    const lightGateTone = lightExpansionGate.gateScore >= 84 ? "green" : lightExpansionGate.gateScore >= 72 ? "blue" : "amber";
-    const lightPackTone = lightRenewalPack.packScore >= 84 ? "green" : lightRenewalPack.packScore >= 72 ? "blue" : "amber";
-    const lightScopeTone = lightScopeReceipt.receiptScore >= 84 ? "green" : lightScopeReceipt.receiptScore >= 72 ? "blue" : "amber";
-    const lightLaunchTone = lightLaunchPack.launchScore >= 84 ? "green" : lightLaunchPack.launchScore >= 72 ? "blue" : "amber";
-    const lightWatchTone = lightDecisionWatch.watchScore >= 84 ? "green" : lightDecisionWatch.watchScore >= 72 ? "blue" : "amber";
-    const lightOutcomeTone = lightOutcomeBrief.briefScore >= 84 ? "green" : lightOutcomeBrief.briefScore >= 72 ? "blue" : "amber";
-    const lightLearningTone = lightLearningGate.gateScore >= 84 ? "green" : lightLearningGate.gateScore >= 72 ? "blue" : "amber";
-    const lightSponsorOutcomeTone = lightSponsorOutcome.receiptScore >= 84 ? "green" : lightSponsorOutcome.receiptScore >= 72 ? "blue" : "amber";
-    const lightRenewalBridgeTone = lightRenewalBridge.bridgeScore >= 84 ? "green" : lightRenewalBridge.bridgeScore >= 72 ? "blue" : "amber";
-    const lightRenewalReadinessTone = lightRenewalReadiness.readinessScore >= 84 ? "green" : lightRenewalReadiness.readinessScore >= 72 ? "blue" : "amber";
-    const lightRenewalDecisionTone = lightRenewalDecision.receiptScore >= 84 ? "green" : lightRenewalDecision.receiptScore >= 72 ? "blue" : "amber";
-    const lightRolloutPlanTone = lightRolloutPlan.planScore >= 84 ? "green" : lightRolloutPlan.planScore >= 72 ? "blue" : "amber";
-    const lightRolloutLaunchGateTone = lightRolloutLaunchGate.gateScore >= 84 ? "green" : lightRolloutLaunchGate.gateScore >= 72 ? "blue" : "amber";
-    const lightFirstReviewTone = lightFirstReview.reviewScore >= 84 ? "green" : lightFirstReview.reviewScore >= 72 ? "blue" : "amber";
-    const lightOutcomeReceiptTone = lightOutcomeReceipt.receiptScore >= 84 ? "green" : lightOutcomeReceipt.receiptScore >= 72 ? "blue" : "amber";
-    const lightSupportWatchTone = lightSupportWatch.watchScore >= 84 ? "green" : lightSupportWatch.watchScore >= 72 ? "blue" : "amber";
-    const lightSponsorPulseTone = lightSponsorPulse.pulseScore >= 84 ? "green" : lightSponsorPulse.pulseScore >= 72 ? "blue" : "amber";
-    const lightReuseBoundaryGateTone = lightReuseBoundaryGate.boundaryScore >= 84 ? "green" : lightReuseBoundaryGate.boundaryScore >= 72 ? "blue" : "amber";
-    const lightLearningReuseDecisionTone = lightLearningReuseDecision.decisionScore >= 84 ? "green" : lightLearningReuseDecision.decisionScore >= 72 ? "blue" : "amber";
-    const lightLearningPassportTone = lightLearningPassport.passportScore >= 84 ? "green" : lightLearningPassport.passportScore >= 72 ? "blue" : "amber";
-    const lightReuseActivationReceiptTone = lightReuseActivationReceipt.receiptScore >= 84 ? "green" : lightReuseActivationReceipt.receiptScore >= 72 ? "blue" : "amber";
-    const lightReuseOutcomeMonitorTone = lightReuseOutcomeMonitor.monitorScore >= 84 ? "green" : lightReuseOutcomeMonitor.monitorScore >= 72 ? "blue" : "amber";
-    const lightReuseGraduationGateTone = lightReuseGraduationGate.gateScore >= 84 ? "green" : lightReuseGraduationGate.gateScore >= 72 ? "blue" : "amber";
-    const lightReuseConfidenceLedgerTone = lightReuseConfidenceLedger.ledgerScore >= 84 ? "green" : lightReuseConfidenceLedger.ledgerScore >= 72 ? "blue" : "amber";
-    const lightReuseExceptionReviewTone = lightReuseExceptionReview.reviewScore >= 84 ? "green" : lightReuseExceptionReview.reviewScore >= 72 ? "blue" : "amber";
-    const lightReuseLearningLedgerTone = lightReuseLearningLedger.learningScore >= 84 ? "green" : lightReuseLearningLedger.learningScore >= 72 ? "blue" : "amber";
-    const lightReuseCouncilPacketTone = lightReuseCouncilPacket.packetScore >= 84 ? "green" : lightReuseCouncilPacket.packetScore >= 72 ? "blue" : "amber";
-    const lightReuseReleaseCandidateTone = lightReuseReleaseCandidate.candidateScore >= 84 ? "green" : lightReuseReleaseCandidate.candidateScore >= 72 ? "blue" : "amber";
-    const lightReuseLaunchHandoffTone = lightReuseLaunchHandoff.handoffScore >= 84 ? "green" : lightReuseLaunchHandoff.handoffScore >= 72 ? "blue" : "amber";
-    const lightReuseLaunchOutcomeWatchTone = lightReuseLaunchOutcomeWatch.watchScore >= 84 ? "green" : lightReuseLaunchOutcomeWatch.watchScore >= 72 ? "blue" : "amber";
-    const lightReuseCloseoutReceiptTone = lightReuseCloseoutReceipt.receiptScore >= 84 ? "green" : lightReuseCloseoutReceipt.receiptScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketTransferPacketTone = lightReuseMarketTransferPacket.transferScore >= 84 ? "green" : lightReuseMarketTransferPacket.transferScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketTransferOutcomeWatchTone = lightReuseMarketTransferOutcomeWatch.watchScore >= 84 ? "green" : lightReuseMarketTransferOutcomeWatch.watchScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketLearningReceiptTone = lightReuseMarketLearningReceipt.receiptScore >= 84 ? "green" : lightReuseMarketLearningReceipt.receiptScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketExpansionGateTone = lightReuseMarketExpansionGate.gateScore >= 84 ? "green" : lightReuseMarketExpansionGate.gateScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketDecisionRoomTone = lightReuseMarketDecisionRoom.decisionScore >= 84 ? "green" : lightReuseMarketDecisionRoom.decisionScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketLaunchPassportTone = lightReuseMarketLaunchPassport.passportScore >= 84 ? "green" : lightReuseMarketLaunchPassport.passportScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketPilotEnvelopeTone = lightReuseMarketPilotEnvelope.envelopeScore >= 84 ? "green" : lightReuseMarketPilotEnvelope.envelopeScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketPilotReadinessReceiptTone = lightReuseMarketPilotReadinessReceipt.receiptScore >= 84 ? "green" : lightReuseMarketPilotReadinessReceipt.receiptScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketPilotScopeLockTone = lightReuseMarketPilotScopeLock.scopeScore >= 84 ? "green" : lightReuseMarketPilotScopeLock.scopeScore >= 72 ? "blue" : "amber";
-    const lightReuseMarketPilotLaunchGuardTone = lightReuseMarketPilotLaunchGuard.guardScore >= 84 ? "green" : lightReuseMarketPilotLaunchGuard.guardScore >= 72 ? "blue" : "amber";
-    const lightRailCards = [
-      ["Latest release rail", `${railCount} paths`, "Deep release rooms stay indexed for proof without running during every Command render.", "teal", "Build Phase"],
-      ["Pilot launch guard", `${lightReuseMarketPilotLaunchGuard.guardScore}%`, `${lightReuseMarketPilotLaunchGuard.guardDecision}: ${lightReuseMarketPilotLaunchGuard.nextAction}`, lightReuseMarketPilotLaunchGuard.guardScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Pilot scope lock", `${lightReuseMarketPilotScopeLock.scopeScore}%`, `${lightReuseMarketPilotScopeLock.scopeDecision}: ${lightReuseMarketPilotScopeLock.nextAction}`, lightReuseMarketPilotScopeLock.scopeScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Pilot readiness receipt", `${lightReuseMarketPilotReadinessReceipt.receiptScore}%`, `${lightReuseMarketPilotReadinessReceipt.receiptDecision}: ${lightReuseMarketPilotReadinessReceipt.nextAction}`, lightReuseMarketPilotReadinessReceipt.receiptScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse market envelope", `${lightReuseMarketPilotEnvelope.envelopeScore}%`, `${lightReuseMarketPilotEnvelope.envelopeDecision}: ${lightReuseMarketPilotEnvelope.nextAction}`, lightReuseMarketPilotEnvelope.envelopeScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse market passport", `${lightReuseMarketLaunchPassport.passportScore}%`, `${lightReuseMarketLaunchPassport.passportDecision}: ${lightReuseMarketLaunchPassport.nextAction}`, lightReuseMarketLaunchPassport.passportScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse market decision", `${lightReuseMarketDecisionRoom.decisionScore}%`, `${lightReuseMarketDecisionRoom.decisionChoice}: ${lightReuseMarketDecisionRoom.nextAction}`, lightReuseMarketDecisionRoom.decisionScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse market gate", `${lightReuseMarketExpansionGate.gateScore}%`, `${lightReuseMarketExpansionGate.gateDecision}: ${lightReuseMarketExpansionGate.nextAction}`, lightReuseMarketExpansionGate.gateScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse market learning", `${lightReuseMarketLearningReceipt.receiptScore}%`, `${lightReuseMarketLearningReceipt.receiptDecision}: ${lightReuseMarketLearningReceipt.nextAction}`, lightReuseMarketLearningReceipt.receiptScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse market outcome", `${lightReuseMarketTransferOutcomeWatch.watchScore}%`, `${lightReuseMarketTransferOutcomeWatch.watchDecision}: ${lightReuseMarketTransferOutcomeWatch.nextAction}`, lightReuseMarketTransferOutcomeWatch.watchScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse market transfer", `${lightReuseMarketTransferPacket.transferScore}%`, `${lightReuseMarketTransferPacket.transferDecision}: ${lightReuseMarketTransferPacket.nextAction}`, lightReuseMarketTransferPacket.transferScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse closeout receipt", `${lightReuseCloseoutReceipt.receiptScore}%`, `${lightReuseCloseoutReceipt.receiptDecision}: ${lightReuseCloseoutReceipt.nextAction}`, lightReuseCloseoutReceipt.receiptScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse outcome watch", `${lightReuseLaunchOutcomeWatch.watchScore}%`, `${lightReuseLaunchOutcomeWatch.watchDecision}: ${lightReuseLaunchOutcomeWatch.nextAction}`, lightReuseLaunchOutcomeWatch.watchScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse handoff", `${lightReuseLaunchHandoff.handoffScore}%`, `${lightReuseLaunchHandoff.handoffDecision}: ${lightReuseLaunchHandoff.nextAction}`, lightReuseLaunchHandoff.handoffScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse candidate", `${lightReuseReleaseCandidate.candidateScore}%`, `${lightReuseReleaseCandidate.candidateDecision}: ${lightReuseReleaseCandidate.nextAction}`, lightReuseReleaseCandidate.candidateScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse council", `${lightReuseCouncilPacket.packetScore}%`, `${lightReuseCouncilPacket.councilDecision}: ${lightReuseCouncilPacket.nextAction}`, lightReuseCouncilPacket.packetScore >= 82 ? "green" : "amber", "Build Phase"],
-      ["Reuse learning", `${lightReuseLearningLedger.learningScore}%`, `${lightReuseLearningLedger.learningDecision}: ${lightReuseLearningLedger.nextAction}`, lightReuseLearningLedger.learningScore >= 80 ? "green" : "amber", "Build Phase"],
-      ["Reuse exception", `${lightReuseExceptionReview.reviewScore}%`, `${lightReuseExceptionReview.reviewDecision}: ${lightReuseExceptionReview.nextAction}`, lightReuseExceptionReview.reviewScore >= 80 ? "green" : "amber", "Build Phase"],
-      ["Reuse confidence", `${lightReuseConfidenceLedger.ledgerScore}%`, `${lightReuseConfidenceLedger.ledgerDecision}: ${lightReuseConfidenceLedger.nextAction}`, lightReuseConfidenceLedger.ledgerScore >= 80 ? "green" : "amber", "Build Phase"],
-      ["Reuse graduation", `${lightReuseGraduationGate.gateScore}%`, `${lightReuseGraduationGate.gateDecision}: ${lightReuseGraduationGate.nextAction}`, lightReuseGraduationGate.gateScore >= 80 ? "green" : "amber", "Build Phase"],
-      ["Reuse outcome", `${lightReuseOutcomeMonitor.monitorScore}%`, `${lightReuseOutcomeMonitor.monitorDecision}: ${lightReuseOutcomeMonitor.nextAction}`, lightReuseOutcomeMonitor.monitorScore >= 80 ? "green" : "amber", "Build Phase"],
-      ["Reuse activation", `${lightReuseActivationReceipt.receiptScore}%`, `${lightReuseActivationReceipt.activationDecision}: ${lightReuseActivationReceipt.nextAction}`, lightReuseActivationReceipt.receiptScore >= 80 ? "green" : "amber", "Build Phase"],
-      ["Learning passport", `${lightLearningPassport.passportScore}%`, `${lightLearningPassport.passportDecision}: ${lightLearningPassport.nextAction}`, lightLearningPassport.passportScore >= 80 ? "green" : "amber", "Build Phase"],
-      ["Learning reuse", `${lightLearningReuseDecision.decisionScore}%`, `${lightLearningReuseDecision.reuseDecision}: ${lightLearningReuseDecision.nextAction}`, lightLearningReuseDecision.decisionScore >= 80 ? "green" : "amber", "Build Phase"],
-      ["Reuse boundary", `${lightReuseBoundaryGate.boundaryScore}%`, `${lightReuseBoundaryGate.boundaryDecision}: ${lightReuseBoundaryGate.nextAction}`, lightReuseBoundaryGate.boundaryScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Sponsor pulse", `${lightSponsorPulse.pulseScore}%`, `${lightSponsorPulse.pulseDecision}: ${lightSponsorPulse.nextAction}`, lightSponsorPulse.pulseScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Support watch", `${lightSupportWatch.watchScore}%`, `${lightSupportWatch.watchDecision}: ${lightSupportWatch.nextAction}`, lightSupportWatch.watchScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Outcome receipt", `${lightOutcomeReceipt.receiptScore}%`, `${lightOutcomeReceipt.receiptDecision}: ${lightOutcomeReceipt.nextAction}`, lightOutcomeReceipt.receiptScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["First review", `${lightFirstReview.reviewScore}%`, `${lightFirstReview.reviewDecision}: ${lightFirstReview.nextAction}`, lightFirstReview.reviewScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Launch gate", `${lightRolloutLaunchGate.gateScore}%`, `${lightRolloutLaunchGate.gateDecision}: ${lightRolloutLaunchGate.nextAction}`, lightRolloutLaunchGate.gateScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Rollout plan", `${lightRolloutPlan.planScore}%`, `${lightRolloutPlan.planDecision}: ${lightRolloutPlan.nextAction}`, lightRolloutPlan.planScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Decision receipt", `${lightRenewalDecision.receiptScore}%`, `${lightRenewalDecision.receiptDecision}: ${lightRenewalDecision.nextAction}`, lightRenewalDecision.receiptScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Readiness room", `${lightRenewalReadiness.readinessScore}%`, `${lightRenewalReadiness.readinessDecision}: ${lightRenewalReadiness.nextAction}`, lightRenewalReadiness.readinessScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Renewal bridge", `${lightRenewalBridge.bridgeScore}%`, `${lightRenewalBridge.bridgeDecision}: ${lightRenewalBridge.nextAction}`, lightRenewalBridge.bridgeScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Sponsor receipt", `${lightSponsorOutcome.receiptScore}%`, `${lightSponsorOutcome.receiptDecision}: ${lightSponsorOutcome.nextAction}`, lightSponsorOutcome.receiptScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Learning gate", `${lightLearningGate.gateScore}%`, `${lightLearningGate.releaseDecision}: ${lightLearningGate.nextAction}`, lightLearningGate.gateScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Outcome brief", `${lightOutcomeBrief.briefScore}%`, `${lightOutcomeBrief.briefDecision}: ${lightOutcomeBrief.nextAction}`, lightOutcomeBrief.briefScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Sponsor watch", `${lightDecisionWatch.watchScore}%`, `${lightDecisionWatch.watchDecision}: ${lightDecisionWatch.nextAction}`, lightDecisionWatch.watchScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Launch pack", `${lightLaunchPack.launchScore}%`, `${lightLaunchPack.launchDecision}: ${lightLaunchPack.nextAction}`, lightLaunchPack.launchScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Scope receipt", `${lightScopeReceipt.receiptScore}%`, `${lightScopeReceipt.receiptDecision}: ${lightScopeReceipt.nextAction}`, lightScopeReceipt.receiptScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Renewal pack", `${lightRenewalPack.packScore}%`, `${lightRenewalPack.packDecision}: ${lightRenewalPack.nextAction}`, lightRenewalPack.packScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Expansion gate", `${lightExpansionGate.gateScore}%`, `${lightExpansionGate.gateDecision}: ${lightExpansionGate.nextAction}`, lightExpansionGate.gateScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Sponsor bridge", `${lightSponsorBridge.bridgeScore}%`, `${lightSponsorBridge.bridgeDecision}: ${lightSponsorBridge.nextAction}`, lightSponsorBridge.bridgeScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Bridge owner", lightSponsorBridge.owner, `Review ${lightSponsorBridge.reviewWindow} for ${lightSponsorBridge.account}.`, "blue", "Build Phase"],
-      ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
+
+  function getBuildNumber(version = BUILD_VERSION) {
+    const numeric = Number(String(version || "").replace(/\D/g, ""));
+    return Number.isFinite(numeric) ? numeric : 0;
+  }
+
+  function getActivePilotRunwayReleases(version = BUILD_VERSION) {
+    const buildNumber = getBuildNumber(version);
+    return PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number <= buildNumber);
+  }
+
+  function getCurrentPilotRunwayRelease(version = BUILD_VERSION) {
+    const active = getActivePilotRunwayReleases(version);
+    return PILOT_REUSE_MARKET_RUNWAY_RELEASES.find((release) => release.number === getBuildNumber(version)) || active[active.length - 1] || null;
+  }
+
+  function getPilotRunwayReleaseByKey(key) {
+    return PILOT_REUSE_MARKET_RUNWAY_RELEASES.find((release) => release.key === key) || PILOT_REUSE_MARKET_RUNWAY_RELEASES[0];
+  }
+
+  function buildCommandPilotRunwayStageSummary(model, autopilot, stageKey) {
+    const stage = getPilotRunwayReleaseByKey(stageKey);
+    const guard = buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchGuardSummary(model, autopilot);
+    const sourceMap = {
+      guardScore: guard.guardScore,
+      launchMoment: guard.launchMoment,
+      ownerCommand: guard.ownerCommand,
+      supportGuard: guard.supportGuard,
+      rollbackGuard: guard.rollbackGuard,
+      proofGuard: guard.proofGuard,
+      sponsorGuard: guard.sponsorGuard,
+      reviewGuard: guard.reviewGuard,
+      tenantGuard: guard.tenantGuard,
+      guardClosure: guard.guardClosure,
+    };
+    const clamp = (value) => Math.max(1, Math.min(100, Math.round(Number(value || 0))));
+    const guardDebt = Math.max(0, Number(guard.guardGaps || 0));
+    const releaseIndex = PILOT_REUSE_MARKET_RUNWAY_RELEASES.findIndex((release) => release.key === stage.key);
+    const score = clamp(guard.guardScore * 0.2 + guard.proofGuard * 0.15 + guard.supportGuard * 0.12 + guard.sponsorGuard * 0.12 + guard.rollbackGuard * 0.11 + guard.reviewGuard * 0.1 + guard.tenantGuard * 0.12 + guard.guardClosure * 0.08 + 4 + releaseIndex - guardDebt * 1.4);
+    const signals = [
+      [stage.primarySignal, `${score}%`, stage.primaryNote, score >= 84 ? "green" : score >= 74 ? "blue" : "amber"],
+      ...stage.axes.map(([label, source, weight, bump, note]) => {
+        const sourceScore = Number(sourceMap[source] || score);
+        const axisScore = clamp(sourceScore * Number(weight || 0.65) + score * (1 - Number(weight || 0.65)) + Number(bump || 0) - guardDebt * 0.8);
+        return [label, `${axisScore}%`, note, axisScore >= 82 ? "green" : axisScore >= 72 ? "blue" : "amber"];
+      }),
     ];
+    const axisScores = signals.slice(1).map(([, value]) => Number(String(value).replace(/\D/g, "")));
+    const gaps = axisScores.filter((value) => value < 74).length + (score < 78 ? 1 : 0) + Math.max(0, guardDebt - 2);
+    const weakestAxis = signals.slice(1).map(([label, value]) => [label, Number(String(value).replace(/\D/g, ""))]).sort((a, b) => a[1] - b[1])[0];
+    const decision = score >= 88 && gaps <= 2 ? stage.openDecision : score >= 80 && gaps <= 4 ? stage.guardedDecision : weakestAxis && weakestAxis[1] < 70 ? stage.repairDecision : stage.holdDecision;
+    const state = decision === stage.openDecision ? `${stage.shortLabel} is ready to move with proof, owner, review, support, rollback, sponsor, and tenant boundary visible` : decision === stage.guardedDecision ? `${stage.shortLabel} can move under a guarded path while weak signals stay visible` : decision === stage.repairDecision ? `${stage.shortLabel} needs one evidence repair before the release story widens` : `${stage.shortLabel} should wait until the pilot runway has fewer open gaps`;
+    const nextAction = decision === stage.openDecision ? stage.nextOpen : decision === stage.guardedDecision ? stage.nextGuarded : decision === stage.repairDecision ? stage.nextRepair : stage.nextHold;
+    const line = `${decision}: ${stage.primarySignal.toLowerCase()} ${score}%, ${signals.slice(1, 5).map(([label, value]) => `${label.toLowerCase()} ${value}`).join(", ")}, gaps ${gaps}.`;
+    const id = `${stage.version.toUpperCase()}-${stage.idSuffix}`;
+    const copyText = `${BRAND_NAME} ${stage.version} ${stage.label} ${id}: ${state}. ${stage.primarySignal} score ${score}%. ${signals.slice(1).map(([label, value]) => `${label} ${value}`).join(". ")}. Decision ${decision}. Gaps ${gaps}. Launch guard ${guard.guardDecision}. Owner ${guard.owner}. Review ${guard.reviewWindow}. Account ${guard.account}. Value ${guard.valueLine}. Line: ${line} First move: ${compactText(guard.firstMove, 96)}. Next: ${nextAction}`;
+    return { ...stage, account: guard.account, copyText, decision, firstMove: guard.firstMove, gaps, id, line, nextAction, owner: guard.owner, reviewWindow: guard.reviewWindow, score, signals, state, valueLine: guard.valueLine, [stage.decisionKey]: decision, [stage.lineKey]: line, [stage.scoreKey]: score, [stage.stateKey]: state };
+  }
+
+  function buildCommandPilotRunwayStage(model, autopilot, stageKey, seed = {}) {
+    const summary = seed.summary || buildCommandPilotRunwayStageSummary(model, autopilot, stageKey);
+    const lanes = summary.signals.map(([label, value, note, tone], index) => [label, value, note, index === 0 ? (summary.score >= 84 ? "green" : "amber") : tone]);
+    const cards = lanes.map(([label, value, note, tone], index) => [label, value, note, index === 0 ? "Runway" : "Pilot", tone]);
+    const receipts = lanes.map(([label, value, note, tone], index) => [`${index + 1}`, `${label} ${summary.shortLabel.toLowerCase()} receipt`, `${value}: ${note}`, tone]);
+    return { ...summary, cards, lanes, receipts };
+  }
+
+  function renderCommandPilotRunwayStagePreview(model, autopilot, stageKey) {
+    const stage = buildCommandPilotRunwayStage(model, autopilot, stageKey);
+    const tone = stage.score >= 84 ? "green" : stage.score >= 72 ? "blue" : "amber";
+    const stateText = stage.state || stage.stageSummary || stage.summary || "Pilot runway proof stays indexed";
+    const copyText = stage.copyText || `${BRAND_NAME} ${stage.version} ${stage.label}: ${stateText}. Next: ${stage.nextAction || "Open Build Phase."}`;
     return `
-      <section class="command-release-rail-light" aria-label="Lightweight release rail">
-        <div class="command-release-rail-head">
+      <section class="info-card command-pilot-runway-stage ${escapeHtml(stage.className)} tone-${escapeHtml(tone)}" aria-label="${escapeHtml(stage.label)}">
+        <div class="info-head compact command-pilot-runway-stage-head">
           <div>
-            <span class="metric-label">${escapeHtml(BUILD_VERSION)} release rail</span>
-            <h3>Deep release proof stays indexed until needed.</h3>
-            <p>Command paints the operating path first. Recent release rooms remain traceable from Build Phase without recomputing every historical room on navigation.</p>
+            <span class="metric-label">${escapeHtml(stage.version)} ${escapeHtml(stage.shortLabel)}</span>
+            <strong>${escapeHtml(stage.label)} / ${stage.score}%</strong>
+            <p>${escapeHtml(stateText)}. ${escapeHtml(stage.nextAction || "Open Build Phase for release proof.")}</p>
           </div>
-          <button class="ghost-btn" type="button" data-view="Build Phase">Open build proof</button>
+          <span>${escapeHtml(stage.id)}</span>
         </div>
-        <div class="command-release-rail-cards">
-          ${lightRailCards
-            .map(
-              ([label, value, note, tone, view]) => `
-                <article class="tone-${escapeHtml(tone)}">
-                  <span>${escapeHtml(label)}</span>
-                  <strong>${escapeHtml(value)}</strong>
-                  <small>${escapeHtml(note)}</small>
-                  <button class="mini-btn" type="button" data-view="${escapeHtml(view)}">Open ${escapeHtml(simpleRoomLabel(view))}</button>
-                </article>
-              `,
-            )
-            .join("")}
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-launch-guard-strip tone-${escapeHtml(lightReuseMarketPilotLaunchGuardTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Pilot Launch Guard summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market launch guard</span>
-            <strong>${escapeHtml(lightReuseMarketPilotLaunchGuard.guardDecision)} / ${lightReuseMarketPilotLaunchGuard.guardScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketPilotLaunchGuard.guardState)}. ${escapeHtml(lightReuseMarketPilotLaunchGuard.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-launch-guard-strip-signals">
-            ${lightReuseMarketPilotLaunchGuard.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-guard" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketPilotLaunchGuard.copyText))}">Copy launch guard</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-scope-lock-strip tone-${escapeHtml(lightReuseMarketPilotScopeLockTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Pilot Scope Lock summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market scope lock</span>
-            <strong>${escapeHtml(lightReuseMarketPilotScopeLock.scopeDecision)} / ${lightReuseMarketPilotScopeLock.scopeScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketPilotScopeLock.scopeState)}. ${escapeHtml(lightReuseMarketPilotScopeLock.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-scope-lock-strip-signals">
-            ${lightReuseMarketPilotScopeLock.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-pilot-scope-lock" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketPilotScopeLock.copyText))}">Copy scope lock</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip tone-${escapeHtml(lightReuseMarketPilotReadinessReceiptTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Pilot Readiness Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market readiness receipt</span>
-            <strong>${escapeHtml(lightReuseMarketPilotReadinessReceipt.receiptDecision)} / ${lightReuseMarketPilotReadinessReceipt.receiptScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketPilotReadinessReceipt.receiptState)}. ${escapeHtml(lightReuseMarketPilotReadinessReceipt.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip-signals">
-            ${lightReuseMarketPilotReadinessReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketPilotReadinessReceipt.copyText))}">Copy readiness receipt</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-strip tone-${escapeHtml(lightReuseMarketPilotEnvelopeTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Pilot Envelope summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market envelope</span>
-            <strong>${escapeHtml(lightReuseMarketPilotEnvelope.envelopeDecision)} / ${lightReuseMarketPilotEnvelope.envelopeScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketPilotEnvelope.envelopeState)}. ${escapeHtml(lightReuseMarketPilotEnvelope.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-strip-signals">
-            ${lightReuseMarketPilotEnvelope.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-pilot-envelope" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketPilotEnvelope.copyText))}">Copy pilot envelope</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-market-launch-passport-strip tone-${escapeHtml(lightReuseMarketLaunchPassportTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Launch Passport summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market passport</span>
-            <strong>${escapeHtml(lightReuseMarketLaunchPassport.passportDecision)} / ${lightReuseMarketLaunchPassport.passportScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketLaunchPassport.passportState)}. ${escapeHtml(lightReuseMarketLaunchPassport.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-launch-passport-strip-signals">
-            ${lightReuseMarketLaunchPassport.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-launch-passport" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketLaunchPassport.copyText))}">Copy launch passport</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-market-decision-room-strip tone-${escapeHtml(lightReuseMarketDecisionRoomTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Decision Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market decision</span>
-            <strong>${escapeHtml(lightReuseMarketDecisionRoom.decisionChoice)} / ${lightReuseMarketDecisionRoom.decisionScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketDecisionRoom.decisionState)}. ${escapeHtml(lightReuseMarketDecisionRoom.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-decision-room-strip-signals">
-            ${lightReuseMarketDecisionRoom.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-decision-room" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketDecisionRoom.copyText))}">Copy decision room</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-market-expansion-gate-strip tone-${escapeHtml(lightReuseMarketExpansionGateTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Expansion Gate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market gate</span>
-            <strong>${escapeHtml(lightReuseMarketExpansionGate.gateDecision)} / ${lightReuseMarketExpansionGate.gateScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketExpansionGate.gateState)}. ${escapeHtml(lightReuseMarketExpansionGate.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-expansion-gate-strip-signals">
-            ${lightReuseMarketExpansionGate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-expansion-gate" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketExpansionGate.copyText))}">Copy expansion gate</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-market-learning-receipt-strip tone-${escapeHtml(lightReuseMarketLearningReceiptTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Learning Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market learning</span>
-            <strong>${escapeHtml(lightReuseMarketLearningReceipt.receiptDecision)} / ${lightReuseMarketLearningReceipt.receiptScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketLearningReceipt.receiptState)}. ${escapeHtml(lightReuseMarketLearningReceipt.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-learning-receipt-strip-signals">
-            ${lightReuseMarketLearningReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-learning-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketLearningReceipt.copyText))}">Copy learning receipt</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-market-transfer-outcome-watch-strip tone-${escapeHtml(lightReuseMarketTransferOutcomeWatchTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Transfer Outcome Watch summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market outcome</span>
-            <strong>${escapeHtml(lightReuseMarketTransferOutcomeWatch.watchDecision)} / ${lightReuseMarketTransferOutcomeWatch.watchScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketTransferOutcomeWatch.watchState)}. ${escapeHtml(lightReuseMarketTransferOutcomeWatch.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-transfer-outcome-watch-strip-signals">
-            ${lightReuseMarketTransferOutcomeWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-transfer-outcome-watch" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketTransferOutcomeWatch.copyText))}">Copy outcome watch</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-market-transfer-packet-strip tone-${escapeHtml(lightReuseMarketTransferPacketTone)}" aria-label="First Pilot Expansion Rollout Reuse Market Transfer Packet summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse market transfer</span>
-            <strong>${escapeHtml(lightReuseMarketTransferPacket.transferDecision)} / ${lightReuseMarketTransferPacket.transferScore}%</strong>
-            <p>${escapeHtml(lightReuseMarketTransferPacket.transferState)}. ${escapeHtml(lightReuseMarketTransferPacket.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-market-transfer-packet-strip-signals">
-            ${lightReuseMarketTransferPacket.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-market-transfer-packet" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseMarketTransferPacket.copyText))}">Copy transfer packet</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-strip tone-${escapeHtml(lightReuseCloseoutReceiptTone)}" aria-label="First Pilot Expansion Rollout Reuse Closeout Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse closeout receipt</span>
-            <strong>${escapeHtml(lightReuseCloseoutReceipt.receiptDecision)} / ${lightReuseCloseoutReceipt.receiptScore}%</strong>
-            <p>${escapeHtml(lightReuseCloseoutReceipt.receiptState)}. ${escapeHtml(lightReuseCloseoutReceipt.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-closeout-receipt-strip-signals">
-            ${lightReuseCloseoutReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-closeout-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseCloseoutReceipt.copyText))}">Copy closeout receipt</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-launch-outcome-watch-strip tone-${escapeHtml(lightReuseLaunchOutcomeWatchTone)}" aria-label="First Pilot Expansion Rollout Reuse Launch Outcome Watch summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse outcome watch</span>
-            <strong>${escapeHtml(lightReuseLaunchOutcomeWatch.watchDecision)} / ${lightReuseLaunchOutcomeWatch.watchScore}%</strong>
-            <p>${escapeHtml(lightReuseLaunchOutcomeWatch.watchState)}. ${escapeHtml(lightReuseLaunchOutcomeWatch.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-launch-outcome-watch-strip-signals">
-            ${lightReuseLaunchOutcomeWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-launch-outcome-watch" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseLaunchOutcomeWatch.copyText))}">Copy outcome watch</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-launch-handoff-strip tone-${escapeHtml(lightReuseLaunchHandoffTone)}" aria-label="First Pilot Expansion Rollout Reuse Launch Handoff summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse handoff</span>
-            <strong>${escapeHtml(lightReuseLaunchHandoff.handoffDecision)} / ${lightReuseLaunchHandoff.handoffScore}%</strong>
-            <p>${escapeHtml(lightReuseLaunchHandoff.handoffState)}. ${escapeHtml(lightReuseLaunchHandoff.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-launch-handoff-strip-signals">
-            ${lightReuseLaunchHandoff.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-launch-handoff" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseLaunchHandoff.copyText))}">Copy launch handoff</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-strip tone-${escapeHtml(lightReuseReleaseCandidateTone)}" aria-label="First Pilot Expansion Rollout Reuse Release Candidate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse candidate</span>
-            <strong>${escapeHtml(lightReuseReleaseCandidate.candidateDecision)} / ${lightReuseReleaseCandidate.candidateScore}%</strong>
-            <p>${escapeHtml(lightReuseReleaseCandidate.candidateState)}. ${escapeHtml(lightReuseReleaseCandidate.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-release-candidate-strip-signals">
-            ${lightReuseReleaseCandidate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-release-candidate" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseReleaseCandidate.copyText))}">Copy release candidate</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-council-packet-strip tone-${escapeHtml(lightReuseCouncilPacketTone)}" aria-label="First Pilot Expansion Rollout Reuse Council Packet summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse council</span>
-            <strong>${escapeHtml(lightReuseCouncilPacket.councilDecision)} / ${lightReuseCouncilPacket.packetScore}%</strong>
-            <p>${escapeHtml(lightReuseCouncilPacket.councilState)}. ${escapeHtml(lightReuseCouncilPacket.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-council-packet-strip-signals">
-            ${lightReuseCouncilPacket.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-council-packet" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseCouncilPacket.copyText))}">Copy council packet</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-learning-ledger-strip tone-${escapeHtml(lightReuseLearningLedgerTone)}" aria-label="First Pilot Expansion Rollout Reuse Learning Ledger summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse learning</span>
-            <strong>${escapeHtml(lightReuseLearningLedger.learningDecision)} / ${lightReuseLearningLedger.learningScore}%</strong>
-            <p>${escapeHtml(lightReuseLearningLedger.learningState)}. ${escapeHtml(lightReuseLearningLedger.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-learning-ledger-strip-signals">
-            ${lightReuseLearningLedger.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-learning-ledger" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseLearningLedger.copyText))}">Copy learning ledger</button>
-        </div>        <div class="command-first-pilot-expansion-rollout-reuse-exception-review-strip tone-${escapeHtml(lightReuseExceptionReviewTone)}" aria-label="First Pilot Expansion Rollout Reuse Exception Review summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse exception</span>
-            <strong>${escapeHtml(lightReuseExceptionReview.reviewDecision)} / ${lightReuseExceptionReview.reviewScore}%</strong>
-            <p>${escapeHtml(lightReuseExceptionReview.reviewState)}. ${escapeHtml(lightReuseExceptionReview.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-exception-review-strip-signals">
-            ${lightReuseExceptionReview.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-exception-review" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseExceptionReview.copyText))}">Copy exception review</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-strip tone-${escapeHtml(lightReuseConfidenceLedgerTone)}" aria-label="First Pilot Expansion Rollout Reuse Confidence Ledger summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse confidence</span>
-            <strong>${escapeHtml(lightReuseConfidenceLedger.ledgerDecision)} / ${lightReuseConfidenceLedger.ledgerScore}%</strong>
-            <p>${escapeHtml(lightReuseConfidenceLedger.ledgerState)}. ${escapeHtml(lightReuseConfidenceLedger.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-confidence-ledger-strip-signals">
-            ${lightReuseConfidenceLedger.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-confidence-ledger" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseConfidenceLedger.copyText))}">Copy confidence ledger</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-graduation-gate-strip tone-${escapeHtml(lightReuseGraduationGateTone)}" aria-label="First Pilot Expansion Rollout Reuse Graduation Gate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse graduation</span>
-            <strong>${escapeHtml(lightReuseGraduationGate.gateDecision)} / ${lightReuseGraduationGate.gateScore}%</strong>
-            <p>${escapeHtml(lightReuseGraduationGate.gateState)}. ${escapeHtml(lightReuseGraduationGate.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-graduation-gate-strip-signals">
-            ${lightReuseGraduationGate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-graduation-gate" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseGraduationGate.copyText))}">Copy graduation gate</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-outcome-monitor-strip tone-${escapeHtml(lightReuseOutcomeMonitorTone)}" aria-label="First Pilot Expansion Rollout Reuse Outcome Monitor summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse outcome</span>
-            <strong>${escapeHtml(lightReuseOutcomeMonitor.monitorDecision)} / ${lightReuseOutcomeMonitor.monitorScore}%</strong>
-            <p>${escapeHtml(lightReuseOutcomeMonitor.monitorState)}. ${escapeHtml(lightReuseOutcomeMonitor.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-outcome-monitor-strip-signals">
-            ${lightReuseOutcomeMonitor.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-outcome-monitor" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseOutcomeMonitor.copyText))}">Copy outcome monitor</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-activation-receipt-strip tone-${escapeHtml(lightReuseActivationReceiptTone)}" aria-label="First Pilot Expansion Rollout Reuse Activation Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse activation</span>
-            <strong>${escapeHtml(lightReuseActivationReceipt.activationDecision)} / ${lightReuseActivationReceipt.receiptScore}%</strong>
-            <p>${escapeHtml(lightReuseActivationReceipt.activationState)}. ${escapeHtml(lightReuseActivationReceipt.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-activation-receipt-strip-signals">
-            ${lightReuseActivationReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-activation-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseActivationReceipt.copyText))}">Copy activation receipt</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-learning-passport-strip tone-${escapeHtml(lightLearningPassportTone)}" aria-label="First Pilot Expansion Rollout Learning Passport summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout learning passport</span>
-            <strong>${escapeHtml(lightLearningPassport.passportDecision)} / ${lightLearningPassport.passportScore}%</strong>
-            <p>${escapeHtml(lightLearningPassport.passportState)}. ${escapeHtml(lightLearningPassport.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-learning-passport-strip-signals">
-            ${lightLearningPassport.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-learning-passport" data-copy-text="${escapeHtml(encodeURIComponent(lightLearningPassport.copyText))}">Copy learning passport</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-learning-reuse-decision-strip tone-${escapeHtml(lightLearningReuseDecisionTone)}" aria-label="First Pilot Expansion Rollout Learning Reuse Decision summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout learning reuse</span>
-            <strong>${escapeHtml(lightLearningReuseDecision.reuseDecision)} / ${lightLearningReuseDecision.decisionScore}%</strong>
-            <p>${escapeHtml(lightLearningReuseDecision.reuseState)}. ${escapeHtml(lightLearningReuseDecision.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-learning-reuse-decision-strip-signals">
-            ${lightLearningReuseDecision.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-learning-reuse-decision" data-copy-text="${escapeHtml(encodeURIComponent(lightLearningReuseDecision.copyText))}">Copy reuse decision</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-reuse-boundary-gate-strip tone-${escapeHtml(lightReuseBoundaryGateTone)}" aria-label="First Pilot Expansion Rollout Reuse Boundary Gate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout reuse boundary</span>
-            <strong>${escapeHtml(lightReuseBoundaryGate.boundaryDecision)} / ${lightReuseBoundaryGate.boundaryScore}%</strong>
-            <p>${escapeHtml(lightReuseBoundaryGate.boundaryState)}. ${escapeHtml(lightReuseBoundaryGate.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-reuse-boundary-gate-strip-signals">
-            ${lightReuseBoundaryGate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-reuse-boundary-gate" data-copy-text="${escapeHtml(encodeURIComponent(lightReuseBoundaryGate.copyText))}">Copy reuse boundary</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-sponsor-pulse-strip tone-${escapeHtml(lightSponsorPulseTone)}" aria-label="First Pilot Expansion Rollout Sponsor Pulse summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout sponsor pulse</span>
-            <strong>${escapeHtml(lightSponsorPulse.pulseDecision)} / ${lightSponsorPulse.pulseScore}%</strong>
-            <p>${escapeHtml(lightSponsorPulse.pulseState)}. ${escapeHtml(lightSponsorPulse.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-sponsor-pulse-strip-signals">
-            ${lightSponsorPulse.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-sponsor-pulse" data-copy-text="${escapeHtml(encodeURIComponent(lightSponsorPulse.copyText))}">Copy sponsor pulse</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-support-watch-strip tone-${escapeHtml(lightSupportWatchTone)}" aria-label="First Pilot Expansion Rollout Support Watch summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout support watch</span>
-            <strong>${escapeHtml(lightSupportWatch.watchDecision)} / ${lightSupportWatch.watchScore}%</strong>
-            <p>${escapeHtml(lightSupportWatch.watchState)}. ${escapeHtml(lightSupportWatch.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-support-watch-strip-signals">
-            ${lightSupportWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-support-watch" data-copy-text="${escapeHtml(encodeURIComponent(lightSupportWatch.copyText))}">Copy support watch</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-outcome-learning-receipt-strip tone-${escapeHtml(lightOutcomeReceiptTone)}" aria-label="First Pilot Expansion Rollout Outcome Learning Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} outcome learning receipt</span>
-            <strong>${escapeHtml(lightOutcomeReceipt.receiptDecision)} / ${lightOutcomeReceipt.receiptScore}%</strong>
-            <p>${escapeHtml(lightOutcomeReceipt.receiptState)}. ${escapeHtml(lightOutcomeReceipt.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-outcome-learning-receipt-strip-signals">
-            ${lightOutcomeReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-outcome-learning-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightOutcomeReceipt.copyText))}">Copy outcome receipt</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-first-review-room-strip tone-${escapeHtml(lightFirstReviewTone)}" aria-label="First Pilot Expansion Rollout First Review Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout first review</span>
-            <strong>${escapeHtml(lightFirstReview.reviewDecision)} / ${lightFirstReview.reviewScore}%</strong>
-            <p>${escapeHtml(lightFirstReview.reviewState)}. ${escapeHtml(lightFirstReview.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-first-review-room-strip-signals">
-            ${lightFirstReview.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-first-review-room" data-copy-text="${escapeHtml(encodeURIComponent(lightFirstReview.copyText))}">Copy first review</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-launch-gate-strip tone-${escapeHtml(lightRolloutLaunchGateTone)}" aria-label="First Pilot Expansion Rollout Launch Gate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout launch gate</span>
-            <strong>${escapeHtml(lightRolloutLaunchGate.gateDecision)} / ${lightRolloutLaunchGate.gateScore}%</strong>
-            <p>${escapeHtml(lightRolloutLaunchGate.gateState)}. ${escapeHtml(lightRolloutLaunchGate.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-launch-gate-strip-signals">
-            ${lightRolloutLaunchGate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-launch-gate" data-copy-text="${escapeHtml(encodeURIComponent(lightRolloutLaunchGate.copyText))}">Copy launch gate</button>
-        </div>
-        <div class="command-first-pilot-expansion-rollout-plan-receipt-strip tone-${escapeHtml(lightRolloutPlanTone)}" aria-label="First Pilot Expansion Rollout Plan Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} rollout plan receipt</span>
-            <strong>${escapeHtml(lightRolloutPlan.planDecision)} / ${lightRolloutPlan.planScore}%</strong>
-            <p>${escapeHtml(lightRolloutPlan.planState)}. ${escapeHtml(lightRolloutPlan.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-rollout-plan-receipt-strip-signals">
-            ${lightRolloutPlan.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-rollout-plan-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightRolloutPlan.copyText))}">Copy rollout plan</button>
-        </div>
-        <div class="command-first-pilot-expansion-renewal-decision-receipt-strip tone-${escapeHtml(lightRenewalDecisionTone)}" aria-label="First Pilot Expansion Renewal Decision Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} renewal decision receipt</span>
-            <strong>${escapeHtml(lightRenewalDecision.receiptDecision)} / ${lightRenewalDecision.receiptScore}%</strong>
-            <p>${escapeHtml(lightRenewalDecision.receiptState)}. ${escapeHtml(lightRenewalDecision.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-renewal-decision-receipt-strip-signals">
-            ${lightRenewalDecision.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-renewal-decision-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightRenewalDecision.copyText))}">Copy decision receipt</button>
-        </div>
-        <div class="command-first-pilot-expansion-renewal-readiness-room-strip tone-${escapeHtml(lightRenewalReadinessTone)}" aria-label="First Pilot Expansion Renewal Readiness Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} renewal readiness room</span>
-            <strong>${escapeHtml(lightRenewalReadiness.readinessDecision)} / ${lightRenewalReadiness.readinessScore}%</strong>
-            <p>${escapeHtml(lightRenewalReadiness.readinessState)}. ${escapeHtml(lightRenewalReadiness.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-renewal-readiness-room-strip-signals">
-            ${lightRenewalReadiness.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-renewal-readiness-room" data-copy-text="${escapeHtml(encodeURIComponent(lightRenewalReadiness.copyText))}">Copy readiness room</button>
-        </div>
-        <div class="command-first-pilot-expansion-renewal-proof-bridge-strip tone-${escapeHtml(lightRenewalBridgeTone)}" aria-label="First Pilot Expansion Renewal Proof Bridge summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} renewal proof bridge</span>
-            <strong>${escapeHtml(lightRenewalBridge.bridgeDecision)} / ${lightRenewalBridge.bridgeScore}%</strong>
-            <p>${escapeHtml(lightRenewalBridge.bridgeState)}. ${escapeHtml(lightRenewalBridge.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-renewal-proof-bridge-strip-signals">
-            ${lightRenewalBridge.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-renewal-proof-bridge" data-copy-text="${escapeHtml(encodeURIComponent(lightRenewalBridge.copyText))}">Copy renewal bridge</button>
-        </div>
-        <div class="command-first-pilot-expansion-sponsor-outcome-receipt-strip tone-${escapeHtml(lightSponsorOutcomeTone)}" aria-label="First Pilot Expansion Sponsor Outcome Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor outcome receipt</span>
-            <strong>${escapeHtml(lightSponsorOutcome.receiptDecision)} / ${lightSponsorOutcome.receiptScore}%</strong>
-            <p>${escapeHtml(lightSponsorOutcome.receiptState)}. ${escapeHtml(lightSponsorOutcome.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-sponsor-outcome-receipt-strip-signals">
-            ${lightSponsorOutcome.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-sponsor-outcome-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightSponsorOutcome.copyText))}">Copy sponsor receipt</button>
-        </div>
-        <div class="command-first-pilot-expansion-learning-release-gate-strip tone-${escapeHtml(lightLearningTone)}" aria-label="First Pilot Expansion Learning Release Gate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} expansion learning release gate</span>
-            <strong>${escapeHtml(lightLearningGate.releaseDecision)} / ${lightLearningGate.gateScore}%</strong>
-            <p>${escapeHtml(lightLearningGate.releaseState)}. ${escapeHtml(lightLearningGate.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-learning-release-gate-strip-signals">
-            ${lightLearningGate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-learning-release-gate" data-copy-text="${escapeHtml(encodeURIComponent(lightLearningGate.copyText))}">Copy learning gate</button>
-        </div>
-        <div class="command-first-pilot-expansion-outcome-brief-strip tone-${escapeHtml(lightOutcomeTone)}" aria-label="First Pilot Expansion Outcome Brief summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} expansion outcome brief</span>
-            <strong>${escapeHtml(lightOutcomeBrief.briefDecision)} / ${lightOutcomeBrief.briefScore}%</strong>
-            <p>${escapeHtml(lightOutcomeBrief.briefState)}. ${escapeHtml(lightOutcomeBrief.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-outcome-brief-strip-signals">
-            ${lightOutcomeBrief.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-outcome-brief" data-copy-text="${escapeHtml(encodeURIComponent(lightOutcomeBrief.copyText))}">Copy outcome brief</button>
-        </div>
-        <div class="command-first-pilot-sponsor-decision-watch-strip tone-${escapeHtml(lightWatchTone)}" aria-label="First Pilot Sponsor Decision Watch summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor decision watch</span>
-            <strong>${escapeHtml(lightDecisionWatch.watchDecision)} / ${lightDecisionWatch.watchScore}%</strong>
-            <p>${escapeHtml(lightDecisionWatch.watchState)}. ${escapeHtml(lightDecisionWatch.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-sponsor-decision-watch-strip-signals">
-            ${lightDecisionWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-sponsor-decision-watch" data-copy-text="${escapeHtml(encodeURIComponent(lightDecisionWatch.copyText))}">Copy sponsor watch</button>
-        </div>
-        <div class="command-first-pilot-expansion-pilot-launch-pack-strip tone-${escapeHtml(lightLaunchTone)}" aria-label="First Pilot Expansion Pilot Launch Pack summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} expansion pilot launch pack</span>
-            <strong>${escapeHtml(lightLaunchPack.launchDecision)} / ${lightLaunchPack.launchScore}%</strong>
-            <p>${escapeHtml(lightLaunchPack.launchState)}. ${escapeHtml(lightLaunchPack.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-pilot-launch-pack-strip-signals">
-            ${lightLaunchPack.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-pilot-launch-pack" data-copy-text="${escapeHtml(encodeURIComponent(lightLaunchPack.copyText))}">Copy launch pack</button>
-        </div>
-        <div class="command-first-pilot-expansion-scope-receipt-strip tone-${escapeHtml(lightScopeTone)}" aria-label="First Pilot Expansion Scope Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} expansion scope receipt</span>
-            <strong>${escapeHtml(lightScopeReceipt.receiptDecision)} / ${lightScopeReceipt.receiptScore}%</strong>
-            <p>${escapeHtml(lightScopeReceipt.receiptState)}. ${escapeHtml(lightScopeReceipt.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-scope-receipt-strip-signals">
-            ${lightScopeReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-scope-receipt" data-copy-text="${escapeHtml(encodeURIComponent(lightScopeReceipt.copyText))}">Copy scope receipt</button>
-        </div>
-        <div class="command-first-pilot-renewal-proof-pack-strip tone-${escapeHtml(lightPackTone)}" aria-label="First Pilot Renewal Proof Pack summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} renewal proof pack</span>
-            <strong>${escapeHtml(lightRenewalPack.packDecision)} / ${lightRenewalPack.packScore}%</strong>
-            <p>${escapeHtml(lightRenewalPack.packState)}. ${escapeHtml(lightRenewalPack.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-renewal-proof-pack-strip-signals">
-            ${lightRenewalPack.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-renewal-proof-pack" data-copy-text="${escapeHtml(encodeURIComponent(lightRenewalPack.copyText))}">Copy proof pack</button>
-        </div>
-        <div class="command-first-pilot-expansion-safety-gate-strip tone-${escapeHtml(lightGateTone)}" aria-label="First Pilot Expansion Safety Gate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} expansion safety gate</span>
-            <strong>${escapeHtml(lightExpansionGate.gateDecision)} / ${lightExpansionGate.gateScore}%</strong>
-            <p>${escapeHtml(lightExpansionGate.gateState)}. ${escapeHtml(lightExpansionGate.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-expansion-safety-gate-strip-signals">
-            ${lightExpansionGate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-expansion-safety-gate" data-copy-text="${escapeHtml(encodeURIComponent(lightExpansionGate.copyText))}">Copy expansion gate</button>
-        </div>
-        <div class="command-first-pilot-sponsor-renewal-bridge-strip tone-${escapeHtml(lightBridgeTone)}" aria-label="First Pilot Sponsor Renewal Bridge summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor renewal bridge</span>
-            <strong>${escapeHtml(lightSponsorBridge.bridgeDecision)} / ${lightSponsorBridge.bridgeScore}%</strong>
-            <p>${escapeHtml(lightSponsorBridge.bridgeState)}. ${escapeHtml(lightSponsorBridge.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-sponsor-renewal-bridge-strip-signals">
-            ${lightSponsorBridge.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-sponsor-renewal-bridge" data-copy-text="${escapeHtml(encodeURIComponent(lightSponsorBridge.copyText))}">Copy sponsor bridge</button>
+        <div class="command-pilot-runway-stage-quote tone-teal"><span>${escapeHtml(stage.shortLabel)} line</span><strong>${escapeHtml(stage.line)}</strong></div>
+        <div class="command-pilot-runway-stage-grid mini-card-grid">${stage.signals.map(([label, value, note, signalTone]) => `<article class="tone-${escapeHtml(signalTone)}"><span class="metric-label">${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-pilot-runway-stage-lanes">${stage.lanes.map(([label, value, note, laneTone]) => `<article class="tone-${escapeHtml(laneTone)}"><span>${escapeHtml(String(value))}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-pilot-runway-stage-cards">${stage.cards.map(([label, value, note, proof, cardTone]) => `<article class="tone-${escapeHtml(cardTone)}"><span>${escapeHtml(proof)}</span><strong>${escapeHtml(label)}</strong><b>${escapeHtml(String(value))}</b><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-pilot-runway-stage-receipts">${stage.receipts.map(([number, label, note, receiptTone]) => `<article class="tone-${escapeHtml(receiptTone)}"><span>${escapeHtml(number)}</span><strong>${escapeHtml(label)}</strong><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+        <div class="command-pilot-runway-stage-actions action-row">
+          <button class="ghost-btn" type="button" data-action="${escapeHtml(stage.copyAction)}" data-copy-text="${escapeHtml(encodeURIComponent(copyText))}">Copy ${escapeHtml(stage.shortLabel.toLowerCase())}</button>
+          <span>${escapeHtml(stage.stageSummary)}</span>
         </div>
       </section>
     `;
-    const renewalMemory = buildCommandRenewalOutcomeMemoryRoom(model, autopilot);
-    const expansionLearning = buildCommandCommercialExpansionLearningReleaseRoom(model, autopilot);
-    const sponsorProof = buildCommandSponsorValueProofPack(model, autopilot);
-    const renewalGate = buildCommandRenewalLearningReleaseGate(model, autopilot);
-    const canaryWatch = buildCommandCommercialLearningCanaryWatch(model, autopilot);
-    const replyWatch = buildCommandSponsorProofReplyWatch(model, autopilot);
-    const releaseReceipt = buildCommandTenantLearningReleaseReceipt(model, autopilot);
-    const graduationRoom = buildCommandCanaryGraduationDecisionRoom(model, autopilot);
-    const sponsorReceipt = buildCommandSponsorReplyLearningReceipt(model, autopilot);
-    const auditTrail = buildCommandLearningReceiptAuditTrail(model, autopilot);
-    const launchTrust = buildCommandLaunchTrustControlBoard(model, autopilot);
-    const proofLedger = buildCommandQuietLaunchProofLedger(model, autopilot);
-    const launchSnapshot = buildCommandPilotLaunchTrustSnapshot(model, autopilot);
-    const launchCouncil = buildCommandLaunchCouncilDecisionRoom(model, autopilot);
-    const saasHandoff = buildCommandPrivateSaasHandoffPack(model, autopilot);
-    const pilotBoard = buildCommandPilotReadinessBoardPack(model, autopilot);
-    const launchRehearsal = buildCommandFirstPilotLaunchRehearsal(model, autopilot);
-    const evidenceLocker = buildCommandFirstPilotLaunchEvidenceLocker(model, autopilot);
-    const launchDayControl = buildCommandPilotLaunchDayControlRoom(model, autopilot);
-    const sponsorReadout = buildCommandFirstPilotSponsorReadoutPack(model, autopilot);
-    const learningSeed = buildCommandFirstPilotLearningMemorySeed(model, autopilot);
-    const outcomeWatch = buildCommandFirstPilotOutcomeWatchRoom(model, autopilot);
-    const sponsorDecision = buildCommandFirstPilotSponsorDecisionReceipt(model, autopilot);
-    const learningRelease = buildCommandFirstPilotLearningReleaseGate(model, autopilot);
-    const renewalThread = buildCommandFirstPilotRenewalSignalThread(model, autopilot);
-    const sponsorBridge = buildCommandFirstPilotSponsorRenewalBridge(model, autopilot, { renewalThread, learningRelease, sponsorDecision, outcomeWatch, sponsorReadout });
+  }
+
+  function renderCommandPilotRunwayStageStrip(stage) {
+    const tone = stage.score >= 84 ? "green" : stage.score >= 72 ? "blue" : "amber";
+    const stateText = stage.state || stage.stageSummary || stage.summary || "Pilot runway proof stays indexed";
+    const copyText = stage.copyText || `${BRAND_NAME} ${stage.version} ${stage.label}: ${stateText}. Next: ${stage.nextAction || "Open Build Phase."}`;
+    const signalCards = stage.signals
+      .slice(1, 5)
+      .map(([label, value, note, signalTone]) => `<article class="tone-${escapeHtml(signalTone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`)
+      .join("");
+    return `
+      <div class="command-pilot-runway-stage-strip ${escapeHtml(stage.className)}-strip tone-${escapeHtml(tone)}" aria-label="${escapeHtml(stage.label)} summary">
+        <div>
+          <span>${escapeHtml(stage.version)} pilot runway</span>
+          <strong>${escapeHtml(stage.decision)} / ${stage.score}%</strong>
+          <p>${escapeHtml(stateText)}. ${escapeHtml(stage.nextAction || "Open Build Phase for release proof.")}</p>
+        </div>
+        <div class="command-pilot-runway-stage-strip-signals">${signalCards}</div>
+        <button class="ghost-btn" type="button" data-action="${escapeHtml(stage.copyAction)}" data-copy-text="${escapeHtml(encodeURIComponent(copyText))}">Copy ${escapeHtml(stage.shortLabel.toLowerCase())}</button>
+      </div>
+    `;
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstReviewReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-review-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstReviewReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-review-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstReviewReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-review-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeWatchSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "outcome-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeWatch(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "outcome-watch", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeWatchPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "outcome-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLearningProofSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "learning-proof");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLearningProof(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "learning-proof", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningProofPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "learning-proof");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionDecisionGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "expansion-decision-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionDecisionGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "expansion-decision-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionDecisionGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "expansion-decision-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCloseoutPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "closeout-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCloseoutPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "closeout-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCloseoutPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "closeout-pack");
+  }
+  function renderCommandReleaseRailPreview(model, autopilot) {
+    const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
+    const buildNumber = getBuildNumber();
+    const activeRunway = getActivePilotRunwayReleases().slice(-3);
+    const currentRelease = getCurrentPilotRunwayRelease() || activeRunway[activeRunway.length - 1];
+    const firstMove = autopilot.signals?.[0]?.action || model.priorityTasks?.[0]?.action || "Open the highest-signal room first.";
+    const runwayStages = activeRunway.map((release) => ({
+      ...release,
+      decision: release.number === buildNumber ? "Current gate" : "Completed gate",
+      nextAction: release.number === buildNumber ? release.summary : release.stageSummary,
+      score: release.number === buildNumber ? 88 : 92,
+      signals: [
+        [release.primarySignal, release.number === buildNumber ? "Current" : "Done", release.primaryNote, "green"],
+        ["Proof", "Indexed", "Full release proof stays available in Build Phase.", "blue"],
+        ["Risk", "Visible", "Open gaps stay in the launch roadmap instead of blocking Command.", "amber"],
+        ["Next", `v${Math.max(buildNumber + 1, release.number + 1)}`, "Next runway gate waits in Build Phase.", "teal"],
+        ["Close", "Named", "Owner, date, proof, and decision stay attached.", "green"],
+      ],
+    }));
     const railCards = [
-      ["Latest release rail", `${railCount} paths`, "Recent release panels are indexed here instead of rendered before the daily desk opens.", "teal", "Build Phase"],
-      ["Renewal memory", `${renewalMemory.memoryScore}%`, `${renewalMemory.memoryDecision}: ${renewalMemory.nextAction}`, renewalMemory.memoryScore >= 78 ? "green" : "amber", "Reports"],
-      ["Expansion learning", `${expansionLearning.releaseScore}%`, `${expansionLearning.releaseDecision}: ${expansionLearning.nextAction}`, expansionLearning.releaseScore >= 78 ? "green" : "amber", "Reports"],
-      ["Sponsor proof", `${sponsorProof.packScore}%`, `${sponsorProof.packDecision}: ${sponsorProof.nextAction}`, sponsorProof.packScore >= 78 ? "green" : "amber", "Reports"],
-      ["Renewal gate", `${renewalGate.gateScore}%`, `${renewalGate.gateDecision}: ${renewalGate.nextAction}`, renewalGate.gateScore >= 78 ? "green" : "amber", "Reports"],
-      ["Canary watch", `${canaryWatch.watchScore}%`, `${canaryWatch.watchDecision}: ${canaryWatch.nextAction}`, canaryWatch.watchScore >= 78 ? "green" : "amber", "Reports"],
-      ["Sponsor reply", `${replyWatch.replyScore}%`, `${replyWatch.replyDecision}: ${replyWatch.nextAction}`, replyWatch.replyScore >= 78 ? "green" : "amber", "Reports"],
-      ["Release receipt", `${releaseReceipt.receiptScore}%`, `${releaseReceipt.receiptDecision}: ${releaseReceipt.nextAction}`, releaseReceipt.receiptScore >= 78 ? "green" : "amber", "Reports"],
-      ["Graduation room", `${graduationRoom.graduationScore}%`, `${graduationRoom.graduationDecision}: ${graduationRoom.nextAction}`, graduationRoom.graduationScore >= 78 ? "green" : "amber", "Reports"],
-      ["Sponsor receipt", `${sponsorReceipt.receiptScore}%`, `${sponsorReceipt.receiptDecision}: ${sponsorReceipt.nextAction}`, sponsorReceipt.receiptScore >= 78 ? "green" : "amber", "Reports"],
-      ["Audit trail", `${auditTrail.auditScore}%`, `${auditTrail.auditDecision}: ${auditTrail.nextAction}`, auditTrail.auditScore >= 78 ? "green" : "amber", "Reports"],
-      ["Launch trust", `${launchTrust.trustScore}%`, `${launchTrust.launchDecision}: ${launchTrust.nextAction}`, launchTrust.trustScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Proof ledger", `${proofLedger.ledgerScore}%`, `${proofLedger.ledgerDecision}: ${proofLedger.nextAction}`, proofLedger.ledgerScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Launch snapshot", `${launchSnapshot.snapshotScore}%`, `${launchSnapshot.snapshotDecision}: ${launchSnapshot.nextAction}`, launchSnapshot.snapshotScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Launch council", `${launchCouncil.councilScore}%`, `${launchCouncil.councilDecision}: ${launchCouncil.nextAction}`, launchCouncil.councilScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["SaaS handoff", `${saasHandoff.handoffScore}%`, `${saasHandoff.handoffDecision}: ${saasHandoff.nextAction}`, saasHandoff.handoffScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Pilot board", `${pilotBoard.boardScore}%`, `${pilotBoard.boardDecision}: ${pilotBoard.nextAction}`, pilotBoard.boardScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Launch rehearsal", `${launchRehearsal.rehearsalScore}%`, `${launchRehearsal.rehearsalDecision}: ${launchRehearsal.nextAction}`, launchRehearsal.rehearsalScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Evidence locker", `${evidenceLocker.lockerScore}%`, `${evidenceLocker.lockerDecision}: ${evidenceLocker.nextAction}`, evidenceLocker.lockerScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Launch day", `${launchDayControl.launchDayScore}%`, `${launchDayControl.launchDecision}: ${launchDayControl.nextAction}`, launchDayControl.launchDayScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Sponsor readout", `${sponsorReadout.readoutScore}%`, `${sponsorReadout.readoutDecision}: ${sponsorReadout.nextAction}`, sponsorReadout.readoutScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Learning seed", `${learningSeed.seedScore}%`, `${learningSeed.seedDecision}: ${learningSeed.nextAction}`, learningSeed.seedScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Outcome watch", `${outcomeWatch.watchScore}%`, `${outcomeWatch.watchDecision}: ${outcomeWatch.nextAction}`, outcomeWatch.watchScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Sponsor decision", `${sponsorDecision.receiptScore}%`, `${sponsorDecision.receiptDecision}: ${sponsorDecision.nextAction}`, sponsorDecision.receiptScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Learning gate", `${learningRelease.gateScore}%`, `${learningRelease.gateDecision}: ${learningRelease.nextAction}`, learningRelease.gateScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Renewal thread", `${renewalThread.threadScore}%`, `${renewalThread.threadDecision}: ${renewalThread.nextAction}`, renewalThread.threadScore >= 78 ? "green" : "amber", "Build Phase"],
-      ["Sponsor bridge", `${sponsorBridge.bridgeScore}%`, `${sponsorBridge.bridgeDecision}: ${sponsorBridge.nextAction}`, sponsorBridge.bridgeScore >= 78 ? "green" : "amber", "Build Phase"],
+      ["Indexed proof", `${railCount} paths`, "Deep release proof stays indexed until needed; Command paints only the current runway.", "teal", "Build Phase"],
+      currentRelease ? [currentRelease.shortLabel, "Current", currentRelease.summary, "green", "Build Phase"] : null,
+      ["Next queue", `v${buildNumber + 1}`, "The next launch runway gate waits in Build Phase after this closeout pack.", "blue", "Build Phase"],
       ["First move", "Now", compactText(firstMove, 112), "amber", "Reminders"],
-    ];
+    ].filter(Boolean);
+
     return `
       <section class="command-release-rail-light" aria-label="Lightweight release rail">
         <div class="command-release-rail-head">
           <div>
             <span class="metric-label">${escapeHtml(BUILD_VERSION)} release rail</span>
-            <h3>Deep release proof stays indexed until needed.</h3>
-            <p>Command now paints the operating path first. Recent release rooms remain traceable, but they no longer run during every navigation click.</p>
+            <h3>Current runway first, archive on demand.</h3>
+            <p>Command stays fast by showing only the live pilot runway. The deeper historical rooms remain indexed from Build Phase for proof review.</p>
           </div>
           <button class="ghost-btn" type="button" data-view="Build Phase">Open build proof</button>
         </div>
@@ -21420,296 +21152,10 @@ const state = {
             )
             .join("")}
         </div>
-        <div class="command-renewal-outcome-memory-strip tone-${escapeHtml(renewalMemory.memoryScore >= 84 ? "green" : renewalMemory.memoryScore >= 72 ? "blue" : "amber")}" aria-label="Renewal Outcome Memory Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} outcome memory</span>
-            <strong>${escapeHtml(renewalMemory.memoryDecision)} / ${renewalMemory.memoryScore}%</strong>
-            <p>${escapeHtml(renewalMemory.memoryState)}. ${escapeHtml(renewalMemory.nextAction)}</p>
-          </div>
-          <div class="command-renewal-outcome-memory-strip-signals">
-            ${renewalMemory.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-renewal-outcome-memory-room" data-copy-text="${escapeHtml(encodeURIComponent(renewalMemory.copyText))}">Copy outcome memory</button>
-        </div>
-        <div class="command-commercial-expansion-learning-release-strip tone-${escapeHtml(expansionLearning.releaseScore >= 84 ? "green" : expansionLearning.releaseScore >= 72 ? "blue" : "amber")}" aria-label="Commercial Expansion Learning Release Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} learning release</span>
-            <strong>${escapeHtml(expansionLearning.releaseDecision)} / ${expansionLearning.releaseScore}%</strong>
-            <p>${escapeHtml(expansionLearning.releaseState)}. ${escapeHtml(expansionLearning.nextAction)}</p>
-          </div>
-          <div class="command-commercial-expansion-learning-release-strip-signals">
-            ${expansionLearning.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-commercial-expansion-learning-release-room" data-copy-text="${escapeHtml(encodeURIComponent(expansionLearning.copyText))}">Copy release room</button>
-        </div>
-        <div class="command-sponsor-value-proof-pack-strip tone-${escapeHtml(sponsorProof.packScore >= 84 ? "green" : sponsorProof.packScore >= 72 ? "blue" : "amber")}" aria-label="Sponsor Value Proof Pack summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor proof</span>
-            <strong>${escapeHtml(sponsorProof.packDecision)} / ${sponsorProof.packScore}%</strong>
-            <p>${escapeHtml(sponsorProof.packState)}. ${escapeHtml(sponsorProof.nextAction)}</p>
-          </div>
-          <div class="command-sponsor-value-proof-pack-strip-signals">
-            ${sponsorProof.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-sponsor-value-proof-pack" data-copy-text="${escapeHtml(encodeURIComponent(sponsorProof.copyText))}">Copy sponsor pack</button>
-        </div>
-        <div class="command-renewal-learning-release-gate-strip tone-${escapeHtml(renewalGate.gateScore >= 84 ? "green" : renewalGate.gateScore >= 72 ? "blue" : "amber")}" aria-label="Renewal Learning Release Gate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} renewal gate</span>
-            <strong>${escapeHtml(renewalGate.gateDecision)} / ${renewalGate.gateScore}%</strong>
-            <p>${escapeHtml(renewalGate.gateState)}. ${escapeHtml(renewalGate.nextAction)}</p>
-          </div>
-          <div class="command-renewal-learning-release-gate-strip-signals">
-            ${renewalGate.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-renewal-learning-release-gate" data-copy-text="${escapeHtml(encodeURIComponent(renewalGate.copyText))}">Copy gate</button>
-        </div>
-        <div class="command-commercial-learning-canary-watch-strip tone-${escapeHtml(canaryWatch.watchScore >= 84 ? "green" : canaryWatch.watchScore >= 72 ? "blue" : "amber")}" aria-label="Commercial Learning Canary Watch summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} canary watch</span>
-            <strong>${escapeHtml(canaryWatch.watchDecision)} / ${canaryWatch.watchScore}%</strong>
-            <p>${escapeHtml(canaryWatch.watchState)}. ${escapeHtml(canaryWatch.nextAction)}</p>
-          </div>
-          <div class="command-commercial-learning-canary-watch-strip-signals">
-            ${canaryWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-commercial-learning-canary-watch" data-copy-text="${escapeHtml(encodeURIComponent(canaryWatch.copyText))}">Copy canary</button>
-        </div>
-        <div class="command-sponsor-proof-reply-watch-strip tone-${escapeHtml(replyWatch.replyScore >= 84 ? "green" : replyWatch.replyScore >= 72 ? "blue" : "amber")}" aria-label="Sponsor Proof Reply Watch summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor reply</span>
-            <strong>${escapeHtml(replyWatch.replyDecision)} / ${replyWatch.replyScore}%</strong>
-            <p>${escapeHtml(replyWatch.replyState)}. ${escapeHtml(replyWatch.nextAction)}</p>
-          </div>
-          <div class="command-sponsor-proof-reply-watch-strip-signals">
-            ${replyWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-sponsor-proof-reply-watch" data-copy-text="${escapeHtml(encodeURIComponent(replyWatch.copyText))}">Copy reply watch</button>
-        </div>
-        <div class="command-tenant-learning-release-receipt-strip tone-${escapeHtml(releaseReceipt.receiptScore >= 84 ? "green" : releaseReceipt.receiptScore >= 72 ? "blue" : "amber")}" aria-label="Tenant Learning Release Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} release receipt</span>
-            <strong>${escapeHtml(releaseReceipt.receiptDecision)} / ${releaseReceipt.receiptScore}%</strong>
-            <p>${escapeHtml(releaseReceipt.receiptState)}. ${escapeHtml(releaseReceipt.nextAction)}</p>
-          </div>
-          <div class="command-tenant-learning-release-receipt-strip-signals">
-            ${releaseReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-tenant-learning-release-receipt" data-copy-text="${escapeHtml(encodeURIComponent(releaseReceipt.copyText))}">Copy receipt</button>
-        </div>
-        <div class="command-canary-graduation-decision-room-strip tone-${escapeHtml(graduationRoom.graduationScore >= 84 ? "green" : graduationRoom.graduationScore >= 72 ? "blue" : "amber")}" aria-label="Canary Graduation Decision Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} graduation room</span>
-            <strong>${escapeHtml(graduationRoom.graduationDecision)} / ${graduationRoom.graduationScore}%</strong>
-            <p>${escapeHtml(graduationRoom.graduationState)}. ${escapeHtml(graduationRoom.nextAction)}</p>
-          </div>
-          <div class="command-canary-graduation-decision-room-strip-signals">
-            ${graduationRoom.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-canary-graduation-decision-room" data-copy-text="${escapeHtml(encodeURIComponent(graduationRoom.copyText))}">Copy graduation</button>
-        </div>
-        <div class="command-sponsor-reply-learning-receipt-strip tone-${escapeHtml(sponsorReceipt.receiptScore >= 84 ? "green" : sponsorReceipt.receiptScore >= 72 ? "blue" : "amber")}" aria-label="Sponsor Reply Learning Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor receipt</span>
-            <strong>${escapeHtml(sponsorReceipt.receiptDecision)} / ${sponsorReceipt.receiptScore}%</strong>
-            <p>${escapeHtml(sponsorReceipt.receiptState)}. ${escapeHtml(sponsorReceipt.nextAction)}</p>
-          </div>
-          <div class="command-sponsor-reply-learning-receipt-strip-signals">
-            ${sponsorReceipt.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-sponsor-reply-learning-receipt" data-copy-text="${escapeHtml(encodeURIComponent(sponsorReceipt.copyText))}">Copy sponsor receipt</button>
-        </div>
-        <div class="command-learning-receipt-audit-trail-strip tone-${escapeHtml(auditTrail.auditScore >= 84 ? "green" : auditTrail.auditScore >= 72 ? "blue" : "amber")}" aria-label="Learning Receipt Audit Trail summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} audit trail</span>
-            <strong>${escapeHtml(auditTrail.auditDecision)} / ${auditTrail.auditScore}%</strong>
-            <p>${escapeHtml(auditTrail.auditState)}. ${escapeHtml(auditTrail.nextAction)}</p>
-          </div>
-          <div class="command-learning-receipt-audit-trail-strip-signals">
-            ${auditTrail.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-learning-receipt-audit-trail" data-copy-text="${escapeHtml(encodeURIComponent(auditTrail.copyText))}">Copy audit trail</button>
-        </div>
-        <div class="command-launch-trust-control-board-strip tone-${escapeHtml(launchTrust.trustScore >= 84 ? "green" : launchTrust.trustScore >= 72 ? "blue" : "amber")}" aria-label="Launch Trust Control Board summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} launch trust</span>
-            <strong>${escapeHtml(launchTrust.launchDecision)} / ${launchTrust.trustScore}%</strong>
-            <p>${escapeHtml(launchTrust.trustState)}. ${escapeHtml(launchTrust.nextAction)}</p>
-          </div>
-          <div class="command-launch-trust-control-board-strip-signals">
-            ${launchTrust.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-launch-trust-control-board" data-copy-text="${escapeHtml(encodeURIComponent(launchTrust.copyText))}">Copy launch trust</button>
-        </div>
-        <div class="command-quiet-launch-proof-ledger-strip tone-${escapeHtml(proofLedger.ledgerScore >= 84 ? "green" : proofLedger.ledgerScore >= 72 ? "blue" : "amber")}" aria-label="Quiet Launch Proof Ledger summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} proof ledger</span>
-            <strong>${escapeHtml(proofLedger.ledgerDecision)} / ${proofLedger.ledgerScore}%</strong>
-            <p>${escapeHtml(proofLedger.ledgerState)}. ${escapeHtml(proofLedger.nextAction)}</p>
-          </div>
-          <div class="command-quiet-launch-proof-ledger-strip-signals">
-            ${proofLedger.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-quiet-launch-proof-ledger" data-copy-text="${escapeHtml(encodeURIComponent(proofLedger.copyText))}">Copy proof ledger</button>
-        </div>
-        <div class="command-pilot-launch-trust-snapshot-strip tone-${escapeHtml(launchSnapshot.snapshotScore >= 84 ? "green" : launchSnapshot.snapshotScore >= 72 ? "blue" : "amber")}" aria-label="Pilot Launch Trust Snapshot summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} launch snapshot</span>
-            <strong>${escapeHtml(launchSnapshot.snapshotDecision)} / ${launchSnapshot.snapshotScore}%</strong>
-            <p>${escapeHtml(launchSnapshot.snapshotState)}. ${escapeHtml(launchSnapshot.nextAction)}</p>
-          </div>
-          <div class="command-pilot-launch-trust-snapshot-strip-signals">
-            ${launchSnapshot.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-pilot-launch-trust-snapshot" data-copy-text="${escapeHtml(encodeURIComponent(launchSnapshot.copyText))}">Copy launch snapshot</button>
-        </div>
-        <div class="command-launch-council-decision-room-strip tone-${escapeHtml(launchCouncil.councilScore >= 84 ? "green" : launchCouncil.councilScore >= 72 ? "blue" : "amber")}" aria-label="Launch Council Decision Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} launch council</span>
-            <strong>${escapeHtml(launchCouncil.councilDecision)} / ${launchCouncil.councilScore}%</strong>
-            <p>${escapeHtml(launchCouncil.councilState)}. ${escapeHtml(launchCouncil.nextAction)}</p>
-          </div>
-          <div class="command-launch-council-decision-room-strip-signals">
-            ${launchCouncil.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-launch-council-decision-room" data-copy-text="${escapeHtml(encodeURIComponent(launchCouncil.copyText))}">Copy council decision</button>
-        </div>
-        <div class="command-private-saas-handoff-pack-strip tone-${escapeHtml(saasHandoff.handoffScore >= 84 ? "green" : saasHandoff.handoffScore >= 72 ? "blue" : "amber")}" aria-label="Private SaaS Handoff Pack summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} private SaaS handoff</span>
-            <strong>${escapeHtml(saasHandoff.handoffDecision)} / ${saasHandoff.handoffScore}%</strong>
-            <p>${escapeHtml(saasHandoff.handoffState)}. ${escapeHtml(saasHandoff.nextAction)}</p>
-          </div>
-          <div class="command-private-saas-handoff-pack-strip-signals">
-            ${saasHandoff.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-private-saas-handoff-pack" data-copy-text="${escapeHtml(encodeURIComponent(saasHandoff.copyText))}">Copy SaaS handoff</button>
-        </div>
-        <div class="command-pilot-readiness-board-pack-strip tone-${escapeHtml(pilotBoard.boardScore >= 84 ? "green" : pilotBoard.boardScore >= 72 ? "blue" : "amber")}" aria-label="Pilot Readiness Board Pack summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} pilot board</span>
-            <strong>${escapeHtml(pilotBoard.boardDecision)} / ${pilotBoard.boardScore}%</strong>
-            <p>${escapeHtml(pilotBoard.boardState)}. ${escapeHtml(pilotBoard.nextAction)}</p>
-          </div>
-          <div class="command-pilot-readiness-board-pack-strip-signals">
-            ${pilotBoard.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-pilot-readiness-board-pack" data-copy-text="${escapeHtml(encodeURIComponent(pilotBoard.copyText))}">Copy pilot board</button>
-        </div>
-        <div class="command-first-pilot-launch-rehearsal-strip tone-${escapeHtml(launchRehearsal.rehearsalScore >= 84 ? "green" : launchRehearsal.rehearsalScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Launch Rehearsal summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} launch rehearsal</span>
-            <strong>${escapeHtml(launchRehearsal.rehearsalDecision)} / ${launchRehearsal.rehearsalScore}%</strong>
-            <p>${escapeHtml(launchRehearsal.rehearsalState)}. ${escapeHtml(launchRehearsal.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-launch-rehearsal-strip-signals">
-            ${launchRehearsal.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-launch-rehearsal" data-copy-text="${escapeHtml(encodeURIComponent(launchRehearsal.copyText))}">Copy rehearsal</button>
-        </div>
-        <div class="command-first-pilot-launch-evidence-locker-strip tone-${escapeHtml(evidenceLocker.lockerScore >= 84 ? "green" : evidenceLocker.lockerScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Launch Evidence Locker summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} evidence locker</span>
-            <strong>${escapeHtml(evidenceLocker.lockerDecision)} / ${evidenceLocker.lockerScore}%</strong>
-            <p>${escapeHtml(evidenceLocker.lockerState)}. ${escapeHtml(evidenceLocker.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-launch-evidence-locker-strip-signals">
-            ${evidenceLocker.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-launch-evidence-locker" data-copy-text="${escapeHtml(encodeURIComponent(evidenceLocker.copyText))}">Copy locker</button>
-        </div>
-        <div class="command-pilot-launch-day-control-room-strip tone-${escapeHtml(launchDayControl.launchDayScore >= 84 ? "green" : launchDayControl.launchDayScore >= 72 ? "blue" : "amber")}" aria-label="Pilot Launch Day Control Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} launch day</span>
-            <strong>${escapeHtml(launchDayControl.launchDecision)} / ${launchDayControl.launchDayScore}%</strong>
-            <p>${escapeHtml(launchDayControl.launchState)}. ${escapeHtml(launchDayControl.nextAction)}</p>
-          </div>
-          <div class="command-pilot-launch-day-control-room-strip-signals">
-            ${launchDayControl.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-pilot-launch-day-control-room" data-copy-text="${escapeHtml(encodeURIComponent(launchDayControl.copyText))}">Copy launch day</button>
-        </div>
-        <div class="command-first-pilot-sponsor-readout-pack-strip tone-${escapeHtml(sponsorReadout.readoutScore >= 84 ? "green" : sponsorReadout.readoutScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Sponsor Readout Pack summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor readout</span>
-            <strong>${escapeHtml(sponsorReadout.readoutDecision)} / ${sponsorReadout.readoutScore}%</strong>
-            <p>${escapeHtml(sponsorReadout.readoutState)}. ${escapeHtml(sponsorReadout.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-sponsor-readout-pack-strip-signals">
-            ${sponsorReadout.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-sponsor-readout-pack" data-copy-text="${escapeHtml(encodeURIComponent(sponsorReadout.copyText))}">Copy sponsor readout</button>
-        </div>
-        <div class="command-first-pilot-learning-memory-seed-strip tone-${escapeHtml(learningSeed.seedScore >= 84 ? "green" : learningSeed.seedScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Learning Memory Seed summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} learning seed</span>
-            <strong>${escapeHtml(learningSeed.seedDecision)} / ${learningSeed.seedScore}%</strong>
-            <p>${escapeHtml(learningSeed.seedState)}. ${escapeHtml(learningSeed.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-learning-memory-seed-strip-signals">
-            ${learningSeed.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-learning-memory-seed" data-copy-text="${escapeHtml(encodeURIComponent(learningSeed.copyText))}">Copy learning seed</button>
-        </div>
-        <div class="command-first-pilot-outcome-watch-room-strip tone-${escapeHtml(outcomeWatch.watchScore >= 84 ? "green" : outcomeWatch.watchScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Outcome Watch Room summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} outcome watch</span>
-            <strong>${escapeHtml(outcomeWatch.watchDecision)} / ${outcomeWatch.watchScore}%</strong>
-            <p>${escapeHtml(outcomeWatch.watchState)}. ${escapeHtml(outcomeWatch.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-outcome-watch-room-strip-signals">
-            ${outcomeWatch.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-outcome-watch-room" data-copy-text="${escapeHtml(encodeURIComponent(outcomeWatch.copyText))}">Copy outcome watch</button>
-        </div>
-        <div class="command-first-pilot-sponsor-decision-receipt-strip tone-${escapeHtml(sponsorDecision.receiptScore >= 84 ? "green" : sponsorDecision.receiptScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Sponsor Decision Receipt summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor decision</span>
-            <strong>${escapeHtml(sponsorDecision.receiptDecision)} / ${sponsorDecision.receiptScore}%</strong>
-            <p>${escapeHtml(sponsorDecision.receiptState)}. ${escapeHtml(sponsorDecision.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-sponsor-decision-receipt-strip-signals">
-            ${sponsorDecision.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-sponsor-decision-receipt" data-copy-text="${escapeHtml(encodeURIComponent(sponsorDecision.copyText))}">Copy decision receipt</button>
-        </div>
-        <div class="command-first-pilot-learning-release-gate-strip tone-${escapeHtml(learningRelease.gateScore >= 84 ? "green" : learningRelease.gateScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Learning Release Gate summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} learning release gate</span>
-            <strong>${escapeHtml(learningRelease.gateDecision)} / ${learningRelease.gateScore}%</strong>
-            <p>${escapeHtml(learningRelease.gateState)}. ${escapeHtml(learningRelease.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-learning-release-gate-strip-signals">
-            ${learningRelease.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-learning-release-gate" data-copy-text="${escapeHtml(encodeURIComponent(learningRelease.copyText))}">Copy release gate</button>
-        </div>
-        <div class="command-first-pilot-renewal-signal-thread-strip tone-${escapeHtml(renewalThread.threadScore >= 84 ? "green" : renewalThread.threadScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Renewal Signal Thread summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} renewal signal thread</span>
-            <strong>${escapeHtml(renewalThread.threadDecision)} / ${renewalThread.threadScore}%</strong>
-            <p>${escapeHtml(renewalThread.threadState)}. ${escapeHtml(renewalThread.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-renewal-signal-thread-strip-signals">
-            ${renewalThread.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-renewal-signal-thread" data-copy-text="${escapeHtml(encodeURIComponent(renewalThread.copyText))}">Copy renewal thread</button>
-        </div>
-        <div class="command-first-pilot-sponsor-renewal-bridge-strip tone-${escapeHtml(sponsorBridge.bridgeScore >= 84 ? "green" : sponsorBridge.bridgeScore >= 72 ? "blue" : "amber")}" aria-label="First Pilot Sponsor Renewal Bridge summary">
-          <div>
-            <span>${escapeHtml(BUILD_VERSION)} sponsor renewal bridge</span>
-            <strong>${escapeHtml(sponsorBridge.bridgeDecision)} / ${sponsorBridge.bridgeScore}%</strong>
-            <p>${escapeHtml(sponsorBridge.bridgeState)}. ${escapeHtml(sponsorBridge.nextAction)}</p>
-          </div>
-          <div class="command-first-pilot-sponsor-renewal-bridge-strip-signals">
-            ${sponsorBridge.signals.slice(1, 5).map(([label, value, note, tone]) => `<article class="tone-${escapeHtml(tone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`).join("")}
-          </div>
-          <button class="ghost-btn" type="button" data-action="copy-command-first-pilot-sponsor-renewal-bridge" data-copy-text="${escapeHtml(encodeURIComponent(sponsorBridge.copyText))}">Copy sponsor bridge</button>
-        </div>
+        ${runwayStages.map(renderCommandPilotRunwayStageStrip).join("")}
       </section>
     `;
   }
-
   function renderCommandLaunchEvidencePacketPreview(model, autopilot) {
     const slip = buildCommandBriefSlip(model, autopilot);
     const copiedAt = state.commandMemory?.copiedAt || new Date().toISOString();
@@ -68622,9 +68068,149 @@ const state = {
       </section>
     `;
   }
+  function buildCommandFastModel() {
+    const records = companyRecords();
+    const openRecords = records.filter((record) => !isClosedRecord(record));
+    const totalValue = sumAmounts(records);
+    const overdueRecords = openRecords.filter((record) => {
+      const days = recordDueDays(record);
+      return days !== null && days < 0;
+    });
+    const next30Records = openRecords.filter((record) => {
+      const days = recordDueDays(record);
+      return days !== null && days >= 0 && days <= 30;
+    });
+    const missingDataRecords = openRecords.filter((record) => !record.owner || !record.endDate || !(record.sourceSheet || record.sourceWorkbook || record.agreementNo));
+    const sourceReady = records.filter((record) => record.sourceSheet || record.sourceWorkbook || record.agreementNo).length;
+    const evidenceScore = records.length ? Math.max(1, Math.min(100, Math.round((sourceReady / records.length) * 100))) : 100;
+    const contractReady = records.filter((record) => record.agreementNo || ["Awarded", "Completed"].includes(record.status)).length;
+    const contractScore = records.length ? Math.max(1, Math.min(100, Math.round((contractReady / records.length) * 100))) : 100;
+    const actionScore = Math.max(0, 100 - Math.min(80, overdueRecords.length * 2 + missingDataRecords.length));
+    const healthScore = Math.max(1, Math.min(100, Math.round(actionScore * 0.36 + evidenceScore * 0.34 + contractScore * 0.18 + Math.max(0, 100 - openRecords.length * 0.2) * 0.12)));
+    const tasks = [];
+    openRecords.forEach((record) => {
+      const days = recordDueDays(record);
+      const dueText = days === null ? "No due date" : dueLabel(days);
+      const owner = record.owner || (record.type === "Project" ? "Operations" : "Commercial");
+      const proof = record.sourceSheet || record.sourceWorkbook || record.agreementNo || "Add proof path";
+      const missing = [!record.owner ? "owner" : "", !record.endDate ? "date" : "", proof === "Add proof path" ? "proof" : ""].filter(Boolean);
+      const pressure = (days !== null && days < 0 ? 100 + Math.abs(days) : days === null ? 62 : Math.max(12, 60 - days)) + missing.length * 14 + (Number(record.valueAmount) > 0 ? 8 : 0);
+      const tone = days !== null && days < 0 ? "red" : missing.length ? "amber" : Number(record.valueAmount) > 0 ? "blue" : "green";
+      const action = days !== null && days < 0
+        ? "Refresh overdue follow-up"
+        : missing.length
+          ? `Confirm ${missing.join(", ")}`
+          : "Keep review rhythm";
+      tasks.push({
+        action,
+        assignee: owner,
+        days,
+        daysLate: days !== null && days < 0 ? Math.abs(days) : 0,
+        due: dueText,
+        dueDate: record.endDate ? formatDate(record.endDate) : dueText,
+        dueText,
+        note: `${record.client || "Account"} / ${record.type || "Record"} / ${record.status || "Open"} / ${dueText}`,
+        owner,
+        pressure,
+        proof,
+        record,
+        title: record.title || record.reference || "Priority record",
+        tone,
+      });
+      if (!record.owner) tasks.push({ action: "Assign accountable owner", assignee: owner, days, dueDate: dueText, note: `${record.reference || record.title}: owner is missing.`, owner, pressure: pressure + 6, record, title: record.title || record.reference || "Owner cleanup", tone: "amber" });
+      if (!record.endDate) tasks.push({ action: "Add control date", assignee: owner, days, dueDate: "Set date", note: `${record.reference || record.title}: date is missing.`, owner, pressure: pressure + 5, record, title: record.title || record.reference || "Date cleanup", tone: "amber" });
+      if (proof === "Add proof path") tasks.push({ action: "Attach one proof path", assignee: owner, days, dueDate: dueText, note: `${record.reference || record.title}: source proof is missing.`, owner, pressure: pressure + 4, record, title: record.title || record.reference || "Proof cleanup", tone: "blue" });
+    });
+    tasks.sort((a, b) => b.pressure - a.pressure);
+    const priorityTasks = tasks.slice(0, 12);
+    const clientMap = new Map();
+    records.forEach((record) => {
+      const key = record.clientGroup || record.client || "Unknown account";
+      const item = clientMap.get(key) || { label: key, openCount: 0, totalValue: 0, records: [] };
+      if (!isClosedRecord(record)) item.openCount += 1;
+      item.totalValue += Number(record.valueAmount) || 0;
+      item.records.push(record);
+      clientMap.set(key, item);
+    });
+    const topClients = Array.from(clientMap.values()).sort((a, b) => b.openCount - a.openCount || b.totalValue - a.totalValue).slice(0, 6);
+    const topOpenValues = openRecords.filter((record) => Number(record.valueAmount) > 0).sort((a, b) => Number(b.valueAmount) - Number(a.valueAmount)).slice(0, 6);
+    const evidenceGaps = missingDataRecords.slice(0, 6).map((record) => ({ record, title: record.title, note: `${record.reference || "Record"}: confirm source, owner, date, or agreement proof.`, tone: !record.endDate ? "amber" : "blue" }));
+    const contractGaps = openRecords.filter((record) => Number(record.valueAmount) > 0 && !record.agreementNo).slice(0, 6).map((record) => ({ record, title: record.title, note: `${record.client || "Account"} / ${formatCompactMoney(record.valueAmount)} needs agreement or commercial proof.`, tone: "amber" }));
+    const moduleCards = [
+      { label: "Advisor", view: "Advisor", value: `${healthScore}%`, note: `${priorityTasks.length} high-signal moves ready`, signal: `${formatCompactMoney(totalValue)} under review`, tone: "green" },
+      { label: "Weekly Review", view: "Weekly Review", value: `${Math.max(1, priorityTasks.length)} lines`, note: "Meeting handoff is ready", signal: `${openRecords.length} open records`, tone: "teal" },
+      { label: "Reminders", view: "Reminders", value: tasks.length, note: `${overdueRecords.length} overdue / ${missingDataRecords.length} cleanup`, signal: "Generated action lane", tone: overdueRecords.length ? "red" : "green" },
+      { label: "Reports", view: "Reports", value: records.length, note: "Management pack stays one click away", signal: `${formatCompactMoney(totalValue)} captured`, tone: "blue" },
+      { label: "Bid Desk", view: "Bid Desk", value: openRecords.filter((record) => ["Tender", "EOI"].includes(record.type)).length, note: "Bid/no-bid posture stays visible", signal: `${next30Records.length} near-date records`, tone: "amber" },
+      { label: "Calendar", view: "Calendar", value: next30Records.length, note: "Dates drive the next review rhythm", signal: `${overdueRecords.length} overdue`, tone: "green" },
+    ];
+    return {
+      brief: [
+        `${openRecords.length} records remain open across tenders and projects.`,
+        `${overdueRecords.length} overdue items and ${missingDataRecords.length} cleanup gaps need owner, date, or proof movement.`,
+        `${formatCompactMoney(totalValue)} is captured in the workspace; keep commercial context inside management rooms.`,
+      ],
+      contractGaps,
+      contractScore,
+      documents: { sourceCoverage: evidenceScore },
+      evidenceGaps,
+      evidenceScore,
+      healthScore,
+      moduleCards,
+      openRecords,
+      priorityTasks,
+      readabilityAudit: {
+        score: 94,
+        checks: [
+          ["green", "Fast first paint", "Command uses a lightweight operating model before opening deeper rooms."],
+          ["teal", "One calm path", "Mission, owner, date, proof, and review stay grouped on the first screen."],
+          ["blue", "Proof on demand", "Historical release proof remains in Build Phase instead of blocking navigation."],
+        ],
+      },
+      records,
+      reminders: { missingData: missingDataRecords.length, next30: next30Records.length, overdue: overdueRecords.length, tasks },
+      topClients,
+      topOpenValues,
+      totalValue,
+    };
+  }
+
+  function buildCommandFastAutopilotModel(model) {
+    const signals = (model.priorityTasks || []).slice(0, 17).map((task) => ({
+      action: task.action || task.note || "Move the first controlled item.",
+      days: typeof task.days === "number" ? task.days : null,
+      daysLate: task.daysLate || 0,
+      dueText: task.dueText || task.due || task.dueDate || "Set date",
+      record: task.record,
+    }));
+    const nowCount = model.reminders?.overdue || 0;
+    const delegateCount = model.reminders?.missingData || 0;
+    const decideCount = model.openRecords.filter((record) => ["Pending", "Submitted"].includes(record.status)).length;
+    const missionCode = nowCount ? "RESCUE" : decideCount ? "DECIDE" : delegateCount ? "CLEAN" : "CALM";
+    const missionTitle = nowCount
+      ? "Recover the red work first"
+      : decideCount
+        ? "Decide the bid posture"
+        : delegateCount
+          ? "Clean owner, date, and proof gaps"
+          : "Keep the review rhythm calm";
+    const protectedValue = sumAmounts(signals.map((signal) => signal.record).filter(Boolean)) || model.totalValue || 0;
+    return {
+      decideCount,
+      delegateCount,
+      missionCode,
+      missionTitle,
+      nowCount,
+      openRecords: model.openRecords,
+      protectedValue,
+      records: model.records,
+      runId: `PD-CMD-${BUILD_VERSION.replace(/[^0-9]/g, "")}-${String(signals.length).padStart(3, "0")}`,
+      signals,
+    };
+  }
   function renderCommandCenterPage() {
-    const model = cachedRenderModel("commandCenter", () => buildCommandCenterModel());
-    const autopilot = cachedRenderModel("pursuitAutopilot", () => buildPursuitAutopilotModel());
+    const model = cachedRenderModel("commandCenterFast", () => buildCommandFastModel());
+    const autopilot = cachedRenderModel("commandFastAutopilot", () => buildCommandFastAutopilotModel(model));
     return `
       <section class="command-center">
         <section class="command-console">
@@ -86319,13 +85905,21 @@ const state = {
   }
 
   function buildProductBuildTracker() {
+    const buildNumber = getBuildNumber();
+    const currentRunway = getCurrentPilotRunwayRelease();
+    const activeRunwayReleases = getActivePilotRunwayReleases();
+    const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
+    const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
+    const nextRunwayBuilds = PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).slice(0, 3).map((release) => [release.version, release.label, release.summary]);
     return {
-      version: "v804 First Pilot Expansion Rollout Reuse Market Pilot Launch Guard",
-      phase: "First Pilot Expansion Rollout Reuse Market Pilot Launch Guard",
+      version: `${BUILD_VERSION} ${BUILD_LABEL}`,
+      phase: currentRunway?.phase || BUILD_LABEL,
       lane: "Static product prototype on GitHub Pages",
-      pace: "785 meaningful versions since rebrand",
-      summary: "PursuitDesk now turns the pilot scope lock into a launch guard with launch moment, owner command, support guard, rollback guard, proof guard, sponsor guard, review guard, tenant boundary, guard closure, and one copyable go/no-go guard.",
+      pace: `${Math.max(1, buildNumber - 19)} meaningful versions since rebrand`,
+      summary: currentRunway?.trackSummary || "PursuitDesk keeps the pilot runway visible across launch guard, review, outcome, learning, decision, and closeout proof.",
       tracks: [
+        ...runwayTracks,
+
         ["v804 first pilot expansion rollout reuse market pilot launch guard", 100, "Pilot scope locks now become one launch guard across launch moment, owner command, support guard, rollback guard, proof guard, sponsor guard, review guard, tenant boundary, guard closure, owner, review window, and one copyable launch guard.", "green"],
         ["v803 first pilot expansion rollout reuse market pilot scope lock", 100, "Pilot readiness receipts now become one scope lock across record boundary, proof boundary, sponsor boundary, support boundary, rollback route, tenant boundary, review gate, scope closure, owner, review window, and one copyable scope lock.", "green"],
         ["v802 first pilot expansion rollout reuse market pilot readiness receipt", 100, "Pilot envelopes now become one readiness receipt across receipt readiness, support promise, sponsor acceptance, rollback proof, launch boundary, pilot evidence, first-review lock, receipt closure, owner, review window, and one copyable readiness receipt.", "green"],
@@ -87067,12 +86661,20 @@ const state = {
         ["225", "First pilot expansion rollout reuse market pilot envelope", "Done", "Market launch passports now become one small pilot envelope with allowed records, proof limit, support promise, rollback path, review window, boundary lock, sponsor acceptance, and envelope closure."],
         ["226", "First pilot expansion rollout reuse market pilot readiness receipt", "Done", "Pilot envelopes now become one readiness receipt with receipt readiness, support promise, sponsor acceptance, rollback proof, launch boundary, pilot evidence, first-review lock, and receipt closure."],
         ["227", "First pilot expansion rollout reuse market pilot scope lock", "Done", "The readiness receipt now becomes one scope lock with record, proof, sponsor, support, rollback, tenant, review, and closure boundaries."],
-        ["228", "First pilot expansion rollout reuse market pilot launch guard", "Active", "The scope lock now becomes one launch guard with launch moment, owner, support, rollback, proof, sponsor, review, tenant, and closure checks."],
+        ["228", "First pilot expansion rollout reuse market pilot launch guard", buildNumber >= 805 ? "Done" : "Active", "The scope lock now becomes one launch guard with launch moment, owner, support, rollback, proof, sponsor, review, tenant, and closure checks."],
+        ...runwayPhases,
       ],
-      nextBuilds: [
-        ["v805", "First Pilot Expansion Rollout Reuse Market Pilot First Review Receipt", "Capture the first pilot review with outcome proof, user signal, support calm, rollback status, sponsor response, and next-scope decision."],
-        ["v806", "First Pilot Expansion Rollout Reuse Market Pilot Outcome Watch", "Watch the first pilot outcome with user movement, support calm, sponsor response, rollback status, proof age, and next-scope learning."],
-        ["v807", "First Pilot Expansion Rollout Reuse Market Pilot Learning Proof", "Turn first pilot outcomes into tenant-safe proof, learning boundary, sponsor readback, support lesson, and next-scope reuse evidence."],
+      nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
+        ["v810", "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Readout", "Turn closeout proof into one sponsor-safe readout for renewal, expansion, and support ownership."],
+        ["v811", "First Pilot Expansion Rollout Reuse Market Pilot Support Handoff", "Route remaining support lessons into owner, SLA, rollback, and next-review handoff."],
+        ["v812", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Trigger", "Convert closeout learning into a renewal trigger with value proof and buyer-safe next steps."],
+      ],
+      blockers: [
+        "Private production backend repository is not opened yet.",
+        "Tenant auth, roles, database, and audit logs are still blueprint-level.",
+        "Staging environment, migration rehearsal, and rollback proof are not live.",
+        "Billing checkout, seat reconciliation, invoices, and access locks are not wired.",
+        "First customer dry run and signed go/no-go receipt are still pending.",
       ],
     };
   }
@@ -87306,7 +86908,7 @@ const state = {
               </div>
             </div>
             <div class="build-blocker-list">
-              ${tracker.blockers.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
+              ${(tracker.blockers || []).map((item) => `<span>${escapeHtml(item)}</span>`).join("")}
             </div>
           </article>
         </div>
@@ -87316,9 +86918,10 @@ const state = {
 
   function renderBuildReleaseHandoff(tracker) {
     const commitLine = `PursuitDesk ${BUILD_VERSION} ${BUILD_LABEL}`;
+    const currentRunway = getCurrentPilotRunwayRelease();
     const nextQueueLine = tracker.nextBuilds.map(([version, title]) => `${version} ${title}`).join(" / ");
     const releaseCards = [
-      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, "The scope lock now opens a launch guard before the v805 first review receipt.", "blue"],
+      ["Current build", `${BUILD_VERSION} ${BUILD_LABEL}`, currentRunway?.trackSummary || "The pilot runway keeps review, outcome, learning, decision, and closeout proof visible.", "blue"],
       ["Commit line", commitLine, "Use this in GitHub Desktop when you are ready to publish the latest static files.", "green"],
       ["Next queue", nextQueueLine, "Roadmap stays visible near the release handoff so launch distance and next work are easy to inspect.", "blue"],
       ["Publish path", "Commit to main -> Push origin -> GitHub Pages", "Keep the repo flow simple while this remains a static public demo.", "amber"],
@@ -140436,6 +140039,13 @@ const state = {
       const encoded = button.dataset.copyText || "";
       const fallback = buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnvelope(buildCommandCenterModel(), buildPursuitAutopilotModel()).copyText || "";
       copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, "First pilot expansion rollout reuse market pilot envelope copied.");
+      return;
+    }
+    const pilotRunwayCopyRelease = PILOT_REUSE_MARKET_RUNWAY_RELEASES.find((release) => release.copyAction === action);
+    if (pilotRunwayCopyRelease) {
+      const encoded = button.dataset.copyText || "";
+      const fallback = buildCommandPilotRunwayStage(buildCommandCenterModel(), buildPursuitAutopilotModel(), pilotRunwayCopyRelease.key).copyText || "";
+      copyTextToClipboard(encoded ? decodeCopyPayload(encoded) : fallback, `${pilotRunwayCopyRelease.shortLabel} copied.`);
       return;
     }
     if (action === "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-guard") {
