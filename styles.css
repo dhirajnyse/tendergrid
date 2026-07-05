@@ -88436,6 +88436,118 @@ body.serenity-mode {
   }
 }
 
+/* v802 first pilot expansion rollout reuse market pilot readiness receipt */
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt {
+  border: 1px solid rgba(20, 120, 105, 0.24);
+  background: linear-gradient(135deg, rgba(236, 253, 245, 0.99), rgba(239, 246, 255, 0.98));
+  box-shadow: 0 18px 48px rgba(10, 45, 58, 0.08);
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(400px, 1.5fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip > div:first-child,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-head,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-quote {
+  display: grid;
+  gap: 6px;
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip span,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt .metric-label,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-quote span {
+  color: var(--teal-900);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip strong,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-quote strong {
+  color: var(--ink);
+  font-size: clamp(1rem, 1.55vw, 1.22rem);
+  line-height: 1.2;
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip p,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip small,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt p,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip-signals,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-grid,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-lanes,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-cards,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-receipts {
+  display: grid;
+  gap: 10px;
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip-signals {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-lanes,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-cards,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-receipts {
+  grid-template-columns: repeat(4, minmax(160px, 1fr));
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip article,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-grid article,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-lanes article,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-cards article,
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-receipts article {
+  min-width: 0;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-cards article b {
+  display: block;
+  color: var(--ink);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  margin-top: 4px;
+}
+
+.command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-actions {
+  margin-top: 14px;
+}
+
+@media (max-width: 1180px) {
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip-signals,
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-lanes,
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-cards,
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-receipts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-strip-signals,
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-lanes,
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-cards,
+  .command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt-receipts {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* v801 first pilot expansion rollout reuse market pilot envelope */
 .command-first-pilot-expansion-rollout-reuse-market-pilot-envelope-strip,
 .command-first-pilot-expansion-rollout-reuse-market-pilot-envelope {
