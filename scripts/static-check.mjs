@@ -82,29 +82,29 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.min.css?v=802.1"), "index.html is missing the v802.1 minified CSS cache token.");
-assert(index.includes("data/sample-data.js?v=802.1"), "index.html is missing the v802.1 data cache token.");
-assert(index.includes("app.min.js?v=802.1"), "index.html is missing the v802.1 minified app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=802.1"), "index.html is missing the v802.1 icon cache token.");
+assert(index.includes("styles.min.css?v=803.1"), "index.html is missing the v803.1 minified CSS cache token.");
+assert(index.includes("data/sample-data.js?v=803.1"), "index.html is missing the v803.1 data cache token.");
+assert(index.includes("app.min.js?v=803.1"), "index.html is missing the v803.1 minified app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=803.1"), "index.html is missing the v803.1 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
 
 assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name.");
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
-assert(pkg.version === "8.0.2", "package.json has the wrong release version.");
+assert(pkg.version === "8.0.3", "package.json has the wrong release version.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v802";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Readiness Receipt";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=802.1'), "app.js is missing the v802.1 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=802.1'), "app.js is missing the v802.1 3D logo cache token.");
-assert(appMin.includes("v802"), "app.min.js is missing the v802 build marker.");
-assert(appMin.includes("First Pilot Expansion Rollout Reuse Market Pilot Readiness Receipt"), "app.min.js is missing the v802 build label.");
-assert(appMin.includes("copy-command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt"), "app.min.js is missing the v802 copy action.");
-assert(appMin.includes("v802 first pilot expansion rollout reuse market pilot readiness receipt"), "app.min.js is missing the v802 current Build Phase track.");
-assert(appMin.includes("v803") && appMin.includes("v804") && appMin.includes("v805"), "app.min.js is missing the v803-v805 next queue.");
-assert(cssMin.includes("command-first-pilot-expansion-rollout-reuse-market-pilot-readiness-receipt"), "styles.min.css is missing the v802 reuse market pilot readiness receipt class.");
+assert(app.includes('const BUILD_VERSION = "v803";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=803.1'), "app.js is missing the v803.1 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=803.1'), "app.js is missing the v803.1 3D logo cache token.");
+assert(appMin.includes("v803"), "app.min.js is missing the v803 build marker.");
+assert(appMin.includes("First Pilot Expansion Rollout Reuse Market Pilot Scope Lock"), "app.min.js is missing the v803 build label.");
+assert(appMin.includes("copy-command-first-pilot-expansion-rollout-reuse-market-pilot-scope-lock"), "app.min.js is missing the v803 copy action.");
+assert(appMin.includes("v803 first pilot expansion rollout reuse market pilot scope lock"), "app.min.js is missing the v803 current Build Phase track.");
+assert(appMin.includes("v804") && appMin.includes("v805") && appMin.includes("v806"), "app.min.js is missing the v804-v806 next queue.");
+assert(cssMin.includes("command-first-pilot-expansion-rollout-reuse-market-pilot-scope-lock"), "styles.min.css is missing the v803 reuse market pilot scope lock class.");
 [
   "app.js",
   "styles.css",
@@ -1840,6 +1840,23 @@ assert(app.includes("Access start"), "First Pilot Expansion Pilot Launch Pack sh
 assert(app.includes("Commercial start"), "First Pilot Expansion Pilot Launch Pack should include the commercial start signal.");
 assert(app.includes("Launch expansion pilot"), "First Pilot Expansion Pilot Launch Pack should include the launch expansion pilot option.");
 assert(app.includes("v767 first pilot expansion pilot launch pack"), "Build Phase is missing the v767 first pilot expansion pilot launch pack track.");
+assert(app.includes("First Pilot Expansion Rollout Reuse Market Pilot Scope Lock"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock release label is missing.");
+assert(app.includes("function buildCommandFirstPilotExpansionRolloutReuseMarketPilotScopeLockSummary"), "app.js is missing the First Pilot Expansion Rollout Reuse Market Pilot Scope Lock summary model.");
+assert(app.includes("function buildCommandFirstPilotExpansionRolloutReuseMarketPilotScopeLock"), "app.js is missing the First Pilot Expansion Rollout Reuse Market Pilot Scope Lock model.");
+assert(app.includes("function renderCommandFirstPilotExpansionRolloutReuseMarketPilotScopeLockPreview"), "app.js is missing the First Pilot Expansion Rollout Reuse Market Pilot Scope Lock render path.");
+assert(app.includes("${renderCommandFirstPilotExpansionRolloutReuseMarketPilotScopeLockPreview(model, autopilot)}"), "Command Center is missing the First Pilot Expansion Rollout Reuse Market Pilot Scope Lock hidden render path.");
+assert(app.includes("copy-command-first-pilot-expansion-rollout-reuse-market-pilot-scope-lock"), "app.js is missing the First Pilot Expansion Rollout Reuse Market Pilot Scope Lock copy action.");
+assert(app.includes("Pilot scope lock"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include the pilot scope lock signal.");
+assert(app.includes("Record boundary"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include record boundary.");
+assert(app.includes("Proof boundary"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include proof boundary.");
+assert(app.includes("Sponsor boundary"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include sponsor boundary.");
+assert(app.includes("Support boundary"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include support boundary.");
+assert(app.includes("Rollback route"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include rollback route.");
+assert(app.includes("Tenant boundary"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include tenant boundary.");
+assert(app.includes("Review gate"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include review gate.");
+assert(app.includes("Scope closure"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include scope closure.");
+assert(app.includes("Lock pilot scope"), "First Pilot Expansion Rollout Reuse Market Pilot Scope Lock should include the lock pilot scope option.");
+assert(app.includes("v803 first pilot expansion rollout reuse market pilot scope lock"), "Build Phase is missing the v803 first pilot expansion rollout reuse market pilot scope lock track.");
 assert(app.includes("First Pilot Expansion Rollout Reuse Market Pilot Readiness Receipt"), "First Pilot Expansion Rollout Reuse Market Pilot Readiness Receipt release label is missing.");
 assert(app.includes("function buildCommandFirstPilotExpansionRolloutReuseMarketPilotReadinessReceiptSummary"), "app.js is missing the First Pilot Expansion Rollout Reuse Market Pilot Readiness Receipt summary model.");
 assert(app.includes("function buildCommandFirstPilotExpansionRolloutReuseMarketPilotReadinessReceipt"), "app.js is missing the First Pilot Expansion Rollout Reuse Market Pilot Readiness Receipt model.");
@@ -2670,10 +2687,13 @@ assert(app.includes("v798 first pilot expansion rollout reuse market expansion g
 assert(app.includes("v799 first pilot expansion rollout reuse market decision room"), "Build Phase history should include v799.");
 assert(app.includes("v800 first pilot expansion rollout reuse market launch passport"), "Build Phase history should include v800.");
 assert(app.includes("v801 first pilot expansion rollout reuse market pilot envelope"), "Build Phase history should include v801.");
-assert(app.includes("v802 first pilot expansion rollout reuse market pilot readiness receipt"), "Build Phase current track should include v802.");
-assert(app.includes("v803"), "Build Phase next queue should include v803.");
+assert(app.includes("v802 first pilot expansion rollout reuse market pilot readiness receipt"), "Build Phase history should include v802.");
+assert(app.includes("v803 first pilot expansion rollout reuse market pilot scope lock"), "Build Phase current track should include v803.");
+assert(app.includes('["0", "Positioning", "Done"'), "Build Phase roadmap should retain the baseline phase history.");
+assert(app.includes('["227", "First pilot expansion rollout reuse market pilot scope lock", "Active"'), "Build Phase phase list should mark v803 as active.");
 assert(app.includes("v804"), "Build Phase next queue should include v804.");
 assert(app.includes("v805"), "Build Phase next queue should include v805.");
+assert(app.includes("v806"), "Build Phase next queue should include v806.");
 assert(css.includes("command-guidance-reuse-ledger"), "styles.css is missing the Guidance Reuse Ledger shell.");
 assert(css.includes("command-guidance-reuse-ledger-grid"), "styles.css is missing the Guidance Reuse Ledger control grid.");
 assert(css.includes("command-guidance-reuse-ledger-lanes"), "styles.css is missing the Guidance Reuse Ledger lanes.");
