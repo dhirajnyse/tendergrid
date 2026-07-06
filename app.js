@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v814";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch QA Issue Wave";
+  const BUILD_VERSION = "v819";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Bridge";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=814.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=814.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=819.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=819.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -425,6 +425,201 @@
         ["Release decision", "sponsorGuard", 0.68, 6, "Release decision is named before widening."],
         ["Blocker burn-down", "supportGuard", 0.7, 5, "Blockers have a burn-down route and owner."],
         ["QA closure", "guardClosure", 0.72, 4, "The QA wave closes with owner, proof, and next release gate."],
+      ],
+    },
+    {
+      key: "customer-story-room",
+      version: "v815",
+      number: 815,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Story Room",
+      shortLabel: "Customer Story Room",
+      phase: "First pilot expansion rollout reuse market pilot customer story room",
+      track: "v815 first pilot expansion rollout reuse market pilot customer story room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-story-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-story-room",
+      idSuffix: "CUSTOMER-STORY-ROOM",
+      scoreKey: "storyScore",
+      decisionKey: "storyDecision",
+      stateKey: "storyState",
+      lineKey: "storyLine",
+      primarySignal: "Pilot customer story room",
+      primaryNote: "Turns launch QA proof into one buyer-safe customer story before launch conversations widen.",
+      summary: "Convert QA proof into customer story, outcome claim, proof boundary, buyer quote, privacy guard, and launch narrative.",
+      trackSummary: "Launch QA issue waves now become one customer story room across outcome claim, proof boundary, buyer quote, privacy guard, value proof, support proof, launch narrative, and story closure.",
+      stageSummary: "Launch QA issue waves now become one customer story room with outcome claim, proof boundary, buyer quote, privacy guard, value proof, support proof, launch narrative, and closure.",
+      openDecision: "Publish customer story",
+      guardedDecision: "Publish guarded customer story",
+      holdDecision: "Hold customer story",
+      repairDecision: "Repair story proof",
+      nextOpen: "Publish the customer story and keep outcome claim, proof boundary, buyer quote, privacy guard, and launch narrative together.",
+      nextGuarded: "Publish a guarded customer story while one proof, quote, or privacy lane stays under review.",
+      nextHold: "Hold the story until outcome claim, privacy guard, and sponsor-safe proof are clear.",
+      nextRepair: "Repair story proof before the customer narrative is reused in launch conversations.",
+      axes: [
+        ["Outcome claim", "proofGuard", 0.76, 6, "The customer story starts with a proof-backed outcome claim."],
+        ["Proof boundary", "tenantGuard", 0.74, 5, "Private proof is separated from buyer-safe story text."],
+        ["Buyer quote", "sponsorGuard", 0.68, 6, "A sponsor-safe quote or paraphrase is ready."],
+        ["Privacy guard", "tenantGuard", 0.76, 5, "Story reuse stays inside tenant-safe privacy rules."],
+        ["Value proof", "proofGuard", 0.74, 5, "Value proof can be read without spreadsheet archaeology."],
+        ["Support proof", "supportGuard", 0.72, 5, "Support outcome is calm enough for customer-facing use."],
+        ["Launch narrative", "launchMoment", 0.7, 6, "Launch narrative has one clear before-and-after path."],
+        ["Story closure", "guardClosure", 0.72, 4, "The story closes with owner, proof, approval, and next use."],
+      ],
+    },
+    {
+      key: "staging-backlog",
+      version: "v816",
+      number: 816,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Staging Backlog",
+      shortLabel: "Staging Backlog",
+      phase: "First pilot expansion rollout reuse market pilot staging backlog",
+      track: "v816 first pilot expansion rollout reuse market pilot staging backlog",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-staging-backlog",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-staging-backlog",
+      idSuffix: "STAGING-BACKLOG",
+      scoreKey: "stagingScore",
+      decisionKey: "stagingDecision",
+      stateKey: "stagingState",
+      lineKey: "stagingLine",
+      primarySignal: "Pilot staging backlog",
+      primaryNote: "Moves customer-story and QA proof into staging tasks, owners, smoke checks, and rollback gates.",
+      summary: "Turn launch story proof into staging backlog tasks with owner, test surface, acceptance proof, rollback note, and release gate.",
+      trackSummary: "Customer story rooms now become one staging backlog across staging tasks, test owners, smoke checks, acceptance proof, rollback note, release gate, blocker burn-down, and staging closure.",
+      stageSummary: "Customer story rooms now become one staging backlog with tasks, owners, smoke checks, acceptance proof, rollback note, release gate, blocker burn-down, and closure.",
+      openDecision: "Open staging backlog",
+      guardedDecision: "Open guarded staging backlog",
+      holdDecision: "Hold staging backlog",
+      repairDecision: "Repair staging proof",
+      nextOpen: "Open the staging backlog and keep tasks, owners, smoke checks, acceptance proof, rollback notes, and release gate together.",
+      nextGuarded: "Open a guarded staging backlog while one smoke or rollback lane needs proof.",
+      nextHold: "Hold staging until tasks, owners, acceptance proof, and rollback notes are clear.",
+      nextRepair: "Repair staging proof before launch work leaves the demo surface.",
+      axes: [
+        ["Staging tasks", "reviewGuard", 0.74, 6, "Staging work is split into executable tasks."],
+        ["Test owners", "ownerCommand", 0.74, 5, "Each staging lane has one owner."],
+        ["Smoke checks", "launchMoment", 0.7, 7, "Smoke checks cover the visible launch path."],
+        ["Acceptance proof", "proofGuard", 0.76, 5, "Acceptance proof is named before release movement."],
+        ["Rollback note", "rollbackGuard", 0.74, 5, "Rollback path stays attached to staging work."],
+        ["Release gate", "sponsorGuard", 0.68, 6, "Release gate is visible before launch governance."],
+        ["Blocker burn-down", "supportGuard", 0.72, 5, "Blockers have owner, order, and review timing."],
+        ["Staging closure", "guardClosure", 0.72, 4, "The backlog closes with proof, owner, and next gate."],
+      ],
+    },
+    {
+      key: "launch-governance-pack",
+      version: "v817",
+      number: 817,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Governance Pack",
+      shortLabel: "Launch Governance Pack",
+      phase: "First pilot expansion rollout reuse market pilot launch governance pack",
+      track: "v817 first pilot expansion rollout reuse market pilot launch governance pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-governance-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-governance-pack",
+      idSuffix: "LAUNCH-GOVERNANCE-PACK",
+      scoreKey: "governanceScore",
+      decisionKey: "governanceDecision",
+      stateKey: "governanceState",
+      lineKey: "governanceLine",
+      primarySignal: "Pilot launch governance pack",
+      primaryNote: "Turns staging proof into governance acceptance, audit path, and rollback-safe launch approval.",
+      summary: "Package staging proof into governance acceptance, audit trail, access boundary, rollback approval, sponsor signoff, and launch decision.",
+      trackSummary: "Staging backlogs now become one launch governance pack across governance acceptance, audit trail, access boundary, rollback approval, sponsor signoff, launch decision, evidence seal, and governance closure.",
+      stageSummary: "Staging backlogs now become one launch governance pack with acceptance, audit trail, access boundary, rollback approval, sponsor signoff, launch decision, evidence seal, and closure.",
+      openDecision: "Approve launch governance",
+      guardedDecision: "Approve guarded governance",
+      holdDecision: "Hold launch governance",
+      repairDecision: "Repair governance proof",
+      nextOpen: "Approve launch governance and keep acceptance, audit trail, access boundary, rollback approval, sponsor signoff, and launch decision together.",
+      nextGuarded: "Approve guarded governance while one access, audit, or rollback lane remains watched.",
+      nextHold: "Hold launch governance until acceptance, audit trail, access boundary, and sponsor signoff are safe.",
+      nextRepair: "Repair governance proof before billing or access readiness widens.",
+      axes: [
+        ["Governance acceptance", "proofGuard", 0.76, 6, "Governance can accept the launch proof."],
+        ["Audit trail", "tenantGuard", 0.74, 5, "Audit evidence is traceable and bounded."],
+        ["Access boundary", "tenantGuard", 0.76, 5, "Access limits are explicit before launch."],
+        ["Rollback approval", "rollbackGuard", 0.76, 5, "Rollback route is approved before go-live movement."],
+        ["Sponsor signoff", "sponsorGuard", 0.72, 5, "Sponsor signoff is named and readable."],
+        ["Launch decision", "launchMoment", 0.7, 6, "Launch decision is visible before billing readiness."],
+        ["Evidence seal", "proofGuard", 0.74, 5, "Evidence seal protects the final proof pack."],
+        ["Governance closure", "guardClosure", 0.72, 4, "Governance closes with owner, decision, proof, and next gate."],
+      ],
+    },
+    {
+      key: "billing-access-readiness",
+      version: "v818",
+      number: 818,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Billing Access Readiness",
+      shortLabel: "Billing Access Readiness",
+      phase: "First pilot expansion rollout reuse market pilot billing access readiness",
+      track: "v818 first pilot expansion rollout reuse market pilot billing access readiness",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-billing-access-readiness",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-billing-access-readiness",
+      idSuffix: "BILLING-ACCESS-READINESS",
+      scoreKey: "billingAccessScore",
+      decisionKey: "billingAccessDecision",
+      stateKey: "billingAccessState",
+      lineKey: "billingAccessLine",
+      primarySignal: "Pilot billing access readiness",
+      primaryNote: "Turns governance approval into billing, seats, tenant access, invoice proof, and permission checks.",
+      summary: "Prepare billing and access readiness with tenant seats, invoice proof, role boundary, checkout route, finance owner, and access lock.",
+      trackSummary: "Launch governance packs now become one billing access readiness room across tenant seats, invoice proof, role boundary, checkout route, finance owner, access lock, billing smoke, and readiness closure.",
+      stageSummary: "Launch governance packs now become one billing access readiness room with seats, invoice proof, role boundary, checkout route, finance owner, access lock, billing smoke, and closure.",
+      openDecision: "Open billing access readiness",
+      guardedDecision: "Open guarded billing readiness",
+      holdDecision: "Hold billing access readiness",
+      repairDecision: "Repair billing access proof",
+      nextOpen: "Open billing access readiness and keep seats, invoice proof, role boundary, checkout route, finance owner, and access lock together.",
+      nextGuarded: "Open guarded billing readiness while finance or access proof stays under review.",
+      nextHold: "Hold billing readiness until seats, invoice proof, access boundary, and checkout route are clear.",
+      nextRepair: "Repair billing access proof before the production backend bridge is opened.",
+      axes: [
+        ["Tenant seats", "ownerCommand", 0.72, 6, "Seat count and owner are explicit."],
+        ["Invoice proof", "proofGuard", 0.72, 6, "Invoice or billing proof is captured."],
+        ["Role boundary", "tenantGuard", 0.76, 5, "Role and access boundary stays controlled."],
+        ["Checkout route", "launchMoment", 0.66, 8, "Checkout path is named even if not live yet."],
+        ["Finance owner", "ownerCommand", 0.72, 5, "Finance owner is named for launch readiness."],
+        ["Access lock", "tenantGuard", 0.76, 5, "Access locks protect membership movement."],
+        ["Billing smoke", "supportGuard", 0.68, 6, "Billing smoke checks are ready for staging."],
+        ["Readiness closure", "guardClosure", 0.72, 4, "Billing access readiness closes with proof and next bridge."],
+      ],
+    },
+    {
+      key: "production-backend-bridge",
+      version: "v819",
+      number: 819,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Bridge",
+      shortLabel: "Production Backend Bridge",
+      phase: "First pilot expansion rollout reuse market pilot production backend bridge",
+      track: "v819 first pilot expansion rollout reuse market pilot production backend bridge",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-bridge",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-bridge",
+      idSuffix: "PRODUCTION-BACKEND-BRIDGE",
+      scoreKey: "backendBridgeScore",
+      decisionKey: "backendBridgeDecision",
+      stateKey: "backendBridgeState",
+      lineKey: "backendBridgeLine",
+      primarySignal: "Pilot production backend bridge",
+      primaryNote: "Turns billing and access readiness into the first private backend bridge with data, auth, audit, and rollback lanes.",
+      summary: "Bridge static pilot readiness toward production backend work with data model, auth, audit log, file storage, migration rehearsal, and rollback route.",
+      trackSummary: "Billing access readiness now becomes one production backend bridge across data model, auth route, audit log, file storage, migration rehearsal, rollback route, first tenant cutover, and bridge closure.",
+      stageSummary: "Billing access readiness now becomes one production backend bridge with data model, auth route, audit log, file storage, migration rehearsal, rollback route, first tenant cutover, and closure.",
+      openDecision: "Open production backend bridge",
+      guardedDecision: "Open guarded backend bridge",
+      holdDecision: "Hold backend bridge",
+      repairDecision: "Repair backend bridge proof",
+      nextOpen: "Open the production backend bridge and keep data model, auth, audit, file storage, migration rehearsal, rollback, and first tenant cutover together.",
+      nextGuarded: "Open a guarded backend bridge while one backend proof lane remains staged.",
+      nextHold: "Hold backend bridge until data, auth, audit, storage, migration, and rollback proof are clearer.",
+      nextRepair: "Repair backend bridge proof before production implementation widens.",
+      axes: [
+        ["Data model", "proofGuard", 0.74, 6, "Production data model has a clear first bridge."],
+        ["Auth route", "tenantGuard", 0.72, 6, "Authentication route is named before implementation."],
+        ["Audit log", "tenantGuard", 0.74, 5, "Audit log requirement is visible."],
+        ["File storage", "proofGuard", 0.68, 7, "Evidence file storage path is named."],
+        ["Migration rehearsal", "reviewGuard", 0.66, 8, "Migration rehearsal is staged before production movement."],
+        ["Rollback route", "rollbackGuard", 0.76, 5, "Backend rollback route is explicit."],
+        ["First tenant cutover", "launchMoment", 0.68, 7, "First tenant cutover path is calm and bounded."],
+        ["Bridge closure", "guardClosure", 0.72, 4, "The bridge closes with owner, proof, and next build route."],
       ],
     },  ];
   const BILLING_CURRENCY = "USD";
@@ -16030,7 +16225,13 @@ const state = {
     "${renderCommandPrivateBackendIssueWavePreview(model, autopilot)}",
   ];
 
-  const COMMAND_RELEASE_RAIL_RENDER_PATHS = [    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchQaIssueWavePreview(model, autopilot)}",
+  const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendBridgePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingAccessReadinessPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchGovernancePackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingBacklogPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerStoryRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchQaIssueWavePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceExportPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalTriggerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportHandoffPreview(model, autopilot)}",
@@ -21360,6 +21561,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchQaIssueWavePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-qa-issue-wave");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerStoryRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-story-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerStoryRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-story-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerStoryRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-story-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingBacklogSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "staging-backlog");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingBacklog(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "staging-backlog", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingBacklogPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-backlog");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchGovernancePackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-governance-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchGovernancePack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-governance-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchGovernancePackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-governance-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBillingAccessReadinessSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "billing-access-readiness");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBillingAccessReadiness(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "billing-access-readiness", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingAccessReadinessPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "billing-access-readiness");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendBridgeSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-backend-bridge");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendBridge(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-backend-bridge", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendBridgePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-backend-bridge");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -86924,9 +87185,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v815", "First Pilot Expansion Rollout Reuse Market Pilot Customer Story Room", "Turn QA proof into one buyer-safe customer story for first launch conversations."],
-        ["v816", "First Pilot Expansion Rollout Reuse Market Pilot Staging Backlog", "Move launch QA issues into staging tasks, test owners, and proof gates."],
-        ["v817", "First Pilot Expansion Rollout Reuse Market Pilot Launch Governance Pack", "Close the staging backlog with governance acceptance, rollback proof, and launch handoff."],
+        ["v820", "First Pilot Expansion Rollout Reuse Market Pilot Data Migration Rehearsal", "Rehearse the first production data migration with rollback, audit, and import proof."],
+        ["v821", "First Pilot Expansion Rollout Reuse Market Pilot Auth Boundary Test", "Test roles, tenant access, admin controls, and session boundaries before live tenants."],
+        ["v822", "First Pilot Expansion Rollout Reuse Market Pilot Audit Storage Proof", "Prove audit events and evidence storage retrieval before production pilot cutover."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",
