@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v879";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Production Boundary Test";
+  const BUILD_VERSION = "v884";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Country Launch Readiness Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=879.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=879.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=884.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=884.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -2960,6 +2960,201 @@
         ["Restore", "rollbackGuard", 0.76, 5, "Restore route is proven."],
         ["Billing lock", "sponsorGuard", 0.74, 5, "Billing lock enforces access."],
         ["Security signoff", "guardClosure", 0.74, 5, "Security signoff closes boundary test."],
+      ],
+    },
+    {
+      key: "production-launch-proof-room",
+      version: "v880",
+      number: 880,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Launch Proof Room",
+      shortLabel: "Production Launch Proof Room",
+      phase: "First pilot expansion rollout reuse market pilot production launch proof room",
+      track: "v880 first pilot expansion rollout reuse market pilot production launch proof room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-launch-proof-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-launch-proof-room",
+      idSuffix: "PRODUCTION-LAUNCH-PROOF-ROOM",
+      scoreKey: "productionLaunchProofRoomScore",
+      decisionKey: "productionLaunchProofRoomDecision",
+      stateKey: "productionLaunchProofRoomState",
+      lineKey: "productionLaunchProofRoomLine",
+      primarySignal: "Pilot production launch proof room",
+      primaryNote: "Collects production launch proof across tenant boundary, revenue activation, onboarding, support watch, evidence retrieval, monitoring, and sponsor signoff.",
+      summary: "Collect production launch proof across tenant boundary, revenue activation, onboarding, support watch, evidence retrieval, monitoring, and sponsor signoff.",
+      trackSummary: "Multi-tenant boundary tests now become one production launch proof room across tenant boundary, revenue activation, onboarding, support watch, evidence retrieval, monitoring, sponsor signoff, and launch receipt.",
+      stageSummary: "Boundary testing now becomes production launch proof with tenant boundary, revenue, onboarding, support, evidence retrieval, monitoring, sponsor signoff, and launch receipt.",
+      openDecision: "Open launch proof room",
+      guardedDecision: "Open guarded proof room",
+      holdDecision: "Hold launch proof",
+      repairDecision: "Repair launch proof",
+      nextOpen: "Open the production launch proof room and keep tenant boundary, revenue activation, onboarding, support watch, evidence retrieval, monitoring, sponsor signoff, and launch receipt together.",
+      nextGuarded: "Open guarded launch proof while one boundary, revenue, support, evidence, or monitoring lane stays watched.",
+      nextHold: "Hold launch proof until tenant boundary, revenue activation, support watch, and monitoring are proven.",
+      nextRepair: "Repair launch proof before pilot support command center.",
+      axes: [
+        ["Tenant boundary", "tenantGuard", 0.8, 4, "Tenant boundary is proven."],
+        ["Revenue activation", "sponsorGuard", 0.74, 5, "Revenue activation is visible."],
+        ["Onboarding", "ownerCommand", 0.74, 5, "Onboarding status is readable."],
+        ["Support watch", "supportGuard", 0.74, 5, "Support watch is active."],
+        ["Evidence retrieval", "proofGuard", 0.76, 5, "Evidence retrieval works."],
+        ["Monitoring", "reviewGuard", 0.72, 6, "Monitoring is live enough for launch."],
+        ["Sponsor signoff", "sponsorGuard", 0.74, 5, "Sponsor signoff is attached."],
+        ["Launch receipt", "guardClosure", 0.74, 5, "Launch receipt closes the room."],
+      ],
+    },
+    {
+      key: "pilot-support-command-center",
+      version: "v881",
+      number: 881,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Support Command Center",
+      shortLabel: "Pilot Support Command Center",
+      phase: "First pilot expansion rollout reuse market pilot support command center",
+      track: "v881 first pilot expansion rollout reuse market pilot support command center",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-support-command-center",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-support-command-center",
+      idSuffix: "PILOT-SUPPORT-COMMAND-CENTER",
+      scoreKey: "pilotSupportCommandCenterScore",
+      decisionKey: "pilotSupportCommandCenterDecision",
+      stateKey: "pilotSupportCommandCenterState",
+      lineKey: "pilotSupportCommandCenterLine",
+      primarySignal: "Pilot support command center",
+      primaryNote: "Operates first pilot support with incidents, response owners, customer notes, evidence needs, billing questions, rollback watch, and daily support receipt.",
+      summary: "Operate first pilot support with incidents, response owners, customer notes, evidence needs, billing questions, rollback watch, and daily support receipt.",
+      trackSummary: "Production launch proof rooms now become one pilot support command center across incidents, owners, customer notes, evidence needs, billing questions, rollback watch, daily support receipt, and support closure.",
+      stageSummary: "Launch proof now becomes support command with incidents, owners, notes, evidence needs, billing questions, rollback watch, daily receipt, and closure.",
+      openDecision: "Open support command",
+      guardedDecision: "Open guarded support command",
+      holdDecision: "Hold support command",
+      repairDecision: "Repair support command",
+      nextOpen: "Open the pilot support command center and keep incidents, response owners, customer notes, evidence needs, billing questions, rollback watch, and daily support receipt together.",
+      nextGuarded: "Open guarded support command while one incident, billing, evidence, or rollback lane stays watched.",
+      nextHold: "Hold support command until incident owners, evidence needs, billing questions, and rollback watch are readable.",
+      nextRepair: "Repair support command before customer value realization board.",
+      axes: [
+        ["Incidents", "supportGuard", 0.72, 6, "Incidents are triaged."],
+        ["Response owners", "ownerCommand", 0.74, 5, "Response owners are named."],
+        ["Customer notes", "sponsorGuard", 0.7, 6, "Customer notes are sponsor-safe."],
+        ["Evidence needs", "proofGuard", 0.74, 5, "Evidence needs are visible."],
+        ["Billing questions", "sponsorGuard", 0.7, 6, "Billing questions are routed."],
+        ["Rollback watch", "rollbackGuard", 0.76, 5, "Rollback watch remains ready."],
+        ["Daily receipt", "reviewGuard", 0.72, 6, "Daily support receipt is readable."],
+        ["Support closure", "guardClosure", 0.72, 6, "Support closure closes command."],
+      ],
+    },
+    {
+      key: "customer-value-realization-board",
+      version: "v882",
+      number: 882,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Value Realization Board",
+      shortLabel: "Customer Value Realization Board",
+      phase: "First pilot expansion rollout reuse market pilot customer value realization board",
+      track: "v882 first pilot expansion rollout reuse market pilot customer value realization board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-value-realization-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-value-realization-board",
+      idSuffix: "CUSTOMER-VALUE-REALIZATION-BOARD",
+      scoreKey: "customerValueRealizationBoardScore",
+      decisionKey: "customerValueRealizationBoardDecision",
+      stateKey: "customerValueRealizationBoardState",
+      lineKey: "customerValueRealizationBoardLine",
+      primarySignal: "Pilot customer value realization board",
+      primaryNote: "Tracks customer value after launch with adoption, action closure, value proof, sponsor feedback, support calm, renewal signal, and expansion readiness.",
+      summary: "Track customer value after launch with adoption, action closure, value proof, sponsor feedback, support calm, renewal signal, and expansion readiness.",
+      trackSummary: "Pilot support command centers now become one customer value realization board across adoption, action closure, value proof, sponsor feedback, support calm, renewal signal, expansion readiness, and value receipt.",
+      stageSummary: "Support command now becomes value realization with adoption, action closure, value proof, sponsor feedback, support calm, renewal signal, expansion readiness, and receipt.",
+      openDecision: "Open value board",
+      guardedDecision: "Open guarded value board",
+      holdDecision: "Hold value board",
+      repairDecision: "Repair value proof",
+      nextOpen: "Open the customer value realization board and keep adoption, action closure, value proof, sponsor feedback, support calm, renewal signal, and expansion readiness together.",
+      nextGuarded: "Open guarded value board while one adoption, proof, sponsor, support, or renewal lane stays watched.",
+      nextHold: "Hold value board until adoption, action closure, value proof, and sponsor feedback are clear.",
+      nextRepair: "Repair value proof before sponsor renewal decision room.",
+      axes: [
+        ["Adoption", "launchMoment", 0.7, 6, "Adoption is visible."],
+        ["Action closure", "ownerCommand", 0.72, 6, "Actions close in the workspace."],
+        ["Value proof", "proofGuard", 0.76, 5, "Value proof is attached."],
+        ["Sponsor feedback", "sponsorGuard", 0.72, 5, "Sponsor feedback is captured."],
+        ["Support calm", "supportGuard", 0.74, 5, "Support stays calm."],
+        ["Renewal signal", "reviewGuard", 0.68, 7, "Renewal signal is visible."],
+        ["Expansion readiness", "tenantGuard", 0.7, 6, "Expansion readiness stays bounded."],
+        ["Value receipt", "guardClosure", 0.72, 6, "Value receipt closes the board."],
+      ],
+    },
+    {
+      key: "sponsor-renewal-decision-room",
+      version: "v883",
+      number: 883,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Renewal Decision Room",
+      shortLabel: "Sponsor Renewal Decision Room",
+      phase: "First pilot expansion rollout reuse market pilot sponsor renewal decision room",
+      track: "v883 first pilot expansion rollout reuse market pilot sponsor renewal decision room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-sponsor-renewal-decision-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-sponsor-renewal-decision-room",
+      idSuffix: "SPONSOR-RENEWAL-DECISION-ROOM",
+      scoreKey: "sponsorRenewalDecisionRoomScore",
+      decisionKey: "sponsorRenewalDecisionRoomDecision",
+      stateKey: "sponsorRenewalDecisionRoomState",
+      lineKey: "sponsorRenewalDecisionRoomLine",
+      primarySignal: "Pilot sponsor renewal decision room",
+      primaryNote: "Converts value proof into renewal decision with commercial ask, scope options, proof bundle, objections, timing, finance route, and sponsor signoff.",
+      summary: "Convert value proof into a sponsor renewal decision with commercial ask, scope options, proof bundle, objections, timing, finance route, and sponsor signoff.",
+      trackSummary: "Customer value boards now become one sponsor renewal decision room across commercial ask, scope options, proof bundle, objections, timing, finance route, sponsor signoff, and renewal receipt.",
+      stageSummary: "Value realization now becomes sponsor renewal decision with commercial ask, scope options, proof bundle, objections, timing, finance route, signoff, and receipt.",
+      openDecision: "Open renewal decision",
+      guardedDecision: "Open guarded renewal room",
+      holdDecision: "Hold renewal decision",
+      repairDecision: "Repair renewal decision",
+      nextOpen: "Open the sponsor renewal decision room and keep commercial ask, scope options, proof bundle, objections, timing, finance route, and sponsor signoff together.",
+      nextGuarded: "Open guarded renewal decision while one commercial, proof, objection, finance, or signoff lane stays watched.",
+      nextHold: "Hold renewal decision until commercial ask, proof bundle, objections, and finance route are clear.",
+      nextRepair: "Repair renewal decision before country launch readiness pack.",
+      axes: [
+        ["Commercial ask", "sponsorGuard", 0.74, 5, "Commercial ask is clear."],
+        ["Scope options", "tenantGuard", 0.7, 6, "Scope options are bounded."],
+        ["Proof bundle", "proofGuard", 0.76, 5, "Proof bundle is ready."],
+        ["Objections", "reviewGuard", 0.7, 6, "Objections are named."],
+        ["Timing", "reviewGuard", 0.72, 5, "Renewal timing is visible."],
+        ["Finance route", "ownerCommand", 0.72, 6, "Finance route is assigned."],
+        ["Sponsor signoff", "sponsorGuard", 0.74, 5, "Sponsor signoff is explicit."],
+        ["Renewal receipt", "guardClosure", 0.72, 6, "Renewal receipt closes the room."],
+      ],
+    },
+    {
+      key: "country-launch-readiness-pack",
+      version: "v884",
+      number: 884,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Country Launch Readiness Pack",
+      shortLabel: "Country Launch Readiness Pack",
+      phase: "First pilot expansion rollout reuse market pilot country launch readiness pack",
+      track: "v884 first pilot expansion rollout reuse market pilot country launch readiness pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-country-launch-readiness-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-country-launch-readiness-pack",
+      idSuffix: "COUNTRY-LAUNCH-READINESS-PACK",
+      scoreKey: "countryLaunchReadinessPackScore",
+      decisionKey: "countryLaunchReadinessPackDecision",
+      stateKey: "countryLaunchReadinessPackState",
+      lineKey: "countryLaunchReadinessPackLine",
+      primarySignal: "Pilot country launch readiness pack",
+      primaryNote: "Prepares multi-country launch with localization, currency and tax, data boundary, support coverage, partner route, pilot candidate, launch checklist, and country signoff.",
+      summary: "Prepare country launch readiness with localization, currency and tax, data boundary, support coverage, partner route, pilot candidate, launch checklist, and country signoff.",
+      trackSummary: "Sponsor renewal decision rooms now become one country launch readiness pack across localization, currency and tax, data boundary, support coverage, partner route, pilot candidate, launch checklist, and signoff.",
+      stageSummary: "Sponsor renewal now becomes country readiness with localization, currency, data boundary, support, partner route, pilot candidate, checklist, and signoff.",
+      openDecision: "Publish country readiness",
+      guardedDecision: "Publish guarded country pack",
+      holdDecision: "Hold country readiness",
+      repairDecision: "Repair country readiness",
+      nextOpen: "Publish the country launch readiness pack and keep localization, currency and tax, data boundary, support coverage, partner route, pilot candidate, launch checklist, and country signoff together.",
+      nextGuarded: "Publish guarded country readiness while one localization, tax, data boundary, support, or partner lane stays watched.",
+      nextHold: "Hold country readiness until data boundary, support coverage, partner route, and launch checklist are clear.",
+      nextRepair: "Repair country readiness before regional partner onboarding.",
+      axes: [
+        ["Localization", "reviewGuard", 0.7, 6, "Localization needs are mapped."],
+        ["Currency and tax", "sponsorGuard", 0.7, 6, "Currency and tax are reviewed."],
+        ["Data boundary", "tenantGuard", 0.78, 5, "Country data boundary is explicit."],
+        ["Support coverage", "supportGuard", 0.74, 5, "Support coverage is available."],
+        ["Partner route", "ownerCommand", 0.7, 6, "Partner route is assigned."],
+        ["Pilot candidate", "launchMoment", 0.68, 7, "Pilot candidate is selected."],
+        ["Launch checklist", "proofGuard", 0.74, 5, "Launch checklist has proof."],
+        ["Country signoff", "guardClosure", 0.72, 6, "Country signoff closes the pack."],
       ],
     },
   ];
@@ -18580,6 +18775,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchReadinessPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorRenewalDecisionRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerValueRealizationBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportCommandCenterPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchProofRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantProductionBoundaryTestPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRevenueActivationBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionOnboardingConsolePreview(model, autopilot)}",
@@ -24755,6 +24955,65 @@ const state = {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-tenant-production-boundary-test");
   }
 
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchProofRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-launch-proof-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchProofRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-launch-proof-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchProofRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-launch-proof-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportCommandCenterSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-support-command-center");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportCommandCenter(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-support-command-center", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportCommandCenterPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-support-command-center");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerValueRealizationBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-value-realization-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerValueRealizationBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-value-realization-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerValueRealizationBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-value-realization-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorRenewalDecisionRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "sponsor-renewal-decision-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorRenewalDecisionRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "sponsor-renewal-decision-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorRenewalDecisionRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "sponsor-renewal-decision-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchReadinessPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "country-launch-readiness-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchReadinessPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "country-launch-readiness-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchReadinessPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "country-launch-readiness-pack");
+  }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const buildNumber = getBuildNumber();
@@ -89564,9 +89823,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v880", "First Pilot Expansion Rollout Reuse Market Pilot Production Launch Proof Room", "Collect production launch proof across tenant boundary, revenue activation, onboarding, support watch, evidence retrieval, monitoring, and sponsor signoff."],
-      ["v881", "First Pilot Expansion Rollout Reuse Market Pilot Pilot Support Command Center", "Operate first pilot support with incidents, response owners, customer notes, evidence needs, billing questions, rollback watch, and daily support receipt."],
-      ["v882", "First Pilot Expansion Rollout Reuse Market Pilot Customer Value Realization Board", "Track customer value after launch with adoption, action closure, value proof, sponsor feedback, support calm, renewal signal, and expansion readiness."],
+      ["v885", "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Onboarding Map", "Map regional partner onboarding with country readiness, partner access, support coverage, compliance note, pricing route, demo tenant, and signoff."],
+      ["v886", "First Pilot Expansion Rollout Reuse Market Pilot Market Launch Evidence Ledger", "Record market launch evidence across country signoff, pilot candidate, partner route, value proof, billing proof, support readiness, and audit receipt."],
+      ["v887", "First Pilot Expansion Rollout Reuse Market Pilot Global Scale Guard", "Guard global scale with market limits, data residency, support capacity, pricing controls, partner accountability, monitoring, and rollback proof."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

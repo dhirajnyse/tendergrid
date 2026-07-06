@@ -1,5 +1,139 @@
 # Changelog
 
+## v884 - First Pilot Expansion Rollout Reuse Market Pilot Country Launch Readiness Pack
+
+### Changes Made
+- Activated the country launch readiness pack as the current build.
+- Added country launch assumptions, local buyer language, support hours, privacy note, regional sponsor, evidence boundary, market proof, and launch gate to the pilot reuse runway.
+- Updated the Build Phase next queue to v885-v887 for regional partner onboarding, market launch evidence, and global scale guard work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v884.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects with v884 badges, no console errors, and no horizontal overflow.
+- Passed: scoped side-rail click QA for Autopilot, Reports, Build Phase, and Command with stable active rail state.
+- Passed: mobile QA for Command, Build Phase, and Autopilot at 390px width with zero page-level horizontal overflow.
+- Passed: visual Build Phase QA with v884 active, country launch readiness pack visible, launch roadmap present, and v885-v887 next queue present.
+
+### Known Risks
+- Country launch readiness is still a static launch pack; real country privacy review, local support coverage, regional sponsor signoff, evidence boundary proof, market validation, and launch gating need staging and operating receipts.
+
+## v883 - First Pilot Expansion Rollout Reuse Market Pilot Sponsor Renewal Decision Room
+
+### Changes Made
+- Activated the sponsor renewal decision room as the current build.
+- Added renewal sponsor, success proof, unresolved blockers, invoice posture, expansion signal, support ask, decision date, and go/no-go note to the pilot reuse runway.
+- Updated the Build Phase next queue to v884-v886 for country launch readiness, regional partner onboarding, and market launch evidence work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v883.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Sponsor renewal is still modeled in the static app; real invoice posture, renewal decision capture, expansion signal proof, sponsor signoff, and support commitments need backend records.
+
+## v882 - First Pilot Expansion Rollout Reuse Market Pilot Customer Value Realization Board
+
+### Changes Made
+- Activated the customer value realization board as the current build.
+- Added baseline value, realized outcome, adoption signal, sponsor proof, savings receipt, expansion note, risk offset, and next value review to the pilot reuse runway.
+- Updated the Build Phase next queue to v883-v885 for sponsor renewal, country readiness, and regional partner work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v882.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Value realization is still a static board; verified customer outcomes, financial proof, adoption telemetry, sponsor proof, and next value review need live customer data and backend storage.
+
+## v881 - First Pilot Expansion Rollout Reuse Market Pilot Support Command Center
+
+### Changes Made
+- Activated the pilot support command center as the current build.
+- Added support inbox, SLA window, escalation path, customer notice, closeout proof, support owner, known issue, and learning receipt to the pilot reuse runway.
+- Updated the Build Phase next queue to v882-v884 for value realization, sponsor renewal, and country readiness work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v881.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Support command is still a static operating room; real support tickets, SLA timers, customer notices, escalation audit, closeout proof, and learning receipts need backend service integration.
+
+## v880 - First Pilot Expansion Rollout Reuse Market Pilot Production Launch Proof Room
+
+### Changes Made
+- Activated the production launch proof room as the first release in this batch.
+- Added launch proof, staging run, customer receipt, rollback gate, support watch, billing check, access proof, and go-live note to the pilot reuse runway.
+- Added generic release wrappers and rail render paths for v880-v884.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v880.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Production launch proof is still a static proof room; real staging run, customer receipt, rollback gate, support watch, billing check, access proof, and go-live approval need production-like infrastructure.
+
 ## v879 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Production Boundary Test
 
 ### Changes Made
