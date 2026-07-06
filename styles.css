@@ -94854,3 +94854,100 @@ body.serenity-mode {
     grid-template-columns: 1fr;
   }
 }
+
+/* v859 mobile rail launcher refinement */
+@media (max-width: 560px) {
+  .side-rail {
+    position: sticky;
+    top: 0;
+    max-height: 42vh;
+    overflow-y: auto;
+    padding: 8px;
+  }
+
+  .side-rail-brand {
+    grid-template-columns: 34px minmax(0, 1fr);
+    min-height: 48px;
+    margin-bottom: 8px;
+    padding: 7px;
+  }
+
+  .side-rail-brand .brand-mark {
+    width: 32px;
+    height: 32px;
+  }
+
+  .side-rail-brand strong {
+    font-size: 14px;
+  }
+
+  .side-rail-brand small {
+    display: none;
+  }
+
+  .side-rail-focus {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 5px 8px;
+    margin-bottom: 8px;
+    padding: 8px;
+  }
+
+  .side-rail-focus span,
+  .side-rail-focus small {
+    display: none;
+  }
+
+  .side-rail-focus strong {
+    font-size: 13px;
+  }
+
+  .side-rail-focus button {
+    min-height: 28px;
+    padding: 6px 8px;
+  }
+
+  .side-rail-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+
+  .side-rail-scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .side-rail-group {
+    flex: 0 0 auto;
+    min-width: max-content;
+  }
+
+  .side-rail-group-label {
+    display: none;
+  }
+
+  .side-rail-group-links {
+    display: flex;
+    gap: 6px;
+  }
+
+  .side-rail-link {
+    width: auto;
+    min-height: 34px;
+    padding: 7px 10px;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .side-rail-link span {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .side-rail-link small {
+    display: none;
+  }
+}

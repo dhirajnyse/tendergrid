@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v854";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Cutover Plan";
+  const BUILD_VERSION = "v859";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Rehearsal Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=854.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=854.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=859.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=859.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1985,6 +1985,201 @@
         ["Rollback window", "rollbackGuard", 0.78, 4, "Rollback window is visible."],
         ["Owner signoff", "ownerCommand", 0.76, 5, "Owner signoff closes the move."],
         ["Launch closure", "guardClosure", 0.76, 4, "Cutover plan closes the production pilot runway."],
+      ],
+    },
+    {
+      key: "production-evidence-locker",
+      version: "v855",
+      number: 855,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Evidence Locker",
+      shortLabel: "Production Evidence Locker",
+      phase: "First pilot expansion rollout reuse market pilot production evidence locker",
+      track: "v855 first pilot expansion rollout reuse market pilot production evidence locker",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-evidence-locker",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-evidence-locker",
+      idSuffix: "PRODUCTION-EVIDENCE-LOCKER",
+      scoreKey: "productionEvidenceLockerScore",
+      decisionKey: "productionEvidenceLockerDecision",
+      stateKey: "productionEvidenceLockerState",
+      lineKey: "productionEvidenceLockerLine",
+      primarySignal: "Pilot production evidence locker",
+      primaryNote: "Locks cutover proof, screenshots, import receipts, billing receipt, support receipt, rollback proof, and owner signoff into one audit-ready locker.",
+      summary: "Lock production evidence with cutover proof, source screenshots, import receipt, billing receipt, support receipt, rollback proof, owner signoff, and audit retrieval.",
+      trackSummary: "Production cutover plans now become one evidence locker across cutover proof, source screenshots, import receipt, billing receipt, support receipt, rollback proof, owner signoff, and audit retrieval.",
+      stageSummary: "Cutover plan now becomes an evidence locker with screenshots, import, billing, support, rollback, signoff, and retrieval proof.",
+      openDecision: "Lock production evidence",
+      guardedDecision: "Lock guarded evidence",
+      holdDecision: "Hold evidence locker",
+      repairDecision: "Repair evidence proof",
+      nextOpen: "Lock the production evidence and keep cutover proof, screenshots, import, billing, support, rollback, signoff, and retrieval together.",
+      nextGuarded: "Lock guarded evidence while one screenshot, billing, support, or retrieval lane stays watched.",
+      nextHold: "Hold the evidence locker until cutover proof, import receipt, billing receipt, support receipt, and rollback proof are clear.",
+      nextRepair: "Repair production evidence before billing activation drill.",
+      axes: [
+        ["Cutover proof", "proofGuard", 0.78, 4, "Cutover proof is attached."],
+        ["Source screenshots", "tenantGuard", 0.74, 5, "Screenshots show source state without leaking tenant data."],
+        ["Import receipt", "proofGuard", 0.76, 5, "Import receipt is retrievable."],
+        ["Billing receipt", "sponsorGuard", 0.74, 5, "Billing receipt is visible to the right owner."],
+        ["Support receipt", "supportGuard", 0.76, 5, "Support receipt is ready for first pilot week."],
+        ["Rollback proof", "rollbackGuard", 0.78, 4, "Rollback proof can be read back."],
+        ["Owner signoff", "ownerCommand", 0.76, 5, "Owner signoff closes the locker."],
+        ["Audit retrieval", "guardClosure", 0.76, 4, "Locker can be reopened for audit."],
+      ],
+    },
+    {
+      key: "billing-activation-drill",
+      version: "v856",
+      number: 856,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Billing Activation Drill",
+      shortLabel: "Billing Activation Drill",
+      phase: "First pilot expansion rollout reuse market pilot billing activation drill",
+      track: "v856 first pilot expansion rollout reuse market pilot billing activation drill",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-billing-activation-drill",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-billing-activation-drill",
+      idSuffix: "BILLING-ACTIVATION-DRILL",
+      scoreKey: "billingActivationDrillScore",
+      decisionKey: "billingActivationDrillDecision",
+      stateKey: "billingActivationDrillState",
+      lineKey: "billingActivationDrillLine",
+      primarySignal: "Pilot billing activation drill",
+      primaryNote: "Dry-runs paid activation across plan, seat count, payment path, invoice, access hold, renewal date, exception path, and rollback.",
+      summary: "Dry-run billing activation with plan, seats, payment path, invoice proof, access hold, renewal date, exception path, and billing rollback.",
+      trackSummary: "Production evidence lockers now become one billing activation drill across plan, seats, payment path, invoice proof, access hold, renewal date, exception path, and billing rollback.",
+      stageSummary: "Evidence locker now becomes billing drill with plan, seats, payment, invoice, access hold, renewal, exception, and rollback proof.",
+      openDecision: "Run billing activation drill",
+      guardedDecision: "Run guarded billing drill",
+      holdDecision: "Hold billing drill",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Run the billing activation drill and keep plan, seats, payment, invoice, access hold, renewal date, exception path, and rollback visible.",
+      nextGuarded: "Run a guarded billing drill while one payment, invoice, access, or renewal lane stays watched.",
+      nextHold: "Hold billing activation until evidence locker and commercial owner receipt are calm.",
+      nextRepair: "Repair billing proof before customer go-live readiness review.",
+      axes: [
+        ["Plan selected", "sponsorGuard", 0.74, 5, "Pilot plan is selected."],
+        ["Seat count", "ownerCommand", 0.72, 5, "Seat count is agreed."],
+        ["Payment path", "proofGuard", 0.72, 5, "Payment path is known."],
+        ["Invoice proof", "proofGuard", 0.76, 5, "Invoice proof can be retrieved."],
+        ["Access hold", "tenantGuard", 0.76, 5, "Access can hold if billing fails."],
+        ["Renewal date", "reviewGuard", 0.72, 5, "Renewal date is visible."],
+        ["Exception path", "supportGuard", 0.72, 5, "Support knows billing exceptions."],
+        ["Billing rollback", "rollbackGuard", 0.76, 4, "Billing rollback is safe."],
+      ],
+    },
+    {
+      key: "customer-go-live-readiness-review",
+      version: "v857",
+      number: 857,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Go-Live Readiness Review",
+      shortLabel: "Customer Go-Live Readiness Review",
+      phase: "First pilot expansion rollout reuse market pilot customer go-live readiness review",
+      track: "v857 first pilot expansion rollout reuse market pilot customer go-live readiness review",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-go-live-readiness-review",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-go-live-readiness-review",
+      idSuffix: "CUSTOMER-GO-LIVE-READINESS-REVIEW",
+      scoreKey: "customerGoLiveReadinessScore",
+      decisionKey: "customerGoLiveReadinessDecision",
+      stateKey: "customerGoLiveReadinessState",
+      lineKey: "customerGoLiveReadinessLine",
+      primarySignal: "Pilot customer go-live readiness review",
+      primaryNote: "Reviews sponsor, users, support, import, billing, audit export, rollback, and first-week rhythm before the customer goes live.",
+      summary: "Review customer go-live readiness with sponsor decision, user list, support path, import proof, billing guard, audit export, rollback proof, and first-week rhythm.",
+      trackSummary: "Billing activation drills now become one customer go-live readiness review across sponsor decision, user list, support path, import proof, billing guard, audit export, rollback proof, and first-week rhythm.",
+      stageSummary: "Billing drill now becomes go-live review with sponsor, users, support, import, billing, export, rollback, and week-one rhythm.",
+      openDecision: "Approve go-live readiness",
+      guardedDecision: "Approve guarded go-live",
+      holdDecision: "Hold customer go-live",
+      repairDecision: "Repair go-live proof",
+      nextOpen: "Approve customer go-live readiness and keep sponsor, users, support, import, billing, audit export, rollback, and first-week rhythm together.",
+      nextGuarded: "Approve guarded go-live while one user, support, billing, export, or rollback lane stays watched.",
+      nextHold: "Hold customer go-live until sponsor, user list, support path, billing guard, and rollback proof are ready.",
+      nextRepair: "Repair go-live proof before the week-one success board opens.",
+      axes: [
+        ["Sponsor decision", "sponsorGuard", 0.76, 5, "Sponsor decision is explicit."],
+        ["User list", "ownerCommand", 0.74, 5, "Pilot users are named."],
+        ["Support path", "supportGuard", 0.76, 5, "Support path is calm."],
+        ["Import proof", "proofGuard", 0.76, 5, "Import proof is attached."],
+        ["Billing guard", "tenantGuard", 0.74, 5, "Billing guard protects access."],
+        ["Audit export", "proofGuard", 0.74, 5, "Audit export works."],
+        ["Rollback proof", "rollbackGuard", 0.78, 4, "Rollback proof is readable."],
+        ["First-week rhythm", "reviewGuard", 0.74, 5, "First week has a review rhythm."],
+      ],
+    },
+    {
+      key: "first-pilot-week-one-success-board",
+      version: "v858",
+      number: 858,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Pilot Week-One Success Board",
+      shortLabel: "First Pilot Week-One Success Board",
+      phase: "First pilot expansion rollout reuse market pilot first pilot week-one success board",
+      track: "v858 first pilot expansion rollout reuse market pilot first pilot week-one success board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-pilot-week-one-success-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-pilot-week-one-success-board",
+      idSuffix: "FIRST-PILOT-WEEK-ONE-SUCCESS-BOARD",
+      scoreKey: "firstPilotWeekOneSuccessScore",
+      decisionKey: "firstPilotWeekOneSuccessDecision",
+      stateKey: "firstPilotWeekOneSuccessState",
+      lineKey: "firstPilotWeekOneSuccessLine",
+      primarySignal: "Pilot week-one success board",
+      primaryNote: "Keeps week-one adoption, first value, support calm, sponsor note, proof trail, learning signal, renewal cue, and risk repair in one board.",
+      summary: "Track week-one pilot success with adoption, first value, support calm, sponsor note, proof trail, learning signal, renewal cue, and risk repair.",
+      trackSummary: "Go-live readiness reviews now become one week-one success board across adoption, first value, support calm, sponsor note, proof trail, learning signal, renewal cue, and risk repair.",
+      stageSummary: "Go-live review now becomes week-one success with adoption, value, support, sponsor, proof, learning, renewal, and risk repair.",
+      openDecision: "Open week-one success board",
+      guardedDecision: "Open guarded success board",
+      holdDecision: "Hold success board",
+      repairDecision: "Repair week-one proof",
+      nextOpen: "Open the week-one success board and keep adoption, first value, support calm, sponsor note, proof trail, learning signal, renewal cue, and risk repair together.",
+      nextGuarded: "Open a guarded success board while adoption, proof, learning, or renewal lanes mature.",
+      nextHold: "Hold week-one success until adoption and support signals are readable.",
+      nextRepair: "Repair week-one proof before rollback rehearsal receipt.",
+      axes: [
+        ["Adoption signal", "launchMoment", 0.72, 6, "Users are moving."],
+        ["First value", "sponsorGuard", 0.72, 6, "First value can be named."],
+        ["Support calm", "supportGuard", 0.76, 5, "Support remains calm."],
+        ["Sponsor note", "sponsorGuard", 0.72, 5, "Sponsor note is captured."],
+        ["Proof trail", "proofGuard", 0.76, 5, "Proof trail is readable."],
+        ["Learning signal", "tenantGuard", 0.7, 6, "Learning stays tenant-safe."],
+        ["Renewal cue", "reviewGuard", 0.68, 7, "Renewal cue is watched."],
+        ["Risk repair", "rollbackGuard", 0.74, 5, "Risk repair remains reversible."],
+      ],
+    },
+    {
+      key: "production-rollback-rehearsal-receipt",
+      version: "v859",
+      number: 859,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Rehearsal Receipt",
+      shortLabel: "Production Rollback Rehearsal Receipt",
+      phase: "First pilot expansion rollout reuse market pilot production rollback rehearsal receipt",
+      track: "v859 first pilot expansion rollout reuse market pilot production rollback rehearsal receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-rollback-rehearsal-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-rollback-rehearsal-receipt",
+      idSuffix: "PRODUCTION-ROLLBACK-REHEARSAL-RECEIPT",
+      scoreKey: "productionRollbackRehearsalScore",
+      decisionKey: "productionRollbackRehearsalDecision",
+      stateKey: "productionRollbackRehearsalState",
+      lineKey: "productionRollbackRehearsalLine",
+      primarySignal: "Pilot production rollback rehearsal receipt",
+      primaryNote: "Proves the customer pilot can safely reverse with trigger, owner, data restore, access restore, billing reversal, support notice, audit note, and success exit rule.",
+      summary: "Rehearse production rollback with trigger, owner, data restore, access restore, billing reversal, support notice, audit note, and success exit rule.",
+      trackSummary: "Week-one success boards now become one production rollback rehearsal receipt across trigger, owner, data restore, access restore, billing reversal, support notice, audit note, and success exit rule.",
+      stageSummary: "Week-one board now becomes rollback rehearsal with trigger, owner, data, access, billing, support, audit, and exit rule proof.",
+      openDecision: "Issue rollback rehearsal receipt",
+      guardedDecision: "Issue guarded rollback receipt",
+      holdDecision: "Hold rollback receipt",
+      repairDecision: "Repair rollback rehearsal",
+      nextOpen: "Issue the rollback rehearsal receipt and keep trigger, owner, data restore, access restore, billing reversal, support notice, audit note, and success exit together.",
+      nextGuarded: "Issue a guarded rollback receipt while one data, access, billing, or support lane stays watched.",
+      nextHold: "Hold rollout until rollback trigger, owner, restore paths, support notice, and audit note are proven.",
+      nextRepair: "Repair rollback rehearsal before first pilot outcome evidence pack.",
+      axes: [
+        ["Rollback trigger", "rollbackGuard", 0.78, 4, "Rollback trigger is explicit."],
+        ["Rollback owner", "ownerCommand", 0.76, 5, "Rollback owner is named."],
+        ["Data restore", "tenantGuard", 0.76, 5, "Data restore is known."],
+        ["Access restore", "ownerCommand", 0.74, 5, "Access restore can be executed."],
+        ["Billing reversal", "sponsorGuard", 0.72, 5, "Billing reversal is understood."],
+        ["Support notice", "supportGuard", 0.76, 5, "Support notice is ready."],
+        ["Audit note", "proofGuard", 0.76, 5, "Audit note is written."],
+        ["Success exit", "guardClosure", 0.74, 5, "Exit rule says when rollback is no longer needed."],
       ],
     },
   ];
@@ -17605,6 +17800,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackRehearsalReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotWeekOneSuccessBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveReadinessReviewPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingActivationDrillPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceLockerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCutoverPlanPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantImportDryRunReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportAccessConsoleDraftPreview(model, autopilot)}",
@@ -23455,6 +23655,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCutoverPlanPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-pilot-cutover-plan");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceLockerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-evidence-locker");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceLocker(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-evidence-locker", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceLockerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-evidence-locker");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBillingActivationDrillSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "billing-activation-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBillingActivationDrill(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "billing-activation-drill", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingActivationDrillPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "billing-activation-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveReadinessReviewSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-go-live-readiness-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveReadinessReview(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-go-live-readiness-review", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveReadinessReviewPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-go-live-readiness-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotWeekOneSuccessBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-pilot-week-one-success-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotWeekOneSuccessBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-pilot-week-one-success-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotWeekOneSuccessBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-pilot-week-one-success-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackRehearsalReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-rollback-rehearsal-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackRehearsalReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-rollback-rehearsal-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackRehearsalReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-rollback-rehearsal-receipt");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -89019,9 +89279,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v855", "First Pilot Expansion Rollout Reuse Market Pilot Production Evidence Locker", "Lock cutover proof, screenshots, imports, billing, support, rollback, and owner signoff into a customer-safe evidence locker."],
-        ["v856", "First Pilot Expansion Rollout Reuse Market Pilot Billing Activation Drill", "Dry-run paid activation with plan, seat, payment, invoice, access hold, renewal, and rollback checks."],
-        ["v857", "First Pilot Expansion Rollout Reuse Market Pilot Customer Go-Live Readiness Review", "Review sponsor, users, support, import proof, billing guard, audit exports, rollback, and first-week success rhythm before live pilot."],
+        ["v860", "First Pilot Expansion Rollout Reuse Market Pilot First Pilot Outcome Evidence Pack", "Package first pilot outcomes with usage proof, support proof, billing proof, rollback proof, sponsor note, and learning boundary."],
+        ["v861", "First Pilot Expansion Rollout Reuse Market Pilot Production Support Escalation Map", "Map support escalation with severity, owner, expiry, tenant visibility, audit receipt, and rollback-safe customer notice."],
+        ["v862", "First Pilot Expansion Rollout Reuse Market Pilot Customer Renewal Signal Board", "Track renewal signals from usage, proof movement, sponsor sentiment, support pressure, billing state, and success rhythm."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",

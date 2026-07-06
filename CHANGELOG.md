@@ -1,5 +1,122 @@
 # Changelog
 
+## v859 - First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Rehearsal Receipt
+
+### Changes Made
+- Activated the production rollback rehearsal receipt as the current build.
+- Added rollback trigger, rollback owner, data restore, access restore, billing reversal, support notice, audit note, and success exit rule to the pilot runway.
+- Tightened the phone-width side rail into a compact launcher so mobile opens onto the working screen sooner.
+- Updated the Build Phase next queue to v860-v862 for outcome evidence, support escalation, and renewal signal work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v859.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `styles.css`
+- `styles.min.css`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `node --check .\data\sample-data.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: scoped side-rail click QA for Autopilot, Reports, Build Phase, and Command with no console errors.
+- Passed: mobile Command and Build Phase QA with zero body overflow and compact rail launcher visible.
+
+### Known Risks
+- Rollback rehearsal is modeled in the static workspace; production still needs executable restore scripts, billing reversal integration, support notification delivery, and audit event persistence.
+
+## v858 - First Pilot Expansion Rollout Reuse Market Pilot First Pilot Week-One Success Board
+
+### Changes Made
+- Added the week-one success board runway gate.
+- Added adoption signal, first value, support calm, sponsor note, proof trail, learning signal, renewal cue, and risk repair to the reusable pilot stage model.
+- Wired the stage into the Command release rail and Build Phase runway.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Week-one success remains a modeled operating board; live usage telemetry, sponsor notes, and renewal signals still need backend storage.
+
+## v857 - First Pilot Expansion Rollout Reuse Market Pilot Customer Go-Live Readiness Review
+
+### Changes Made
+- Added the customer go-live readiness review runway gate.
+- Added sponsor decision, user list, support path, import proof, billing guard, audit export, rollback proof, and first-week rhythm checks.
+- Wired the stage into the Command release rail and Build Phase runway.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Go-live review is static until customer user invites, billing guard enforcement, audit export, and rollback proof are backed by production services.
+
+## v856 - First Pilot Expansion Rollout Reuse Market Pilot Billing Activation Drill
+
+### Changes Made
+- Added the billing activation drill runway gate.
+- Added plan selection, seat count, payment path, invoice proof, access hold, renewal date, exception path, and billing rollback checks.
+- Wired the stage into the Command release rail and Build Phase runway.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Billing drill is modeled; payment provider webhooks, invoice state, entitlement locks, and billing rollback are not live yet.
+
+## v855 - First Pilot Expansion Rollout Reuse Market Pilot Production Evidence Locker
+
+### Changes Made
+- Added the production evidence locker runway gate.
+- Added cutover proof, source screenshots, import receipt, billing receipt, support receipt, rollback proof, owner signoff, and audit retrieval checks.
+- Wired the stage into the Command release rail and Build Phase runway.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Evidence locker is static; real file storage, immutable proof hashes, access-scoped retrieval, and audit history still need backend implementation.
+
 ## v854 - First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Cutover Plan
 
 ### Changes Made
