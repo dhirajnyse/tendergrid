@@ -1,5 +1,133 @@
 # Changelog
 
+## v839 - First Pilot Expansion Rollout Reuse Market Pilot Market Learning Consent Ledger
+
+### Changes Made
+- Activated the market learning consent ledger as the current build.
+- Added source account, learning claim, consent scope, tenant-local redaction, approval owner, expiry date, reuse channel, and audit receipt to the runway.
+- Updated the Build Phase next queue to v840-v842 for learning reuse policy, partner demo boundary, and multi-tenant control draft.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v839.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop visual QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: mobile Command visual QA with no document or body horizontal overflow.
+
+### Known Risks
+- Consent is modeled in static UI; production use still needs persisted consent records, tenant-level approvals, expiry enforcement, and audit storage.
+
+## v838 - First Pilot Expansion Rollout Reuse Market Pilot Second Pilot Go-Live Packet
+
+### Changes Made
+- Activated the second pilot go-live packet during the batch.
+- Added kickoff script, access grant, data import, support owner, proof plan, rollback check, sponsor message, and day-one receipt to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v838.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Go-live packet is static and demo-safe; real go-live depends on tenant auth, validated import, support staffing, and rollback rehearsal.
+
+## v837 - First Pilot Expansion Rollout Reuse Market Pilot Controlled Scale Gate
+
+### Changes Made
+- Activated the controlled scale gate during the batch.
+- Added launch limit, proof lock, support capacity, privacy lock, rollback path, billing readiness, sponsor readiness, and scale receipt to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v837.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Scale readiness remains modeled; production scale needs billing integration, live support capacity proof, tenant isolation, and tested rollback.
+
+## v836 - First Pilot Expansion Rollout Reuse Market Pilot Region Readiness Map
+
+### Changes Made
+- Activated the region readiness map during the batch.
+- Added target region, segment fit, compliance boundary, support lane, billing route, data rule, rollout owner, and launch order to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v836.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Region readiness is directional; actual launch regions need local compliance review, billing support, hosting posture, and data residency decisions.
+
+## v835 - First Pilot Expansion Rollout Reuse Market Pilot Wider Launch Council
+
+### Changes Made
+- Activated the wider launch council during the batch.
+- Added market proof, release condition, owner quorum, risk boundary, sponsor path, support promise, decision receipt, and council closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v835.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Council decisions are represented as product proof; real launch governance still needs named stakeholders, approvals, and live commercial evidence.
+
 ## v834 - First Pilot Expansion Rollout Reuse Market Pilot Market Readiness Proof Board
 
 ### Changes Made

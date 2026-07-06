@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v834";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Market Readiness Proof Board";
+  const BUILD_VERSION = "v839";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Market Learning Consent Ledger";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=834.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=834.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=839.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=839.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1205,6 +1205,201 @@
         ["Privacy guard", "tenantGuard", 0.78, 4, "Privacy guard stays intact."],
         ["Launch risk", "rollbackGuard", 0.74, 5, "Launch risk and fallback are named."],
         ["Market closure", "guardClosure", 0.74, 4, "Market readiness closes with decision and next roadmap."],
+      ],
+    },
+    {
+      key: "wider-launch-council",
+      version: "v835",
+      number: 835,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Wider Launch Council",
+      shortLabel: "Wider Launch Council",
+      phase: "First pilot expansion rollout reuse market pilot wider launch council",
+      track: "v835 first pilot expansion rollout reuse market pilot wider launch council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-wider-launch-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-wider-launch-council",
+      idSuffix: "WIDER-LAUNCH-COUNCIL",
+      scoreKey: "widerLaunchCouncilScore",
+      decisionKey: "widerLaunchCouncilDecision",
+      stateKey: "widerLaunchCouncilState",
+      lineKey: "widerLaunchCouncilLine",
+      primarySignal: "Pilot wider launch council",
+      primaryNote: "Turns market readiness proof into a calm go, guarded-go, hold, or repair council decision.",
+      summary: "Run a wider launch council with market proof, release condition, owner quorum, risk boundary, sponsor path, support promise, and launch decision receipt.",
+      trackSummary: "Market readiness boards now become one wider launch council across market proof, release condition, owner quorum, risk boundary, sponsor path, support promise, decision receipt, and council closure.",
+      stageSummary: "Market readiness proof now becomes a wider launch council with proof, release condition, owners, risk boundary, sponsor path, support promise, receipt, and closure.",
+      openDecision: "Open wider launch council",
+      guardedDecision: "Open guarded launch council",
+      holdDecision: "Hold wider launch council",
+      repairDecision: "Repair council proof",
+      nextOpen: "Open the wider launch council and keep market proof, release conditions, owner quorum, risk boundary, sponsor path, and support promise together.",
+      nextGuarded: "Open a guarded wider launch council while one release, support, or sponsor lane remains watched.",
+      nextHold: "Hold wider launch until proof, support, and sponsor path are ready.",
+      nextRepair: "Repair council proof before region readiness mapping.",
+      axes: [
+        ["Market proof", "proofGuard", 0.76, 5, "Market proof is strong enough for council review."],
+        ["Release condition", "reviewGuard", 0.72, 5, "Release conditions are explicit."],
+        ["Owner quorum", "ownerCommand", 0.74, 5, "Decision owners are named."],
+        ["Risk boundary", "rollbackGuard", 0.74, 5, "Risk boundary and fallback are visible."],
+        ["Sponsor path", "sponsorGuard", 0.72, 5, "Sponsor path can carry the next step."],
+        ["Support promise", "supportGuard", 0.74, 5, "Support promise is realistic."],
+        ["Decision receipt", "tenantGuard", 0.72, 5, "Decision receipt avoids private tenant leakage."],
+        ["Council closure", "guardClosure", 0.74, 4, "Council closes with go, hold, repair, or guarded-go."],
+      ],
+    },
+    {
+      key: "region-readiness-map",
+      version: "v836",
+      number: 836,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Region Readiness Map",
+      shortLabel: "Region Readiness Map",
+      phase: "First pilot expansion rollout reuse market pilot region readiness map",
+      track: "v836 first pilot expansion rollout reuse market pilot region readiness map",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-region-readiness-map",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-region-readiness-map",
+      idSuffix: "REGION-READINESS-MAP",
+      scoreKey: "regionReadinessScore",
+      decisionKey: "regionReadinessDecision",
+      stateKey: "regionReadinessState",
+      lineKey: "regionReadinessLine",
+      primarySignal: "Pilot region readiness map",
+      primaryNote: "Maps which region, tenant segment, support lane, compliance boundary, and rollout owner can safely move next.",
+      summary: "Map region readiness with target region, segment fit, compliance boundary, support lane, billing route, data rule, rollout owner, and launch order.",
+      trackSummary: "Wider launch councils now become one region readiness map across target region, segment fit, compliance boundary, support lane, billing route, data rule, rollout owner, and map closure.",
+      stageSummary: "Wider launch council now maps region readiness with region, segment, compliance, support, billing, data, owner, and launch order.",
+      openDecision: "Map launch region",
+      guardedDecision: "Map guarded region",
+      holdDecision: "Hold region map",
+      repairDecision: "Repair region proof",
+      nextOpen: "Map the launch region and keep region, segment, compliance, support, billing, data, and owner conditions together.",
+      nextGuarded: "Map a guarded region while one compliance, billing, or support lane stays under review.",
+      nextHold: "Hold region mapping until compliance boundary and support lane are clear.",
+      nextRepair: "Repair region proof before controlled scale gate.",
+      axes: [
+        ["Target region", "launchMoment", 0.72, 5, "One region is named before scale."],
+        ["Segment fit", "proofGuard", 0.72, 5, "Segment fit is evidence-backed."],
+        ["Compliance boundary", "tenantGuard", 0.76, 4, "Compliance boundary is explicit."],
+        ["Support lane", "supportGuard", 0.74, 5, "Support lane is staffed."],
+        ["Billing route", "sponsorGuard", 0.68, 7, "Billing route is visible enough for launch."],
+        ["Data rule", "tenantGuard", 0.78, 4, "Data rule protects country and tenant boundaries."],
+        ["Rollout owner", "ownerCommand", 0.76, 5, "One owner carries regional rollout."],
+        ["Map closure", "guardClosure", 0.74, 4, "Region map closes with order and next gate."],
+      ],
+    },
+    {
+      key: "controlled-scale-gate",
+      version: "v837",
+      number: 837,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Controlled Scale Gate",
+      shortLabel: "Controlled Scale Gate",
+      phase: "First pilot expansion rollout reuse market pilot controlled scale gate",
+      track: "v837 first pilot expansion rollout reuse market pilot controlled scale gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-controlled-scale-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-controlled-scale-gate",
+      idSuffix: "CONTROLLED-SCALE-GATE",
+      scoreKey: "controlledScaleScore",
+      decisionKey: "controlledScaleDecision",
+      stateKey: "controlledScaleState",
+      lineKey: "controlledScaleLine",
+      primarySignal: "Pilot controlled scale gate",
+      primaryNote: "Gates scale with proof, support capacity, privacy, rollback, billing, sponsor readiness, and measured launch limits.",
+      summary: "Gate controlled scale with launch limit, proof lock, support capacity, privacy lock, rollback path, billing readiness, sponsor readiness, and scale receipt.",
+      trackSummary: "Region readiness maps now become one controlled scale gate across launch limit, proof lock, support capacity, privacy lock, rollback path, billing readiness, sponsor readiness, and scale closure.",
+      stageSummary: "Region readiness now gates controlled scale with limit, proof, support, privacy, rollback, billing, sponsor readiness, and closure.",
+      openDecision: "Open controlled scale gate",
+      guardedDecision: "Open guarded scale gate",
+      holdDecision: "Hold controlled scale",
+      repairDecision: "Repair scale proof",
+      nextOpen: "Open controlled scale and keep limit, proof lock, support capacity, privacy, rollback, billing, and sponsor readiness together.",
+      nextGuarded: "Open a guarded scale gate while one billing, support, or rollback lane stays watched.",
+      nextHold: "Hold controlled scale until proof, support, privacy, and rollback are complete.",
+      nextRepair: "Repair scale proof before second pilot go-live.",
+      axes: [
+        ["Launch limit", "reviewGuard", 0.74, 5, "Scale limit is intentionally small."],
+        ["Proof lock", "proofGuard", 0.76, 5, "Proof lock is ready before scale."],
+        ["Support capacity", "supportGuard", 0.74, 5, "Support capacity can absorb scale."],
+        ["Privacy lock", "tenantGuard", 0.78, 4, "Privacy lock is hard."],
+        ["Rollback path", "rollbackGuard", 0.76, 5, "Rollback path is tested enough."],
+        ["Billing readiness", "sponsorGuard", 0.68, 7, "Billing readiness is visible."],
+        ["Sponsor readiness", "sponsorGuard", 0.72, 5, "Sponsor readiness has proof."],
+        ["Scale closure", "guardClosure", 0.74, 4, "Scale gate closes with go, guarded-go, hold, or repair."],
+      ],
+    },
+    {
+      key: "second-pilot-go-live-packet",
+      version: "v838",
+      number: 838,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Second Pilot Go-Live Packet",
+      shortLabel: "Second Pilot Go-Live Packet",
+      phase: "First pilot expansion rollout reuse market pilot second pilot go-live packet",
+      track: "v838 first pilot expansion rollout reuse market pilot second pilot go-live packet",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-second-pilot-go-live-packet",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-second-pilot-go-live-packet",
+      idSuffix: "SECOND-PILOT-GO-LIVE-PACKET",
+      scoreKey: "secondPilotGoLiveScore",
+      decisionKey: "secondPilotGoLiveDecision",
+      stateKey: "secondPilotGoLiveState",
+      lineKey: "secondPilotGoLiveLine",
+      primarySignal: "Pilot second go-live packet",
+      primaryNote: "Packages second-pilot kickoff, access, data, support, proof plan, rollback, sponsor message, and day-one receipt.",
+      summary: "Prepare second pilot go-live with kickoff script, access grant, data import, support owner, proof plan, rollback check, sponsor message, and day-one receipt.",
+      trackSummary: "Controlled scale gates now become one second pilot go-live packet across kickoff script, access grant, data import, support owner, proof plan, rollback check, sponsor message, and go-live closure.",
+      stageSummary: "Controlled scale now becomes second pilot go-live packet with kickoff, access, data, support, proof, rollback, sponsor message, and day-one receipt.",
+      openDecision: "Send second pilot packet",
+      guardedDecision: "Send guarded go-live packet",
+      holdDecision: "Hold go-live packet",
+      repairDecision: "Repair go-live proof",
+      nextOpen: "Send the second pilot go-live packet and keep kickoff, access, data, support, proof, rollback, and sponsor message together.",
+      nextGuarded: "Send a guarded go-live packet while one access, data, or support lane stays watched.",
+      nextHold: "Hold go-live until access, data, support, and rollback are clear.",
+      nextRepair: "Repair go-live proof before learning consent ledger.",
+      axes: [
+        ["Kickoff script", "sponsorGuard", 0.72, 5, "Kickoff script is buyer-safe."],
+        ["Access grant", "tenantGuard", 0.76, 5, "Access grant follows role boundary."],
+        ["Data import", "proofGuard", 0.72, 5, "Data import has validation proof."],
+        ["Support owner", "supportGuard", 0.74, 5, "Support owner is named."],
+        ["Proof plan", "proofGuard", 0.74, 5, "Proof plan defines day-one evidence."],
+        ["Rollback check", "rollbackGuard", 0.76, 5, "Rollback check is ready."],
+        ["Sponsor message", "sponsorGuard", 0.72, 5, "Sponsor message is short and clear."],
+        ["Go-live closure", "guardClosure", 0.74, 4, "Go-live closes with owner, date, and receipt."],
+      ],
+    },
+    {
+      key: "market-learning-consent-ledger",
+      version: "v839",
+      number: 839,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Market Learning Consent Ledger",
+      shortLabel: "Market Learning Consent Ledger",
+      phase: "First pilot expansion rollout reuse market pilot market learning consent ledger",
+      track: "v839 first pilot expansion rollout reuse market pilot market learning consent ledger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-market-learning-consent-ledger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-market-learning-consent-ledger",
+      idSuffix: "MARKET-LEARNING-CONSENT-LEDGER",
+      scoreKey: "marketLearningConsentScore",
+      decisionKey: "marketLearningConsentDecision",
+      stateKey: "marketLearningConsentState",
+      lineKey: "marketLearningConsentLine",
+      primarySignal: "Pilot market learning consent ledger",
+      primaryNote: "Records what market learning can be reused, where it came from, who approved it, when it expires, and what stays tenant-local.",
+      summary: "Record market learning consent with source account, learning claim, consent scope, tenant-local redaction, approval owner, expiry date, reuse channel, and audit receipt.",
+      trackSummary: "Second pilot go-live packets now become one market learning consent ledger across source account, learning claim, consent scope, tenant-local redaction, approval owner, expiry date, reuse channel, and ledger closure.",
+      stageSummary: "Second pilot go-live now records learning consent with source, claim, scope, redaction, owner, expiry, reuse channel, and audit receipt.",
+      openDecision: "Record learning consent",
+      guardedDecision: "Record guarded consent",
+      holdDecision: "Hold learning consent",
+      repairDecision: "Repair consent proof",
+      nextOpen: "Record market learning consent and keep source, claim, scope, redaction, owner, expiry, reuse channel, and audit receipt together.",
+      nextGuarded: "Record guarded consent while one expiry, redaction, or approval lane stays watched.",
+      nextHold: "Hold learning consent until scope, redaction, and approval are clear.",
+      nextRepair: "Repair consent proof before broader market learning reuse.",
+      axes: [
+        ["Source account", "tenantGuard", 0.76, 5, "Source account is protected and traceable."],
+        ["Learning claim", "proofGuard", 0.74, 5, "Learning claim has evidence."],
+        ["Consent scope", "sponsorGuard", 0.72, 5, "Consent scope is explicit."],
+        ["Tenant redaction", "tenantGuard", 0.78, 4, "Tenant-local detail is redacted."],
+        ["Approval owner", "ownerCommand", 0.76, 5, "Approval owner is named."],
+        ["Expiry date", "reviewGuard", 0.72, 5, "Consent has an expiry review."],
+        ["Reuse channel", "launchMoment", 0.68, 7, "Reuse channel is narrow."],
+        ["Ledger closure", "guardClosure", 0.74, 4, "Ledger closes with audit receipt and next review."],
       ],
     },
   ];
@@ -16812,6 +17007,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLearningConsentLedgerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotGoLivePacketPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotControlledScaleGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionReadinessMapPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotWiderLaunchCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketReadinessProofBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotCandidateSelectorPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReuseApprovalPreview(model, autopilot)}",
@@ -22402,6 +22602,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketReadinessProofBoardPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "market-readiness-proof-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotWiderLaunchCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "wider-launch-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotWiderLaunchCouncil(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "wider-launch-council", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotWiderLaunchCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "wider-launch-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionReadinessMapSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "region-readiness-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionReadinessMap(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "region-readiness-map", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionReadinessMapPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "region-readiness-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotControlledScaleGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "controlled-scale-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotControlledScaleGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "controlled-scale-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotControlledScaleGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "controlled-scale-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotGoLivePacketSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "second-pilot-go-live-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotGoLivePacket(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "second-pilot-go-live-packet", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotGoLivePacketPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "second-pilot-go-live-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLearningConsentLedgerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "market-learning-consent-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLearningConsentLedger(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "market-learning-consent-ledger", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLearningConsentLedgerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "market-learning-consent-ledger");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -87966,9 +88226,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v835", "First Pilot Expansion Rollout Reuse Market Pilot Wider Launch Council", "Turn market proof into a wider-launch council decision with owner, boundary, and release conditions."],
-        ["v836", "First Pilot Expansion Rollout Reuse Market Pilot Region Readiness Map", "Map which region, tenant segment, support lane, and compliance boundary can safely launch next."],
-        ["v837", "First Pilot Expansion Rollout Reuse Market Pilot Controlled Scale Gate", "Gate controlled scale with proof, support capacity, privacy, rollback, billing, and sponsor readiness."],
+        ["v840", "First Pilot Expansion Rollout Reuse Market Pilot Learning Reuse Policy Pack", "Turn consent-ledger rows into reusable learning policy, expiry, redaction, and review controls."],
+        ["v841", "First Pilot Expansion Rollout Reuse Market Pilot Partner Demo Boundary", "Separate public demo proof, partner-safe claims, tenant-local examples, and no-show fields before market demos."],
+        ["v842", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Control Draft", "Draft tenant isolation, admin roles, audit storage, export rules, and support controls for production planning."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",
