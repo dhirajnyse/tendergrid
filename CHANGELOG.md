@@ -1,5 +1,134 @@
 # Changelog
 
+## v854 - First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Cutover Plan
+
+### Changes Made
+- Activated the production pilot cutover plan as the current build.
+- Added cutover sequence, data freeze, access switch, billing gate, support watch, rollback window, owner signoff, and launch closure to the runway.
+- Updated the Build Phase next queue to v855-v857 for production evidence locker, billing activation drill, and customer go-live readiness review.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v854.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: desktop side-rail click QA for Autopilot, Reports, Build Phase, and Command with no console errors.
+- Passed: mobile Command and Build Phase visual QA with no document or body horizontal overflow.
+
+### Known Risks
+- Cutover plan is static; production still needs real deployment runbook, backend environment, data freeze automation, rollback execution, and owner signoff workflow.
+
+## v853 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Import Dry-Run Receipt
+
+### Changes Made
+- Activated the tenant import dry-run receipt during the batch.
+- Added source snapshot, mapped rows, rejected rows, validation summary, owner approval, audit checksum, rollback proof, and receipt closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v853.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Dry-run receipt is modeled; live import still needs file parsing, validation persistence, rejected-row storage, checksum generation, and rollback replay.
+
+## v852 - First Pilot Expansion Rollout Reuse Market Pilot Support Access Console Draft
+
+### Changes Made
+- Activated the support access console draft during the batch.
+- Added requester, approver, expiry timer, audit write, impersonation limit, support receipt, access rollback, and console closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v852.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Support access remains a draft; production needs tenant-scoped support sessions, time-bound grants, approval UI, immutable audit events, and revocation tests.
+
+## v851 - First Pilot Expansion Rollout Reuse Market Pilot Audit Export Boundary Test
+
+### Changes Made
+- Activated the audit export boundary test during the batch.
+- Added tenant scope, role scope, date window, redaction rule, proof lock, download receipt, export rollback, and boundary closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v851.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Export boundary test is static; real protection needs server-side tenant filtering, role enforcement, redaction checks, export receipts, and audit download tests.
+
+## v850 - First Pilot Expansion Rollout Reuse Market Pilot Production Billing Guard Contract
+
+### Changes Made
+- Activated the production billing guard contract during the batch.
+- Added plan map, seat ledger, renewal state, payment proof, access hold, invoice receipt, billing rollback, and guard closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v850.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Billing guard is modeled; production needs payment provider integration, invoice state, seat reconciliation, access locks, and renewal automation.
+
 ## v849 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Data Import Contract
 
 ### Changes Made

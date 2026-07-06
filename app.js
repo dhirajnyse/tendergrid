@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v849";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Data Import Contract";
+  const BUILD_VERSION = "v854";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Cutover Plan";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=849.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=849.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=854.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=854.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1790,6 +1790,201 @@
         ["Owner signoff", "ownerCommand", 0.76, 5, "Owner signoff is required."],
         ["Rollback path", "rollbackGuard", 0.76, 5, "Rollback path is explicit."],
         ["Import closure", "guardClosure", 0.74, 4, "Import contract closes with next production gate."],
+      ],
+    },
+    {
+      key: "production-billing-guard-contract",
+      version: "v850",
+      number: 850,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Guard Contract",
+      shortLabel: "Production Billing Guard Contract",
+      phase: "First pilot expansion rollout reuse market pilot production billing guard contract",
+      track: "v850 first pilot expansion rollout reuse market pilot production billing guard contract",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-billing-guard-contract",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-billing-guard-contract",
+      idSuffix: "PRODUCTION-BILLING-GUARD-CONTRACT",
+      scoreKey: "productionBillingGuardScore",
+      decisionKey: "productionBillingGuardDecision",
+      stateKey: "productionBillingGuardState",
+      lineKey: "productionBillingGuardLine",
+      primarySignal: "Pilot production billing guard contract",
+      primaryNote: "Defines plan, seat, renewal, payment proof, access hold, invoice receipt, and billing rollback boundaries before paid pilot launch.",
+      summary: "Define billing guard contract with plan map, seat ledger, renewal state, payment proof, access hold, invoice receipt, and billing rollback.",
+      trackSummary: "Tenant import contracts now become one production billing guard contract across plan map, seat ledger, renewal state, payment proof, access hold, invoice receipt, billing rollback, and guard closure.",
+      stageSummary: "Import contract now becomes billing guard with plans, seats, renewal, proof, access hold, invoice receipt, rollback, and closure.",
+      openDecision: "Define production billing guard",
+      guardedDecision: "Define guarded billing contract",
+      holdDecision: "Hold billing guard",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Define billing guard contract and keep plan map, seats, renewal, payment proof, access hold, invoice receipt, and rollback together.",
+      nextGuarded: "Define guarded billing while one payment proof, access hold, or renewal lane stays watched.",
+      nextHold: "Hold billing guard until import contract and role permissions are clear.",
+      nextRepair: "Repair billing proof before audit export boundary testing.",
+      axes: [
+        ["Plan map", "sponsorGuard", 0.74, 5, "Plans are named before checkout."],
+        ["Seat ledger", "ownerCommand", 0.74, 5, "Seat ownership is visible."],
+        ["Renewal state", "reviewGuard", 0.72, 5, "Renewal state is explicit."],
+        ["Payment proof", "proofGuard", 0.76, 5, "Payment proof is required."],
+        ["Access hold", "tenantGuard", 0.76, 5, "Access hold protects unpaid states."],
+        ["Invoice receipt", "proofGuard", 0.74, 5, "Invoice receipt is auditable."],
+        ["Billing rollback", "rollbackGuard", 0.76, 5, "Billing rollback is visible."],
+        ["Guard closure", "guardClosure", 0.74, 4, "Billing guard closes with export boundary next."],
+      ],
+    },
+    {
+      key: "audit-export-boundary-test",
+      version: "v851",
+      number: 851,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Audit Export Boundary Test",
+      shortLabel: "Audit Export Boundary Test",
+      phase: "First pilot expansion rollout reuse market pilot audit export boundary test",
+      track: "v851 first pilot expansion rollout reuse market pilot audit export boundary test",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-audit-export-boundary-test",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-audit-export-boundary-test",
+      idSuffix: "AUDIT-EXPORT-BOUNDARY-TEST",
+      scoreKey: "auditExportBoundaryScore",
+      decisionKey: "auditExportBoundaryDecision",
+      stateKey: "auditExportBoundaryState",
+      lineKey: "auditExportBoundaryLine",
+      primarySignal: "Pilot audit export boundary test",
+      primaryNote: "Tests tenant, role, date range, redaction, proof lock, download receipt, and export rollback boundaries before customer-visible exports.",
+      summary: "Test audit exports with tenant scope, role scope, date window, redaction rule, proof lock, download receipt, and export rollback.",
+      trackSummary: "Billing guard contracts now become one audit export boundary test across tenant scope, role scope, date window, redaction rule, proof lock, download receipt, export rollback, and boundary closure.",
+      stageSummary: "Billing guard now becomes audit export test with tenant, role, date, redaction, proof lock, receipt, rollback, and closure.",
+      openDecision: "Test audit export boundary",
+      guardedDecision: "Test guarded export boundary",
+      holdDecision: "Hold export boundary",
+      repairDecision: "Repair export proof",
+      nextOpen: "Test audit export boundary and keep tenant, role, date, redaction, proof lock, download receipt, and rollback together.",
+      nextGuarded: "Test guarded export while one redaction, proof lock, or receipt lane stays watched.",
+      nextHold: "Hold export boundary until billing and audit receipt rules are clear.",
+      nextRepair: "Repair export proof before support access console drafting.",
+      axes: [
+        ["Tenant scope", "tenantGuard", 0.78, 4, "Tenant scope cannot leak."],
+        ["Role scope", "ownerCommand", 0.74, 5, "Role scope is clear."],
+        ["Date window", "launchMoment", 0.72, 5, "Date window is bounded."],
+        ["Redaction rule", "tenantGuard", 0.76, 5, "Redaction rule is explicit."],
+        ["Proof lock", "proofGuard", 0.76, 5, "Proof lock prevents edits."],
+        ["Download receipt", "proofGuard", 0.74, 5, "Download receipt is written."],
+        ["Export rollback", "rollbackGuard", 0.76, 5, "Export rollback is visible."],
+        ["Boundary closure", "guardClosure", 0.74, 4, "Boundary closes with support access next."],
+      ],
+    },
+    {
+      key: "support-access-console-draft",
+      version: "v852",
+      number: 852,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Support Access Console Draft",
+      shortLabel: "Support Access Console Draft",
+      phase: "First pilot expansion rollout reuse market pilot support access console draft",
+      track: "v852 first pilot expansion rollout reuse market pilot support access console draft",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-support-access-console-draft",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-support-access-console-draft",
+      idSuffix: "SUPPORT-ACCESS-CONSOLE-DRAFT",
+      scoreKey: "supportAccessConsoleScore",
+      decisionKey: "supportAccessConsoleDecision",
+      stateKey: "supportAccessConsoleState",
+      lineKey: "supportAccessConsoleLine",
+      primarySignal: "Pilot support access console draft",
+      primaryNote: "Drafts tenant-scoped support access with requester, approver, expiry, audit write, impersonation limit, support receipt, and rollback.",
+      summary: "Draft support access console with requester, approver, expiry timer, audit write, impersonation limit, support receipt, and access rollback.",
+      trackSummary: "Audit export boundary tests now become one support access console draft across requester, approver, expiry timer, audit write, impersonation limit, support receipt, access rollback, and console closure.",
+      stageSummary: "Audit export boundary now becomes support access console with requester, approver, expiry, audit, impersonation, receipt, rollback, and closure.",
+      openDecision: "Draft support access console",
+      guardedDecision: "Draft guarded support console",
+      holdDecision: "Hold support console",
+      repairDecision: "Repair support proof",
+      nextOpen: "Draft support access console and keep requester, approver, expiry, audit write, impersonation limit, receipt, and rollback together.",
+      nextGuarded: "Draft guarded support while one expiry, impersonation, or rollback lane stays watched.",
+      nextHold: "Hold support console until export boundary and role matrix are clear.",
+      nextRepair: "Repair support proof before import dry-run receipt.",
+      axes: [
+        ["Requester", "ownerCommand", 0.74, 5, "Requester is named."],
+        ["Approver", "sponsorGuard", 0.72, 5, "Approver is visible."],
+        ["Expiry timer", "launchMoment", 0.72, 5, "Access expires automatically."],
+        ["Audit write", "proofGuard", 0.76, 5, "Support writes audit."],
+        ["Impersonation limit", "tenantGuard", 0.78, 4, "Impersonation is limited."],
+        ["Support receipt", "supportGuard", 0.76, 5, "Support receipt is clear."],
+        ["Access rollback", "rollbackGuard", 0.76, 5, "Access rollback is explicit."],
+        ["Console closure", "guardClosure", 0.74, 4, "Console closes with import dry-run next."],
+      ],
+    },
+    {
+      key: "tenant-import-dry-run-receipt",
+      version: "v853",
+      number: 853,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Import Dry-Run Receipt",
+      shortLabel: "Tenant Import Dry-Run Receipt",
+      phase: "First pilot expansion rollout reuse market pilot tenant import dry-run receipt",
+      track: "v853 first pilot expansion rollout reuse market pilot tenant import dry-run receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-import-dry-run-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-import-dry-run-receipt",
+      idSuffix: "TENANT-IMPORT-DRY-RUN-RECEIPT",
+      scoreKey: "tenantImportDryRunScore",
+      decisionKey: "tenantImportDryRunDecision",
+      stateKey: "tenantImportDryRunState",
+      lineKey: "tenantImportDryRunLine",
+      primarySignal: "Pilot tenant import dry-run receipt",
+      primaryNote: "Turns import contract into a dry-run receipt with source snapshot, mapped rows, rejected rows, owner approval, audit checksum, and rollback proof.",
+      summary: "Produce tenant import dry-run receipt with source snapshot, mapped rows, rejected rows, validation summary, owner approval, audit checksum, and rollback proof.",
+      trackSummary: "Support access console drafts now become one tenant import dry-run receipt across source snapshot, mapped rows, rejected rows, validation summary, owner approval, audit checksum, rollback proof, and receipt closure.",
+      stageSummary: "Support access console now becomes import dry-run receipt with source, mapped rows, rejects, validation, approval, checksum, rollback, and closure.",
+      openDecision: "Produce import dry-run receipt",
+      guardedDecision: "Produce guarded dry-run receipt",
+      holdDecision: "Hold import dry-run",
+      repairDecision: "Repair dry-run proof",
+      nextOpen: "Produce import dry-run receipt and keep source snapshot, mapped rows, rejects, validation, approval, audit checksum, and rollback together.",
+      nextGuarded: "Produce guarded dry-run while one reject, checksum, or approval lane stays watched.",
+      nextHold: "Hold import dry-run until support access and export boundaries are clear.",
+      nextRepair: "Repair dry-run proof before production pilot cutover planning.",
+      axes: [
+        ["Source snapshot", "tenantGuard", 0.76, 5, "Source snapshot is frozen."],
+        ["Mapped rows", "proofGuard", 0.74, 5, "Mapped rows are counted."],
+        ["Rejected rows", "reviewGuard", 0.72, 5, "Rejected rows are readable."],
+        ["Validation summary", "proofGuard", 0.76, 5, "Validation summary is attached."],
+        ["Owner approval", "ownerCommand", 0.76, 5, "Owner approval is required."],
+        ["Audit checksum", "proofGuard", 0.74, 5, "Audit checksum is present."],
+        ["Rollback proof", "rollbackGuard", 0.76, 5, "Rollback proof is ready."],
+        ["Receipt closure", "guardClosure", 0.74, 4, "Dry-run closes with cutover plan."],
+      ],
+    },
+    {
+      key: "production-pilot-cutover-plan",
+      version: "v854",
+      number: 854,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Cutover Plan",
+      shortLabel: "Production Pilot Cutover Plan",
+      phase: "First pilot expansion rollout reuse market pilot production pilot cutover plan",
+      track: "v854 first pilot expansion rollout reuse market pilot production pilot cutover plan",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-pilot-cutover-plan",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-pilot-cutover-plan",
+      idSuffix: "PRODUCTION-PILOT-CUTOVER-PLAN",
+      scoreKey: "productionPilotCutoverScore",
+      decisionKey: "productionPilotCutoverDecision",
+      stateKey: "productionPilotCutoverState",
+      lineKey: "productionPilotCutoverLine",
+      primarySignal: "Pilot production cutover plan",
+      primaryNote: "Closes the first production pilot runway with cutover sequence, data freeze, access switch, billing gate, support watch, rollback window, and owner signoff.",
+      summary: "Plan production pilot cutover with cutover sequence, data freeze, access switch, billing gate, support watch, rollback window, owner signoff, and launch closure.",
+      trackSummary: "Tenant import dry-run receipts now become one production pilot cutover plan across cutover sequence, data freeze, access switch, billing gate, support watch, rollback window, owner signoff, and launch closure.",
+      stageSummary: "Import dry-run now becomes production cutover with sequence, data freeze, access switch, billing, support, rollback, signoff, and closure.",
+      openDecision: "Plan production pilot cutover",
+      guardedDecision: "Plan guarded cutover",
+      holdDecision: "Hold production cutover",
+      repairDecision: "Repair cutover proof",
+      nextOpen: "Plan production pilot cutover and keep sequence, data freeze, access switch, billing, support, rollback, owner signoff, and closure together.",
+      nextGuarded: "Plan guarded cutover while one billing, support, rollback, or signoff lane stays watched.",
+      nextHold: "Hold cutover until import dry-run, support access, billing, and export proof are clear.",
+      nextRepair: "Repair cutover proof before production evidence locker.",
+      axes: [
+        ["Cutover sequence", "launchMoment", 0.76, 5, "Cutover sequence is ordered."],
+        ["Data freeze", "tenantGuard", 0.76, 5, "Data freeze protects source truth."],
+        ["Access switch", "ownerCommand", 0.74, 5, "Access switch has an owner."],
+        ["Billing gate", "sponsorGuard", 0.74, 5, "Billing gate is controlled."],
+        ["Support watch", "supportGuard", 0.76, 5, "Support watch is ready."],
+        ["Rollback window", "rollbackGuard", 0.78, 4, "Rollback window is visible."],
+        ["Owner signoff", "ownerCommand", 0.76, 5, "Owner signoff closes the move."],
+        ["Launch closure", "guardClosure", 0.76, 4, "Cutover plan closes the production pilot runway."],
       ],
     },
   ];
@@ -17410,6 +17605,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCutoverPlanPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantImportDryRunReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportAccessConsoleDraftPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportBoundaryTestPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingGuardContractPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataImportContractPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRolePermissionMatrixPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingAcceptanceScriptPreview(model, autopilot)}",
@@ -23195,6 +23395,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataImportContractPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-data-import-contract");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingGuardContractSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-billing-guard-contract");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingGuardContract(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-billing-guard-contract", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingGuardContractPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-billing-guard-contract");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportBoundaryTestSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "audit-export-boundary-test");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportBoundaryTest(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "audit-export-boundary-test", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportBoundaryTestPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "audit-export-boundary-test");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSupportAccessConsoleDraftSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "support-access-console-draft");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSupportAccessConsoleDraft(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "support-access-console-draft", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportAccessConsoleDraftPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "support-access-console-draft");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantImportDryRunReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-import-dry-run-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantImportDryRunReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-import-dry-run-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantImportDryRunReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-import-dry-run-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCutoverPlanSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-pilot-cutover-plan");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCutoverPlan(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-pilot-cutover-plan", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCutoverPlanPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-pilot-cutover-plan");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -88759,9 +89019,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v850", "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Guard Contract", "Define billing guard contracts for plans, seats, renewal state, payment proof, access holds, and audit receipts."],
-        ["v851", "First Pilot Expansion Rollout Reuse Market Pilot Audit Export Boundary Test", "Test audit export boundaries for tenant, role, date range, redaction, proof lock, and download receipt."],
-        ["v852", "First Pilot Expansion Rollout Reuse Market Pilot Support Access Console Draft", "Draft support access controls for tenant-scoped help, impersonation limits, approval, audit, expiry, and rollback."],
+        ["v855", "First Pilot Expansion Rollout Reuse Market Pilot Production Evidence Locker", "Lock cutover proof, screenshots, imports, billing, support, rollback, and owner signoff into a customer-safe evidence locker."],
+        ["v856", "First Pilot Expansion Rollout Reuse Market Pilot Billing Activation Drill", "Dry-run paid activation with plan, seat, payment, invoice, access hold, renewal, and rollback checks."],
+        ["v857", "First Pilot Expansion Rollout Reuse Market Pilot Customer Go-Live Readiness Review", "Review sponsor, users, support, import proof, billing guard, audit exports, rollback, and first-week success rhythm before live pilot."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",
