@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v864";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Launch Readiness Map";
+  const BUILD_VERSION = "v869";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Evidence Storage Backend Contract";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=864.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=864.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=869.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=869.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -2375,6 +2375,201 @@
         ["Rollback route", "rollbackGuard", 0.78, 4, "Rollback route exists for every tenant."],
         ["Learning boundary", "tenantGuard", 0.76, 5, "Learning boundary protects customers."],
         ["Launch council", "guardClosure", 0.72, 6, "Launch council can decide go, hold, or repair."],
+      ],
+    },
+    {
+      key: "broader-market-pilot-plan",
+      version: "v865",
+      number: 865,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Broader Market Pilot Plan",
+      shortLabel: "Broader Market Pilot Plan",
+      phase: "First pilot expansion rollout reuse market pilot broader market pilot plan",
+      track: "v865 first pilot expansion rollout reuse market pilot broader market pilot plan",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-broader-market-pilot-plan",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-broader-market-pilot-plan",
+      idSuffix: "BROADER-MARKET-PILOT-PLAN",
+      scoreKey: "broaderMarketPilotPlanScore",
+      decisionKey: "broaderMarketPilotPlanDecision",
+      stateKey: "broaderMarketPilotPlanState",
+      lineKey: "broaderMarketPilotPlanLine",
+      primarySignal: "Pilot broader market pilot plan",
+      primaryNote: "Chooses target segments, pilot capacity, pricing guard, onboarding proof, support route, learning boundary, and rollback limits before adding more customers.",
+      summary: "Plan the broader market pilot with target segments, pilot capacity, pricing guard, onboarding proof, support route, learning boundary, and rollback limits.",
+      trackSummary: "Multi-customer launch readiness now becomes one broader market pilot plan across segments, capacity, pricing, onboarding, support, learning boundary, and rollback limits.",
+      stageSummary: "Multi-customer readiness now becomes broader pilot plan with segments, capacity, pricing, onboarding, support, learning, and rollback limits.",
+      openDecision: "Open broader market pilot",
+      guardedDecision: "Open guarded market pilot",
+      holdDecision: "Hold broader pilot",
+      repairDecision: "Repair market pilot plan",
+      nextOpen: "Open the broader market pilot plan and keep target segment, capacity, pricing guard, onboarding proof, support route, learning boundary, and rollback limits together.",
+      nextGuarded: "Open a guarded broader pilot while one segment, pricing, support, or rollback lane stays watched.",
+      nextHold: "Hold broader market pilot until segment fit, pilot capacity, pricing guard, and rollback limits are clear.",
+      nextRepair: "Repair broader market pilot plan before customer success rhythm.",
+      axes: [
+        ["Target segment", "launchMoment", 0.72, 6, "Target segment is narrow enough to learn."],
+        ["Pilot capacity", "ownerCommand", 0.72, 6, "Pilot capacity is honest."],
+        ["Pricing guard", "sponsorGuard", 0.72, 5, "Pricing guard avoids surprise commitments."],
+        ["Onboarding proof", "proofGuard", 0.74, 5, "Onboarding proof is repeatable."],
+        ["Support route", "supportGuard", 0.74, 5, "Support route is ready for more customers."],
+        ["Learning boundary", "tenantGuard", 0.76, 5, "Learning boundary stays tenant-safe."],
+        ["Rollback limits", "rollbackGuard", 0.76, 5, "Rollback limits are explicit."],
+        ["Pilot go rule", "guardClosure", 0.72, 6, "Go rule closes the plan."],
+      ],
+    },
+    {
+      key: "customer-success-operating-rhythm",
+      version: "v866",
+      number: 866,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Operating Rhythm",
+      shortLabel: "Customer Success Operating Rhythm",
+      phase: "First pilot expansion rollout reuse market pilot customer success operating rhythm",
+      track: "v866 first pilot expansion rollout reuse market pilot customer success operating rhythm",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-operating-rhythm",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-operating-rhythm",
+      idSuffix: "CUSTOMER-SUCCESS-OPERATING-RHYTHM",
+      scoreKey: "customerSuccessOperatingRhythmScore",
+      decisionKey: "customerSuccessOperatingRhythmDecision",
+      stateKey: "customerSuccessOperatingRhythmState",
+      lineKey: "customerSuccessOperatingRhythmLine",
+      primarySignal: "Pilot customer success operating rhythm",
+      primaryNote: "Turns pilot success into a weekly rhythm across adoption watch, support pulse, value proof, renewal owner, sponsor check, learning review, and risk repair.",
+      summary: "Turn pilot success into a weekly customer success rhythm with adoption watch, support pulse, value proof, renewal owner, sponsor check, learning review, and risk repair.",
+      trackSummary: "Broader market pilot plans now become one customer success operating rhythm across adoption, support, value, renewal, sponsor check, learning, and risk repair.",
+      stageSummary: "Broader pilot plan now becomes customer success rhythm with adoption, support, value, renewal, sponsor, learning, and repair loops.",
+      openDecision: "Start customer success rhythm",
+      guardedDecision: "Start guarded success rhythm",
+      holdDecision: "Hold success rhythm",
+      repairDecision: "Repair success rhythm",
+      nextOpen: "Start the success rhythm and keep adoption watch, support pulse, value proof, renewal owner, sponsor check, learning review, and risk repair together.",
+      nextGuarded: "Start guarded success rhythm while one adoption, support, renewal, or sponsor lane matures.",
+      nextHold: "Hold success rhythm until adoption watch, support pulse, value proof, and renewal owner are visible.",
+      nextRepair: "Repair customer success rhythm before tenant launch automation.",
+      axes: [
+        ["Adoption watch", "launchMoment", 0.72, 6, "Adoption watch is visible."],
+        ["Support pulse", "supportGuard", 0.74, 5, "Support pulse is calm."],
+        ["Value proof", "proofGuard", 0.74, 5, "Value proof is refreshed weekly."],
+        ["Renewal owner", "ownerCommand", 0.72, 6, "Renewal owner is named."],
+        ["Sponsor check", "sponsorGuard", 0.72, 5, "Sponsor check stays scheduled."],
+        ["Learning review", "tenantGuard", 0.74, 5, "Learning review respects tenant limits."],
+        ["Risk repair", "reviewGuard", 0.72, 6, "Risk repair is not postponed."],
+        ["Weekly close", "guardClosure", 0.72, 6, "Weekly close writes the receipt."],
+      ],
+    },
+    {
+      key: "tenant-launch-automation-backlog",
+      version: "v867",
+      number: 867,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Launch Automation Backlog",
+      shortLabel: "Tenant Launch Automation Backlog",
+      phase: "First pilot expansion rollout reuse market pilot tenant launch automation backlog",
+      track: "v867 first pilot expansion rollout reuse market pilot tenant launch automation backlog",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-launch-automation-backlog",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-launch-automation-backlog",
+      idSuffix: "TENANT-LAUNCH-AUTOMATION-BACKLOG",
+      scoreKey: "tenantLaunchAutomationBacklogScore",
+      decisionKey: "tenantLaunchAutomationBacklogDecision",
+      stateKey: "tenantLaunchAutomationBacklogState",
+      lineKey: "tenantLaunchAutomationBacklogLine",
+      primarySignal: "Pilot tenant launch automation backlog",
+      primaryNote: "Prioritizes tenant launch automation for invites, imports, billing locks, support notices, evidence export, rollback checks, audit receipts, and launch completion.",
+      summary: "Prioritize tenant launch automation for invites, imports, billing locks, support notices, evidence export, rollback checks, audit receipts, and launch completion.",
+      trackSummary: "Customer success rhythms now become one tenant launch automation backlog across invites, imports, billing locks, support notices, evidence export, rollback checks, audit receipts, and launch completion.",
+      stageSummary: "Customer success rhythm now becomes tenant launch automation with invites, imports, billing, support, exports, rollback, audit, and completion.",
+      openDecision: "Open automation backlog",
+      guardedDecision: "Open guarded automation backlog",
+      holdDecision: "Hold automation backlog",
+      repairDecision: "Repair automation backlog",
+      nextOpen: "Open tenant launch automation and keep invites, imports, billing locks, support notices, evidence export, rollback checks, audit receipts, and completion together.",
+      nextGuarded: "Open guarded automation while one invite, import, billing, or rollback lane stays manual.",
+      nextHold: "Hold automation until invites, imports, billing locks, and audit receipts are safe.",
+      nextRepair: "Repair tenant launch automation before billing entitlement enforcement.",
+      axes: [
+        ["Invites", "ownerCommand", 0.72, 6, "Invites can be sent safely."],
+        ["Imports", "proofGuard", 0.74, 5, "Imports have source proof."],
+        ["Billing locks", "sponsorGuard", 0.72, 5, "Billing locks prevent surprise charges."],
+        ["Support notices", "supportGuard", 0.74, 5, "Support notices are prepared."],
+        ["Evidence export", "proofGuard", 0.74, 5, "Evidence export is repeatable."],
+        ["Rollback checks", "rollbackGuard", 0.76, 5, "Rollback checks are automated or assigned."],
+        ["Audit receipts", "tenantGuard", 0.76, 5, "Audit receipts keep tenant boundaries clear."],
+        ["Launch completion", "guardClosure", 0.72, 6, "Launch completion has a receipt."],
+      ],
+    },
+    {
+      key: "billing-entitlement-enforcement-map",
+      version: "v868",
+      number: 868,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Billing Entitlement Enforcement Map",
+      shortLabel: "Billing Entitlement Enforcement Map",
+      phase: "First pilot expansion rollout reuse market pilot billing entitlement enforcement map",
+      track: "v868 first pilot expansion rollout reuse market pilot billing entitlement enforcement map",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-billing-entitlement-enforcement-map",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-billing-entitlement-enforcement-map",
+      idSuffix: "BILLING-ENTITLEMENT-ENFORCEMENT-MAP",
+      scoreKey: "billingEntitlementEnforcementScore",
+      decisionKey: "billingEntitlementEnforcementDecision",
+      stateKey: "billingEntitlementEnforcementState",
+      lineKey: "billingEntitlementEnforcementLine",
+      primarySignal: "Pilot billing entitlement enforcement map",
+      primaryNote: "Maps seat limits, role gates, billing state, downgrade route, exception approval, audit receipt, tenant notice, and support fallback before launch automation widens.",
+      summary: "Map billing entitlement enforcement with seat limits, role gates, billing state, downgrade route, exception approval, audit receipt, tenant notice, and support fallback.",
+      trackSummary: "Tenant launch automation backlogs now become one billing entitlement enforcement map across seats, roles, billing, downgrade, exception approval, audit receipt, tenant notice, and support fallback.",
+      stageSummary: "Tenant launch automation now becomes billing entitlement map with seats, roles, billing state, downgrade, exceptions, audit, notice, and support fallback.",
+      openDecision: "Open entitlement enforcement",
+      guardedDecision: "Open guarded entitlement map",
+      holdDecision: "Hold entitlement enforcement",
+      repairDecision: "Repair entitlement enforcement",
+      nextOpen: "Open billing entitlement enforcement and keep seat limits, role gates, billing state, downgrade route, exception approval, audit receipt, tenant notice, and support fallback together.",
+      nextGuarded: "Open guarded entitlement map while one billing, role, downgrade, or exception lane stays watched.",
+      nextHold: "Hold enforcement until seat limits, role gates, billing state, and support fallback are clear.",
+      nextRepair: "Repair entitlement enforcement before evidence storage backend contract.",
+      axes: [
+        ["Seat limits", "sponsorGuard", 0.72, 5, "Seat limits match the plan."],
+        ["Role gates", "tenantGuard", 0.76, 5, "Role gates enforce access cleanly."],
+        ["Billing state", "proofGuard", 0.72, 6, "Billing state is readable."],
+        ["Downgrade route", "rollbackGuard", 0.74, 5, "Downgrade route is safe."],
+        ["Exception approval", "ownerCommand", 0.72, 6, "Exceptions need approval."],
+        ["Audit receipt", "proofGuard", 0.76, 5, "Audit receipt records enforcement."],
+        ["Tenant notice", "supportGuard", 0.72, 5, "Tenant notice avoids surprise."],
+        ["Support fallback", "guardClosure", 0.72, 6, "Support fallback closes the map."],
+      ],
+    },
+    {
+      key: "evidence-storage-backend-contract",
+      version: "v869",
+      number: 869,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Evidence Storage Backend Contract",
+      shortLabel: "Evidence Storage Backend Contract",
+      phase: "First pilot expansion rollout reuse market pilot evidence storage backend contract",
+      track: "v869 first pilot expansion rollout reuse market pilot evidence storage backend contract",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-evidence-storage-backend-contract",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-evidence-storage-backend-contract",
+      idSuffix: "EVIDENCE-STORAGE-BACKEND-CONTRACT",
+      scoreKey: "evidenceStorageBackendContractScore",
+      decisionKey: "evidenceStorageBackendContractDecision",
+      stateKey: "evidenceStorageBackendContractState",
+      lineKey: "evidenceStorageBackendContractLine",
+      primarySignal: "Pilot evidence storage backend contract",
+      primaryNote: "Defines storage paths for proof, exports, audit events, tenant boundary, retention, restore route, access checks, and backend acceptance receipt.",
+      summary: "Define the evidence storage backend contract with proof paths, export paths, audit events, tenant boundary, retention, restore route, access checks, and acceptance receipt.",
+      trackSummary: "Billing entitlement enforcement maps now become one evidence storage backend contract across proof paths, exports, audit events, tenant boundary, retention, restore, access checks, and acceptance receipt.",
+      stageSummary: "Billing entitlement now becomes evidence storage contract with proof, exports, audit, tenant boundary, retention, restore, access, and acceptance receipt.",
+      openDecision: "Publish storage contract",
+      guardedDecision: "Publish guarded storage contract",
+      holdDecision: "Hold storage contract",
+      repairDecision: "Repair storage contract",
+      nextOpen: "Publish the evidence storage contract and keep proof paths, export paths, audit events, tenant boundary, retention, restore route, access checks, and acceptance receipt together.",
+      nextGuarded: "Publish guarded storage contract while one proof, export, retention, or access lane stays watched.",
+      nextHold: "Hold storage contract until proof paths, tenant boundary, restore route, and access checks are explicit.",
+      nextRepair: "Repair storage contract before launch operations control tower.",
+      axes: [
+        ["Proof paths", "proofGuard", 0.76, 5, "Proof paths are named."],
+        ["Export paths", "proofGuard", 0.74, 5, "Export paths are safe."],
+        ["Audit events", "tenantGuard", 0.76, 5, "Audit events are tenant-bound."],
+        ["Tenant boundary", "tenantGuard", 0.78, 4, "Tenant boundary is enforced."],
+        ["Retention", "reviewGuard", 0.72, 6, "Retention rule is readable."],
+        ["Restore route", "rollbackGuard", 0.76, 5, "Restore route is documented."],
+        ["Access checks", "ownerCommand", 0.74, 5, "Access checks are assigned."],
+        ["Acceptance receipt", "guardClosure", 0.72, 6, "Acceptance receipt closes the backend contract."],
       ],
     },
   ];
@@ -17995,6 +18190,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceStorageBackendContractPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingEntitlementEnforcementMapPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantLaunchAutomationBacklogPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessOperatingRhythmPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBroaderMarketPilotPlanPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerLaunchReadinessMapPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotLearningReleaseGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRenewalSignalBoardPreview(model, autopilot)}",
@@ -23976,7 +24176,66 @@ const state = {
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerLaunchReadinessMapPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-customer-launch-readiness-map");
   }
-  function renderCommandReleaseRailPreview(model, autopilot) {
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBroaderMarketPilotPlanSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "broader-market-pilot-plan");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBroaderMarketPilotPlan(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "broader-market-pilot-plan", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBroaderMarketPilotPlanPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "broader-market-pilot-plan");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessOperatingRhythmSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-success-operating-rhythm");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessOperatingRhythm(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-success-operating-rhythm", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessOperatingRhythmPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-success-operating-rhythm");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantLaunchAutomationBacklogSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-launch-automation-backlog");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantLaunchAutomationBacklog(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-launch-automation-backlog", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantLaunchAutomationBacklogPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-launch-automation-backlog");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBillingEntitlementEnforcementMapSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "billing-entitlement-enforcement-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBillingEntitlementEnforcementMap(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "billing-entitlement-enforcement-map", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingEntitlementEnforcementMapPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "billing-entitlement-enforcement-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceStorageBackendContractSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "evidence-storage-backend-contract");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceStorageBackendContract(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "evidence-storage-backend-contract", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceStorageBackendContractPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "evidence-storage-backend-contract");
+  }  function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const buildNumber = getBuildNumber();
     const activeRunway = getActivePilotRunwayReleases().slice(-3);
@@ -89539,9 +89798,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v865", "First Pilot Expansion Rollout Reuse Market Pilot Broader Market Pilot Plan", "Plan the broader market pilot with target segments, pilot capacity, pricing guard, onboarding proof, support route, learning boundary, and rollback limits."],
-        ["v866", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Operating Rhythm", "Turn pilot success into a weekly customer success rhythm with adoption watch, support pulse, value proof, renewal owner, and learning review."],
-        ["v867", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Launch Automation Backlog", "Prioritize tenant launch automation for invites, imports, billing locks, support notices, evidence export, rollback checks, and audit receipts."],
+        ["v870", "First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Control Tower", "Coordinate launch operations with release owner, customer queue, support queue, billing queue, incident watch, evidence flow, rollback state, and daily decision."],
+        ["v871", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Security Review Pack", "Prepare tenant security review with access controls, data boundary, audit trails, evidence retention, admin roles, support access, and restore proof."],
+        ["v872", "First Pilot Expansion Rollout Reuse Market Pilot Backend Pilot Cutover Checklist", "Close backend pilot cutover with environment readiness, data migration, access gates, billing entitlement, evidence storage, support route, rollback proof, and acceptance receipt."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",

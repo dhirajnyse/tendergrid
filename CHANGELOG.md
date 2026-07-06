@@ -1,5 +1,139 @@
 # Changelog
 
+## v869 - First Pilot Expansion Rollout Reuse Market Pilot Evidence Storage Backend Contract
+
+### Changes Made
+- Activated the evidence storage backend contract as the current build.
+- Added proof paths, export paths, audit events, tenant boundary, retention, restore route, access checks, and backend acceptance receipt to the pilot reuse runway.
+- Updated the Build Phase next queue to v870-v872 for launch operations, tenant security review, and backend pilot cutover work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v869.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects.
+- Passed: scoped side-rail click QA for Autopilot, Reports, Build Phase, and Command with no console errors.
+- Passed: mobile Command, Build Phase, and Autopilot QA at 390px with zero body overflow.
+- Passed: visual Build Phase QA with v869 active, storage contract visible, and v870-v872 next queue present.
+
+### Known Risks
+- Evidence storage is still a backend contract model; real proof storage, export delivery, audit event persistence, retention enforcement, restore tooling, and access checks still need production backend implementation.
+
+## v868 - First Pilot Expansion Rollout Reuse Market Pilot Billing Entitlement Enforcement Map
+
+### Changes Made
+- Activated the billing entitlement enforcement map as the current build.
+- Added seat limits, role gates, billing state, downgrade route, exception approval, audit receipt, tenant notice, and support fallback to the pilot reuse runway.
+- Updated the Build Phase next queue to v869-v871 for evidence storage, launch operations, and tenant security review work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v868.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Entitlement enforcement is modeled in the static workspace; real seat limits, role gates, billing state changes, downgrades, exception approvals, and tenant notices need backend enforcement.
+
+## v867 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Launch Automation Backlog
+
+### Changes Made
+- Activated the tenant launch automation backlog as the current build.
+- Added invites, imports, billing locks, support notices, evidence export, rollback checks, audit receipts, and launch completion to the pilot reuse runway.
+- Updated the Build Phase next queue to v868-v870 for billing entitlement, evidence storage, and launch operations work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v867.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Tenant launch automation is still a prioritized backlog; live invites, imports, billing locks, support notifications, evidence export, rollback checks, and audit receipts need service implementation.
+
+## v866 - First Pilot Expansion Rollout Reuse Market Pilot Customer Success Operating Rhythm
+
+### Changes Made
+- Activated the customer success operating rhythm as the current build.
+- Added adoption watch, support pulse, value proof, renewal owner, sponsor check, learning review, risk repair, and weekly close to the pilot reuse runway.
+- Updated the Build Phase next queue to v867-v869 for tenant launch automation, billing entitlement, and evidence storage work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v866.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Customer success rhythm is static until live adoption telemetry, support signals, value proof, renewal ownership, sponsor feedback, and learning review receipts are persisted.
+
+## v865 - First Pilot Expansion Rollout Reuse Market Pilot Broader Market Pilot Plan
+
+### Changes Made
+- Activated the broader market pilot plan as the current build.
+- Added target segment, pilot capacity, pricing guard, onboarding proof, support route, learning boundary, rollback limits, and pilot go rule to the pilot reuse runway.
+- Updated the Build Phase next queue to v866-v868 for customer success rhythm, tenant launch automation, and billing entitlement work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v865.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Broader market pilot planning remains modeled in the static workspace; real segment selection, pilot capacity tracking, pricing controls, onboarding proof, support routing, and rollback limits still need live operational data.
+
 ## v864 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Launch Readiness Map
 
 ### Changes Made
