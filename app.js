@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v819";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Bridge";
+  const BUILD_VERSION = "v824";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Readiness Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=819.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=819.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=824.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=824.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -621,7 +621,203 @@
         ["First tenant cutover", "launchMoment", 0.68, 7, "First tenant cutover path is calm and bounded."],
         ["Bridge closure", "guardClosure", 0.72, 4, "The bridge closes with owner, proof, and next build route."],
       ],
-    },  ];
+    },
+    {
+      key: "data-migration-rehearsal",
+      version: "v820",
+      number: 820,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Data Migration Rehearsal",
+      shortLabel: "Data Migration Rehearsal",
+      phase: "First pilot expansion rollout reuse market pilot data migration rehearsal",
+      track: "v820 first pilot expansion rollout reuse market pilot data migration rehearsal",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-data-migration-rehearsal",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-data-migration-rehearsal",
+      idSuffix: "DATA-MIGRATION-REHEARSAL",
+      scoreKey: "migrationScore",
+      decisionKey: "migrationDecision",
+      stateKey: "migrationState",
+      lineKey: "migrationLine",
+      primarySignal: "Pilot data migration rehearsal",
+      primaryNote: "Turns the backend bridge into a dry-run migration with import mapping, rollback, and audit readback.",
+      summary: "Rehearse the first production data migration with source mapping, import proof, validation counts, rollback packet, audit readback, and owner signoff.",
+      trackSummary: "Production backend bridges now become one data migration rehearsal across source mapping, import proof, validation counts, rollback packet, audit readback, owner signoff, rehearsal timing, and migration closure.",
+      stageSummary: "Backend bridge now rehearses migration with mapping, import proof, counts, rollback, audit readback, owner signoff, timing, and closure.",
+      openDecision: "Run migration rehearsal",
+      guardedDecision: "Run guarded migration rehearsal",
+      holdDecision: "Hold migration rehearsal",
+      repairDecision: "Repair migration proof",
+      nextOpen: "Run the migration rehearsal and keep mapping, import proof, validation counts, rollback packet, audit readback, and owner signoff together.",
+      nextGuarded: "Run a guarded migration rehearsal while one import, audit, or rollback lane remains staged.",
+      nextHold: "Hold migration rehearsal until mapping, counts, rollback, and audit readback are clear.",
+      nextRepair: "Repair migration proof before auth boundary testing opens.",
+      axes: [
+        ["Source mapping", "proofGuard", 0.76, 5, "Each workbook source has a target table, field, and owner."],
+        ["Import proof", "launchMoment", 0.7, 7, "The dry-run import can be repeated with visible evidence."],
+        ["Validation counts", "reviewGuard", 0.72, 6, "Record counts reconcile before any tenant data moves."],
+        ["Rollback packet", "rollbackGuard", 0.78, 4, "Rollback files and restore rules are named."],
+        ["Audit readback", "tenantGuard", 0.74, 5, "Audit events can be read after rehearsal."],
+        ["Owner signoff", "ownerCommand", 0.72, 5, "One accountable owner accepts the rehearsal result."],
+        ["Rehearsal timing", "supportGuard", 0.68, 6, "Timing and support load are visible before staging."],
+        ["Migration closure", "guardClosure", 0.74, 4, "The rehearsal closes with proof, exceptions, and next gate."],
+      ],
+    },
+    {
+      key: "auth-boundary-test",
+      version: "v821",
+      number: 821,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Auth Boundary Test",
+      shortLabel: "Auth Boundary Test",
+      phase: "First pilot expansion rollout reuse market pilot auth boundary test",
+      track: "v821 first pilot expansion rollout reuse market pilot auth boundary test",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-auth-boundary-test",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-auth-boundary-test",
+      idSuffix: "AUTH-BOUNDARY-TEST",
+      scoreKey: "authBoundaryScore",
+      decisionKey: "authBoundaryDecision",
+      stateKey: "authBoundaryState",
+      lineKey: "authBoundaryLine",
+      primarySignal: "Pilot auth boundary test",
+      primaryNote: "Tests tenant, admin, role, session, commercial-vault, and denied-access boundaries before live users.",
+      summary: "Test roles, tenant access, admin controls, session boundaries, commercial-vault visibility, denied routes, and audit evidence before live tenants.",
+      trackSummary: "Migration rehearsals now become one auth boundary test across tenant access, admin controls, role routes, session boundary, commercial vault, denied audit, support override, and boundary closure.",
+      stageSummary: "Migration rehearsal now tests auth boundaries with tenant access, admin controls, role routes, sessions, vault rules, denied audit, support override, and closure.",
+      openDecision: "Run auth boundary test",
+      guardedDecision: "Run guarded auth test",
+      holdDecision: "Hold auth boundary test",
+      repairDecision: "Repair auth proof",
+      nextOpen: "Run auth boundary tests and keep tenant, admin, role, session, vault, denied audit, and support override proof together.",
+      nextGuarded: "Run guarded auth tests while one route or denied-audit lane needs proof.",
+      nextHold: "Hold auth boundary testing until migration proof and tenant routes are clear.",
+      nextRepair: "Repair auth proof before audit storage proof is trusted.",
+      axes: [
+        ["Tenant access", "tenantGuard", 0.78, 5, "Tenant data stays isolated by account."],
+        ["Admin controls", "ownerCommand", 0.72, 6, "Admin powers are explicit and testable."],
+        ["Role routes", "tenantGuard", 0.76, 5, "Roles open only the intended rooms."],
+        ["Session boundary", "supportGuard", 0.7, 6, "Session expiry and retry behavior are visible."],
+        ["Commercial vault", "proofGuard", 0.74, 5, "Commercial fields remain protected."],
+        ["Denied audit", "rollbackGuard", 0.72, 6, "Denied attempts create readable audit proof."],
+        ["Support override", "reviewGuard", 0.66, 7, "Support override rules stay limited and reviewable."],
+        ["Boundary closure", "guardClosure", 0.74, 4, "The boundary test closes with pass, hold, and repair notes."],
+      ],
+    },
+    {
+      key: "audit-storage-proof",
+      version: "v822",
+      number: 822,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Audit Storage Proof",
+      shortLabel: "Audit Storage Proof",
+      phase: "First pilot expansion rollout reuse market pilot audit storage proof",
+      track: "v822 first pilot expansion rollout reuse market pilot audit storage proof",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-audit-storage-proof",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-audit-storage-proof",
+      idSuffix: "AUDIT-STORAGE-PROOF",
+      scoreKey: "auditStorageScore",
+      decisionKey: "auditStorageDecision",
+      stateKey: "auditStorageState",
+      lineKey: "auditStorageLine",
+      primarySignal: "Pilot audit storage proof",
+      primaryNote: "Proves audit events, evidence files, checksums, retention, retrieval, and denied download logs before cutover.",
+      summary: "Prove audit events and evidence storage retrieval with file paths, checksum proof, retention rule, denied-download audit, and export readback.",
+      trackSummary: "Auth boundary tests now become one audit storage proof across audit events, evidence files, checksum proof, retention rule, retrieval test, denied downloads, export readback, and storage closure.",
+      stageSummary: "Auth boundary test now proves audit storage with events, files, checksums, retention, retrieval, denied downloads, export readback, and closure.",
+      openDecision: "Prove audit storage",
+      guardedDecision: "Prove guarded audit storage",
+      holdDecision: "Hold audit storage proof",
+      repairDecision: "Repair storage proof",
+      nextOpen: "Prove audit storage and keep events, files, checksums, retention, retrieval, denied downloads, and export readback together.",
+      nextGuarded: "Prove guarded audit storage while one retention or retrieval lane stays under review.",
+      nextHold: "Hold audit storage proof until auth boundaries, file paths, and readback proof are clear.",
+      nextRepair: "Repair audit storage proof before tenant cutover dry run opens.",
+      axes: [
+        ["Audit events", "tenantGuard", 0.76, 5, "Every sensitive action creates readable audit proof."],
+        ["Evidence files", "proofGuard", 0.74, 6, "Evidence files have a named storage path."],
+        ["Checksum proof", "proofGuard", 0.72, 5, "Stored proof can be verified without guessing."],
+        ["Retention rule", "reviewGuard", 0.7, 6, "Retention and expiry rules are visible."],
+        ["Retrieval test", "launchMoment", 0.68, 7, "A stored proof item can be retrieved and read back."],
+        ["Denied downloads", "rollbackGuard", 0.72, 6, "Denied downloads are blocked and audited."],
+        ["Export readback", "supportGuard", 0.68, 6, "Exported evidence remains readable after storage."],
+        ["Storage closure", "guardClosure", 0.74, 4, "Storage proof closes with exceptions and next cutover gate."],
+      ],
+    },
+    {
+      key: "tenant-cutover-dry-run",
+      version: "v823",
+      number: 823,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Cutover Dry Run",
+      shortLabel: "Tenant Cutover Dry Run",
+      phase: "First pilot expansion rollout reuse market pilot tenant cutover dry run",
+      track: "v823 first pilot expansion rollout reuse market pilot tenant cutover dry run",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-cutover-dry-run",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-cutover-dry-run",
+      idSuffix: "TENANT-CUTOVER-DRY-RUN",
+      scoreKey: "cutoverScore",
+      decisionKey: "cutoverDecision",
+      stateKey: "cutoverState",
+      lineKey: "cutoverLine",
+      primarySignal: "Pilot tenant cutover dry run",
+      primaryNote: "Rehearses first tenant cutover with timing, owners, fallback, support, billing, and confirmation proof.",
+      summary: "Dry-run the first tenant cutover with tenant package, timeline, owner matrix, access checks, billing lock, fallback route, and confirmation receipt.",
+      trackSummary: "Audit storage proofs now become one tenant cutover dry run across tenant package, cutover timeline, owner matrix, access checks, billing lock, fallback route, support watch, and cutover closure.",
+      stageSummary: "Audit storage proof now dry-runs cutover with package, timeline, owners, access checks, billing lock, fallback route, support watch, and closure.",
+      openDecision: "Run cutover dry run",
+      guardedDecision: "Run guarded cutover dry run",
+      holdDecision: "Hold cutover dry run",
+      repairDecision: "Repair cutover proof",
+      nextOpen: "Run tenant cutover dry run and keep tenant package, timeline, owners, access checks, billing lock, fallback, and support watch together.",
+      nextGuarded: "Run a guarded cutover dry run while one access, billing, or fallback lane stays under review.",
+      nextHold: "Hold cutover dry run until audit storage and access proof are calm.",
+      nextRepair: "Repair cutover proof before the production pilot readiness gate opens.",
+      axes: [
+        ["Tenant package", "proofGuard", 0.74, 6, "The tenant package is named and bounded."],
+        ["Cutover timeline", "reviewGuard", 0.72, 6, "Cutover timing is visible to owners."],
+        ["Owner matrix", "ownerCommand", 0.76, 5, "Each cutover lane has one accountable owner."],
+        ["Access checks", "tenantGuard", 0.76, 5, "Access checks pass before cutover movement."],
+        ["Billing lock", "tenantGuard", 0.7, 6, "Billing and seats are locked for the rehearsal."],
+        ["Fallback route", "rollbackGuard", 0.78, 4, "Fallback route is ready and readable."],
+        ["Support watch", "supportGuard", 0.7, 6, "Support watch is active during the dry run."],
+        ["Cutover closure", "guardClosure", 0.74, 4, "Cutover closes with pass, hold, repair, and next gate."],
+      ],
+    },
+    {
+      key: "production-pilot-readiness-gate",
+      version: "v824",
+      number: 824,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Readiness Gate",
+      shortLabel: "Production Pilot Readiness Gate",
+      phase: "First pilot expansion rollout reuse market pilot production pilot readiness gate",
+      track: "v824 first pilot expansion rollout reuse market pilot production pilot readiness gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-pilot-readiness-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-pilot-readiness-gate",
+      idSuffix: "PRODUCTION-PILOT-READINESS-GATE",
+      scoreKey: "pilotReadinessScore",
+      decisionKey: "pilotReadinessDecision",
+      stateKey: "pilotReadinessState",
+      lineKey: "pilotReadinessLine",
+      primarySignal: "Pilot production readiness gate",
+      primaryNote: "Combines migration, auth, audit storage, cutover, billing, support, rollback, and sponsor go/no-go into one gate.",
+      summary: "Gate the first production pilot with migration proof, auth boundary, audit storage, tenant cutover, billing readiness, support plan, rollback path, and sponsor decision.",
+      trackSummary: "Tenant cutover dry runs now become one production pilot readiness gate across migration proof, auth boundary, audit storage, cutover receipt, billing readiness, support plan, rollback path, and sponsor go/no-go.",
+      stageSummary: "Tenant cutover dry run now becomes one production readiness gate with migration, auth, audit, cutover, billing, support, rollback, and sponsor decision.",
+      openDecision: "Approve production pilot gate",
+      guardedDecision: "Approve guarded pilot gate",
+      holdDecision: "Hold production pilot gate",
+      repairDecision: "Repair pilot readiness proof",
+      nextOpen: "Approve the production pilot readiness gate and keep migration, auth, audit, cutover, billing, support, rollback, and sponsor decision together.",
+      nextGuarded: "Approve a guarded pilot gate while one non-critical proof lane stays under watch.",
+      nextHold: "Hold production pilot until migration, auth, audit, cutover, billing, support, and rollback are clear.",
+      nextRepair: "Repair readiness proof before any live pilot commitment.",
+      axes: [
+        ["Migration proof", "proofGuard", 0.76, 5, "Migration proof has passed rehearsal."],
+        ["Auth boundary", "tenantGuard", 0.78, 5, "Auth and tenant boundaries are safe enough for pilot."],
+        ["Audit storage", "proofGuard", 0.74, 5, "Audit storage and retrieval are proven."],
+        ["Cutover receipt", "launchMoment", 0.72, 6, "Cutover dry-run receipt is complete."],
+        ["Billing readiness", "tenantGuard", 0.7, 6, "Billing and access locks are ready for pilot."],
+        ["Support plan", "supportGuard", 0.72, 5, "Support owner, response, and escalation are visible."],
+        ["Rollback path", "rollbackGuard", 0.78, 4, "Rollback remains a real path, not a hope."],
+        ["Sponsor go/no-go", "sponsorGuard", 0.72, 5, "Sponsor decision is explicit before live pilot starts."],
+      ],
+    },
+  ];
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
   const BILLING_MANAGER_SEAT_PRICE = 15;
@@ -16226,6 +16422,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotReadinessGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantCutoverDryRunPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditStorageProofPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuthBoundaryTestPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotDataMigrationRehearsalPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendBridgePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingAccessReadinessPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchGovernancePackPreview(model, autopilot)}",
@@ -21621,6 +21822,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendBridgePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-backend-bridge");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotDataMigrationRehearsalSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "data-migration-rehearsal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotDataMigrationRehearsal(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "data-migration-rehearsal", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotDataMigrationRehearsalPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "data-migration-rehearsal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuthBoundaryTestSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "auth-boundary-test");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuthBoundaryTest(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "auth-boundary-test", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuthBoundaryTestPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "auth-boundary-test");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuditStorageProofSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "audit-storage-proof");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuditStorageProof(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "audit-storage-proof", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditStorageProofPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "audit-storage-proof");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantCutoverDryRunSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-cutover-dry-run");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantCutoverDryRun(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-cutover-dry-run", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantCutoverDryRunPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-cutover-dry-run");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotReadinessGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-pilot-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotReadinessGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-pilot-readiness-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotReadinessGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-pilot-readiness-gate");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -87185,9 +87446,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v820", "First Pilot Expansion Rollout Reuse Market Pilot Data Migration Rehearsal", "Rehearse the first production data migration with rollback, audit, and import proof."],
-        ["v821", "First Pilot Expansion Rollout Reuse Market Pilot Auth Boundary Test", "Test roles, tenant access, admin controls, and session boundaries before live tenants."],
-        ["v822", "First Pilot Expansion Rollout Reuse Market Pilot Audit Storage Proof", "Prove audit events and evidence storage retrieval before production pilot cutover."],
+        ["v825", "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Script", "Turn the readiness gate into the exact customer go-live sequence with owners, proof, and fallback."],
+        ["v826", "First Pilot Expansion Rollout Reuse Market Pilot Day-One Support Watch", "Watch the first production day with access, row movement, incidents, sponsor signal, and support load."],
+        ["v827", "First Pilot Expansion Rollout Reuse Market Pilot Live Outcome Receipt", "Capture the first live outcome receipt with proof, customer response, risk, and learning boundaries."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",

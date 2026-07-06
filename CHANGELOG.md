@@ -1,5 +1,133 @@
 # Changelog
 
+## v824 - First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Readiness Gate
+
+### Changes Made
+- Activated the production pilot readiness gate as the current build.
+- Added one go/no-go gate joining migration proof, auth boundary, audit storage, cutover receipt, billing readiness, support plan, rollback path, and sponsor decision.
+- Updated the Build Phase next queue to v825-v827 for go-live script, day-one support watch, and live outcome receipt.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v824.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop visual QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: mobile Command visual QA with no document or body horizontal overflow.
+
+### Known Risks
+- The readiness gate is still static product proof; real production go/no-go requires live backend, tenant auth, billing, monitoring, rollback, and signed sponsor approval.
+
+## v823 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Cutover Dry Run
+
+### Changes Made
+- Activated tenant cutover dry run during the batch.
+- Added tenant package, cutover timeline, owner matrix, access checks, billing lock, fallback route, support watch, and cutover closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v823.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Cutover proof is modeled for readiness; real tenant migration timing, access validation, support watch, and fallback rehearsal remain implementation work.
+
+## v822 - First Pilot Expansion Rollout Reuse Market Pilot Audit Storage Proof
+
+### Changes Made
+- Activated audit storage proof during the batch.
+- Added audit events, evidence files, checksum proof, retention rule, retrieval test, denied download logs, export readback, and storage closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v822.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Storage and audit retrieval are release-room proof only; live object storage, checksums, retention jobs, and denial logs are not implemented yet.
+
+## v821 - First Pilot Expansion Rollout Reuse Market Pilot Auth Boundary Test
+
+### Changes Made
+- Activated auth boundary test during the batch.
+- Added tenant access, admin controls, role routes, session boundary, commercial vault, denied audit, support override, and boundary closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v821.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Auth boundaries are visible as product proof; real authentication, role enforcement, session handling, and denied-route audit events are not live.
+
+## v820 - First Pilot Expansion Rollout Reuse Market Pilot Data Migration Rehearsal
+
+### Changes Made
+- Activated data migration rehearsal during the batch.
+- Added source mapping, import proof, validation counts, rollback packet, audit readback, owner signoff, rehearsal timing, and migration closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v820.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Migration rehearsal is a static readiness model; real import scripts, database migrations, rollback files, and audit readback remain future backend work.
+
 ## v819 - First Pilot Expansion Rollout Reuse Market Pilot Production Backend Bridge
 
 ### Changes Made
