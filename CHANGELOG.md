@@ -1,5 +1,137 @@
 # Changelog
 
+## v864 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Launch Readiness Map
+
+### Changes Made
+- Activated the multi-customer launch readiness map as the current build.
+- Added tenant isolation, onboarding capacity, support capacity, billing control, evidence export, rollback route, learning boundary, and launch council decision to the pilot reuse runway.
+- Updated the Build Phase next queue to v865-v867 for broader market pilot planning, customer success rhythm, and tenant launch automation work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v864.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects.
+- Passed: scoped side-rail click QA for Autopilot, Reports, Build Phase, and Command with no console errors.
+- Passed: mobile Command, Build Phase, and Autopilot QA at 390px with zero body overflow.
+- Passed: visual Build Phase QA with v864 active, launch map visible, and v865-v867 next queue present.
+
+### Known Risks
+- Multi-customer launch readiness is still modeled in the static workspace; production tenant isolation, onboarding automation, billing control, evidence storage, rollback execution, and launch council approvals still need live backend services.
+
+## v863 - First Pilot Expansion Rollout Reuse Market Pilot First Pilot Learning Release Gate
+
+### Changes Made
+- Activated the first pilot learning release gate as the current build.
+- Added outcome proof, tenant boundary, sponsor consent, support lesson, billing lesson, reusable guidance, private hold, and release receipt to the pilot reuse runway.
+- Updated the Build Phase next queue to v864-v866 for multi-customer readiness, broader market pilot planning, and customer success rhythm work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v863.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- The learning gate is a static release model until pilot outcome proof, customer consent, lesson capture, and reusable guidance approvals are stored with tenant-safe audit history.
+
+## v862 - First Pilot Expansion Rollout Reuse Market Pilot Customer Renewal Signal Board
+
+### Changes Made
+- Activated the customer renewal signal board as the current build.
+- Added renewal signals across usage, proof movement, sponsor sentiment, support pressure, billing state, and success rhythm to the pilot reuse runway.
+- Updated the Build Phase next queue to v863-v865 for learning release, multi-customer launch readiness, and broader market pilot planning work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v862.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Renewal signals are static until live usage, sponsor sentiment, billing status, support tickets, and success rhythm events are collected from production systems.
+
+## v861 - First Pilot Expansion Rollout Reuse Market Pilot Production Support Escalation Map
+
+### Changes Made
+- Activated the production support escalation map as the current build.
+- Added severity, owner, expiry, tenant visibility, audit receipt, and rollback-safe customer notice to the pilot reuse runway.
+- Updated the Build Phase next queue to v862-v864 for renewal signals, learning release, and multi-customer launch readiness work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v861.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Support escalation is modeled as a release map; live severity routing, owner SLAs, tenant-safe notices, audit persistence, and support tool integrations remain backend work.
+
+## v860 - First Pilot Expansion Rollout Reuse Market Pilot First Pilot Outcome Evidence Pack
+
+### Changes Made
+- Activated the first pilot outcome evidence pack as the current build.
+- Added customer value proof, adoption proof, support proof, billing proof, sponsor proof, rollback proof, reusable learning, and private boundary to the pilot reuse runway.
+- Updated the Build Phase next queue to v861-v863 for support escalation, renewal signals, and learning release work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v860.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Outcome evidence remains static until production usage, billing, sponsor proof, support proof, rollback proof, and tenant learning boundaries are backed by persisted services.
+
 ## v859 - First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Rehearsal Receipt
 
 ### Changes Made

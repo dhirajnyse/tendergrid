@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v859";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Rehearsal Receipt";
+  const BUILD_VERSION = "v864";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Launch Readiness Map";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=859.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=859.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=864.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=864.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -2180,6 +2180,201 @@
         ["Support notice", "supportGuard", 0.76, 5, "Support notice is ready."],
         ["Audit note", "proofGuard", 0.76, 5, "Audit note is written."],
         ["Success exit", "guardClosure", 0.74, 5, "Exit rule says when rollback is no longer needed."],
+      ],
+    },
+    {
+      key: "first-pilot-outcome-evidence-pack",
+      version: "v860",
+      number: 860,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Pilot Outcome Evidence Pack",
+      shortLabel: "First Pilot Outcome Evidence Pack",
+      phase: "First pilot expansion rollout reuse market pilot first pilot outcome evidence pack",
+      track: "v860 first pilot expansion rollout reuse market pilot first pilot outcome evidence pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-pilot-outcome-evidence-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-pilot-outcome-evidence-pack",
+      idSuffix: "FIRST-PILOT-OUTCOME-EVIDENCE-PACK",
+      scoreKey: "firstPilotOutcomeEvidenceScore",
+      decisionKey: "firstPilotOutcomeEvidenceDecision",
+      stateKey: "firstPilotOutcomeEvidenceState",
+      lineKey: "firstPilotOutcomeEvidenceLine",
+      primarySignal: "Pilot outcome evidence pack",
+      primaryNote: "Packages week-one usage, value proof, support proof, billing proof, rollback proof, sponsor note, learning boundary, and next decision into one outcome pack.",
+      summary: "Package first pilot outcomes with usage proof, value proof, support proof, billing proof, rollback proof, sponsor note, learning boundary, and next decision.",
+      trackSummary: "Rollback rehearsal receipts now become one outcome evidence pack across usage proof, value proof, support proof, billing proof, rollback proof, sponsor note, learning boundary, and next decision.",
+      stageSummary: "Rollback rehearsal now becomes outcome evidence with usage, value, support, billing, rollback, sponsor, learning, and decision proof.",
+      openDecision: "Publish outcome evidence pack",
+      guardedDecision: "Publish guarded outcome pack",
+      holdDecision: "Hold outcome pack",
+      repairDecision: "Repair outcome proof",
+      nextOpen: "Publish the outcome evidence pack and keep usage, value, support, billing, rollback, sponsor, learning, and next decision together.",
+      nextGuarded: "Publish a guarded outcome pack while one usage, support, billing, or learning lane stays watched.",
+      nextHold: "Hold the outcome pack until usage proof, sponsor note, rollback proof, and learning boundary are clear.",
+      nextRepair: "Repair outcome proof before support escalation mapping.",
+      axes: [
+        ["Usage proof", "launchMoment", 0.74, 5, "Week-one usage can be read back."],
+        ["Value proof", "sponsorGuard", 0.72, 6, "First value is visible."],
+        ["Support proof", "supportGuard", 0.76, 5, "Support proof is calm."],
+        ["Billing proof", "proofGuard", 0.72, 5, "Billing state has proof."],
+        ["Rollback proof", "rollbackGuard", 0.78, 4, "Rollback proof stays attached."],
+        ["Sponsor note", "sponsorGuard", 0.72, 5, "Sponsor note is captured."],
+        ["Learning boundary", "tenantGuard", 0.74, 5, "Learning boundary is tenant-safe."],
+        ["Next decision", "guardClosure", 0.72, 6, "Next decision closes the pack."],
+      ],
+    },
+    {
+      key: "production-support-escalation-map",
+      version: "v861",
+      number: 861,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Support Escalation Map",
+      shortLabel: "Production Support Escalation Map",
+      phase: "First pilot expansion rollout reuse market pilot production support escalation map",
+      track: "v861 first pilot expansion rollout reuse market pilot production support escalation map",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-support-escalation-map",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-support-escalation-map",
+      idSuffix: "PRODUCTION-SUPPORT-ESCALATION-MAP",
+      scoreKey: "productionSupportEscalationScore",
+      decisionKey: "productionSupportEscalationDecision",
+      stateKey: "productionSupportEscalationState",
+      lineKey: "productionSupportEscalationLine",
+      primarySignal: "Pilot support escalation map",
+      primaryNote: "Maps severity, support owner, response clock, customer notice, audit receipt, billing hold, data guard, and rollback-safe support route.",
+      summary: "Map production support escalation with severity, owner, response clock, customer notice, audit receipt, billing hold, data guard, and rollback-safe route.",
+      trackSummary: "Outcome evidence packs now become one production support escalation map across severity, owner, response clock, customer notice, audit receipt, billing hold, data guard, and rollback-safe route.",
+      stageSummary: "Outcome evidence now becomes support escalation with severity, owner, clock, notice, audit, billing, data guard, and rollback route.",
+      openDecision: "Publish support escalation map",
+      guardedDecision: "Publish guarded support map",
+      holdDecision: "Hold support map",
+      repairDecision: "Repair escalation route",
+      nextOpen: "Publish support escalation and keep severity, owner, response clock, customer notice, audit receipt, billing hold, data guard, and rollback route together.",
+      nextGuarded: "Publish guarded escalation while one response, notice, billing, or data lane stays watched.",
+      nextHold: "Hold support map until owner, response clock, customer notice, and rollback route are clear.",
+      nextRepair: "Repair support route before renewal signal review.",
+      axes: [
+        ["Severity", "supportGuard", 0.74, 5, "Severity levels are clear."],
+        ["Support owner", "ownerCommand", 0.76, 5, "Support owner is named."],
+        ["Response clock", "reviewGuard", 0.72, 5, "Response clock is visible."],
+        ["Customer notice", "sponsorGuard", 0.72, 5, "Customer notice is ready."],
+        ["Audit receipt", "proofGuard", 0.76, 5, "Audit receipt is written."],
+        ["Billing hold", "tenantGuard", 0.7, 6, "Billing hold avoids surprise changes."],
+        ["Data guard", "tenantGuard", 0.76, 5, "Data guard protects tenant records."],
+        ["Rollback-safe route", "rollbackGuard", 0.78, 4, "Support route can trigger rollback safely."],
+      ],
+    },
+    {
+      key: "customer-renewal-signal-board",
+      version: "v862",
+      number: 862,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Renewal Signal Board",
+      shortLabel: "Customer Renewal Signal Board",
+      phase: "First pilot expansion rollout reuse market pilot customer renewal signal board",
+      track: "v862 first pilot expansion rollout reuse market pilot customer renewal signal board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-renewal-signal-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-renewal-signal-board",
+      idSuffix: "CUSTOMER-RENEWAL-SIGNAL-BOARD",
+      scoreKey: "customerRenewalSignalScore",
+      decisionKey: "customerRenewalSignalDecision",
+      stateKey: "customerRenewalSignalState",
+      lineKey: "customerRenewalSignalLine",
+      primarySignal: "Pilot renewal signal board",
+      primaryNote: "Reads usage, sponsor sentiment, value proof, support pressure, billing state, expansion cue, proof repair, and renewal ask readiness before the pilot ends.",
+      summary: "Track renewal signals with usage trend, sponsor sentiment, value proof, support pressure, billing state, expansion cue, proof repair, and renewal ask readiness.",
+      trackSummary: "Support escalation maps now become one customer renewal signal board across usage trend, sponsor sentiment, value proof, support pressure, billing state, expansion cue, proof repair, and renewal ask readiness.",
+      stageSummary: "Support escalation now becomes renewal signals with usage, sponsor, value, support, billing, expansion, proof repair, and renewal ask.",
+      openDecision: "Open renewal signal board",
+      guardedDecision: "Open guarded renewal board",
+      holdDecision: "Hold renewal board",
+      repairDecision: "Repair renewal proof",
+      nextOpen: "Open renewal signals and keep usage trend, sponsor sentiment, value proof, support pressure, billing state, expansion cue, proof repair, and renewal ask together.",
+      nextGuarded: "Open guarded renewal while one usage, sponsor, billing, or support lane matures.",
+      nextHold: "Hold renewal ask until value proof, support calm, billing state, and sponsor sentiment are readable.",
+      nextRepair: "Repair renewal proof before learning release gate.",
+      axes: [
+        ["Usage trend", "launchMoment", 0.72, 6, "Usage trend is visible."],
+        ["Sponsor sentiment", "sponsorGuard", 0.72, 6, "Sponsor sentiment is known."],
+        ["Value proof", "proofGuard", 0.74, 5, "Value proof is attached."],
+        ["Support pressure", "supportGuard", 0.72, 6, "Support pressure is understood."],
+        ["Billing state", "tenantGuard", 0.7, 6, "Billing state is clear."],
+        ["Expansion cue", "reviewGuard", 0.68, 7, "Expansion cue is watched."],
+        ["Proof repair", "proofGuard", 0.72, 5, "Proof repair is owned."],
+        ["Renewal ask", "guardClosure", 0.7, 6, "Renewal ask is ready or held."],
+      ],
+    },
+    {
+      key: "first-pilot-learning-release-gate",
+      version: "v863",
+      number: 863,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Pilot Learning Release Gate",
+      shortLabel: "First Pilot Learning Release Gate",
+      phase: "First pilot expansion rollout reuse market pilot first pilot learning release gate",
+      track: "v863 first pilot expansion rollout reuse market pilot first pilot learning release gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-pilot-learning-release-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-pilot-learning-release-gate",
+      idSuffix: "FIRST-PILOT-LEARNING-RELEASE-GATE",
+      scoreKey: "firstPilotLearningReleaseGateScore",
+      decisionKey: "firstPilotLearningReleaseGateDecision",
+      stateKey: "firstPilotLearningReleaseGateState",
+      lineKey: "firstPilotLearningReleaseGateLine",
+      primarySignal: "Pilot learning release gate",
+      primaryNote: "Decides what pilot learning can influence future guidance, what stays tenant-private, what needs sponsor consent, and what waits for more outcome proof.",
+      summary: "Gate first pilot learning with outcome proof, tenant boundary, sponsor consent, support lesson, billing lesson, reusable guidance, private hold, and release receipt.",
+      trackSummary: "Renewal signal boards now become one learning release gate across outcome proof, tenant boundary, sponsor consent, support lesson, billing lesson, reusable guidance, private hold, and release receipt.",
+      stageSummary: "Renewal signals now become learning release gate with outcome proof, boundary, consent, support, billing, reusable guidance, private hold, and receipt.",
+      openDecision: "Release pilot learning",
+      guardedDecision: "Release guarded learning",
+      holdDecision: "Hold learning release",
+      repairDecision: "Repair learning proof",
+      nextOpen: "Release pilot learning and keep outcome proof, tenant boundary, sponsor consent, support lesson, billing lesson, reusable guidance, private hold, and receipt together.",
+      nextGuarded: "Release guarded learning while one proof, consent, billing, or support lane stays watched.",
+      nextHold: "Hold learning release until proof, consent, and tenant boundary are safe enough.",
+      nextRepair: "Repair learning proof before multi-customer launch readiness.",
+      axes: [
+        ["Outcome proof", "proofGuard", 0.76, 5, "Outcome proof is strong."],
+        ["Tenant boundary", "tenantGuard", 0.78, 4, "Tenant boundary is explicit."],
+        ["Sponsor consent", "sponsorGuard", 0.74, 5, "Sponsor consent is recorded."],
+        ["Support lesson", "supportGuard", 0.72, 5, "Support lesson can be reused safely."],
+        ["Billing lesson", "reviewGuard", 0.7, 6, "Billing lesson is bounded."],
+        ["Reusable guidance", "launchMoment", 0.68, 7, "Reusable guidance is narrow."],
+        ["Private hold", "tenantGuard", 0.76, 5, "Private holds stay private."],
+        ["Release receipt", "guardClosure", 0.74, 5, "Release receipt closes the gate."],
+      ],
+    },
+    {
+      key: "multi-customer-launch-readiness-map",
+      version: "v864",
+      number: 864,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Launch Readiness Map",
+      shortLabel: "Multi-Customer Launch Readiness Map",
+      phase: "First pilot expansion rollout reuse market pilot multi-customer launch readiness map",
+      track: "v864 first pilot expansion rollout reuse market pilot multi-customer launch readiness map",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-customer-launch-readiness-map",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-customer-launch-readiness-map",
+      idSuffix: "MULTI-CUSTOMER-LAUNCH-READINESS-MAP",
+      scoreKey: "multiCustomerLaunchReadinessScore",
+      decisionKey: "multiCustomerLaunchReadinessDecision",
+      stateKey: "multiCustomerLaunchReadinessState",
+      lineKey: "multiCustomerLaunchReadinessLine",
+      primarySignal: "Pilot multi-customer launch readiness map",
+      primaryNote: "Maps launch readiness for more customers across tenant isolation, onboarding capacity, support capacity, billing control, evidence export, rollback, learning boundary, and launch council decision.",
+      summary: "Map multi-customer launch readiness with tenant isolation, onboarding capacity, support capacity, billing control, evidence export, rollback route, learning boundary, and launch council decision.",
+      trackSummary: "Learning release gates now become one multi-customer launch readiness map across tenant isolation, onboarding capacity, support capacity, billing control, evidence export, rollback route, learning boundary, and launch council decision.",
+      stageSummary: "Learning release now becomes multi-customer readiness with tenant isolation, onboarding, support, billing, exports, rollback, learning, and council decision.",
+      openDecision: "Open multi-customer readiness",
+      guardedDecision: "Open guarded launch map",
+      holdDecision: "Hold multi-customer launch",
+      repairDecision: "Repair launch readiness",
+      nextOpen: "Open multi-customer readiness and keep tenant isolation, onboarding, support, billing, evidence export, rollback, learning boundary, and launch council together.",
+      nextGuarded: "Open guarded launch map while one tenant, support, billing, or rollback lane stays watched.",
+      nextHold: "Hold multi-customer launch until tenant isolation, support capacity, billing control, and rollback route are proven.",
+      nextRepair: "Repair launch readiness before broader market pilot planning.",
+      axes: [
+        ["Tenant isolation", "tenantGuard", 0.78, 4, "Tenant isolation is non-negotiable."],
+        ["Onboarding capacity", "ownerCommand", 0.72, 6, "Onboarding capacity is named."],
+        ["Support capacity", "supportGuard", 0.74, 6, "Support capacity can absorb more pilots."],
+        ["Billing control", "sponsorGuard", 0.72, 5, "Billing control is clear."],
+        ["Evidence export", "proofGuard", 0.74, 5, "Evidence export is safe."],
+        ["Rollback route", "rollbackGuard", 0.78, 4, "Rollback route exists for every tenant."],
+        ["Learning boundary", "tenantGuard", 0.76, 5, "Learning boundary protects customers."],
+        ["Launch council", "guardClosure", 0.72, 6, "Launch council can decide go, hold, or repair."],
       ],
     },
   ];
@@ -17800,6 +17995,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerLaunchReadinessMapPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotLearningReleaseGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRenewalSignalBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportEscalationMapPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotOutcomeEvidencePackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackRehearsalReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotWeekOneSuccessBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveReadinessReviewPreview(model, autopilot)}",
@@ -23715,6 +23915,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackRehearsalReceiptPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-rollback-rehearsal-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotOutcomeEvidencePackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-pilot-outcome-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotOutcomeEvidencePack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-pilot-outcome-evidence-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotOutcomeEvidencePackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-pilot-outcome-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportEscalationMapSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-support-escalation-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportEscalationMap(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-support-escalation-map", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportEscalationMapPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-support-escalation-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRenewalSignalBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-renewal-signal-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRenewalSignalBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-renewal-signal-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRenewalSignalBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-renewal-signal-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotLearningReleaseGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-pilot-learning-release-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotLearningReleaseGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-pilot-learning-release-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotLearningReleaseGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-pilot-learning-release-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerLaunchReadinessMapSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-customer-launch-readiness-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerLaunchReadinessMap(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-customer-launch-readiness-map", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerLaunchReadinessMapPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-customer-launch-readiness-map");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -89279,9 +89539,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v860", "First Pilot Expansion Rollout Reuse Market Pilot First Pilot Outcome Evidence Pack", "Package first pilot outcomes with usage proof, support proof, billing proof, rollback proof, sponsor note, and learning boundary."],
-        ["v861", "First Pilot Expansion Rollout Reuse Market Pilot Production Support Escalation Map", "Map support escalation with severity, owner, expiry, tenant visibility, audit receipt, and rollback-safe customer notice."],
-        ["v862", "First Pilot Expansion Rollout Reuse Market Pilot Customer Renewal Signal Board", "Track renewal signals from usage, proof movement, sponsor sentiment, support pressure, billing state, and success rhythm."],
+        ["v865", "First Pilot Expansion Rollout Reuse Market Pilot Broader Market Pilot Plan", "Plan the broader market pilot with target segments, pilot capacity, pricing guard, onboarding proof, support route, learning boundary, and rollback limits."],
+        ["v866", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Operating Rhythm", "Turn pilot success into a weekly customer success rhythm with adoption watch, support pulse, value proof, renewal owner, and learning review."],
+        ["v867", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Launch Automation Backlog", "Prioritize tenant launch automation for invites, imports, billing locks, support notices, evidence export, rollback checks, and audit receipts."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",
