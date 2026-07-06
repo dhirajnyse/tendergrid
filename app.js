@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v869";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Evidence Storage Backend Contract";
+  const BUILD_VERSION = "v874";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Launch Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=869.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=869.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=874.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=874.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -2572,7 +2572,201 @@
         ["Acceptance receipt", "guardClosure", 0.72, 6, "Acceptance receipt closes the backend contract."],
       ],
     },
-  ];
+    {
+      key: "launch-operations-control-tower",
+      version: "v870",
+      number: 870,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Control Tower",
+      shortLabel: "Launch Operations Control Tower",
+      phase: "First pilot expansion rollout reuse market pilot launch operations control tower",
+      track: "v870 first pilot expansion rollout reuse market pilot launch operations control tower",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-operations-control-tower",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-operations-control-tower",
+      idSuffix: "LAUNCH-OPERATIONS-CONTROL-TOWER",
+      scoreKey: "launchOperationsControlTowerScore",
+      decisionKey: "launchOperationsControlTowerDecision",
+      stateKey: "launchOperationsControlTowerState",
+      lineKey: "launchOperationsControlTowerLine",
+      primarySignal: "Pilot launch operations control tower",
+      primaryNote: "Coordinates launch operations with release owner, customer queue, support queue, billing queue, incident watch, evidence flow, rollback state, and daily decision.",
+      summary: "Coordinate launch operations with release owner, customer queue, support queue, billing queue, incident watch, evidence flow, rollback state, and daily decision.",
+      trackSummary: "Evidence storage backend contracts now become one launch operations control tower across owner, customer queue, support queue, billing queue, incident watch, evidence flow, rollback state, and daily decision.",
+      stageSummary: "Evidence storage now becomes launch operations with release owner, queues, incident watch, evidence flow, rollback state, and daily decision.",
+      openDecision: "Open launch control tower",
+      guardedDecision: "Open guarded control tower",
+      holdDecision: "Hold launch operations",
+      repairDecision: "Repair launch control",
+      nextOpen: "Open the launch operations control tower and keep release owner, customer queue, support queue, billing queue, incident watch, evidence flow, rollback state, and daily decision together.",
+      nextGuarded: "Open guarded launch operations while one customer, support, billing, or rollback lane stays watched.",
+      nextHold: "Hold launch operations until owner, customer queue, support queue, billing queue, and rollback state are readable.",
+      nextRepair: "Repair launch operations before tenant security review.",
+      axes: [
+        ["Release owner", "ownerCommand", 0.74, 5, "Release owner is accountable."],
+        ["Customer queue", "launchMoment", 0.72, 6, "Customer queue is ordered."],
+        ["Support queue", "supportGuard", 0.74, 5, "Support queue is staffed."],
+        ["Billing queue", "sponsorGuard", 0.72, 5, "Billing queue is visible."],
+        ["Incident watch", "reviewGuard", 0.74, 5, "Incident watch stays open."],
+        ["Evidence flow", "proofGuard", 0.76, 5, "Evidence flow is connected."],
+        ["Rollback state", "rollbackGuard", 0.76, 5, "Rollback state is readable."],
+        ["Daily decision", "guardClosure", 0.72, 6, "Daily decision closes the tower."],
+      ],
+    },
+    {
+      key: "tenant-security-review-pack",
+      version: "v871",
+      number: 871,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Security Review Pack",
+      shortLabel: "Tenant Security Review Pack",
+      phase: "First pilot expansion rollout reuse market pilot tenant security review pack",
+      track: "v871 first pilot expansion rollout reuse market pilot tenant security review pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-security-review-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-security-review-pack",
+      idSuffix: "TENANT-SECURITY-REVIEW-PACK",
+      scoreKey: "tenantSecurityReviewPackScore",
+      decisionKey: "tenantSecurityReviewPackDecision",
+      stateKey: "tenantSecurityReviewPackState",
+      lineKey: "tenantSecurityReviewPackLine",
+      primarySignal: "Pilot tenant security review pack",
+      primaryNote: "Prepares tenant security review with access controls, data boundary, audit trails, evidence retention, admin roles, support access, and restore proof.",
+      summary: "Prepare tenant security review with access controls, data boundary, audit trails, evidence retention, admin roles, support access, restore proof, and security signoff.",
+      trackSummary: "Launch operations control towers now become one tenant security review pack across access controls, data boundary, audit trails, evidence retention, admin roles, support access, restore proof, and signoff.",
+      stageSummary: "Launch control now becomes tenant security review with access, data boundary, audit, retention, admin roles, support, restore proof, and signoff.",
+      openDecision: "Publish security review pack",
+      guardedDecision: "Publish guarded security pack",
+      holdDecision: "Hold security review",
+      repairDecision: "Repair security review",
+      nextOpen: "Publish the security review pack and keep access controls, data boundary, audit trails, retention, admin roles, support access, restore proof, and signoff together.",
+      nextGuarded: "Publish guarded security review while one access, audit, support, or restore lane stays watched.",
+      nextHold: "Hold security review until access controls, data boundary, audit trail, and restore proof are explicit.",
+      nextRepair: "Repair security review before backend pilot cutover.",
+      axes: [
+        ["Access controls", "tenantGuard", 0.78, 4, "Access controls are clear."],
+        ["Data boundary", "tenantGuard", 0.78, 4, "Data boundary is explicit."],
+        ["Audit trails", "proofGuard", 0.76, 5, "Audit trails are reviewable."],
+        ["Evidence retention", "reviewGuard", 0.72, 6, "Retention is understood."],
+        ["Admin roles", "ownerCommand", 0.74, 5, "Admin roles are named."],
+        ["Support access", "supportGuard", 0.72, 5, "Support access is bounded."],
+        ["Restore proof", "rollbackGuard", 0.76, 5, "Restore proof is attached."],
+        ["Security signoff", "guardClosure", 0.72, 6, "Security signoff closes the pack."],
+      ],
+    },
+    {
+      key: "backend-pilot-cutover-checklist",
+      version: "v872",
+      number: 872,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Backend Pilot Cutover Checklist",
+      shortLabel: "Backend Pilot Cutover Checklist",
+      phase: "First pilot expansion rollout reuse market pilot backend pilot cutover checklist",
+      track: "v872 first pilot expansion rollout reuse market pilot backend pilot cutover checklist",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-backend-pilot-cutover-checklist",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-backend-pilot-cutover-checklist",
+      idSuffix: "BACKEND-PILOT-CUTOVER-CHECKLIST",
+      scoreKey: "backendPilotCutoverChecklistScore",
+      decisionKey: "backendPilotCutoverChecklistDecision",
+      stateKey: "backendPilotCutoverChecklistState",
+      lineKey: "backendPilotCutoverChecklistLine",
+      primarySignal: "Pilot backend pilot cutover checklist",
+      primaryNote: "Closes backend pilot cutover with environment readiness, data migration, access gates, billing entitlement, evidence storage, support route, rollback proof, and acceptance receipt.",
+      summary: "Close backend pilot cutover with environment readiness, data migration, access gates, billing entitlement, evidence storage, support route, rollback proof, and acceptance receipt.",
+      trackSummary: "Tenant security review packs now become one backend pilot cutover checklist across environment readiness, data migration, access gates, billing entitlement, evidence storage, support route, rollback proof, and acceptance receipt.",
+      stageSummary: "Tenant security review now becomes backend cutover with environment, migration, access, billing, evidence, support, rollback, and acceptance receipt.",
+      openDecision: "Open backend cutover",
+      guardedDecision: "Open guarded cutover",
+      holdDecision: "Hold backend cutover",
+      repairDecision: "Repair backend cutover",
+      nextOpen: "Open backend cutover and keep environment readiness, data migration, access gates, billing entitlement, evidence storage, support route, rollback proof, and acceptance receipt together.",
+      nextGuarded: "Open guarded backend cutover while one migration, access, billing, or rollback lane stays watched.",
+      nextHold: "Hold cutover until environment readiness, access gates, evidence storage, and rollback proof are ready.",
+      nextRepair: "Repair backend cutover before production evidence API contract.",
+      axes: [
+        ["Environment", "launchMoment", 0.74, 5, "Environment is ready."],
+        ["Data migration", "proofGuard", 0.74, 5, "Migration has proof."],
+        ["Access gates", "tenantGuard", 0.76, 5, "Access gates are closed by default."],
+        ["Billing entitlement", "sponsorGuard", 0.72, 5, "Billing entitlement is enforced."],
+        ["Evidence storage", "proofGuard", 0.76, 5, "Evidence storage is ready."],
+        ["Support route", "supportGuard", 0.72, 5, "Support route is published."],
+        ["Rollback proof", "rollbackGuard", 0.76, 5, "Rollback proof is tested."],
+        ["Acceptance receipt", "guardClosure", 0.72, 6, "Acceptance receipt closes cutover."],
+      ],
+    },
+    {
+      key: "production-evidence-api-contract",
+      version: "v873",
+      number: 873,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Evidence API Contract",
+      shortLabel: "Production Evidence API Contract",
+      phase: "First pilot expansion rollout reuse market pilot production evidence api contract",
+      track: "v873 first pilot expansion rollout reuse market pilot production evidence api contract",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-evidence-api-contract",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-evidence-api-contract",
+      idSuffix: "PRODUCTION-EVIDENCE-API-CONTRACT",
+      scoreKey: "productionEvidenceApiContractScore",
+      decisionKey: "productionEvidenceApiContractDecision",
+      stateKey: "productionEvidenceApiContractState",
+      lineKey: "productionEvidenceApiContractLine",
+      primarySignal: "Pilot production evidence API contract",
+      primaryNote: "Defines API routes for proof writes, export reads, audit events, tenant scope, retention policy, restore hooks, access checks, and API acceptance receipt.",
+      summary: "Define the production evidence API contract with proof writes, export reads, audit events, tenant scope, retention policy, restore hooks, access checks, and API acceptance receipt.",
+      trackSummary: "Backend pilot cutover checklists now become one production evidence API contract across proof writes, export reads, audit events, tenant scope, retention, restore hooks, access checks, and acceptance receipt.",
+      stageSummary: "Backend cutover now becomes evidence API contract with proof writes, exports, audit, tenant scope, retention, restore, access, and acceptance receipt.",
+      openDecision: "Publish evidence API contract",
+      guardedDecision: "Publish guarded API contract",
+      holdDecision: "Hold evidence API contract",
+      repairDecision: "Repair evidence API contract",
+      nextOpen: "Publish the evidence API contract and keep proof writes, export reads, audit events, tenant scope, retention policy, restore hooks, access checks, and acceptance receipt together.",
+      nextGuarded: "Publish guarded API contract while one proof write, export, retention, or access lane stays watched.",
+      nextHold: "Hold evidence API until proof writes, tenant scope, restore hooks, and access checks are explicit.",
+      nextRepair: "Repair evidence API before tenant admin launch console.",
+      axes: [
+        ["Proof writes", "proofGuard", 0.76, 5, "Proof writes are defined."],
+        ["Export reads", "proofGuard", 0.74, 5, "Export reads are scoped."],
+        ["Audit events", "tenantGuard", 0.76, 5, "Audit events are emitted."],
+        ["Tenant scope", "tenantGuard", 0.78, 4, "Tenant scope is enforced."],
+        ["Retention policy", "reviewGuard", 0.72, 6, "Retention policy is clear."],
+        ["Restore hooks", "rollbackGuard", 0.76, 5, "Restore hooks are documented."],
+        ["Access checks", "ownerCommand", 0.74, 5, "Access checks are repeatable."],
+        ["API receipt", "guardClosure", 0.72, 6, "API receipt closes the contract."],
+      ],
+    },
+    {
+      key: "tenant-admin-launch-console",
+      version: "v874",
+      number: 874,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Launch Console",
+      shortLabel: "Tenant Admin Launch Console",
+      phase: "First pilot expansion rollout reuse market pilot tenant admin launch console",
+      track: "v874 first pilot expansion rollout reuse market pilot tenant admin launch console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-admin-launch-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-admin-launch-console",
+      idSuffix: "TENANT-ADMIN-LAUNCH-CONSOLE",
+      scoreKey: "tenantAdminLaunchConsoleScore",
+      decisionKey: "tenantAdminLaunchConsoleDecision",
+      stateKey: "tenantAdminLaunchConsoleState",
+      lineKey: "tenantAdminLaunchConsoleLine",
+      primarySignal: "Pilot tenant admin launch console",
+      primaryNote: "Creates the tenant admin launch console for users, roles, billing, imports, evidence, support access, audit log, and launch status.",
+      summary: "Create the tenant admin launch console with users, roles, billing, imports, evidence, support access, audit log, and launch status.",
+      trackSummary: "Production evidence API contracts now become one tenant admin launch console across users, roles, billing, imports, evidence, support access, audit log, and launch status.",
+      stageSummary: "Evidence API now becomes tenant admin console with users, roles, billing, imports, evidence, support, audit, and launch status.",
+      openDecision: "Open tenant admin console",
+      guardedDecision: "Open guarded admin console",
+      holdDecision: "Hold tenant admin console",
+      repairDecision: "Repair admin console",
+      nextOpen: "Open the tenant admin launch console and keep users, roles, billing, imports, evidence, support access, audit log, and launch status together.",
+      nextGuarded: "Open guarded admin console while one users, billing, import, or support lane stays watched.",
+      nextHold: "Hold tenant admin console until users, roles, billing, evidence, and audit log are ready.",
+      nextRepair: "Repair tenant admin console before launch readiness rehearsal.",
+      axes: [
+        ["Users", "ownerCommand", 0.74, 5, "Users can be managed."],
+        ["Roles", "tenantGuard", 0.76, 5, "Roles are enforceable."],
+        ["Billing", "sponsorGuard", 0.72, 5, "Billing is visible."],
+        ["Imports", "proofGuard", 0.74, 5, "Imports show source proof."],
+        ["Evidence", "proofGuard", 0.76, 5, "Evidence is reachable."],
+        ["Support access", "supportGuard", 0.72, 5, "Support access is bounded."],
+        ["Audit log", "tenantGuard", 0.76, 5, "Audit log is visible."],
+        ["Launch status", "guardClosure", 0.72, 6, "Launch status closes the console."],
+      ],
+    },  ];
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
   const BILLING_MANAGER_SEAT_PRICE = 15;
@@ -18190,6 +18384,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminLaunchConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceApiContractPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendPilotCutoverChecklistPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSecurityReviewPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsControlTowerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceStorageBackendContractPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingEntitlementEnforcementMapPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantLaunchAutomationBacklogPreview(model, autopilot)}",
@@ -24235,7 +24434,67 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceStorageBackendContractPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "evidence-storage-backend-contract");
-  }  function renderCommandReleaseRailPreview(model, autopilot) {
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsControlTowerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-operations-control-tower");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsControlTower(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-operations-control-tower", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsControlTowerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-operations-control-tower");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSecurityReviewPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-security-review-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSecurityReviewPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-security-review-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSecurityReviewPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-security-review-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBackendPilotCutoverChecklistSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "backend-pilot-cutover-checklist");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBackendPilotCutoverChecklist(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "backend-pilot-cutover-checklist", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendPilotCutoverChecklistPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "backend-pilot-cutover-checklist");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceApiContractSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-evidence-api-contract");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceApiContract(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-evidence-api-contract", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceApiContractPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-evidence-api-contract");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminLaunchConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-admin-launch-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminLaunchConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-admin-launch-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminLaunchConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-admin-launch-console");
+  }
+  function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const buildNumber = getBuildNumber();
     const activeRunway = getActivePilotRunwayReleases().slice(-3);
@@ -89798,9 +90057,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v870", "First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Control Tower", "Coordinate launch operations with release owner, customer queue, support queue, billing queue, incident watch, evidence flow, rollback state, and daily decision."],
-        ["v871", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Security Review Pack", "Prepare tenant security review with access controls, data boundary, audit trails, evidence retention, admin roles, support access, and restore proof."],
-        ["v872", "First Pilot Expansion Rollout Reuse Market Pilot Backend Pilot Cutover Checklist", "Close backend pilot cutover with environment readiness, data migration, access gates, billing entitlement, evidence storage, support route, rollback proof, and acceptance receipt."],
+        ["v875", "First Pilot Expansion Rollout Reuse Market Pilot Launch Readiness Rehearsal", "Rehearse launch readiness with admin console, security review, evidence API, support route, billing proof, rollback drill, customer notice, and go/no-go receipt."],
+        ["v876", "First Pilot Expansion Rollout Reuse Market Pilot Customer Migration Runbook", "Prepare customer migration with source audit, import batches, access mapping, evidence carryover, billing alignment, support watch, rollback plan, and acceptance receipt."],
+        ["v877", "First Pilot Expansion Rollout Reuse Market Pilot Production Onboarding Console", "Shape production onboarding with tenant setup, user invites, role templates, import proof, billing start, evidence review, support handoff, and launch status."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",

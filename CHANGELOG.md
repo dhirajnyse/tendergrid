@@ -1,5 +1,139 @@
 # Changelog
 
+## v874 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Launch Console
+
+### Changes Made
+- Activated the tenant admin launch console as the current build.
+- Added users, roles, billing, imports, evidence, support access, audit log, and launch status to the pilot reuse runway.
+- Updated the Build Phase next queue to v875-v877 for launch readiness rehearsal, customer migration, and production onboarding work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v874.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects with v874 badges, no console errors, and no horizontal overflow.
+- Passed: scoped side-rail click QA for Autopilot, Reports, Build Phase, and Command with stable active rail state.
+- Passed: mobile QA for Command, Build Phase, and Autopilot at 390px width with zero body overflow.
+- Passed: visual Build Phase QA with v874 active, tenant admin launch console visible, launch roadmap present, and v875-v877 next queue present.
+
+### Known Risks
+- Tenant admin launch console is still a static release model; real user administration, role enforcement, billing state, import control, evidence access, support access, audit logs, and launch status need backend implementation.
+
+## v873 - First Pilot Expansion Rollout Reuse Market Pilot Production Evidence API Contract
+
+### Changes Made
+- Activated the production evidence API contract as the current build.
+- Added proof writes, export reads, audit events, tenant scope, retention policy, restore hooks, access checks, and API acceptance receipt to the pilot reuse runway.
+- Updated the Build Phase next queue to v874-v876 for tenant admin launch, launch readiness rehearsal, and customer migration work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v873.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Evidence API contract is not yet a live API; proof writes, export reads, audit events, tenant scoping, retention, restore hooks, and access checks still need backend routes and persistence.
+
+## v872 - First Pilot Expansion Rollout Reuse Market Pilot Backend Pilot Cutover Checklist
+
+### Changes Made
+- Activated the backend pilot cutover checklist as the current build.
+- Added environment readiness, data migration, access gates, billing entitlement, evidence storage, support route, rollback proof, and acceptance receipt to the pilot reuse runway.
+- Updated the Build Phase next queue to v873-v875 for evidence API, tenant admin launch, and launch readiness rehearsal work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v872.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Backend cutover is still a checklist model; environment readiness, migration, access gates, billing entitlement, evidence storage, support routing, rollback proof, and acceptance receipts need production execution.
+
+## v871 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Security Review Pack
+
+### Changes Made
+- Activated the tenant security review pack as the current build.
+- Added access controls, data boundary, audit trails, evidence retention, admin roles, support access, restore proof, and security signoff to the pilot reuse runway.
+- Updated the Build Phase next queue to v872-v874 for backend cutover, evidence API, and tenant admin launch work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v871.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Tenant security review is modeled in the static workspace; access control validation, data boundary enforcement, audit trails, retention, support access, restore proof, and security signoff need live system evidence.
+
+## v870 - First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Control Tower
+
+### Changes Made
+- Activated the launch operations control tower as the current build.
+- Added release owner, customer queue, support queue, billing queue, incident watch, evidence flow, rollback state, and daily decision to the pilot reuse runway.
+- Updated the Build Phase next queue to v871-v873 for tenant security review, backend cutover, and production evidence API work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v870.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Launch operations are still represented as a static control tower; real customer queues, support queues, billing queues, incidents, evidence flow, rollback state, and daily decisions need production data sources.
+
 ## v869 - First Pilot Expansion Rollout Reuse Market Pilot Evidence Storage Backend Contract
 
 ### Changes Made
