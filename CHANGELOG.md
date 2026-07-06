@@ -1,5 +1,133 @@
 # Changelog
 
+## v834 - First Pilot Expansion Rollout Reuse Market Pilot Market Readiness Proof Board
+
+### Changes Made
+- Activated the market readiness proof board as the current build.
+- Added a market-readiness gate that combines renewal decision, expansion offer, approved learning, second-candidate fit, support capacity, privacy guard, launch risk, and sponsor path.
+- Updated the Build Phase next queue to v835-v837 for wider launch council, region readiness, and controlled scale gate.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v834.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop visual QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: mobile Command visual QA with no document or body horizontal overflow.
+
+### Known Risks
+- Market readiness is modeled as static proof; actual wider launch should wait for real renewal signal, second-pilot sponsor fit, support capacity, production backend, billing, and live privacy controls.
+
+## v833 - First Pilot Expansion Rollout Reuse Market Pilot Second Pilot Candidate Selector
+
+### Changes Made
+- Activated the second pilot candidate selector during the batch.
+- Added fit score, proof transfer, privacy boundary, support capacity, sponsor readiness, commercial path, launch risk, and candidate closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v833.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Candidate selection is modeled from static workspace signals; real account scoring still needs live CRM context, support capacity, and sponsor qualification.
+
+## v832 - First Pilot Expansion Rollout Reuse Market Pilot Learning Reuse Approval
+
+### Changes Made
+- Activated the learning reuse approval during the batch.
+- Added source proof, anonymized lesson, tenant boundary, sponsor permission, retest need, influence scope, expiry review, and reuse closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v832.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Learning reuse approval is still local/static; production reuse needs persisted tenant consent, audit logs, expiry enforcement, and retest evidence.
+
+## v831 - First Pilot Expansion Rollout Reuse Market Pilot Expansion Offer Draft
+
+### Changes Made
+- Activated the expansion offer draft during the batch.
+- Added scope, seats, price lane, success criteria, access boundary, rollout owner, support limit, and offer closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v831.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Expansion offer is modeled for product flow; real pricing, contract approval, billing, and access enforcement remain future backend work.
+
+## v830 - First Pilot Expansion Rollout Reuse Market Pilot Renewal Decision Room
+
+### Changes Made
+- Activated the renewal decision room during the batch.
+- Added renewal posture, hold reason, repair lane, expansion option, commercial owner, support promise, decision receipt, and renewal closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v830.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Renewal decision logic is static and demo-safe; live renewal decisions still need customer response, payment, contract, and sponsor evidence.
+
 ## v829 - First Pilot Expansion Rollout Reuse Market Pilot Sponsor Day-Seven Review Pack
 
 ### Changes Made

@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v829";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Day-Seven Review Pack";
+  const BUILD_VERSION = "v834";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Market Readiness Proof Board";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=829.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=829.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=834.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=834.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1010,6 +1010,201 @@
         ["Expansion boundary", "tenantGuard", 0.74, 5, "Expansion boundary stays controlled."],
         ["Next ask", "reviewGuard", 0.72, 5, "One next ask is ready for the sponsor."],
         ["Review closure", "guardClosure", 0.74, 4, "The day-seven review closes with decision, owner, and date."],
+      ],
+    },
+    {
+      key: "renewal-decision-room",
+      version: "v830",
+      number: 830,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Renewal Decision Room",
+      shortLabel: "Renewal Decision Room",
+      phase: "First pilot expansion rollout reuse market pilot renewal decision room",
+      track: "v830 first pilot expansion rollout reuse market pilot renewal decision room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-decision-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-decision-room",
+      idSuffix: "RENEWAL-DECISION-ROOM",
+      scoreKey: "renewalDecisionScore",
+      decisionKey: "renewalDecisionRoomDecision",
+      stateKey: "renewalDecisionRoomState",
+      lineKey: "renewalDecisionRoomLine",
+      primarySignal: "Pilot renewal decision room",
+      primaryNote: "Turns day-seven sponsor proof into renew, hold, repair, expand, or stop decisions.",
+      summary: "Convert day-seven evidence into renewal decision, hold reason, repair lane, expansion option, commercial owner, support promise, and decision receipt.",
+      trackSummary: "Sponsor day-seven review packs now become one renewal decision room across renewal posture, hold reason, repair lane, expansion option, commercial owner, support promise, decision receipt, and renewal closure.",
+      stageSummary: "Day-seven sponsor review now becomes renewal decision with posture, hold reason, repair lane, expansion option, commercial owner, support promise, receipt, and closure.",
+      openDecision: "Open renewal decision",
+      guardedDecision: "Open guarded renewal decision",
+      holdDecision: "Hold renewal decision",
+      repairDecision: "Repair renewal proof",
+      nextOpen: "Open the renewal decision room and keep renewal posture, repair lane, expansion option, owner, support promise, and decision receipt together.",
+      nextGuarded: "Open a guarded renewal decision while one proof, support, or commercial lane stays watched.",
+      nextHold: "Hold renewal until sponsor proof, support story, and customer response are clear.",
+      nextRepair: "Repair renewal proof before expansion offer drafting.",
+      axes: [
+        ["Renewal posture", "sponsorGuard", 0.74, 5, "Renewal posture is explicit and sponsor-readable."],
+        ["Hold reason", "reviewGuard", 0.7, 6, "Any hold reason is named without blame."],
+        ["Repair lane", "proofGuard", 0.72, 5, "Proof repair has owner and next action."],
+        ["Expansion option", "launchMoment", 0.68, 7, "Expansion stays optional and controlled."],
+        ["Commercial owner", "ownerCommand", 0.76, 5, "One owner carries the renewal conversation."],
+        ["Support promise", "supportGuard", 0.72, 5, "Support promise stays realistic."],
+        ["Decision receipt", "tenantGuard", 0.72, 5, "Decision evidence avoids tenant-private leakage."],
+        ["Renewal closure", "guardClosure", 0.74, 4, "Renewal closes with decision, owner, and date."],
+      ],
+    },
+    {
+      key: "expansion-offer-draft",
+      version: "v831",
+      number: 831,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Expansion Offer Draft",
+      shortLabel: "Expansion Offer Draft",
+      phase: "First pilot expansion rollout reuse market pilot expansion offer draft",
+      track: "v831 first pilot expansion rollout reuse market pilot expansion offer draft",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-offer-draft",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-offer-draft",
+      idSuffix: "EXPANSION-OFFER-DRAFT",
+      scoreKey: "expansionOfferScore",
+      decisionKey: "expansionOfferDecision",
+      stateKey: "expansionOfferState",
+      lineKey: "expansionOfferLine",
+      primarySignal: "Pilot expansion offer draft",
+      primaryNote: "Shapes sponsor-approved proof into seats, scope, price, success criteria, access boundaries, and guardrails.",
+      summary: "Draft the expansion offer with scope, seats, price lane, success criteria, access boundary, rollout owner, support limit, and approval path.",
+      trackSummary: "Renewal decision rooms now become one expansion offer draft across scope, seats, price lane, success criteria, access boundary, rollout owner, support limit, and offer closure.",
+      stageSummary: "Renewal decision now drafts expansion offer with scope, seats, price, success criteria, access boundary, rollout owner, support limit, and closure.",
+      openDecision: "Draft expansion offer",
+      guardedDecision: "Draft guarded offer",
+      holdDecision: "Hold expansion offer",
+      repairDecision: "Repair offer proof",
+      nextOpen: "Draft the expansion offer and keep scope, seats, price, success criteria, access boundary, rollout owner, and support limit together.",
+      nextGuarded: "Draft a guarded offer while one price, access, or support lane remains under review.",
+      nextHold: "Hold expansion offer until renewal decision and sponsor proof are clear.",
+      nextRepair: "Repair offer proof before learning reuse approval.",
+      axes: [
+        ["Scope", "reviewGuard", 0.74, 5, "Expansion scope is narrow and named."],
+        ["Seats", "tenantGuard", 0.7, 6, "Seat count is controlled by access boundary."],
+        ["Price lane", "sponsorGuard", 0.68, 7, "Price lane is clear enough for sponsor review."],
+        ["Success criteria", "proofGuard", 0.74, 5, "Success criteria are measurable."],
+        ["Access boundary", "tenantGuard", 0.76, 5, "Access boundary protects roles and commercial fields."],
+        ["Rollout owner", "ownerCommand", 0.76, 5, "One owner carries rollout."],
+        ["Support limit", "supportGuard", 0.72, 5, "Support limit is visible before expansion."],
+        ["Offer closure", "guardClosure", 0.74, 4, "Offer closes with approval path and next decision."],
+      ],
+    },
+    {
+      key: "learning-reuse-approval",
+      version: "v832",
+      number: 832,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Learning Reuse Approval",
+      shortLabel: "Learning Reuse Approval",
+      phase: "First pilot expansion rollout reuse market pilot learning reuse approval",
+      track: "v832 first pilot expansion rollout reuse market pilot learning reuse approval",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-learning-reuse-approval",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-learning-reuse-approval",
+      idSuffix: "LEARNING-REUSE-APPROVAL",
+      scoreKey: "learningReuseScore",
+      decisionKey: "learningReuseDecision",
+      stateKey: "learningReuseState",
+      lineKey: "learningReuseLine",
+      primarySignal: "Pilot learning reuse approval",
+      primaryNote: "Approves what first-pilot learning can influence elsewhere without leaking tenant context.",
+      summary: "Approve reusable learning with source proof, anonymized lesson, tenant boundary, sponsor permission, retest need, influence scope, and expiry review.",
+      trackSummary: "Expansion offer drafts now become one learning reuse approval across source proof, anonymized lesson, tenant boundary, sponsor permission, retest need, influence scope, expiry review, and reuse closure.",
+      stageSummary: "Expansion offer now approves learning reuse with source proof, anonymized lesson, tenant boundary, sponsor permission, retest need, influence scope, expiry, and closure.",
+      openDecision: "Approve learning reuse",
+      guardedDecision: "Approve guarded learning reuse",
+      holdDecision: "Hold learning reuse",
+      repairDecision: "Repair reuse proof",
+      nextOpen: "Approve learning reuse and keep source proof, anonymized lesson, tenant boundary, sponsor permission, retest need, and influence scope together.",
+      nextGuarded: "Approve guarded learning reuse while one expiry, permission, or retest lane stays watched.",
+      nextHold: "Hold learning reuse until tenant boundary and sponsor permission are clear.",
+      nextRepair: "Repair reuse proof before selecting a second pilot.",
+      axes: [
+        ["Source proof", "proofGuard", 0.76, 5, "Reusable lesson has source proof."],
+        ["Anonymized lesson", "tenantGuard", 0.76, 5, "Lesson is anonymized before reuse."],
+        ["Tenant boundary", "tenantGuard", 0.78, 4, "Tenant-private context stays out."],
+        ["Sponsor permission", "sponsorGuard", 0.72, 5, "Sponsor permission is named."],
+        ["Retest need", "reviewGuard", 0.68, 6, "Retest need is explicit before influence."],
+        ["Influence scope", "launchMoment", 0.66, 7, "Influence scope remains narrow."],
+        ["Expiry review", "supportGuard", 0.68, 6, "Reuse has an expiry review."],
+        ["Reuse closure", "guardClosure", 0.74, 4, "Reuse approval closes with owner and boundary."],
+      ],
+    },
+    {
+      key: "second-pilot-candidate-selector",
+      version: "v833",
+      number: 833,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Second Pilot Candidate Selector",
+      shortLabel: "Second Pilot Candidate Selector",
+      phase: "First pilot expansion rollout reuse market pilot second pilot candidate selector",
+      track: "v833 first pilot expansion rollout reuse market pilot second pilot candidate selector",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-second-pilot-candidate-selector",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-second-pilot-candidate-selector",
+      idSuffix: "SECOND-PILOT-CANDIDATE-SELECTOR",
+      scoreKey: "secondPilotScore",
+      decisionKey: "secondPilotDecision",
+      stateKey: "secondPilotState",
+      lineKey: "secondPilotLine",
+      primarySignal: "Pilot second candidate selector",
+      primaryNote: "Selects the safest next account using proof fit, support capacity, privacy boundary, and sponsor readiness.",
+      summary: "Select the second pilot candidate with fit score, proof transfer, privacy boundary, support capacity, sponsor readiness, commercial path, and launch risk.",
+      trackSummary: "Learning reuse approvals now become one second pilot candidate selector across fit score, proof transfer, privacy boundary, support capacity, sponsor readiness, commercial path, launch risk, and candidate closure.",
+      stageSummary: "Learning reuse approval now selects second pilot with fit score, proof transfer, privacy boundary, support capacity, sponsor readiness, commercial path, launch risk, and closure.",
+      openDecision: "Select second pilot",
+      guardedDecision: "Select guarded second pilot",
+      holdDecision: "Hold candidate selection",
+      repairDecision: "Repair candidate proof",
+      nextOpen: "Select the second pilot and keep fit, proof transfer, privacy boundary, support capacity, sponsor readiness, commercial path, and launch risk together.",
+      nextGuarded: "Select a guarded second pilot while one proof, support, or commercial lane stays under review.",
+      nextHold: "Hold candidate selection until learning reuse and support capacity are clear.",
+      nextRepair: "Repair candidate proof before market readiness is claimed.",
+      axes: [
+        ["Fit score", "proofGuard", 0.72, 5, "Candidate fit is evidence-backed."],
+        ["Proof transfer", "tenantGuard", 0.7, 6, "Only approved proof transfers."],
+        ["Privacy boundary", "tenantGuard", 0.78, 4, "Privacy boundary remains hard."],
+        ["Support capacity", "supportGuard", 0.74, 5, "Support capacity is sufficient."],
+        ["Sponsor readiness", "sponsorGuard", 0.7, 6, "Sponsor route is realistic."],
+        ["Commercial path", "ownerCommand", 0.68, 7, "Commercial path has owner and next step."],
+        ["Launch risk", "rollbackGuard", 0.72, 5, "Launch risk has fallback."],
+        ["Candidate closure", "guardClosure", 0.74, 4, "Selection closes with decision and next proof board."],
+      ],
+    },
+    {
+      key: "market-readiness-proof-board",
+      version: "v834",
+      number: 834,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Market Readiness Proof Board",
+      shortLabel: "Market Readiness Proof Board",
+      phase: "First pilot expansion rollout reuse market pilot market readiness proof board",
+      track: "v834 first pilot expansion rollout reuse market pilot market readiness proof board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-market-readiness-proof-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-market-readiness-proof-board",
+      idSuffix: "MARKET-READINESS-PROOF-BOARD",
+      scoreKey: "marketReadinessScore",
+      decisionKey: "marketReadinessDecision",
+      stateKey: "marketReadinessState",
+      lineKey: "marketReadinessLine",
+      primarySignal: "Pilot market readiness proof board",
+      primaryNote: "Combines renewal, expansion, learning reuse, second-pilot fit, support, privacy, and market launch proof.",
+      summary: "Prove market readiness with renewal decision, expansion offer, approved learning, second candidate, support capacity, privacy guard, launch risk, and sponsor path.",
+      trackSummary: "Second pilot candidate selectors now become one market readiness proof board across renewal decision, expansion offer, learning reuse, candidate fit, support capacity, privacy guard, launch risk, and market closure.",
+      stageSummary: "Second candidate selector now becomes market readiness board with renewal, expansion, learning reuse, candidate fit, support, privacy, launch risk, and closure.",
+      openDecision: "Approve market readiness",
+      guardedDecision: "Approve guarded market readiness",
+      holdDecision: "Hold market readiness",
+      repairDecision: "Repair market proof",
+      nextOpen: "Approve market readiness and keep renewal, expansion, learning reuse, candidate fit, support, privacy, launch risk, and sponsor path together.",
+      nextGuarded: "Approve guarded market readiness while one non-critical proof lane stays watched.",
+      nextHold: "Hold market readiness until renewal, reuse, second-candidate fit, and support proof are clear.",
+      nextRepair: "Repair market proof before wider launch planning.",
+      axes: [
+        ["Renewal decision", "sponsorGuard", 0.74, 5, "Renewal decision supports market confidence."],
+        ["Expansion offer", "ownerCommand", 0.7, 6, "Expansion offer is controlled."],
+        ["Learning reuse", "tenantGuard", 0.76, 5, "Learning reuse is approved and bounded."],
+        ["Candidate fit", "proofGuard", 0.72, 5, "Second candidate fit is visible."],
+        ["Support capacity", "supportGuard", 0.74, 5, "Support can absorb next pilot."],
+        ["Privacy guard", "tenantGuard", 0.78, 4, "Privacy guard stays intact."],
+        ["Launch risk", "rollbackGuard", 0.74, 5, "Launch risk and fallback are named."],
+        ["Market closure", "guardClosure", 0.74, 4, "Market readiness closes with decision and next roadmap."],
       ],
     },
   ];
@@ -16617,6 +16812,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketReadinessProofBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotCandidateSelectorPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReuseApprovalPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionOfferDraftPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalDecisionRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorDaySevenReviewPackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotIncidentLearningLoopPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveOutcomeReceiptPreview(model, autopilot)}",
@@ -22142,6 +22342,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorDaySevenReviewPackPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "sponsor-day-seven-review-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalDecisionRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "renewal-decision-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalDecisionRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "renewal-decision-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalDecisionRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "renewal-decision-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionOfferDraftSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "expansion-offer-draft");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionOfferDraft(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "expansion-offer-draft", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionOfferDraftPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "expansion-offer-draft");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReuseApprovalSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "learning-reuse-approval");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReuseApproval(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "learning-reuse-approval", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReuseApprovalPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "learning-reuse-approval");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotCandidateSelectorSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "second-pilot-candidate-selector");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotCandidateSelector(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "second-pilot-candidate-selector", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotCandidateSelectorPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "second-pilot-candidate-selector");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMarketReadinessProofBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "market-readiness-proof-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMarketReadinessProofBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "market-readiness-proof-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketReadinessProofBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "market-readiness-proof-board");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -87706,9 +87966,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v830", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Decision Room", "Turn the day-seven sponsor review into a renewal, hold, repair, or expand decision."],
-        ["v831", "First Pilot Expansion Rollout Reuse Market Pilot Expansion Offer Draft", "Shape sponsor-approved proof into a controlled expansion offer with seats, scope, and guardrails."],
-        ["v832", "First Pilot Expansion Rollout Reuse Market Pilot Learning Reuse Approval", "Approve which first-pilot learning can safely influence other tenants and markets."],
+        ["v835", "First Pilot Expansion Rollout Reuse Market Pilot Wider Launch Council", "Turn market proof into a wider-launch council decision with owner, boundary, and release conditions."],
+        ["v836", "First Pilot Expansion Rollout Reuse Market Pilot Region Readiness Map", "Map which region, tenant segment, support lane, and compliance boundary can safely launch next."],
+        ["v837", "First Pilot Expansion Rollout Reuse Market Pilot Controlled Scale Gate", "Gate controlled scale with proof, support capacity, privacy, rollback, billing, and sponsor readiness."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",
