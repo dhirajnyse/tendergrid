@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v839";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Market Learning Consent Ledger";
+  const BUILD_VERSION = "v844";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Console Blueprint";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=839.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=839.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=844.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=844.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1400,6 +1400,201 @@
         ["Expiry date", "reviewGuard", 0.72, 5, "Consent has an expiry review."],
         ["Reuse channel", "launchMoment", 0.68, 7, "Reuse channel is narrow."],
         ["Ledger closure", "guardClosure", 0.74, 4, "Ledger closes with audit receipt and next review."],
+      ],
+    },
+    {
+      key: "learning-reuse-policy-pack",
+      version: "v840",
+      number: 840,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Learning Reuse Policy Pack",
+      shortLabel: "Learning Reuse Policy Pack",
+      phase: "First pilot expansion rollout reuse market pilot learning reuse policy pack",
+      track: "v840 first pilot expansion rollout reuse market pilot learning reuse policy pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-learning-reuse-policy-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-learning-reuse-policy-pack",
+      idSuffix: "LEARNING-REUSE-POLICY-PACK",
+      scoreKey: "learningReusePolicyScore",
+      decisionKey: "learningReusePolicyDecision",
+      stateKey: "learningReusePolicyState",
+      lineKey: "learningReusePolicyLine",
+      primarySignal: "Pilot learning reuse policy pack",
+      primaryNote: "Turns consent-ledger rows into reusable learning policy, expiry, redaction, review, and stop rules.",
+      summary: "Publish learning reuse policy with approved lesson, allowed audience, redaction rule, expiry rule, review owner, stop condition, and audit note.",
+      trackSummary: "Market learning consent ledgers now become one learning reuse policy pack across approved lesson, allowed audience, redaction rule, expiry rule, review owner, stop condition, audit note, and policy closure.",
+      stageSummary: "Learning consent now becomes policy with lesson, audience, redaction, expiry, owner, stop condition, audit note, and closure.",
+      openDecision: "Publish reuse policy",
+      guardedDecision: "Publish guarded reuse policy",
+      holdDecision: "Hold reuse policy",
+      repairDecision: "Repair policy proof",
+      nextOpen: "Publish the reuse policy and keep approved lesson, audience, redaction, expiry, owner, stop condition, and audit note together.",
+      nextGuarded: "Publish a guarded policy while one redaction, expiry, or audience lane stays watched.",
+      nextHold: "Hold reuse policy until consent scope and redaction are clear.",
+      nextRepair: "Repair policy proof before partner demo boundaries are created.",
+      axes: [
+        ["Approved lesson", "proofGuard", 0.76, 5, "The reusable lesson is proof-backed."],
+        ["Allowed audience", "tenantGuard", 0.74, 5, "Audience is intentionally narrow."],
+        ["Redaction rule", "tenantGuard", 0.78, 4, "Redaction protects tenant-local detail."],
+        ["Expiry rule", "reviewGuard", 0.72, 5, "Policy expires or revalidates."],
+        ["Review owner", "ownerCommand", 0.76, 5, "One owner reviews reuse."],
+        ["Stop condition", "rollbackGuard", 0.74, 5, "Stop condition is visible."],
+        ["Audit note", "supportGuard", 0.72, 5, "Audit note explains what moved."],
+        ["Policy closure", "guardClosure", 0.74, 4, "Policy closes with status and next review."],
+      ],
+    },
+    {
+      key: "partner-demo-boundary",
+      version: "v841",
+      number: 841,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Partner Demo Boundary",
+      shortLabel: "Partner Demo Boundary",
+      phase: "First pilot expansion rollout reuse market pilot partner demo boundary",
+      track: "v841 first pilot expansion rollout reuse market pilot partner demo boundary",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-partner-demo-boundary",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-partner-demo-boundary",
+      idSuffix: "PARTNER-DEMO-BOUNDARY",
+      scoreKey: "partnerDemoBoundaryScore",
+      decisionKey: "partnerDemoBoundaryDecision",
+      stateKey: "partnerDemoBoundaryState",
+      lineKey: "partnerDemoBoundaryLine",
+      primarySignal: "Pilot partner demo boundary",
+      primaryNote: "Separates public demo proof, partner-safe claims, tenant-local examples, no-show fields, and guided narrative.",
+      summary: "Set partner demo boundary with demo claim, proof source, redacted example, no-show field list, safe audience, script owner, and demo rollback.",
+      trackSummary: "Learning reuse policy packs now become one partner demo boundary across demo claim, proof source, redacted example, no-show fields, safe audience, script owner, demo rollback, and demo closure.",
+      stageSummary: "Learning policy now becomes partner demo boundary with claim, proof, redaction, no-show fields, audience, owner, rollback, and closure.",
+      openDecision: "Approve partner demo boundary",
+      guardedDecision: "Approve guarded demo boundary",
+      holdDecision: "Hold demo boundary",
+      repairDecision: "Repair demo proof",
+      nextOpen: "Approve the partner demo boundary and keep claim, proof, redaction, no-show fields, audience, owner, and rollback together.",
+      nextGuarded: "Approve a guarded demo boundary while one proof, audience, or redaction lane stays watched.",
+      nextHold: "Hold partner demo until proof source and no-show fields are clear.",
+      nextRepair: "Repair demo proof before multi-tenant controls are drafted.",
+      axes: [
+        ["Demo claim", "sponsorGuard", 0.72, 5, "Demo claim is modest and true."],
+        ["Proof source", "proofGuard", 0.76, 5, "Proof source is traceable."],
+        ["Redacted example", "tenantGuard", 0.78, 4, "Example is redacted before demo."],
+        ["No-show fields", "tenantGuard", 0.78, 4, "No-show fields are explicit."],
+        ["Safe audience", "reviewGuard", 0.72, 5, "Audience is fit for the demo."],
+        ["Script owner", "ownerCommand", 0.76, 5, "One owner controls the script."],
+        ["Demo rollback", "rollbackGuard", 0.74, 5, "Demo can fall back if challenged."],
+        ["Demo closure", "guardClosure", 0.74, 4, "Demo boundary closes with approval and expiry."],
+      ],
+    },
+    {
+      key: "multi-tenant-control-draft",
+      version: "v842",
+      number: 842,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Control Draft",
+      shortLabel: "Multi-Tenant Control Draft",
+      phase: "First pilot expansion rollout reuse market pilot multi-tenant control draft",
+      track: "v842 first pilot expansion rollout reuse market pilot multi tenant control draft",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-control-draft",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-control-draft",
+      idSuffix: "MULTI-TENANT-CONTROL-DRAFT",
+      scoreKey: "multiTenantControlScore",
+      decisionKey: "multiTenantControlDecision",
+      stateKey: "multiTenantControlState",
+      lineKey: "multiTenantControlLine",
+      primarySignal: "Pilot multi-tenant control draft",
+      primaryNote: "Drafts tenant isolation, admin roles, audit storage, export rules, support access, and incident boundaries.",
+      summary: "Draft multi-tenant controls with tenant isolation, role matrix, audit storage, export rule, support access, incident boundary, and control owner.",
+      trackSummary: "Partner demo boundaries now become one multi-tenant control draft across tenant isolation, role matrix, audit storage, export rule, support access, incident boundary, control owner, and draft closure.",
+      stageSummary: "Partner demo boundary now becomes multi-tenant control draft with isolation, roles, audit, export, support, incident boundary, owner, and closure.",
+      openDecision: "Draft multi-tenant controls",
+      guardedDecision: "Draft guarded controls",
+      holdDecision: "Hold control draft",
+      repairDecision: "Repair control proof",
+      nextOpen: "Draft multi-tenant controls and keep tenant isolation, role matrix, audit storage, export rule, support access, and incident boundary together.",
+      nextGuarded: "Draft guarded controls while one support, audit, or export lane stays watched.",
+      nextHold: "Hold control draft until tenant isolation and role matrix are clear.",
+      nextRepair: "Repair control proof before audit receipt storage.",
+      axes: [
+        ["Tenant isolation", "tenantGuard", 0.78, 4, "Tenant isolation is the first control."],
+        ["Role matrix", "ownerCommand", 0.74, 5, "Role matrix is simple and visible."],
+        ["Audit storage", "proofGuard", 0.72, 5, "Audit storage path is drafted."],
+        ["Export rule", "tenantGuard", 0.76, 5, "Export rule prevents accidental leakage."],
+        ["Support access", "supportGuard", 0.72, 5, "Support access is bounded."],
+        ["Incident boundary", "rollbackGuard", 0.74, 5, "Incident boundary is documented."],
+        ["Control owner", "ownerCommand", 0.76, 5, "One owner carries control draft."],
+        ["Draft closure", "guardClosure", 0.74, 4, "Draft closes with next implementation proof."],
+      ],
+    },
+    {
+      key: "production-audit-receipt-store",
+      version: "v843",
+      number: 843,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Audit Receipt Store",
+      shortLabel: "Production Audit Receipt Store",
+      phase: "First pilot expansion rollout reuse market pilot production audit receipt store",
+      track: "v843 first pilot expansion rollout reuse market pilot production audit receipt store",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-audit-receipt-store",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-audit-receipt-store",
+      idSuffix: "PRODUCTION-AUDIT-RECEIPT-STORE",
+      scoreKey: "productionAuditStoreScore",
+      decisionKey: "productionAuditStoreDecision",
+      stateKey: "productionAuditStoreState",
+      lineKey: "productionAuditStoreLine",
+      primarySignal: "Pilot production audit receipt store",
+      primaryNote: "Defines how production receipts are written, retained, searched, exported, reviewed, and closed.",
+      summary: "Define audit receipt store with receipt type, write trigger, retention rule, search key, export guard, review cadence, and closure proof.",
+      trackSummary: "Multi-tenant control drafts now become one production audit receipt store across receipt type, write trigger, retention rule, search key, export guard, review cadence, closure proof, and store closure.",
+      stageSummary: "Multi-tenant controls now define audit receipt store with type, trigger, retention, search, export guard, review cadence, proof, and closure.",
+      openDecision: "Define audit receipt store",
+      guardedDecision: "Define guarded audit store",
+      holdDecision: "Hold audit store",
+      repairDecision: "Repair audit proof",
+      nextOpen: "Define the audit receipt store and keep receipt type, trigger, retention, search, export guard, review cadence, and closure proof together.",
+      nextGuarded: "Define a guarded audit store while one retention, search, or export guard lane stays watched.",
+      nextHold: "Hold audit store until receipt type and retention rule are clear.",
+      nextRepair: "Repair audit proof before tenant admin console blueprint.",
+      axes: [
+        ["Receipt type", "proofGuard", 0.74, 5, "Receipt types are named."],
+        ["Write trigger", "reviewGuard", 0.72, 5, "Write trigger is explicit."],
+        ["Retention rule", "tenantGuard", 0.74, 5, "Retention rule is visible."],
+        ["Search key", "proofGuard", 0.7, 6, "Search keys are simple."],
+        ["Export guard", "tenantGuard", 0.78, 4, "Export guard protects tenants."],
+        ["Review cadence", "supportGuard", 0.72, 5, "Audit review cadence is defined."],
+        ["Closure proof", "guardClosure", 0.74, 4, "Closure proof is attached."],
+        ["Store closure", "guardClosure", 0.74, 4, "Store closes with implementation next step."],
+      ],
+    },
+    {
+      key: "tenant-admin-console-blueprint",
+      version: "v844",
+      number: 844,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Console Blueprint",
+      shortLabel: "Tenant Admin Console Blueprint",
+      phase: "First pilot expansion rollout reuse market pilot tenant admin console blueprint",
+      track: "v844 first pilot expansion rollout reuse market pilot tenant admin console blueprint",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-admin-console-blueprint",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-admin-console-blueprint",
+      idSuffix: "TENANT-ADMIN-CONSOLE-BLUEPRINT",
+      scoreKey: "tenantAdminConsoleScore",
+      decisionKey: "tenantAdminConsoleDecision",
+      stateKey: "tenantAdminConsoleState",
+      lineKey: "tenantAdminConsoleLine",
+      primarySignal: "Pilot tenant admin console blueprint",
+      primaryNote: "Blueprints tenant admin setup, roles, users, imports, audit view, billing guard, support access, and rollback controls.",
+      summary: "Blueprint tenant admin console with setup flow, role grants, user invites, import guard, audit view, billing guard, support access, and rollback control.",
+      trackSummary: "Production audit receipt stores now become one tenant admin console blueprint across setup flow, role grants, user invites, import guard, audit view, billing guard, support access, and rollback control.",
+      stageSummary: "Audit store now blueprints tenant admin console with setup, roles, invites, imports, audit, billing, support, rollback, and closure.",
+      openDecision: "Blueprint tenant admin console",
+      guardedDecision: "Blueprint guarded admin console",
+      holdDecision: "Hold admin console blueprint",
+      repairDecision: "Repair admin proof",
+      nextOpen: "Blueprint the tenant admin console and keep setup, roles, invites, imports, audit, billing, support, and rollback together.",
+      nextGuarded: "Blueprint a guarded admin console while one billing, support, or rollback lane stays watched.",
+      nextHold: "Hold admin console blueprint until roles, audit, and billing guard are clear.",
+      nextRepair: "Repair admin proof before production implementation planning.",
+      axes: [
+        ["Setup flow", "reviewGuard", 0.74, 5, "Setup flow is short."],
+        ["Role grants", "tenantGuard", 0.76, 5, "Role grants are bounded."],
+        ["User invites", "ownerCommand", 0.72, 5, "User invite path is owned."],
+        ["Import guard", "proofGuard", 0.72, 5, "Import guard prevents bad data."],
+        ["Audit view", "proofGuard", 0.74, 5, "Audit view is discoverable."],
+        ["Billing guard", "sponsorGuard", 0.7, 6, "Billing guard prevents confusion."],
+        ["Support access", "supportGuard", 0.72, 5, "Support access is limited."],
+        ["Rollback control", "rollbackGuard", 0.76, 5, "Rollback control is visible."],
       ],
     },
   ];
@@ -17007,6 +17202,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminConsoleBlueprintPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionAuditReceiptStorePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantControlDraftPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerDemoBoundaryPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReusePolicyPackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLearningConsentLedgerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondPilotGoLivePacketPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotControlledScaleGatePreview(model, autopilot)}",
@@ -22662,6 +22862,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLearningConsentLedgerPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "market-learning-consent-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReusePolicyPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "learning-reuse-policy-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReusePolicyPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "learning-reuse-policy-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningReusePolicyPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "learning-reuse-policy-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerDemoBoundarySummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "partner-demo-boundary");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerDemoBoundary(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "partner-demo-boundary", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerDemoBoundaryPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "partner-demo-boundary");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantControlDraftSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-tenant-control-draft");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantControlDraft(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-tenant-control-draft", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantControlDraftPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-tenant-control-draft");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionAuditReceiptStoreSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-audit-receipt-store");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionAuditReceiptStore(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-audit-receipt-store", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionAuditReceiptStorePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-audit-receipt-store");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminConsoleBlueprintSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-admin-console-blueprint");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminConsoleBlueprint(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-admin-console-blueprint", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminConsoleBlueprintPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-admin-console-blueprint");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -88226,9 +88486,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v840", "First Pilot Expansion Rollout Reuse Market Pilot Learning Reuse Policy Pack", "Turn consent-ledger rows into reusable learning policy, expiry, redaction, and review controls."],
-        ["v841", "First Pilot Expansion Rollout Reuse Market Pilot Partner Demo Boundary", "Separate public demo proof, partner-safe claims, tenant-local examples, and no-show fields before market demos."],
-        ["v842", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Control Draft", "Draft tenant isolation, admin roles, audit storage, export rules, and support controls for production planning."],
+        ["v845", "First Pilot Expansion Rollout Reuse Market Pilot Production Implementation Planner", "Turn the tenant admin blueprint into implementation lanes, sequence, owner, risk, and proof gates."],
+        ["v846", "First Pilot Expansion Rollout Reuse Market Pilot Backend Contract Map", "Map required backend contracts for tenants, roles, audit receipts, imports, billing, support, and exports."],
+        ["v847", "First Pilot Expansion Rollout Reuse Market Pilot Staging Acceptance Script", "Prepare a staging acceptance script for admin setup, import, audit, billing guard, and rollback checks."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",

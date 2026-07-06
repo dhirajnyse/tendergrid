@@ -1,5 +1,133 @@
 # Changelog
 
+## v844 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Console Blueprint
+
+### Changes Made
+- Activated the tenant admin console blueprint as the current build.
+- Added setup flow, role grants, user invites, import guard, audit view, billing guard, support access, and rollback control to the runway.
+- Updated the Build Phase next queue to v845-v847 for implementation planning, backend contract mapping, and staging acceptance.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v844.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop visual QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: mobile Command visual QA with no document or body horizontal overflow.
+
+### Known Risks
+- Tenant admin console remains a static blueprint; production still needs tenant auth, database-backed roles, billing, audit storage, import validation, and support access enforcement.
+
+## v843 - First Pilot Expansion Rollout Reuse Market Pilot Production Audit Receipt Store
+
+### Changes Made
+- Activated the production audit receipt store during the batch.
+- Added receipt type, write trigger, retention rule, search key, export guard, review cadence, closure proof, and store closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v843.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Audit receipt storage is modeled only; a real store needs persistence, retention controls, access policy, export rules, and tamper-evident logging.
+
+## v842 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Control Draft
+
+### Changes Made
+- Activated the multi-tenant control draft during the batch.
+- Added tenant isolation, role matrix, audit storage, export rule, support access, incident boundary, control owner, and draft closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v842.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Multi-tenant controls are a product draft; production work still needs implementation contracts, data isolation, role checks, and incident workflows.
+
+## v841 - First Pilot Expansion Rollout Reuse Market Pilot Partner Demo Boundary
+
+### Changes Made
+- Activated the partner demo boundary during the batch.
+- Added demo claim, proof source, redacted example, no-show fields, safe audience, script owner, demo rollback, and demo closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v841.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Demo boundary is static; partner demos still need real approval, field-level masking, role-based demo data, and reviewed scripts.
+
+## v840 - First Pilot Expansion Rollout Reuse Market Pilot Learning Reuse Policy Pack
+
+### Changes Made
+- Activated the learning reuse policy pack during the batch.
+- Added approved lesson, allowed audience, redaction rule, expiry rule, review owner, stop condition, audit note, and policy closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v840.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Learning reuse policy is modeled; real enforcement needs durable consent, expiry jobs, policy review, and tenant-level redaction controls.
+
 ## v839 - First Pilot Expansion Rollout Reuse Market Pilot Market Learning Consent Ledger
 
 ### Changes Made
