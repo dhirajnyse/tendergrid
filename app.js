@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v824";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Readiness Gate";
+  const BUILD_VERSION = "v829";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Day-Seven Review Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=824.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=824.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=829.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=829.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -815,6 +815,201 @@
         ["Support plan", "supportGuard", 0.72, 5, "Support owner, response, and escalation are visible."],
         ["Rollback path", "rollbackGuard", 0.78, 4, "Rollback remains a real path, not a hope."],
         ["Sponsor go/no-go", "sponsorGuard", 0.72, 5, "Sponsor decision is explicit before live pilot starts."],
+      ],
+    },
+    {
+      key: "customer-pilot-go-live-script",
+      version: "v825",
+      number: 825,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Script",
+      shortLabel: "Customer Pilot Go-Live Script",
+      phase: "First pilot expansion rollout reuse market pilot customer pilot go-live script",
+      track: "v825 first pilot expansion rollout reuse market pilot customer pilot go-live script",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-pilot-go-live-script",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-pilot-go-live-script",
+      idSuffix: "CUSTOMER-PILOT-GO-LIVE-SCRIPT",
+      scoreKey: "goLiveScriptScore",
+      decisionKey: "goLiveScriptDecision",
+      stateKey: "goLiveScriptState",
+      lineKey: "goLiveScriptLine",
+      primarySignal: "Pilot customer go-live script",
+      primaryNote: "Turns readiness approval into the exact launch sequence with owners, timings, proof, and fallback.",
+      summary: "Convert the readiness gate into a customer go-live script with launch order, named owners, proof moments, customer messages, fallback route, and closeout receipt.",
+      trackSummary: "Production readiness gates now become one customer go-live script across launch order, owner calls, proof moments, customer messages, fallback route, support bridge, sponsor check, and script closure.",
+      stageSummary: "Readiness gate now becomes a go-live script with launch order, owners, proof, customer message, fallback, support bridge, sponsor check, and closure.",
+      openDecision: "Run go-live script",
+      guardedDecision: "Run guarded go-live script",
+      holdDecision: "Hold go-live script",
+      repairDecision: "Repair go-live proof",
+      nextOpen: "Run the go-live script and keep launch order, owners, proof moments, customer messages, fallback, support, and sponsor check together.",
+      nextGuarded: "Run a guarded go-live script while one low-risk proof lane stays watched.",
+      nextHold: "Hold go-live until owner calls, customer messages, fallback route, and proof moments are clear.",
+      nextRepair: "Repair go-live proof before day-one support watch opens.",
+      axes: [
+        ["Launch order", "launchMoment", 0.76, 5, "The go-live sequence is timed and readable."],
+        ["Owner calls", "ownerCommand", 0.76, 5, "Each go-live call has one accountable owner."],
+        ["Proof moments", "proofGuard", 0.76, 5, "Proof is captured at the right launch moments."],
+        ["Customer messages", "sponsorGuard", 0.72, 5, "Customer-facing lines are ready and calm."],
+        ["Fallback route", "rollbackGuard", 0.78, 4, "Fallback is known before the first launch action."],
+        ["Support bridge", "supportGuard", 0.72, 5, "Support bridge is ready before users enter."],
+        ["Sponsor check", "sponsorGuard", 0.7, 6, "Sponsor check confirms launch confidence."],
+        ["Script closure", "guardClosure", 0.74, 4, "The go-live script closes with proof and next watch."],
+      ],
+    },
+    {
+      key: "day-one-support-watch",
+      version: "v826",
+      number: 826,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Day-One Support Watch",
+      shortLabel: "Day-One Support Watch",
+      phase: "First pilot expansion rollout reuse market pilot day-one support watch",
+      track: "v826 first pilot expansion rollout reuse market pilot day-one support watch",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-day-one-support-watch",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-day-one-support-watch",
+      idSuffix: "DAY-ONE-SUPPORT-WATCH",
+      scoreKey: "dayOneWatchScore",
+      decisionKey: "dayOneWatchDecision",
+      stateKey: "dayOneWatchState",
+      lineKey: "dayOneWatchLine",
+      primarySignal: "Pilot day-one support watch",
+      primaryNote: "Watches first access, first row movement, incidents, support load, sponsor signal, and rollback readiness.",
+      summary: "Watch day one with first login, row movement, support tickets, incident state, sponsor pulse, rollback readiness, and customer confidence.",
+      trackSummary: "Customer go-live scripts now become one day-one support watch across first login, row movement, support queue, incident state, sponsor pulse, rollback readiness, customer confidence, and watch closure.",
+      stageSummary: "Go-live script now becomes a support watch with first login, row movement, support queue, incident state, sponsor pulse, rollback, confidence, and closure.",
+      openDecision: "Open day-one watch",
+      guardedDecision: "Open guarded day-one watch",
+      holdDecision: "Hold day-one watch",
+      repairDecision: "Repair support watch proof",
+      nextOpen: "Open the day-one support watch and keep first login, row movement, incidents, support load, sponsor pulse, and rollback readiness together.",
+      nextGuarded: "Open a guarded day-one watch while one support or incident lane remains under review.",
+      nextHold: "Hold day-one watch until go-live proof and support owner coverage are clear.",
+      nextRepair: "Repair day-one proof before live outcome receipt is issued.",
+      axes: [
+        ["First login", "tenantGuard", 0.74, 5, "At least one pilot user access moment is visible."],
+        ["Row movement", "launchMoment", 0.7, 6, "The first live row movement is captured."],
+        ["Support queue", "supportGuard", 0.74, 5, "Support queue is manageable and owned."],
+        ["Incident state", "rollbackGuard", 0.72, 6, "Incidents are named, held, or cleared."],
+        ["Sponsor pulse", "sponsorGuard", 0.7, 6, "Sponsor signal is captured before the day ends."],
+        ["Rollback readiness", "rollbackGuard", 0.78, 4, "Rollback remains ready during day one."],
+        ["Customer confidence", "proofGuard", 0.68, 7, "Customer confidence is observable without overclaiming."],
+        ["Watch closure", "guardClosure", 0.74, 4, "Day-one watch closes with proof, risks, and next receipt."],
+      ],
+    },
+    {
+      key: "live-outcome-receipt",
+      version: "v827",
+      number: 827,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Outcome Receipt",
+      shortLabel: "Live Outcome Receipt",
+      phase: "First pilot expansion rollout reuse market pilot live outcome receipt",
+      track: "v827 first pilot expansion rollout reuse market pilot live outcome receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-outcome-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-outcome-receipt",
+      idSuffix: "LIVE-OUTCOME-RECEIPT",
+      scoreKey: "liveOutcomeScore",
+      decisionKey: "liveOutcomeDecision",
+      stateKey: "liveOutcomeState",
+      lineKey: "liveOutcomeLine",
+      primarySignal: "Pilot live outcome receipt",
+      primaryNote: "Captures the first live outcome with proof, customer response, risk, learning boundary, and evidence export.",
+      summary: "Issue the first live outcome receipt with movement proof, customer response, support result, risk posture, learning boundary, export proof, and next review.",
+      trackSummary: "Day-one support watches now become one live outcome receipt across movement proof, customer response, support result, risk posture, learning boundary, export proof, next review, and receipt closure.",
+      stageSummary: "Day-one watch now becomes a live receipt with movement proof, customer response, support result, risk, learning boundary, export proof, review, and closure.",
+      openDecision: "Issue live outcome receipt",
+      guardedDecision: "Issue guarded outcome receipt",
+      holdDecision: "Hold outcome receipt",
+      repairDecision: "Repair live outcome proof",
+      nextOpen: "Issue the live outcome receipt and keep movement proof, customer response, support result, risk, learning boundary, and export proof together.",
+      nextGuarded: "Issue a guarded live receipt while one proof or learning lane stays watched.",
+      nextHold: "Hold outcome receipt until movement, support, and customer response are clear.",
+      nextRepair: "Repair live outcome proof before incident learning or sponsor review widens.",
+      axes: [
+        ["Movement proof", "proofGuard", 0.76, 5, "The live movement is evidence-backed."],
+        ["Customer response", "sponsorGuard", 0.72, 5, "Customer response is captured safely."],
+        ["Support result", "supportGuard", 0.72, 5, "Support result is known and bounded."],
+        ["Risk posture", "rollbackGuard", 0.74, 5, "Risk and rollback posture are named."],
+        ["Learning boundary", "tenantGuard", 0.76, 5, "Learning remains tenant-safe."],
+        ["Export proof", "proofGuard", 0.72, 5, "Receipt proof can be exported or read back."],
+        ["Next review", "reviewGuard", 0.7, 6, "Next review date and owner are visible."],
+        ["Receipt closure", "guardClosure", 0.74, 4, "The receipt closes without hidden follow-up debt."],
+      ],
+    },
+    {
+      key: "pilot-incident-learning-loop",
+      version: "v828",
+      number: 828,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Incident Learning Loop",
+      shortLabel: "Pilot Incident Learning Loop",
+      phase: "First pilot expansion rollout reuse market pilot incident learning loop",
+      track: "v828 first pilot expansion rollout reuse market pilot incident learning loop",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-incident-learning-loop",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-incident-learning-loop",
+      idSuffix: "PILOT-INCIDENT-LEARNING-LOOP",
+      scoreKey: "incidentLearningScore",
+      decisionKey: "incidentLearningDecision",
+      stateKey: "incidentLearningState",
+      lineKey: "incidentLearningLine",
+      primarySignal: "Pilot incident learning loop",
+      primaryNote: "Turns live incidents into safe fixes, retests, customer-safe updates, and reusable learning boundaries.",
+      summary: "Convert live pilot incidents into triage state, fix owner, retest proof, customer update, rollback memory, reusable learning, and closure.",
+      trackSummary: "Live outcome receipts now become one incident learning loop across incident triage, fix owner, retest proof, customer update, rollback memory, reusable learning, privacy boundary, and loop closure.",
+      stageSummary: "Live outcome receipt now becomes an incident learning loop with triage, fix owner, retest proof, customer update, rollback memory, reusable learning, privacy, and closure.",
+      openDecision: "Run incident learning loop",
+      guardedDecision: "Run guarded learning loop",
+      holdDecision: "Hold incident learning loop",
+      repairDecision: "Repair incident proof",
+      nextOpen: "Run the incident learning loop and keep triage, fix owner, retest proof, customer update, rollback memory, and reusable learning together.",
+      nextGuarded: "Run a guarded learning loop while one customer update or privacy lane stays under review.",
+      nextHold: "Hold incident learning until triage, retest, and customer-safe update are clear.",
+      nextRepair: "Repair incident proof before sponsor day-seven review.",
+      axes: [
+        ["Incident triage", "supportGuard", 0.74, 5, "Incidents are classified without panic."],
+        ["Fix owner", "ownerCommand", 0.76, 5, "Each fix has one owner."],
+        ["Retest proof", "proofGuard", 0.74, 5, "Fixes have retest proof before reuse."],
+        ["Customer update", "sponsorGuard", 0.7, 6, "Customer update is accurate and calm."],
+        ["Rollback memory", "rollbackGuard", 0.76, 5, "Rollback or workaround memory is kept."],
+        ["Reusable learning", "tenantGuard", 0.72, 6, "Reusable learning excludes private tenant detail."],
+        ["Privacy boundary", "tenantGuard", 0.76, 5, "Privacy boundary is explicit before learning moves."],
+        ["Loop closure", "guardClosure", 0.74, 4, "The loop closes with fix, retest, learning, and next review."],
+      ],
+    },
+    {
+      key: "sponsor-day-seven-review-pack",
+      version: "v829",
+      number: 829,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Day-Seven Review Pack",
+      shortLabel: "Sponsor Day-Seven Review Pack",
+      phase: "First pilot expansion rollout reuse market pilot sponsor day-seven review pack",
+      track: "v829 first pilot expansion rollout reuse market pilot sponsor day-seven review pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-sponsor-day-seven-review-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-sponsor-day-seven-review-pack",
+      idSuffix: "SPONSOR-DAY-SEVEN-REVIEW-PACK",
+      scoreKey: "daySevenReviewScore",
+      decisionKey: "daySevenReviewDecision",
+      stateKey: "daySevenReviewState",
+      lineKey: "daySevenReviewLine",
+      primarySignal: "Pilot sponsor day-seven review pack",
+      primaryNote: "Packages first-week proof, incidents, learning, value, support, renewal signal, and next ask for sponsor review.",
+      summary: "Package the sponsor day-seven review with live proof, support story, incident learning, value signal, renewal hint, expansion boundary, and next decision.",
+      trackSummary: "Incident learning loops now become one sponsor day-seven review pack across live proof, support story, incident learning, value signal, renewal hint, expansion boundary, next ask, and review closure.",
+      stageSummary: "Incident learning loop now becomes day-seven review with live proof, support story, learning, value, renewal hint, expansion boundary, next ask, and closure.",
+      openDecision: "Send day-seven review",
+      guardedDecision: "Send guarded day-seven review",
+      holdDecision: "Hold day-seven review",
+      repairDecision: "Repair review pack proof",
+      nextOpen: "Send the day-seven review and keep live proof, support story, incident learning, value signal, renewal hint, expansion boundary, and next ask together.",
+      nextGuarded: "Send a guarded day-seven review while one proof, incident, or renewal lane stays watched.",
+      nextHold: "Hold sponsor review until live proof, support story, and incident learning are clear.",
+      nextRepair: "Repair review pack proof before sponsor decision or renewal movement.",
+      axes: [
+        ["Live proof", "proofGuard", 0.76, 5, "First-week proof is readable and evidence-backed."],
+        ["Support story", "supportGuard", 0.72, 5, "Support story is calm and honest."],
+        ["Incident learning", "tenantGuard", 0.72, 6, "Incidents became bounded learning."],
+        ["Value signal", "launchMoment", 0.7, 6, "Value signal is visible without overclaiming."],
+        ["Renewal hint", "sponsorGuard", 0.68, 7, "Renewal hint is present but not forced."],
+        ["Expansion boundary", "tenantGuard", 0.74, 5, "Expansion boundary stays controlled."],
+        ["Next ask", "reviewGuard", 0.72, 5, "One next ask is ready for the sponsor."],
+        ["Review closure", "guardClosure", 0.74, 4, "The day-seven review closes with decision, owner, and date."],
       ],
     },
   ];
@@ -16422,6 +16617,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorDaySevenReviewPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotIncidentLearningLoopPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveOutcomeReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotDayOneSupportWatchPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveScriptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotReadinessGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantCutoverDryRunPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditStorageProofPreview(model, autopilot)}",
@@ -21882,6 +22082,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotReadinessGatePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-pilot-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveScriptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-pilot-go-live-script");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveScript(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-pilot-go-live-script", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveScriptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-pilot-go-live-script");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotDayOneSupportWatchSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "day-one-support-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotDayOneSupportWatch(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "day-one-support-watch", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotDayOneSupportWatchPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "day-one-support-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveOutcomeReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-outcome-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveOutcomeReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-outcome-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveOutcomeReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-outcome-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotIncidentLearningLoopSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-incident-learning-loop");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotIncidentLearningLoop(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-incident-learning-loop", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotIncidentLearningLoopPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-incident-learning-loop");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorDaySevenReviewPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "sponsor-day-seven-review-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorDaySevenReviewPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "sponsor-day-seven-review-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorDaySevenReviewPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "sponsor-day-seven-review-pack");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -87446,9 +87706,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v825", "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Script", "Turn the readiness gate into the exact customer go-live sequence with owners, proof, and fallback."],
-        ["v826", "First Pilot Expansion Rollout Reuse Market Pilot Day-One Support Watch", "Watch the first production day with access, row movement, incidents, sponsor signal, and support load."],
-        ["v827", "First Pilot Expansion Rollout Reuse Market Pilot Live Outcome Receipt", "Capture the first live outcome receipt with proof, customer response, risk, and learning boundaries."],
+        ["v830", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Decision Room", "Turn the day-seven sponsor review into a renewal, hold, repair, or expand decision."],
+        ["v831", "First Pilot Expansion Rollout Reuse Market Pilot Expansion Offer Draft", "Shape sponsor-approved proof into a controlled expansion offer with seats, scope, and guardrails."],
+        ["v832", "First Pilot Expansion Rollout Reuse Market Pilot Learning Reuse Approval", "Approve which first-pilot learning can safely influence other tenants and markets."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",

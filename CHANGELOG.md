@@ -1,5 +1,133 @@
 # Changelog
 
+## v829 - First Pilot Expansion Rollout Reuse Market Pilot Sponsor Day-Seven Review Pack
+
+### Changes Made
+- Activated the sponsor day-seven review pack as the current build.
+- Added a sponsor-ready first-week pack with live proof, support story, incident learning, value signal, renewal hint, expansion boundary, next ask, and review closure.
+- Updated the Build Phase next queue to v830-v832 for renewal decision, expansion offer, and learning reuse approval.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v829.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop visual QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: mobile Command visual QA with no document or body horizontal overflow.
+
+### Known Risks
+- The day-seven review pack is static readiness proof; real sponsor review depends on live pilot data, real support events, and verified customer feedback.
+
+## v828 - First Pilot Expansion Rollout Reuse Market Pilot Incident Learning Loop
+
+### Changes Made
+- Activated pilot incident learning loop during the batch.
+- Added incident triage, fix owner, retest proof, customer update, rollback memory, reusable learning, privacy boundary, and loop closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v828.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Incident learning is modeled but not connected to live ticketing, retest automation, customer messaging, or persisted learning governance.
+
+## v827 - First Pilot Expansion Rollout Reuse Market Pilot Live Outcome Receipt
+
+### Changes Made
+- Activated live outcome receipt during the batch.
+- Added movement proof, customer response, support result, risk posture, learning boundary, export proof, next review, and receipt closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v827.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Live outcome receipt is a product model; real outcome proof, evidence export, and customer response capture need backend storage and event logging.
+
+## v826 - First Pilot Expansion Rollout Reuse Market Pilot Day-One Support Watch
+
+### Changes Made
+- Activated day-one support watch during the batch.
+- Added first login, row movement, support queue, incident state, sponsor pulse, rollback readiness, customer confidence, and watch closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v826.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Day-one support signals are static readiness lanes; real support tickets, login telemetry, incident state, and rollback execution are not live.
+
+## v825 - First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Script
+
+### Changes Made
+- Activated customer pilot go-live script during the batch.
+- Added launch order, owner calls, proof moments, customer messages, fallback route, support bridge, sponsor check, and script closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v825.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Go-live script is a static launch room; real customer go-live still requires production backend, support coverage, live access, and rollback rehearsal.
+
 ## v824 - First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Readiness Gate
 
 ### Changes Made
