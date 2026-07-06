@@ -1,5 +1,136 @@
 # Changelog
 
+## v849 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Data Import Contract
+
+### Changes Made
+- Activated the tenant data import contract as the current build.
+- Added source intake, field map, validation rules, rejected row handling, audit receipt, owner signoff, rollback path, and import closure to the runway.
+- Updated the Build Phase next queue to v850-v852 for billing guard, audit export boundary, and support access controls.
+- Added deferred side-rail navigation rendering so real button clicks open Autopilot, Reports, Build Phase, and Command without freezing the page.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v849.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, and Build Phase.
+- Passed: desktop side-rail click QA for Autopilot, Reports, Build Phase, and Command with no console errors.
+- Passed: mobile Command and Build Phase visual QA with no document or body horizontal overflow.
+
+### Known Risks
+- Import contract is static; production needs real upload handling, schema validation, rejected-row persistence, audit writes, and rollback execution.
+- Deferred navigation is frontend-only; the heavy historical release archive still needs backend/API separation for long-term performance.
+
+## v848 - First Pilot Expansion Rollout Reuse Market Pilot Role Permission Matrix
+
+### Changes Made
+- Activated the role permission matrix during the batch.
+- Added admin role, manager role, viewer role, denied action, audit event, support limit, approval rule, and matrix closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v848.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Permission matrix is modeled; production enforcement still needs backend role claims, route guards, audit events, and denial tests.
+
+## v847 - First Pilot Expansion Rollout Reuse Market Pilot Staging Acceptance Script
+
+### Changes Made
+- Activated the staging acceptance script during the batch.
+- Added setup test, role test, import test, audit test, billing guard test, support access test, export test, and rollback test to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v847.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Acceptance script is not yet executable automation; it needs staging environment wiring, seeded tenants, backend APIs, and CI checks.
+
+## v846 - First Pilot Expansion Rollout Reuse Market Pilot Backend Contract Map
+
+### Changes Made
+- Activated the backend contract map during the batch.
+- Added tenant schema, role claims, audit writes, import endpoint, billing guard, support access, export policy, and contract closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v846.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Backend contracts are still a product map; implementation will need API schemas, database tables, auth claims, and integration tests.
+
+## v845 - First Pilot Expansion Rollout Reuse Market Pilot Production Implementation Planner
+
+### Changes Made
+- Activated the production implementation planner during the batch.
+- Added build lanes, sequence, owner, proof gate, risk gate, release order, rollback checkpoint, and planner closure to the runway.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v845.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Implementation planner is static readiness; real production planning still needs engineering estimates, backend repo access, infra choices, and deployment ownership.
+
 ## v844 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Console Blueprint
 
 ### Changes Made

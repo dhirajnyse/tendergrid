@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v844";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Console Blueprint";
+  const BUILD_VERSION = "v849";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Data Import Contract";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=844.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=844.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=849.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=849.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -1597,6 +1597,201 @@
         ["Rollback control", "rollbackGuard", 0.76, 5, "Rollback control is visible."],
       ],
     },
+    {
+      key: "production-implementation-planner",
+      version: "v845",
+      number: 845,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Implementation Planner",
+      shortLabel: "Production Implementation Planner",
+      phase: "First pilot expansion rollout reuse market pilot production implementation planner",
+      track: "v845 first pilot expansion rollout reuse market pilot production implementation planner",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-implementation-planner",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-implementation-planner",
+      idSuffix: "PRODUCTION-IMPLEMENTATION-PLANNER",
+      scoreKey: "productionImplementationScore",
+      decisionKey: "productionImplementationDecision",
+      stateKey: "productionImplementationState",
+      lineKey: "productionImplementationLine",
+      primarySignal: "Pilot production implementation planner",
+      primaryNote: "Turns the admin console blueprint into implementation lanes, sequence, owner, proof gates, risk, and release order.",
+      summary: "Plan production implementation with build lanes, sequence, owner, proof gate, risk gate, release order, and rollback checkpoint.",
+      trackSummary: "Tenant admin console blueprints now become one production implementation planner across build lanes, sequence, owner, proof gate, risk gate, release order, rollback checkpoint, and planner closure.",
+      stageSummary: "Tenant admin blueprint now becomes implementation planner with lanes, sequence, owner, proof, risk, release order, rollback, and closure.",
+      openDecision: "Plan production implementation",
+      guardedDecision: "Plan guarded implementation",
+      holdDecision: "Hold implementation plan",
+      repairDecision: "Repair implementation proof",
+      nextOpen: "Plan production implementation and keep lanes, sequence, owner, proof gate, risk gate, release order, and rollback checkpoint together.",
+      nextGuarded: "Plan a guarded implementation while one proof, owner, or rollback lane stays watched.",
+      nextHold: "Hold implementation planning until admin console, audit, and role blueprint are clear.",
+      nextRepair: "Repair implementation proof before backend contract mapping.",
+      axes: [
+        ["Build lanes", "reviewGuard", 0.74, 5, "Implementation lanes are named."],
+        ["Sequence", "launchMoment", 0.72, 5, "Work is sequenced before coding."],
+        ["Owner", "ownerCommand", 0.76, 5, "One owner carries the plan."],
+        ["Proof gate", "proofGuard", 0.74, 5, "Each lane has proof gate."],
+        ["Risk gate", "rollbackGuard", 0.72, 5, "Risk gate is explicit."],
+        ["Release order", "supportGuard", 0.7, 6, "Release order protects support."],
+        ["Rollback checkpoint", "rollbackGuard", 0.76, 5, "Rollback checkpoint is visible."],
+        ["Planner closure", "guardClosure", 0.74, 4, "Planner closes with next contract map."],
+      ],
+    },
+    {
+      key: "backend-contract-map",
+      version: "v846",
+      number: 846,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Backend Contract Map",
+      shortLabel: "Backend Contract Map",
+      phase: "First pilot expansion rollout reuse market pilot backend contract map",
+      track: "v846 first pilot expansion rollout reuse market pilot backend contract map",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-backend-contract-map",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-backend-contract-map",
+      idSuffix: "BACKEND-CONTRACT-MAP",
+      scoreKey: "backendContractScore",
+      decisionKey: "backendContractDecision",
+      stateKey: "backendContractState",
+      lineKey: "backendContractLine",
+      primarySignal: "Pilot backend contract map",
+      primaryNote: "Maps required backend contracts for tenants, roles, audit receipts, imports, billing, support, and exports.",
+      summary: "Map backend contracts with tenant schema, role claims, audit writes, import endpoint, billing guard, support access, and export policy.",
+      trackSummary: "Production implementation planners now become one backend contract map across tenant schema, role claims, audit writes, import endpoint, billing guard, support access, export policy, and contract closure.",
+      stageSummary: "Implementation planner now maps backend contracts with tenant schema, roles, audit, imports, billing, support, export policy, and closure.",
+      openDecision: "Map backend contracts",
+      guardedDecision: "Map guarded backend contracts",
+      holdDecision: "Hold backend contract map",
+      repairDecision: "Repair contract proof",
+      nextOpen: "Map backend contracts and keep tenant schema, role claims, audit writes, imports, billing, support, and exports together.",
+      nextGuarded: "Map guarded contracts while one import, billing, or export lane stays watched.",
+      nextHold: "Hold backend mapping until tenant schema and role claims are clear.",
+      nextRepair: "Repair backend proof before staging acceptance.",
+      axes: [
+        ["Tenant schema", "tenantGuard", 0.78, 4, "Tenant schema has clear boundaries."],
+        ["Role claims", "ownerCommand", 0.74, 5, "Role claims are simple."],
+        ["Audit writes", "proofGuard", 0.74, 5, "Audit write contract is named."],
+        ["Import endpoint", "proofGuard", 0.72, 5, "Import endpoint is scoped."],
+        ["Billing guard", "sponsorGuard", 0.7, 6, "Billing guard is controlled."],
+        ["Support access", "supportGuard", 0.72, 5, "Support access stays bounded."],
+        ["Export policy", "tenantGuard", 0.76, 5, "Export policy prevents leakage."],
+        ["Contract closure", "guardClosure", 0.74, 4, "Contract map closes with staging script."],
+      ],
+    },
+    {
+      key: "staging-acceptance-script",
+      version: "v847",
+      number: 847,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Staging Acceptance Script",
+      shortLabel: "Staging Acceptance Script",
+      phase: "First pilot expansion rollout reuse market pilot staging acceptance script",
+      track: "v847 first pilot expansion rollout reuse market pilot staging acceptance script",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-staging-acceptance-script",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-staging-acceptance-script",
+      idSuffix: "STAGING-ACCEPTANCE-SCRIPT",
+      scoreKey: "stagingAcceptanceScore",
+      decisionKey: "stagingAcceptanceDecision",
+      stateKey: "stagingAcceptanceState",
+      lineKey: "stagingAcceptanceLine",
+      primarySignal: "Pilot staging acceptance script",
+      primaryNote: "Prepares staging checks for admin setup, role grants, import, audit, billing guard, support access, export, and rollback.",
+      summary: "Write staging acceptance with setup test, role test, import test, audit test, billing guard test, support access test, export test, and rollback test.",
+      trackSummary: "Backend contract maps now become one staging acceptance script across setup test, role test, import test, audit test, billing guard test, support access test, export test, and acceptance closure.",
+      stageSummary: "Backend contracts now become staging acceptance with setup, roles, import, audit, billing, support, export, rollback, and closure.",
+      openDecision: "Write staging acceptance",
+      guardedDecision: "Write guarded acceptance",
+      holdDecision: "Hold staging acceptance",
+      repairDecision: "Repair staging proof",
+      nextOpen: "Write staging acceptance and keep setup, roles, import, audit, billing guard, support, export, and rollback together.",
+      nextGuarded: "Write guarded acceptance while one audit, export, or rollback lane stays watched.",
+      nextHold: "Hold staging acceptance until backend contracts and role rules are clear.",
+      nextRepair: "Repair staging proof before permission matrix.",
+      axes: [
+        ["Setup test", "reviewGuard", 0.74, 5, "Setup test is clear."],
+        ["Role test", "tenantGuard", 0.76, 5, "Role test protects access."],
+        ["Import test", "proofGuard", 0.72, 5, "Import test catches bad data."],
+        ["Audit test", "proofGuard", 0.74, 5, "Audit test confirms receipt writes."],
+        ["Billing guard test", "sponsorGuard", 0.7, 6, "Billing guard test prevents confusion."],
+        ["Support access test", "supportGuard", 0.72, 5, "Support access is tested."],
+        ["Export test", "tenantGuard", 0.76, 5, "Export test protects data."],
+        ["Rollback test", "rollbackGuard", 0.76, 5, "Rollback test is present."],
+      ],
+    },
+    {
+      key: "role-permission-matrix",
+      version: "v848",
+      number: 848,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Role Permission Matrix",
+      shortLabel: "Role Permission Matrix",
+      phase: "First pilot expansion rollout reuse market pilot role permission matrix",
+      track: "v848 first pilot expansion rollout reuse market pilot role permission matrix",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-role-permission-matrix",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-role-permission-matrix",
+      idSuffix: "ROLE-PERMISSION-MATRIX",
+      scoreKey: "rolePermissionScore",
+      decisionKey: "rolePermissionDecision",
+      stateKey: "rolePermissionState",
+      lineKey: "rolePermissionLine",
+      primarySignal: "Pilot role permission matrix",
+      primaryNote: "Converts admin blueprint and staging tests into roles, grants, denied actions, audit events, support limits, and approval rules.",
+      summary: "Define role permissions with admin role, manager role, viewer role, denied action, audit event, support limit, approval rule, and permission receipt.",
+      trackSummary: "Staging acceptance scripts now become one role permission matrix across admin role, manager role, viewer role, denied action, audit event, support limit, approval rule, and matrix closure.",
+      stageSummary: "Staging acceptance now becomes role matrix with admin, manager, viewer, denied action, audit event, support limit, approval rule, and closure.",
+      openDecision: "Define role matrix",
+      guardedDecision: "Define guarded role matrix",
+      holdDecision: "Hold role matrix",
+      repairDecision: "Repair permission proof",
+      nextOpen: "Define role matrix and keep admin, manager, viewer, denied action, audit event, support limit, and approval rule together.",
+      nextGuarded: "Define guarded roles while one denied action, support limit, or approval lane stays watched.",
+      nextHold: "Hold role matrix until staging and backend role claims are clear.",
+      nextRepair: "Repair role proof before import contract.",
+      axes: [
+        ["Admin role", "ownerCommand", 0.76, 5, "Admin permissions are explicit."],
+        ["Manager role", "reviewGuard", 0.72, 5, "Manager permissions are practical."],
+        ["Viewer role", "tenantGuard", 0.76, 5, "Viewer role is limited."],
+        ["Denied action", "rollbackGuard", 0.74, 5, "Denied actions are visible."],
+        ["Audit event", "proofGuard", 0.74, 5, "Permission changes write receipts."],
+        ["Support limit", "supportGuard", 0.72, 5, "Support access has limits."],
+        ["Approval rule", "sponsorGuard", 0.7, 6, "Sensitive grants require approval."],
+        ["Matrix closure", "guardClosure", 0.74, 4, "Matrix closes with import contract next."],
+      ],
+    },
+    {
+      key: "tenant-data-import-contract",
+      version: "v849",
+      number: 849,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Data Import Contract",
+      shortLabel: "Tenant Data Import Contract",
+      phase: "First pilot expansion rollout reuse market pilot tenant data import contract",
+      track: "v849 first pilot expansion rollout reuse market pilot tenant data import contract",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-data-import-contract",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-data-import-contract",
+      idSuffix: "TENANT-DATA-IMPORT-CONTRACT",
+      scoreKey: "tenantDataImportScore",
+      decisionKey: "tenantDataImportDecision",
+      stateKey: "tenantDataImportState",
+      lineKey: "tenantDataImportLine",
+      primarySignal: "Pilot tenant data import contract",
+      primaryNote: "Defines source file intake, mapping, validation, rejected rows, audit receipts, owner signoff, and rollback for tenant imports.",
+      summary: "Define tenant import contract with source intake, field map, validation rules, rejected row handling, audit receipt, owner signoff, and rollback path.",
+      trackSummary: "Role permission matrices now become one tenant data import contract across source intake, field map, validation rules, rejected rows, audit receipt, owner signoff, rollback path, and import closure.",
+      stageSummary: "Role matrix now becomes tenant import contract with source intake, mapping, validation, rejected rows, audit, signoff, rollback, and closure.",
+      openDecision: "Define tenant import contract",
+      guardedDecision: "Define guarded import contract",
+      holdDecision: "Hold import contract",
+      repairDecision: "Repair import proof",
+      nextOpen: "Define tenant import contract and keep source intake, field map, validation, rejected rows, audit receipt, signoff, and rollback together.",
+      nextGuarded: "Define a guarded import contract while one validation, audit, or rollback lane stays watched.",
+      nextHold: "Hold import contract until role permissions and staging acceptance are clear.",
+      nextRepair: "Repair import proof before production pilot data movement.",
+      axes: [
+        ["Source intake", "tenantGuard", 0.74, 5, "Source intake is controlled."],
+        ["Field map", "proofGuard", 0.72, 5, "Field map is visible."],
+        ["Validation rules", "proofGuard", 0.76, 5, "Validation rules catch bad data."],
+        ["Rejected rows", "reviewGuard", 0.72, 5, "Rejected rows have a path."],
+        ["Audit receipt", "proofGuard", 0.74, 5, "Import writes audit receipt."],
+        ["Owner signoff", "ownerCommand", 0.76, 5, "Owner signoff is required."],
+        ["Rollback path", "rollbackGuard", 0.76, 5, "Rollback path is explicit."],
+        ["Import closure", "guardClosure", 0.74, 4, "Import contract closes with next production gate."],
+      ],
+    },
   ];
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
@@ -2869,6 +3064,13 @@ const state = {
     }
   }
 
+  function scheduleViewRender({ scroll = true } = {}) {
+    window.setTimeout(() => {
+      render();
+      if (scroll) scrollToTop();
+    }, 0);
+  }
+
   function openView(view, options = {}) {
     const cleanView = normalizeViewName(view);
     if (!cleanView) return false;
@@ -2887,7 +3089,10 @@ const state = {
       state.quickSearchOpen = false;
       state.quickSearch = "";
       if (options.syncRoute !== false) syncViewRoute(state.view);
-      if (hadOpenOverlay) render();
+      if (hadOpenOverlay) {
+        if (options.deferRender) scheduleViewRender({ scroll: false });
+        else render();
+      }
       return true;
     }
     state.view = cleanView;
@@ -2902,17 +3107,20 @@ const state = {
     if (!typeOptions.includes(state.filters.type)) state.filters.type = "All";
     state.selectedId = null;
     if (options.syncRoute !== false) syncViewRoute(state.view);
-    render();
-    scrollToTop();
+    if (options.deferRender) scheduleViewRender();
+    else {
+      render();
+      scrollToTop();
+    }
     return true;
   }
 
-  function openAdminView(view) {
+  function openAdminView(view, options = {}) {
     if (!canAdmin()) {
       window.alert("This admin-only section is not enabled for your user.");
       return true;
     }
-    return openView(view, { skipAccessCheck: true });
+    return openView(view, { skipAccessCheck: true, ...options });
   }
 
   function bindAdminViewButtons() {
@@ -2920,7 +3128,7 @@ const state = {
       button.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
-        openAdminView(button.dataset.view);
+        openAdminView(button.dataset.view, { deferRender: true });
       });
     });
   }
@@ -17202,6 +17410,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataImportContractPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRolePermissionMatrixPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingAcceptanceScriptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendContractMapPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionImplementationPlannerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminConsoleBlueprintPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionAuditReceiptStorePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantControlDraftPreview(model, autopilot)}",
@@ -22922,6 +23135,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminConsoleBlueprintPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-admin-console-blueprint");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionImplementationPlannerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-implementation-planner");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionImplementationPlanner(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-implementation-planner", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionImplementationPlannerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-implementation-planner");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBackendContractMapSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "backend-contract-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBackendContractMap(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "backend-contract-map", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendContractMapPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "backend-contract-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingAcceptanceScriptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "staging-acceptance-script");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingAcceptanceScript(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "staging-acceptance-script", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingAcceptanceScriptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-acceptance-script");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRolePermissionMatrixSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "role-permission-matrix");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRolePermissionMatrix(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "role-permission-matrix", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRolePermissionMatrixPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "role-permission-matrix");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataImportContractSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-data-import-contract");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataImportContract(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-data-import-contract", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataImportContractPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-data-import-contract");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -88486,9 +88759,9 @@ const state = {
         ...runwayPhases,
       ],
       nextBuilds: nextRunwayBuilds.length ? nextRunwayBuilds : [
-        ["v845", "First Pilot Expansion Rollout Reuse Market Pilot Production Implementation Planner", "Turn the tenant admin blueprint into implementation lanes, sequence, owner, risk, and proof gates."],
-        ["v846", "First Pilot Expansion Rollout Reuse Market Pilot Backend Contract Map", "Map required backend contracts for tenants, roles, audit receipts, imports, billing, support, and exports."],
-        ["v847", "First Pilot Expansion Rollout Reuse Market Pilot Staging Acceptance Script", "Prepare a staging acceptance script for admin setup, import, audit, billing guard, and rollback checks."],
+        ["v850", "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Guard Contract", "Define billing guard contracts for plans, seats, renewal state, payment proof, access holds, and audit receipts."],
+        ["v851", "First Pilot Expansion Rollout Reuse Market Pilot Audit Export Boundary Test", "Test audit export boundaries for tenant, role, date range, redaction, proof lock, and download receipt."],
+        ["v852", "First Pilot Expansion Rollout Reuse Market Pilot Support Access Console Draft", "Draft support access controls for tenant-scoped help, impersonation limits, approval, audit, expiry, and rollback."],
       ],
       blockers: [
         "Private production backend repository is not opened yet.",
@@ -135058,7 +135331,7 @@ const state = {
     if (action === "open-admin-view") {
       event.preventDefault();
       event.stopPropagation();
-      openAdminView(button.dataset.view);
+      openAdminView(button.dataset.view, { deferRender: true });
       return;
     }
 
@@ -135069,12 +135342,12 @@ const state = {
     }
 
     if (action === "go-home") {
-      openView("Command");
+      openView("Command", { deferRender: true });
       return;
     }
 
     if (action === "open-build-phase") {
-      openView("Build Phase");
+      openView("Build Phase", { deferRender: true });
       return;
     }
 
@@ -142120,7 +142393,7 @@ const state = {
 
     if (button.dataset.view) {
       if (button.tagName === "A") event.preventDefault();
-      openView(button.dataset.view);
+      openView(button.dataset.view, { deferRender: true });
       return;
     }
     if (action === "logout") {
