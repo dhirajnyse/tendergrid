@@ -1,5 +1,139 @@
 # Changelog
 
+## v889 - First Pilot Expansion Rollout Reuse Market Pilot Production Backend Conversion Gate
+
+### Changes Made
+- Activated the production backend conversion gate as the current build.
+- Added auth boundary, database plan, storage plan, audit trail, billing path, deployment route, monitoring, and cutover decision to the pilot reuse runway.
+- Updated the Build Phase next queue to v890-v892 for production integration planning, tenant provisioning drill, and launch automation safety review.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v889.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects with v889 badges, no console errors, and no horizontal overflow.
+- Passed: scoped side-rail click QA for Autopilot, Reports, Build Phase, and Command with stable active rail state.
+- Passed: mobile QA for Command, Build Phase, and Autopilot at 390px width with zero page-level horizontal overflow.
+- Passed: visual Build Phase QA with v889 active, production backend conversion gate visible, launch roadmap present, and v890-v892 next queue present.
+
+### Known Risks
+- Production backend conversion remains a static gate; real auth, database, storage, audit trail, billing, deployment, monitoring, and cutover proof need backend and staging execution.
+
+## v888 - First Pilot Expansion Rollout Reuse Market Pilot Live Customer Rehearsal Board
+
+### Changes Made
+- Activated the live customer rehearsal board as the current build.
+- Added import rehearsal, access rehearsal, first meeting, support desk, billing notice, proof capture, rollback drill, and rehearsal signoff to the pilot reuse runway.
+- Updated the Build Phase next queue to v889-v891 for backend conversion, production integration, and tenant provisioning work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v888.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Live customer rehearsal is still modeled in the static app; real import rehearsal, access rehearsal, support desk, billing notice, proof capture, rollback drill, and customer signoff need staging data.
+
+## v887 - First Pilot Expansion Rollout Reuse Market Pilot Global Scale Guard
+
+### Changes Made
+- Activated the global scale guard as the current build.
+- Added market limits, data residency, support capacity, pricing controls, partner accountability, monitoring, rollback proof, and launch throttle to the pilot reuse runway.
+- Updated the Build Phase next queue to v888-v890 for live customer rehearsal, backend conversion, and production integration work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v887.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Global scale guard is still static; real market limits, data residency, support capacity, pricing controls, monitoring, partner accountability, rollback proof, and launch throttles need operational systems.
+
+## v886 - First Pilot Expansion Rollout Reuse Market Pilot Market Launch Evidence Ledger
+
+### Changes Made
+- Activated the market launch evidence ledger as the current build.
+- Added partner signoff, pilot candidate, country boundary, value story, billing proof, support readiness, audit receipt, and decision owner to the pilot reuse runway.
+- Updated the Build Phase next queue to v887-v889 for global scale, live customer rehearsal, and backend conversion work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v886.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Market evidence is still a static ledger; real partner signoff, pilot candidate approval, country boundary proof, value proof, billing proof, support readiness, and audit receipts need backend storage.
+
+## v885 - First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Onboarding Map
+
+### Changes Made
+- Activated the regional partner onboarding map as the first release in this batch.
+- Added partner access, local compliance, pricing route, demo tenant, support handoff, buyer language, launch owner, and partner signoff to the pilot reuse runway.
+- Added generic release wrappers and command rail render paths for v885-v889.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v885.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Regional partner onboarding is still a static map; real partner access, local compliance, pricing route, demo tenant, support handoff, buyer language, launch owner, and signoff need operating receipts.
+
 ## v884 - First Pilot Expansion Rollout Reuse Market Pilot Country Launch Readiness Pack
 
 ### Changes Made

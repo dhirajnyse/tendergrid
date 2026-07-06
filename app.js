@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v884";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Country Launch Readiness Pack";
+  const BUILD_VERSION = "v889";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Conversion Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=884.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=884.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=889.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=889.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -3155,6 +3155,201 @@
         ["Pilot candidate", "launchMoment", 0.68, 7, "Pilot candidate is selected."],
         ["Launch checklist", "proofGuard", 0.74, 5, "Launch checklist has proof."],
         ["Country signoff", "guardClosure", 0.72, 6, "Country signoff closes the pack."],
+      ],
+    },
+    {
+      key: "regional-partner-onboarding-map",
+      version: "v885",
+      number: 885,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Onboarding Map",
+      shortLabel: "Regional Partner Onboarding Map",
+      phase: "First pilot expansion rollout reuse market pilot regional partner onboarding map",
+      track: "v885 first pilot expansion rollout reuse market pilot regional partner onboarding map",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-regional-partner-onboarding-map",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-regional-partner-onboarding-map",
+      idSuffix: "REGIONAL-PARTNER-ONBOARDING-MAP",
+      scoreKey: "regionalPartnerOnboardingMapScore",
+      decisionKey: "regionalPartnerOnboardingMapDecision",
+      stateKey: "regionalPartnerOnboardingMapState",
+      lineKey: "regionalPartnerOnboardingMapLine",
+      primarySignal: "Pilot regional partner onboarding map",
+      primaryNote: "Turns country readiness into partner onboarding with partner access, local compliance, pricing route, demo tenant, support handoff, buyer language, and signoff.",
+      summary: "Map regional partner onboarding with country readiness, partner access, local compliance, pricing route, demo tenant, support handoff, buyer language, and signoff.",
+      trackSummary: "Country readiness packs now become one regional partner onboarding map across partner access, local compliance, pricing route, demo tenant, support handoff, buyer language, launch owner, and signoff.",
+      stageSummary: "Country readiness now becomes regional partner onboarding with access, compliance, pricing, demo tenant, support handoff, buyer language, owner, and signoff.",
+      openDecision: "Open partner onboarding",
+      guardedDecision: "Open guarded partner map",
+      holdDecision: "Hold partner onboarding",
+      repairDecision: "Repair partner map",
+      nextOpen: "Open the regional partner onboarding map and keep partner access, local compliance, pricing route, demo tenant, support handoff, buyer language, launch owner, and signoff together.",
+      nextGuarded: "Open guarded partner onboarding while one access, compliance, pricing, support, or buyer-language lane stays watched.",
+      nextHold: "Hold partner onboarding until access, compliance, pricing route, and support handoff are clear.",
+      nextRepair: "Repair partner onboarding before market launch evidence ledger.",
+      axes: [
+        ["Partner access", "tenantGuard", 0.76, 5, "Partner access boundary is explicit."],
+        ["Local compliance", "proofGuard", 0.74, 5, "Local compliance note is attached."],
+        ["Pricing route", "sponsorGuard", 0.72, 6, "Pricing route is readable."],
+        ["Demo tenant", "launchMoment", 0.7, 6, "Demo tenant is prepared."],
+        ["Support handoff", "supportGuard", 0.74, 5, "Support handoff is named."],
+        ["Buyer language", "reviewGuard", 0.7, 6, "Buyer language fits the region."],
+        ["Launch owner", "ownerCommand", 0.72, 6, "Regional launch owner is assigned."],
+        ["Partner signoff", "guardClosure", 0.72, 6, "Partner signoff closes onboarding."],
+      ],
+    },
+    {
+      key: "market-launch-evidence-ledger",
+      version: "v886",
+      number: 886,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Market Launch Evidence Ledger",
+      shortLabel: "Market Launch Evidence Ledger",
+      phase: "First pilot expansion rollout reuse market pilot market launch evidence ledger",
+      track: "v886 first pilot expansion rollout reuse market pilot market launch evidence ledger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-market-launch-evidence-ledger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-market-launch-evidence-ledger",
+      idSuffix: "MARKET-LAUNCH-EVIDENCE-LEDGER",
+      scoreKey: "marketLaunchEvidenceLedgerScore",
+      decisionKey: "marketLaunchEvidenceLedgerDecision",
+      stateKey: "marketLaunchEvidenceLedgerState",
+      lineKey: "marketLaunchEvidenceLedgerLine",
+      primarySignal: "Pilot market launch evidence ledger",
+      primaryNote: "Records market launch proof across partner signoff, pilot candidate, country boundary, value story, billing proof, support readiness, audit receipt, and decision owner.",
+      summary: "Record market launch evidence across partner signoff, pilot candidate, country boundary, value story, billing proof, support readiness, audit receipt, and decision owner.",
+      trackSummary: "Regional partner onboarding maps now become one market launch evidence ledger across signoff, pilot candidate, country boundary, value story, billing proof, support readiness, audit receipt, and decision owner.",
+      stageSummary: "Partner onboarding now becomes a market evidence ledger with signoff, candidate, boundary, value story, billing proof, support readiness, audit receipt, and owner.",
+      openDecision: "Open evidence ledger",
+      guardedDecision: "Open guarded ledger",
+      holdDecision: "Hold market ledger",
+      repairDecision: "Repair evidence ledger",
+      nextOpen: "Open the market launch evidence ledger and keep partner signoff, pilot candidate, country boundary, value story, billing proof, support readiness, audit receipt, and decision owner together.",
+      nextGuarded: "Open guarded evidence ledger while one signoff, billing, support, value, or audit lane stays watched.",
+      nextHold: "Hold market launch until signoff, value story, billing proof, and audit receipt are clear.",
+      nextRepair: "Repair market evidence before global scale guard.",
+      axes: [
+        ["Partner signoff", "guardClosure", 0.72, 6, "Partner signoff is reusable proof."],
+        ["Pilot candidate", "launchMoment", 0.7, 6, "Pilot candidate is named."],
+        ["Country boundary", "tenantGuard", 0.78, 5, "Country boundary is auditable."],
+        ["Value story", "sponsorGuard", 0.72, 6, "Value story is buyer-safe."],
+        ["Billing proof", "sponsorGuard", 0.72, 6, "Billing proof is visible."],
+        ["Support readiness", "supportGuard", 0.74, 5, "Support readiness is proven."],
+        ["Audit receipt", "proofGuard", 0.76, 5, "Audit receipt is attached."],
+        ["Decision owner", "ownerCommand", 0.72, 6, "Decision owner is accountable."],
+      ],
+    },
+    {
+      key: "global-scale-guard",
+      version: "v887",
+      number: 887,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Scale Guard",
+      shortLabel: "Global Scale Guard",
+      phase: "First pilot expansion rollout reuse market pilot global scale guard",
+      track: "v887 first pilot expansion rollout reuse market pilot global scale guard",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-scale-guard",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-scale-guard",
+      idSuffix: "GLOBAL-SCALE-GUARD",
+      scoreKey: "globalScaleGuardScore",
+      decisionKey: "globalScaleGuardDecision",
+      stateKey: "globalScaleGuardState",
+      lineKey: "globalScaleGuardLine",
+      primarySignal: "Pilot global scale guard",
+      primaryNote: "Guards global rollout with market limits, data residency, support capacity, pricing controls, partner accountability, monitoring, rollback proof, and launch throttle.",
+      summary: "Guard global scale with market limits, data residency, support capacity, pricing controls, partner accountability, monitoring, rollback proof, and launch throttle.",
+      trackSummary: "Market evidence ledgers now become one global scale guard across market limits, data residency, support capacity, pricing controls, partner accountability, monitoring, rollback proof, and launch throttle.",
+      stageSummary: "Market evidence now becomes global scale guard with limits, residency, support capacity, pricing controls, partner accountability, monitoring, rollback, and throttle.",
+      openDecision: "Open scale guard",
+      guardedDecision: "Open guarded scale",
+      holdDecision: "Hold global scale",
+      repairDecision: "Repair scale guard",
+      nextOpen: "Open the global scale guard and keep market limits, data residency, support capacity, pricing controls, partner accountability, monitoring, rollback proof, and launch throttle together.",
+      nextGuarded: "Open guarded scale while one residency, support, pricing, partner, monitoring, or rollback lane stays watched.",
+      nextHold: "Hold global scale until residency, support capacity, pricing controls, and rollback proof are clear.",
+      nextRepair: "Repair global scale guard before live customer rehearsal.",
+      axes: [
+        ["Market limits", "reviewGuard", 0.72, 6, "Market limits are explicit."],
+        ["Data residency", "tenantGuard", 0.8, 4, "Data residency is guarded."],
+        ["Support capacity", "supportGuard", 0.74, 5, "Support capacity is readable."],
+        ["Pricing controls", "sponsorGuard", 0.72, 6, "Pricing controls are bounded."],
+        ["Partner accountability", "ownerCommand", 0.72, 6, "Partner accountability is assigned."],
+        ["Monitoring", "proofGuard", 0.74, 5, "Monitoring is attached."],
+        ["Rollback proof", "rollbackGuard", 0.76, 5, "Rollback proof travels with scale."],
+        ["Launch throttle", "guardClosure", 0.72, 6, "Launch throttle closes the guard."],
+      ],
+    },
+    {
+      key: "live-customer-rehearsal-board",
+      version: "v888",
+      number: 888,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Customer Rehearsal Board",
+      shortLabel: "Live Customer Rehearsal Board",
+      phase: "First pilot expansion rollout reuse market pilot live customer rehearsal board",
+      track: "v888 first pilot expansion rollout reuse market pilot live customer rehearsal board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-customer-rehearsal-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-customer-rehearsal-board",
+      idSuffix: "LIVE-CUSTOMER-REHEARSAL-BOARD",
+      scoreKey: "liveCustomerRehearsalBoardScore",
+      decisionKey: "liveCustomerRehearsalBoardDecision",
+      stateKey: "liveCustomerRehearsalBoardState",
+      lineKey: "liveCustomerRehearsalBoardLine",
+      primarySignal: "Pilot live customer rehearsal board",
+      primaryNote: "Rehearses the first live customer path with import, access, first meeting, support desk, billing notice, proof capture, rollback drill, and rehearsal signoff.",
+      summary: "Rehearse the first live customer path with import, access, first meeting, support desk, billing notice, proof capture, rollback drill, and rehearsal signoff.",
+      trackSummary: "Global scale guards now become one live customer rehearsal board across import, access, first meeting, support desk, billing notice, proof capture, rollback drill, and rehearsal signoff.",
+      stageSummary: "Global scale guard now becomes live customer rehearsal with import, access, first meeting, support, billing notice, proof capture, rollback drill, and signoff.",
+      openDecision: "Run customer rehearsal",
+      guardedDecision: "Run guarded rehearsal",
+      holdDecision: "Hold rehearsal",
+      repairDecision: "Repair rehearsal",
+      nextOpen: "Run the live customer rehearsal board and keep import, access, first meeting, support desk, billing notice, proof capture, rollback drill, and rehearsal signoff together.",
+      nextGuarded: "Run guarded rehearsal while one import, access, support, billing, proof, or rollback lane stays watched.",
+      nextHold: "Hold live rehearsal until import, access, support desk, and rollback drill are clear.",
+      nextRepair: "Repair live rehearsal before production backend conversion gate.",
+      axes: [
+        ["Import rehearsal", "proofGuard", 0.74, 5, "Import rehearsal is proven."],
+        ["Access rehearsal", "tenantGuard", 0.78, 5, "Access rehearsal is safe."],
+        ["First meeting", "launchMoment", 0.7, 6, "First meeting agenda is ready."],
+        ["Support desk", "supportGuard", 0.74, 5, "Support desk is prepared."],
+        ["Billing notice", "sponsorGuard", 0.72, 6, "Billing notice is customer-safe."],
+        ["Proof capture", "proofGuard", 0.76, 5, "Proof capture is rehearsed."],
+        ["Rollback drill", "rollbackGuard", 0.76, 5, "Rollback drill is ready."],
+        ["Rehearsal signoff", "guardClosure", 0.72, 6, "Rehearsal signoff closes the board."],
+      ],
+    },
+    {
+      key: "production-backend-conversion-gate",
+      version: "v889",
+      number: 889,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Conversion Gate",
+      shortLabel: "Production Backend Conversion Gate",
+      phase: "First pilot expansion rollout reuse market pilot production backend conversion gate",
+      track: "v889 first pilot expansion rollout reuse market pilot production backend conversion gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-conversion-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-conversion-gate",
+      idSuffix: "PRODUCTION-BACKEND-CONVERSION-GATE",
+      scoreKey: "productionBackendConversionGateScore",
+      decisionKey: "productionBackendConversionGateDecision",
+      stateKey: "productionBackendConversionGateState",
+      lineKey: "productionBackendConversionGateLine",
+      primarySignal: "Pilot production backend conversion gate",
+      primaryNote: "Separates static demo proof from backend conversion with auth, database, storage, audit, billing, deployment, monitoring, and cutover decision.",
+      summary: "Gate production backend conversion with auth, database, storage, audit, billing, deployment, monitoring, and cutover decision separated from the static demo.",
+      trackSummary: "Live customer rehearsals now become one production backend conversion gate across auth, database, storage, audit, billing, deployment, monitoring, cutover decision, and static-demo boundary.",
+      stageSummary: "Live rehearsal now becomes backend conversion gate with auth, database, storage, audit, billing, deployment, monitoring, cutover, and static boundary.",
+      openDecision: "Open backend gate",
+      guardedDecision: "Open guarded backend gate",
+      holdDecision: "Hold backend conversion",
+      repairDecision: "Repair backend gate",
+      nextOpen: "Open the production backend conversion gate and keep auth, database, storage, audit, billing, deployment, monitoring, cutover decision, and static-demo boundary together.",
+      nextGuarded: "Open guarded backend gate while one auth, database, storage, audit, billing, deployment, or monitoring lane stays watched.",
+      nextHold: "Hold backend conversion until auth, database, storage, audit, billing, and deployment are clear.",
+      nextRepair: "Repair backend conversion before production integration planning expands.",
+      axes: [
+        ["Auth boundary", "tenantGuard", 0.8, 4, "Auth boundary is explicit."],
+        ["Database plan", "ownerCommand", 0.74, 5, "Database plan is owned."],
+        ["Storage plan", "proofGuard", 0.74, 5, "Storage plan covers evidence."],
+        ["Audit trail", "proofGuard", 0.76, 5, "Audit trail is specified."],
+        ["Billing path", "sponsorGuard", 0.72, 6, "Billing path is controlled."],
+        ["Deployment route", "reviewGuard", 0.72, 6, "Deployment route is readable."],
+        ["Monitoring", "supportGuard", 0.74, 5, "Monitoring is assigned."],
+        ["Cutover decision", "guardClosure", 0.72, 6, "Cutover decision closes the gate."],
       ],
     },
   ];
@@ -18775,6 +18970,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendConversionGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveCustomerRehearsalBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalScaleGuardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLaunchEvidenceLedgerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerOnboardingMapPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchReadinessPackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorRenewalDecisionRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerValueRealizationBoardPreview(model, autopilot)}",
@@ -25013,6 +25213,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchReadinessPackPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "country-launch-readiness-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerOnboardingMapSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "regional-partner-onboarding-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerOnboardingMap(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "regional-partner-onboarding-map", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerOnboardingMapPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "regional-partner-onboarding-map");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLaunchEvidenceLedgerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "market-launch-evidence-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLaunchEvidenceLedger(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "market-launch-evidence-ledger", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMarketLaunchEvidenceLedgerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "market-launch-evidence-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalScaleGuardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-scale-guard");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalScaleGuard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-scale-guard", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalScaleGuardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-scale-guard");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveCustomerRehearsalBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-customer-rehearsal-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveCustomerRehearsalBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-customer-rehearsal-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveCustomerRehearsalBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-customer-rehearsal-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendConversionGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-backend-conversion-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendConversionGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-backend-conversion-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendConversionGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-backend-conversion-gate");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -89823,9 +90083,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v885", "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Onboarding Map", "Map regional partner onboarding with country readiness, partner access, support coverage, compliance note, pricing route, demo tenant, and signoff."],
-      ["v886", "First Pilot Expansion Rollout Reuse Market Pilot Market Launch Evidence Ledger", "Record market launch evidence across country signoff, pilot candidate, partner route, value proof, billing proof, support readiness, and audit receipt."],
-      ["v887", "First Pilot Expansion Rollout Reuse Market Pilot Global Scale Guard", "Guard global scale with market limits, data residency, support capacity, pricing controls, partner accountability, monitoring, and rollback proof."],
+      ["v890", "First Pilot Expansion Rollout Reuse Market Pilot Production Integration Planner", "Plan production integration across API boundaries, data model, auth, evidence storage, billing handoff, monitoring, and rollout owners."],
+      ["v891", "First Pilot Expansion Rollout Reuse Market Pilot Pilot Tenant Provisioning Drill", "Drill tenant provisioning with workspace creation, roles, imports, support access, audit exports, billing state, and rollback rehearsal."],
+      ["v892", "First Pilot Expansion Rollout Reuse Market Pilot Launch Automation Safety Review", "Review launch automation safety with trigger limits, human approvals, audit receipts, recovery paths, customer messaging, and support escalation."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
