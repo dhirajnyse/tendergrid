@@ -1,5 +1,140 @@
 # Changelog
 
+## v879 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Production Boundary Test
+
+### Changes Made
+- Activated the multi-tenant production boundary test as the current build.
+- Added tenant isolation, cross-tenant deny checks, support impersonation, audit export, data retention, restore, billing lock, and security signoff to the pilot reuse runway.
+- Improved the Build Phase next queue so it stays filled with v880-v882 planning items when the local release runway reaches the latest registered build.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v879.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects with v879 badges, no console errors, and no horizontal overflow.
+- Passed: scoped side-rail click QA for Autopilot, Reports, Build Phase, and Command with stable active rail state.
+- Passed: mobile QA for Command, Build Phase, and Autopilot at 390px width with zero body overflow.
+- Passed: visual Build Phase QA with v879 active, multi-tenant boundary test visible, launch roadmap present, and v880-v882 next queue present.
+
+### Known Risks
+- Multi-tenant production boundary testing is still modeled in the static app; real tenant isolation, deny tests, support impersonation, audit export, restore proof, billing lock, and signoff need backend and staging execution.
+
+## v878 - First Pilot Expansion Rollout Reuse Market Pilot Revenue Activation Board
+
+### Changes Made
+- Activated the pilot revenue activation board as the current build.
+- Added plan, invoice, payment state, seat activation, entitlements, renewal signal, finance receipt, and revenue decision to the pilot reuse runway.
+- Updated the Build Phase next queue to v879-v881 for boundary testing, production launch proof, and support command work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v878.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Revenue activation is still a static launch model; real plans, invoices, payment state, seat activation, entitlement enforcement, finance receipts, and renewal signals need billing/backend integration.
+
+## v877 - First Pilot Expansion Rollout Reuse Market Pilot Production Onboarding Console
+
+### Changes Made
+- Activated the production onboarding console as the current build.
+- Added tenant setup, user invites, role templates, import proof, billing start, evidence review, support handoff, and launch status to the pilot reuse runway.
+- Updated the Build Phase next queue to v878-v880 for revenue activation, boundary testing, and production launch proof work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v877.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Production onboarding is still a static console; real tenant setup, invites, role templates, import proof, billing start, evidence review, support handoff, and launch state need backend workflows.
+
+## v876 - First Pilot Expansion Rollout Reuse Market Pilot Customer Migration Runbook
+
+### Changes Made
+- Activated the customer migration runbook as the current build.
+- Added source audit, import batches, access mapping, evidence carryover, billing alignment, support watch, rollback plan, and acceptance receipt to the pilot reuse runway.
+- Updated the Build Phase next queue to v877-v879 for onboarding, revenue activation, and boundary testing work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v876.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Customer migration is still a static runbook; real source audit, import batches, access mapping, evidence carryover, billing alignment, support watch, rollback, and acceptance need staging data and backend execution.
+
+## v875 - First Pilot Expansion Rollout Reuse Market Pilot Launch Readiness Rehearsal
+
+### Changes Made
+- Activated the launch readiness rehearsal as the current build.
+- Added admin console, security review, evidence API, support route, billing proof, rollback drill, customer notice, and go/no-go receipt to the pilot reuse runway.
+- Added generic release wrappers and rail render paths for v875-v879.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v875.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: UTF-8 no-BOM rewrite for edited text files after `package.json` initially parsed with a BOM during the first v875 check.
+
+### Known Risks
+- Launch readiness rehearsal is still a static release model; real admin console checks, security review, evidence API, support route, billing proof, rollback drill, customer notice, and go/no-go receipt need staging proof.
+
 ## v874 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Launch Console
 
 ### Changes Made
