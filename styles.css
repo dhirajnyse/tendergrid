@@ -86704,6 +86704,42 @@ tr.selected-row td:first-child {
   }
 }
 
+/* v914 mobile account action wrap */
+@media (max-width: 540px) {
+  .topbar-actions {
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .account-actions {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 7px;
+  }
+
+  .account-actions .admin-tools-launcher,
+  .account-actions .user-pill {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .account-actions .admin-tools-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .account-actions .user-pill {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .account-actions > .ghost-btn,
+  .account-actions > .secondary-btn {
+    flex: 1 1 calc(50% - 7px);
+    min-width: 132px;
+  }
+}
+
 /* v701 room rhythm polish */
 :root {
   --rhythm-shadow: 0 12px 28px rgba(28, 42, 38, 0.08);
@@ -94949,5 +94985,62 @@ body.serenity-mode {
 
   .side-rail-link small {
     display: none;
+  }
+}
+
+/* v914 phone header final guard */
+@media (max-width: 540px) {
+  .workspace-frame .topbar-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    overflow-x: visible;
+    gap: 8px;
+  }
+
+  .workspace-frame .topbar-actions > .rooms-launcher,
+  .workspace-frame .topbar-actions > .rail-side-toggle {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .workspace-frame .topbar-actions > .rooms-launcher .rooms-btn,
+  .workspace-frame .topbar-actions > .rail-side-toggle {
+    width: 100%;
+  }
+
+  .workspace-frame .topbar-actions > .account-actions {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    overflow-x: visible;
+    gap: 7px;
+  }
+
+  .workspace-frame .account-actions .admin-tools-launcher,
+  .workspace-frame .account-actions .user-pill {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .workspace-frame .account-actions .user-pill {
+    display: inline-flex;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .workspace-frame .account-actions .admin-tools-btn,
+  .workspace-frame .account-actions > .ghost-btn,
+  .workspace-frame .account-actions > .secondary-btn {
+    width: 100%;
+    min-width: 0;
+    white-space: normal;
+  }
+
+  .workspace-frame .account-actions .admin-tools-btn span {
+    min-width: 0;
+    white-space: normal;
   }
 }

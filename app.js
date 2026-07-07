@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v909";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Revenue Proof Board";
+  const BUILD_VERSION = "v914";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Board Review Packet";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=909.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=909.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=914.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=914.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -4130,6 +4130,201 @@
         ["Support cost", "supportGuard", 0.74, 5, "Support cost is understood."],
         ["Expansion path", "ownerCommand", 0.72, 6, "Expansion path has an owner."],
         ["Revenue receipt", "guardClosure", 0.72, 6, "Revenue receipt closes proof."],
+      ],
+    },
+    {
+      key: "investor-proof-packet",
+      version: "v910",
+      number: 910,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Investor Proof Packet",
+      shortLabel: "Investor Proof Packet",
+      phase: "First pilot expansion rollout reuse market pilot investor proof packet",
+      track: "v910 first pilot expansion rollout reuse market pilot investor proof packet",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-investor-proof-packet",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-investor-proof-packet",
+      idSuffix: "INVESTOR-PROOF-PACKET",
+      scoreKey: "investorProofPacketScore",
+      decisionKey: "investorProofPacketDecision",
+      stateKey: "investorProofPacketState",
+      lineKey: "investorProofPacketLine",
+      primarySignal: "Pilot investor proof packet",
+      primaryNote: "Packages launch progress, revenue proof, customer outcome, support cost, risk posture, next-funding story, board ask, and investor receipt.",
+      summary: "Package launch progress, revenue proof, customer outcome, support cost, risk posture, next-funding story, board ask, and investor receipt.",
+      trackSummary: "Revenue proof now becomes one investor proof packet across launch progress, revenue proof, customer outcome, support cost, risk posture, next-funding story, board ask, and receipt.",
+      stageSummary: "Revenue proof now becomes investor proof with launch progress, revenue proof, customer outcome, support cost, risk posture, funding story, board ask, and receipt.",
+      openDecision: "Open investor packet",
+      guardedDecision: "Open guarded packet",
+      holdDecision: "Hold investor packet",
+      repairDecision: "Repair investor proof",
+      nextOpen: "Open the investor proof packet and keep launch progress, revenue proof, customer outcome, support cost, risk posture, next-funding story, board ask, and investor receipt together.",
+      nextGuarded: "Open guarded investor proof while one launch, revenue, outcome, support-cost, risk, funding-story, or board-ask lane stays watched.",
+      nextHold: "Hold investor story until launch progress, revenue proof, customer outcome, support cost, and risk posture are complete.",
+      nextRepair: "Repair investor proof before customer reference studio.",
+      axes: [
+        ["Launch progress", "launchMoment", 0.74, 5, "Launch progress is visible."],
+        ["Revenue proof", "sponsorGuard", 0.72, 6, "Revenue proof is credible."],
+        ["Customer outcome", "proofGuard", 0.76, 5, "Customer outcome is attached."],
+        ["Support cost", "supportGuard", 0.74, 5, "Support cost is understood."],
+        ["Risk posture", "rollbackGuard", 0.76, 5, "Risk posture is named."],
+        ["Funding story", "reviewGuard", 0.74, 5, "Funding story is clear."],
+        ["Board ask", "ownerCommand", 0.72, 6, "Board ask has an owner."],
+        ["Investor receipt", "guardClosure", 0.72, 6, "Investor receipt closes packet."],
+      ],
+    },
+    {
+      key: "customer-reference-studio",
+      version: "v911",
+      number: 911,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Studio",
+      shortLabel: "Customer Reference Studio",
+      phase: "First pilot expansion rollout reuse market pilot customer reference studio",
+      track: "v911 first pilot expansion rollout reuse market pilot customer reference studio",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-reference-studio",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-reference-studio",
+      idSuffix: "CUSTOMER-REFERENCE-STUDIO",
+      scoreKey: "customerReferenceStudioScore",
+      decisionKey: "customerReferenceStudioDecision",
+      stateKey: "customerReferenceStudioState",
+      lineKey: "customerReferenceStudioLine",
+      primarySignal: "Pilot customer reference studio",
+      primaryNote: "Turns first paid pilot proof into a buyer-safe reference with quote approval, redaction boundary, outcome proof, sponsor permission, reusable story, legal note, approval owner, and reference receipt.",
+      summary: "Turn first paid pilot proof into a buyer-safe reference with quote approval, redaction boundary, outcome proof, sponsor permission, reusable story, legal note, approval owner, and reference receipt.",
+      trackSummary: "Investor proof now becomes one customer reference studio across quote approval, redaction boundary, outcome proof, sponsor permission, reusable story, legal note, approval owner, and receipt.",
+      stageSummary: "Investor proof now becomes customer reference studio with quote, redaction, outcome, permission, story, legal note, owner, and receipt.",
+      openDecision: "Open reference studio",
+      guardedDecision: "Open guarded reference",
+      holdDecision: "Hold reference",
+      repairDecision: "Repair reference proof",
+      nextOpen: "Open the customer reference studio and keep quote approval, redaction boundary, outcome proof, sponsor permission, reusable story, legal note, approval owner, and reference receipt together.",
+      nextGuarded: "Open guarded customer reference while one quote, redaction, outcome, sponsor, legal, owner, or receipt lane stays watched.",
+      nextHold: "Hold customer reference until quote approval, redaction boundary, outcome proof, sponsor permission, and legal note are complete.",
+      nextRepair: "Repair customer reference before production support operating console.",
+      axes: [
+        ["Quote approval", "sponsorGuard", 0.72, 6, "Quote approval is captured."],
+        ["Redaction boundary", "tenantGuard", 0.76, 5, "Redaction boundary is clear."],
+        ["Outcome proof", "proofGuard", 0.76, 5, "Outcome proof is attached."],
+        ["Sponsor permission", "sponsorGuard", 0.72, 6, "Sponsor permission is explicit."],
+        ["Reusable story", "reviewGuard", 0.74, 5, "Reusable story is written."],
+        ["Legal note", "tenantGuard", 0.74, 5, "Legal note is visible."],
+        ["Approval owner", "ownerCommand", 0.72, 6, "Approval owner is named."],
+        ["Reference receipt", "guardClosure", 0.72, 6, "Reference receipt closes studio."],
+      ],
+    },
+    {
+      key: "production-support-operating-console",
+      version: "v912",
+      number: 912,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Support Operating Console",
+      shortLabel: "Production Support Operating Console",
+      phase: "First pilot expansion rollout reuse market pilot production support operating console",
+      track: "v912 first pilot expansion rollout reuse market pilot production support operating console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-support-operating-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-support-operating-console",
+      idSuffix: "PRODUCTION-SUPPORT-OPERATING-CONSOLE",
+      scoreKey: "productionSupportOperatingConsoleScore",
+      decisionKey: "productionSupportOperatingConsoleDecision",
+      stateKey: "productionSupportOperatingConsoleState",
+      lineKey: "productionSupportOperatingConsoleLine",
+      primarySignal: "Pilot production support operating console",
+      primaryNote: "Moves launch support into a live operating console with SLA target, incident queue, escalation owner, customer notice, support coverage, root-cause log, close rule, and support receipt.",
+      summary: "Move launch support into a live operating console with SLA target, incident queue, escalation owner, customer notice, support coverage, root-cause log, close rule, and support receipt.",
+      trackSummary: "Customer reference proof now becomes one production support operating console across SLA target, incident queue, escalation owner, customer notice, support coverage, root-cause log, close rule, and receipt.",
+      stageSummary: "Customer reference now becomes production support console with SLA, incidents, escalation, notice, coverage, root-cause, close rule, and receipt.",
+      openDecision: "Open support console",
+      guardedDecision: "Open guarded support",
+      holdDecision: "Hold support console",
+      repairDecision: "Repair support console",
+      nextOpen: "Open the production support operating console and keep SLA target, incident queue, escalation owner, customer notice, support coverage, root-cause log, close rule, and support receipt together.",
+      nextGuarded: "Open guarded support while one SLA, incident, escalation, notice, coverage, root-cause, or close-rule lane stays watched.",
+      nextHold: "Hold support console until SLA target, incident queue, escalation owner, customer notice, and support coverage are complete.",
+      nextRepair: "Repair production support before live billing reconciliation room.",
+      axes: [
+        ["SLA target", "supportGuard", 0.76, 5, "SLA target is published."],
+        ["Incident queue", "supportGuard", 0.74, 5, "Incident queue is visible."],
+        ["Escalation owner", "ownerCommand", 0.72, 6, "Escalation owner is named."],
+        ["Customer notice", "sponsorGuard", 0.72, 6, "Customer notice is ready."],
+        ["Support coverage", "supportGuard", 0.74, 5, "Support coverage is understood."],
+        ["Root-cause log", "proofGuard", 0.74, 5, "Root-cause log is attached."],
+        ["Close rule", "reviewGuard", 0.74, 5, "Close rule is agreed."],
+        ["Support receipt", "guardClosure", 0.72, 6, "Support receipt closes console."],
+      ],
+    },
+    {
+      key: "live-billing-reconciliation-room",
+      version: "v913",
+      number: 913,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Billing Reconciliation Room",
+      shortLabel: "Live Billing Reconciliation Room",
+      phase: "First pilot expansion rollout reuse market pilot live billing reconciliation room",
+      track: "v913 first pilot expansion rollout reuse market pilot live billing reconciliation room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-billing-reconciliation-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-billing-reconciliation-room",
+      idSuffix: "LIVE-BILLING-RECONCILIATION-ROOM",
+      scoreKey: "liveBillingReconciliationRoomScore",
+      decisionKey: "liveBillingReconciliationRoomDecision",
+      stateKey: "liveBillingReconciliationRoomState",
+      lineKey: "liveBillingReconciliationRoomLine",
+      primarySignal: "Pilot live billing reconciliation room",
+      primaryNote: "Reconciles live billing with invoice state, payment receipt, seat count, entitlement check, webhook status, tax note, finance owner, and billing receipt.",
+      summary: "Reconcile live billing with invoice state, payment receipt, seat count, entitlement check, webhook status, tax note, finance owner, and billing receipt.",
+      trackSummary: "Production support now becomes one live billing reconciliation room across invoice state, payment receipt, seat count, entitlement check, webhook status, tax note, finance owner, and receipt.",
+      stageSummary: "Production support now becomes live billing reconciliation with invoice, payment, seats, entitlement, webhook, tax, finance owner, and receipt.",
+      openDecision: "Open billing reconciliation",
+      guardedDecision: "Open guarded billing",
+      holdDecision: "Hold billing reconciliation",
+      repairDecision: "Repair billing reconciliation",
+      nextOpen: "Open the live billing reconciliation room and keep invoice state, payment receipt, seat count, entitlement check, webhook status, tax note, finance owner, and billing receipt together.",
+      nextGuarded: "Open guarded billing while one invoice, payment, seat, entitlement, webhook, tax, finance-owner, or receipt lane stays watched.",
+      nextHold: "Hold billing reconciliation until invoice state, payment receipt, seat count, entitlement check, and webhook status are complete.",
+      nextRepair: "Repair live billing before launch board review packet.",
+      axes: [
+        ["Invoice state", "sponsorGuard", 0.72, 6, "Invoice state is reconciled."],
+        ["Payment receipt", "sponsorGuard", 0.72, 6, "Payment receipt is stored."],
+        ["Seat count", "tenantGuard", 0.76, 5, "Seat count is verified."],
+        ["Entitlement check", "tenantGuard", 0.76, 5, "Entitlement check is clean."],
+        ["Webhook status", "proofGuard", 0.74, 5, "Webhook status is visible."],
+        ["Tax note", "reviewGuard", 0.74, 5, "Tax note is attached."],
+        ["Finance owner", "ownerCommand", 0.72, 6, "Finance owner is named."],
+        ["Billing receipt", "guardClosure", 0.72, 6, "Billing receipt closes room."],
+      ],
+    },
+    {
+      key: "launch-board-review-packet",
+      version: "v914",
+      number: 914,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Board Review Packet",
+      shortLabel: "Launch Board Review Packet",
+      phase: "First pilot expansion rollout reuse market pilot launch board review packet",
+      track: "v914 first pilot expansion rollout reuse market pilot launch board review packet",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-board-review-packet",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-board-review-packet",
+      idSuffix: "LAUNCH-BOARD-REVIEW-PACKET",
+      scoreKey: "launchBoardReviewPacketScore",
+      decisionKey: "launchBoardReviewPacketDecision",
+      stateKey: "launchBoardReviewPacketState",
+      lineKey: "launchBoardReviewPacketLine",
+      primarySignal: "Pilot launch board review packet",
+      primaryNote: "Creates the launch board review packet with runway score, revenue proof, support posture, reference status, billing reconciliation, backend readiness, board decision, and review receipt.",
+      summary: "Create the launch board review packet with runway score, revenue proof, support posture, reference status, billing reconciliation, backend readiness, board decision, and review receipt.",
+      trackSummary: "Live billing reconciliation now becomes one launch board review packet across runway score, revenue proof, support posture, reference status, billing reconciliation, backend readiness, board decision, and receipt.",
+      stageSummary: "Live billing reconciliation now becomes board review with runway score, revenue proof, support posture, reference status, billing, backend readiness, decision, and receipt.",
+      openDecision: "Open board packet",
+      guardedDecision: "Open guarded board",
+      holdDecision: "Hold board review",
+      repairDecision: "Repair board packet",
+      nextOpen: "Open the launch board review packet and keep runway score, revenue proof, support posture, reference status, billing reconciliation, backend readiness, board decision, and review receipt together.",
+      nextGuarded: "Open guarded board review while one runway, revenue, support, reference, billing, backend, or board-decision lane stays watched.",
+      nextHold: "Hold board review until runway score, revenue proof, support posture, reference status, and billing reconciliation are complete.",
+      nextRepair: "Repair launch board packet before customer-scale operating plan.",
+      axes: [
+        ["Runway score", "launchMoment", 0.74, 5, "Runway score is visible."],
+        ["Revenue proof", "sponsorGuard", 0.72, 6, "Revenue proof is current."],
+        ["Support posture", "supportGuard", 0.74, 5, "Support posture is stable."],
+        ["Reference status", "proofGuard", 0.76, 5, "Reference status is approved."],
+        ["Billing reconciliation", "sponsorGuard", 0.72, 6, "Billing reconciliation is complete."],
+        ["Backend readiness", "tenantGuard", 0.76, 5, "Backend readiness is clear."],
+        ["Board decision", "ownerCommand", 0.72, 6, "Board decision is named."],
+        ["Review receipt", "guardClosure", 0.72, 6, "Review receipt closes packet."],
       ],
     },
   ];
@@ -19750,6 +19945,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardReviewPacketPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportOperatingConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceStudioPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotInvestorProofPacketPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRevenueProofBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendLaunchPacketPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalLaunchControlGatePreview(model, autopilot)}",
@@ -26312,6 +26512,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRevenueProofBoardPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-revenue-proof-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotInvestorProofPacketSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "investor-proof-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotInvestorProofPacket(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "investor-proof-packet", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotInvestorProofPacketPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "investor-proof-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceStudioSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-reference-studio");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceStudio(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-reference-studio", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceStudioPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-reference-studio");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportOperatingConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-support-operating-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportOperatingConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-support-operating-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportOperatingConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-support-operating-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-billing-reconciliation-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-billing-reconciliation-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-billing-reconciliation-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardReviewPacketSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-board-review-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardReviewPacket(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-board-review-packet", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardReviewPacketPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-board-review-packet");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -91123,9 +91383,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v910", "First Pilot Expansion Rollout Reuse Market Pilot Investor Proof Packet", "Package launch progress, revenue proof, customer outcome, support cost, risk posture, and next-funding story for investor or board review."],
-      ["v911", "First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Studio", "Turn the first paid pilot into a buyer-safe reference with quote, proof boundary, redactions, approval owner, and reuse rules."],
-      ["v912", "First Pilot Expansion Rollout Reuse Market Pilot Production Support Operating Console", "Move support from launch proof into live operating console with SLA, incidents, owners, escalation, customer notice, and close receipts."],
+      ["v915", "First Pilot Expansion Rollout Reuse Market Pilot Customer Scale Operating Plan", "Turn board approval into a customer-scale operating plan with cohort order, support capacity, billing expansion, data boundary, and rollout owner."],
+      ["v916", "First Pilot Expansion Rollout Reuse Market Pilot Production Observability Desk", "Connect launch operations to observability with uptime, job health, audit events, billing webhooks, import errors, and support alerts."],
+      ["v917", "First Pilot Expansion Rollout Reuse Market Pilot Global Country Pilot Pack", "Prepare the next country pilot with localization fit, residency boundary, partner route, support promise, pricing proof, and launch receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

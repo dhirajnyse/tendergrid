@@ -1,5 +1,142 @@
 # Changelog
 
+## v914 - First Pilot Expansion Rollout Reuse Market Pilot Launch Board Review Packet
+
+### Changes Made
+- Activated the launch board review packet as the current build.
+- Added runway score, revenue proof, support posture, reference status, billing reconciliation, backend readiness, board decision, and review receipt as board-review lanes.
+- Updated the Build Phase next queue to v915-v917 for customer-scale planning, production observability, and global country pilot work.
+- Tightened the phone-width topbar so Rooms, rail switch, admin tools, user, reset, and logout controls wrap without clipping.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v914.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `styles.css`
+- `styles.min.css`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects with v914 badges, no console errors, and zero page-level horizontal overflow.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, and Command with stable routing and zero page-level horizontal overflow.
+- Passed: mobile QA for Command, Build Phase, and Autopilot at 390px width with zero page-level horizontal overflow.
+- Passed: visual Build Phase QA with v914 active, launch board review packet visible, launch roadmap present, v915-v917 next queue present, and phone topbar controls fully visible without text clipping.
+
+### Known Risks
+- Launch board review is still static proof; real board decisions, production backend readiness, billing reconciliation, and review receipts need live backend, finance, and governance systems.
+
+## v913 - First Pilot Expansion Rollout Reuse Market Pilot Live Billing Reconciliation Room
+
+### Changes Made
+- Activated the live billing reconciliation room in the pilot reuse runway.
+- Added invoice state, payment receipt, seat count, entitlement check, webhook status, tax note, finance owner, and billing receipt as billing reconciliation lanes.
+- Updated the Build Phase next queue to v914-v916 for launch board review, customer-scale planning, and production observability.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v913.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Billing reconciliation is still static; real invoice state, payment receipts, entitlements, webhooks, tax notes, and finance receipts need billing integrations.
+
+## v912 - First Pilot Expansion Rollout Reuse Market Pilot Production Support Operating Console
+
+### Changes Made
+- Activated the production support operating console in the pilot reuse runway.
+- Added SLA target, incident queue, escalation owner, customer notice, support coverage, root-cause log, close rule, and support receipt as support operating lanes.
+- Updated the Build Phase next queue to v913-v915 for live billing reconciliation, launch board review, and customer-scale planning.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v912.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Support console is still static; real SLA, incident queue, customer notices, coverage, root-cause logs, and close receipts need production support systems.
+
+## v911 - First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Studio
+
+### Changes Made
+- Activated the customer reference studio in the pilot reuse runway.
+- Added quote approval, redaction boundary, outcome proof, sponsor permission, reusable story, legal note, approval owner, and reference receipt as customer-reference lanes.
+- Updated the Build Phase next queue to v912-v914 for production support, live billing reconciliation, and launch board review.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v911.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Customer reference studio is still static; real quote approval, sponsor permission, legal approval, redaction, and reference receipts need customer and legal workflows.
+
+## v910 - First Pilot Expansion Rollout Reuse Market Pilot Investor Proof Packet
+
+### Changes Made
+- Activated the investor proof packet in the pilot reuse runway.
+- Added launch progress, revenue proof, customer outcome, support cost, risk posture, funding story, board ask, and investor receipt as proof-packet lanes.
+- Added release wrappers and command rail render paths for v910-v914.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v910.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Investor proof packet is still static; real launch progress, revenue proof, customer outcomes, support cost, funding story, board ask, and investor receipts need live commercial systems.
+
 ## v909 - First Pilot Expansion Rollout Reuse Market Pilot Revenue Proof Board
 
 ### Changes Made
