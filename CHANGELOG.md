@@ -1,5 +1,136 @@
 # Changelog
 
+## v894 - First Pilot Expansion Rollout Reuse Market Pilot First Customer Cutover Console
+
+### Changes Made
+- Activated the first customer cutover console as the current build.
+- Added final data lock, user activation, launch owner, support watch, billing confirmation, proof capture, rollback window, and cutover receipt to the pilot reuse runway.
+- Updated the Build Phase next queue to v895-v897 for live usage telemetry, customer success handoff, and production rollback confidence work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v894.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects with v894 badges, no console errors, and no horizontal overflow.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, and Command with stable active rail state.
+- Passed: mobile QA for Command, Build Phase, and Autopilot at 390px width with zero page-level horizontal overflow.
+- Passed: visual Build Phase QA with v894 active, first customer cutover console visible, launch roadmap present, and v895-v897 next queue present.
+
+### Known Risks
+- First customer cutover is still a static console; real data lock, user activation, support watch, billing confirmation, proof capture, rollback window, and customer receipt need staging and production systems.
+
+## v893 - First Pilot Expansion Rollout Reuse Market Pilot Staging Data Migration Receipt
+
+### Changes Made
+- Activated the staging data migration receipt in the pilot reuse runway.
+- Added source snapshot, field mapping, row validation, reconciliation, evidence files, owner acceptance, rollback proof, and migration receipt as launch proof lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v893.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Staging migration remains modeled in the static app; real workbook snapshotting, field mapping, row validation, reconciliation, evidence storage, acceptance, and rollback proof need a staging environment.
+
+## v892 - First Pilot Expansion Rollout Reuse Market Pilot Launch Automation Safety Review
+
+### Changes Made
+- Activated the launch automation safety review in the pilot reuse runway.
+- Added trigger limits, human approvals, audit receipts, recovery paths, customer messaging, support escalation, automation monitor, and safety signoff as gated launch lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v892.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Automation safety is static proof at this stage; real triggers, approvals, audit receipts, recovery paths, customer messages, support escalation, and monitoring need backend execution.
+
+## v891 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Provisioning Drill
+
+### Changes Made
+- Activated the pilot tenant provisioning drill in the pilot reuse runway.
+- Added workspace creation, role templates, import seed, support access, audit export, billing state, rollback rehearsal, and tenant receipt as provisioning proof lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v891.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Tenant provisioning is still a static drill; real workspace creation, roles, import seed, support access, audit export, billing state, rollback rehearsal, and receipt need service-layer execution.
+
+## v890 - First Pilot Expansion Rollout Reuse Market Pilot Production Integration Planner
+
+### Changes Made
+- Activated the production integration planner as the first release in this batch.
+- Added API boundaries, data model, auth integration, evidence storage, billing handoff, monitoring, rollout owner, and integration receipt to the pilot reuse runway.
+- Added release wrappers and command rail render paths for v890-v894.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v890.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Production integration is still a static planner; real API boundaries, data model, auth, evidence storage, billing handoff, monitoring, owner assignment, and receipt need backend implementation.
+
 ## v889 - First Pilot Expansion Rollout Reuse Market Pilot Production Backend Conversion Gate
 
 ### Changes Made

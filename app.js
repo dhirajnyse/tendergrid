@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v889";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Conversion Gate";
+  const BUILD_VERSION = "v894";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Customer Cutover Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=889.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=889.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=894.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=894.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -3350,6 +3350,201 @@
         ["Deployment route", "reviewGuard", 0.72, 6, "Deployment route is readable."],
         ["Monitoring", "supportGuard", 0.74, 5, "Monitoring is assigned."],
         ["Cutover decision", "guardClosure", 0.72, 6, "Cutover decision closes the gate."],
+      ],
+    },
+    {
+      key: "production-integration-planner",
+      version: "v890",
+      number: 890,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Integration Planner",
+      shortLabel: "Production Integration Planner",
+      phase: "First pilot expansion rollout reuse market pilot production integration planner",
+      track: "v890 first pilot expansion rollout reuse market pilot production integration planner",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-integration-planner",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-integration-planner",
+      idSuffix: "PRODUCTION-INTEGRATION-PLANNER",
+      scoreKey: "productionIntegrationPlannerScore",
+      decisionKey: "productionIntegrationPlannerDecision",
+      stateKey: "productionIntegrationPlannerState",
+      lineKey: "productionIntegrationPlannerLine",
+      primarySignal: "Pilot production integration planner",
+      primaryNote: "Plans production integration across API boundaries, data model, auth, evidence storage, billing handoff, monitoring, rollout owner, and integration receipt.",
+      summary: "Plan production integration across API boundaries, data model, auth, evidence storage, billing handoff, monitoring, rollout owner, and integration receipt.",
+      trackSummary: "Backend conversion gates now become one production integration planner across API boundaries, data model, auth, evidence storage, billing handoff, monitoring, rollout owner, and integration receipt.",
+      stageSummary: "Backend gate now becomes production integration with APIs, data model, auth, storage, billing, monitoring, rollout owner, and receipt.",
+      openDecision: "Open integration plan",
+      guardedDecision: "Open guarded integration",
+      holdDecision: "Hold integration plan",
+      repairDecision: "Repair integration plan",
+      nextOpen: "Open the production integration planner and keep API boundaries, data model, auth, evidence storage, billing handoff, monitoring, rollout owner, and integration receipt together.",
+      nextGuarded: "Open guarded integration while one API, data, auth, storage, billing, monitoring, or owner lane stays watched.",
+      nextHold: "Hold integration until API boundaries, auth, data model, storage, and billing handoff are clear.",
+      nextRepair: "Repair production integration before tenant provisioning drill.",
+      axes: [
+        ["API boundaries", "tenantGuard", 0.78, 5, "API boundaries are explicit."],
+        ["Data model", "ownerCommand", 0.74, 5, "Data model is owned."],
+        ["Auth integration", "tenantGuard", 0.8, 4, "Auth integration is bounded."],
+        ["Evidence storage", "proofGuard", 0.76, 5, "Evidence storage is mapped."],
+        ["Billing handoff", "sponsorGuard", 0.72, 6, "Billing handoff is controlled."],
+        ["Monitoring", "supportGuard", 0.74, 5, "Monitoring route is assigned."],
+        ["Rollout owner", "ownerCommand", 0.72, 6, "Rollout owner is accountable."],
+        ["Integration receipt", "guardClosure", 0.72, 6, "Integration receipt closes the planner."],
+      ],
+    },
+    {
+      key: "pilot-tenant-provisioning-drill",
+      version: "v891",
+      number: 891,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Provisioning Drill",
+      shortLabel: "Pilot Tenant Provisioning Drill",
+      phase: "First pilot expansion rollout reuse market pilot tenant provisioning drill",
+      track: "v891 first pilot expansion rollout reuse market pilot tenant provisioning drill",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-provisioning-drill",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-provisioning-drill",
+      idSuffix: "PILOT-TENANT-PROVISIONING-DRILL",
+      scoreKey: "pilotTenantProvisioningDrillScore",
+      decisionKey: "pilotTenantProvisioningDrillDecision",
+      stateKey: "pilotTenantProvisioningDrillState",
+      lineKey: "pilotTenantProvisioningDrillLine",
+      primarySignal: "Pilot tenant provisioning drill",
+      primaryNote: "Drills tenant provisioning with workspace creation, role templates, import seed, support access, audit export, billing state, rollback rehearsal, and tenant receipt.",
+      summary: "Drill tenant provisioning with workspace creation, role templates, import seed, support access, audit export, billing state, rollback rehearsal, and tenant receipt.",
+      trackSummary: "Production integration planners now become one tenant provisioning drill across workspace creation, role templates, import seed, support access, audit export, billing state, rollback rehearsal, and receipt.",
+      stageSummary: "Integration planning now becomes tenant provisioning with workspace creation, roles, import seed, support access, audit export, billing, rollback, and receipt.",
+      openDecision: "Run tenant drill",
+      guardedDecision: "Run guarded tenant drill",
+      holdDecision: "Hold tenant drill",
+      repairDecision: "Repair tenant drill",
+      nextOpen: "Run the tenant provisioning drill and keep workspace creation, role templates, import seed, support access, audit export, billing state, rollback rehearsal, and tenant receipt together.",
+      nextGuarded: "Run guarded tenant provisioning while one workspace, role, import, support, audit, billing, or rollback lane stays watched.",
+      nextHold: "Hold tenant provisioning until workspace creation, role templates, import seed, and support access are clear.",
+      nextRepair: "Repair tenant provisioning before launch automation safety review.",
+      axes: [
+        ["Workspace creation", "launchMoment", 0.72, 6, "Workspace creation is rehearsed."],
+        ["Role templates", "tenantGuard", 0.78, 5, "Role templates are safe."],
+        ["Import seed", "proofGuard", 0.74, 5, "Import seed is validated."],
+        ["Support access", "supportGuard", 0.74, 5, "Support access is bounded."],
+        ["Audit export", "proofGuard", 0.76, 5, "Audit export works."],
+        ["Billing state", "sponsorGuard", 0.72, 6, "Billing state is visible."],
+        ["Rollback rehearsal", "rollbackGuard", 0.76, 5, "Rollback rehearsal is ready."],
+        ["Tenant receipt", "guardClosure", 0.72, 6, "Tenant receipt closes the drill."],
+      ],
+    },
+    {
+      key: "launch-automation-safety-review",
+      version: "v892",
+      number: 892,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Automation Safety Review",
+      shortLabel: "Launch Automation Safety Review",
+      phase: "First pilot expansion rollout reuse market pilot launch automation safety review",
+      track: "v892 first pilot expansion rollout reuse market pilot launch automation safety review",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-automation-safety-review",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-automation-safety-review",
+      idSuffix: "LAUNCH-AUTOMATION-SAFETY-REVIEW",
+      scoreKey: "launchAutomationSafetyReviewScore",
+      decisionKey: "launchAutomationSafetyReviewDecision",
+      stateKey: "launchAutomationSafetyReviewState",
+      lineKey: "launchAutomationSafetyReviewLine",
+      primarySignal: "Pilot launch automation safety review",
+      primaryNote: "Reviews launch automation safety with trigger limits, human approvals, audit receipts, recovery paths, customer messaging, support escalation, and safety signoff.",
+      summary: "Review launch automation safety with trigger limits, human approvals, audit receipts, recovery paths, customer messaging, support escalation, and safety signoff.",
+      trackSummary: "Tenant provisioning drills now become one launch automation safety review across trigger limits, human approvals, audit receipts, recovery paths, customer messaging, support escalation, and safety signoff.",
+      stageSummary: "Tenant provisioning now becomes automation safety review with trigger limits, approvals, audit, recovery, customer messaging, support escalation, and signoff.",
+      openDecision: "Open automation review",
+      guardedDecision: "Open guarded automation",
+      holdDecision: "Hold automation review",
+      repairDecision: "Repair automation safety",
+      nextOpen: "Open the launch automation safety review and keep trigger limits, human approvals, audit receipts, recovery paths, customer messaging, support escalation, and safety signoff together.",
+      nextGuarded: "Open guarded automation safety while one trigger, approval, audit, recovery, message, or support lane stays watched.",
+      nextHold: "Hold launch automation until trigger limits, approvals, audit receipts, and recovery paths are clear.",
+      nextRepair: "Repair automation safety before staging data migration receipt.",
+      axes: [
+        ["Trigger limits", "reviewGuard", 0.74, 5, "Trigger limits are explicit."],
+        ["Human approvals", "ownerCommand", 0.74, 5, "Human approvals are named."],
+        ["Audit receipts", "proofGuard", 0.76, 5, "Audit receipts are generated."],
+        ["Recovery paths", "rollbackGuard", 0.76, 5, "Recovery paths are ready."],
+        ["Customer messaging", "sponsorGuard", 0.72, 6, "Customer messaging is safe."],
+        ["Support escalation", "supportGuard", 0.74, 5, "Support escalation is visible."],
+        ["Automation monitor", "tenantGuard", 0.74, 5, "Automation monitor is bounded."],
+        ["Safety signoff", "guardClosure", 0.72, 6, "Safety signoff closes review."],
+      ],
+    },
+    {
+      key: "staging-data-migration-receipt",
+      version: "v893",
+      number: 893,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Staging Data Migration Receipt",
+      shortLabel: "Staging Data Migration Receipt",
+      phase: "First pilot expansion rollout reuse market pilot staging data migration receipt",
+      track: "v893 first pilot expansion rollout reuse market pilot staging data migration receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-staging-data-migration-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-staging-data-migration-receipt",
+      idSuffix: "STAGING-DATA-MIGRATION-RECEIPT",
+      scoreKey: "stagingDataMigrationReceiptScore",
+      decisionKey: "stagingDataMigrationReceiptDecision",
+      stateKey: "stagingDataMigrationReceiptState",
+      lineKey: "stagingDataMigrationReceiptLine",
+      primarySignal: "Pilot staging data migration receipt",
+      primaryNote: "Proves workbook-to-staging migration with source snapshot, field mapping, row validation, reconciliation, evidence files, owner acceptance, rollback proof, and migration receipt.",
+      summary: "Prove staging data migration with source snapshot, field mapping, row validation, reconciliation, evidence files, owner acceptance, rollback proof, and migration receipt.",
+      trackSummary: "Launch automation safety reviews now become one staging data migration receipt across source snapshot, field mapping, row validation, reconciliation, evidence files, owner acceptance, rollback proof, and receipt.",
+      stageSummary: "Automation safety now becomes staging migration receipt with source snapshot, mapping, validation, reconciliation, evidence, acceptance, rollback, and receipt.",
+      openDecision: "Run migration receipt",
+      guardedDecision: "Run guarded migration",
+      holdDecision: "Hold migration receipt",
+      repairDecision: "Repair migration receipt",
+      nextOpen: "Run the staging data migration receipt and keep source snapshot, field mapping, row validation, reconciliation, evidence files, owner acceptance, rollback proof, and migration receipt together.",
+      nextGuarded: "Run guarded migration while one source, mapping, validation, reconciliation, evidence, owner, or rollback lane stays watched.",
+      nextHold: "Hold migration until source snapshot, mapping, validation, reconciliation, and rollback proof are clear.",
+      nextRepair: "Repair staging migration before first customer cutover.",
+      axes: [
+        ["Source snapshot", "proofGuard", 0.74, 5, "Source snapshot is frozen."],
+        ["Field mapping", "ownerCommand", 0.72, 6, "Field mapping is owned."],
+        ["Row validation", "proofGuard", 0.76, 5, "Rows validate in staging."],
+        ["Reconciliation", "reviewGuard", 0.74, 5, "Reconciliation is readable."],
+        ["Evidence files", "proofGuard", 0.74, 5, "Evidence files migrate."],
+        ["Owner acceptance", "sponsorGuard", 0.72, 6, "Owner acceptance is captured."],
+        ["Rollback proof", "rollbackGuard", 0.76, 5, "Rollback proof is ready."],
+        ["Migration receipt", "guardClosure", 0.72, 6, "Migration receipt closes staging."],
+      ],
+    },
+    {
+      key: "first-customer-cutover-console",
+      version: "v894",
+      number: 894,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Customer Cutover Console",
+      shortLabel: "First Customer Cutover Console",
+      phase: "First pilot expansion rollout reuse market pilot first customer cutover console",
+      track: "v894 first pilot expansion rollout reuse market pilot first customer cutover console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-cutover-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-cutover-console",
+      idSuffix: "FIRST-CUSTOMER-CUTOVER-CONSOLE",
+      scoreKey: "firstCustomerCutoverConsoleScore",
+      decisionKey: "firstCustomerCutoverConsoleDecision",
+      stateKey: "firstCustomerCutoverConsoleState",
+      lineKey: "firstCustomerCutoverConsoleLine",
+      primarySignal: "Pilot first customer cutover console",
+      primaryNote: "Coordinates first customer cutover with final data lock, user activation, launch owner, support watch, billing confirmation, proof capture, rollback window, and cutover receipt.",
+      summary: "Coordinate first customer cutover with final data lock, user activation, launch owner, support watch, billing confirmation, proof capture, rollback window, and cutover receipt.",
+      trackSummary: "Staging migration receipts now become one first customer cutover console across final data lock, user activation, launch owner, support watch, billing confirmation, proof capture, rollback window, and receipt.",
+      stageSummary: "Staging migration now becomes first customer cutover with data lock, user activation, launch owner, support watch, billing, proof capture, rollback, and receipt.",
+      openDecision: "Open cutover console",
+      guardedDecision: "Open guarded cutover",
+      holdDecision: "Hold customer cutover",
+      repairDecision: "Repair cutover console",
+      nextOpen: "Open the first customer cutover console and keep final data lock, user activation, launch owner, support watch, billing confirmation, proof capture, rollback window, and cutover receipt together.",
+      nextGuarded: "Open guarded cutover while one data, user, owner, support, billing, proof, or rollback lane stays watched.",
+      nextHold: "Hold first customer cutover until data lock, user activation, support watch, billing, and rollback window are clear.",
+      nextRepair: "Repair customer cutover before live usage telemetry expands.",
+      axes: [
+        ["Final data lock", "tenantGuard", 0.78, 5, "Final data lock is explicit."],
+        ["User activation", "launchMoment", 0.72, 6, "Users are activation-ready."],
+        ["Launch owner", "ownerCommand", 0.72, 6, "Launch owner is accountable."],
+        ["Support watch", "supportGuard", 0.74, 5, "Support watch is active."],
+        ["Billing confirmation", "sponsorGuard", 0.72, 6, "Billing confirmation is visible."],
+        ["Proof capture", "proofGuard", 0.76, 5, "Proof capture is ready."],
+        ["Rollback window", "rollbackGuard", 0.76, 5, "Rollback window is named."],
+        ["Cutover receipt", "guardClosure", 0.72, 6, "Cutover receipt closes go-live."],
       ],
     },
   ];
@@ -18970,6 +19165,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerCutoverConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDataMigrationReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchAutomationSafetyReviewPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTenantProvisioningDrillPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIntegrationPlannerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendConversionGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveCustomerRehearsalBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalScaleGuardPreview(model, autopilot)}",
@@ -25274,6 +25474,66 @@ const state = {
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendConversionGatePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-backend-conversion-gate");
   }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIntegrationPlannerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-integration-planner");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIntegrationPlanner(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-integration-planner", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIntegrationPlannerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-integration-planner");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTenantProvisioningDrillSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-tenant-provisioning-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTenantProvisioningDrill(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-tenant-provisioning-drill", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTenantProvisioningDrillPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-tenant-provisioning-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchAutomationSafetyReviewSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-automation-safety-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchAutomationSafetyReview(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-automation-safety-review", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchAutomationSafetyReviewPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-automation-safety-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDataMigrationReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "staging-data-migration-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDataMigrationReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "staging-data-migration-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDataMigrationReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-data-migration-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerCutoverConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-customer-cutover-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerCutoverConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-customer-cutover-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerCutoverConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-cutover-console");
+  }
+
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
     const buildNumber = getBuildNumber();
@@ -90083,9 +90343,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v890", "First Pilot Expansion Rollout Reuse Market Pilot Production Integration Planner", "Plan production integration across API boundaries, data model, auth, evidence storage, billing handoff, monitoring, and rollout owners."],
-      ["v891", "First Pilot Expansion Rollout Reuse Market Pilot Pilot Tenant Provisioning Drill", "Drill tenant provisioning with workspace creation, roles, imports, support access, audit exports, billing state, and rollback rehearsal."],
-      ["v892", "First Pilot Expansion Rollout Reuse Market Pilot Launch Automation Safety Review", "Review launch automation safety with trigger limits, human approvals, audit receipts, recovery paths, customer messaging, and support escalation."],
+      ["v895", "First Pilot Expansion Rollout Reuse Market Pilot Live Usage Telemetry Board", "Track first live usage with login movement, room visits, action closure, support pressure, evidence creation, billing state, and health alerts."],
+      ["v896", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Handoff Room", "Handoff first customer success with owner rhythm, support promises, weekly review, value proof, renewal signal, and escalation route."],
+      ["v897", "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Confidence Drill", "Drill rollback confidence across restore point, access pause, customer notice, audit receipt, billing hold, and recovery owner."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
@@ -144709,7 +144969,3 @@ const state = {
 
   render();
 })();
-
-
-
-
