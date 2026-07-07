@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v904";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Readiness Evidence Vault";
+  const BUILD_VERSION = "v909";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Revenue Proof Board";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=904.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=904.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=909.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=909.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -3935,6 +3935,201 @@
         ["Rollback proof", "rollbackGuard", 0.76, 5, "Rollback proof is ready."],
         ["Admin audit", "reviewGuard", 0.74, 5, "Admin audit is complete."],
         ["Vault receipt", "guardClosure", 0.72, 6, "Vault receipt closes readiness."],
+      ],
+    },
+    {
+      key: "wider-rollout-decision-room",
+      version: "v905",
+      number: 905,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Wider Rollout Decision Room",
+      shortLabel: "Wider Rollout Decision Room",
+      phase: "First pilot expansion rollout reuse market pilot wider rollout decision room",
+      track: "v905 first pilot expansion rollout reuse market pilot wider rollout decision room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-wider-rollout-decision-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-wider-rollout-decision-room",
+      idSuffix: "WIDER-ROLLOUT-DECISION-ROOM",
+      scoreKey: "widerRolloutDecisionRoomScore",
+      decisionKey: "widerRolloutDecisionRoomDecision",
+      stateKey: "widerRolloutDecisionRoomState",
+      lineKey: "widerRolloutDecisionRoomLine",
+      primarySignal: "Pilot wider rollout decision room",
+      primaryNote: "Decides wider rollout with readiness evidence, support confidence, billing proof, sponsor permission, partner route, rollback posture, market boundary, and decision receipt.",
+      summary: "Decide wider rollout with readiness evidence, support confidence, billing proof, sponsor permission, partner route, rollback posture, market boundary, and decision receipt.",
+      trackSummary: "Production readiness evidence now becomes one wider rollout decision room across readiness evidence, support confidence, billing proof, sponsor permission, partner route, rollback posture, market boundary, and receipt.",
+      stageSummary: "Production readiness now becomes wider rollout decision with evidence, support confidence, billing proof, sponsor permission, partner route, rollback, boundary, and receipt.",
+      openDecision: "Open rollout decision",
+      guardedDecision: "Open guarded rollout",
+      holdDecision: "Hold wider rollout",
+      repairDecision: "Repair rollout decision",
+      nextOpen: "Open the wider rollout decision room and keep readiness evidence, support confidence, billing proof, sponsor permission, partner route, rollback posture, market boundary, and decision receipt together.",
+      nextGuarded: "Open guarded wider rollout while one evidence, support, billing, sponsor, partner, rollback, or market-boundary lane stays watched.",
+      nextHold: "Hold wider rollout until readiness evidence, support confidence, billing proof, sponsor permission, and rollback posture are complete.",
+      nextRepair: "Repair wider rollout decision before second customer readiness pack.",
+      axes: [
+        ["Readiness evidence", "proofGuard", 0.76, 5, "Readiness evidence is accepted."],
+        ["Support confidence", "supportGuard", 0.74, 5, "Support confidence is visible."],
+        ["Billing proof", "sponsorGuard", 0.72, 6, "Billing proof is signed."],
+        ["Sponsor permission", "sponsorGuard", 0.72, 6, "Sponsor permission is recorded."],
+        ["Partner route", "reviewGuard", 0.74, 5, "Partner route is selected."],
+        ["Rollback posture", "rollbackGuard", 0.76, 5, "Rollback posture is calm."],
+        ["Market boundary", "tenantGuard", 0.74, 5, "Market boundary is named."],
+        ["Decision receipt", "guardClosure", 0.72, 6, "Decision receipt closes rollout."],
+      ],
+    },
+    {
+      key: "second-customer-readiness-pack",
+      version: "v906",
+      number: 906,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Second Customer Readiness Pack",
+      shortLabel: "Second Customer Readiness Pack",
+      phase: "First pilot expansion rollout reuse market pilot second customer readiness pack",
+      track: "v906 first pilot expansion rollout reuse market pilot second customer readiness pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-second-customer-readiness-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-second-customer-readiness-pack",
+      idSuffix: "SECOND-CUSTOMER-READINESS-PACK",
+      scoreKey: "secondCustomerReadinessPackScore",
+      decisionKey: "secondCustomerReadinessPackDecision",
+      stateKey: "secondCustomerReadinessPackState",
+      lineKey: "secondCustomerReadinessPackLine",
+      primarySignal: "Pilot second customer readiness pack",
+      primaryNote: "Prepares the second customer with import readiness, access model, success owner, billing route, support guard, first review date, proof boundary, and readiness receipt.",
+      summary: "Prepare the second customer with import readiness, access model, success owner, billing route, support guard, first review date, proof boundary, and readiness receipt.",
+      trackSummary: "Wider rollout decision now becomes one second customer readiness pack across import readiness, access model, success owner, billing route, support guard, first review date, proof boundary, and receipt.",
+      stageSummary: "Wider rollout now becomes second customer readiness with import, access, success owner, billing route, support, first review, proof boundary, and receipt.",
+      openDecision: "Open readiness pack",
+      guardedDecision: "Open guarded readiness",
+      holdDecision: "Hold second customer",
+      repairDecision: "Repair readiness pack",
+      nextOpen: "Open the second customer readiness pack and keep import readiness, access model, success owner, billing route, support guard, first review date, proof boundary, and readiness receipt together.",
+      nextGuarded: "Open guarded second customer readiness while one import, access, success, billing, support, date, or proof-boundary lane stays watched.",
+      nextHold: "Hold second customer launch until import readiness, access model, success owner, billing route, and support guard are complete.",
+      nextRepair: "Repair second customer readiness before global launch control gate.",
+      axes: [
+        ["Import readiness", "proofGuard", 0.76, 5, "Import readiness is tested."],
+        ["Access model", "tenantGuard", 0.76, 5, "Access model is scoped."],
+        ["Success owner", "ownerCommand", 0.72, 6, "Success owner is named."],
+        ["Billing route", "sponsorGuard", 0.72, 6, "Billing route is clear."],
+        ["Support guard", "supportGuard", 0.74, 5, "Support guard is ready."],
+        ["First review date", "reviewGuard", 0.74, 5, "First review date is locked."],
+        ["Proof boundary", "tenantGuard", 0.74, 5, "Proof boundary is safe."],
+        ["Readiness receipt", "guardClosure", 0.72, 6, "Readiness receipt closes pack."],
+      ],
+    },
+    {
+      key: "global-launch-control-gate",
+      version: "v907",
+      number: 907,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Launch Control Gate",
+      shortLabel: "Global Launch Control Gate",
+      phase: "First pilot expansion rollout reuse market pilot global launch control gate",
+      track: "v907 first pilot expansion rollout reuse market pilot global launch control gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-launch-control-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-launch-control-gate",
+      idSuffix: "GLOBAL-LAUNCH-CONTROL-GATE",
+      scoreKey: "globalLaunchControlGateScore",
+      decisionKey: "globalLaunchControlGateDecision",
+      stateKey: "globalLaunchControlGateState",
+      lineKey: "globalLaunchControlGateLine",
+      primarySignal: "Pilot global launch control gate",
+      primaryNote: "Controls global launch with region fit, data boundary, support scale, partner readiness, pricing proof, go/no-go owner, rollback route, and launch receipt.",
+      summary: "Control global launch readiness with region fit, data boundary, support scale, partner readiness, pricing proof, go/no-go owner, rollback route, and launch receipt.",
+      trackSummary: "Second customer readiness now becomes one global launch control gate across region fit, data boundary, support scale, partner readiness, pricing proof, go/no-go owner, rollback route, and receipt.",
+      stageSummary: "Second customer readiness now becomes global launch control with region fit, data boundary, support scale, partner readiness, pricing proof, go/no-go, rollback, and receipt.",
+      openDecision: "Open launch gate",
+      guardedDecision: "Open guarded launch",
+      holdDecision: "Hold global launch",
+      repairDecision: "Repair launch gate",
+      nextOpen: "Open the global launch control gate and keep region fit, data boundary, support scale, partner readiness, pricing proof, go/no-go owner, rollback route, and launch receipt together.",
+      nextGuarded: "Open guarded global launch while one region, data, support, partner, pricing, decision, or rollback lane stays watched.",
+      nextHold: "Hold global launch until region fit, data boundary, support scale, partner readiness, and pricing proof are complete.",
+      nextRepair: "Repair global launch control before production backend launch packet.",
+      axes: [
+        ["Region fit", "tenantGuard", 0.74, 5, "Region fit is clear."],
+        ["Data boundary", "tenantGuard", 0.76, 5, "Data boundary is safe."],
+        ["Support scale", "supportGuard", 0.74, 5, "Support scale is ready."],
+        ["Partner readiness", "reviewGuard", 0.74, 5, "Partner readiness is visible."],
+        ["Pricing proof", "sponsorGuard", 0.72, 6, "Pricing proof is accepted."],
+        ["Go/no-go owner", "ownerCommand", 0.72, 6, "Go/no-go owner is named."],
+        ["Rollback route", "rollbackGuard", 0.76, 5, "Rollback route is rehearsed."],
+        ["Launch receipt", "guardClosure", 0.72, 6, "Launch receipt closes gate."],
+      ],
+    },
+    {
+      key: "production-backend-launch-packet",
+      version: "v908",
+      number: 908,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Launch Packet",
+      shortLabel: "Production Backend Launch Packet",
+      phase: "First pilot expansion rollout reuse market pilot production backend launch packet",
+      track: "v908 first pilot expansion rollout reuse market pilot production backend launch packet",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-launch-packet",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-launch-packet",
+      idSuffix: "PRODUCTION-BACKEND-LAUNCH-PACKET",
+      scoreKey: "productionBackendLaunchPacketScore",
+      decisionKey: "productionBackendLaunchPacketDecision",
+      stateKey: "productionBackendLaunchPacketState",
+      lineKey: "productionBackendLaunchPacketLine",
+      primarySignal: "Pilot production backend launch packet",
+      primaryNote: "Packages backend launch with API contract, auth guard, database migration, audit log, billing webhook, hosting monitor, support playbook, and packet receipt.",
+      summary: "Package backend launch with API contract, auth guard, database migration, audit log, billing webhook, hosting monitor, support playbook, and packet receipt.",
+      trackSummary: "Global launch control now becomes one production backend launch packet across API contract, auth guard, database migration, audit log, billing webhook, hosting monitor, support playbook, and receipt.",
+      stageSummary: "Global launch control now becomes backend launch packet with API, auth, database, audit, billing, hosting, support playbook, and receipt.",
+      openDecision: "Open backend packet",
+      guardedDecision: "Open guarded backend",
+      holdDecision: "Hold backend launch",
+      repairDecision: "Repair backend packet",
+      nextOpen: "Open the production backend launch packet and keep API contract, auth guard, database migration, audit log, billing webhook, hosting monitor, support playbook, and packet receipt together.",
+      nextGuarded: "Open guarded backend launch while one API, auth, database, audit, billing, hosting, or support lane stays watched.",
+      nextHold: "Hold backend launch until API contract, auth guard, database migration, audit log, billing webhook, and hosting monitor are complete.",
+      nextRepair: "Repair production backend launch before pilot revenue proof board.",
+      axes: [
+        ["API contract", "proofGuard", 0.76, 5, "API contract is frozen."],
+        ["Auth guard", "tenantGuard", 0.76, 5, "Auth guard is verified."],
+        ["Database migration", "proofGuard", 0.76, 5, "Database migration is rehearsed."],
+        ["Audit log", "reviewGuard", 0.74, 5, "Audit log is visible."],
+        ["Billing webhook", "sponsorGuard", 0.72, 6, "Billing webhook is mapped."],
+        ["Hosting monitor", "rollbackGuard", 0.76, 5, "Hosting monitor is watching."],
+        ["Support playbook", "supportGuard", 0.74, 5, "Support playbook is ready."],
+        ["Packet receipt", "guardClosure", 0.72, 6, "Packet receipt closes backend."],
+      ],
+    },
+    {
+      key: "pilot-revenue-proof-board",
+      version: "v909",
+      number: 909,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Revenue Proof Board",
+      shortLabel: "Pilot Revenue Proof Board",
+      phase: "First pilot expansion rollout reuse market pilot revenue proof board",
+      track: "v909 first pilot expansion rollout reuse market pilot revenue proof board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-revenue-proof-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-revenue-proof-board",
+      idSuffix: "PILOT-REVENUE-PROOF-BOARD",
+      scoreKey: "pilotRevenueProofBoardScore",
+      decisionKey: "pilotRevenueProofBoardDecision",
+      stateKey: "pilotRevenueProofBoardState",
+      lineKey: "pilotRevenueProofBoardLine",
+      primarySignal: "Pilot revenue proof board",
+      primaryNote: "Turns pilot launch into revenue proof with invoice proof, payment status, seat activation, sponsor value, renewal signal, support cost, expansion path, and revenue receipt.",
+      summary: "Turn pilot launch into revenue proof with invoice proof, payment status, seat activation, sponsor value, renewal signal, support cost, expansion path, and revenue receipt.",
+      trackSummary: "Production backend launch now becomes one pilot revenue proof board across invoice proof, payment status, seat activation, sponsor value, renewal signal, support cost, expansion path, and receipt.",
+      stageSummary: "Backend launch now becomes revenue proof with invoice, payment, seat activation, sponsor value, renewal signal, support cost, expansion path, and receipt.",
+      openDecision: "Open revenue proof",
+      guardedDecision: "Open guarded revenue",
+      holdDecision: "Hold revenue proof",
+      repairDecision: "Repair revenue proof",
+      nextOpen: "Open the pilot revenue proof board and keep invoice proof, payment status, seat activation, sponsor value, renewal signal, support cost, expansion path, and revenue receipt together.",
+      nextGuarded: "Open guarded revenue proof while one invoice, payment, seat, sponsor, renewal, support-cost, or expansion lane stays watched.",
+      nextHold: "Hold revenue story until invoice proof, payment status, seat activation, sponsor value, renewal signal, and support cost are complete.",
+      nextRepair: "Repair pilot revenue proof before investor proof packet.",
+      axes: [
+        ["Invoice proof", "sponsorGuard", 0.72, 6, "Invoice proof is stored."],
+        ["Payment status", "sponsorGuard", 0.72, 6, "Payment status is visible."],
+        ["Seat activation", "tenantGuard", 0.76, 5, "Seat activation is counted."],
+        ["Sponsor value", "reviewGuard", 0.74, 5, "Sponsor value is described."],
+        ["Renewal signal", "launchMoment", 0.74, 5, "Renewal signal is alive."],
+        ["Support cost", "supportGuard", 0.74, 5, "Support cost is understood."],
+        ["Expansion path", "ownerCommand", 0.72, 6, "Expansion path has an owner."],
+        ["Revenue receipt", "guardClosure", 0.72, 6, "Revenue receipt closes proof."],
       ],
     },
   ];
@@ -19555,6 +19750,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRevenueProofBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendLaunchPacketPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalLaunchControlGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerReadinessPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotWiderRolloutDecisionRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionReadinessEvidenceVaultPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminAuditTrailPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionGatePreview(model, autopilot)}",
@@ -26052,6 +26252,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionReadinessEvidenceVaultPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-readiness-evidence-vault");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotWiderRolloutDecisionRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "wider-rollout-decision-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotWiderRolloutDecisionRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "wider-rollout-decision-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotWiderRolloutDecisionRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "wider-rollout-decision-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerReadinessPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "second-customer-readiness-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerReadinessPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "second-customer-readiness-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerReadinessPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "second-customer-readiness-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalLaunchControlGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-launch-control-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalLaunchControlGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-launch-control-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalLaunchControlGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-launch-control-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendLaunchPacketSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-backend-launch-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendLaunchPacket(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-backend-launch-packet", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendLaunchPacketPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-backend-launch-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRevenueProofBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-revenue-proof-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRevenueProofBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-revenue-proof-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRevenueProofBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-revenue-proof-board");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -90863,9 +91123,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v905", "First Pilot Expansion Rollout Reuse Market Pilot Wider Rollout Decision Room", "Decide wider rollout with readiness evidence, support confidence, billing proof, sponsor permission, partner route, and rollback posture."],
-      ["v906", "First Pilot Expansion Rollout Reuse Market Pilot Second Customer Readiness Pack", "Prepare the second customer with import readiness, access model, success owner, billing route, support guard, and first review date."],
-      ["v907", "First Pilot Expansion Rollout Reuse Market Pilot Global Launch Control Gate", "Control global launch readiness with region fit, data boundary, support scale, partner readiness, pricing proof, and go/no-go receipt."],
+      ["v910", "First Pilot Expansion Rollout Reuse Market Pilot Investor Proof Packet", "Package launch progress, revenue proof, customer outcome, support cost, risk posture, and next-funding story for investor or board review."],
+      ["v911", "First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Studio", "Turn the first paid pilot into a buyer-safe reference with quote, proof boundary, redactions, approval owner, and reuse rules."],
+      ["v912", "First Pilot Expansion Rollout Reuse Market Pilot Production Support Operating Console", "Move support from launch proof into live operating console with SLA, incidents, owners, escalation, customer notice, and close receipts."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

@@ -1,5 +1,136 @@
 # Changelog
 
+## v909 - First Pilot Expansion Rollout Reuse Market Pilot Revenue Proof Board
+
+### Changes Made
+- Activated the pilot revenue proof board as the current build.
+- Added invoice proof, payment status, seat activation, sponsor value, renewal signal, support cost, expansion path, and revenue receipt as revenue proof lanes.
+- Updated the Build Phase next queue to v910-v912 for investor proof, customer reference, and production support console work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v909.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects with v909 badges, no console errors, and no horizontal overflow.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, and Command with stable active rail state.
+- Passed: mobile QA for Command, Build Phase, and Autopilot at 390px width with zero page-level horizontal overflow.
+- Passed: visual Build Phase QA with v909 active, pilot revenue proof board visible, launch roadmap present, and v910-v912 next queue present.
+
+### Known Risks
+- Revenue proof is still static; real invoices, payment status, seat activation, sponsor value, renewal signal, support cost, expansion path, and revenue receipts need billing and customer-success systems.
+
+## v908 - First Pilot Expansion Rollout Reuse Market Pilot Production Backend Launch Packet
+
+### Changes Made
+- Activated the production backend launch packet in the pilot reuse runway.
+- Added API contract, auth guard, database migration, audit log, billing webhook, hosting monitor, support playbook, and packet receipt as backend launch lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v908.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Backend launch packet is still a static plan; real API contracts, auth, database migration, audit logs, billing webhooks, hosting monitors, support playbooks, and packet receipts need production implementation.
+
+## v907 - First Pilot Expansion Rollout Reuse Market Pilot Global Launch Control Gate
+
+### Changes Made
+- Activated the global launch control gate in the pilot reuse runway.
+- Added region fit, data boundary, support scale, partner readiness, pricing proof, go/no-go owner, rollback route, and launch receipt as launch control lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v907.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Global launch control is still static; real region fit, data boundaries, support scale, partner readiness, pricing proof, go/no-go ownership, rollback route, and launch receipts need operational systems.
+
+## v906 - First Pilot Expansion Rollout Reuse Market Pilot Second Customer Readiness Pack
+
+### Changes Made
+- Activated the second customer readiness pack in the pilot reuse runway.
+- Added import readiness, access model, success owner, billing route, support guard, first review date, proof boundary, and readiness receipt as second-customer lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v906.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Second-customer readiness is still static; real import dry runs, access models, success ownership, billing routes, support guards, first review dates, proof boundaries, and readiness receipts need backend and implementation workflows.
+
+## v905 - First Pilot Expansion Rollout Reuse Market Pilot Wider Rollout Decision Room
+
+### Changes Made
+- Activated the wider rollout decision room in the pilot reuse runway.
+- Added readiness evidence, support confidence, billing proof, sponsor permission, partner route, rollback posture, market boundary, and decision receipt as rollout decision lanes.
+- Added release wrappers and command rail render paths for v905-v909.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v905.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Wider rollout decisioning is still static; real readiness evidence, support confidence, billing proof, sponsor permission, partner route, rollback posture, market boundary, and decision receipts need production operating data.
+
 ## v904 - First Pilot Expansion Rollout Reuse Market Pilot Production Readiness Evidence Vault
 
 ### Changes Made
