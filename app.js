@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v899";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Support SLA Watch";
+  const BUILD_VERSION = "v904";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Readiness Evidence Vault";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=899.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=899.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=904.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=904.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -3740,6 +3740,201 @@
         ["Health review", "reviewGuard", 0.74, 5, "Health review is scheduled."],
         ["Recovery promise", "rollbackGuard", 0.76, 5, "Recovery promise is credible."],
         ["SLA receipt", "guardClosure", 0.72, 6, "SLA receipt closes watch."],
+      ],
+    },
+    {
+      key: "launch-health-command-room",
+      version: "v900",
+      number: 900,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Health Command Room",
+      shortLabel: "Launch Health Command Room",
+      phase: "First pilot expansion rollout reuse market pilot launch health command room",
+      track: "v900 first pilot expansion rollout reuse market pilot launch health command room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-health-command-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-health-command-room",
+      idSuffix: "LAUNCH-HEALTH-COMMAND-ROOM",
+      scoreKey: "launchHealthCommandRoomScore",
+      decisionKey: "launchHealthCommandRoomDecision",
+      stateKey: "launchHealthCommandRoomState",
+      lineKey: "launchHealthCommandRoomLine",
+      primarySignal: "Pilot launch health command room",
+      primaryNote: "Tracks launch health across usage signal, support load, billing status, evidence flow, sponsor response, rollback pressure, next action, and health receipt.",
+      summary: "Track launch health across usage, support, billing, evidence, sponsor response, rollback pressure, next action, and health receipt.",
+      trackSummary: "Launch support SLA watch now becomes one health command room across usage signal, support load, billing status, evidence flow, sponsor response, rollback pressure, next action, and receipt.",
+      stageSummary: "SLA watch now becomes launch health command with usage, support, billing, evidence, sponsor response, rollback pressure, next action, and receipt.",
+      openDecision: "Open health command",
+      guardedDecision: "Open guarded health",
+      holdDecision: "Hold health command",
+      repairDecision: "Repair launch health",
+      nextOpen: "Open the launch health command room and keep usage signal, support load, billing status, evidence flow, sponsor response, rollback pressure, next action, and health receipt together.",
+      nextGuarded: "Open guarded launch health while one usage, support, billing, evidence, sponsor, rollback, or next-action lane stays watched.",
+      nextHold: "Hold launch widening until usage signal, support load, billing status, evidence flow, and rollback pressure are readable.",
+      nextRepair: "Repair launch health before outcome proof intake.",
+      axes: [
+        ["Usage signal", "launchMoment", 0.74, 5, "Usage signal is visible."],
+        ["Support load", "supportGuard", 0.74, 5, "Support load is watched."],
+        ["Billing status", "sponsorGuard", 0.72, 6, "Billing status is linked."],
+        ["Evidence flow", "proofGuard", 0.76, 5, "Evidence flow is moving."],
+        ["Sponsor response", "sponsorGuard", 0.72, 6, "Sponsor response is tracked."],
+        ["Rollback pressure", "rollbackGuard", 0.76, 5, "Rollback pressure is named."],
+        ["Next action", "ownerCommand", 0.72, 6, "Next action has an owner."],
+        ["Health receipt", "guardClosure", 0.72, 6, "Health receipt closes the room."],
+      ],
+    },
+    {
+      key: "outcome-proof-intake",
+      version: "v901",
+      number: 901,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Outcome Proof Intake",
+      shortLabel: "Outcome Proof Intake",
+      phase: "First pilot expansion rollout reuse market pilot outcome proof intake",
+      track: "v901 first pilot expansion rollout reuse market pilot outcome proof intake",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-outcome-proof-intake",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-outcome-proof-intake",
+      idSuffix: "OUTCOME-PROOF-INTAKE",
+      scoreKey: "outcomeProofIntakeScore",
+      decisionKey: "outcomeProofIntakeDecision",
+      stateKey: "outcomeProofIntakeState",
+      lineKey: "outcomeProofIntakeLine",
+      primarySignal: "Pilot outcome proof intake",
+      primaryNote: "Collects first outcome proof with action evidence, customer quote, value movement, support trail, before-after signal, learning boundary, owner review, and proof receipt.",
+      summary: "Collect first outcome proof with action evidence, customer quote, value movement, support trail, before-after signal, learning boundary, owner review, and proof receipt.",
+      trackSummary: "Launch health command now becomes outcome proof intake across action evidence, customer quote, value movement, support trail, before-after signal, learning boundary, owner review, and receipt.",
+      stageSummary: "Launch health now becomes outcome proof with action evidence, customer quote, value movement, support trail, before-after signal, learning boundary, review, and receipt.",
+      openDecision: "Open proof intake",
+      guardedDecision: "Open guarded proof",
+      holdDecision: "Hold proof intake",
+      repairDecision: "Repair outcome proof",
+      nextOpen: "Open the outcome proof intake and keep action evidence, customer quote, value movement, support trail, before-after signal, learning boundary, owner review, and proof receipt together.",
+      nextGuarded: "Open guarded outcome proof while one evidence, quote, value, support, signal, learning, or owner lane stays watched.",
+      nextHold: "Hold outcome claims until action evidence, customer quote, value movement, support trail, and learning boundary are clear.",
+      nextRepair: "Repair outcome proof before renewal expansion gate.",
+      axes: [
+        ["Action evidence", "proofGuard", 0.76, 5, "Action evidence is attached."],
+        ["Customer quote", "sponsorGuard", 0.72, 6, "Customer quote is captured."],
+        ["Value movement", "reviewGuard", 0.74, 5, "Value movement is visible."],
+        ["Support trail", "supportGuard", 0.74, 5, "Support trail is readable."],
+        ["Before-after signal", "proofGuard", 0.76, 5, "Before-after signal is compared."],
+        ["Learning boundary", "tenantGuard", 0.74, 5, "Learning boundary is safe."],
+        ["Owner review", "ownerCommand", 0.72, 6, "Owner review is assigned."],
+        ["Proof receipt", "guardClosure", 0.72, 6, "Proof receipt closes intake."],
+      ],
+    },
+    {
+      key: "renewal-expansion-gate",
+      version: "v902",
+      number: 902,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Renewal Expansion Gate",
+      shortLabel: "Renewal Expansion Gate",
+      phase: "First pilot expansion rollout reuse market pilot renewal expansion gate",
+      track: "v902 first pilot expansion rollout reuse market pilot renewal expansion gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-expansion-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-expansion-gate",
+      idSuffix: "RENEWAL-EXPANSION-GATE",
+      scoreKey: "renewalExpansionGateScore",
+      decisionKey: "renewalExpansionGateDecision",
+      stateKey: "renewalExpansionGateState",
+      lineKey: "renewalExpansionGateLine",
+      primarySignal: "Pilot renewal expansion gate",
+      primaryNote: "Prepares renewal expansion with sponsor proof, usage continuity, support confidence, billing status, roadmap ask, expansion account, decision date, and gate receipt.",
+      summary: "Prepare renewal and expansion decisions with sponsor proof, usage continuity, support confidence, billing status, roadmap ask, expansion account, decision date, and gate receipt.",
+      trackSummary: "Outcome proof intake now becomes renewal expansion gate across sponsor proof, usage continuity, support confidence, billing status, roadmap ask, expansion account, decision date, and receipt.",
+      stageSummary: "Outcome proof now becomes renewal expansion with sponsor proof, usage continuity, support confidence, billing, roadmap ask, expansion account, date, and receipt.",
+      openDecision: "Open expansion gate",
+      guardedDecision: "Open guarded expansion",
+      holdDecision: "Hold expansion gate",
+      repairDecision: "Repair expansion gate",
+      nextOpen: "Open the renewal expansion gate and keep sponsor proof, usage continuity, support confidence, billing status, roadmap ask, expansion account, decision date, and gate receipt together.",
+      nextGuarded: "Open guarded renewal expansion while one sponsor, usage, support, billing, roadmap, account, or date lane stays watched.",
+      nextHold: "Hold renewal expansion until sponsor proof, usage continuity, support confidence, billing status, and decision date are clear.",
+      nextRepair: "Repair renewal expansion before admin audit trail.",
+      axes: [
+        ["Sponsor proof", "sponsorGuard", 0.72, 6, "Sponsor proof is ready."],
+        ["Usage continuity", "launchMoment", 0.74, 5, "Usage continuity is visible."],
+        ["Support confidence", "supportGuard", 0.74, 5, "Support confidence is credible."],
+        ["Billing status", "sponsorGuard", 0.72, 6, "Billing status is current."],
+        ["Roadmap ask", "reviewGuard", 0.74, 5, "Roadmap ask is explicit."],
+        ["Expansion account", "tenantGuard", 0.72, 6, "Expansion account is named."],
+        ["Decision date", "ownerCommand", 0.72, 6, "Decision date is controlled."],
+        ["Gate receipt", "guardClosure", 0.72, 6, "Gate receipt closes expansion."],
+      ],
+    },
+    {
+      key: "pilot-admin-audit-trail",
+      version: "v903",
+      number: 903,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Admin Audit Trail",
+      shortLabel: "Pilot Admin Audit Trail",
+      phase: "First pilot expansion rollout reuse market pilot admin audit trail",
+      track: "v903 first pilot expansion rollout reuse market pilot admin audit trail",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-admin-audit-trail",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-admin-audit-trail",
+      idSuffix: "PILOT-ADMIN-AUDIT-TRAIL",
+      scoreKey: "pilotAdminAuditTrailScore",
+      decisionKey: "pilotAdminAuditTrailDecision",
+      stateKey: "pilotAdminAuditTrailState",
+      lineKey: "pilotAdminAuditTrailLine",
+      primarySignal: "Pilot admin audit trail",
+      primaryNote: "Exposes admin audit trail with access changes, role grants, proof events, billing touches, export receipts, incident notes, reviewer owner, and audit receipt.",
+      summary: "Expose admin audit trail with access changes, role grants, proof events, billing touches, export receipts, incident notes, reviewer owner, and audit receipt.",
+      trackSummary: "Renewal expansion gates now become one admin audit trail across access changes, role grants, proof events, billing touches, export receipts, incident notes, reviewer owner, and receipt.",
+      stageSummary: "Renewal expansion now becomes admin audit with access changes, role grants, proof events, billing touches, exports, incidents, reviewer, and receipt.",
+      openDecision: "Open audit trail",
+      guardedDecision: "Open guarded audit",
+      holdDecision: "Hold audit trail",
+      repairDecision: "Repair admin audit",
+      nextOpen: "Open the pilot admin audit trail and keep access changes, role grants, proof events, billing touches, export receipts, incident notes, reviewer owner, and audit receipt together.",
+      nextGuarded: "Open guarded admin audit while one access, role, proof, billing, export, incident, or reviewer lane stays watched.",
+      nextHold: "Hold production readiness until access changes, role grants, proof events, billing touches, and export receipts are readable.",
+      nextRepair: "Repair admin audit before production readiness evidence vault.",
+      axes: [
+        ["Access changes", "tenantGuard", 0.78, 5, "Access changes are logged."],
+        ["Role grants", "tenantGuard", 0.76, 5, "Role grants are visible."],
+        ["Proof events", "proofGuard", 0.76, 5, "Proof events are captured."],
+        ["Billing touches", "sponsorGuard", 0.72, 6, "Billing touches are traceable."],
+        ["Export receipts", "proofGuard", 0.74, 5, "Export receipts are stored."],
+        ["Incident notes", "supportGuard", 0.74, 5, "Incident notes are linked."],
+        ["Reviewer owner", "ownerCommand", 0.72, 6, "Reviewer owner is named."],
+        ["Audit receipt", "guardClosure", 0.72, 6, "Audit receipt closes trail."],
+      ],
+    },
+    {
+      key: "production-readiness-evidence-vault",
+      version: "v904",
+      number: 904,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Readiness Evidence Vault",
+      shortLabel: "Production Readiness Evidence Vault",
+      phase: "First pilot expansion rollout reuse market pilot production readiness evidence vault",
+      track: "v904 first pilot expansion rollout reuse market pilot production readiness evidence vault",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-readiness-evidence-vault",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-readiness-evidence-vault",
+      idSuffix: "PRODUCTION-READINESS-EVIDENCE-VAULT",
+      scoreKey: "productionReadinessEvidenceVaultScore",
+      decisionKey: "productionReadinessEvidenceVaultDecision",
+      stateKey: "productionReadinessEvidenceVaultState",
+      lineKey: "productionReadinessEvidenceVaultLine",
+      primarySignal: "Pilot production readiness evidence vault",
+      primaryNote: "Collects production readiness evidence with launch proof, security note, data receipt, support proof, billing proof, rollback proof, admin audit, and vault receipt.",
+      summary: "Collect production readiness evidence with launch proof, security note, data receipt, support proof, billing proof, rollback proof, admin audit, and vault receipt.",
+      trackSummary: "Admin audit trails now become one production readiness evidence vault across launch proof, security note, data receipt, support proof, billing proof, rollback proof, admin audit, and receipt.",
+      stageSummary: "Admin audit now becomes production readiness vault with launch proof, security note, data receipt, support proof, billing proof, rollback proof, audit, and receipt.",
+      openDecision: "Open evidence vault",
+      guardedDecision: "Open guarded vault",
+      holdDecision: "Hold evidence vault",
+      repairDecision: "Repair evidence vault",
+      nextOpen: "Open the production readiness evidence vault and keep launch proof, security note, data receipt, support proof, billing proof, rollback proof, admin audit, and vault receipt together.",
+      nextGuarded: "Open guarded evidence vault while one launch, security, data, support, billing, rollback, or audit lane stays watched.",
+      nextHold: "Hold wider rollout until launch proof, security note, data receipt, support proof, billing proof, and rollback proof are complete.",
+      nextRepair: "Repair production readiness evidence before wider rollout decision.",
+      axes: [
+        ["Launch proof", "proofGuard", 0.76, 5, "Launch proof is stored."],
+        ["Security note", "tenantGuard", 0.76, 5, "Security note is readable."],
+        ["Data receipt", "proofGuard", 0.76, 5, "Data receipt is attached."],
+        ["Support proof", "supportGuard", 0.74, 5, "Support proof is captured."],
+        ["Billing proof", "sponsorGuard", 0.72, 6, "Billing proof is linked."],
+        ["Rollback proof", "rollbackGuard", 0.76, 5, "Rollback proof is ready."],
+        ["Admin audit", "reviewGuard", 0.74, 5, "Admin audit is complete."],
+        ["Vault receipt", "guardClosure", 0.72, 6, "Vault receipt closes readiness."],
       ],
     },
   ];
@@ -19360,6 +19555,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionReadinessEvidenceVaultPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminAuditTrailPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeProofIntakePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchHealthCommandRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportSlaWatchPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotBillingProofConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackConfidenceDrillPreview(model, autopilot)}",
@@ -25792,6 +25992,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportSlaWatchPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-support-sla-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchHealthCommandRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-health-command-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchHealthCommandRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-health-command-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchHealthCommandRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-health-command-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeProofIntakeSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "outcome-proof-intake");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeProofIntake(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "outcome-proof-intake", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeProofIntakePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "outcome-proof-intake");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "renewal-expansion-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "renewal-expansion-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "renewal-expansion-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminAuditTrailSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-admin-audit-trail");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminAuditTrail(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-admin-audit-trail", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminAuditTrailPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-admin-audit-trail");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionReadinessEvidenceVaultSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-readiness-evidence-vault");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionReadinessEvidenceVault(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-readiness-evidence-vault", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionReadinessEvidenceVaultPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-readiness-evidence-vault");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -90603,9 +90863,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v900", "First Pilot Expansion Rollout Reuse Market Pilot Launch Health Command Room", "Track launch health across usage, support, billing, evidence, sponsor response, rollback pressure, and next action."],
-      ["v901", "First Pilot Expansion Rollout Reuse Market Pilot Outcome Proof Intake", "Collect first outcome proof with action evidence, customer quote, value movement, support trail, and learning boundary."],
-      ["v902", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Expansion Gate", "Prepare renewal and expansion decisions with sponsor proof, usage continuity, support confidence, billing status, and roadmap ask."],
+      ["v905", "First Pilot Expansion Rollout Reuse Market Pilot Wider Rollout Decision Room", "Decide wider rollout with readiness evidence, support confidence, billing proof, sponsor permission, partner route, and rollback posture."],
+      ["v906", "First Pilot Expansion Rollout Reuse Market Pilot Second Customer Readiness Pack", "Prepare the second customer with import readiness, access model, success owner, billing route, support guard, and first review date."],
+      ["v907", "First Pilot Expansion Rollout Reuse Market Pilot Global Launch Control Gate", "Control global launch readiness with region fit, data boundary, support scale, partner readiness, pricing proof, and go/no-go receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
