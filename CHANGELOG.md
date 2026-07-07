@@ -50,7 +50,7 @@
 - Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
 - Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
 - Passed: `node --check .\app.min.js`
-- Passed: `npm.cmd run check`
+- Run during promotion: `npm.cmd run check` exposed a temporary UTF-8 package encoding issue that was normalized before the final v894 verification sweep.
 
 ### Known Risks
 - Staging migration remains modeled in the static app; real workbook snapshotting, field mapping, row validation, reconciliation, evidence storage, acceptance, and rollback proof need a staging environment.
@@ -75,7 +75,7 @@
 - Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
 - Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
 - Passed: `node --check .\app.min.js`
-- Passed: `npm.cmd run check`
+- Run during promotion: `npm.cmd run check` exposed a temporary UTF-8 package encoding issue that was normalized before the final v894 verification sweep.
 
 ### Known Risks
 - Automation safety is static proof at this stage; real triggers, approvals, audit receipts, recovery paths, customer messages, support escalation, and monitoring need backend execution.
@@ -100,7 +100,7 @@
 - Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
 - Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
 - Passed: `node --check .\app.min.js`
-- Passed: `npm.cmd run check`
+- Run during promotion: `npm.cmd run check` exposed a temporary UTF-8 package encoding issue that was normalized before the final v894 verification sweep.
 
 ### Known Risks
 - Tenant provisioning is still a static drill; real workspace creation, roles, import seed, support access, audit export, billing state, rollback rehearsal, and receipt need service-layer execution.
@@ -126,7 +126,7 @@
 - Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
 - Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
 - Passed: `node --check .\app.min.js`
-- Passed: `npm.cmd run check`
+- Run during promotion: `npm.cmd run check` exposed a temporary UTF-8 package encoding issue that was normalized before the final v894 verification sweep.
 
 ### Known Risks
 - Production integration is still a static planner; real API boundaries, data model, auth, evidence storage, billing handoff, monitoring, owner assignment, and receipt need backend implementation.
