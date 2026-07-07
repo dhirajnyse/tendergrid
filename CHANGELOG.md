@@ -1,5 +1,136 @@
 # Changelog
 
+## v899 - First Pilot Expansion Rollout Reuse Market Pilot Launch Support SLA Watch
+
+### Changes Made
+- Activated the launch support SLA watch as the current build.
+- Added first response, escalation owner, customer notice, support capacity, incident log, health review, recovery promise, and SLA receipt to the pilot reuse runway.
+- Updated the Build Phase next queue to v900-v902 for launch health command, outcome proof intake, and renewal expansion gate work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v899.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop route QA for Command, Autopilot, Reports, Build Phase, Tenders, and Projects with v899 badges, no console errors, and no horizontal overflow.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, and Command with stable active rail state.
+- Passed: mobile QA for Command, Build Phase, and Autopilot at 390px width with zero page-level horizontal overflow.
+- Passed: visual Build Phase QA with v899 active, launch support SLA watch visible, launch roadmap present, and v900-v902 next queue present.
+
+### Known Risks
+- Launch support SLA is still static proof; real response timers, escalation owners, customer notices, support capacity, incident logs, health reviews, recovery promises, and SLA receipts need production support systems.
+
+## v898 - First Pilot Expansion Rollout Reuse Market Pilot Billing Proof Console
+
+### Changes Made
+- Activated the pilot billing proof console in the pilot reuse runway.
+- Added seat count, invoice draft, payment owner, commercial boundary, tax note, support handoff, renewal anchor, and billing receipt as billing proof lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v898.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Billing proof is still modeled in the static app; real seats, invoice draft, payment owner, commercial boundary, tax note, support handoff, renewal anchor, and billing receipt need billing-system integration.
+
+## v897 - First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Confidence Drill
+
+### Changes Made
+- Activated the production rollback confidence drill in the pilot reuse runway.
+- Added restore point, access pause, customer notice, audit receipt, billing hold, recovery owner, support rehearsal, and rollback receipt as production safety lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v897.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Rollback confidence is still a static drill; real restore points, access pause, customer notice, audit receipt, billing hold, recovery owner, support rehearsal, and rollback receipt need staging and production rehearsal.
+
+## v896 - First Pilot Expansion Rollout Reuse Market Pilot Customer Success Handoff Room
+
+### Changes Made
+- Activated the customer success handoff room in the pilot reuse runway.
+- Added owner rhythm, support promises, weekly review, value proof, renewal signal, escalation route, account memory, and handoff receipt as customer success lanes.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v896.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Customer success handoff is still static; real owner rhythm, support promises, weekly review cadence, value proof, renewal signal, escalation route, account memory, and handoff receipt need operating workflows.
+
+## v895 - First Pilot Expansion Rollout Reuse Market Pilot Live Usage Telemetry Board
+
+### Changes Made
+- Activated the live usage telemetry board as the first release in this batch.
+- Added login movement, room visits, action closure, support pressure, evidence creation, billing state, health alerts, and telemetry receipt to the pilot reuse runway.
+- Added release wrappers and command rail render paths for v895-v899.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v895.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Live usage telemetry is still static; real login movement, room visits, action closure, support pressure, evidence creation, billing state, health alerts, and telemetry receipt need backend analytics or event capture.
+
 ## v894 - First Pilot Expansion Rollout Reuse Market Pilot First Customer Cutover Console
 
 ### Changes Made

@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v894";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Customer Cutover Console";
+  const BUILD_VERSION = "v899";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Support SLA Watch";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=894.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=894.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=899.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=899.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -3545,6 +3545,201 @@
         ["Proof capture", "proofGuard", 0.76, 5, "Proof capture is ready."],
         ["Rollback window", "rollbackGuard", 0.76, 5, "Rollback window is named."],
         ["Cutover receipt", "guardClosure", 0.72, 6, "Cutover receipt closes go-live."],
+      ],
+    },
+    {
+      key: "live-usage-telemetry-board",
+      version: "v895",
+      number: 895,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Usage Telemetry Board",
+      shortLabel: "Live Usage Telemetry Board",
+      phase: "First pilot expansion rollout reuse market pilot live usage telemetry board",
+      track: "v895 first pilot expansion rollout reuse market pilot live usage telemetry board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-usage-telemetry-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-usage-telemetry-board",
+      idSuffix: "LIVE-USAGE-TELEMETRY-BOARD",
+      scoreKey: "liveUsageTelemetryBoardScore",
+      decisionKey: "liveUsageTelemetryBoardDecision",
+      stateKey: "liveUsageTelemetryBoardState",
+      lineKey: "liveUsageTelemetryBoardLine",
+      primarySignal: "Pilot live usage telemetry board",
+      primaryNote: "Tracks first live usage with login movement, room visits, action closure, support pressure, evidence creation, billing state, health alerts, and telemetry receipt.",
+      summary: "Track first live usage with login movement, room visits, action closure, support pressure, evidence creation, billing state, health alerts, and telemetry receipt.",
+      trackSummary: "First customer cutovers now become one live usage telemetry board across login movement, room visits, action closure, support pressure, evidence creation, billing state, health alerts, and receipt.",
+      stageSummary: "Cutover now becomes live usage telemetry with login movement, room visits, action closure, support pressure, evidence, billing, alerts, and receipt.",
+      openDecision: "Open usage board",
+      guardedDecision: "Open guarded usage",
+      holdDecision: "Hold usage board",
+      repairDecision: "Repair usage telemetry",
+      nextOpen: "Open the live usage telemetry board and keep login movement, room visits, action closure, support pressure, evidence creation, billing state, health alerts, and telemetry receipt together.",
+      nextGuarded: "Open guarded usage telemetry while one login, room, action, support, evidence, billing, or alert lane stays watched.",
+      nextHold: "Hold live usage expansion until login movement, action closure, support pressure, billing state, and health alerts are readable.",
+      nextRepair: "Repair usage telemetry before customer success handoff.",
+      axes: [
+        ["Login movement", "launchMoment", 0.72, 6, "Login movement is visible."],
+        ["Room visits", "tenantGuard", 0.74, 5, "Room visits are tracked."],
+        ["Action closure", "guardClosure", 0.72, 6, "Action closure is counted."],
+        ["Support pressure", "supportGuard", 0.74, 5, "Support pressure is watched."],
+        ["Evidence creation", "proofGuard", 0.76, 5, "Evidence creation is visible."],
+        ["Billing state", "sponsorGuard", 0.72, 6, "Billing state stays linked."],
+        ["Health alerts", "reviewGuard", 0.74, 5, "Health alerts are named."],
+        ["Telemetry receipt", "guardClosure", 0.72, 6, "Telemetry receipt closes the board."],
+      ],
+    },
+    {
+      key: "customer-success-handoff-room",
+      version: "v896",
+      number: 896,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Handoff Room",
+      shortLabel: "Customer Success Handoff Room",
+      phase: "First pilot expansion rollout reuse market pilot customer success handoff room",
+      track: "v896 first pilot expansion rollout reuse market pilot customer success handoff room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-handoff-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-handoff-room",
+      idSuffix: "CUSTOMER-SUCCESS-HANDOFF-ROOM",
+      scoreKey: "customerSuccessHandoffRoomScore",
+      decisionKey: "customerSuccessHandoffRoomDecision",
+      stateKey: "customerSuccessHandoffRoomState",
+      lineKey: "customerSuccessHandoffRoomLine",
+      primarySignal: "Pilot customer success handoff room",
+      primaryNote: "Handoffs customer success with owner rhythm, support promises, weekly review, value proof, renewal signal, escalation route, account memory, and handoff receipt.",
+      summary: "Handoff first customer success with owner rhythm, support promises, weekly review, value proof, renewal signal, escalation route, account memory, and handoff receipt.",
+      trackSummary: "Live usage telemetry now becomes one customer success handoff across owner rhythm, support promises, weekly review, value proof, renewal signal, escalation route, account memory, and receipt.",
+      stageSummary: "Usage telemetry now becomes customer success handoff with owner rhythm, support promises, weekly review, value proof, renewal signal, escalation, memory, and receipt.",
+      openDecision: "Open success handoff",
+      guardedDecision: "Open guarded success",
+      holdDecision: "Hold success handoff",
+      repairDecision: "Repair success handoff",
+      nextOpen: "Open the customer success handoff room and keep owner rhythm, support promises, weekly review, value proof, renewal signal, escalation route, account memory, and handoff receipt together.",
+      nextGuarded: "Open guarded customer success while one owner, support, review, proof, renewal, escalation, or memory lane stays watched.",
+      nextHold: "Hold customer success handoff until owner rhythm, support promises, weekly review, and value proof are clear.",
+      nextRepair: "Repair customer success handoff before rollback confidence drill.",
+      axes: [
+        ["Owner rhythm", "ownerCommand", 0.74, 5, "Owner rhythm is named."],
+        ["Support promises", "supportGuard", 0.74, 5, "Support promises are visible."],
+        ["Weekly review", "reviewGuard", 0.74, 5, "Weekly review is scheduled."],
+        ["Value proof", "proofGuard", 0.76, 5, "Value proof is collected."],
+        ["Renewal signal", "sponsorGuard", 0.72, 6, "Renewal signal is watched."],
+        ["Escalation route", "supportGuard", 0.74, 5, "Escalation route is assigned."],
+        ["Account memory", "tenantGuard", 0.72, 6, "Account memory is preserved."],
+        ["Handoff receipt", "guardClosure", 0.72, 6, "Handoff receipt closes success."],
+      ],
+    },
+    {
+      key: "production-rollback-confidence-drill",
+      version: "v897",
+      number: 897,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Confidence Drill",
+      shortLabel: "Production Rollback Confidence Drill",
+      phase: "First pilot expansion rollout reuse market pilot production rollback confidence drill",
+      track: "v897 first pilot expansion rollout reuse market pilot production rollback confidence drill",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-rollback-confidence-drill",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-rollback-confidence-drill",
+      idSuffix: "PRODUCTION-ROLLBACK-CONFIDENCE-DRILL",
+      scoreKey: "productionRollbackConfidenceDrillScore",
+      decisionKey: "productionRollbackConfidenceDrillDecision",
+      stateKey: "productionRollbackConfidenceDrillState",
+      lineKey: "productionRollbackConfidenceDrillLine",
+      primarySignal: "Pilot production rollback confidence drill",
+      primaryNote: "Drills rollback confidence across restore point, access pause, customer notice, audit receipt, billing hold, recovery owner, support rehearsal, and rollback receipt.",
+      summary: "Drill rollback confidence across restore point, access pause, customer notice, audit receipt, billing hold, recovery owner, support rehearsal, and rollback receipt.",
+      trackSummary: "Customer success handoffs now become one rollback confidence drill across restore point, access pause, customer notice, audit receipt, billing hold, recovery owner, support rehearsal, and receipt.",
+      stageSummary: "Success handoff now becomes rollback confidence with restore point, access pause, customer notice, audit, billing hold, recovery owner, support rehearsal, and receipt.",
+      openDecision: "Run rollback drill",
+      guardedDecision: "Run guarded rollback",
+      holdDecision: "Hold rollback drill",
+      repairDecision: "Repair rollback confidence",
+      nextOpen: "Run the production rollback confidence drill and keep restore point, access pause, customer notice, audit receipt, billing hold, recovery owner, support rehearsal, and rollback receipt together.",
+      nextGuarded: "Run guarded rollback while one restore, access, customer, audit, billing, owner, or support lane stays watched.",
+      nextHold: "Hold wider production use until restore point, access pause, customer notice, audit receipt, and recovery owner are clear.",
+      nextRepair: "Repair rollback confidence before billing proof console.",
+      axes: [
+        ["Restore point", "rollbackGuard", 0.78, 5, "Restore point is confirmed."],
+        ["Access pause", "tenantGuard", 0.74, 5, "Access pause is rehearsed."],
+        ["Customer notice", "sponsorGuard", 0.72, 6, "Customer notice is ready."],
+        ["Audit receipt", "proofGuard", 0.76, 5, "Audit receipt is captured."],
+        ["Billing hold", "sponsorGuard", 0.72, 6, "Billing hold is controlled."],
+        ["Recovery owner", "ownerCommand", 0.72, 6, "Recovery owner is named."],
+        ["Support rehearsal", "supportGuard", 0.74, 5, "Support rehearsal is complete."],
+        ["Rollback receipt", "guardClosure", 0.72, 6, "Rollback receipt closes the drill."],
+      ],
+    },
+    {
+      key: "pilot-billing-proof-console",
+      version: "v898",
+      number: 898,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Billing Proof Console",
+      shortLabel: "Pilot Billing Proof Console",
+      phase: "First pilot expansion rollout reuse market pilot billing proof console",
+      track: "v898 first pilot expansion rollout reuse market pilot billing proof console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-billing-proof-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-billing-proof-console",
+      idSuffix: "PILOT-BILLING-PROOF-CONSOLE",
+      scoreKey: "pilotBillingProofConsoleScore",
+      decisionKey: "pilotBillingProofConsoleDecision",
+      stateKey: "pilotBillingProofConsoleState",
+      lineKey: "pilotBillingProofConsoleLine",
+      primarySignal: "Pilot billing proof console",
+      primaryNote: "Separates billing proof across seat count, invoice draft, payment owner, commercial boundary, tax note, support handoff, renewal anchor, and billing receipt.",
+      summary: "Separate pilot billing proof with seat count, invoice draft, payment owner, commercial boundary, tax note, support handoff, renewal anchor, and billing receipt.",
+      trackSummary: "Rollback confidence drills now become one billing proof console across seat count, invoice draft, payment owner, commercial boundary, tax note, support handoff, renewal anchor, and receipt.",
+      stageSummary: "Rollback confidence now becomes billing proof with seats, invoice draft, payment owner, commercial boundary, tax note, support handoff, renewal anchor, and receipt.",
+      openDecision: "Open billing proof",
+      guardedDecision: "Open guarded billing",
+      holdDecision: "Hold billing proof",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Open the pilot billing proof console and keep seat count, invoice draft, payment owner, commercial boundary, tax note, support handoff, renewal anchor, and billing receipt together.",
+      nextGuarded: "Open guarded billing proof while one seat, invoice, payment, commercial, tax, support, or renewal lane stays watched.",
+      nextHold: "Hold billing proof until seat count, invoice draft, payment owner, commercial boundary, and tax note are clear.",
+      nextRepair: "Repair billing proof before launch support SLA watch.",
+      axes: [
+        ["Seat count", "tenantGuard", 0.74, 5, "Seat count is confirmed."],
+        ["Invoice draft", "sponsorGuard", 0.72, 6, "Invoice draft is ready."],
+        ["Payment owner", "ownerCommand", 0.72, 6, "Payment owner is named."],
+        ["Commercial boundary", "sponsorGuard", 0.74, 5, "Commercial boundary is safe."],
+        ["Tax note", "reviewGuard", 0.72, 6, "Tax note is visible."],
+        ["Support handoff", "supportGuard", 0.74, 5, "Support handoff is linked."],
+        ["Renewal anchor", "sponsorGuard", 0.72, 6, "Renewal anchor is set."],
+        ["Billing receipt", "guardClosure", 0.72, 6, "Billing receipt closes proof."],
+      ],
+    },
+    {
+      key: "launch-support-sla-watch",
+      version: "v899",
+      number: 899,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Support SLA Watch",
+      shortLabel: "Launch Support SLA Watch",
+      phase: "First pilot expansion rollout reuse market pilot launch support sla watch",
+      track: "v899 first pilot expansion rollout reuse market pilot launch support sla watch",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-support-sla-watch",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-support-sla-watch",
+      idSuffix: "LAUNCH-SUPPORT-SLA-WATCH",
+      scoreKey: "launchSupportSlaWatchScore",
+      decisionKey: "launchSupportSlaWatchDecision",
+      stateKey: "launchSupportSlaWatchState",
+      lineKey: "launchSupportSlaWatchLine",
+      primarySignal: "Pilot launch support SLA watch",
+      primaryNote: "Watches launch support with first response, escalation owner, customer notice, support capacity, incident log, health review, recovery promise, and SLA receipt.",
+      summary: "Watch launch support with first response, escalation owner, customer notice, support capacity, incident log, health review, recovery promise, and SLA receipt.",
+      trackSummary: "Billing proof consoles now become one launch support SLA watch across first response, escalation owner, customer notice, support capacity, incident log, health review, recovery promise, and receipt.",
+      stageSummary: "Billing proof now becomes launch support SLA with first response, escalation owner, customer notice, support capacity, incident log, health review, recovery promise, and receipt.",
+      openDecision: "Open SLA watch",
+      guardedDecision: "Open guarded SLA",
+      holdDecision: "Hold SLA watch",
+      repairDecision: "Repair SLA watch",
+      nextOpen: "Open the launch support SLA watch and keep first response, escalation owner, customer notice, support capacity, incident log, health review, recovery promise, and SLA receipt together.",
+      nextGuarded: "Open guarded support SLA while one response, escalation, notice, capacity, incident, health, or recovery lane stays watched.",
+      nextHold: "Hold launch widening until first response, escalation owner, customer notice, support capacity, and recovery promise are clear.",
+      nextRepair: "Repair launch support SLA before launch health command room.",
+      axes: [
+        ["First response", "supportGuard", 0.76, 5, "First response target is visible."],
+        ["Escalation owner", "ownerCommand", 0.72, 6, "Escalation owner is named."],
+        ["Customer notice", "sponsorGuard", 0.72, 6, "Customer notice is ready."],
+        ["Support capacity", "supportGuard", 0.74, 5, "Support capacity is watched."],
+        ["Incident log", "proofGuard", 0.74, 5, "Incident log is captured."],
+        ["Health review", "reviewGuard", 0.74, 5, "Health review is scheduled."],
+        ["Recovery promise", "rollbackGuard", 0.76, 5, "Recovery promise is credible."],
+        ["SLA receipt", "guardClosure", 0.72, 6, "SLA receipt closes watch."],
       ],
     },
   ];
@@ -19165,6 +19360,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportSlaWatchPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotBillingProofConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackConfidenceDrillPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessHandoffRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveUsageTelemetryBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerCutoverConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDataMigrationReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchAutomationSafetyReviewPreview(model, autopilot)}",
@@ -25532,6 +25732,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerCutoverConsolePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-cutover-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveUsageTelemetryBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-usage-telemetry-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveUsageTelemetryBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-usage-telemetry-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveUsageTelemetryBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-usage-telemetry-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessHandoffRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-success-handoff-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessHandoffRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-success-handoff-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessHandoffRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-success-handoff-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackConfidenceDrillSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-rollback-confidence-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackConfidenceDrill(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-rollback-confidence-drill", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackConfidenceDrillPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-rollback-confidence-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotBillingProofConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-billing-proof-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotBillingProofConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-billing-proof-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotBillingProofConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-billing-proof-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportSlaWatchSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-support-sla-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportSlaWatch(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-support-sla-watch", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportSlaWatchPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-support-sla-watch");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -90343,9 +90603,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v895", "First Pilot Expansion Rollout Reuse Market Pilot Live Usage Telemetry Board", "Track first live usage with login movement, room visits, action closure, support pressure, evidence creation, billing state, and health alerts."],
-      ["v896", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Handoff Room", "Handoff first customer success with owner rhythm, support promises, weekly review, value proof, renewal signal, and escalation route."],
-      ["v897", "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Confidence Drill", "Drill rollback confidence across restore point, access pause, customer notice, audit receipt, billing hold, and recovery owner."],
+      ["v900", "First Pilot Expansion Rollout Reuse Market Pilot Launch Health Command Room", "Track launch health across usage, support, billing, evidence, sponsor response, rollback pressure, and next action."],
+      ["v901", "First Pilot Expansion Rollout Reuse Market Pilot Outcome Proof Intake", "Collect first outcome proof with action evidence, customer quote, value movement, support trail, and learning boundary."],
+      ["v902", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Expansion Gate", "Prepare renewal and expansion decisions with sponsor proof, usage continuity, support confidence, billing status, and roadmap ask."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
