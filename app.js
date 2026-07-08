@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v969";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Staging Deployment Smoke Console";
+  const BUILD_VERSION = "v974";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Evidence Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=969.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=969.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=974.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=974.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -6470,6 +6470,201 @@
         ["Rollback test", "rollbackGuard", 0.78, 5, "Rollback test is repeatable."],
         ["Release signoff", "sponsorGuard", 0.76, 6, "Release signoff is captured."],
         ["Staging receipt", "guardClosure", 0.8, 6, "Staging receipt closes console."],
+      ],
+    },
+    {
+      key: "pilot-user-acceptance-test-console",
+      version: "v970",
+      number: 970,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Pilot User Acceptance Test Console",
+      shortLabel: "Pilot User Acceptance Test Console",
+      phase: "First pilot expansion rollout reuse market pilot pilot user acceptance test console",
+      track: "v970 first pilot expansion rollout reuse market pilot pilot user acceptance test console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-user-acceptance-test-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-user-acceptance-test-console",
+      idSuffix: "PILOT-USER-ACCEPTANCE-TEST-CONSOLE",
+      scoreKey: "pilotUserAcceptanceTestConsoleScore",
+      decisionKey: "pilotUserAcceptanceTestConsoleDecision",
+      stateKey: "pilotUserAcceptanceTestConsoleState",
+      lineKey: "pilotUserAcceptanceTestConsoleLine",
+      primarySignal: "Pilot user acceptance test console",
+      primaryNote: "Turns staging smoke proof into pilot UAT with role checks, acceptance owner, scenario evidence, defect lane, and UAT receipt.",
+      summary: "Run pilot UAT with role checks, acceptance owner, scenario proof, defect lane, support note, sponsor readback, go/no-go posture, and UAT receipt.",
+      trackSummary: "Staging deployment smoke console now becomes one pilot UAT console across role checks, acceptance owner, scenario proof, defect lane, support note, sponsor readback, go/no-go posture, and receipt.",
+      stageSummary: "Staging smoke now becomes pilot UAT with role checks, owner, scenario proof, defects, support, sponsor readback, decision posture, and receipt.",
+      openDecision: "Open pilot UAT",
+      guardedDecision: "Open guarded UAT",
+      holdDecision: "Hold UAT",
+      repairDecision: "Repair UAT proof",
+      nextOpen: "Open pilot UAT and keep role checks, acceptance owner, scenario proof, defect lane, support note, sponsor readback, and UAT receipt together.",
+      nextGuarded: "Open guarded UAT while one role, owner, scenario, defect, support, sponsor, or decision lane stays watched.",
+      nextHold: "Hold UAT until role checks, acceptance owner, scenario proof, and defect lane are ready.",
+      nextRepair: "Repair UAT proof before security smoke expands.",
+      axes: [
+        ["Role checks", "tenantGuard", 0.78, 5, "Pilot roles are checked."],
+        ["Acceptance owner", "ownerCommand", 0.8, 6, "Acceptance owner is named."],
+        ["Scenario proof", "proofGuard", 0.8, 5, "Scenario proof is attached."],
+        ["Defect lane", "rollbackGuard", 0.76, 5, "Defects have a lane."],
+        ["Support note", "supportGuard", 0.76, 5, "Support note is visible."],
+        ["Sponsor readback", "sponsorGuard", 0.78, 6, "Sponsor readback is captured."],
+        ["Go/no-go posture", "reviewGuard", 0.76, 6, "Decision posture is visible."],
+        ["UAT receipt", "guardClosure", 0.8, 6, "UAT receipt closes console."],
+      ],
+    },
+    {
+      key: "first-backend-security-smoke-gate",
+      version: "v971",
+      number: 971,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Backend Security Smoke Gate",
+      shortLabel: "First Backend Security Smoke Gate",
+      phase: "First pilot expansion rollout reuse market pilot first backend security smoke gate",
+      track: "v971 first pilot expansion rollout reuse market pilot first backend security smoke gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-backend-security-smoke-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-backend-security-smoke-gate",
+      idSuffix: "FIRST-BACKEND-SECURITY-SMOKE-GATE",
+      scoreKey: "firstBackendSecuritySmokeGateScore",
+      decisionKey: "firstBackendSecuritySmokeGateDecision",
+      stateKey: "firstBackendSecuritySmokeGateState",
+      lineKey: "firstBackendSecuritySmokeGateLine",
+      primarySignal: "Pilot first backend security smoke gate",
+      primaryNote: "Turns UAT acceptance into backend security smoke with auth boundary, tenant isolation, secret handling, audit visibility, rate limit, error guard, reviewer signoff, and security receipt.",
+      summary: "Gate backend security smoke with auth boundary, tenant isolation, secret handling, audit visibility, rate limit, error guard, reviewer signoff, and security receipt.",
+      trackSummary: "Pilot UAT now becomes one backend security smoke gate across auth boundary, tenant isolation, secret handling, audit visibility, rate limit, error guard, reviewer signoff, and receipt.",
+      stageSummary: "Pilot UAT now becomes backend security smoke with auth, tenant, secrets, audit, rate, error, review, and receipt controls.",
+      openDecision: "Open security smoke",
+      guardedDecision: "Open guarded security",
+      holdDecision: "Hold security gate",
+      repairDecision: "Repair security proof",
+      nextOpen: "Open first backend security smoke gate and keep auth boundary, tenant isolation, secret handling, audit visibility, rate limit, error guard, reviewer signoff, and receipt together.",
+      nextGuarded: "Open guarded security smoke while one auth, tenant, secret, audit, rate, error, reviewer, or receipt lane stays watched.",
+      nextHold: "Hold security gate until auth boundary, tenant isolation, secret handling, and audit visibility are ready.",
+      nextRepair: "Repair security proof before production launch decision expands.",
+      axes: [
+        ["Auth boundary", "tenantGuard", 0.82, 5, "Auth boundary is smoked."],
+        ["Tenant isolation", "tenantGuard", 0.82, 5, "Tenant isolation is checked."],
+        ["Secret handling", "proofGuard", 0.78, 5, "Secrets stay out of client state."],
+        ["Audit visibility", "proofGuard", 0.8, 5, "Audit writes are visible."],
+        ["Rate limit", "rollbackGuard", 0.76, 5, "Rate limit behavior is known."],
+        ["Error guard", "rollbackGuard", 0.78, 5, "Errors stay contained."],
+        ["Reviewer signoff", "sponsorGuard", 0.76, 6, "Reviewer signoff is captured."],
+        ["Security receipt", "guardClosure", 0.82, 6, "Security receipt closes gate."],
+      ],
+    },
+    {
+      key: "production-launch-decision-board",
+      version: "v972",
+      number: 972,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Launch Decision Board",
+      shortLabel: "Production Launch Decision Board",
+      phase: "First pilot expansion rollout reuse market pilot production launch decision board",
+      track: "v972 first pilot expansion rollout reuse market pilot production launch decision board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-launch-decision-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-launch-decision-board",
+      idSuffix: "PRODUCTION-LAUNCH-DECISION-BOARD",
+      scoreKey: "productionLaunchDecisionBoardScore",
+      decisionKey: "productionLaunchDecisionBoardDecision",
+      stateKey: "productionLaunchDecisionBoardState",
+      lineKey: "productionLaunchDecisionBoardLine",
+      primarySignal: "Pilot production launch decision board",
+      primaryNote: "Turns security smoke into a launch decision with go/no-go, blocker posture, release owner, rollback proof, sponsor signoff, support readiness, billing readiness, and decision receipt.",
+      summary: "Decide production launch with go/no-go, blocker posture, release owner, rollback proof, sponsor signoff, support readiness, billing readiness, and decision receipt.",
+      trackSummary: "Security smoke gate now becomes one production launch decision board across go/no-go, blocker posture, release owner, rollback proof, sponsor signoff, support readiness, billing readiness, and receipt.",
+      stageSummary: "Security smoke now becomes launch decision with go/no-go, blockers, release owner, rollback, sponsor, support, billing, and receipt controls.",
+      openDecision: "Open launch decision",
+      guardedDecision: "Open guarded launch",
+      holdDecision: "Hold launch decision",
+      repairDecision: "Repair launch proof",
+      nextOpen: "Open production launch decision board and keep go/no-go, blocker posture, release owner, rollback proof, sponsor signoff, support readiness, billing readiness, and receipt together.",
+      nextGuarded: "Open guarded launch decision while one blocker, owner, rollback, sponsor, support, billing, or receipt lane stays watched.",
+      nextHold: "Hold launch decision until blockers, release owner, rollback proof, sponsor signoff, and support readiness are ready.",
+      nextRepair: "Repair launch proof before backend issue import expands.",
+      axes: [
+        ["Go/no-go", "reviewGuard", 0.78, 6, "Launch decision is explicit."],
+        ["Blocker posture", "proofGuard", 0.78, 5, "Blockers are visible."],
+        ["Release owner", "ownerCommand", 0.8, 6, "Release owner is named."],
+        ["Rollback proof", "rollbackGuard", 0.8, 5, "Rollback proof is attached."],
+        ["Sponsor signoff", "sponsorGuard", 0.8, 6, "Sponsor signoff is captured."],
+        ["Support readiness", "supportGuard", 0.78, 5, "Support is ready."],
+        ["Billing readiness", "tenantGuard", 0.76, 5, "Billing readiness is checked."],
+        ["Decision receipt", "guardClosure", 0.82, 6, "Decision receipt closes board."],
+      ],
+    },
+    {
+      key: "backend-issue-import-sprint-board",
+      version: "v973",
+      number: 973,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Backend Issue Import Sprint Board",
+      shortLabel: "Backend Issue Import Sprint Board",
+      phase: "First pilot expansion rollout reuse market pilot backend issue import sprint board",
+      track: "v973 first pilot expansion rollout reuse market pilot backend issue import sprint board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-backend-issue-import-sprint-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-backend-issue-import-sprint-board",
+      idSuffix: "BACKEND-ISSUE-IMPORT-SPRINT-BOARD",
+      scoreKey: "backendIssueImportSprintBoardScore",
+      decisionKey: "backendIssueImportSprintBoardDecision",
+      stateKey: "backendIssueImportSprintBoardState",
+      lineKey: "backendIssueImportSprintBoardLine",
+      primarySignal: "Pilot backend issue import sprint board",
+      primaryNote: "Turns launch decision work into importable backend sprint issues with issue title, owner, label, priority, acceptance proof, risk note, sprint order, and import receipt.",
+      summary: "Prepare backend sprint import with issue title, owner, label, priority, acceptance proof, risk note, sprint order, and import receipt.",
+      trackSummary: "Production launch decision board now becomes one backend issue import sprint board across issue title, owner, label, priority, acceptance proof, risk note, sprint order, and receipt.",
+      stageSummary: "Launch decision now becomes backend issue import with title, owner, label, priority, acceptance proof, risk, sprint order, and receipt controls.",
+      openDecision: "Open issue import",
+      guardedDecision: "Open guarded import",
+      holdDecision: "Hold issue import",
+      repairDecision: "Repair issue proof",
+      nextOpen: "Open backend issue import sprint board and keep issue title, owner, label, priority, acceptance proof, risk note, sprint order, and import receipt together.",
+      nextGuarded: "Open guarded import while one issue, owner, label, priority, proof, risk, sprint, or receipt lane stays watched.",
+      nextHold: "Hold issue import until titles, owners, labels, priorities, and acceptance proof are ready.",
+      nextRepair: "Repair issue proof before customer go-live evidence expands.",
+      axes: [
+        ["Issue title", "reviewGuard", 0.78, 5, "Issue titles are clear."],
+        ["Owner", "ownerCommand", 0.8, 6, "Issue owners are named."],
+        ["Label", "tenantGuard", 0.76, 5, "Labels are import ready."],
+        ["Priority", "proofGuard", 0.76, 5, "Priorities are visible."],
+        ["Acceptance proof", "proofGuard", 0.8, 5, "Acceptance proof is written."],
+        ["Risk note", "rollbackGuard", 0.76, 5, "Risk note is attached."],
+        ["Sprint order", "reviewGuard", 0.78, 6, "Sprint order is sequenced."],
+        ["Import receipt", "guardClosure", 0.8, 6, "Import receipt closes board."],
+      ],
+    },
+    {
+      key: "customer-pilot-go-live-evidence-pack",
+      version: "v974",
+      number: 974,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Evidence Pack",
+      shortLabel: "Customer Pilot Go-Live Evidence Pack",
+      phase: "First pilot expansion rollout reuse market pilot customer pilot go-live evidence pack",
+      track: "v974 first pilot expansion rollout reuse market pilot customer pilot go-live evidence pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-pilot-go-live-evidence-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-pilot-go-live-evidence-pack",
+      idSuffix: "CUSTOMER-PILOT-GO-LIVE-EVIDENCE-PACK",
+      scoreKey: "customerPilotGoLiveEvidencePackScore",
+      decisionKey: "customerPilotGoLiveEvidencePackDecision",
+      stateKey: "customerPilotGoLiveEvidencePackState",
+      lineKey: "customerPilotGoLiveEvidencePackLine",
+      primarySignal: "Pilot customer go-live evidence pack",
+      primaryNote: "Turns backend issue import into customer go-live proof with day-one evidence, user confirmation, support watch, sponsor proof, rollback posture, learning boundary, success metric, and go-live receipt.",
+      summary: "Package customer go-live proof with day-one evidence, user confirmation, support watch, sponsor proof, rollback posture, learning boundary, success metric, and go-live receipt.",
+      trackSummary: "Backend issue import sprint board now becomes one customer pilot go-live evidence pack across day-one evidence, user confirmation, support watch, sponsor proof, rollback posture, learning boundary, success metric, and receipt.",
+      stageSummary: "Backend issue import now becomes customer go-live evidence with day-one proof, user confirmation, support watch, sponsor proof, rollback, learning boundary, success metric, and receipt.",
+      openDecision: "Publish go-live pack",
+      guardedDecision: "Publish guarded pack",
+      holdDecision: "Hold go-live pack",
+      repairDecision: "Repair go-live proof",
+      nextOpen: "Publish customer pilot go-live evidence pack and keep day-one evidence, user confirmation, support watch, sponsor proof, rollback posture, learning boundary, success metric, and receipt together.",
+      nextGuarded: "Publish guarded go-live pack while one evidence, user, support, sponsor, rollback, learning, metric, or receipt lane stays watched.",
+      nextHold: "Hold go-live pack until day-one evidence, user confirmation, support watch, sponsor proof, and rollback posture are ready.",
+      nextRepair: "Repair go-live proof before day-one support watch expands.",
+      axes: [
+        ["Day-one evidence", "proofGuard", 0.8, 5, "Day-one evidence is attached."],
+        ["User confirmation", "tenantGuard", 0.78, 5, "User confirmation is visible."],
+        ["Support watch", "supportGuard", 0.8, 5, "Support watch is active."],
+        ["Sponsor proof", "sponsorGuard", 0.8, 6, "Sponsor proof is captured."],
+        ["Rollback posture", "rollbackGuard", 0.78, 5, "Rollback posture is clear."],
+        ["Learning boundary", "tenantGuard", 0.8, 5, "Learning boundary is safe."],
+        ["Success metric", "reviewGuard", 0.76, 6, "Success metric is named."],
+        ["Go-live receipt", "guardClosure", 0.82, 6, "Go-live receipt closes pack."],
       ],
     },
   ];
@@ -22090,6 +22285,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveEvidencePackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendIssueImportSprintBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchDecisionBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendSecuritySmokeGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotUserAcceptanceTestConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDeploymentSmokeConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendApiContractPackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendExecutionStarterPreview(model, autopilot)}",
@@ -29432,6 +29632,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDeploymentSmokeConsolePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-deployment-smoke-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotUserAcceptanceTestConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-user-acceptance-test-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotUserAcceptanceTestConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-user-acceptance-test-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotUserAcceptanceTestConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-user-acceptance-test-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendSecuritySmokeGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-backend-security-smoke-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendSecuritySmokeGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-backend-security-smoke-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendSecuritySmokeGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-backend-security-smoke-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchDecisionBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-launch-decision-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchDecisionBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-launch-decision-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchDecisionBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-launch-decision-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBackendIssueImportSprintBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "backend-issue-import-sprint-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBackendIssueImportSprintBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "backend-issue-import-sprint-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendIssueImportSprintBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "backend-issue-import-sprint-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveEvidencePackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-pilot-go-live-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveEvidencePack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-pilot-go-live-evidence-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveEvidencePackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-pilot-go-live-evidence-pack");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -94243,9 +94503,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v970", "First Pilot Expansion Rollout Reuse Market Pilot Pilot User Acceptance Test Console", "Turn staging smoke proof into customer UAT scripts, role checks, acceptance evidence, and defect triage."],
-      ["v971", "First Pilot Expansion Rollout Reuse Market Pilot First Backend Security Smoke Gate", "Make backend auth, tenant boundary, audit write, rate limits, and error handling visible before launch signoff."],
-      ["v972", "First Pilot Expansion Rollout Reuse Market Pilot Production Launch Decision Board", "Convert staging, security, UAT, support, billing, and renewal proof into the final launch decision board."],
+      ["v975", "First Pilot Expansion Rollout Reuse Market Pilot Day-One Support Watch Console", "Turn go-live evidence into support watch, SLA owner, response route, incident trigger, and customer calm proof."],
+      ["v976", "First Pilot Expansion Rollout Reuse Market Pilot Billing Activation Entitlement Receipt", "Confirm billing activation, entitlement rules, plan proof, access lock, invoice note, and finance receipt before scale."],
+      ["v977", "First Pilot Expansion Rollout Reuse Market Pilot First Learning Closeout Review", "Close the first live learning loop with outcome proof, customer readback, safe reuse decision, and roadmap adjustment."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

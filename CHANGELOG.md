@@ -1,5 +1,124 @@
 # Changelog
 
+## v974 - First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Evidence Pack
+
+### Changes Made
+- Promoted customer pilot go-live evidence pack as the current build.
+- Added day-one evidence, user confirmation, support watch, sponsor proof, rollback posture, learning boundary, success metric, and go-live receipt lanes.
+- Updated Build Phase to show v974 as current and queue v975-v977 for day-one support watch, billing entitlement receipt, and first learning closeout review work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v974.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v974 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Customer Pilot Go-Live Evidence Pack visible and v975-v977 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v974 visible, no page-level horizontal overflow, and no console errors.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, build badge, and Command without hangs or console errors.
+
+### Known Risks
+- Go-live evidence pack is still static; real launch requires live tenant evidence, user acceptance capture, support monitoring, sponsor approval workflow, rollback tooling, learning boundary enforcement, and success metric storage.
+
+## v973 - First Pilot Expansion Rollout Reuse Market Pilot Backend Issue Import Sprint Board
+
+### Changes Made
+- Added the backend issue import sprint board to the pilot rollout runway.
+- Added issue title, owner, label, priority, acceptance proof, risk note, sprint order, and import receipt lanes.
+- Added wrapper render paths and static registry coverage so backend sprint import readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with backend issue import sprint board release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Backend issue import sprint board is not connected to GitHub issue creation, private backend repo labels, assignee sync, priority enforcement, acceptance tests, or sprint tracking.
+
+## v972 - First Pilot Expansion Rollout Reuse Market Pilot Production Launch Decision Board
+
+### Changes Made
+- Added the production launch decision board to the pilot rollout runway.
+- Added go/no-go, blocker posture, release owner, rollback proof, sponsor signoff, support readiness, billing readiness, and decision receipt lanes.
+- Added wrapper render paths and static registry coverage so launch decision readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with production launch decision board release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Production launch decision board is not connected to real blocker status, release ownership, rollback proof, sponsor approvals, support readiness, billing readiness, or a production launch workflow.
+
+## v971 - First Pilot Expansion Rollout Reuse Market Pilot First Backend Security Smoke Gate
+
+### Changes Made
+- Added the first backend security smoke gate to the pilot rollout runway.
+- Added auth boundary, tenant isolation, secret handling, audit visibility, rate limit, error guard, reviewer signoff, and security receipt lanes.
+- Added wrapper render paths and static registry coverage so backend security smoke readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with first backend security smoke gate release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Backend security smoke gate is not connected to real auth middleware, tenant isolation tests, secret scanning, rate limit checks, audit writes, error monitoring, or security reviewer workflow.
+
+## v970 - First Pilot Expansion Rollout Reuse Market Pilot Pilot User Acceptance Test Console
+
+### Changes Made
+- Added the pilot user acceptance test console to the pilot rollout runway.
+- Added role checks, acceptance owner, scenario proof, defect lane, support note, sponsor readback, go/no-go posture, and UAT receipt lanes.
+- Added wrapper render paths and static registry coverage so pilot UAT readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with pilot user acceptance test console release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Pilot UAT console is not connected to real test execution, user acceptance signatures, defect tracking, support notes, sponsor responses, or UAT receipt storage.
+
 ## v969 - First Pilot Expansion Rollout Reuse Market Pilot Staging Deployment Smoke Console
 
 ### Changes Made
