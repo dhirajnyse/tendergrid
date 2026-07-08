@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v929";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Launch Readiness Console";
+  const BUILD_VERSION = "v934";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Day-One Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=929.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=929.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=934.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=934.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -4910,6 +4910,201 @@
         ["Billing readiness", "sponsorGuard", 0.72, 6, "Billing readiness is checked."],
         ["Country owner", "ownerCommand", 0.72, 6, "Country owner is named."],
         ["Launch receipt", "guardClosure", 0.72, 6, "Launch receipt closes console."],
+      ],
+    },
+    {
+      key: "enterprise-pilot-command-room",
+      version: "v930",
+      number: 930,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Pilot Command Room",
+      shortLabel: "Enterprise Pilot Command Room",
+      phase: "First pilot expansion rollout reuse market pilot enterprise pilot command room",
+      track: "v930 first pilot expansion rollout reuse market pilot enterprise pilot command room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-pilot-command-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-pilot-command-room",
+      idSuffix: "ENTERPRISE-PILOT-COMMAND-ROOM",
+      scoreKey: "enterprisePilotCommandRoomScore",
+      decisionKey: "enterprisePilotCommandRoomDecision",
+      stateKey: "enterprisePilotCommandRoomState",
+      lineKey: "enterprisePilotCommandRoomLine",
+      primarySignal: "Pilot enterprise command room",
+      primaryNote: "Prepares enterprise pilot control with buyer sponsor, security proof, rollout owner, support model, renewal intent, executive proof, decision cadence, and command receipt.",
+      summary: "Prepare enterprise pilot control with buyer sponsor, security proof, rollout owner, support model, renewal intent, executive proof, decision cadence, and command receipt.",
+      trackSummary: "Multi-country readiness now becomes one enterprise pilot command room across buyer sponsor, security proof, rollout owner, support model, renewal intent, executive proof, decision cadence, and receipt.",
+      stageSummary: "Multi-country readiness now becomes enterprise command with sponsor, security, rollout owner, support, renewal, executive proof, cadence, and receipt.",
+      openDecision: "Open enterprise command",
+      guardedDecision: "Open guarded enterprise command",
+      holdDecision: "Hold enterprise command",
+      repairDecision: "Repair enterprise command",
+      nextOpen: "Open the enterprise pilot command room and keep buyer sponsor, security proof, rollout owner, support model, renewal intent, executive proof, decision cadence, and command receipt together.",
+      nextGuarded: "Open guarded enterprise command while one sponsor, security, rollout, support, renewal, executive, or cadence lane stays watched.",
+      nextHold: "Hold enterprise command until sponsor, security proof, rollout owner, support model, and executive proof are clear.",
+      nextRepair: "Repair enterprise command before trust center publication pack.",
+      axes: [
+        ["Buyer sponsor", "sponsorGuard", 0.74, 5, "Buyer sponsor is named."],
+        ["Security proof", "proofGuard", 0.76, 5, "Security proof is assembled."],
+        ["Rollout owner", "ownerCommand", 0.72, 6, "Rollout owner is accountable."],
+        ["Support model", "supportGuard", 0.74, 5, "Support model is staffed."],
+        ["Renewal intent", "launchMoment", 0.72, 6, "Renewal intent is visible."],
+        ["Executive proof", "reviewGuard", 0.74, 5, "Executive proof is ready."],
+        ["Decision cadence", "tenantGuard", 0.74, 5, "Decision cadence is controlled."],
+        ["Command receipt", "guardClosure", 0.72, 6, "Command receipt closes room."],
+      ],
+    },
+    {
+      key: "trust-center-publication-pack",
+      version: "v931",
+      number: 931,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Trust Center Publication Pack",
+      shortLabel: "Trust Center Publication Pack",
+      phase: "First pilot expansion rollout reuse market pilot trust center publication pack",
+      track: "v931 first pilot expansion rollout reuse market pilot trust center publication pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-trust-center-publication-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-trust-center-publication-pack",
+      idSuffix: "TRUST-CENTER-PUBLICATION-PACK",
+      scoreKey: "trustCenterPublicationPackScore",
+      decisionKey: "trustCenterPublicationPackDecision",
+      stateKey: "trustCenterPublicationPackState",
+      lineKey: "trustCenterPublicationPackLine",
+      primarySignal: "Pilot trust center publication pack",
+      primaryNote: "Packages buyer-safe trust proof with security summary, privacy boundary, uptime posture, data policy, support promise, audit receipt, owner approval, and publication receipt.",
+      summary: "Package buyer-safe trust proof with security summary, privacy boundary, uptime posture, data policy, support promise, audit receipt, owner approval, and publication receipt.",
+      trackSummary: "Enterprise command now becomes one trust center publication pack across security summary, privacy boundary, uptime posture, data policy, support promise, audit receipt, owner approval, and receipt.",
+      stageSummary: "Enterprise command now becomes trust publication with security, privacy, uptime, data policy, support, audit, approval, and receipt.",
+      openDecision: "Publish trust pack",
+      guardedDecision: "Publish guarded trust pack",
+      holdDecision: "Hold trust pack",
+      repairDecision: "Repair trust pack",
+      nextOpen: "Publish the trust center pack and keep security summary, privacy boundary, uptime posture, data policy, support promise, audit receipt, owner approval, and publication receipt together.",
+      nextGuarded: "Publish guarded trust proof while one security, privacy, uptime, data, support, audit, or approval lane stays watched.",
+      nextHold: "Hold trust publication until security summary, privacy boundary, uptime posture, data policy, and audit receipt are complete.",
+      nextRepair: "Repair trust publication before production learning integration gate.",
+      axes: [
+        ["Security summary", "proofGuard", 0.76, 5, "Security summary is publishable."],
+        ["Privacy boundary", "tenantGuard", 0.76, 5, "Privacy boundary is clear."],
+        ["Uptime posture", "rollbackGuard", 0.74, 5, "Uptime posture is stated."],
+        ["Data policy", "tenantGuard", 0.74, 5, "Data policy is buyer safe."],
+        ["Support promise", "supportGuard", 0.74, 5, "Support promise is visible."],
+        ["Audit receipt", "guardClosure", 0.72, 6, "Audit receipt is attached."],
+        ["Owner approval", "ownerCommand", 0.72, 6, "Owner approval is captured."],
+        ["Publication receipt", "guardClosure", 0.72, 6, "Publication receipt closes pack."],
+      ],
+    },
+    {
+      key: "production-learning-integration-gate",
+      version: "v932",
+      number: 932,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Learning Integration Gate",
+      shortLabel: "Production Learning Integration Gate",
+      phase: "First pilot expansion rollout reuse market pilot production learning integration gate",
+      track: "v932 first pilot expansion rollout reuse market pilot production learning integration gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-learning-integration-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-learning-integration-gate",
+      idSuffix: "PRODUCTION-LEARNING-INTEGRATION-GATE",
+      scoreKey: "productionLearningIntegrationGateScore",
+      decisionKey: "productionLearningIntegrationGateDecision",
+      stateKey: "productionLearningIntegrationGateState",
+      lineKey: "productionLearningIntegrationGateLine",
+      primarySignal: "Pilot production learning integration gate",
+      primaryNote: "Controls production learning with tenant-safe telemetry, outcome review, approval workflow, governance receipt, rollback-ready learning release, and integration proof.",
+      summary: "Control production learning with tenant-safe telemetry, outcome review, approval workflow, governance receipt, rollback-ready learning release, and integration proof.",
+      trackSummary: "Trust publication now becomes one production learning integration gate across telemetry boundary, outcome review, approval workflow, governance receipt, rollback-ready release, integration proof, reviewer owner, and receipt.",
+      stageSummary: "Trust publication now becomes production learning integration with telemetry, outcomes, approvals, governance, rollback, proof, owner, and receipt.",
+      openDecision: "Open learning gate",
+      guardedDecision: "Open guarded learning gate",
+      holdDecision: "Hold learning integration",
+      repairDecision: "Repair learning integration",
+      nextOpen: "Open the production learning integration gate and keep telemetry boundary, outcome review, approval workflow, governance receipt, rollback-ready release, integration proof, reviewer owner, and receipt together.",
+      nextGuarded: "Open guarded learning integration while one telemetry, outcome, approval, governance, rollback, proof, or owner lane stays watched.",
+      nextHold: "Hold learning integration until telemetry boundary, outcome review, approval workflow, governance receipt, and rollback-ready release are complete.",
+      nextRepair: "Repair production learning before backend readiness evidence room.",
+      axes: [
+        ["Telemetry boundary", "tenantGuard", 0.76, 5, "Telemetry boundary is tenant safe."],
+        ["Outcome review", "reviewGuard", 0.74, 5, "Outcome review is scheduled."],
+        ["Approval workflow", "proofGuard", 0.76, 5, "Approval workflow is attached."],
+        ["Governance receipt", "guardClosure", 0.72, 6, "Governance receipt is ready."],
+        ["Rollback-ready release", "rollbackGuard", 0.76, 5, "Learning release can roll back."],
+        ["Integration proof", "proofGuard", 0.76, 5, "Integration proof is assembled."],
+        ["Reviewer owner", "ownerCommand", 0.72, 6, "Reviewer owner is named."],
+        ["Learning receipt", "guardClosure", 0.72, 6, "Learning receipt closes gate."],
+      ],
+    },
+    {
+      key: "backend-readiness-evidence-room",
+      version: "v933",
+      number: 933,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Backend Readiness Evidence Room",
+      shortLabel: "Backend Readiness Evidence Room",
+      phase: "First pilot expansion rollout reuse market pilot backend readiness evidence room",
+      track: "v933 first pilot expansion rollout reuse market pilot backend readiness evidence room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-backend-readiness-evidence-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-backend-readiness-evidence-room",
+      idSuffix: "BACKEND-READINESS-EVIDENCE-ROOM",
+      scoreKey: "backendReadinessEvidenceRoomScore",
+      decisionKey: "backendReadinessEvidenceRoomDecision",
+      stateKey: "backendReadinessEvidenceRoomState",
+      lineKey: "backendReadinessEvidenceRoomLine",
+      primarySignal: "Pilot backend readiness evidence room",
+      primaryNote: "Turns production learning into backend proof with API contract, auth guard, data migration, audit trail, deployment proof, rollback proof, owner route, and readiness receipt.",
+      summary: "Turn production learning into backend proof with API contract, auth guard, data migration, audit trail, deployment proof, rollback proof, owner route, and readiness receipt.",
+      trackSummary: "Production learning integration now becomes one backend readiness evidence room across API contract, auth guard, data migration, audit trail, deployment proof, rollback proof, owner route, and receipt.",
+      stageSummary: "Production learning now becomes backend readiness with API, auth, data, audit, deployment, rollback, owner, and receipt.",
+      openDecision: "Open backend evidence",
+      guardedDecision: "Open guarded backend evidence",
+      holdDecision: "Hold backend readiness",
+      repairDecision: "Repair backend readiness",
+      nextOpen: "Open the backend readiness evidence room and keep API contract, auth guard, data migration, audit trail, deployment proof, rollback proof, owner route, and readiness receipt together.",
+      nextGuarded: "Open guarded backend readiness while one API, auth, data, audit, deployment, rollback, or owner lane stays watched.",
+      nextHold: "Hold backend readiness until API contract, auth guard, data migration, audit trail, and deployment proof are complete.",
+      nextRepair: "Repair backend readiness before customer pilot day-one console.",
+      axes: [
+        ["API contract", "proofGuard", 0.76, 5, "API contract is drafted."],
+        ["Auth guard", "tenantGuard", 0.76, 5, "Auth guard is explicit."],
+        ["Data migration", "reviewGuard", 0.74, 5, "Data migration is rehearsed."],
+        ["Audit trail", "guardClosure", 0.72, 6, "Audit trail is planned."],
+        ["Deployment proof", "launchMoment", 0.74, 5, "Deployment proof is visible."],
+        ["Rollback proof", "rollbackGuard", 0.76, 5, "Rollback proof is ready."],
+        ["Owner route", "ownerCommand", 0.72, 6, "Owner route is named."],
+        ["Readiness receipt", "guardClosure", 0.72, 6, "Readiness receipt closes room."],
+      ],
+    },
+    {
+      key: "customer-pilot-day-one-console",
+      version: "v934",
+      number: 934,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Day-One Console",
+      shortLabel: "Customer Pilot Day-One Console",
+      phase: "First pilot expansion rollout reuse market pilot customer pilot day-one console",
+      track: "v934 first pilot expansion rollout reuse market pilot customer pilot day-one console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-pilot-day-one-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-pilot-day-one-console",
+      idSuffix: "CUSTOMER-PILOT-DAY-ONE-CONSOLE",
+      scoreKey: "customerPilotDayOneConsoleScore",
+      decisionKey: "customerPilotDayOneConsoleDecision",
+      stateKey: "customerPilotDayOneConsoleState",
+      lineKey: "customerPilotDayOneConsoleLine",
+      primarySignal: "Pilot customer day-one console",
+      primaryNote: "Runs the first customer pilot day with kickoff owner, user invite, first data proof, support channel, executive note, rollback watch, success checkpoint, and day-one receipt.",
+      summary: "Run the first customer pilot day with kickoff owner, user invite, first data proof, support channel, executive note, rollback watch, success checkpoint, and day-one receipt.",
+      trackSummary: "Backend readiness now becomes one customer pilot day-one console across kickoff owner, user invite, first data proof, support channel, executive note, rollback watch, success checkpoint, and receipt.",
+      stageSummary: "Backend readiness now becomes day-one pilot command with kickoff, invites, data proof, support, executive note, rollback, success checkpoint, and receipt.",
+      openDecision: "Open day-one pilot",
+      guardedDecision: "Open guarded day-one pilot",
+      holdDecision: "Hold day-one pilot",
+      repairDecision: "Repair day-one pilot",
+      nextOpen: "Open the customer pilot day-one console and keep kickoff owner, user invite, first data proof, support channel, executive note, rollback watch, success checkpoint, and day-one receipt together.",
+      nextGuarded: "Open guarded day-one pilot while one kickoff, invite, data, support, executive, rollback, or checkpoint lane stays watched.",
+      nextHold: "Hold day-one pilot until kickoff owner, user invite, first data proof, support channel, and rollback watch are ready.",
+      nextRepair: "Repair day-one pilot before scaling customer activation.",
+      axes: [
+        ["Kickoff owner", "ownerCommand", 0.72, 6, "Kickoff owner is accountable."],
+        ["User invite", "launchMoment", 0.74, 5, "User invite is ready."],
+        ["First data proof", "proofGuard", 0.76, 5, "First data proof is attached."],
+        ["Support channel", "supportGuard", 0.74, 5, "Support channel is open."],
+        ["Executive note", "sponsorGuard", 0.72, 6, "Executive note is prepared."],
+        ["Rollback watch", "rollbackGuard", 0.76, 5, "Rollback watch is live."],
+        ["Success checkpoint", "reviewGuard", 0.74, 5, "Success checkpoint is scheduled."],
+        ["Day-one receipt", "guardClosure", 0.72, 6, "Day-one receipt closes console."],
       ],
     },
   ];
@@ -20530,6 +20725,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotDayOneConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendReadinessEvidenceRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningIntegrationGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTrustCenterPublicationPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterprisePilotCommandRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryLaunchReadinessConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessAutomationLayerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAiGovernanceEvidenceLayerPreview(model, autopilot)}",
@@ -27352,6 +27552,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryLaunchReadinessConsolePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-country-launch-readiness-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterprisePilotCommandRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "enterprise-pilot-command-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterprisePilotCommandRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "enterprise-pilot-command-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterprisePilotCommandRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "enterprise-pilot-command-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTrustCenterPublicationPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "trust-center-publication-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTrustCenterPublicationPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "trust-center-publication-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTrustCenterPublicationPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "trust-center-publication-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningIntegrationGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-learning-integration-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningIntegrationGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-learning-integration-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningIntegrationGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-learning-integration-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBackendReadinessEvidenceRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "backend-readiness-evidence-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBackendReadinessEvidenceRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "backend-readiness-evidence-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendReadinessEvidenceRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "backend-readiness-evidence-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotDayOneConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-pilot-day-one-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotDayOneConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-pilot-day-one-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotDayOneConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-pilot-day-one-console");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -92163,9 +92423,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v930", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Pilot Command Room", "Prepare the enterprise pilot command room with buyer sponsor, security proof, rollout owner, support model, renewal intent, and executive proof receipt."],
-      ["v931", "First Pilot Expansion Rollout Reuse Market Pilot Trust Center Publication Pack", "Publish buyer-safe trust proof with security summary, privacy boundary, uptime posture, data policy, support promise, and audit receipt."],
-      ["v932", "First Pilot Expansion Rollout Reuse Market Pilot Production Learning Integration Gate", "Connect production learning with tenant-safe telemetry, outcome review, approval workflow, governance receipt, and rollback-ready learning release."],
+      ["v935", "First Pilot Expansion Rollout Reuse Market Pilot Customer Activation Scale Room", "Scale day-one customer activation with adoption cohorts, support load, sponsor proof, renewal signal, and safe expansion controls."],
+      ["v936", "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Control Room", "Control paid pilot billing with invoice proof, checkout state, entitlement guard, payment receipt, and finance handoff."],
+      ["v937", "First Pilot Expansion Rollout Reuse Market Pilot Live Support Command Center", "Operate live customer support with SLA watch, escalation route, issue evidence, owner queue, and customer communication receipts."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

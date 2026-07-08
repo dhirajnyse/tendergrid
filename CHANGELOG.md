@@ -1,5 +1,141 @@
 # Changelog
 
+## v934 - First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Day-One Console
+
+### Changes Made
+- Activated the customer pilot day-one console as the current build.
+- Added kickoff owner, user invite, first data proof, support channel, executive note, rollback watch, success checkpoint, and day-one receipt as pilot-launch lanes.
+- Updated the Build Phase next queue to v935-v937 for customer activation scale, production billing control, and live support command work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v934.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with correct headings, Build v934 visible, no page-level horizontal overflow, and no console errors.
+- Passed: left-rail click QA for Autopilot, Reports, Build Phase, and Command with no navigation hang, correct route changes, no console errors, and no page-level horizontal overflow.
+- Passed: 390px mobile browser QA for Command, Autopilot, Reports, and Build Phase with correct headings, Build v934 visible, v935-v937 visible on Build Phase, no console errors, and no page-level horizontal overflow.
+- Passed: mobile header check with Build v934, Serenity, Live demo, Rooms, Rail: Left, Admin Tools, Reset demo, and Logout visible inside the responsive header flow.
+
+### Known Risks
+- Customer pilot day-one remains static; real kickoff ownership, user invitations, first data proof, support channel, rollback watch, success checkpoints, and day-one receipts need live tenant, support, and customer-success integrations.
+
+## v933 - First Pilot Expansion Rollout Reuse Market Pilot Backend Readiness Evidence Room
+
+### Changes Made
+- Activated the backend readiness evidence room as the current build.
+- Added API contract, auth guard, data migration, audit trail, deployment proof, rollback proof, owner route, and readiness receipt as backend-readiness lanes.
+- Updated the Build Phase next queue to v934-v936 for customer pilot day-one, customer activation scale, and production billing control work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v933.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Backend readiness evidence remains static; real API contracts, auth guards, migration dry runs, audit trails, deployment proof, rollback proof, and owner routes need a private backend repository and staging environment.
+
+## v932 - First Pilot Expansion Rollout Reuse Market Pilot Production Learning Integration Gate
+
+### Changes Made
+- Activated the production learning integration gate as the current build.
+- Added telemetry boundary, outcome review, approval workflow, governance receipt, rollback-ready release, integration proof, reviewer owner, and learning receipt as production-learning lanes.
+- Updated the Build Phase next queue to v933-v935 for backend readiness evidence, customer pilot day-one, and customer activation scale work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v932.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Production learning integration remains static; real telemetry boundaries, outcome reviews, approval workflows, rollback-ready learning release, and governance receipts need backend event capture and review controls.
+
+## v931 - First Pilot Expansion Rollout Reuse Market Pilot Trust Center Publication Pack
+
+### Changes Made
+- Activated the trust center publication pack as the current build.
+- Added security summary, privacy boundary, uptime posture, data policy, support promise, audit receipt, owner approval, and publication receipt as buyer-safe trust lanes.
+- Updated the Build Phase next queue to v932-v934 for production learning integration, backend readiness evidence, and customer pilot day-one work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v931.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Trust center publication remains static; real security summaries, privacy notices, uptime posture, data policy, support promise, audit receipts, and owner approvals need governed backend evidence and publication workflows.
+
+## v930 - First Pilot Expansion Rollout Reuse Market Pilot Enterprise Pilot Command Room
+
+### Changes Made
+- Activated the enterprise pilot command room as the current build.
+- Added buyer sponsor, security proof, rollout owner, support model, renewal intent, executive proof, decision cadence, and command receipt as enterprise-pilot control lanes.
+- Added v930-v934 runway definitions, command rail render paths, wrapper functions, and static release-registry checks.
+- Updated the Build Phase next queue to v931-v933 for trust center publication, production learning integration, and backend readiness evidence work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v930.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` baseline before editing.
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Enterprise pilot command remains static; real buyer sponsor proof, security evidence, rollout ownership, support model, renewal intent, and executive receipts need backend workflow and customer-pilot integrations.
+
 ## v929 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Launch Readiness Console
 
 ### Changes Made
