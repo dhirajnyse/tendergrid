@@ -1,5 +1,123 @@
 # Changelog
 
+## v959 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Trail Viewer
+
+### Changes Made
+- Promoted tenant audit trail viewer as the current build.
+- Added audit event, action event, evidence event, access event, export event, retention event, owner filter, review note, and audit receipt lanes.
+- Updated Build Phase to show v959 as current and queue v960-v962 for access policy enforcement, data retention compliance, and production usage telemetry.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v959.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v959 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Tenant Audit Trail Viewer visible and v960-v962 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v959 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Tenant audit trail viewer is still a static prototype; real launch requires backend audit events, query APIs, immutable storage, access log capture, retention and deletion enforcement, export governance, and permission checks.
+
+## v958 - First Pilot Expansion Rollout Reuse Market Pilot Production Evidence Upload Prototype
+
+### Changes Made
+- Added the production evidence upload prototype to the pilot rollout runway.
+- Added file intake, scan status, metadata capture, linked record, proof preview, failure lane, audit write, and upload receipt lanes.
+- Added wrapper render paths and static registry coverage so production evidence upload readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with production evidence upload prototype release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Evidence upload remains simulated until real upload storage, malware scanning, file metadata capture, record linking, proof preview rendering, and audit write APIs exist.
+
+## v957 - First Pilot Expansion Rollout Reuse Market Pilot Renewal Expansion Board Pack
+
+### Changes Made
+- Added the renewal expansion board pack to the pilot rollout runway.
+- Added adoption proof, value proof, support proof, sponsor quote, risk register, expansion option, decision ask, and board receipt lanes.
+- Added wrapper render paths and static registry coverage so the renewal expansion story can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with renewal expansion board pack release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Renewal expansion board pack is not connected to real product usage, sponsor notes, support history, commercial renewal data, or board-approved expansion workflow.
+
+## v956 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Production Onboarding
+
+### Changes Made
+- Added tenant admin production onboarding to the pilot rollout runway.
+- Added tenant owner, admin role, invite route, permission proof, room starter, support link, acceptance proof, and admin receipt lanes.
+- Added wrapper render paths and static registry coverage so admin onboarding readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with tenant admin production onboarding release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Tenant admin onboarding remains static until invitation emails, role policies, tenant configuration, user acceptance receipts, support routing, and permission enforcement are backed by production services.
+
+## v955 - First Pilot Expansion Rollout Reuse Market Pilot First Pilot Support SLA Monitor
+
+### Changes Made
+- Added the first pilot support SLA monitor to the pilot rollout runway.
+- Added response SLA, escalation age, owner cover, sponsor comfort, unresolved risk, help article, support receipt, and SLA decision lanes.
+- Added wrapper render paths and static registry coverage so pilot support readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with first pilot support SLA monitor release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Support SLA monitor is not yet connected to a ticketing inbox, real response clocks, escalation rules, owner schedules, sponsor sentiment, or help article analytics.
+
 ## v954 - First Pilot Expansion Rollout Reuse Market Pilot Evidence Upload and Audit Storage Gate
 
 ### Changes Made

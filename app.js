@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v954";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Evidence Upload and Audit Storage Gate";
+  const BUILD_VERSION = "v959";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Trail Viewer";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=954.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=954.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=959.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=959.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -5885,6 +5885,201 @@
         ["Retrieval proof", "reviewGuard", 0.76, 5, "Retrieval proof is testable."],
         ["Deletion route", "rollbackGuard", 0.76, 5, "Deletion route is governed."],
         ["Storage receipt", "guardClosure", 0.8, 6, "Storage receipt closes evidence gate."],
+      ],
+    },
+    {
+      key: "first-pilot-support-sla-monitor",
+      version: "v955",
+      number: 955,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Pilot Support SLA Monitor",
+      shortLabel: "First Pilot Support SLA Monitor",
+      phase: "First pilot expansion rollout reuse market pilot first pilot support sla monitor",
+      track: "v955 first pilot expansion rollout reuse market pilot first pilot support sla monitor",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-pilot-support-sla-monitor",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-pilot-support-sla-monitor",
+      idSuffix: "FIRST-PILOT-SUPPORT-SLA-MONITOR",
+      scoreKey: "firstPilotSupportSlaMonitorScore",
+      decisionKey: "firstPilotSupportSlaMonitorDecision",
+      stateKey: "firstPilotSupportSlaMonitorState",
+      lineKey: "firstPilotSupportSlaMonitorLine",
+      primarySignal: "Pilot first support SLA monitor",
+      primaryNote: "Turns evidence storage readiness into a first-pilot support monitor with response SLA, escalation age, owner cover, sponsor comfort, unresolved risk, help article, support receipt, and SLA decision.",
+      summary: "Watch live pilot support with response SLA, escalation age, owner cover, sponsor comfort, unresolved risk, help article, support receipt, and SLA decision.",
+      trackSummary: "Evidence upload and audit storage gate now becomes one first-pilot support SLA monitor across response SLA, escalation age, owner cover, sponsor comfort, unresolved risk, help article, support receipt, and decision.",
+      stageSummary: "Evidence storage now becomes support SLA monitor with response, escalation, owner, sponsor, risk, help, receipt, and decision controls.",
+      openDecision: "Open support SLA monitor",
+      guardedDecision: "Open guarded support SLA",
+      holdDecision: "Hold support monitor",
+      repairDecision: "Repair support SLA proof",
+      nextOpen: "Open first-pilot support SLA monitor and keep response SLA, escalation age, owner cover, sponsor comfort, unresolved risk, help article, support receipt, and SLA decision together.",
+      nextGuarded: "Open guarded support SLA while one response, escalation, owner, sponsor, risk, help, receipt, or decision lane stays watched.",
+      nextHold: "Hold support monitor until response SLA, escalation age, owner cover, sponsor comfort, and unresolved risk are clear.",
+      nextRepair: "Repair support SLA proof before tenant admin onboarding expands.",
+      axes: [
+        ["Response SLA", "supportGuard", 0.8, 5, "Response SLA is watched."],
+        ["Escalation age", "reviewGuard", 0.76, 5, "Escalation age is visible."],
+        ["Owner cover", "ownerCommand", 0.76, 6, "Owner coverage is named."],
+        ["Sponsor comfort", "sponsorGuard", 0.76, 6, "Sponsor comfort is captured."],
+        ["Unresolved risk", "rollbackGuard", 0.76, 5, "Open support risk is visible."],
+        ["Help article", "supportGuard", 0.74, 5, "Help article is ready."],
+        ["Support receipt", "proofGuard", 0.78, 5, "Support receipt is readable."],
+        ["SLA decision", "guardClosure", 0.78, 6, "SLA decision closes monitor."],
+      ],
+    },
+    {
+      key: "tenant-admin-production-onboarding",
+      version: "v956",
+      number: 956,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Production Onboarding",
+      shortLabel: "Tenant Admin Production Onboarding",
+      phase: "First pilot expansion rollout reuse market pilot tenant admin production onboarding",
+      track: "v956 first pilot expansion rollout reuse market pilot tenant admin production onboarding",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-admin-production-onboarding",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-admin-production-onboarding",
+      idSuffix: "TENANT-ADMIN-PRODUCTION-ONBOARDING",
+      scoreKey: "tenantAdminProductionOnboardingScore",
+      decisionKey: "tenantAdminProductionOnboardingDecision",
+      stateKey: "tenantAdminProductionOnboardingState",
+      lineKey: "tenantAdminProductionOnboardingLine",
+      primarySignal: "Pilot tenant admin production onboarding",
+      primaryNote: "Turns support SLA monitoring into production admin onboarding with tenant owner, admin role, invite route, permission proof, room starter, support link, acceptance proof, and admin receipt.",
+      summary: "Prepare production admin onboarding with tenant owner, admin role, invite route, permission proof, room starter, support link, acceptance proof, and admin receipt.",
+      trackSummary: "First-pilot support SLA monitor now becomes one tenant admin production onboarding path across tenant owner, admin role, invite route, permission proof, room starter, support link, acceptance proof, and receipt.",
+      stageSummary: "Support monitor now becomes production admin onboarding with tenant, role, invite, permission, room, support, acceptance, and receipt controls.",
+      openDecision: "Open admin onboarding",
+      guardedDecision: "Open guarded onboarding",
+      holdDecision: "Hold admin onboarding",
+      repairDecision: "Repair admin proof",
+      nextOpen: "Open tenant admin production onboarding and keep tenant owner, admin role, invite route, permission proof, room starter, support link, acceptance proof, and admin receipt together.",
+      nextGuarded: "Open guarded onboarding while one tenant, role, invite, permission, room, support, acceptance, or receipt lane stays watched.",
+      nextHold: "Hold admin onboarding until tenant owner, admin role, invite route, permission proof, and room starter are ready.",
+      nextRepair: "Repair admin proof before renewal expansion board pack expands.",
+      axes: [
+        ["Tenant owner", "ownerCommand", 0.78, 6, "Tenant owner is accountable."],
+        ["Admin role", "tenantGuard", 0.8, 5, "Admin role is controlled."],
+        ["Invite route", "tenantGuard", 0.76, 5, "Invite route is clear."],
+        ["Permission proof", "proofGuard", 0.78, 5, "Permission proof is readable."],
+        ["Room starter", "reviewGuard", 0.74, 5, "Room starter is simple."],
+        ["Support link", "supportGuard", 0.76, 5, "Support link is visible."],
+        ["Acceptance proof", "sponsorGuard", 0.76, 6, "Admin acceptance is captured."],
+        ["Admin receipt", "guardClosure", 0.78, 6, "Admin receipt closes onboarding."],
+      ],
+    },
+    {
+      key: "renewal-expansion-board-pack",
+      version: "v957",
+      number: 957,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Renewal Expansion Board Pack",
+      shortLabel: "Renewal Expansion Board Pack",
+      phase: "First pilot expansion rollout reuse market pilot renewal expansion board pack",
+      track: "v957 first pilot expansion rollout reuse market pilot renewal expansion board pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-expansion-board-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-expansion-board-pack",
+      idSuffix: "RENEWAL-EXPANSION-BOARD-PACK",
+      scoreKey: "renewalExpansionBoardPackScore",
+      decisionKey: "renewalExpansionBoardPackDecision",
+      stateKey: "renewalExpansionBoardPackState",
+      lineKey: "renewalExpansionBoardPackLine",
+      primarySignal: "Pilot renewal expansion board pack",
+      primaryNote: "Turns production admin onboarding into a renewal expansion board pack with adoption proof, value proof, support proof, sponsor quote, risk register, expansion option, decision ask, and board receipt.",
+      summary: "Prepare renewal expansion board proof with adoption proof, value proof, support proof, sponsor quote, risk register, expansion option, decision ask, and board receipt.",
+      trackSummary: "Tenant admin production onboarding now becomes one renewal expansion board pack across adoption proof, value proof, support proof, sponsor quote, risk register, expansion option, decision ask, and receipt.",
+      stageSummary: "Admin onboarding now becomes board pack with adoption, value, support, sponsor, risk, expansion, ask, and receipt controls.",
+      openDecision: "Open board pack",
+      guardedDecision: "Open guarded board pack",
+      holdDecision: "Hold board pack",
+      repairDecision: "Repair board proof",
+      nextOpen: "Open renewal expansion board pack and keep adoption proof, value proof, support proof, sponsor quote, risk register, expansion option, decision ask, and board receipt together.",
+      nextGuarded: "Open guarded board pack while one adoption, value, support, sponsor, risk, expansion, ask, or receipt lane stays watched.",
+      nextHold: "Hold board pack until adoption proof, value proof, support proof, sponsor quote, and risk register are ready.",
+      nextRepair: "Repair board proof before production evidence upload prototype expands.",
+      axes: [
+        ["Adoption proof", "reviewGuard", 0.76, 5, "Adoption proof is visible."],
+        ["Value proof", "proofGuard", 0.78, 5, "Value proof is readable."],
+        ["Support proof", "supportGuard", 0.78, 5, "Support proof is calm."],
+        ["Sponsor quote", "sponsorGuard", 0.76, 6, "Sponsor quote is safe."],
+        ["Risk register", "rollbackGuard", 0.76, 5, "Risk register is current."],
+        ["Expansion option", "ownerCommand", 0.74, 6, "Expansion option is owned."],
+        ["Decision ask", "sponsorGuard", 0.76, 6, "Decision ask is clear."],
+        ["Board receipt", "guardClosure", 0.78, 6, "Board receipt closes pack."],
+      ],
+    },
+    {
+      key: "production-evidence-upload-prototype",
+      version: "v958",
+      number: 958,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Evidence Upload Prototype",
+      shortLabel: "Production Evidence Upload Prototype",
+      phase: "First pilot expansion rollout reuse market pilot production evidence upload prototype",
+      track: "v958 first pilot expansion rollout reuse market pilot production evidence upload prototype",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-evidence-upload-prototype",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-evidence-upload-prototype",
+      idSuffix: "PRODUCTION-EVIDENCE-UPLOAD-PROTOTYPE",
+      scoreKey: "productionEvidenceUploadPrototypeScore",
+      decisionKey: "productionEvidenceUploadPrototypeDecision",
+      stateKey: "productionEvidenceUploadPrototypeState",
+      lineKey: "productionEvidenceUploadPrototypeLine",
+      primarySignal: "Pilot production evidence upload prototype",
+      primaryNote: "Turns board proof into an evidence upload prototype with file intake, scan status, metadata capture, linked record, proof preview, failure lane, audit write, and upload receipt.",
+      summary: "Prototype production evidence upload with file intake, scan status, metadata capture, linked record, proof preview, failure lane, audit write, and upload receipt.",
+      trackSummary: "Renewal expansion board pack now becomes one production evidence upload prototype across file intake, scan status, metadata capture, linked record, proof preview, failure lane, audit write, and receipt.",
+      stageSummary: "Board pack now becomes evidence upload prototype with intake, scan, metadata, link, preview, failure, audit, and receipt controls.",
+      openDecision: "Open upload prototype",
+      guardedDecision: "Open guarded upload",
+      holdDecision: "Hold upload prototype",
+      repairDecision: "Repair upload proof",
+      nextOpen: "Open production evidence upload prototype and keep file intake, scan status, metadata capture, linked record, proof preview, failure lane, audit write, and upload receipt together.",
+      nextGuarded: "Open guarded upload while one intake, scan, metadata, link, preview, failure, audit, or receipt lane stays watched.",
+      nextHold: "Hold upload prototype until file intake, scan status, metadata capture, linked record, and proof preview are ready.",
+      nextRepair: "Repair upload proof before tenant audit trail viewer expands.",
+      axes: [
+        ["File intake", "proofGuard", 0.78, 5, "File intake is defined."],
+        ["Scan status", "tenantGuard", 0.78, 5, "Scan status is visible."],
+        ["Metadata capture", "reviewGuard", 0.76, 5, "Metadata capture is clear."],
+        ["Linked record", "proofGuard", 0.78, 5, "Evidence links to a record."],
+        ["Proof preview", "reviewGuard", 0.76, 5, "Proof preview is readable."],
+        ["Failure lane", "rollbackGuard", 0.76, 5, "Failure lane is governed."],
+        ["Audit write", "proofGuard", 0.8, 5, "Audit write is captured."],
+        ["Upload receipt", "guardClosure", 0.8, 6, "Upload receipt closes prototype."],
+      ],
+    },
+    {
+      key: "tenant-audit-trail-viewer",
+      version: "v959",
+      number: 959,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Trail Viewer",
+      shortLabel: "Tenant Audit Trail Viewer",
+      phase: "First pilot expansion rollout reuse market pilot tenant audit trail viewer",
+      track: "v959 first pilot expansion rollout reuse market pilot tenant audit trail viewer",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-audit-trail-viewer",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-audit-trail-viewer",
+      idSuffix: "TENANT-AUDIT-TRAIL-VIEWER",
+      scoreKey: "tenantAuditTrailViewerScore",
+      decisionKey: "tenantAuditTrailViewerDecision",
+      stateKey: "tenantAuditTrailViewerState",
+      lineKey: "tenantAuditTrailViewerLine",
+      primarySignal: "Pilot tenant audit trail viewer",
+      primaryNote: "Turns evidence upload prototype into an audit trail viewer with action event, evidence event, access event, export event, retention event, owner filter, review note, and audit receipt.",
+      summary: "Give admins an audit trail lens with action event, evidence event, access event, export event, retention event, owner filter, review note, and audit receipt.",
+      trackSummary: "Production evidence upload prototype now becomes one tenant audit trail viewer across action event, evidence event, access event, export event, retention event, owner filter, review note, and receipt.",
+      stageSummary: "Evidence upload prototype now becomes audit trail viewer with action, evidence, access, export, retention, owner, note, and receipt controls.",
+      openDecision: "Open audit trail viewer",
+      guardedDecision: "Open guarded audit trail",
+      holdDecision: "Hold audit trail viewer",
+      repairDecision: "Repair audit trail proof",
+      nextOpen: "Open tenant audit trail viewer and keep action event, evidence event, access event, export event, retention event, owner filter, review note, and audit receipt together.",
+      nextGuarded: "Open guarded audit trail while one action, evidence, access, export, retention, owner, note, or receipt lane stays watched.",
+      nextHold: "Hold audit trail viewer until action event, evidence event, access event, export event, and retention event are ready.",
+      nextRepair: "Repair audit trail proof before access policy enforcement expands.",
+      axes: [
+        ["Action event", "reviewGuard", 0.76, 5, "Action event is visible."],
+        ["Evidence event", "proofGuard", 0.78, 5, "Evidence event is linked."],
+        ["Access event", "tenantGuard", 0.8, 5, "Access event is controlled."],
+        ["Export event", "tenantGuard", 0.78, 5, "Export event is governed."],
+        ["Retention event", "proofGuard", 0.78, 5, "Retention event is readable."],
+        ["Owner filter", "ownerCommand", 0.74, 6, "Owner filter is usable."],
+        ["Review note", "sponsorGuard", 0.74, 5, "Review note is safe."],
+        ["Audit receipt", "guardClosure", 0.8, 6, "Audit receipt closes viewer."],
       ],
     },
   ];
@@ -21505,6 +21700,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditTrailViewerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceUploadPrototypePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionBoardPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminProductionOnboardingPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotSupportSlaMonitorPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceUploadAuditStorageGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendTenantGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignalDeskPreview(model, autopilot)}",
@@ -28652,6 +28852,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceUploadAuditStorageGatePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "evidence-upload-audit-storage-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotSupportSlaMonitorSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-pilot-support-sla-monitor");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotSupportSlaMonitor(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-pilot-support-sla-monitor", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPilotSupportSlaMonitorPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-pilot-support-sla-monitor");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminProductionOnboardingSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-admin-production-onboarding");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminProductionOnboarding(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-admin-production-onboarding", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminProductionOnboardingPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-admin-production-onboarding");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionBoardPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "renewal-expansion-board-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionBoardPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "renewal-expansion-board-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionBoardPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "renewal-expansion-board-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceUploadPrototypeSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-evidence-upload-prototype");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceUploadPrototype(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-evidence-upload-prototype", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceUploadPrototypePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-evidence-upload-prototype");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditTrailViewerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-audit-trail-viewer");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditTrailViewer(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-audit-trail-viewer", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditTrailViewerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-audit-trail-viewer");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -93463,9 +93723,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v955", "First Pilot Expansion Rollout Reuse Market Pilot First Pilot Support SLA Monitor", "Watch live support response, escalation aging, owner coverage, sponsor comfort, and unresolved support risk."],
-      ["v956", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Production Onboarding", "Turn production tenant access into an admin onboarding path with roles, invites, proof, help, and owner handoff."],
-      ["v957", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Expansion Board Pack", "Convert launch evidence, support confidence, adoption heat, and value continuity into a board-ready renewal and expansion pack."],
+      ["v960", "First Pilot Expansion Rollout Reuse Market Pilot Access Policy Enforcement Gate", "Turn admin and audit proof into enforced role policy with deny paths, exception review, and access receipts."],
+      ["v961", "First Pilot Expansion Rollout Reuse Market Pilot Data Retention Compliance Console", "Make retention, deletion, export, legal hold, and retrieval evidence visible before production data widens."],
+      ["v962", "First Pilot Expansion Rollout Reuse Market Pilot Production Usage Telemetry Desk", "Connect adoption, room visits, action completion, support pressure, and sponsor confidence into production telemetry."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
