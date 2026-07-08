@@ -1,5 +1,124 @@
 # Changelog
 
+## v969 - First Pilot Expansion Rollout Reuse Market Pilot Staging Deployment Smoke Console
+
+### Changes Made
+- Promoted staging deployment smoke console as the current build.
+- Added deploy target, smoke checks, seed data, auth smoke, audit smoke, rollback test, release signoff, and staging receipt lanes.
+- Updated Build Phase to show v969 as current and queue v970-v972 for pilot UAT, backend security smoke, and production launch decision work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v969.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v969 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Staging Deployment Smoke Console visible and v970-v972 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v969 visible, no page-level horizontal overflow, and no console errors.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, build badge, and Command without hangs or console errors.
+
+### Known Risks
+- Staging deployment smoke console is still static; real launch requires a staging environment, deployment pipeline, seed data controls, auth smoke tests, audit smoke tests, rollback automation, and release signoff workflow.
+
+## v968 - First Pilot Expansion Rollout Reuse Market Pilot First Backend API Contract Pack
+
+### Changes Made
+- Added the first backend API contract pack to the pilot rollout runway.
+- Added endpoint map, request fields, response fields, error envelope, auth claim, audit write, contract review, and API receipt lanes.
+- Added wrapper render paths and static registry coverage so backend API contract readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with first backend API contract pack release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- API contract pack is not connected to real endpoints, schema validation, auth middleware, audit writes, error envelopes, contract tests, or backend documentation generation.
+
+## v967 - First Pilot Expansion Rollout Reuse Market Pilot Private Backend Execution Starter
+
+### Changes Made
+- Added the private backend execution starter to the pilot rollout runway.
+- Added task queue, environment owner, API scope, data store, auth route, audit write, deployment owner, and delivery receipt lanes.
+- Added wrapper render paths and static registry coverage so backend execution readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with private backend execution starter release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Backend execution starter remains a planning surface until a private backend repo, environment ownership, API tasks, data store, auth route, audit writer, deployment path, and delivery receipts exist.
+
+## v966 - First Pilot Expansion Rollout Reuse Market Pilot Customer Health Renewal Cockpit
+
+### Changes Made
+- Added the customer health renewal cockpit to the pilot rollout runway.
+- Added usage health, support outcome, value proof, sponsor sentiment, renewal risk, expansion signal, next ask, and health receipt lanes.
+- Added wrapper render paths and static registry coverage so renewal health can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with customer health renewal cockpit release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Customer health renewal cockpit is not connected to real usage telemetry, support outcomes, sponsor feedback, renewal CRM data, expansion signals, or revenue workflow.
+
+## v965 - First Pilot Expansion Rollout Reuse Market Pilot Production Incident Response Runbook
+
+### Changes Made
+- Added the production incident response runbook to the pilot rollout runway.
+- Added severity ladder, response owner, rollback trigger, customer notice, status update, root cause note, support handoff, and incident receipt lanes.
+- Added wrapper render paths and static registry coverage so incident response readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with production incident response runbook release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Incident response runbook is not backed by real incident alerts, escalation channels, status page updates, customer communication, rollback automation, root cause workflow, or support handoff tooling.
+
 ## v964 - First Pilot Expansion Rollout Reuse Market Pilot Audit Export and Compliance Pack
 
 ### Changes Made

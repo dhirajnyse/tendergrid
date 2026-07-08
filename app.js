@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v964";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Audit Export and Compliance Pack";
+  const BUILD_VERSION = "v969";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Staging Deployment Smoke Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=964.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=964.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=969.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=969.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -6275,6 +6275,201 @@
         ["Exception list", "reviewGuard", 0.76, 5, "Exception list is explicit."],
         ["Compliance note", "ownerCommand", 0.74, 6, "Compliance note has an owner."],
         ["Pack receipt", "guardClosure", 0.8, 6, "Pack receipt closes export pack."],
+      ],
+    },
+    {
+      key: "production-incident-response-runbook",
+      version: "v965",
+      number: 965,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Incident Response Runbook",
+      shortLabel: "Production Incident Response Runbook",
+      phase: "First pilot expansion rollout reuse market pilot production incident response runbook",
+      track: "v965 first pilot expansion rollout reuse market pilot production incident response runbook",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-incident-response-runbook",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-incident-response-runbook",
+      idSuffix: "PRODUCTION-INCIDENT-RESPONSE-RUNBOOK",
+      scoreKey: "productionIncidentResponseRunbookScore",
+      decisionKey: "productionIncidentResponseRunbookDecision",
+      stateKey: "productionIncidentResponseRunbookState",
+      lineKey: "productionIncidentResponseRunbookLine",
+      primarySignal: "Pilot production incident response runbook",
+      primaryNote: "Turns audit export proof into an incident runbook with severity ladder, response owner, rollback trigger, customer notice, status update, root cause note, support handoff, and incident receipt.",
+      summary: "Prepare production incident response with severity ladder, response owner, rollback trigger, customer notice, status update, root cause note, support handoff, and incident receipt.",
+      trackSummary: "Audit export and compliance pack now becomes one production incident response runbook across severity ladder, response owner, rollback trigger, customer notice, status update, root cause note, support handoff, and receipt.",
+      stageSummary: "Compliance pack now becomes incident runbook with severity, owner, rollback, notice, update, root cause, support, and receipt controls.",
+      openDecision: "Open incident runbook",
+      guardedDecision: "Open guarded incident",
+      holdDecision: "Hold runbook",
+      repairDecision: "Repair incident proof",
+      nextOpen: "Open production incident response runbook and keep severity ladder, response owner, rollback trigger, customer notice, status update, root cause note, support handoff, and incident receipt together.",
+      nextGuarded: "Open guarded incident while one severity, owner, rollback, notice, update, root cause, support, or receipt lane stays watched.",
+      nextHold: "Hold incident runbook until severity ladder, response owner, rollback trigger, customer notice, and status update are ready.",
+      nextRepair: "Repair incident proof before customer health renewal expands.",
+      axes: [
+        ["Severity ladder", "rollbackGuard", 0.78, 5, "Severity ladder is explicit."],
+        ["Response owner", "ownerCommand", 0.78, 6, "Response owner is named."],
+        ["Rollback trigger", "rollbackGuard", 0.8, 5, "Rollback trigger is ready."],
+        ["Customer notice", "sponsorGuard", 0.76, 6, "Customer notice is safe."],
+        ["Status update", "supportGuard", 0.76, 5, "Status update is repeatable."],
+        ["Root cause note", "reviewGuard", 0.74, 5, "Root cause note is captured."],
+        ["Support handoff", "supportGuard", 0.78, 5, "Support handoff is clear."],
+        ["Incident receipt", "guardClosure", 0.8, 6, "Incident receipt closes runbook."],
+      ],
+    },
+    {
+      key: "customer-health-renewal-cockpit",
+      version: "v966",
+      number: 966,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Health Renewal Cockpit",
+      shortLabel: "Customer Health Renewal Cockpit",
+      phase: "First pilot expansion rollout reuse market pilot customer health renewal cockpit",
+      track: "v966 first pilot expansion rollout reuse market pilot customer health renewal cockpit",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-health-renewal-cockpit",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-health-renewal-cockpit",
+      idSuffix: "CUSTOMER-HEALTH-RENEWAL-COCKPIT",
+      scoreKey: "customerHealthRenewalCockpitScore",
+      decisionKey: "customerHealthRenewalCockpitDecision",
+      stateKey: "customerHealthRenewalCockpitState",
+      lineKey: "customerHealthRenewalCockpitLine",
+      primarySignal: "Pilot customer health renewal cockpit",
+      primaryNote: "Turns incident response readiness into renewal health with usage health, support outcome, value proof, sponsor sentiment, renewal risk, expansion signal, next ask, and health receipt.",
+      summary: "Read customer renewal health with usage health, support outcome, value proof, sponsor sentiment, renewal risk, expansion signal, next ask, and health receipt.",
+      trackSummary: "Production incident response runbook now becomes one customer health renewal cockpit across usage health, support outcome, value proof, sponsor sentiment, renewal risk, expansion signal, next ask, and receipt.",
+      stageSummary: "Incident runbook now becomes renewal health with usage, support, value, sponsor, risk, expansion, ask, and receipt controls.",
+      openDecision: "Open renewal health",
+      guardedDecision: "Open guarded health",
+      holdDecision: "Hold renewal health",
+      repairDecision: "Repair health proof",
+      nextOpen: "Open customer health renewal cockpit and keep usage health, support outcome, value proof, sponsor sentiment, renewal risk, expansion signal, next ask, and health receipt together.",
+      nextGuarded: "Open guarded renewal health while one usage, support, value, sponsor, risk, expansion, ask, or receipt lane stays watched.",
+      nextHold: "Hold renewal health until usage health, support outcome, value proof, sponsor sentiment, and renewal risk are ready.",
+      nextRepair: "Repair health proof before private backend execution expands.",
+      axes: [
+        ["Usage health", "reviewGuard", 0.78, 5, "Usage health is visible."],
+        ["Support outcome", "supportGuard", 0.78, 5, "Support outcome is calm."],
+        ["Value proof", "proofGuard", 0.8, 5, "Value proof is attached."],
+        ["Sponsor sentiment", "sponsorGuard", 0.76, 6, "Sponsor sentiment is current."],
+        ["Renewal risk", "rollbackGuard", 0.76, 5, "Renewal risk is named."],
+        ["Expansion signal", "ownerCommand", 0.74, 6, "Expansion signal has an owner."],
+        ["Next ask", "sponsorGuard", 0.76, 6, "Next ask is clear."],
+        ["Health receipt", "guardClosure", 0.8, 6, "Health receipt closes cockpit."],
+      ],
+    },
+    {
+      key: "private-backend-execution-starter",
+      version: "v967",
+      number: 967,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Private Backend Execution Starter",
+      shortLabel: "Private Backend Execution Starter",
+      phase: "First pilot expansion rollout reuse market pilot private backend execution starter",
+      track: "v967 first pilot expansion rollout reuse market pilot private backend execution starter",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-private-backend-execution-starter",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-private-backend-execution-starter",
+      idSuffix: "PRIVATE-BACKEND-EXECUTION-STARTER",
+      scoreKey: "privateBackendExecutionStarterScore",
+      decisionKey: "privateBackendExecutionStarterDecision",
+      stateKey: "privateBackendExecutionStarterState",
+      lineKey: "privateBackendExecutionStarterLine",
+      primarySignal: "Pilot private backend execution starter",
+      primaryNote: "Turns renewal health into backend execution with task queue, environment owner, API scope, data store, auth route, audit write, deployment owner, and delivery receipt.",
+      summary: "Start private backend execution with task queue, environment owner, API scope, data store, auth route, audit write, deployment owner, and delivery receipt.",
+      trackSummary: "Customer health renewal cockpit now becomes one private backend execution starter across task queue, environment owner, API scope, data store, auth route, audit write, deployment owner, and receipt.",
+      stageSummary: "Renewal health now becomes backend execution with task, environment, API, data, auth, audit, deployment, and receipt controls.",
+      openDecision: "Open backend execution",
+      guardedDecision: "Open guarded backend",
+      holdDecision: "Hold backend starter",
+      repairDecision: "Repair backend execution proof",
+      nextOpen: "Open private backend execution starter and keep task queue, environment owner, API scope, data store, auth route, audit write, deployment owner, and delivery receipt together.",
+      nextGuarded: "Open guarded backend execution while one task, environment, API, data, auth, audit, deployment, or receipt lane stays watched.",
+      nextHold: "Hold backend starter until task queue, environment owner, API scope, data store, and auth route are ready.",
+      nextRepair: "Repair backend execution proof before first API contract expands.",
+      axes: [
+        ["Task queue", "reviewGuard", 0.76, 5, "Task queue is sequenced."],
+        ["Environment owner", "ownerCommand", 0.78, 6, "Environment owner is named."],
+        ["API scope", "proofGuard", 0.76, 5, "API scope is bounded."],
+        ["Data store", "tenantGuard", 0.78, 5, "Data store is tenant safe."],
+        ["Auth route", "tenantGuard", 0.8, 5, "Auth route is controlled."],
+        ["Audit write", "proofGuard", 0.8, 5, "Audit write is included."],
+        ["Deployment owner", "ownerCommand", 0.76, 6, "Deployment owner is assigned."],
+        ["Delivery receipt", "guardClosure", 0.8, 6, "Delivery receipt closes starter."],
+      ],
+    },
+    {
+      key: "first-backend-api-contract-pack",
+      version: "v968",
+      number: 968,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Backend API Contract Pack",
+      shortLabel: "First Backend API Contract Pack",
+      phase: "First pilot expansion rollout reuse market pilot first backend api contract pack",
+      track: "v968 first pilot expansion rollout reuse market pilot first backend api contract pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-backend-api-contract-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-backend-api-contract-pack",
+      idSuffix: "FIRST-BACKEND-API-CONTRACT-PACK",
+      scoreKey: "firstBackendApiContractPackScore",
+      decisionKey: "firstBackendApiContractPackDecision",
+      stateKey: "firstBackendApiContractPackState",
+      lineKey: "firstBackendApiContractPackLine",
+      primarySignal: "Pilot first backend API contract pack",
+      primaryNote: "Turns backend execution into API contracts with endpoint map, request fields, response fields, error envelope, auth claim, audit write, contract review, and API receipt.",
+      summary: "Define first backend API contracts with endpoint map, request fields, response fields, error envelope, auth claim, audit write, contract review, and API receipt.",
+      trackSummary: "Private backend execution starter now becomes one first backend API contract pack across endpoint map, request fields, response fields, error envelope, auth claim, audit write, contract review, and receipt.",
+      stageSummary: "Backend execution now becomes API contract pack with endpoint, request, response, error, auth, audit, review, and receipt controls.",
+      openDecision: "Open API contract pack",
+      guardedDecision: "Open guarded API pack",
+      holdDecision: "Hold API contract",
+      repairDecision: "Repair API proof",
+      nextOpen: "Open first backend API contract pack and keep endpoint map, request fields, response fields, error envelope, auth claim, audit write, contract review, and API receipt together.",
+      nextGuarded: "Open guarded API contract while one endpoint, request, response, error, auth, audit, review, or receipt lane stays watched.",
+      nextHold: "Hold API contract until endpoint map, request fields, response fields, error envelope, and auth claim are ready.",
+      nextRepair: "Repair API proof before staging deployment smoke expands.",
+      axes: [
+        ["Endpoint map", "proofGuard", 0.78, 5, "Endpoint map is visible."],
+        ["Request fields", "reviewGuard", 0.76, 5, "Request fields are bounded."],
+        ["Response fields", "reviewGuard", 0.76, 5, "Response fields are stable."],
+        ["Error envelope", "rollbackGuard", 0.76, 5, "Error envelope is consistent."],
+        ["Auth claim", "tenantGuard", 0.8, 5, "Auth claim is controlled."],
+        ["Audit write", "proofGuard", 0.8, 5, "Audit write is required."],
+        ["Contract review", "sponsorGuard", 0.76, 6, "Contract review is captured."],
+        ["API receipt", "guardClosure", 0.8, 6, "API receipt closes pack."],
+      ],
+    },
+    {
+      key: "staging-deployment-smoke-console",
+      version: "v969",
+      number: 969,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Staging Deployment Smoke Console",
+      shortLabel: "Staging Deployment Smoke Console",
+      phase: "First pilot expansion rollout reuse market pilot staging deployment smoke console",
+      track: "v969 first pilot expansion rollout reuse market pilot staging deployment smoke console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-staging-deployment-smoke-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-staging-deployment-smoke-console",
+      idSuffix: "STAGING-DEPLOYMENT-SMOKE-CONSOLE",
+      scoreKey: "stagingDeploymentSmokeConsoleScore",
+      decisionKey: "stagingDeploymentSmokeConsoleDecision",
+      stateKey: "stagingDeploymentSmokeConsoleState",
+      lineKey: "stagingDeploymentSmokeConsoleLine",
+      primarySignal: "Pilot staging deployment smoke console",
+      primaryNote: "Turns API contracts into staging deployment smoke control with deploy target, smoke checks, seed data, auth smoke, audit smoke, rollback test, release signoff, and staging receipt.",
+      summary: "Prepare staging deployment smoke control with deploy target, smoke checks, seed data, auth smoke, audit smoke, rollback test, release signoff, and staging receipt.",
+      trackSummary: "First backend API contract pack now becomes one staging deployment smoke console across deploy target, smoke checks, seed data, auth smoke, audit smoke, rollback test, release signoff, and receipt.",
+      stageSummary: "API contract pack now becomes staging smoke with target, checks, seed, auth, audit, rollback, signoff, and receipt controls.",
+      openDecision: "Open staging smoke",
+      guardedDecision: "Open guarded staging",
+      holdDecision: "Hold staging smoke",
+      repairDecision: "Repair staging proof",
+      nextOpen: "Open staging deployment smoke console and keep deploy target, smoke checks, seed data, auth smoke, audit smoke, rollback test, release signoff, and staging receipt together.",
+      nextGuarded: "Open guarded staging smoke while one target, check, seed, auth, audit, rollback, signoff, or receipt lane stays watched.",
+      nextHold: "Hold staging smoke until deploy target, smoke checks, seed data, auth smoke, and audit smoke are ready.",
+      nextRepair: "Repair staging proof before user acceptance testing expands.",
+      axes: [
+        ["Deploy target", "ownerCommand", 0.76, 6, "Deploy target is named."],
+        ["Smoke checks", "proofGuard", 0.78, 5, "Smoke checks are listed."],
+        ["Seed data", "tenantGuard", 0.76, 5, "Seed data is safe."],
+        ["Auth smoke", "tenantGuard", 0.8, 5, "Auth smoke is included."],
+        ["Audit smoke", "proofGuard", 0.8, 5, "Audit smoke is included."],
+        ["Rollback test", "rollbackGuard", 0.78, 5, "Rollback test is repeatable."],
+        ["Release signoff", "sponsorGuard", 0.76, 6, "Release signoff is captured."],
+        ["Staging receipt", "guardClosure", 0.8, 6, "Staging receipt closes console."],
       ],
     },
   ];
@@ -21895,6 +22090,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDeploymentSmokeConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendApiContractPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendExecutionStarterPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerHealthRenewalCockpitPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentResponseRunbookPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportCompliancePackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportTicketIntakePrototypePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionUsageTelemetryDeskPreview(model, autopilot)}",
@@ -29172,6 +29372,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportCompliancePackPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "audit-export-compliance-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentResponseRunbookSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-incident-response-runbook");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentResponseRunbook(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-incident-response-runbook", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentResponseRunbookPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-incident-response-runbook");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerHealthRenewalCockpitSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-health-renewal-cockpit");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerHealthRenewalCockpit(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-health-renewal-cockpit", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerHealthRenewalCockpitPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-health-renewal-cockpit");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendExecutionStarterSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "private-backend-execution-starter");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendExecutionStarter(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "private-backend-execution-starter", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendExecutionStarterPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "private-backend-execution-starter");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendApiContractPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-backend-api-contract-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendApiContractPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-backend-api-contract-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstBackendApiContractPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-backend-api-contract-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDeploymentSmokeConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "staging-deployment-smoke-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDeploymentSmokeConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "staging-deployment-smoke-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingDeploymentSmokeConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-deployment-smoke-console");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -93983,9 +94243,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v965", "First Pilot Expansion Rollout Reuse Market Pilot Production Incident Response Runbook", "Turn support intake and audit exports into incident severity, response owners, rollback criteria, and customer communication."],
-      ["v966", "First Pilot Expansion Rollout Reuse Market Pilot Customer Health Renewal Cockpit", "Connect usage telemetry, support outcomes, value proof, and sponsor sentiment into renewal health."],
-      ["v967", "First Pilot Expansion Rollout Reuse Market Pilot Private Backend Execution Starter", "Move launch prototype controls into first backend implementation tasks, environment plan, API scope, and delivery receipts."],
+      ["v970", "First Pilot Expansion Rollout Reuse Market Pilot Pilot User Acceptance Test Console", "Turn staging smoke proof into customer UAT scripts, role checks, acceptance evidence, and defect triage."],
+      ["v971", "First Pilot Expansion Rollout Reuse Market Pilot First Backend Security Smoke Gate", "Make backend auth, tenant boundary, audit write, rate limits, and error handling visible before launch signoff."],
+      ["v972", "First Pilot Expansion Rollout Reuse Market Pilot Production Launch Decision Board", "Convert staging, security, UAT, support, billing, and renewal proof into the final launch decision board."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
