@@ -1,5 +1,122 @@
 # Changelog
 
+## v944 - First Pilot Expansion Rollout Reuse Market Pilot Pilot Data Import Proof
+
+### Changes Made
+- Activated pilot data import proof as the current build.
+- Added source map, field match, validation queue, rollback file, owner signoff, audit proof, privacy check, and import receipt lanes.
+- Updated Build Phase to show v944 as current and queue v945-v947 for security remediation, staging smoke receipt, and customer go-live checklist.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v944.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v944 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Pilot Data Import Proof visible and v945-v947 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v944 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Pilot data import proof is still a static readiness path; real launch needs a backend import worker, source workbook parser, validation reports, rollback file storage, privacy checks, audit writes, and owner signoff.
+
+## v943 - First Pilot Expansion Rollout Reuse Market Pilot Private Backend Starter Plan
+
+### Changes Made
+- Added the private backend starter plan to the pilot runway.
+- Added private repo, API shell, auth guard, tenant schema, audit writer, import queue, deploy path, and rollback receipt lanes.
+- Added wrapper render paths and static registry coverage so Build Phase and the release rail can open the backend starter proof.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with private backend starter plan release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Private backend starter plan remains a static plan; actual private repository creation, API implementation, auth, schema, audit writer, import queue, deployment, and rollback proof are still required.
+
+## v942 - First Pilot Expansion Rollout Reuse Market Pilot Paid Pilot Agreement Desk
+
+### Changes Made
+- Added the paid pilot agreement desk to the pilot runway.
+- Added agreement terms, invoice owner, scope lock, support promise, data terms, success measure, renewal option, and decision receipt lanes.
+- Added wrapper render paths and static registry coverage so paid pilot readiness is visible in Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with paid pilot agreement desk release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Paid pilot agreement desk is not a legal or billing system; signed contract terms, invoice workflow, payment handling, data processing terms, and customer approval still need real execution.
+
+## v941 - First Pilot Expansion Rollout Reuse Market Pilot Staging Environment Mirror
+
+### Changes Made
+- Added the staging environment mirror to the pilot runway.
+- Added seeded tenant, test data pack, smoke checks, rollback rehearsal, release owner, support route, access gate, and mirror receipt lanes.
+- Added wrapper render paths and static registry coverage so staging mirror proof is indexed in Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with staging environment mirror release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Staging environment mirror is still a static planning room; a real staging deployment, seeded tenant, smoke automation, rollback rehearsal, and access-gated admin checks are not yet live.
+
+## v940 - First Pilot Expansion Rollout Reuse Market Pilot Security Review Packet
+
+### Changes Made
+- Added the security review packet to the pilot runway.
+- Added privacy posture, access review, audit export, data boundary, support policy, rollback note, security signoff, and review receipt lanes.
+- Added wrapper render paths and static registry coverage so security readiness is protected by the checker.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with security review packet release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Security review packet is buyer-safe static evidence only; real launch still needs security policy review, access testing, audit exports, data boundary verification, support policy approval, and signed security signoff.
+
 ## v939 - First Pilot Expansion Rollout Reuse Market Pilot Launch Proof Review Room
 
 ### Changes Made

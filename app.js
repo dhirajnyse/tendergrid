@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v939";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Proof Review Room";
+  const BUILD_VERSION = "v944";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Pilot Data Import Proof";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=939.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=939.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=944.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=944.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -5300,6 +5300,201 @@
         ["Customer outcome", "sponsorGuard", 0.74, 6, "Customer outcome is sponsor-safe."],
         ["Rollback route", "rollbackGuard", 0.76, 5, "Rollback route is reversible."],
         ["Decision receipt", "guardClosure", 0.74, 6, "Launch decision receipt closes review."],
+      ],
+    },
+    {
+      key: "security-review-packet",
+      version: "v940",
+      number: 940,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Security Review Packet",
+      shortLabel: "Security Review Packet",
+      phase: "First pilot expansion rollout reuse market pilot security review packet",
+      track: "v940 first pilot expansion rollout reuse market pilot security review packet",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-security-review-packet",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-security-review-packet",
+      idSuffix: "SECURITY-REVIEW-PACKET",
+      scoreKey: "securityReviewPacketScore",
+      decisionKey: "securityReviewPacketDecision",
+      stateKey: "securityReviewPacketState",
+      lineKey: "securityReviewPacketLine",
+      primarySignal: "Pilot security review packet",
+      primaryNote: "Packages buyer-safe security readiness with privacy posture, admin audit export, access review, data boundary, support policy, rollback note, and signoff receipt.",
+      summary: "Prepare buyer-safe security readiness with privacy posture, admin audit export, access review, data boundary, support policy, rollback note, and signoff receipt.",
+      trackSummary: "Launch proof review now becomes one security review packet across privacy posture, access review, audit export, data boundary, support policy, rollback note, signoff, and review receipt.",
+      stageSummary: "Launch proof now becomes a buyer-safe security packet with privacy, access, audit, data, support, rollback, signoff, and receipt controls.",
+      openDecision: "Open security review",
+      guardedDecision: "Open guarded security review",
+      holdDecision: "Hold security review",
+      repairDecision: "Repair security proof",
+      nextOpen: "Open the security review packet and keep privacy posture, access review, audit export, data boundary, support policy, rollback note, security signoff, and review receipt together.",
+      nextGuarded: "Open guarded security review while one privacy, access, audit, data, support, rollback, signoff, or receipt lane stays watched.",
+      nextHold: "Hold security review until privacy posture, access review, audit export, data boundary, and support policy are ready.",
+      nextRepair: "Repair security proof before staging mirror planning expands.",
+      axes: [
+        ["Privacy posture", "tenantGuard", 0.76, 5, "Privacy posture is buyer readable."],
+        ["Access review", "ownerCommand", 0.74, 6, "Access owner and role review are named."],
+        ["Audit export", "reviewGuard", 0.74, 5, "Admin audit export is prepared."],
+        ["Data boundary", "tenantGuard", 0.78, 5, "Customer data boundary is explicit."],
+        ["Support policy", "supportGuard", 0.74, 5, "Support policy is attached."],
+        ["Rollback note", "rollbackGuard", 0.76, 5, "Rollback note is reversible."],
+        ["Security signoff", "proofGuard", 0.76, 5, "Security signoff evidence is assembled."],
+        ["Review receipt", "guardClosure", 0.74, 6, "Security review receipt closes packet."],
+      ],
+    },
+    {
+      key: "staging-environment-mirror",
+      version: "v941",
+      number: 941,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Staging Environment Mirror",
+      shortLabel: "Staging Environment Mirror",
+      phase: "First pilot expansion rollout reuse market pilot staging environment mirror",
+      track: "v941 first pilot expansion rollout reuse market pilot staging environment mirror",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-staging-environment-mirror",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-staging-environment-mirror",
+      idSuffix: "STAGING-ENVIRONMENT-MIRROR",
+      scoreKey: "stagingEnvironmentMirrorScore",
+      decisionKey: "stagingEnvironmentMirrorDecision",
+      stateKey: "stagingEnvironmentMirrorState",
+      lineKey: "stagingEnvironmentMirrorLine",
+      primarySignal: "Pilot staging environment mirror",
+      primaryNote: "Separates the public demo from a staging pilot mirror with seeded tenant, safe test data, smoke checks, rollback rehearsal, release owner, support route, access gate, and mirror receipt.",
+      summary: "Separate public demo from a staging mirror with seeded tenant, safe test data, smoke checks, rollback rehearsal, release owner, support route, access gate, and mirror receipt.",
+      trackSummary: "Security review now becomes one staging environment mirror across seeded tenant, test data pack, smoke checks, rollback rehearsal, release owner, support route, access gate, and mirror receipt.",
+      stageSummary: "Security proof now becomes a staging mirror with tenant, test data, smoke, rollback, owner, support, access, and receipt controls.",
+      openDecision: "Open staging mirror",
+      guardedDecision: "Open guarded staging mirror",
+      holdDecision: "Hold staging mirror",
+      repairDecision: "Repair staging proof",
+      nextOpen: "Open the staging mirror and keep seeded tenant, test data pack, smoke checks, rollback rehearsal, release owner, support route, access gate, and mirror receipt together.",
+      nextGuarded: "Open guarded staging mirror while one tenant, test data, smoke, rollback, owner, support, access, or receipt lane stays watched.",
+      nextHold: "Hold staging mirror until seeded tenant, safe test data, smoke checks, rollback rehearsal, and access gate are ready.",
+      nextRepair: "Repair staging proof before paid pilot agreement work expands.",
+      axes: [
+        ["Seeded tenant", "tenantGuard", 0.76, 5, "Staging tenant is separated from demo."],
+        ["Test data pack", "proofGuard", 0.76, 5, "Test data pack is safe and repeatable."],
+        ["Smoke checks", "reviewGuard", 0.74, 6, "Smoke checks are named."],
+        ["Rollback rehearsal", "rollbackGuard", 0.78, 5, "Rollback rehearsal is ready."],
+        ["Release owner", "ownerCommand", 0.74, 6, "Release owner is accountable."],
+        ["Support route", "supportGuard", 0.74, 5, "Support route is connected."],
+        ["Access gate", "tenantGuard", 0.76, 5, "Access gate protects staging."],
+        ["Mirror receipt", "guardClosure", 0.74, 6, "Mirror receipt closes staging proof."],
+      ],
+    },
+    {
+      key: "paid-pilot-agreement-desk",
+      version: "v942",
+      number: 942,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Paid Pilot Agreement Desk",
+      shortLabel: "Paid Pilot Agreement Desk",
+      phase: "First pilot expansion rollout reuse market pilot paid pilot agreement desk",
+      track: "v942 first pilot expansion rollout reuse market pilot paid pilot agreement desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-paid-pilot-agreement-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-paid-pilot-agreement-desk",
+      idSuffix: "PAID-PILOT-AGREEMENT-DESK",
+      scoreKey: "paidPilotAgreementDeskScore",
+      decisionKey: "paidPilotAgreementDeskDecision",
+      stateKey: "paidPilotAgreementDeskState",
+      lineKey: "paidPilotAgreementDeskLine",
+      primarySignal: "Pilot paid pilot agreement desk",
+      primaryNote: "Moves friendly pilot interest into paid pilot readiness with agreement terms, invoice owner, scope lock, support promise, data terms, success measure, renewal option, and decision receipt.",
+      summary: "Prepare paid pilot readiness with agreement terms, invoice owner, scope lock, support promise, data terms, success measure, renewal option, and decision receipt.",
+      trackSummary: "Staging mirror now becomes one paid pilot agreement desk across terms, invoice owner, scope lock, support promise, data terms, success measure, renewal option, and decision receipt.",
+      stageSummary: "Staging proof now becomes paid pilot agreement readiness with terms, invoice, scope, support, data, success, renewal, and receipt controls.",
+      openDecision: "Open paid pilot desk",
+      guardedDecision: "Open guarded paid pilot desk",
+      holdDecision: "Hold paid pilot desk",
+      repairDecision: "Repair agreement proof",
+      nextOpen: "Open the paid pilot desk and keep agreement terms, invoice owner, scope lock, support promise, data terms, success measure, renewal option, and decision receipt together.",
+      nextGuarded: "Open guarded paid pilot desk while one terms, invoice, scope, support, data, success, renewal, or receipt lane stays watched.",
+      nextHold: "Hold paid pilot desk until agreement terms, invoice owner, scope lock, support promise, and data terms are ready.",
+      nextRepair: "Repair agreement proof before private backend starter planning expands.",
+      axes: [
+        ["Agreement terms", "proofGuard", 0.76, 5, "Agreement terms are buyer readable."],
+        ["Invoice owner", "ownerCommand", 0.74, 6, "Invoice owner is named."],
+        ["Scope lock", "tenantGuard", 0.76, 5, "Paid pilot scope is locked."],
+        ["Support promise", "supportGuard", 0.76, 5, "Support promise is included."],
+        ["Data terms", "tenantGuard", 0.78, 5, "Data terms are explicit."],
+        ["Success measure", "reviewGuard", 0.74, 6, "Success measure is agreed."],
+        ["Renewal option", "sponsorGuard", 0.74, 5, "Renewal option is visible."],
+        ["Decision receipt", "guardClosure", 0.74, 6, "Agreement decision receipt closes desk."],
+      ],
+    },
+    {
+      key: "private-backend-starter-plan",
+      version: "v943",
+      number: 943,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Private Backend Starter Plan",
+      shortLabel: "Private Backend Starter Plan",
+      phase: "First pilot expansion rollout reuse market pilot private backend starter plan",
+      track: "v943 first pilot expansion rollout reuse market pilot private backend starter plan",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-private-backend-starter-plan",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-private-backend-starter-plan",
+      idSuffix: "PRIVATE-BACKEND-STARTER-PLAN",
+      scoreKey: "privateBackendStarterPlanScore",
+      decisionKey: "privateBackendStarterPlanDecision",
+      stateKey: "privateBackendStarterPlanState",
+      lineKey: "privateBackendStarterPlanLine",
+      primarySignal: "Pilot private backend starter plan",
+      primaryNote: "Turns paid pilot readiness into a private backend starter plan with private repo, API shell, auth guard, tenant schema, audit writer, import queue, deploy path, and rollback receipt.",
+      summary: "Plan the private backend starter with private repo, API shell, auth guard, tenant schema, audit writer, import queue, deploy path, and rollback receipt.",
+      trackSummary: "Paid pilot agreement now becomes one private backend starter plan across repo, API shell, auth guard, tenant schema, audit writer, import queue, deploy path, and rollback receipt.",
+      stageSummary: "Paid pilot readiness now becomes backend starter planning with repo, API, auth, tenant schema, audit, import, deploy, and rollback controls.",
+      openDecision: "Open backend starter",
+      guardedDecision: "Open guarded backend starter",
+      holdDecision: "Hold backend starter",
+      repairDecision: "Repair backend proof",
+      nextOpen: "Open the private backend starter and keep private repo, API shell, auth guard, tenant schema, audit writer, import queue, deploy path, and rollback receipt together.",
+      nextGuarded: "Open guarded backend starter while one repo, API, auth, schema, audit, import, deploy, or rollback lane stays watched.",
+      nextHold: "Hold backend starter until private repo, API shell, auth guard, tenant schema, and audit writer are clear.",
+      nextRepair: "Repair backend proof before pilot data import proof expands.",
+      axes: [
+        ["Private repo", "proofGuard", 0.76, 5, "Private repo plan is named."],
+        ["API shell", "launchMoment", 0.74, 5, "API shell path is visible."],
+        ["Auth guard", "tenantGuard", 0.78, 5, "Auth guard protects tenants."],
+        ["Tenant schema", "tenantGuard", 0.76, 5, "Tenant schema is mapped."],
+        ["Audit writer", "reviewGuard", 0.74, 6, "Audit writer boundary is visible."],
+        ["Import queue", "proofGuard", 0.74, 5, "Import queue is planned."],
+        ["Deploy path", "ownerCommand", 0.74, 6, "Deployment owner and path are named."],
+        ["Rollback receipt", "rollbackGuard", 0.76, 5, "Backend rollback receipt is reversible."],
+      ],
+    },
+    {
+      key: "pilot-data-import-proof",
+      version: "v944",
+      number: 944,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Pilot Data Import Proof",
+      shortLabel: "Pilot Data Import Proof",
+      phase: "First pilot expansion rollout reuse market pilot pilot data import proof",
+      track: "v944 first pilot expansion rollout reuse market pilot pilot data import proof",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-data-import-proof",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-data-import-proof",
+      idSuffix: "PILOT-DATA-IMPORT-PROOF",
+      scoreKey: "pilotDataImportProofScore",
+      decisionKey: "pilotDataImportProofDecision",
+      stateKey: "pilotDataImportProofState",
+      lineKey: "pilotDataImportProofLine",
+      primarySignal: "Pilot data import proof",
+      primaryNote: "Validates first workbook import readiness with source map, field match, validation queue, rollback file, owner signoff, audit proof, privacy check, and import receipt.",
+      summary: "Validate first workbook import readiness with source map, field match, validation queue, rollback file, owner signoff, audit proof, privacy check, and import receipt.",
+      trackSummary: "Private backend starter now becomes one pilot data import proof across source map, field match, validation queue, rollback file, owner signoff, audit proof, privacy check, and import receipt.",
+      stageSummary: "Backend starter planning now becomes import proof with source map, field match, validation, rollback, owner, audit, privacy, and receipt controls.",
+      openDecision: "Open import proof",
+      guardedDecision: "Open guarded import proof",
+      holdDecision: "Hold import proof",
+      repairDecision: "Repair import proof",
+      nextOpen: "Open pilot data import proof and keep source map, field match, validation queue, rollback file, owner signoff, audit proof, privacy check, and import receipt together.",
+      nextGuarded: "Open guarded import proof while one source, field, validation, rollback, owner, audit, privacy, or receipt lane stays watched.",
+      nextHold: "Hold import proof until source map, field match, validation queue, rollback file, and privacy check are ready.",
+      nextRepair: "Repair import proof before security remediation expands.",
+      axes: [
+        ["Source map", "proofGuard", 0.76, 5, "Source workbook map is attached."],
+        ["Field match", "reviewGuard", 0.74, 6, "Field mapping is validated."],
+        ["Validation queue", "supportGuard", 0.74, 5, "Validation queue is assigned."],
+        ["Rollback file", "rollbackGuard", 0.78, 5, "Rollback file is ready."],
+        ["Owner signoff", "ownerCommand", 0.74, 6, "Import owner signs off."],
+        ["Audit proof", "proofGuard", 0.76, 5, "Import audit proof is readable."],
+        ["Privacy check", "tenantGuard", 0.78, 5, "Import privacy check is tenant safe."],
+        ["Import receipt", "guardClosure", 0.74, 6, "Import receipt closes proof."],
       ],
     },
   ];
@@ -20920,6 +21115,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotDataImportProofPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendStarterPlanPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPaidPilotAgreementDeskPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentMirrorPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecurityReviewPacketPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchProofReviewRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminOnboardingFlowPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportCommandCenterPreview(model, autopilot)}",
@@ -27872,6 +28072,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchProofReviewRoomPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-proof-review-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecurityReviewPacketSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "security-review-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecurityReviewPacket(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "security-review-packet", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecurityReviewPacketPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "security-review-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentMirrorSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "staging-environment-mirror");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentMirror(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "staging-environment-mirror", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentMirrorPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-environment-mirror");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPaidPilotAgreementDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "paid-pilot-agreement-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPaidPilotAgreementDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "paid-pilot-agreement-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPaidPilotAgreementDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "paid-pilot-agreement-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendStarterPlanSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "private-backend-starter-plan");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendStarterPlan(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "private-backend-starter-plan", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendStarterPlanPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "private-backend-starter-plan");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotDataImportProofSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-data-import-proof");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotDataImportProof(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-data-import-proof", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotDataImportProofPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-data-import-proof");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -92683,9 +92943,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v940", "First Pilot Expansion Rollout Reuse Market Pilot Security Review Packet", "Package buyer-safe security notes, privacy posture, admin audit export, support policy, and launch boundary proof."],
-      ["v941", "First Pilot Expansion Rollout Reuse Market Pilot Staging Environment Mirror", "Separate the public demo from a staging pilot mirror with data seed proof, rollback rehearsal, and admin smoke checks."],
-      ["v942", "First Pilot Expansion Rollout Reuse Market Pilot Paid Pilot Agreement Desk", "Move from friendly pilot to paid pilot readiness with agreement terms, invoice owner, scope lock, support promise, and decision receipt."],
+      ["v945", "First Pilot Expansion Rollout Reuse Market Pilot Security Remediation Sprint", "Close the security review findings with owner, severity, fix path, retest proof, and signoff receipt."],
+      ["v946", "First Pilot Expansion Rollout Reuse Market Pilot Staging Smoke Receipt", "Run staging smoke checks against seeded pilot data, access gates, rollback rehearsal, and admin acceptance notes."],
+      ["v947", "First Pilot Expansion Rollout Reuse Market Pilot Customer Go-Live Checklist", "Turn import proof into the first customer go-live checklist with owner, dates, support window, training, and launch decision."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
