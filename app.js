@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v924";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch-to-Renewal Operating System";
+  const BUILD_VERSION = "v929";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Launch Readiness Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=924.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=924.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=929.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=929.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -4715,6 +4715,201 @@
         ["Invoice proof", "sponsorGuard", 0.72, 6, "Invoice proof is ready."],
         ["Success handoff", "supportGuard", 0.74, 5, "Success handoff is complete."],
         ["Renewal receipt", "guardClosure", 0.72, 6, "Renewal receipt closes system."],
+      ],
+    },
+    {
+      key: "revenue-retention-control-room",
+      version: "v925",
+      number: 925,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Revenue Retention Control Room",
+      shortLabel: "Revenue Retention Control Room",
+      phase: "First pilot expansion rollout reuse market pilot revenue retention control room",
+      track: "v925 first pilot expansion rollout reuse market pilot revenue retention control room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-revenue-retention-control-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-revenue-retention-control-room",
+      idSuffix: "REVENUE-RETENTION-CONTROL-ROOM",
+      scoreKey: "revenueRetentionControlRoomScore",
+      decisionKey: "revenueRetentionControlRoomDecision",
+      stateKey: "revenueRetentionControlRoomState",
+      lineKey: "revenueRetentionControlRoomLine",
+      primarySignal: "Pilot revenue retention control room",
+      primaryNote: "Turns launch-to-renewal proof into revenue health, renewal owner, usage risk, invoice posture, expansion ask, save plan, executive note, and retention receipt.",
+      summary: "Turn launch-to-renewal proof into revenue health, renewal owner, usage risk, invoice posture, expansion ask, save plan, executive note, and retention receipt.",
+      trackSummary: "Launch-to-renewal now becomes one revenue retention control room across revenue health, renewal owner, usage risk, invoice posture, expansion ask, save plan, executive note, and receipt.",
+      stageSummary: "Launch-to-renewal now becomes retention control with revenue health, renewal owner, usage risk, invoice posture, expansion ask, save plan, executive note, and receipt.",
+      openDecision: "Open retention control",
+      guardedDecision: "Open guarded retention",
+      holdDecision: "Hold retention room",
+      repairDecision: "Repair retention room",
+      nextOpen: "Open the revenue retention control room and keep revenue health, renewal owner, usage risk, invoice posture, expansion ask, save plan, executive note, and retention receipt together.",
+      nextGuarded: "Open guarded retention while one revenue, renewal, usage, invoice, expansion, save, or executive lane stays watched.",
+      nextHold: "Hold retention control until revenue health, renewal owner, usage risk, invoice posture, and save plan are clear.",
+      nextRepair: "Repair revenue retention before global partner scale console.",
+      axes: [
+        ["Revenue health", "sponsorGuard", 0.72, 6, "Revenue health is visible."],
+        ["Renewal owner", "ownerCommand", 0.72, 6, "Renewal owner is named."],
+        ["Usage risk", "reviewGuard", 0.74, 5, "Usage risk is watched."],
+        ["Invoice posture", "sponsorGuard", 0.72, 6, "Invoice posture is known."],
+        ["Expansion ask", "launchMoment", 0.74, 5, "Expansion ask is framed."],
+        ["Save plan", "rollbackGuard", 0.76, 5, "Save plan is ready."],
+        ["Executive note", "proofGuard", 0.76, 5, "Executive note is prepared."],
+        ["Retention receipt", "guardClosure", 0.72, 6, "Retention receipt closes room."],
+      ],
+    },
+    {
+      key: "global-partner-scale-console",
+      version: "v926",
+      number: 926,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Partner Scale Console",
+      shortLabel: "Global Partner Scale Console",
+      phase: "First pilot expansion rollout reuse market pilot global partner scale console",
+      track: "v926 first pilot expansion rollout reuse market pilot global partner scale console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-partner-scale-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-partner-scale-console",
+      idSuffix: "GLOBAL-PARTNER-SCALE-CONSOLE",
+      scoreKey: "globalPartnerScaleConsoleScore",
+      decisionKey: "globalPartnerScaleConsoleDecision",
+      stateKey: "globalPartnerScaleConsoleState",
+      lineKey: "globalPartnerScaleConsoleLine",
+      primarySignal: "Pilot global partner scale console",
+      primaryNote: "Prepares partner-led expansion with partner capacity, country route, enablement proof, support escalation, revenue share, compliance boundary, deal owner, and partner scale receipt.",
+      summary: "Prepare partner-led expansion with partner capacity, country route, enablement proof, support escalation, revenue share, compliance boundary, deal owner, and partner scale receipt.",
+      trackSummary: "Revenue retention now becomes one global partner scale console across partner capacity, country route, enablement proof, support escalation, revenue share, compliance boundary, deal owner, and receipt.",
+      stageSummary: "Retention control now becomes partner scale with capacity, country route, enablement, support escalation, revenue share, compliance, deal owner, and receipt.",
+      openDecision: "Open partner scale",
+      guardedDecision: "Open guarded partner scale",
+      holdDecision: "Hold partner scale",
+      repairDecision: "Repair partner scale",
+      nextOpen: "Open the global partner scale console and keep partner capacity, country route, enablement proof, support escalation, revenue share, compliance boundary, deal owner, and partner scale receipt together.",
+      nextGuarded: "Open guarded partner scale while one capacity, country, enablement, support, revenue, compliance, or owner lane stays watched.",
+      nextHold: "Hold partner scale until partner capacity, country route, enablement proof, support escalation, and compliance boundary are complete.",
+      nextRepair: "Repair partner scale before AI governance evidence layer.",
+      axes: [
+        ["Partner capacity", "supportGuard", 0.74, 5, "Partner capacity is sized."],
+        ["Country route", "reviewGuard", 0.74, 5, "Country route is mapped."],
+        ["Enablement proof", "proofGuard", 0.76, 5, "Enablement proof is ready."],
+        ["Support escalation", "supportGuard", 0.74, 5, "Support escalation is clear."],
+        ["Revenue share", "sponsorGuard", 0.72, 6, "Revenue share is visible."],
+        ["Compliance boundary", "tenantGuard", 0.76, 5, "Compliance boundary is clear."],
+        ["Deal owner", "ownerCommand", 0.72, 6, "Deal owner is named."],
+        ["Partner scale receipt", "guardClosure", 0.72, 6, "Partner scale receipt closes console."],
+      ],
+    },
+    {
+      key: "ai-governance-evidence-layer",
+      version: "v927",
+      number: 927,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot AI Governance Evidence Layer",
+      shortLabel: "AI Governance Evidence Layer",
+      phase: "First pilot expansion rollout reuse market pilot ai governance evidence layer",
+      track: "v927 first pilot expansion rollout reuse market pilot ai governance evidence layer",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-ai-governance-evidence-layer",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-ai-governance-evidence-layer",
+      idSuffix: "AI-GOVERNANCE-EVIDENCE-LAYER",
+      scoreKey: "aiGovernanceEvidenceLayerScore",
+      decisionKey: "aiGovernanceEvidenceLayerDecision",
+      stateKey: "aiGovernanceEvidenceLayerState",
+      lineKey: "aiGovernanceEvidenceLayerLine",
+      primarySignal: "Pilot AI governance evidence layer",
+      primaryNote: "Creates AI governance proof with guidance policy, tenant learning boundary, model review, feedback approval, audit receipt, exception lane, reviewer owner, and governance receipt.",
+      summary: "Create AI governance proof with guidance policy, tenant learning boundary, model review, feedback approval, audit receipt, exception lane, reviewer owner, and governance receipt.",
+      trackSummary: "Partner scale now becomes one AI governance evidence layer across guidance policy, tenant learning boundary, model review, feedback approval, audit receipt, exception lane, reviewer owner, and receipt.",
+      stageSummary: "Partner scale now becomes AI governance evidence with policy, tenant boundary, model review, feedback approval, audit, exceptions, owner, and receipt.",
+      openDecision: "Open AI governance",
+      guardedDecision: "Open guarded AI governance",
+      holdDecision: "Hold AI governance",
+      repairDecision: "Repair AI governance",
+      nextOpen: "Open the AI governance evidence layer and keep guidance policy, tenant learning boundary, model review, feedback approval, audit receipt, exception lane, reviewer owner, and governance receipt together.",
+      nextGuarded: "Open guarded AI governance while one policy, tenant, model, feedback, audit, exception, or reviewer lane stays watched.",
+      nextHold: "Hold AI governance until guidance policy, tenant learning boundary, model review, feedback approval, and audit receipt are complete.",
+      nextRepair: "Repair AI governance before customer success automation layer.",
+      axes: [
+        ["Guidance policy", "tenantGuard", 0.76, 5, "Guidance policy is explicit."],
+        ["Tenant learning boundary", "tenantGuard", 0.76, 5, "Tenant learning boundary is enforced."],
+        ["Model review", "reviewGuard", 0.74, 5, "Model review is scheduled."],
+        ["Feedback approval", "proofGuard", 0.76, 5, "Feedback approval is attached."],
+        ["Audit receipt", "guardClosure", 0.72, 6, "Audit receipt is available."],
+        ["Exception lane", "rollbackGuard", 0.76, 5, "Exception lane is ready."],
+        ["Reviewer owner", "ownerCommand", 0.72, 6, "Reviewer owner is named."],
+        ["Governance receipt", "guardClosure", 0.72, 6, "Governance receipt closes layer."],
+      ],
+    },
+    {
+      key: "customer-success-automation-layer",
+      version: "v928",
+      number: 928,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Automation Layer",
+      shortLabel: "Customer Success Automation Layer",
+      phase: "First pilot expansion rollout reuse market pilot customer success automation layer",
+      track: "v928 first pilot expansion rollout reuse market pilot customer success automation layer",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-automation-layer",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-automation-layer",
+      idSuffix: "CUSTOMER-SUCCESS-AUTOMATION-LAYER",
+      scoreKey: "customerSuccessAutomationLayerScore",
+      decisionKey: "customerSuccessAutomationLayerDecision",
+      stateKey: "customerSuccessAutomationLayerState",
+      lineKey: "customerSuccessAutomationLayerLine",
+      primarySignal: "Pilot customer success automation layer",
+      primaryNote: "Turns governance into repeatable success automation with success trigger, nudge queue, review prep, support route, renewal prompt, expansion cue, owner handoff, and automation receipt.",
+      summary: "Turn governance into repeatable success automation with success trigger, nudge queue, review prep, support route, renewal prompt, expansion cue, owner handoff, and automation receipt.",
+      trackSummary: "AI governance now becomes one customer success automation layer across success trigger, nudge queue, review prep, support route, renewal prompt, expansion cue, owner handoff, and receipt.",
+      stageSummary: "AI governance now becomes success automation with triggers, nudges, review prep, support route, renewal prompt, expansion cue, owner handoff, and receipt.",
+      openDecision: "Open success automation",
+      guardedDecision: "Open guarded automation",
+      holdDecision: "Hold automation layer",
+      repairDecision: "Repair automation layer",
+      nextOpen: "Open the customer success automation layer and keep success trigger, nudge queue, review prep, support route, renewal prompt, expansion cue, owner handoff, and automation receipt together.",
+      nextGuarded: "Open guarded success automation while one trigger, nudge, review, support, renewal, expansion, or handoff lane stays watched.",
+      nextHold: "Hold success automation until success trigger, nudge queue, review prep, support route, and renewal prompt are complete.",
+      nextRepair: "Repair customer success automation before multi-country launch readiness console.",
+      axes: [
+        ["Success trigger", "launchMoment", 0.74, 5, "Success trigger is defined."],
+        ["Nudge queue", "reviewGuard", 0.74, 5, "Nudge queue is ready."],
+        ["Review prep", "proofGuard", 0.76, 5, "Review prep is assembled."],
+        ["Support route", "supportGuard", 0.74, 5, "Support route is clear."],
+        ["Renewal prompt", "sponsorGuard", 0.72, 6, "Renewal prompt is visible."],
+        ["Expansion cue", "launchMoment", 0.74, 5, "Expansion cue is named."],
+        ["Owner handoff", "ownerCommand", 0.72, 6, "Owner handoff is complete."],
+        ["Automation receipt", "guardClosure", 0.72, 6, "Automation receipt closes layer."],
+      ],
+    },
+    {
+      key: "multi-country-launch-readiness-console",
+      version: "v929",
+      number: 929,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Launch Readiness Console",
+      shortLabel: "Multi-Country Launch Readiness Console",
+      phase: "First pilot expansion rollout reuse market pilot multi-country launch readiness console",
+      track: "v929 first pilot expansion rollout reuse market pilot multi-country launch readiness console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-country-launch-readiness-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-country-launch-readiness-console",
+      idSuffix: "MULTI-COUNTRY-LAUNCH-READINESS-CONSOLE",
+      scoreKey: "multiCountryLaunchReadinessConsoleScore",
+      decisionKey: "multiCountryLaunchReadinessConsoleDecision",
+      stateKey: "multiCountryLaunchReadinessConsoleState",
+      lineKey: "multiCountryLaunchReadinessConsoleLine",
+      primarySignal: "Pilot multi-country launch readiness console",
+      primaryNote: "Unifies country readiness with launch lane, localization proof, partner coverage, legal boundary, support coverage, billing readiness, country owner, and launch receipt.",
+      summary: "Unify country readiness with launch lane, localization proof, partner coverage, legal boundary, support coverage, billing readiness, country owner, and launch receipt.",
+      trackSummary: "Success automation now becomes one multi-country launch readiness console across launch lane, localization proof, partner coverage, legal boundary, support coverage, billing readiness, country owner, and receipt.",
+      stageSummary: "Success automation now becomes multi-country readiness with launch lane, localization, partner, legal, support, billing, owner, and receipt.",
+      openDecision: "Open country launch",
+      guardedDecision: "Open guarded country launch",
+      holdDecision: "Hold country readiness",
+      repairDecision: "Repair country readiness",
+      nextOpen: "Open the multi-country launch readiness console and keep launch lane, localization proof, partner coverage, legal boundary, support coverage, billing readiness, country owner, and launch receipt together.",
+      nextGuarded: "Open guarded multi-country launch while one launch, localization, partner, legal, support, billing, or owner lane stays watched.",
+      nextHold: "Hold country readiness until launch lane, localization proof, partner coverage, legal boundary, and support coverage are clear.",
+      nextRepair: "Repair multi-country readiness before enterprise pilot command room.",
+      axes: [
+        ["Launch lane", "launchMoment", 0.74, 5, "Launch lane is selected."],
+        ["Localization proof", "proofGuard", 0.76, 5, "Localization proof is ready."],
+        ["Partner coverage", "supportGuard", 0.74, 5, "Partner coverage is visible."],
+        ["Legal boundary", "tenantGuard", 0.76, 5, "Legal boundary is clear."],
+        ["Support coverage", "supportGuard", 0.74, 5, "Support coverage is staffed."],
+        ["Billing readiness", "sponsorGuard", 0.72, 6, "Billing readiness is checked."],
+        ["Country owner", "ownerCommand", 0.72, 6, "Country owner is named."],
+        ["Launch receipt", "guardClosure", 0.72, 6, "Launch receipt closes console."],
       ],
     },
   ];
@@ -20335,6 +20530,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryLaunchReadinessConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessAutomationLayerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAiGovernanceEvidenceLayerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPartnerScaleConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRevenueRetentionControlRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchToRenewalOperatingSystemPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSafeFeedbackLoopPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotNetworkLearningSafetyBoardPreview(model, autopilot)}",
@@ -27092,6 +27292,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchToRenewalOperatingSystemPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-to-renewal-operating-system");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRevenueRetentionControlRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "revenue-retention-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRevenueRetentionControlRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "revenue-retention-control-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRevenueRetentionControlRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "revenue-retention-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPartnerScaleConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-partner-scale-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPartnerScaleConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-partner-scale-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPartnerScaleConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-partner-scale-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAiGovernanceEvidenceLayerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "ai-governance-evidence-layer");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAiGovernanceEvidenceLayer(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "ai-governance-evidence-layer", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAiGovernanceEvidenceLayerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "ai-governance-evidence-layer");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessAutomationLayerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-success-automation-layer");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessAutomationLayer(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-success-automation-layer", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessAutomationLayerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-success-automation-layer");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryLaunchReadinessConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-country-launch-readiness-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryLaunchReadinessConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-country-launch-readiness-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryLaunchReadinessConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-country-launch-readiness-console");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -91903,9 +92163,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v925", "First Pilot Expansion Rollout Reuse Market Pilot Revenue Retention Control Room", "Convert launch-to-renewal proof into retention control with revenue health, renewal owner, usage risk, invoice posture, expansion ask, and success receipt."],
-      ["v926", "First Pilot Expansion Rollout Reuse Market Pilot Global Partner Scale Console", "Prepare partner-led scale with partner capacity, country route, enablement proof, support escalation, revenue share, and launch governance."],
-      ["v927", "First Pilot Expansion Rollout Reuse Market Pilot AI Governance Evidence Layer", "Create the AI governance evidence layer for tenant-safe guidance, policy proof, model review, feedback boundaries, and audit-ready learning receipts."],
+      ["v930", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Pilot Command Room", "Prepare the enterprise pilot command room with buyer sponsor, security proof, rollout owner, support model, renewal intent, and executive proof receipt."],
+      ["v931", "First Pilot Expansion Rollout Reuse Market Pilot Trust Center Publication Pack", "Publish buyer-safe trust proof with security summary, privacy boundary, uptime posture, data policy, support promise, and audit receipt."],
+      ["v932", "First Pilot Expansion Rollout Reuse Market Pilot Production Learning Integration Gate", "Connect production learning with tenant-safe telemetry, outcome review, approval workflow, governance receipt, and rollback-ready learning release."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

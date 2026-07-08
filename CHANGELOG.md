@@ -1,5 +1,144 @@
 # Changelog
 
+## v929 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Launch Readiness Console
+
+### Changes Made
+- Activated the multi-country launch readiness console as the current build.
+- Added launch lane, localization proof, partner coverage, legal boundary, support coverage, billing readiness, country owner, and launch receipt as global-launch readiness lanes.
+- Updated the Build Phase next queue to v930-v932 for enterprise pilot command, trust center publication, and production learning integration work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v929.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with `Build v929`, correct page headings, v929 label visibility, no console errors, and zero page-level horizontal overflow.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, and Command without navigation hangs or console errors.
+- Passed: 375px mobile QA for Command, Autopilot, Reports, and Build Phase with `Build v929`, correct headings, zero page-level horizontal overflow, and v930-v932 next queue visible on Build Phase.
+- Passed: 375px mobile header check with `Build v929`, Serenity, Live demo, Rooms, Rail: Left, Admin Tools, Reset demo, and Logout all visible inside the viewport.
+
+### Known Risks
+- Multi-country launch readiness remains static; real localization, partner coverage, legal boundaries, support coverage, billing readiness, and country-owner receipts need country-specific backend, legal, billing, and support integrations.
+
+## v928 - First Pilot Expansion Rollout Reuse Market Pilot Customer Success Automation Layer
+
+### Changes Made
+- Activated the customer success automation layer as the current build.
+- Added success trigger, nudge queue, review prep, support route, renewal prompt, expansion cue, owner handoff, and automation receipt as customer-success automation lanes.
+- Updated the Build Phase next queue to v929-v931 for multi-country launch readiness, enterprise pilot command, and trust center publication work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v928.
+- Repaired the v928 static current-track and next-queue assertions after the first promotion command timed out before those two guard lines were updated.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Customer success automation remains static; real triggers, nudges, support routes, renewal prompts, and handoff receipts need live customer-success events and workflow execution.
+
+## v927 - First Pilot Expansion Rollout Reuse Market Pilot AI Governance Evidence Layer
+
+### Changes Made
+- Activated the AI governance evidence layer as the current build.
+- Added guidance policy, tenant learning boundary, model review, feedback approval, audit receipt, exception lane, reviewer owner, and governance receipt as AI-governance lanes.
+- Updated the Build Phase next queue to v928-v930 for customer success automation, multi-country launch readiness, and enterprise pilot command work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v927.
+- Restored the v925 static registry row to exact revenue-retention proof before advancing the build train.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` baseline after restoring the v925 registry assertion.
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- AI governance remains static; real guidance policies, model reviews, approval receipts, exception logs, and audit evidence need backend governance storage and review workflows.
+
+## v926 - First Pilot Expansion Rollout Reuse Market Pilot Global Partner Scale Console
+
+### Changes Made
+- Activated the global partner scale console as the current build.
+- Added partner capacity, country route, enablement proof, support escalation, revenue share, compliance boundary, deal owner, and partner scale receipt as partner-expansion lanes.
+- Updated the Build Phase next queue to v927-v929 for AI governance, customer success automation, and multi-country launch readiness.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v926.
+- Repaired the v926 static cache-token expectations after the first check caught stale v925 token assertions.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Repaired and passed: `npm.cmd run check`
+
+### Known Risks
+- Partner scale remains static; real partner capacity, country routing, revenue share, and compliance boundary proof need partner CRM, support, and legal integrations.
+
+## v925 - First Pilot Expansion Rollout Reuse Market Pilot Revenue Retention Control Room
+
+### Changes Made
+- Activated the revenue retention control room as the current build.
+- Added revenue health, renewal owner, usage risk, invoice posture, expansion ask, save plan, executive note, and retention receipt as retention-control lanes.
+- Added release wrappers and command rail render paths for v925-v929.
+- Updated the Build Phase next queue to v926-v928 for partner scale, AI governance, and customer success automation.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v925.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Revenue retention remains static; real revenue health, renewal ownership, invoice posture, expansion asks, and save plans need billing and customer-success integrations.
+
 ## v924 - First Pilot Expansion Rollout Reuse Market Pilot Launch-to-Renewal Operating System
 
 ### Changes Made
