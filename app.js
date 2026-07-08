@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v944";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Pilot Data Import Proof";
+  const BUILD_VERSION = "v949";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Live Pilot Evidence Vault";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=944.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=944.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=949.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=949.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -5495,6 +5495,201 @@
         ["Audit proof", "proofGuard", 0.76, 5, "Import audit proof is readable."],
         ["Privacy check", "tenantGuard", 0.78, 5, "Import privacy check is tenant safe."],
         ["Import receipt", "guardClosure", 0.74, 6, "Import receipt closes proof."],
+      ],
+    },
+    {
+      key: "security-remediation-sprint",
+      version: "v945",
+      number: 945,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Security Remediation Sprint",
+      shortLabel: "Security Remediation Sprint",
+      phase: "First pilot expansion rollout reuse market pilot security remediation sprint",
+      track: "v945 first pilot expansion rollout reuse market pilot security remediation sprint",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-security-remediation-sprint",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-security-remediation-sprint",
+      idSuffix: "SECURITY-REMEDIATION-SPRINT",
+      scoreKey: "securityRemediationSprintScore",
+      decisionKey: "securityRemediationSprintDecision",
+      stateKey: "securityRemediationSprintState",
+      lineKey: "securityRemediationSprintLine",
+      primarySignal: "Pilot security remediation sprint",
+      primaryNote: "Turns the security review packet into a fix queue with finding register, severity owner, fix path, retest proof, residual risk, exception decision, sponsor-safe note, and signoff receipt.",
+      summary: "Close security review findings with finding register, severity owner, fix path, retest proof, residual risk, exception decision, sponsor-safe note, and signoff receipt.",
+      trackSummary: "Pilot data import proof now becomes one security remediation sprint across finding register, severity owner, fix path, retest proof, residual risk, exception decision, sponsor-safe note, and signoff receipt.",
+      stageSummary: "Import proof now becomes a remediation sprint with finding, severity, fix, retest, residual risk, exception, sponsor note, and signoff controls.",
+      openDecision: "Open remediation sprint",
+      guardedDecision: "Open guarded remediation",
+      holdDecision: "Hold remediation sprint",
+      repairDecision: "Repair security fix proof",
+      nextOpen: "Open the security remediation sprint and keep finding register, severity owner, fix path, retest proof, residual risk, exception decision, sponsor-safe note, and signoff receipt together.",
+      nextGuarded: "Open guarded remediation while one finding, severity, fix, retest, residual risk, exception, sponsor note, or signoff lane stays watched.",
+      nextHold: "Hold remediation until findings, severity owner, fix path, retest proof, and residual risk are clear.",
+      nextRepair: "Repair security fix proof before staging smoke expands.",
+      axes: [
+        ["Finding register", "reviewGuard", 0.76, 5, "Security findings are listed."],
+        ["Severity owner", "ownerCommand", 0.74, 6, "Each severity has an owner."],
+        ["Fix path", "proofGuard", 0.76, 5, "Fix path is named."],
+        ["Retest proof", "proofGuard", 0.78, 5, "Retest evidence is expected."],
+        ["Residual risk", "rollbackGuard", 0.76, 5, "Residual risk is visible."],
+        ["Exception decision", "tenantGuard", 0.74, 6, "Exception decision stays governed."],
+        ["Sponsor-safe note", "sponsorGuard", 0.74, 5, "Sponsor note is safe to share."],
+        ["Signoff receipt", "guardClosure", 0.76, 6, "Security signoff receipt closes sprint."],
+      ],
+    },
+    {
+      key: "staging-smoke-receipt",
+      version: "v946",
+      number: 946,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Staging Smoke Receipt",
+      shortLabel: "Staging Smoke Receipt",
+      phase: "First pilot expansion rollout reuse market pilot staging smoke receipt",
+      track: "v946 first pilot expansion rollout reuse market pilot staging smoke receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-staging-smoke-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-staging-smoke-receipt",
+      idSuffix: "STAGING-SMOKE-RECEIPT",
+      scoreKey: "stagingSmokeReceiptScore",
+      decisionKey: "stagingSmokeReceiptDecision",
+      stateKey: "stagingSmokeReceiptState",
+      lineKey: "stagingSmokeReceiptLine",
+      primarySignal: "Pilot staging smoke receipt",
+      primaryNote: "Turns staging mirror planning into a smoke receipt with smoke script, seeded account, access gate, import dry run, rollback rehearsal, browser smoke, admin acceptance, and receipt.",
+      summary: "Prove staging works with smoke script, seeded account, access gate, import dry run, rollback rehearsal, browser smoke, admin acceptance, and smoke receipt.",
+      trackSummary: "Security remediation now becomes one staging smoke receipt across smoke script, seeded account, access gate, import dry run, rollback rehearsal, browser smoke, admin acceptance, and receipt.",
+      stageSummary: "Security remediation now becomes staging smoke proof with script, seed, access, import, rollback, browser, admin acceptance, and receipt controls.",
+      openDecision: "Open staging smoke",
+      guardedDecision: "Open guarded staging smoke",
+      holdDecision: "Hold staging smoke",
+      repairDecision: "Repair smoke proof",
+      nextOpen: "Open staging smoke and keep smoke script, seeded account, access gate, import dry run, rollback rehearsal, browser smoke, admin acceptance, and receipt together.",
+      nextGuarded: "Open guarded staging smoke while one script, seed, access, import, rollback, browser, admin, or receipt lane stays watched.",
+      nextHold: "Hold staging smoke until script, seeded account, access gate, import dry run, and rollback rehearsal are ready.",
+      nextRepair: "Repair smoke proof before customer go-live checklist expands.",
+      axes: [
+        ["Smoke script", "reviewGuard", 0.76, 5, "Smoke script is named."],
+        ["Seeded account", "tenantGuard", 0.76, 5, "Seeded account is controlled."],
+        ["Access gate", "tenantGuard", 0.78, 5, "Access gate is checked."],
+        ["Import dry run", "proofGuard", 0.76, 5, "Import dry run is captured."],
+        ["Rollback rehearsal", "rollbackGuard", 0.78, 5, "Rollback rehearsal is ready."],
+        ["Browser smoke", "reviewGuard", 0.74, 6, "Browser smoke is clean."],
+        ["Admin acceptance", "ownerCommand", 0.74, 6, "Admin acceptance is named."],
+        ["Smoke receipt", "guardClosure", 0.76, 6, "Smoke receipt closes staging proof."],
+      ],
+    },
+    {
+      key: "customer-go-live-checklist",
+      version: "v947",
+      number: 947,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Go-Live Checklist",
+      shortLabel: "Customer Go-Live Checklist",
+      phase: "First pilot expansion rollout reuse market pilot customer go-live checklist",
+      track: "v947 first pilot expansion rollout reuse market pilot customer go-live checklist",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-go-live-checklist",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-go-live-checklist",
+      idSuffix: "CUSTOMER-GO-LIVE-CHECKLIST",
+      scoreKey: "customerGoLiveChecklistScore",
+      decisionKey: "customerGoLiveChecklistDecision",
+      stateKey: "customerGoLiveChecklistState",
+      lineKey: "customerGoLiveChecklistLine",
+      primarySignal: "Pilot customer go-live checklist",
+      primaryNote: "Turns staging smoke proof into a customer go-live checklist with launch owner, cutover date, customer admins, training window, support window, rollback contact, launch message, and go-live receipt.",
+      summary: "Prepare customer go-live with launch owner, cutover date, customer admins, training window, support window, rollback contact, launch message, and go-live receipt.",
+      trackSummary: "Staging smoke receipt now becomes one customer go-live checklist across launch owner, cutover date, customer admins, training window, support window, rollback contact, launch message, and receipt.",
+      stageSummary: "Staging smoke now becomes go-live checklist with owner, date, admins, training, support, rollback contact, launch message, and receipt controls.",
+      openDecision: "Open go-live checklist",
+      guardedDecision: "Open guarded go-live",
+      holdDecision: "Hold go-live checklist",
+      repairDecision: "Repair go-live proof",
+      nextOpen: "Open customer go-live and keep launch owner, cutover date, customer admins, training window, support window, rollback contact, launch message, and go-live receipt together.",
+      nextGuarded: "Open guarded go-live while one owner, date, admin, training, support, rollback, message, or receipt lane stays watched.",
+      nextHold: "Hold go-live until launch owner, cutover date, customer admins, training window, and support window are clear.",
+      nextRepair: "Repair go-live proof before pilot training handoff expands.",
+      axes: [
+        ["Launch owner", "ownerCommand", 0.76, 6, "Launch owner is accountable."],
+        ["Cutover date", "reviewGuard", 0.76, 5, "Cutover date is visible."],
+        ["Customer admins", "tenantGuard", 0.76, 5, "Customer admins are named."],
+        ["Training window", "supportGuard", 0.74, 5, "Training window is scheduled."],
+        ["Support window", "supportGuard", 0.78, 5, "Support window is staffed."],
+        ["Rollback contact", "rollbackGuard", 0.76, 5, "Rollback contact is named."],
+        ["Launch message", "sponsorGuard", 0.74, 6, "Launch message is buyer-safe."],
+        ["Go-live receipt", "guardClosure", 0.76, 6, "Go-live receipt closes checklist."],
+      ],
+    },
+    {
+      key: "pilot-training-handoff",
+      version: "v948",
+      number: 948,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Pilot Training Handoff",
+      shortLabel: "Pilot Training Handoff",
+      phase: "First pilot expansion rollout reuse market pilot pilot training handoff",
+      track: "v948 first pilot expansion rollout reuse market pilot pilot training handoff",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-training-handoff",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-training-handoff",
+      idSuffix: "PILOT-TRAINING-HANDOFF",
+      scoreKey: "pilotTrainingHandoffScore",
+      decisionKey: "pilotTrainingHandoffDecision",
+      stateKey: "pilotTrainingHandoffState",
+      lineKey: "pilotTrainingHandoffLine",
+      primarySignal: "Pilot training handoff",
+      primaryNote: "Turns go-live checklist into a training handoff with admin path, user path, quickstart script, room map, support promise, escalation path, feedback pulse, and handoff receipt.",
+      summary: "Prepare training handoff with admin path, user path, quickstart script, room map, support promise, escalation path, feedback pulse, and handoff receipt.",
+      trackSummary: "Customer go-live checklist now becomes one pilot training handoff across admin path, user path, quickstart script, room map, support promise, escalation path, feedback pulse, and handoff receipt.",
+      stageSummary: "Go-live checklist now becomes training handoff with admin, user, quickstart, room map, support, escalation, feedback, and receipt controls.",
+      openDecision: "Open training handoff",
+      guardedDecision: "Open guarded training",
+      holdDecision: "Hold training handoff",
+      repairDecision: "Repair training proof",
+      nextOpen: "Open pilot training handoff and keep admin path, user path, quickstart script, room map, support promise, escalation path, feedback pulse, and handoff receipt together.",
+      nextGuarded: "Open guarded training while one admin, user, quickstart, room map, support, escalation, feedback, or receipt lane stays watched.",
+      nextHold: "Hold training until admin path, user path, quickstart script, room map, and support promise are clear.",
+      nextRepair: "Repair training proof before live evidence vault expands.",
+      axes: [
+        ["Admin path", "tenantGuard", 0.76, 5, "Admin path is ready."],
+        ["User path", "supportGuard", 0.74, 5, "User path is simple."],
+        ["Quickstart script", "reviewGuard", 0.76, 5, "Quickstart script is copy-ready."],
+        ["Room map", "proofGuard", 0.74, 6, "Room map is clear."],
+        ["Support promise", "supportGuard", 0.78, 5, "Support promise is visible."],
+        ["Escalation path", "ownerCommand", 0.74, 6, "Escalation path is named."],
+        ["Feedback pulse", "sponsorGuard", 0.74, 5, "Feedback pulse is scheduled."],
+        ["Handoff receipt", "guardClosure", 0.76, 6, "Training receipt closes handoff."],
+      ],
+    },
+    {
+      key: "live-pilot-evidence-vault",
+      version: "v949",
+      number: 949,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Pilot Evidence Vault",
+      shortLabel: "Live Pilot Evidence Vault",
+      phase: "First pilot expansion rollout reuse market pilot live pilot evidence vault",
+      track: "v949 first pilot expansion rollout reuse market pilot live pilot evidence vault",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-pilot-evidence-vault",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-pilot-evidence-vault",
+      idSuffix: "LIVE-PILOT-EVIDENCE-VAULT",
+      scoreKey: "livePilotEvidenceVaultScore",
+      decisionKey: "livePilotEvidenceVaultDecision",
+      stateKey: "livePilotEvidenceVaultState",
+      lineKey: "livePilotEvidenceVaultLine",
+      primarySignal: "Pilot live evidence vault",
+      primaryNote: "Collects launch proof into a live evidence vault with go-live proof, import proof, security proof, training proof, support proof, sponsor decision, outcome watch, and vault receipt.",
+      summary: "Collect live pilot proof with go-live proof, import proof, security proof, training proof, support proof, sponsor decision, outcome watch, and vault receipt.",
+      trackSummary: "Pilot training handoff now becomes one live pilot evidence vault across go-live proof, import proof, security proof, training proof, support proof, sponsor decision, outcome watch, and vault receipt.",
+      stageSummary: "Training handoff now becomes a live evidence vault with go-live, import, security, training, support, sponsor, outcome, and receipt controls.",
+      openDecision: "Open evidence vault",
+      guardedDecision: "Open guarded evidence vault",
+      holdDecision: "Hold evidence vault",
+      repairDecision: "Repair vault proof",
+      nextOpen: "Open the live pilot evidence vault and keep go-live proof, import proof, security proof, training proof, support proof, sponsor decision, outcome watch, and vault receipt together.",
+      nextGuarded: "Open guarded evidence vault while one go-live, import, security, training, support, sponsor, outcome, or receipt lane stays watched.",
+      nextHold: "Hold evidence vault until go-live proof, import proof, security proof, training proof, and support proof are ready.",
+      nextRepair: "Repair vault proof before first-week success watch expands.",
+      axes: [
+        ["Go-live proof", "guardClosure", 0.78, 5, "Go-live proof is attached."],
+        ["Import proof", "proofGuard", 0.78, 5, "Import proof is accepted."],
+        ["Security proof", "tenantGuard", 0.76, 5, "Security proof is signed off."],
+        ["Training proof", "supportGuard", 0.76, 5, "Training proof is readable."],
+        ["Support proof", "supportGuard", 0.78, 5, "Support proof is staffed."],
+        ["Sponsor decision", "sponsorGuard", 0.76, 6, "Sponsor decision is visible."],
+        ["Outcome watch", "reviewGuard", 0.74, 6, "Outcome watch is scheduled."],
+        ["Vault receipt", "guardClosure", 0.78, 6, "Vault receipt closes launch proof."],
       ],
     },
   ];
@@ -21115,6 +21310,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLivePilotEvidenceVaultPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTrainingHandoffPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveChecklistPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingSmokeReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecurityRemediationSprintPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotDataImportProofPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendStarterPlanPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPaidPilotAgreementDeskPreview(model, autopilot)}",
@@ -28132,6 +28332,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotDataImportProofPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-data-import-proof");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecurityRemediationSprintSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "security-remediation-sprint");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecurityRemediationSprint(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "security-remediation-sprint", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecurityRemediationSprintPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "security-remediation-sprint");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingSmokeReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "staging-smoke-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingSmokeReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "staging-smoke-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingSmokeReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-smoke-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveChecklistSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-go-live-checklist");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveChecklist(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-go-live-checklist", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveChecklistPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-go-live-checklist");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTrainingHandoffSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-training-handoff");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTrainingHandoff(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-training-handoff", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTrainingHandoffPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-training-handoff");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLivePilotEvidenceVaultSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-pilot-evidence-vault");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLivePilotEvidenceVault(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-pilot-evidence-vault", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLivePilotEvidenceVaultPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-pilot-evidence-vault");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -92943,9 +93203,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v945", "First Pilot Expansion Rollout Reuse Market Pilot Security Remediation Sprint", "Close the security review findings with owner, severity, fix path, retest proof, and signoff receipt."],
-      ["v946", "First Pilot Expansion Rollout Reuse Market Pilot Staging Smoke Receipt", "Run staging smoke checks against seeded pilot data, access gates, rollback rehearsal, and admin acceptance notes."],
-      ["v947", "First Pilot Expansion Rollout Reuse Market Pilot Customer Go-Live Checklist", "Turn import proof into the first customer go-live checklist with owner, dates, support window, training, and launch decision."],
+      ["v950", "First Pilot Expansion Rollout Reuse Market Pilot First Week Success Watch", "Watch the first live pilot week with usage, support load, blocker closure, sponsor signal, and outcome proof."],
+      ["v951", "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Launch Readout", "Prepare the first sponsor readout with launch proof, value proof, support calm, learning signal, and next decision."],
+      ["v952", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Signal Desk", "Turn live evidence into renewal and expansion signals with proof quality, user adoption, sponsor intent, and support confidence."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

@@ -1,5 +1,122 @@
 # Changelog
 
+## v949 - First Pilot Expansion Rollout Reuse Market Pilot Live Pilot Evidence Vault
+
+### Changes Made
+- Promoted live pilot evidence vault as the current build.
+- Added launch receipt, training completion, support receipt, security signoff, import proof, sponsor decision, and learning release evidence lanes.
+- Updated Build Phase to show v949 as current and queue v950-v952 for first week success watch, sponsor launch readout, and renewal signal desk.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v949.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v949 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Live Pilot Evidence Vault visible and v950-v952 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v949 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Live pilot evidence vault is still a static readiness surface; real launch still needs private storage, signed evidence uploads, immutable audit receipts, role-based access, customer support records, and production data retention controls.
+
+## v948 - First Pilot Expansion Rollout Reuse Market Pilot Pilot Training Handoff
+
+### Changes Made
+- Added the pilot training handoff to the pilot rollout runway.
+- Added admin training, manager training, operator training, support script, help route, replay receipt, attendance proof, and handoff decision lanes.
+- Added wrapper render paths and static registry coverage so training handoff can open from Build Phase and release rail.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with pilot training handoff release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Pilot training handoff is not yet connected to real learning content, attendance capture, role-specific help articles, or support desk telemetry.
+
+## v947 - First Pilot Expansion Rollout Reuse Market Pilot Customer Go-Live Checklist
+
+### Changes Made
+- Added the customer go-live checklist to the pilot rollout runway.
+- Added sponsor approval, user invite, access proof, launch notice, day-one owner, support promise, rollback route, and go/no-go receipt lanes.
+- Added wrapper render paths and static registry coverage so customer launch readiness is visible from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with customer go-live checklist release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Customer go-live checklist is not yet tied to real tenant provisioning, email invites, customer support ownership, or production rollback execution.
+
+## v946 - First Pilot Expansion Rollout Reuse Market Pilot Staging Smoke Receipt
+
+### Changes Made
+- Added the staging smoke receipt to the pilot rollout runway.
+- Added staging URL, auth check, seed data check, import check, report check, role switch, rollback smoke, and acceptance receipt lanes.
+- Added wrapper render paths and static registry coverage so staging proof can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with staging smoke receipt release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Staging smoke receipt is still a planned proof path; a real staging tenant, smoke runner, seeded database, import job, and rollback rehearsal remain outside this static demo.
+
+## v945 - First Pilot Expansion Rollout Reuse Market Pilot Security Remediation Sprint
+
+### Changes Made
+- Added the security remediation sprint to the pilot rollout runway.
+- Added vulnerability queue, patch owner, dependency retest, access review, storage review, audit trail, security note, and go/no-go signoff lanes.
+- Added wrapper render paths and static registry coverage so security remediation is tracked before staging and customer go-live.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with security remediation sprint release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Security remediation sprint is not yet connected to real dependency scanning, vulnerability tickets, access review evidence, storage controls, or independent security signoff.
+
 ## v944 - First Pilot Expansion Rollout Reuse Market Pilot Pilot Data Import Proof
 
 ### Changes Made
