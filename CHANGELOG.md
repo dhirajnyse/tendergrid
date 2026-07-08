@@ -1,5 +1,124 @@
 # Changelog
 
+## v964 - First Pilot Expansion Rollout Reuse Market Pilot Audit Export and Compliance Pack
+
+### Changes Made
+- Promoted audit export and compliance pack as the current build.
+- Added audit extract, access proof, retention proof, export scope, reviewer signoff, exception list, compliance note, and pack receipt lanes.
+- Updated Build Phase to show v964 as current and queue v965-v967 for incident response, customer health renewal, and private backend execution starter work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v964.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v964 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Audit Export and Compliance Pack visible and v965-v967 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v964 visible, no page-level horizontal overflow, and no console errors.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, build badge, and Command without hangs or console errors.
+
+### Known Risks
+- Audit export and compliance pack is still a static prototype; real launch requires backend audit export generation, immutable access proof, retention evidence, reviewer workflow, export scoping, exception handling, and compliance archive storage.
+
+## v963 - First Pilot Expansion Rollout Reuse Market Pilot Support Ticket Intake Prototype
+
+### Changes Made
+- Added the support ticket intake prototype to the pilot rollout runway.
+- Added ticket intake, severity route, SLA clock, owner assignment, evidence link, customer reply, resolution proof, and support receipt lanes.
+- Added wrapper render paths and static registry coverage so support intake readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with support ticket intake prototype release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Support ticket intake remains simulated until a real support inbox, severity routing, SLA timers, customer replies, owner assignment, evidence links, and resolution receipts exist.
+
+## v962 - First Pilot Expansion Rollout Reuse Market Pilot Production Usage Telemetry Desk
+
+### Changes Made
+- Added the production usage telemetry desk to the pilot rollout runway.
+- Added room visits, action completion, adoption heat, support pressure, sponsor confidence, feature friction, telemetry export, and usage receipt lanes.
+- Added wrapper render paths and static registry coverage so usage telemetry can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with production usage telemetry desk release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Usage telemetry is not connected to real event capture, analytics storage, room visit logs, completion metrics, support pressure, sponsor sentiment, or export governance.
+
+## v961 - First Pilot Expansion Rollout Reuse Market Pilot Data Retention Compliance Console
+
+### Changes Made
+- Added the data retention compliance console to the pilot rollout runway.
+- Added retention policy, deletion queue, export window, legal hold, retrieval test, evidence aging, owner attestation, and compliance receipt lanes.
+- Added wrapper render paths and static registry coverage so retention compliance readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with data retention compliance console release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Retention compliance console is not backed by real retention jobs, deletion queues, legal hold policies, retrieval tests, owner attestations, or compliance exports.
+
+## v960 - First Pilot Expansion Rollout Reuse Market Pilot Access Policy Enforcement Gate
+
+### Changes Made
+- Added the access policy enforcement gate to the pilot rollout runway.
+- Added role policy, deny path, exception queue, admin override, access receipt, least privilege, reviewer signoff, and enforcement decision lanes.
+- Added wrapper render paths and static registry coverage so access enforcement readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with access policy enforcement gate release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Access policy enforcement gate remains static until real authorization policies, deny decisions, exception approvals, admin overrides, access receipts, and reviewer signoff are implemented in the backend.
+
 ## v959 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Trail Viewer
 
 ### Changes Made

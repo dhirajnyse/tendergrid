@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v959";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Trail Viewer";
+  const BUILD_VERSION = "v964";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Audit Export and Compliance Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=959.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=959.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=964.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=964.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -6080,6 +6080,201 @@
         ["Owner filter", "ownerCommand", 0.74, 6, "Owner filter is usable."],
         ["Review note", "sponsorGuard", 0.74, 5, "Review note is safe."],
         ["Audit receipt", "guardClosure", 0.8, 6, "Audit receipt closes viewer."],
+      ],
+    },
+    {
+      key: "access-policy-enforcement-gate",
+      version: "v960",
+      number: 960,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Access Policy Enforcement Gate",
+      shortLabel: "Access Policy Enforcement Gate",
+      phase: "First pilot expansion rollout reuse market pilot access policy enforcement gate",
+      track: "v960 first pilot expansion rollout reuse market pilot access policy enforcement gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-access-policy-enforcement-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-access-policy-enforcement-gate",
+      idSuffix: "ACCESS-POLICY-ENFORCEMENT-GATE",
+      scoreKey: "accessPolicyEnforcementGateScore",
+      decisionKey: "accessPolicyEnforcementGateDecision",
+      stateKey: "accessPolicyEnforcementGateState",
+      lineKey: "accessPolicyEnforcementGateLine",
+      primarySignal: "Pilot access policy enforcement gate",
+      primaryNote: "Turns audit trail visibility into enforceable access policy with role policy, deny path, exception queue, admin override, access receipt, least privilege, reviewer signoff, and enforcement decision.",
+      summary: "Enforce access policy with role policy, deny path, exception queue, admin override, access receipt, least privilege, reviewer signoff, and enforcement decision.",
+      trackSummary: "Tenant audit trail viewer now becomes one access policy enforcement gate across role policy, deny path, exception queue, admin override, access receipt, least privilege, reviewer signoff, and decision.",
+      stageSummary: "Audit viewer now becomes access enforcement with role, deny, exception, override, receipt, privilege, signoff, and decision controls.",
+      openDecision: "Open access enforcement",
+      guardedDecision: "Open guarded access",
+      holdDecision: "Hold access policy",
+      repairDecision: "Repair access proof",
+      nextOpen: "Open access policy enforcement gate and keep role policy, deny path, exception queue, admin override, access receipt, least privilege, reviewer signoff, and enforcement decision together.",
+      nextGuarded: "Open guarded access while one role, deny, exception, override, receipt, privilege, signoff, or decision lane stays watched.",
+      nextHold: "Hold access enforcement until role policy, deny path, exception queue, admin override, and access receipt are ready.",
+      nextRepair: "Repair access proof before data retention compliance expands.",
+      axes: [
+        ["Role policy", "tenantGuard", 0.8, 5, "Role policy is enforceable."],
+        ["Deny path", "rollbackGuard", 0.78, 5, "Deny path is visible."],
+        ["Exception queue", "reviewGuard", 0.76, 5, "Exception queue is owned."],
+        ["Admin override", "ownerCommand", 0.74, 6, "Admin override is controlled."],
+        ["Access receipt", "proofGuard", 0.8, 5, "Access receipt is captured."],
+        ["Least privilege", "tenantGuard", 0.8, 5, "Least privilege is checked."],
+        ["Reviewer signoff", "sponsorGuard", 0.76, 6, "Reviewer signoff is explicit."],
+        ["Enforcement decision", "guardClosure", 0.8, 6, "Enforcement decision closes gate."],
+      ],
+    },
+    {
+      key: "data-retention-compliance-console",
+      version: "v961",
+      number: 961,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Data Retention Compliance Console",
+      shortLabel: "Data Retention Compliance Console",
+      phase: "First pilot expansion rollout reuse market pilot data retention compliance console",
+      track: "v961 first pilot expansion rollout reuse market pilot data retention compliance console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-data-retention-compliance-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-data-retention-compliance-console",
+      idSuffix: "DATA-RETENTION-COMPLIANCE-CONSOLE",
+      scoreKey: "dataRetentionComplianceConsoleScore",
+      decisionKey: "dataRetentionComplianceConsoleDecision",
+      stateKey: "dataRetentionComplianceConsoleState",
+      lineKey: "dataRetentionComplianceConsoleLine",
+      primarySignal: "Pilot data retention compliance console",
+      primaryNote: "Turns access enforcement into retention governance with retention policy, deletion queue, export window, legal hold, retrieval test, evidence aging, owner attestation, and compliance receipt.",
+      summary: "Control retention compliance with retention policy, deletion queue, export window, legal hold, retrieval test, evidence aging, owner attestation, and compliance receipt.",
+      trackSummary: "Access policy enforcement gate now becomes one data retention compliance console across retention policy, deletion queue, export window, legal hold, retrieval test, evidence aging, owner attestation, and receipt.",
+      stageSummary: "Access enforcement now becomes retention console with policy, deletion, export, hold, retrieval, aging, attestation, and receipt controls.",
+      openDecision: "Open retention console",
+      guardedDecision: "Open guarded retention",
+      holdDecision: "Hold retention console",
+      repairDecision: "Repair retention proof",
+      nextOpen: "Open data retention compliance console and keep retention policy, deletion queue, export window, legal hold, retrieval test, evidence aging, owner attestation, and compliance receipt together.",
+      nextGuarded: "Open guarded retention while one policy, deletion, export, hold, retrieval, aging, attestation, or receipt lane stays watched.",
+      nextHold: "Hold retention console until retention policy, deletion queue, export window, legal hold, and retrieval test are ready.",
+      nextRepair: "Repair retention proof before production usage telemetry expands.",
+      axes: [
+        ["Retention policy", "tenantGuard", 0.8, 5, "Retention policy is explicit."],
+        ["Deletion queue", "rollbackGuard", 0.78, 5, "Deletion queue is governed."],
+        ["Export window", "tenantGuard", 0.78, 5, "Export window is controlled."],
+        ["Legal hold", "reviewGuard", 0.76, 5, "Legal hold is visible."],
+        ["Retrieval test", "proofGuard", 0.78, 5, "Retrieval test is repeatable."],
+        ["Evidence aging", "proofGuard", 0.76, 5, "Evidence aging is readable."],
+        ["Owner attestation", "ownerCommand", 0.76, 6, "Owner attestation is named."],
+        ["Compliance receipt", "guardClosure", 0.8, 6, "Compliance receipt closes console."],
+      ],
+    },
+    {
+      key: "production-usage-telemetry-desk",
+      version: "v962",
+      number: 962,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Usage Telemetry Desk",
+      shortLabel: "Production Usage Telemetry Desk",
+      phase: "First pilot expansion rollout reuse market pilot production usage telemetry desk",
+      track: "v962 first pilot expansion rollout reuse market pilot production usage telemetry desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-usage-telemetry-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-usage-telemetry-desk",
+      idSuffix: "PRODUCTION-USAGE-TELEMETRY-DESK",
+      scoreKey: "productionUsageTelemetryDeskScore",
+      decisionKey: "productionUsageTelemetryDeskDecision",
+      stateKey: "productionUsageTelemetryDeskState",
+      lineKey: "productionUsageTelemetryDeskLine",
+      primarySignal: "Pilot production usage telemetry desk",
+      primaryNote: "Turns retention compliance into usage telemetry with room visits, action completion, adoption heat, support pressure, sponsor confidence, feature friction, telemetry export, and usage receipt.",
+      summary: "Read production telemetry with room visits, action completion, adoption heat, support pressure, sponsor confidence, feature friction, telemetry export, and usage receipt.",
+      trackSummary: "Data retention compliance console now becomes one production usage telemetry desk across room visits, action completion, adoption heat, support pressure, sponsor confidence, feature friction, telemetry export, and receipt.",
+      stageSummary: "Retention console now becomes usage telemetry with visits, completion, adoption, support, sponsor, friction, export, and receipt controls.",
+      openDecision: "Open usage telemetry",
+      guardedDecision: "Open guarded telemetry",
+      holdDecision: "Hold telemetry desk",
+      repairDecision: "Repair telemetry proof",
+      nextOpen: "Open production usage telemetry desk and keep room visits, action completion, adoption heat, support pressure, sponsor confidence, feature friction, telemetry export, and usage receipt together.",
+      nextGuarded: "Open guarded telemetry while one visit, completion, adoption, support, sponsor, friction, export, or receipt lane stays watched.",
+      nextHold: "Hold telemetry desk until room visits, action completion, adoption heat, support pressure, and sponsor confidence are ready.",
+      nextRepair: "Repair telemetry proof before support ticket intake expands.",
+      axes: [
+        ["Room visits", "reviewGuard", 0.76, 5, "Room visits are counted."],
+        ["Action completion", "proofGuard", 0.78, 5, "Action completion is visible."],
+        ["Adoption heat", "reviewGuard", 0.76, 5, "Adoption heat is readable."],
+        ["Support pressure", "supportGuard", 0.78, 5, "Support pressure is watched."],
+        ["Sponsor confidence", "sponsorGuard", 0.76, 6, "Sponsor confidence is captured."],
+        ["Feature friction", "rollbackGuard", 0.74, 5, "Feature friction is surfaced."],
+        ["Telemetry export", "tenantGuard", 0.78, 5, "Telemetry export is governed."],
+        ["Usage receipt", "guardClosure", 0.8, 6, "Usage receipt closes desk."],
+      ],
+    },
+    {
+      key: "support-ticket-intake-prototype",
+      version: "v963",
+      number: 963,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Support Ticket Intake Prototype",
+      shortLabel: "Support Ticket Intake Prototype",
+      phase: "First pilot expansion rollout reuse market pilot support ticket intake prototype",
+      track: "v963 first pilot expansion rollout reuse market pilot support ticket intake prototype",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-support-ticket-intake-prototype",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-support-ticket-intake-prototype",
+      idSuffix: "SUPPORT-TICKET-INTAKE-PROTOTYPE",
+      scoreKey: "supportTicketIntakePrototypeScore",
+      decisionKey: "supportTicketIntakePrototypeDecision",
+      stateKey: "supportTicketIntakePrototypeState",
+      lineKey: "supportTicketIntakePrototypeLine",
+      primarySignal: "Pilot support ticket intake prototype",
+      primaryNote: "Turns usage telemetry into a support intake prototype with ticket intake, severity route, SLA clock, owner assignment, evidence link, customer reply, resolution proof, and support receipt.",
+      summary: "Prototype support intake with ticket intake, severity route, SLA clock, owner assignment, evidence link, customer reply, resolution proof, and support receipt.",
+      trackSummary: "Production usage telemetry desk now becomes one support ticket intake prototype across ticket intake, severity route, SLA clock, owner assignment, evidence link, customer reply, resolution proof, and receipt.",
+      stageSummary: "Usage telemetry now becomes support ticket intake with ticket, severity, SLA, owner, evidence, reply, resolution, and receipt controls.",
+      openDecision: "Open support intake",
+      guardedDecision: "Open guarded intake",
+      holdDecision: "Hold support intake",
+      repairDecision: "Repair ticket proof",
+      nextOpen: "Open support ticket intake prototype and keep ticket intake, severity route, SLA clock, owner assignment, evidence link, customer reply, resolution proof, and support receipt together.",
+      nextGuarded: "Open guarded support intake while one ticket, severity, SLA, owner, evidence, reply, resolution, or receipt lane stays watched.",
+      nextHold: "Hold support intake until ticket intake, severity route, SLA clock, owner assignment, and evidence link are ready.",
+      nextRepair: "Repair ticket proof before audit export compliance expands.",
+      axes: [
+        ["Ticket intake", "supportGuard", 0.78, 5, "Ticket intake is simple."],
+        ["Severity route", "rollbackGuard", 0.76, 5, "Severity route is clear."],
+        ["SLA clock", "supportGuard", 0.8, 5, "SLA clock is visible."],
+        ["Owner assignment", "ownerCommand", 0.76, 6, "Owner assignment is named."],
+        ["Evidence link", "proofGuard", 0.78, 5, "Evidence link is attached."],
+        ["Customer reply", "sponsorGuard", 0.74, 6, "Customer reply is safe."],
+        ["Resolution proof", "proofGuard", 0.78, 5, "Resolution proof is captured."],
+        ["Support receipt", "guardClosure", 0.8, 6, "Support receipt closes intake."],
+      ],
+    },
+    {
+      key: "audit-export-compliance-pack",
+      version: "v964",
+      number: 964,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Audit Export and Compliance Pack",
+      shortLabel: "Audit Export and Compliance Pack",
+      phase: "First pilot expansion rollout reuse market pilot audit export and compliance pack",
+      track: "v964 first pilot expansion rollout reuse market pilot audit export and compliance pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-audit-export-compliance-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-audit-export-compliance-pack",
+      idSuffix: "AUDIT-EXPORT-COMPLIANCE-PACK",
+      scoreKey: "auditExportCompliancePackScore",
+      decisionKey: "auditExportCompliancePackDecision",
+      stateKey: "auditExportCompliancePackState",
+      lineKey: "auditExportCompliancePackLine",
+      primarySignal: "Pilot audit export compliance pack",
+      primaryNote: "Turns support ticket intake into a compliance export pack with audit extract, access proof, retention proof, export scope, reviewer signoff, exception list, compliance note, and pack receipt.",
+      summary: "Package launch audit proof with audit extract, access proof, retention proof, export scope, reviewer signoff, exception list, compliance note, and pack receipt.",
+      trackSummary: "Support ticket intake prototype now becomes one audit export and compliance pack across audit extract, access proof, retention proof, export scope, reviewer signoff, exception list, compliance note, and receipt.",
+      stageSummary: "Support intake now becomes audit compliance pack with extract, access, retention, export, signoff, exception, note, and receipt controls.",
+      openDecision: "Open audit export pack",
+      guardedDecision: "Open guarded export pack",
+      holdDecision: "Hold compliance pack",
+      repairDecision: "Repair export proof",
+      nextOpen: "Open audit export and compliance pack and keep audit extract, access proof, retention proof, export scope, reviewer signoff, exception list, compliance note, and pack receipt together.",
+      nextGuarded: "Open guarded export pack while one extract, access, retention, export, signoff, exception, note, or receipt lane stays watched.",
+      nextHold: "Hold compliance pack until audit extract, access proof, retention proof, export scope, and reviewer signoff are ready.",
+      nextRepair: "Repair export proof before production incident response expands.",
+      axes: [
+        ["Audit extract", "proofGuard", 0.8, 5, "Audit extract is generated."],
+        ["Access proof", "tenantGuard", 0.8, 5, "Access proof is attached."],
+        ["Retention proof", "proofGuard", 0.78, 5, "Retention proof is readable."],
+        ["Export scope", "tenantGuard", 0.78, 5, "Export scope is governed."],
+        ["Reviewer signoff", "sponsorGuard", 0.76, 6, "Reviewer signoff is captured."],
+        ["Exception list", "reviewGuard", 0.76, 5, "Exception list is explicit."],
+        ["Compliance note", "ownerCommand", 0.74, 6, "Compliance note has an owner."],
+        ["Pack receipt", "guardClosure", 0.8, 6, "Pack receipt closes export pack."],
       ],
     },
   ];
@@ -21700,6 +21895,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportCompliancePackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportTicketIntakePrototypePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionUsageTelemetryDeskPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotDataRetentionComplianceConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAccessPolicyEnforcementGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditTrailViewerPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionEvidenceUploadPrototypePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalExpansionBoardPackPreview(model, autopilot)}",
@@ -28912,6 +29112,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditTrailViewerPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-audit-trail-viewer");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAccessPolicyEnforcementGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "access-policy-enforcement-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAccessPolicyEnforcementGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "access-policy-enforcement-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAccessPolicyEnforcementGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "access-policy-enforcement-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotDataRetentionComplianceConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "data-retention-compliance-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotDataRetentionComplianceConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "data-retention-compliance-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotDataRetentionComplianceConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "data-retention-compliance-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionUsageTelemetryDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-usage-telemetry-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionUsageTelemetryDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-usage-telemetry-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionUsageTelemetryDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-usage-telemetry-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSupportTicketIntakePrototypeSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "support-ticket-intake-prototype");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSupportTicketIntakePrototype(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "support-ticket-intake-prototype", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSupportTicketIntakePrototypePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "support-ticket-intake-prototype");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportCompliancePackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "audit-export-compliance-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportCompliancePack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "audit-export-compliance-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuditExportCompliancePackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "audit-export-compliance-pack");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -93723,9 +93983,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v960", "First Pilot Expansion Rollout Reuse Market Pilot Access Policy Enforcement Gate", "Turn admin and audit proof into enforced role policy with deny paths, exception review, and access receipts."],
-      ["v961", "First Pilot Expansion Rollout Reuse Market Pilot Data Retention Compliance Console", "Make retention, deletion, export, legal hold, and retrieval evidence visible before production data widens."],
-      ["v962", "First Pilot Expansion Rollout Reuse Market Pilot Production Usage Telemetry Desk", "Connect adoption, room visits, action completion, support pressure, and sponsor confidence into production telemetry."],
+      ["v965", "First Pilot Expansion Rollout Reuse Market Pilot Production Incident Response Runbook", "Turn support intake and audit exports into incident severity, response owners, rollback criteria, and customer communication."],
+      ["v966", "First Pilot Expansion Rollout Reuse Market Pilot Customer Health Renewal Cockpit", "Connect usage telemetry, support outcomes, value proof, and sponsor sentiment into renewal health."],
+      ["v967", "First Pilot Expansion Rollout Reuse Market Pilot Private Backend Execution Starter", "Move launch prototype controls into first backend implementation tasks, environment plan, API scope, and delivery receipts."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
