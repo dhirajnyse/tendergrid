@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v914";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Board Review Packet";
+  const BUILD_VERSION = "v919";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Learning Control Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=914.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=914.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=919.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=919.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -4325,6 +4325,201 @@
         ["Backend readiness", "tenantGuard", 0.76, 5, "Backend readiness is clear."],
         ["Board decision", "ownerCommand", 0.72, 6, "Board decision is named."],
         ["Review receipt", "guardClosure", 0.72, 6, "Review receipt closes packet."],
+      ],
+    },
+    {
+      key: "customer-scale-operating-plan",
+      version: "v915",
+      number: 915,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Scale Operating Plan",
+      shortLabel: "Customer Scale Operating Plan",
+      phase: "First pilot expansion rollout reuse market pilot customer scale operating plan",
+      track: "v915 first pilot expansion rollout reuse market pilot customer scale operating plan",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-scale-operating-plan",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-scale-operating-plan",
+      idSuffix: "CUSTOMER-SCALE-OPERATING-PLAN",
+      scoreKey: "customerScaleOperatingPlanScore",
+      decisionKey: "customerScaleOperatingPlanDecision",
+      stateKey: "customerScaleOperatingPlanState",
+      lineKey: "customerScaleOperatingPlanLine",
+      primarySignal: "Pilot customer scale operating plan",
+      primaryNote: "Turns board approval into a customer-scale operating plan with cohort order, support capacity, billing expansion, data boundary, rollout owner, success rhythm, capacity proof, and scale receipt.",
+      summary: "Turn board approval into a customer-scale operating plan with cohort order, support capacity, billing expansion, data boundary, rollout owner, success rhythm, capacity proof, and scale receipt.",
+      trackSummary: "Launch board review now becomes one customer-scale operating plan across cohort order, support capacity, billing expansion, data boundary, rollout owner, success rhythm, capacity proof, and receipt.",
+      stageSummary: "Launch board review now becomes customer scale plan with cohort order, support capacity, billing expansion, data boundary, owner, rhythm, capacity proof, and receipt.",
+      openDecision: "Open scale plan",
+      guardedDecision: "Open guarded scale",
+      holdDecision: "Hold customer scale",
+      repairDecision: "Repair scale plan",
+      nextOpen: "Open the customer-scale operating plan and keep cohort order, support capacity, billing expansion, data boundary, rollout owner, success rhythm, capacity proof, and scale receipt together.",
+      nextGuarded: "Open guarded customer scale while one cohort, support, billing, boundary, owner, rhythm, or capacity lane stays watched.",
+      nextHold: "Hold customer scale until cohort order, support capacity, billing expansion, data boundary, and rollout owner are complete.",
+      nextRepair: "Repair customer-scale plan before production observability desk.",
+      axes: [
+        ["Cohort order", "launchMoment", 0.74, 5, "Cohort order is visible."],
+        ["Support capacity", "supportGuard", 0.74, 5, "Support capacity is sized."],
+        ["Billing expansion", "sponsorGuard", 0.72, 6, "Billing expansion is mapped."],
+        ["Data boundary", "tenantGuard", 0.76, 5, "Data boundary is clear."],
+        ["Rollout owner", "ownerCommand", 0.72, 6, "Rollout owner is named."],
+        ["Success rhythm", "reviewGuard", 0.74, 5, "Success rhythm is ready."],
+        ["Capacity proof", "proofGuard", 0.76, 5, "Capacity proof is attached."],
+        ["Scale receipt", "guardClosure", 0.72, 6, "Scale receipt closes plan."],
+      ],
+    },
+    {
+      key: "production-observability-desk",
+      version: "v916",
+      number: 916,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Observability Desk",
+      shortLabel: "Production Observability Desk",
+      phase: "First pilot expansion rollout reuse market pilot production observability desk",
+      track: "v916 first pilot expansion rollout reuse market pilot production observability desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-observability-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-observability-desk",
+      idSuffix: "PRODUCTION-OBSERVABILITY-DESK",
+      scoreKey: "productionObservabilityDeskScore",
+      decisionKey: "productionObservabilityDeskDecision",
+      stateKey: "productionObservabilityDeskState",
+      lineKey: "productionObservabilityDeskLine",
+      primarySignal: "Pilot production observability desk",
+      primaryNote: "Connects launch operations to observability with uptime monitor, job health, audit events, billing webhooks, import errors, support alerts, escalation owner, and observability receipt.",
+      summary: "Connect launch operations to observability with uptime monitor, job health, audit events, billing webhooks, import errors, support alerts, escalation owner, and observability receipt.",
+      trackSummary: "Customer scale now becomes one production observability desk across uptime monitor, job health, audit events, billing webhooks, import errors, support alerts, escalation owner, and receipt.",
+      stageSummary: "Customer scale now becomes production observability with uptime, jobs, audit events, billing webhooks, import errors, support alerts, owner, and receipt.",
+      openDecision: "Open observability",
+      guardedDecision: "Open guarded observability",
+      holdDecision: "Hold observability",
+      repairDecision: "Repair observability",
+      nextOpen: "Open the production observability desk and keep uptime monitor, job health, audit events, billing webhooks, import errors, support alerts, escalation owner, and observability receipt together.",
+      nextGuarded: "Open guarded observability while one uptime, job, audit, webhook, import, support, or escalation lane stays watched.",
+      nextHold: "Hold observability until uptime monitor, job health, audit events, billing webhooks, and support alerts are visible.",
+      nextRepair: "Repair production observability before global country pilot pack.",
+      axes: [
+        ["Uptime monitor", "rollbackGuard", 0.76, 5, "Uptime monitor is watching."],
+        ["Job health", "proofGuard", 0.76, 5, "Job health is visible."],
+        ["Audit events", "reviewGuard", 0.74, 5, "Audit events are flowing."],
+        ["Billing webhooks", "sponsorGuard", 0.72, 6, "Billing webhooks are monitored."],
+        ["Import errors", "proofGuard", 0.74, 5, "Import errors are captured."],
+        ["Support alerts", "supportGuard", 0.74, 5, "Support alerts are routed."],
+        ["Escalation owner", "ownerCommand", 0.72, 6, "Escalation owner is named."],
+        ["Observability receipt", "guardClosure", 0.72, 6, "Observability receipt closes desk."],
+      ],
+    },
+    {
+      key: "global-country-pilot-pack",
+      version: "v917",
+      number: 917,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Country Pilot Pack",
+      shortLabel: "Global Country Pilot Pack",
+      phase: "First pilot expansion rollout reuse market pilot global country pilot pack",
+      track: "v917 first pilot expansion rollout reuse market pilot global country pilot pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-country-pilot-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-country-pilot-pack",
+      idSuffix: "GLOBAL-COUNTRY-PILOT-PACK",
+      scoreKey: "globalCountryPilotPackScore",
+      decisionKey: "globalCountryPilotPackDecision",
+      stateKey: "globalCountryPilotPackState",
+      lineKey: "globalCountryPilotPackLine",
+      primarySignal: "Pilot global country pilot pack",
+      primaryNote: "Prepares the next country pilot with localization fit, residency boundary, partner route, support promise, pricing proof, country sponsor, risk note, and launch receipt.",
+      summary: "Prepare the next country pilot with localization fit, residency boundary, partner route, support promise, pricing proof, country sponsor, risk note, and launch receipt.",
+      trackSummary: "Production observability now becomes one global country pilot pack across localization fit, residency boundary, partner route, support promise, pricing proof, country sponsor, risk note, and receipt.",
+      stageSummary: "Production observability now becomes country pilot pack with localization, residency, partner route, support, pricing, sponsor, risk, and receipt.",
+      openDecision: "Open country pack",
+      guardedDecision: "Open guarded country",
+      holdDecision: "Hold country pilot",
+      repairDecision: "Repair country pack",
+      nextOpen: "Open the global country pilot pack and keep localization fit, residency boundary, partner route, support promise, pricing proof, country sponsor, risk note, and launch receipt together.",
+      nextGuarded: "Open guarded country pilot while one localization, residency, partner, support, pricing, sponsor, or risk lane stays watched.",
+      nextHold: "Hold country pilot until localization fit, residency boundary, partner route, support promise, and pricing proof are complete.",
+      nextRepair: "Repair global country pilot before partner launch enablement kit.",
+      axes: [
+        ["Localization fit", "reviewGuard", 0.74, 5, "Localization fit is understood."],
+        ["Residency boundary", "tenantGuard", 0.76, 5, "Residency boundary is clear."],
+        ["Partner route", "ownerCommand", 0.72, 6, "Partner route is named."],
+        ["Support promise", "supportGuard", 0.74, 5, "Support promise is credible."],
+        ["Pricing proof", "sponsorGuard", 0.72, 6, "Pricing proof is prepared."],
+        ["Country sponsor", "sponsorGuard", 0.72, 6, "Country sponsor is attached."],
+        ["Risk note", "rollbackGuard", 0.76, 5, "Risk note is visible."],
+        ["Launch receipt", "guardClosure", 0.72, 6, "Launch receipt closes pack."],
+      ],
+    },
+    {
+      key: "partner-launch-enablement-kit",
+      version: "v918",
+      number: 918,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Partner Launch Enablement Kit",
+      shortLabel: "Partner Launch Enablement Kit",
+      phase: "First pilot expansion rollout reuse market pilot partner launch enablement kit",
+      track: "v918 first pilot expansion rollout reuse market pilot partner launch enablement kit",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-partner-launch-enablement-kit",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-partner-launch-enablement-kit",
+      idSuffix: "PARTNER-LAUNCH-ENABLEMENT-KIT",
+      scoreKey: "partnerLaunchEnablementKitScore",
+      decisionKey: "partnerLaunchEnablementKitDecision",
+      stateKey: "partnerLaunchEnablementKitState",
+      lineKey: "partnerLaunchEnablementKitLine",
+      primarySignal: "Pilot partner launch enablement kit",
+      primaryNote: "Turns country pilot readiness into partner launch enablement with partner ICP, demo script, reseller boundary, revenue share, enablement owner, support handoff, compliance note, and partner receipt.",
+      summary: "Turn country pilot readiness into partner launch enablement with partner ICP, demo script, reseller boundary, revenue share, enablement owner, support handoff, compliance note, and partner receipt.",
+      trackSummary: "Global country pilot now becomes one partner launch enablement kit across partner ICP, demo script, reseller boundary, revenue share, enablement owner, support handoff, compliance note, and receipt.",
+      stageSummary: "Country pilot now becomes partner enablement with ICP, demo script, reseller boundary, revenue share, owner, support handoff, compliance note, and receipt.",
+      openDecision: "Open partner kit",
+      guardedDecision: "Open guarded partner",
+      holdDecision: "Hold partner launch",
+      repairDecision: "Repair partner kit",
+      nextOpen: "Open the partner launch enablement kit and keep partner ICP, demo script, reseller boundary, revenue share, enablement owner, support handoff, compliance note, and partner receipt together.",
+      nextGuarded: "Open guarded partner launch while one ICP, demo, reseller, revenue, owner, support, or compliance lane stays watched.",
+      nextHold: "Hold partner launch until partner ICP, demo script, reseller boundary, revenue share, and support handoff are complete.",
+      nextRepair: "Repair partner launch before post-launch learning control room.",
+      axes: [
+        ["Partner ICP", "reviewGuard", 0.74, 5, "Partner ICP is defined."],
+        ["Demo script", "proofGuard", 0.76, 5, "Demo script is ready."],
+        ["Reseller boundary", "tenantGuard", 0.76, 5, "Reseller boundary is clear."],
+        ["Revenue share", "sponsorGuard", 0.72, 6, "Revenue share is mapped."],
+        ["Enablement owner", "ownerCommand", 0.72, 6, "Enablement owner is named."],
+        ["Support handoff", "supportGuard", 0.74, 5, "Support handoff is ready."],
+        ["Compliance note", "tenantGuard", 0.74, 5, "Compliance note is attached."],
+        ["Partner receipt", "guardClosure", 0.72, 6, "Partner receipt closes kit."],
+      ],
+    },
+    {
+      key: "post-launch-learning-control-room",
+      version: "v919",
+      number: 919,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Learning Control Room",
+      shortLabel: "Post-Launch Learning Control Room",
+      phase: "First pilot expansion rollout reuse market pilot post-launch learning control room",
+      track: "v919 first pilot expansion rollout reuse market pilot post-launch learning control room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-post-launch-learning-control-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-post-launch-learning-control-room",
+      idSuffix: "POST-LAUNCH-LEARNING-CONTROL-ROOM",
+      scoreKey: "postLaunchLearningControlRoomScore",
+      decisionKey: "postLaunchLearningControlRoomDecision",
+      stateKey: "postLaunchLearningControlRoomState",
+      lineKey: "postLaunchLearningControlRoomLine",
+      primarySignal: "Pilot post-launch learning control room",
+      primaryNote: "Closes the launch loop with outcome signals, support lessons, billing lessons, reference learnings, model boundary, action backlog, safety review, and learning receipt.",
+      summary: "Close the launch loop with outcome signals, support lessons, billing lessons, reference learnings, model boundary, action backlog, safety review, and learning receipt.",
+      trackSummary: "Partner enablement now becomes one post-launch learning control room across outcome signals, support lessons, billing lessons, reference learnings, model boundary, action backlog, safety review, and receipt.",
+      stageSummary: "Partner enablement now becomes learning control with outcomes, support, billing, reference, model boundary, backlog, safety review, and receipt.",
+      openDecision: "Open learning room",
+      guardedDecision: "Open guarded learning",
+      holdDecision: "Hold learning control",
+      repairDecision: "Repair learning room",
+      nextOpen: "Open the post-launch learning control room and keep outcome signals, support lessons, billing lessons, reference learnings, model boundary, action backlog, safety review, and learning receipt together.",
+      nextGuarded: "Open guarded learning while one outcome, support, billing, reference, model, backlog, or safety lane stays watched.",
+      nextHold: "Hold learning control until outcome signals, support lessons, billing lessons, reference learnings, and model boundary are complete.",
+      nextRepair: "Repair post-launch learning before global expansion operating rhythm.",
+      axes: [
+        ["Outcome signals", "proofGuard", 0.76, 5, "Outcome signals are captured."],
+        ["Support lessons", "supportGuard", 0.74, 5, "Support lessons are written."],
+        ["Billing lessons", "sponsorGuard", 0.72, 6, "Billing lessons are captured."],
+        ["Reference learnings", "reviewGuard", 0.74, 5, "Reference learnings are usable."],
+        ["Model boundary", "tenantGuard", 0.76, 5, "Model boundary is explicit."],
+        ["Action backlog", "ownerCommand", 0.72, 6, "Action backlog has owners."],
+        ["Safety review", "rollbackGuard", 0.76, 5, "Safety review is complete."],
+        ["Learning receipt", "guardClosure", 0.72, 6, "Learning receipt closes room."],
       ],
     },
   ];
@@ -19945,6 +20140,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchLearningControlRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerLaunchEnablementKitPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCountryPilotPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionObservabilityDeskPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerScaleOperatingPlanPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardReviewPacketPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportOperatingConsolePreview(model, autopilot)}",
@@ -26572,6 +26772,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardReviewPacketPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-board-review-packet");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerScaleOperatingPlanSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-scale-operating-plan");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerScaleOperatingPlan(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-scale-operating-plan", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerScaleOperatingPlanPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-scale-operating-plan");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionObservabilityDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-observability-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionObservabilityDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-observability-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionObservabilityDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-observability-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCountryPilotPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-country-pilot-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCountryPilotPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-country-pilot-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCountryPilotPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-country-pilot-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerLaunchEnablementKitSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "partner-launch-enablement-kit");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerLaunchEnablementKit(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "partner-launch-enablement-kit", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerLaunchEnablementKitPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "partner-launch-enablement-kit");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchLearningControlRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "post-launch-learning-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchLearningControlRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "post-launch-learning-control-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchLearningControlRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "post-launch-learning-control-room");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -91383,9 +91643,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v915", "First Pilot Expansion Rollout Reuse Market Pilot Customer Scale Operating Plan", "Turn board approval into a customer-scale operating plan with cohort order, support capacity, billing expansion, data boundary, and rollout owner."],
-      ["v916", "First Pilot Expansion Rollout Reuse Market Pilot Production Observability Desk", "Connect launch operations to observability with uptime, job health, audit events, billing webhooks, import errors, and support alerts."],
-      ["v917", "First Pilot Expansion Rollout Reuse Market Pilot Global Country Pilot Pack", "Prepare the next country pilot with localization fit, residency boundary, partner route, support promise, pricing proof, and launch receipt."],
+      ["v920", "First Pilot Expansion Rollout Reuse Market Pilot Global Expansion Operating Rhythm", "Turn post-launch learning into a repeatable expansion rhythm with weekly operating cadence, market queue, support capacity, proof review, and country decision owner."],
+      ["v921", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Readiness Gate", "Prepare enterprise readiness with security proof, procurement language, admin roles, support SLA, audit export, and legal-commercial decision receipt."],
+      ["v922", "First Pilot Expansion Rollout Reuse Market Pilot Network Learning Safety Board", "Create a safety board for cross-customer learning with tenant boundary, opt-in policy, reward signal, drift watch, and rollback decision receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

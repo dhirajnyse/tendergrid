@@ -1,5 +1,138 @@
 # Changelog
 
+## v919 - First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Learning Control Room
+
+### Changes Made
+- Activated the post-launch learning control room as the current build.
+- Added outcome signals, support lessons, billing lessons, reference learnings, model boundary, action backlog, safety review, and learning receipt as post-launch learning lanes.
+- Updated the Build Phase next queue to v920-v922 for global expansion rhythm, enterprise readiness, and network learning safety.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v919.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with `Build v919`, no console errors, and zero horizontal overflow.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, and Command without navigation hangs.
+- Passed: 390px mobile QA for Command, Autopilot, Reports, and Build Phase with visible top controls, no clipped controls, zero horizontal overflow, and v920-v922 next queue visible on Build Phase.
+
+### Known Risks
+- Post-launch learning remains static; real tenant-safe learning boundaries, outcome signals, safety review, and action backlog updates need backend telemetry and governance workflows.
+
+## v918 - First Pilot Expansion Rollout Reuse Market Pilot Partner Launch Enablement Kit
+
+### Changes Made
+- Activated the partner launch enablement kit in the pilot reuse runway.
+- Added partner ICP, demo script, reseller boundary, revenue share, enablement owner, support handoff, compliance note, and partner receipt as enablement lanes.
+- Updated the Build Phase next queue to v919-v921 for post-launch learning, global expansion rhythm, and enterprise readiness.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v918.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Partner enablement remains static; real reseller agreements, revenue-share terms, compliance approvals, and partner training receipts need commercial/legal systems.
+
+## v917 - First Pilot Expansion Rollout Reuse Market Pilot Global Country Pilot Pack
+
+### Changes Made
+- Activated the global country pilot pack in the pilot reuse runway.
+- Added localization fit, residency boundary, partner route, support promise, pricing proof, country sponsor, risk note, and launch receipt as country launch lanes.
+- Updated the Build Phase next queue to v918-v920 for partner enablement, post-launch learning, and global expansion rhythm.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v917.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Country pilot pack remains static; real localization, residency, pricing, country sponsor, and regional support decisions need live market/legal validation.
+
+## v916 - First Pilot Expansion Rollout Reuse Market Pilot Production Observability Desk
+
+### Changes Made
+- Activated the production observability desk in the pilot reuse runway.
+- Added uptime monitor, job health, audit events, billing webhooks, import errors, support alerts, escalation owner, and observability receipt as production watch lanes.
+- Updated the Build Phase next queue to v917-v919 for global country pilot, partner enablement, and post-launch learning.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v916.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Observability remains static; real uptime, job health, audit events, webhooks, import errors, and alerts need production monitoring integrations.
+
+## v915 - First Pilot Expansion Rollout Reuse Market Pilot Customer Scale Operating Plan
+
+### Changes Made
+- Activated the customer scale operating plan in the pilot reuse runway.
+- Added cohort order, support capacity, billing expansion, data boundary, rollout owner, success rhythm, capacity proof, and scale receipt as scale lanes.
+- Added release wrappers and command rail render paths for v915-v919.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v915.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Customer-scale plan remains static; real cohort order, support capacity, billing expansion, data boundary, and rollout ownership need operating system integrations.
+
 ## v914 - First Pilot Expansion Rollout Reuse Market Pilot Launch Board Review Packet
 
 ### Changes Made
