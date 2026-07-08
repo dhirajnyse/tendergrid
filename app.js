@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v934";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Day-One Console";
+  const BUILD_VERSION = "v939";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Proof Review Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=934.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=934.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=939.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=939.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -5105,6 +5105,201 @@
         ["Rollback watch", "rollbackGuard", 0.76, 5, "Rollback watch is live."],
         ["Success checkpoint", "reviewGuard", 0.74, 5, "Success checkpoint is scheduled."],
         ["Day-one receipt", "guardClosure", 0.72, 6, "Day-one receipt closes console."],
+      ],
+    },
+    {
+      key: "customer-activation-scale-room",
+      version: "v935",
+      number: 935,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Activation Scale Room",
+      shortLabel: "Customer Activation Scale Room",
+      phase: "First pilot expansion rollout reuse market pilot customer activation scale room",
+      track: "v935 first pilot expansion rollout reuse market pilot customer activation scale room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-activation-scale-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-activation-scale-room",
+      idSuffix: "CUSTOMER-ACTIVATION-SCALE-ROOM",
+      scoreKey: "customerActivationScaleRoomScore",
+      decisionKey: "customerActivationScaleRoomDecision",
+      stateKey: "customerActivationScaleRoomState",
+      lineKey: "customerActivationScaleRoomLine",
+      primarySignal: "Pilot customer activation scale room",
+      primaryNote: "Turns day-one pilot proof into a controlled activation plan with cohorts, adoption, sponsor proof, support load, renewal signal, expansion guard, and receipt.",
+      summary: "Scale day-one customer activation with cohorts, adoption rhythm, support load, sponsor proof, renewal signal, expansion guard, and activation receipt.",
+      trackSummary: "Customer day-one now becomes one activation scale room across cohort plan, adoption rhythm, support load, sponsor proof, renewal signal, expansion guard, customer success owner, and receipt.",
+      stageSummary: "Day-one pilot proof now becomes controlled customer activation with cohort, adoption, support, sponsor, renewal, expansion, owner, and receipt controls.",
+      openDecision: "Open activation scale",
+      guardedDecision: "Open guarded activation scale",
+      holdDecision: "Hold activation scale",
+      repairDecision: "Repair activation proof",
+      nextOpen: "Open customer activation scale and keep cohort plan, adoption rhythm, support load, sponsor proof, renewal signal, expansion guard, customer success owner, and receipt together.",
+      nextGuarded: "Open guarded activation scale while one cohort, adoption, support, sponsor, renewal, expansion, or owner lane stays watched.",
+      nextHold: "Hold activation scale until day-one proof, support load, sponsor proof, and customer success ownership are steady.",
+      nextRepair: "Repair activation proof before production billing control.",
+      axes: [
+        ["Cohort plan", "reviewGuard", 0.74, 5, "Activation cohort is narrow and named."],
+        ["Adoption rhythm", "launchMoment", 0.76, 5, "Usage rhythm is visible before scale."],
+        ["Support load", "supportGuard", 0.76, 5, "Support load stays calm."],
+        ["Sponsor proof", "sponsorGuard", 0.74, 6, "Sponsor proof is attached."],
+        ["Renewal signal", "proofGuard", 0.74, 5, "Renewal signal is visible."],
+        ["Expansion guard", "tenantGuard", 0.76, 5, "Expansion stays tenant safe."],
+        ["Success owner", "ownerCommand", 0.72, 6, "Customer success owner is named."],
+        ["Activation receipt", "guardClosure", 0.72, 6, "Activation receipt closes scale room."],
+      ],
+    },
+    {
+      key: "production-billing-control-room",
+      version: "v936",
+      number: 936,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Control Room",
+      shortLabel: "Production Billing Control Room",
+      phase: "First pilot expansion rollout reuse market pilot production billing control room",
+      track: "v936 first pilot expansion rollout reuse market pilot production billing control room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-billing-control-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-billing-control-room",
+      idSuffix: "PRODUCTION-BILLING-CONTROL-ROOM",
+      scoreKey: "productionBillingControlRoomScore",
+      decisionKey: "productionBillingControlRoomDecision",
+      stateKey: "productionBillingControlRoomState",
+      lineKey: "productionBillingControlRoomLine",
+      primarySignal: "Pilot production billing control room",
+      primaryNote: "Controls paid pilot readiness with pricing proof, invoice receipt, checkout state, entitlement guard, finance owner, support promise, rollback route, and billing receipt.",
+      summary: "Control paid pilot billing with pricing proof, invoice receipt, checkout state, entitlement guard, finance owner, support promise, rollback route, and billing receipt.",
+      trackSummary: "Customer activation now becomes one production billing control room across pricing proof, invoice receipt, checkout state, entitlement guard, finance owner, support promise, rollback route, and receipt.",
+      stageSummary: "Activation proof now becomes billing control with pricing, invoice, checkout, entitlement, finance, support, rollback, and receipt controls.",
+      openDecision: "Open billing control",
+      guardedDecision: "Open guarded billing control",
+      holdDecision: "Hold billing control",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Open production billing control and keep pricing proof, invoice receipt, checkout state, entitlement guard, finance owner, support promise, rollback route, and billing receipt together.",
+      nextGuarded: "Open guarded billing control while one pricing, invoice, checkout, entitlement, finance, support, or rollback lane stays watched.",
+      nextHold: "Hold billing control until invoice receipt, entitlement guard, finance owner, and rollback route are ready.",
+      nextRepair: "Repair billing proof before live support command.",
+      axes: [
+        ["Pricing proof", "proofGuard", 0.76, 5, "Pricing proof is buyer readable."],
+        ["Invoice receipt", "guardClosure", 0.74, 6, "Invoice receipt is ready."],
+        ["Checkout state", "launchMoment", 0.74, 5, "Checkout state is visible."],
+        ["Entitlement guard", "tenantGuard", 0.76, 5, "Entitlement guard protects seats."],
+        ["Finance owner", "ownerCommand", 0.74, 6, "Finance owner is accountable."],
+        ["Support promise", "supportGuard", 0.74, 5, "Support promise is attached."],
+        ["Rollback route", "rollbackGuard", 0.76, 5, "Billing rollback route is reversible."],
+        ["Billing receipt", "guardClosure", 0.72, 6, "Billing receipt closes room."],
+      ],
+    },
+    {
+      key: "live-support-command-center",
+      version: "v937",
+      number: 937,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Support Command Center",
+      shortLabel: "Live Support Command Center",
+      phase: "First pilot expansion rollout reuse market pilot live support command center",
+      track: "v937 first pilot expansion rollout reuse market pilot live support command center",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-support-command-center",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-support-command-center",
+      idSuffix: "LIVE-SUPPORT-COMMAND-CENTER",
+      scoreKey: "liveSupportCommandCenterScore",
+      decisionKey: "liveSupportCommandCenterDecision",
+      stateKey: "liveSupportCommandCenterState",
+      lineKey: "liveSupportCommandCenterLine",
+      primarySignal: "Pilot live support command center",
+      primaryNote: "Turns paid pilot control into live customer support with SLA watch, escalation route, issue evidence, owner queue, customer note, rollback watch, review cadence, and support receipt.",
+      summary: "Operate live customer support with SLA watch, escalation route, issue evidence, owner queue, customer note, rollback watch, review cadence, and support receipt.",
+      trackSummary: "Billing control now becomes one live support command center across SLA watch, escalation route, issue evidence, owner queue, customer note, rollback watch, review cadence, and receipt.",
+      stageSummary: "Billing control now becomes live support command with SLA, escalation, evidence, owner queue, customer note, rollback, review, and receipt controls.",
+      openDecision: "Open live support",
+      guardedDecision: "Open guarded live support",
+      holdDecision: "Hold live support",
+      repairDecision: "Repair support proof",
+      nextOpen: "Open live support command and keep SLA watch, escalation route, issue evidence, owner queue, customer note, rollback watch, review cadence, and support receipt together.",
+      nextGuarded: "Open guarded live support while one SLA, escalation, issue, owner queue, customer note, rollback, or review lane stays watched.",
+      nextHold: "Hold live support until SLA watch, escalation route, issue evidence, and owner queue are clear.",
+      nextRepair: "Repair support proof before tenant admin onboarding.",
+      axes: [
+        ["SLA watch", "supportGuard", 0.78, 5, "SLA watch is live."],
+        ["Escalation route", "ownerCommand", 0.74, 6, "Escalation route is named."],
+        ["Issue evidence", "proofGuard", 0.76, 5, "Issue evidence is attached."],
+        ["Owner queue", "reviewGuard", 0.72, 6, "Owner queue is visible."],
+        ["Customer note", "sponsorGuard", 0.72, 5, "Customer communication is prepared."],
+        ["Rollback watch", "rollbackGuard", 0.76, 5, "Rollback watch remains open."],
+        ["Review cadence", "reviewGuard", 0.74, 5, "Support review cadence is scheduled."],
+        ["Support receipt", "guardClosure", 0.72, 6, "Support receipt closes center."],
+      ],
+    },
+    {
+      key: "tenant-admin-onboarding-flow",
+      version: "v938",
+      number: 938,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Onboarding Flow",
+      shortLabel: "Tenant Admin Onboarding Flow",
+      phase: "First pilot expansion rollout reuse market pilot tenant admin onboarding flow",
+      track: "v938 first pilot expansion rollout reuse market pilot tenant admin onboarding flow",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-admin-onboarding-flow",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-admin-onboarding-flow",
+      idSuffix: "TENANT-ADMIN-ONBOARDING-FLOW",
+      scoreKey: "tenantAdminOnboardingFlowScore",
+      decisionKey: "tenantAdminOnboardingFlowDecision",
+      stateKey: "tenantAdminOnboardingFlowState",
+      lineKey: "tenantAdminOnboardingFlowLine",
+      primarySignal: "Pilot tenant admin onboarding flow",
+      primaryNote: "Converts live support readiness into a repeatable tenant-admin setup flow with workspace setup, role matrix, import rehearsal, access receipt, billing link, support route, audit export, and admin receipt.",
+      summary: "Prepare tenant-admin onboarding with workspace setup, role matrix, import rehearsal, access receipt, billing link, support route, audit export, and admin receipt.",
+      trackSummary: "Live support command now becomes one tenant admin onboarding flow across workspace setup, role matrix, import rehearsal, access receipt, billing link, support route, audit export, and receipt.",
+      stageSummary: "Live support now becomes repeatable tenant admin onboarding with workspace, roles, import, access, billing, support, audit, and receipt controls.",
+      openDecision: "Open admin onboarding",
+      guardedDecision: "Open guarded admin onboarding",
+      holdDecision: "Hold admin onboarding",
+      repairDecision: "Repair admin proof",
+      nextOpen: "Open tenant admin onboarding and keep workspace setup, role matrix, import rehearsal, access receipt, billing link, support route, audit export, and admin receipt together.",
+      nextGuarded: "Open guarded admin onboarding while one workspace, role, import, access, billing, support, or audit lane stays watched.",
+      nextHold: "Hold admin onboarding until workspace setup, role matrix, import rehearsal, access receipt, and support route are ready.",
+      nextRepair: "Repair admin proof before launch proof review.",
+      axes: [
+        ["Workspace setup", "tenantGuard", 0.76, 5, "Workspace setup is repeatable."],
+        ["Role matrix", "ownerCommand", 0.74, 6, "Role matrix is named."],
+        ["Import rehearsal", "proofGuard", 0.76, 5, "Import rehearsal is attached."],
+        ["Access receipt", "guardClosure", 0.74, 5, "Access receipt is exportable."],
+        ["Billing link", "launchMoment", 0.72, 5, "Billing link is connected."],
+        ["Support route", "supportGuard", 0.76, 5, "Support route is visible."],
+        ["Audit export", "reviewGuard", 0.74, 5, "Audit export is prepared."],
+        ["Admin receipt", "guardClosure", 0.72, 6, "Admin receipt closes flow."],
+      ],
+    },
+    {
+      key: "launch-proof-review-room",
+      version: "v939",
+      number: 939,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Proof Review Room",
+      shortLabel: "Launch Proof Review Room",
+      phase: "First pilot expansion rollout reuse market pilot launch proof review room",
+      track: "v939 first pilot expansion rollout reuse market pilot launch proof review room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-proof-review-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-proof-review-room",
+      idSuffix: "LAUNCH-PROOF-REVIEW-ROOM",
+      scoreKey: "launchProofReviewRoomScore",
+      decisionKey: "launchProofReviewRoomDecision",
+      stateKey: "launchProofReviewRoomState",
+      lineKey: "launchProofReviewRoomLine",
+      primarySignal: "Pilot launch proof review room",
+      primaryNote: "Turns admin onboarding into a launch go/no-go review with pilot receipt, billing proof, support proof, admin receipt, security note, customer outcome, rollback route, and launch decision receipt.",
+      summary: "Review real launch readiness with pilot receipt, billing proof, support proof, admin receipt, security note, customer outcome, rollback route, and launch decision receipt.",
+      trackSummary: "Tenant admin onboarding now becomes one launch proof review room across pilot receipt, billing proof, support proof, admin receipt, security note, customer outcome, rollback route, and decision receipt.",
+      stageSummary: "Tenant admin onboarding now becomes launch proof review with pilot, billing, support, admin, security, outcome, rollback, and decision controls.",
+      openDecision: "Open launch review",
+      guardedDecision: "Open guarded launch review",
+      holdDecision: "Hold launch review",
+      repairDecision: "Repair launch proof",
+      nextOpen: "Open the launch proof review and keep pilot receipt, billing proof, support proof, admin receipt, security note, customer outcome, rollback route, and launch decision receipt together.",
+      nextGuarded: "Open guarded launch review while one pilot, billing, support, admin, security, outcome, rollback, or decision lane stays watched.",
+      nextHold: "Hold launch review until pilot receipt, billing proof, support proof, admin receipt, and security note are ready.",
+      nextRepair: "Repair launch proof before public launch claim.",
+      axes: [
+        ["Pilot receipt", "guardClosure", 0.76, 5, "Pilot receipt is accepted."],
+        ["Billing proof", "proofGuard", 0.76, 5, "Billing proof is attached."],
+        ["Support proof", "supportGuard", 0.76, 5, "Support proof is readable."],
+        ["Admin receipt", "tenantGuard", 0.74, 5, "Admin receipt is complete."],
+        ["Security note", "proofGuard", 0.76, 5, "Security note is shareable."],
+        ["Customer outcome", "sponsorGuard", 0.74, 6, "Customer outcome is sponsor-safe."],
+        ["Rollback route", "rollbackGuard", 0.76, 5, "Rollback route is reversible."],
+        ["Decision receipt", "guardClosure", 0.74, 6, "Launch decision receipt closes review."],
       ],
     },
   ];
@@ -20725,6 +20920,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchProofReviewRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminOnboardingFlowPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportCommandCenterPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingControlRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerActivationScaleRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotDayOneConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendReadinessEvidenceRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningIntegrationGatePreview(model, autopilot)}",
@@ -27612,6 +27812,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotDayOneConsolePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-pilot-day-one-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerActivationScaleRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-activation-scale-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerActivationScaleRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-activation-scale-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerActivationScaleRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-activation-scale-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingControlRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-billing-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingControlRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-billing-control-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingControlRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-billing-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportCommandCenterSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-support-command-center");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportCommandCenter(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-support-command-center", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportCommandCenterPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-support-command-center");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminOnboardingFlowSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-admin-onboarding-flow");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminOnboardingFlow(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-admin-onboarding-flow", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAdminOnboardingFlowPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-admin-onboarding-flow");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchProofReviewRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-proof-review-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchProofReviewRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-proof-review-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchProofReviewRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-proof-review-room");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -92423,9 +92683,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v935", "First Pilot Expansion Rollout Reuse Market Pilot Customer Activation Scale Room", "Scale day-one customer activation with adoption cohorts, support load, sponsor proof, renewal signal, and safe expansion controls."],
-      ["v936", "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Control Room", "Control paid pilot billing with invoice proof, checkout state, entitlement guard, payment receipt, and finance handoff."],
-      ["v937", "First Pilot Expansion Rollout Reuse Market Pilot Live Support Command Center", "Operate live customer support with SLA watch, escalation route, issue evidence, owner queue, and customer communication receipts."],
+      ["v940", "First Pilot Expansion Rollout Reuse Market Pilot Security Review Packet", "Package buyer-safe security notes, privacy posture, admin audit export, support policy, and launch boundary proof."],
+      ["v941", "First Pilot Expansion Rollout Reuse Market Pilot Staging Environment Mirror", "Separate the public demo from a staging pilot mirror with data seed proof, rollback rehearsal, and admin smoke checks."],
+      ["v942", "First Pilot Expansion Rollout Reuse Market Pilot Paid Pilot Agreement Desk", "Move from friendly pilot to paid pilot readiness with agreement terms, invoice owner, scope lock, support promise, and decision receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

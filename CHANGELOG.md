@@ -1,5 +1,128 @@
 # Changelog
 
+## v939 - First Pilot Expansion Rollout Reuse Market Pilot Launch Proof Review Room
+
+### Changes Made
+- Activated the launch proof review room as the current build.
+- Added pilot receipt, billing proof, support proof, admin receipt, security note, customer outcome, rollback route, and launch decision receipt as go/no-go review lanes.
+- Updated the Build Phase next queue to v940-v942 for security review, staging mirror, and paid pilot agreement readiness.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v939.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\scripts\static-check.mjs`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with correct headings, Build v939 visible, no page-level horizontal overflow, and no console errors.
+- Passed: left-rail click QA for Autopilot, Reports, Build Phase, and Command with no navigation hang, correct route changes, no console errors, and no page-level horizontal overflow.
+- Passed: Build Phase browser QA with Launch Proof Review Room visible and v940-v942 next queue visible.
+- Passed: 390px mobile browser QA for Command, Autopilot, Reports, and Build Phase with Build v939 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Launch proof review remains static; real launch decisions need signed pilot receipts, billing evidence, support receipts, admin exports, security notes, customer outcomes, rollback proof, and a production go/no-go owner.
+
+## v938 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Onboarding Flow
+
+### Changes Made
+- Added the tenant admin onboarding flow to the pilot runway.
+- Added workspace setup, role matrix, import rehearsal, access receipt, billing link, support route, audit export, and admin receipt as repeatable tenant setup lanes.
+- Added wrapper render paths and static registry coverage so Build Phase and release rail can open the room.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\scripts\static-check.mjs`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Tenant admin onboarding is still a static proof path; live workspace creation, role assignment, import rehearsal, billing link, support route, and audit export need backend services.
+
+## v937 - First Pilot Expansion Rollout Reuse Market Pilot Live Support Command Center
+
+### Changes Made
+- Added the live support command center to the pilot runway.
+- Added SLA watch, escalation route, issue evidence, owner queue, customer note, rollback watch, review cadence, and support receipt as support operations lanes.
+- Added wrapper render paths and static registry coverage so support proof is available from Build Phase and the release rail.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\scripts\static-check.mjs`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Live support command remains static; real SLA watch, escalation routing, issue capture, customer messaging, rollback watch, and support receipts require operational support tooling.
+
+## v936 - First Pilot Expansion Rollout Reuse Market Pilot Production Billing Control Room
+
+### Changes Made
+- Added the production billing control room to the pilot runway.
+- Added pricing proof, invoice receipt, checkout state, entitlement guard, finance owner, support promise, rollback route, and billing receipt as paid-pilot controls.
+- Added wrapper render paths and static registry coverage so billing readiness stays visible in Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\scripts\static-check.mjs`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Billing control remains static; real checkout, invoices, entitlement checks, finance handoff, and billing rollback need payment and tenant-account integrations.
+
+## v935 - First Pilot Expansion Rollout Reuse Market Pilot Customer Activation Scale Room
+
+### Changes Made
+- Added the customer activation scale room to the pilot runway.
+- Added cohort plan, adoption rhythm, support load, sponsor proof, renewal signal, expansion guard, success owner, and activation receipt as scale-readiness lanes.
+- Added wrapper render paths and static registry coverage so customer activation proof appears in Build Phase and the release rail.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `node --check .\scripts\static-check.mjs`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Customer activation scale remains static; real cohorts, adoption events, support load, sponsor proof, renewal signals, expansion guard, and success ownership need pilot telemetry and customer-success workflows.
+
 ## v934 - First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Day-One Console
 
 ### Changes Made
