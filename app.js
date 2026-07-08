@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v949";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Live Pilot Evidence Vault";
+  const BUILD_VERSION = "v954";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Evidence Upload and Audit Storage Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=949.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=949.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=954.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=954.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -5690,6 +5690,201 @@
         ["Sponsor decision", "sponsorGuard", 0.76, 6, "Sponsor decision is visible."],
         ["Outcome watch", "reviewGuard", 0.74, 6, "Outcome watch is scheduled."],
         ["Vault receipt", "guardClosure", 0.78, 6, "Vault receipt closes launch proof."],
+      ],
+    },
+    {
+      key: "first-week-success-watch",
+      version: "v950",
+      number: 950,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Week Success Watch",
+      shortLabel: "First Week Success Watch",
+      phase: "First pilot expansion rollout reuse market pilot first week success watch",
+      track: "v950 first pilot expansion rollout reuse market pilot first week success watch",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-week-success-watch",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-week-success-watch",
+      idSuffix: "FIRST-WEEK-SUCCESS-WATCH",
+      scoreKey: "firstWeekSuccessWatchScore",
+      decisionKey: "firstWeekSuccessWatchDecision",
+      stateKey: "firstWeekSuccessWatchState",
+      lineKey: "firstWeekSuccessWatchLine",
+      primarySignal: "Pilot first week success watch",
+      primaryNote: "Turns the live evidence vault into a first-week watch with usage signal, blocker closure, support load, sponsor response, owner rhythm, value proof, learning hold, and week-one receipt.",
+      summary: "Watch the first pilot week with usage signal, blocker closure, support load, sponsor response, owner rhythm, value proof, learning hold, and week-one receipt.",
+      trackSummary: "Live pilot evidence vault now becomes one first-week success watch across usage signal, blocker closure, support load, sponsor response, owner rhythm, value proof, learning hold, and week-one receipt.",
+      stageSummary: "Evidence vault now becomes first-week watch with usage, blockers, support, sponsor, owner, value, learning, and receipt controls.",
+      openDecision: "Open first-week watch",
+      guardedDecision: "Open guarded week watch",
+      holdDecision: "Hold week watch",
+      repairDecision: "Repair week-one proof",
+      nextOpen: "Open first-week success watch and keep usage signal, blocker closure, support load, sponsor response, owner rhythm, value proof, learning hold, and week-one receipt together.",
+      nextGuarded: "Open guarded week watch while one usage, blocker, support, sponsor, owner, value, learning, or receipt lane stays watched.",
+      nextHold: "Hold first-week watch until usage signal, blocker closure, support load, sponsor response, and owner rhythm are clear.",
+      nextRepair: "Repair week-one proof before sponsor launch readout expands.",
+      axes: [
+        ["Usage signal", "reviewGuard", 0.76, 5, "Usage signal is visible."],
+        ["Blocker closure", "guardClosure", 0.78, 5, "Blockers are closing."],
+        ["Support load", "supportGuard", 0.76, 5, "Support load is watched."],
+        ["Sponsor response", "sponsorGuard", 0.76, 6, "Sponsor response is captured."],
+        ["Owner rhythm", "ownerCommand", 0.74, 6, "Owner rhythm is named."],
+        ["Value proof", "proofGuard", 0.78, 5, "Value proof is readable."],
+        ["Learning hold", "tenantGuard", 0.76, 5, "Learning stays gated until proof is clean."],
+        ["Week-one receipt", "guardClosure", 0.78, 6, "Week-one receipt closes watch."],
+      ],
+    },
+    {
+      key: "sponsor-launch-readout",
+      version: "v951",
+      number: 951,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Launch Readout",
+      shortLabel: "Sponsor Launch Readout",
+      phase: "First pilot expansion rollout reuse market pilot sponsor launch readout",
+      track: "v951 first pilot expansion rollout reuse market pilot sponsor launch readout",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-sponsor-launch-readout",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-sponsor-launch-readout",
+      idSuffix: "SPONSOR-LAUNCH-READOUT",
+      scoreKey: "sponsorLaunchReadoutScore",
+      decisionKey: "sponsorLaunchReadoutDecision",
+      stateKey: "sponsorLaunchReadoutState",
+      lineKey: "sponsorLaunchReadoutLine",
+      primarySignal: "Pilot sponsor launch readout",
+      primaryNote: "Turns first-week watch into a sponsor readout with executive line, launch proof, value movement, support posture, blocker status, learning boundary, next ask, and readout receipt.",
+      summary: "Prepare the sponsor readout with executive line, launch proof, value movement, support posture, blocker status, learning boundary, next ask, and readout receipt.",
+      trackSummary: "First-week success watch now becomes one sponsor launch readout across executive line, launch proof, value movement, support posture, blocker status, learning boundary, next ask, and receipt.",
+      stageSummary: "First-week watch now becomes sponsor readout with executive, launch, value, support, blocker, learning, ask, and receipt controls.",
+      openDecision: "Open sponsor readout",
+      guardedDecision: "Open guarded readout",
+      holdDecision: "Hold sponsor readout",
+      repairDecision: "Repair readout proof",
+      nextOpen: "Open sponsor launch readout and keep executive line, launch proof, value movement, support posture, blocker status, learning boundary, next ask, and readout receipt together.",
+      nextGuarded: "Open guarded readout while one executive, launch, value, support, blocker, learning, ask, or receipt lane stays watched.",
+      nextHold: "Hold sponsor readout until executive line, launch proof, value movement, support posture, and blocker status are ready.",
+      nextRepair: "Repair sponsor readout proof before renewal signal expands.",
+      axes: [
+        ["Executive line", "sponsorGuard", 0.76, 6, "Executive line is concise."],
+        ["Launch proof", "proofGuard", 0.78, 5, "Launch proof is attached."],
+        ["Value movement", "proofGuard", 0.76, 5, "Value movement is visible."],
+        ["Support posture", "supportGuard", 0.76, 5, "Support posture is calm."],
+        ["Blocker status", "reviewGuard", 0.76, 5, "Blocker status is current."],
+        ["Learning boundary", "tenantGuard", 0.78, 5, "Learning boundary is explicit."],
+        ["Next ask", "ownerCommand", 0.74, 6, "Next ask has an owner."],
+        ["Readout receipt", "guardClosure", 0.78, 6, "Readout receipt closes sponsor proof."],
+      ],
+    },
+    {
+      key: "renewal-signal-desk",
+      version: "v952",
+      number: 952,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Renewal Signal Desk",
+      shortLabel: "Renewal Signal Desk",
+      phase: "First pilot expansion rollout reuse market pilot renewal signal desk",
+      track: "v952 first pilot expansion rollout reuse market pilot renewal signal desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-signal-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-signal-desk",
+      idSuffix: "RENEWAL-SIGNAL-DESK",
+      scoreKey: "renewalSignalDeskScore",
+      decisionKey: "renewalSignalDeskDecision",
+      stateKey: "renewalSignalDeskState",
+      lineKey: "renewalSignalDeskLine",
+      primarySignal: "Pilot renewal signal desk",
+      primaryNote: "Turns sponsor readout into a renewal signal desk with renewal intent, expansion fit, proof strength, adoption heat, support confidence, value continuity, commercial next step, and renewal receipt.",
+      summary: "Convert launch evidence into renewal signals with renewal intent, expansion fit, proof strength, adoption heat, support confidence, value continuity, commercial next step, and renewal receipt.",
+      trackSummary: "Sponsor launch readout now becomes one renewal signal desk across renewal intent, expansion fit, proof strength, adoption heat, support confidence, value continuity, commercial next step, and receipt.",
+      stageSummary: "Sponsor readout now becomes renewal desk with intent, expansion, proof, adoption, support, value, commercial next step, and receipt controls.",
+      openDecision: "Open renewal desk",
+      guardedDecision: "Open guarded renewal",
+      holdDecision: "Hold renewal desk",
+      repairDecision: "Repair renewal proof",
+      nextOpen: "Open renewal signal desk and keep renewal intent, expansion fit, proof strength, adoption heat, support confidence, value continuity, commercial next step, and renewal receipt together.",
+      nextGuarded: "Open guarded renewal while one intent, expansion, proof, adoption, support, value, commercial, or receipt lane stays watched.",
+      nextHold: "Hold renewal desk until renewal intent, expansion fit, proof strength, adoption heat, and support confidence are ready.",
+      nextRepair: "Repair renewal proof before production backend tenant gate expands.",
+      axes: [
+        ["Renewal intent", "sponsorGuard", 0.76, 6, "Renewal intent is captured."],
+        ["Expansion fit", "reviewGuard", 0.74, 5, "Expansion fit is visible."],
+        ["Proof strength", "proofGuard", 0.78, 5, "Proof strength is clear."],
+        ["Adoption heat", "reviewGuard", 0.76, 5, "Adoption heat is watched."],
+        ["Support confidence", "supportGuard", 0.78, 5, "Support confidence is calm."],
+        ["Value continuity", "proofGuard", 0.76, 5, "Value continuity is readable."],
+        ["Commercial next step", "ownerCommand", 0.74, 6, "Commercial next step is owned."],
+        ["Renewal receipt", "guardClosure", 0.78, 6, "Renewal receipt closes signal desk."],
+      ],
+    },
+    {
+      key: "production-backend-tenant-gate",
+      version: "v953",
+      number: 953,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Tenant Gate",
+      shortLabel: "Production Backend Tenant Gate",
+      phase: "First pilot expansion rollout reuse market pilot production backend tenant gate",
+      track: "v953 first pilot expansion rollout reuse market pilot production backend tenant gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-tenant-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-tenant-gate",
+      idSuffix: "PRODUCTION-BACKEND-TENANT-GATE",
+      scoreKey: "productionBackendTenantGateScore",
+      decisionKey: "productionBackendTenantGateDecision",
+      stateKey: "productionBackendTenantGateState",
+      lineKey: "productionBackendTenantGateLine",
+      primarySignal: "Pilot production backend tenant gate",
+      primaryNote: "Turns renewal signal into the production backend gate with tenant isolation, auth policy, database plan, audit writer, import worker, deployment path, rollback path, and backend receipt.",
+      summary: "Prepare the production backend gate with tenant isolation, auth policy, database plan, audit writer, import worker, deployment path, rollback path, and backend receipt.",
+      trackSummary: "Renewal signal desk now becomes one production backend tenant gate across tenant isolation, auth policy, database plan, audit writer, import worker, deployment path, rollback path, and receipt.",
+      stageSummary: "Renewal signal now becomes production backend gate with tenant, auth, database, audit, import, deploy, rollback, and receipt controls.",
+      openDecision: "Open backend tenant gate",
+      guardedDecision: "Open guarded backend gate",
+      holdDecision: "Hold backend tenant gate",
+      repairDecision: "Repair backend proof",
+      nextOpen: "Open production backend tenant gate and keep tenant isolation, auth policy, database plan, audit writer, import worker, deployment path, rollback path, and backend receipt together.",
+      nextGuarded: "Open guarded backend gate while one tenant, auth, database, audit, import, deploy, rollback, or receipt lane stays watched.",
+      nextHold: "Hold backend tenant gate until tenant isolation, auth policy, database plan, audit writer, and import worker are ready.",
+      nextRepair: "Repair backend proof before evidence upload and audit storage expands.",
+      axes: [
+        ["Tenant isolation", "tenantGuard", 0.8, 5, "Tenant isolation is designed."],
+        ["Auth policy", "tenantGuard", 0.78, 5, "Auth policy is explicit."],
+        ["Database plan", "proofGuard", 0.76, 5, "Database plan is named."],
+        ["Audit writer", "proofGuard", 0.78, 5, "Audit writer is planned."],
+        ["Import worker", "reviewGuard", 0.76, 5, "Import worker path is visible."],
+        ["Deployment path", "ownerCommand", 0.74, 6, "Deployment path is owned."],
+        ["Rollback path", "rollbackGuard", 0.78, 5, "Rollback path is ready."],
+        ["Backend receipt", "guardClosure", 0.78, 6, "Backend receipt closes tenant gate."],
+      ],
+    },
+    {
+      key: "evidence-upload-audit-storage-gate",
+      version: "v954",
+      number: 954,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Evidence Upload and Audit Storage Gate",
+      shortLabel: "Evidence Upload and Audit Storage Gate",
+      phase: "First pilot expansion rollout reuse market pilot evidence upload and audit storage gate",
+      track: "v954 first pilot expansion rollout reuse market pilot evidence upload and audit storage gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-evidence-upload-audit-storage-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-evidence-upload-audit-storage-gate",
+      idSuffix: "EVIDENCE-UPLOAD-AUDIT-STORAGE-GATE",
+      scoreKey: "evidenceUploadAuditStorageGateScore",
+      decisionKey: "evidenceUploadAuditStorageGateDecision",
+      stateKey: "evidenceUploadAuditStorageGateState",
+      lineKey: "evidenceUploadAuditStorageGateLine",
+      primarySignal: "Pilot evidence upload audit storage gate",
+      primaryNote: "Turns backend tenant gate into the real evidence storage gate with upload path, file policy, audit event, retention rule, access proof, retrieval proof, deletion route, and storage receipt.",
+      summary: "Define production evidence storage with upload path, file policy, audit event, retention rule, access proof, retrieval proof, deletion route, and storage receipt.",
+      trackSummary: "Production backend tenant gate now becomes one evidence upload and audit storage gate across upload path, file policy, audit event, retention rule, access proof, retrieval proof, deletion route, and receipt.",
+      stageSummary: "Backend tenant gate now becomes evidence storage gate with upload, policy, audit, retention, access, retrieval, deletion, and receipt controls.",
+      openDecision: "Open evidence storage gate",
+      guardedDecision: "Open guarded storage gate",
+      holdDecision: "Hold evidence storage",
+      repairDecision: "Repair storage proof",
+      nextOpen: "Open evidence upload and audit storage gate and keep upload path, file policy, audit event, retention rule, access proof, retrieval proof, deletion route, and storage receipt together.",
+      nextGuarded: "Open guarded storage gate while one upload, policy, audit, retention, access, retrieval, deletion, or receipt lane stays watched.",
+      nextHold: "Hold evidence storage until upload path, file policy, audit event, retention rule, and access proof are ready.",
+      nextRepair: "Repair storage proof before support SLA monitor expands.",
+      axes: [
+        ["Upload path", "proofGuard", 0.78, 5, "Upload path is defined."],
+        ["File policy", "tenantGuard", 0.78, 5, "File policy is tenant safe."],
+        ["Audit event", "proofGuard", 0.8, 5, "Audit event is immutable."],
+        ["Retention rule", "tenantGuard", 0.78, 5, "Retention rule is explicit."],
+        ["Access proof", "tenantGuard", 0.8, 5, "Access proof is controlled."],
+        ["Retrieval proof", "reviewGuard", 0.76, 5, "Retrieval proof is testable."],
+        ["Deletion route", "rollbackGuard", 0.76, 5, "Deletion route is governed."],
+        ["Storage receipt", "guardClosure", 0.8, 6, "Storage receipt closes evidence gate."],
       ],
     },
   ];
@@ -21310,6 +21505,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceUploadAuditStorageGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendTenantGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignalDeskPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorLaunchReadoutPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstWeekSuccessWatchPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLivePilotEvidenceVaultPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotTrainingHandoffPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerGoLiveChecklistPreview(model, autopilot)}",
@@ -28392,6 +28592,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLivePilotEvidenceVaultPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "live-pilot-evidence-vault");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstWeekSuccessWatchSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-week-success-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstWeekSuccessWatch(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-week-success-watch", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstWeekSuccessWatchPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-week-success-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorLaunchReadoutSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "sponsor-launch-readout");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorLaunchReadout(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "sponsor-launch-readout", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSponsorLaunchReadoutPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "sponsor-launch-readout");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignalDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "renewal-signal-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignalDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "renewal-signal-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignalDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "renewal-signal-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendTenantGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-backend-tenant-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendTenantGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-backend-tenant-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendTenantGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-backend-tenant-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceUploadAuditStorageGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "evidence-upload-audit-storage-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceUploadAuditStorageGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "evidence-upload-audit-storage-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEvidenceUploadAuditStorageGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "evidence-upload-audit-storage-gate");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -93203,9 +93463,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v950", "First Pilot Expansion Rollout Reuse Market Pilot First Week Success Watch", "Watch the first live pilot week with usage, support load, blocker closure, sponsor signal, and outcome proof."],
-      ["v951", "First Pilot Expansion Rollout Reuse Market Pilot Sponsor Launch Readout", "Prepare the first sponsor readout with launch proof, value proof, support calm, learning signal, and next decision."],
-      ["v952", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Signal Desk", "Turn live evidence into renewal and expansion signals with proof quality, user adoption, sponsor intent, and support confidence."],
+      ["v955", "First Pilot Expansion Rollout Reuse Market Pilot First Pilot Support SLA Monitor", "Watch live support response, escalation aging, owner coverage, sponsor comfort, and unresolved support risk."],
+      ["v956", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Admin Production Onboarding", "Turn production tenant access into an admin onboarding path with roles, invites, proof, help, and owner handoff."],
+      ["v957", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Expansion Board Pack", "Convert launch evidence, support confidence, adoption heat, and value continuity into a board-ready renewal and expansion pack."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

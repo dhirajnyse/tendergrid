@@ -1,5 +1,123 @@
 # Changelog
 
+## v954 - First Pilot Expansion Rollout Reuse Market Pilot Evidence Upload and Audit Storage Gate
+
+### Changes Made
+- Promoted evidence upload and audit storage gate as the current build.
+- Added upload path, file policy, audit event, retention rule, access proof, retrieval proof, deletion route, and storage receipt lanes.
+- Updated Build Phase to show v954 as current and queue v955-v957 for support SLA monitoring, tenant admin production onboarding, and renewal expansion board pack.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v954.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v954 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Evidence Upload and Audit Storage Gate visible and v955-v957 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v954 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Evidence upload and audit storage gate is still a static launch-readiness surface; real launch requires private file storage, upload scanning, immutable audit events, access enforcement, retention jobs, deletion workflows, and retrieval tests.
+
+## v953 - First Pilot Expansion Rollout Reuse Market Pilot Production Backend Tenant Gate
+
+### Changes Made
+- Added the production backend tenant gate to the pilot rollout runway.
+- Added tenant isolation, auth policy, database plan, audit writer, import worker, deployment path, rollback path, and backend receipt lanes.
+- Added wrapper render paths and static registry coverage so the backend tenant gate is visible from Build Phase and the release rail.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with production backend tenant gate release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Production backend tenant gate remains a plan until a private backend, auth policy, tenant database, audit writer, import worker, deployment pipeline, and rollback path exist.
+
+## v952 - First Pilot Expansion Rollout Reuse Market Pilot Renewal Signal Desk
+
+### Changes Made
+- Added the renewal signal desk to the pilot rollout runway.
+- Added renewal intent, expansion fit, proof strength, adoption heat, support confidence, value continuity, commercial next step, and renewal receipt lanes.
+- Added wrapper render paths and static registry coverage so renewal signals can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with renewal signal desk release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Renewal signal desk is not connected to real usage telemetry, sponsor feedback, commercial workflow, billing status, or customer health data.
+
+## v951 - First Pilot Expansion Rollout Reuse Market Pilot Sponsor Launch Readout
+
+### Changes Made
+- Added the sponsor launch readout to the pilot rollout runway.
+- Added executive line, launch proof, value movement, support posture, blocker status, learning boundary, next ask, and readout receipt lanes.
+- Added wrapper render paths and static registry coverage so sponsor launch readout proof stays reviewable in Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with sponsor launch readout release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Sponsor launch readout is not yet backed by real customer usage, support events, sponsor acknowledgements, or a generated board-ready export.
+
+## v950 - First Pilot Expansion Rollout Reuse Market Pilot First Week Success Watch
+
+### Changes Made
+- Added the first week success watch to the pilot rollout runway.
+- Added usage signal, blocker closure, support load, sponsor response, owner rhythm, value proof, learning hold, and week-one receipt lanes.
+- Added wrapper render paths and static registry coverage so the first live pilot week can be reviewed before sponsor readout.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with first week success watch release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- First week success watch is not connected to real product analytics, support tickets, blocker workflow, sponsor feedback, or outcome telemetry.
+
 ## v949 - First Pilot Expansion Rollout Reuse Market Pilot Live Pilot Evidence Vault
 
 ### Changes Made
