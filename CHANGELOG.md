@@ -1,5 +1,139 @@
 # Changelog
 
+## v924 - First Pilot Expansion Rollout Reuse Market Pilot Launch-to-Renewal Operating System
+
+### Changes Made
+- Activated the launch-to-renewal operating system as the current build.
+- Added onboarding proof, usage pulse, executive review, renewal risk, expansion path, invoice proof, success handoff, and renewal receipt as renewal operating lanes.
+- Updated the Build Phase next queue to v925-v927 for revenue retention, global partner scale, and AI governance evidence work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v924.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+- Passed: browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with `Build v924`, no console errors, and zero horizontal overflow.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, and Command without navigation hangs.
+- Passed: 390px mobile QA for Command, Autopilot, Reports, and Build Phase with visible top controls, no clipped controls, zero horizontal overflow, and v925-v927 next queue visible on Build Phase.
+
+### Known Risks
+- Launch-to-renewal remains static; real onboarding proof, usage pulse, executive review, renewal risk, invoice proof, and success handoff need live customer-success and billing data.
+
+## v923 - First Pilot Expansion Rollout Reuse Market Pilot Tenant-Safe Feedback Loop
+
+### Changes Made
+- Activated the tenant-safe feedback loop as the current build.
+- Added local observation, redaction check, manager approval, pattern tag, private action, shared candidate, customer note, and feedback receipt as feedback-learning lanes.
+- Updated the Build Phase next queue to v924-v926 for launch-to-renewal, revenue retention, and global partner scale.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v923.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Tenant-safe feedback remains static; real redaction checks, manager approvals, tenant-private actions, shared learning candidates, and customer notes need workflow enforcement.
+
+## v922 - First Pilot Expansion Rollout Reuse Market Pilot Network Learning Safety Board
+
+### Changes Made
+- Activated the network learning safety board as the current build.
+- Added tenant boundary, opt-in policy, redaction rule, reward signal, drift watch, rollback path, review owner, and safety receipt as network-learning safety lanes.
+- Updated the Build Phase next queue to v923-v925 for tenant-safe feedback, launch-to-renewal, and revenue retention control.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v922.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Network learning safety remains static; real tenant isolation, opt-in controls, redaction, reward logic, drift monitoring, rollback, and governance review need backend enforcement.
+
+## v921 - First Pilot Expansion Rollout Reuse Market Pilot Enterprise Readiness Gate
+
+### Changes Made
+- Activated the enterprise readiness gate as the current build.
+- Added security questionnaire, procurement language, admin roles, support SLA, audit export, legal note, commercial owner, and enterprise receipt as enterprise proof lanes.
+- Updated the Build Phase next queue to v922-v924 for network learning safety, tenant-safe feedback, and launch-to-renewal work.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v921.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Enterprise readiness remains static; real security questionnaires, procurement language, admin-role enforcement, SLA commitments, audit exports, and legal review need production systems and approvals.
+
+## v920 - First Pilot Expansion Rollout Reuse Market Pilot Global Expansion Operating Rhythm
+
+### Changes Made
+- Activated the global expansion operating rhythm as the current build.
+- Added market queue, weekly cadence, country owner, support capacity, proof review, localization note, partner watch, and expansion receipt as global expansion lanes.
+- Added release wrappers and command rail render paths for v920-v924.
+- Updated the Build Phase next queue to v921-v923 for enterprise readiness, network learning safety, and tenant-safe feedback.
+- Updated cache tokens, package metadata, minified assets, and static expectations for v920.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `node --check .\app.js`
+- Passed: `npm.cmd exec terser -- app.js --compress --mangle --output app.min.js`
+- Passed: `npm.cmd exec clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `node --check .\app.min.js`
+- Passed: `npm.cmd run check`
+
+### Known Risks
+- Global expansion rhythm remains static; real country queue ordering, localization proof, support capacity, partner watch, and expansion receipts need live market operations.
+
 ## v919 - First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Learning Control Room
 
 ### Changes Made

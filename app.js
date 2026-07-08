@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v919";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Post-Launch Learning Control Room";
+  const BUILD_VERSION = "v924";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch-to-Renewal Operating System";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=919.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=919.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=924.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=924.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -4520,6 +4520,201 @@
         ["Action backlog", "ownerCommand", 0.72, 6, "Action backlog has owners."],
         ["Safety review", "rollbackGuard", 0.76, 5, "Safety review is complete."],
         ["Learning receipt", "guardClosure", 0.72, 6, "Learning receipt closes room."],
+      ],
+    },
+    {
+      key: "global-expansion-operating-rhythm",
+      version: "v920",
+      number: 920,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Expansion Operating Rhythm",
+      shortLabel: "Global Expansion Operating Rhythm",
+      phase: "First pilot expansion rollout reuse market pilot global expansion operating rhythm",
+      track: "v920 first pilot expansion rollout reuse market pilot global expansion operating rhythm",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-expansion-operating-rhythm",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-expansion-operating-rhythm",
+      idSuffix: "GLOBAL-EXPANSION-OPERATING-RHYTHM",
+      scoreKey: "globalExpansionOperatingRhythmScore",
+      decisionKey: "globalExpansionOperatingRhythmDecision",
+      stateKey: "globalExpansionOperatingRhythmState",
+      lineKey: "globalExpansionOperatingRhythmLine",
+      primarySignal: "Pilot global expansion operating rhythm",
+      primaryNote: "Turns post-launch learning into a repeatable expansion rhythm with market queue, weekly cadence, country owner, support capacity, proof review, localization note, partner watch, and expansion receipt.",
+      summary: "Turn post-launch learning into a repeatable expansion rhythm with market queue, weekly cadence, country owner, support capacity, proof review, localization note, partner watch, and expansion receipt.",
+      trackSummary: "Post-launch learning now becomes one global expansion operating rhythm across market queue, weekly cadence, country owner, support capacity, proof review, localization note, partner watch, and receipt.",
+      stageSummary: "Post-launch learning now becomes global expansion rhythm with market queue, cadence, country owner, support, proof review, localization, partner watch, and receipt.",
+      openDecision: "Open expansion rhythm",
+      guardedDecision: "Open guarded expansion",
+      holdDecision: "Hold global rhythm",
+      repairDecision: "Repair expansion rhythm",
+      nextOpen: "Open the global expansion operating rhythm and keep market queue, weekly cadence, country owner, support capacity, proof review, localization note, partner watch, and expansion receipt together.",
+      nextGuarded: "Open guarded global expansion while one market, cadence, owner, support, proof, localization, or partner lane stays watched.",
+      nextHold: "Hold global expansion until market queue, weekly cadence, country owner, support capacity, and proof review are clear.",
+      nextRepair: "Repair global expansion rhythm before enterprise readiness gate.",
+      axes: [
+        ["Market queue", "reviewGuard", 0.74, 5, "Market queue is ordered."],
+        ["Weekly cadence", "launchMoment", 0.74, 5, "Weekly cadence is visible."],
+        ["Country owner", "ownerCommand", 0.72, 6, "Country owner is named."],
+        ["Support capacity", "supportGuard", 0.74, 5, "Support capacity is watched."],
+        ["Proof review", "proofGuard", 0.76, 5, "Proof review is scheduled."],
+        ["Localization note", "tenantGuard", 0.76, 5, "Localization note is attached."],
+        ["Partner watch", "sponsorGuard", 0.72, 6, "Partner watch is active."],
+        ["Expansion receipt", "guardClosure", 0.72, 6, "Expansion receipt closes rhythm."],
+      ],
+    },
+    {
+      key: "enterprise-readiness-gate",
+      version: "v921",
+      number: 921,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Readiness Gate",
+      shortLabel: "Enterprise Readiness Gate",
+      phase: "First pilot expansion rollout reuse market pilot enterprise readiness gate",
+      track: "v921 first pilot expansion rollout reuse market pilot enterprise readiness gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-readiness-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-readiness-gate",
+      idSuffix: "ENTERPRISE-READINESS-GATE",
+      scoreKey: "enterpriseReadinessGateScore",
+      decisionKey: "enterpriseReadinessGateDecision",
+      stateKey: "enterpriseReadinessGateState",
+      lineKey: "enterpriseReadinessGateLine",
+      primarySignal: "Pilot enterprise readiness gate",
+      primaryNote: "Prepares larger-buyer proof with security questionnaire, procurement language, admin roles, support SLA, audit export, legal note, commercial owner, and enterprise receipt.",
+      summary: "Prepare larger-buyer proof with security questionnaire, procurement language, admin roles, support SLA, audit export, legal note, commercial owner, and enterprise receipt.",
+      trackSummary: "Global expansion rhythm now becomes one enterprise readiness gate across security questionnaire, procurement language, admin roles, support SLA, audit export, legal note, commercial owner, and receipt.",
+      stageSummary: "Global expansion rhythm now becomes enterprise readiness with security, procurement, roles, SLA, audit export, legal note, commercial owner, and receipt.",
+      openDecision: "Open enterprise gate",
+      guardedDecision: "Open guarded enterprise",
+      holdDecision: "Hold enterprise gate",
+      repairDecision: "Repair enterprise gate",
+      nextOpen: "Open the enterprise readiness gate and keep security questionnaire, procurement language, admin roles, support SLA, audit export, legal note, commercial owner, and enterprise receipt together.",
+      nextGuarded: "Open guarded enterprise readiness while one security, procurement, role, SLA, audit, legal, or commercial lane stays watched.",
+      nextHold: "Hold enterprise readiness until security questionnaire, procurement language, admin roles, support SLA, and audit export are complete.",
+      nextRepair: "Repair enterprise readiness before network learning safety board.",
+      axes: [
+        ["Security questionnaire", "tenantGuard", 0.76, 5, "Security questionnaire is ready."],
+        ["Procurement language", "reviewGuard", 0.74, 5, "Procurement language is prepared."],
+        ["Admin roles", "ownerCommand", 0.72, 6, "Admin roles are mapped."],
+        ["Support SLA", "supportGuard", 0.74, 5, "Support SLA is credible."],
+        ["Audit export", "proofGuard", 0.76, 5, "Audit export is available."],
+        ["Legal note", "tenantGuard", 0.74, 5, "Legal note is attached."],
+        ["Commercial owner", "sponsorGuard", 0.72, 6, "Commercial owner is named."],
+        ["Enterprise receipt", "guardClosure", 0.72, 6, "Enterprise receipt closes gate."],
+      ],
+    },
+    {
+      key: "network-learning-safety-board",
+      version: "v922",
+      number: 922,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Network Learning Safety Board",
+      shortLabel: "Network Learning Safety Board",
+      phase: "First pilot expansion rollout reuse market pilot network learning safety board",
+      track: "v922 first pilot expansion rollout reuse market pilot network learning safety board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-network-learning-safety-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-network-learning-safety-board",
+      idSuffix: "NETWORK-LEARNING-SAFETY-BOARD",
+      scoreKey: "networkLearningSafetyBoardScore",
+      decisionKey: "networkLearningSafetyBoardDecision",
+      stateKey: "networkLearningSafetyBoardState",
+      lineKey: "networkLearningSafetyBoardLine",
+      primarySignal: "Pilot network learning safety board",
+      primaryNote: "Creates a safety board for cross-customer learning with tenant boundary, opt-in policy, redaction rule, reward signal, drift watch, rollback path, review owner, and safety receipt.",
+      summary: "Create a safety board for cross-customer learning with tenant boundary, opt-in policy, redaction rule, reward signal, drift watch, rollback path, review owner, and safety receipt.",
+      trackSummary: "Enterprise readiness now becomes one network learning safety board across tenant boundary, opt-in policy, redaction rule, reward signal, drift watch, rollback path, review owner, and receipt.",
+      stageSummary: "Enterprise readiness now becomes network learning safety with tenant boundary, opt-in, redaction, reward, drift, rollback, owner, and receipt.",
+      openDecision: "Open safety board",
+      guardedDecision: "Open guarded safety",
+      holdDecision: "Hold network learning",
+      repairDecision: "Repair safety board",
+      nextOpen: "Open the network learning safety board and keep tenant boundary, opt-in policy, redaction rule, reward signal, drift watch, rollback path, review owner, and safety receipt together.",
+      nextGuarded: "Open guarded network learning while one tenant, opt-in, redaction, reward, drift, rollback, or review lane stays watched.",
+      nextHold: "Hold network learning until tenant boundary, opt-in policy, redaction rule, reward signal, and drift watch are clear.",
+      nextRepair: "Repair network learning safety before tenant-safe feedback loop.",
+      axes: [
+        ["Tenant boundary", "tenantGuard", 0.76, 5, "Tenant boundary is explicit."],
+        ["Opt-in policy", "reviewGuard", 0.74, 5, "Opt-in policy is visible."],
+        ["Redaction rule", "proofGuard", 0.76, 5, "Redaction rule is active."],
+        ["Reward signal", "sponsorGuard", 0.72, 6, "Reward signal is named."],
+        ["Drift watch", "rollbackGuard", 0.76, 5, "Drift watch is active."],
+        ["Rollback path", "rollbackGuard", 0.76, 5, "Rollback path is clear."],
+        ["Review owner", "ownerCommand", 0.72, 6, "Review owner is named."],
+        ["Safety receipt", "guardClosure", 0.72, 6, "Safety receipt closes board."],
+      ],
+    },
+    {
+      key: "tenant-safe-feedback-loop",
+      version: "v923",
+      number: 923,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant-Safe Feedback Loop",
+      shortLabel: "Tenant-Safe Feedback Loop",
+      phase: "First pilot expansion rollout reuse market pilot tenant-safe feedback loop",
+      track: "v923 first pilot expansion rollout reuse market pilot tenant-safe feedback loop",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-safe-feedback-loop",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-safe-feedback-loop",
+      idSuffix: "TENANT-SAFE-FEEDBACK-LOOP",
+      scoreKey: "tenantSafeFeedbackLoopScore",
+      decisionKey: "tenantSafeFeedbackLoopDecision",
+      stateKey: "tenantSafeFeedbackLoopState",
+      lineKey: "tenantSafeFeedbackLoopLine",
+      primarySignal: "Pilot tenant-safe feedback loop",
+      primaryNote: "Captures customer feedback safely with local observation, redaction check, manager approval, pattern tag, private action, shared candidate, customer note, and feedback receipt.",
+      summary: "Capture customer feedback safely with local observation, redaction check, manager approval, pattern tag, private action, shared candidate, customer note, and feedback receipt.",
+      trackSummary: "Network learning safety now becomes one tenant-safe feedback loop across local observation, redaction check, manager approval, pattern tag, private action, shared candidate, customer note, and receipt.",
+      stageSummary: "Network safety now becomes tenant-safe feedback with local observation, redaction, approval, pattern tag, private action, shared candidate, customer note, and receipt.",
+      openDecision: "Open feedback loop",
+      guardedDecision: "Open guarded feedback",
+      holdDecision: "Hold feedback loop",
+      repairDecision: "Repair feedback loop",
+      nextOpen: "Open the tenant-safe feedback loop and keep local observation, redaction check, manager approval, pattern tag, private action, shared candidate, customer note, and feedback receipt together.",
+      nextGuarded: "Open guarded tenant feedback while one observation, redaction, approval, pattern, action, candidate, or customer lane stays watched.",
+      nextHold: "Hold feedback loop until local observation, redaction check, manager approval, pattern tag, and private action are complete.",
+      nextRepair: "Repair tenant-safe feedback before launch-to-renewal operating system.",
+      axes: [
+        ["Local observation", "proofGuard", 0.76, 5, "Local observation is captured."],
+        ["Redaction check", "tenantGuard", 0.76, 5, "Redaction check is complete."],
+        ["Manager approval", "reviewGuard", 0.74, 5, "Manager approval is attached."],
+        ["Pattern tag", "proofGuard", 0.74, 5, "Pattern tag is assigned."],
+        ["Private action", "ownerCommand", 0.72, 6, "Private action has an owner."],
+        ["Shared candidate", "sponsorGuard", 0.72, 6, "Shared candidate is safe."],
+        ["Customer note", "supportGuard", 0.74, 5, "Customer note is ready."],
+        ["Feedback receipt", "guardClosure", 0.72, 6, "Feedback receipt closes loop."],
+      ],
+    },
+    {
+      key: "launch-to-renewal-operating-system",
+      version: "v924",
+      number: 924,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch-to-Renewal Operating System",
+      shortLabel: "Launch-to-Renewal Operating System",
+      phase: "First pilot expansion rollout reuse market pilot launch-to-renewal operating system",
+      track: "v924 first pilot expansion rollout reuse market pilot launch-to-renewal operating system",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-to-renewal-operating-system",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-to-renewal-operating-system",
+      idSuffix: "LAUNCH-TO-RENEWAL-OPERATING-SYSTEM",
+      scoreKey: "launchToRenewalOperatingSystemScore",
+      decisionKey: "launchToRenewalOperatingSystemDecision",
+      stateKey: "launchToRenewalOperatingSystemState",
+      lineKey: "launchToRenewalOperatingSystemLine",
+      primarySignal: "Pilot launch-to-renewal operating system",
+      primaryNote: "Connects launch to renewal with onboarding proof, usage pulse, executive review, renewal risk, expansion path, invoice proof, success handoff, and renewal receipt.",
+      summary: "Connect launch to renewal with onboarding proof, usage pulse, executive review, renewal risk, expansion path, invoice proof, success handoff, and renewal receipt.",
+      trackSummary: "Tenant-safe feedback now becomes one launch-to-renewal operating system across onboarding proof, usage pulse, executive review, renewal risk, expansion path, invoice proof, success handoff, and receipt.",
+      stageSummary: "Tenant feedback now becomes launch-to-renewal system with onboarding, usage, review, renewal risk, expansion, invoice, success handoff, and receipt.",
+      openDecision: "Open renewal system",
+      guardedDecision: "Open guarded renewal",
+      holdDecision: "Hold renewal system",
+      repairDecision: "Repair renewal system",
+      nextOpen: "Open the launch-to-renewal operating system and keep onboarding proof, usage pulse, executive review, renewal risk, expansion path, invoice proof, success handoff, and renewal receipt together.",
+      nextGuarded: "Open guarded launch-to-renewal while one onboarding, usage, review, risk, expansion, invoice, or success lane stays watched.",
+      nextHold: "Hold renewal system until onboarding proof, usage pulse, executive review, renewal risk, and invoice proof are complete.",
+      nextRepair: "Repair launch-to-renewal before revenue retention control room.",
+      axes: [
+        ["Onboarding proof", "proofGuard", 0.76, 5, "Onboarding proof is attached."],
+        ["Usage pulse", "reviewGuard", 0.74, 5, "Usage pulse is visible."],
+        ["Executive review", "sponsorGuard", 0.72, 6, "Executive review is scheduled."],
+        ["Renewal risk", "rollbackGuard", 0.76, 5, "Renewal risk is watched."],
+        ["Expansion path", "launchMoment", 0.74, 5, "Expansion path is named."],
+        ["Invoice proof", "sponsorGuard", 0.72, 6, "Invoice proof is ready."],
+        ["Success handoff", "supportGuard", 0.74, 5, "Success handoff is complete."],
+        ["Renewal receipt", "guardClosure", 0.72, 6, "Renewal receipt closes system."],
       ],
     },
   ];
@@ -20140,6 +20335,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchToRenewalOperatingSystemPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSafeFeedbackLoopPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotNetworkLearningSafetyBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseReadinessGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalExpansionOperatingRhythmPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchLearningControlRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerLaunchEnablementKitPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalCountryPilotPackPreview(model, autopilot)}",
@@ -26832,6 +27032,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchLearningControlRoomPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "post-launch-learning-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalExpansionOperatingRhythmSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-expansion-operating-rhythm");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalExpansionOperatingRhythm(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-expansion-operating-rhythm", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalExpansionOperatingRhythmPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-expansion-operating-rhythm");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseReadinessGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "enterprise-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseReadinessGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "enterprise-readiness-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseReadinessGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "enterprise-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotNetworkLearningSafetyBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "network-learning-safety-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotNetworkLearningSafetyBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "network-learning-safety-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotNetworkLearningSafetyBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "network-learning-safety-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSafeFeedbackLoopSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-safe-feedback-loop");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSafeFeedbackLoop(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-safe-feedback-loop", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantSafeFeedbackLoopPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-safe-feedback-loop");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchToRenewalOperatingSystemSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-to-renewal-operating-system");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchToRenewalOperatingSystem(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-to-renewal-operating-system", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchToRenewalOperatingSystemPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-to-renewal-operating-system");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -91643,9 +91903,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v920", "First Pilot Expansion Rollout Reuse Market Pilot Global Expansion Operating Rhythm", "Turn post-launch learning into a repeatable expansion rhythm with weekly operating cadence, market queue, support capacity, proof review, and country decision owner."],
-      ["v921", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Readiness Gate", "Prepare enterprise readiness with security proof, procurement language, admin roles, support SLA, audit export, and legal-commercial decision receipt."],
-      ["v922", "First Pilot Expansion Rollout Reuse Market Pilot Network Learning Safety Board", "Create a safety board for cross-customer learning with tenant boundary, opt-in policy, reward signal, drift watch, and rollback decision receipt."],
+      ["v925", "First Pilot Expansion Rollout Reuse Market Pilot Revenue Retention Control Room", "Convert launch-to-renewal proof into retention control with revenue health, renewal owner, usage risk, invoice posture, expansion ask, and success receipt."],
+      ["v926", "First Pilot Expansion Rollout Reuse Market Pilot Global Partner Scale Console", "Prepare partner-led scale with partner capacity, country route, enablement proof, support escalation, revenue share, and launch governance."],
+      ["v927", "First Pilot Expansion Rollout Reuse Market Pilot AI Governance Evidence Layer", "Create the AI governance evidence layer for tenant-safe guidance, policy proof, model review, feedback boundaries, and audit-ready learning receipts."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
