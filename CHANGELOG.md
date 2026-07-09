@@ -1,5 +1,124 @@
 # Changelog
 
+## v994 - First Pilot Expansion Rollout Reuse Market Pilot Production Monitoring Evidence Board
+
+### Changes Made
+- Promoted production monitoring evidence board as the current build.
+- Added uptime signal, error watch, support queue, usage health, billing health, audit watch, monitoring owner, and evidence board receipt lanes.
+- Updated Build Phase to show v994 as current and queue v995-v997 for first customer health scorecard, operational runbook acceptance, and public launch evidence gate work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v994.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v994 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Production Monitoring Evidence Board visible and v995-v997 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v994 visible, no page-level horizontal overflow, and no console errors.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, build badge, and Command without hangs or console errors.
+
+### Known Risks
+- Production monitoring evidence board is still static; real launch requires live uptime telemetry, error monitoring, support queue integration, usage analytics, billing health checks, audit watch alerts, ownership workflow, and receipt storage.
+
+## v993 - First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Approval Receipt
+
+### Changes Made
+- Added the customer reference approval receipt to the pilot rollout runway.
+- Added reference request, customer permission, quote boundary, logo permission, case study notes, privacy review, approval owner, and reference receipt lanes.
+- Added wrapper render paths and static registry coverage so reference approval readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with customer reference approval receipt release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Customer reference approval is not connected to real customer permission capture, quote/legal boundary workflow, logo approvals, case study drafting, privacy review, or receipt storage.
+
+## v992 - First Pilot Expansion Rollout Reuse Market Pilot Launch Retrospective Learning Gate
+
+### Changes Made
+- Added the launch retrospective learning gate to the pilot rollout runway.
+- Added outcome proof, incident review, support lessons, billing notes, customer feedback, reuse decision, learning owner, and retrospective receipt lanes.
+- Added wrapper render paths and static registry coverage so launch learning readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with launch retrospective learning gate release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Launch retrospective learning gate is not connected to live outcome proof, incident review records, support lesson capture, billing notes, customer feedback, or reuse approval workflow.
+
+## v991 - First Pilot Expansion Rollout Reuse Market Pilot Real Customer Go-Live Checklist
+
+### Changes Made
+- Added the real customer go-live checklist to the pilot rollout runway.
+- Added go-live owner, launch date, access ready, billing ready, support ready, audit ready, rollback ready, and customer signoff lanes.
+- Added wrapper render paths and static registry coverage so real customer launch readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with real customer go-live checklist release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Real customer go-live checklist is not connected to live owner assignment, launch scheduling, access/billing/support/audit checks, rollback execution, or customer signoff storage.
+
+## v990 - First Pilot Expansion Rollout Reuse Market Pilot Production Cutover Rehearsal Room
+
+### Changes Made
+- Added the production cutover rehearsal room to the pilot rollout runway.
+- Added data freeze, access switch, billing continuity, support watch, rollback timer, sponsor notice, cutover owner, and rehearsal receipt lanes.
+- Added wrapper render paths and static registry coverage so production cutover rehearsal readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with production cutover rehearsal room release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Production cutover rehearsal is not connected to live data freeze controls, access switch execution, billing continuity checks, support watch, rollback timer, sponsor notice delivery, or rehearsal receipt storage.
+
 ## v989 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Export Receipt
 
 ### Changes Made

@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v989";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Export Receipt";
+  const BUILD_VERSION = "v994";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Monitoring Evidence Board";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=989.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=989.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=994.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=994.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -7250,6 +7250,201 @@
         ["Download receipt", "proofGuard", 0.78, 5, "Download receipt is stored."],
         ["Retention note", "rollbackGuard", 0.76, 5, "Retention note is ready."],
         ["Audit export receipt", "guardClosure", 0.82, 6, "Audit export receipt closes proof."],
+      ],
+    },
+    {
+      key: "production-cutover-rehearsal-room",
+      version: "v990",
+      number: 990,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Cutover Rehearsal Room",
+      shortLabel: "Production Cutover Rehearsal Room",
+      phase: "First pilot expansion rollout reuse market pilot production cutover rehearsal room",
+      track: "v990 first pilot expansion rollout reuse market pilot production cutover rehearsal room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-cutover-rehearsal-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-cutover-rehearsal-room",
+      idSuffix: "PRODUCTION-CUTOVER-REHEARSAL-ROOM",
+      scoreKey: "productionCutoverRehearsalRoomScore",
+      decisionKey: "productionCutoverRehearsalRoomDecision",
+      stateKey: "productionCutoverRehearsalRoomState",
+      lineKey: "productionCutoverRehearsalRoomLine",
+      primarySignal: "Pilot production cutover rehearsal room",
+      primaryNote: "Turns audit export proof into production cutover rehearsal with data freeze, access switch, billing continuity, support watch, rollback timer, sponsor notice, cutover owner, and rehearsal receipt.",
+      summary: "Rehearse production cutover with data freeze, access switch, billing continuity, support watch, rollback timer, sponsor notice, cutover owner, and rehearsal receipt.",
+      trackSummary: "Tenant audit export receipt now becomes one production cutover rehearsal room across data freeze, access switch, billing continuity, support watch, rollback timer, sponsor notice, cutover owner, and rehearsal receipt.",
+      stageSummary: "Audit export proof now becomes production cutover rehearsal with freeze, access, billing, support, rollback, sponsor, owner, and receipt controls.",
+      openDecision: "Run cutover rehearsal",
+      guardedDecision: "Run guarded rehearsal",
+      holdDecision: "Hold cutover rehearsal",
+      repairDecision: "Repair cutover proof",
+      nextOpen: "Run production cutover rehearsal and keep data freeze, access switch, billing continuity, support watch, rollback timer, sponsor notice, owner, and receipt together.",
+      nextGuarded: "Run guarded cutover rehearsal while one freeze, access, billing, support, rollback, sponsor, owner, or receipt lane stays watched.",
+      nextHold: "Hold cutover rehearsal until data freeze, access switch, billing continuity, and rollback timer are clear.",
+      nextRepair: "Repair cutover proof before real customer go-live expands.",
+      axes: [
+        ["Data freeze", "tenantGuard", 0.8, 5, "Data freeze is declared."],
+        ["Access switch", "tenantGuard", 0.8, 5, "Access switch is rehearsed."],
+        ["Billing continuity", "proofGuard", 0.78, 5, "Billing continuity is proven."],
+        ["Support watch", "supportGuard", 0.8, 5, "Support watch is ready."],
+        ["Rollback timer", "rollbackGuard", 0.78, 5, "Rollback timer is visible."],
+        ["Sponsor notice", "sponsorGuard", 0.78, 5, "Sponsor notice is ready."],
+        ["Cutover owner", "ownerCommand", 0.78, 6, "Cutover owner is named."],
+        ["Rehearsal receipt", "guardClosure", 0.82, 6, "Rehearsal receipt closes room."],
+      ],
+    },
+    {
+      key: "real-customer-go-live-checklist",
+      version: "v991",
+      number: 991,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Real Customer Go-Live Checklist",
+      shortLabel: "Real Customer Go-Live Checklist",
+      phase: "First pilot expansion rollout reuse market pilot real customer go-live checklist",
+      track: "v991 first pilot expansion rollout reuse market pilot real customer go-live checklist",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-real-customer-go-live-checklist",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-real-customer-go-live-checklist",
+      idSuffix: "REAL-CUSTOMER-GO-LIVE-CHECKLIST",
+      scoreKey: "realCustomerGoLiveChecklistScore",
+      decisionKey: "realCustomerGoLiveChecklistDecision",
+      stateKey: "realCustomerGoLiveChecklistState",
+      lineKey: "realCustomerGoLiveChecklistLine",
+      primarySignal: "Pilot real customer go-live checklist",
+      primaryNote: "Turns cutover rehearsal into a real customer go-live checklist with owner, launch date, access, billing, support, audit, rollback, and customer signoff.",
+      summary: "Turn cutover rehearsal into a real customer go-live checklist with owner, launch date, access, billing, support, audit, rollback, and customer signoff.",
+      trackSummary: "Production cutover rehearsal now becomes one real customer go-live checklist across owner, launch date, access, billing, support, audit, rollback, and customer signoff.",
+      stageSummary: "Cutover rehearsal now becomes real customer go-live checklist with owner, date, access, billing, support, audit, rollback, and signoff controls.",
+      openDecision: "Open go-live checklist",
+      guardedDecision: "Open guarded go-live",
+      holdDecision: "Hold go-live checklist",
+      repairDecision: "Repair go-live proof",
+      nextOpen: "Open real customer go-live checklist and keep owner, date, access, billing, support, audit, rollback, and customer signoff together.",
+      nextGuarded: "Open guarded go-live while one owner, date, access, billing, support, audit, rollback, or signoff lane stays watched.",
+      nextHold: "Hold go-live checklist until owner, launch date, access, and customer signoff are clear.",
+      nextRepair: "Repair go-live proof before launch retrospective expands.",
+      axes: [
+        ["Go-live owner", "ownerCommand", 0.8, 6, "Go-live owner is assigned."],
+        ["Launch date", "reviewGuard", 0.78, 5, "Launch date is confirmed."],
+        ["Access ready", "tenantGuard", 0.8, 5, "Access is ready."],
+        ["Billing ready", "proofGuard", 0.78, 5, "Billing is ready."],
+        ["Support ready", "supportGuard", 0.8, 5, "Support is ready."],
+        ["Audit ready", "reviewGuard", 0.78, 5, "Audit is ready."],
+        ["Rollback ready", "rollbackGuard", 0.78, 5, "Rollback is ready."],
+        ["Customer signoff", "guardClosure", 0.82, 6, "Customer signoff closes checklist."],
+      ],
+    },
+    {
+      key: "launch-retrospective-learning-gate",
+      version: "v992",
+      number: 992,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Retrospective Learning Gate",
+      shortLabel: "Launch Retrospective Learning Gate",
+      phase: "First pilot expansion rollout reuse market pilot launch retrospective learning gate",
+      track: "v992 first pilot expansion rollout reuse market pilot launch retrospective learning gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-retrospective-learning-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-retrospective-learning-gate",
+      idSuffix: "LAUNCH-RETROSPECTIVE-LEARNING-GATE",
+      scoreKey: "launchRetrospectiveLearningGateScore",
+      decisionKey: "launchRetrospectiveLearningGateDecision",
+      stateKey: "launchRetrospectiveLearningGateState",
+      lineKey: "launchRetrospectiveLearningGateLine",
+      primarySignal: "Pilot launch retrospective learning gate",
+      primaryNote: "Turns go-live checklist into launch retrospective learning gate with outcome proof, incident review, support lessons, billing notes, customer feedback, reuse decision, learning owner, and retrospective receipt.",
+      summary: "Close launch learning with outcome proof, incident review, support lessons, billing notes, customer feedback, reuse decision, learning owner, and retrospective receipt.",
+      trackSummary: "Real customer go-live checklist now becomes one launch retrospective learning gate across outcome proof, incident review, support lessons, billing notes, customer feedback, reuse decision, learning owner, and retrospective receipt.",
+      stageSummary: "Go-live checklist now becomes launch learning gate with outcome, incidents, support, billing, feedback, reuse, owner, and receipt controls.",
+      openDecision: "Open retrospective gate",
+      guardedDecision: "Open guarded retrospective",
+      holdDecision: "Hold retrospective gate",
+      repairDecision: "Repair learning proof",
+      nextOpen: "Open launch retrospective learning gate and keep outcome proof, incident review, support lessons, billing notes, customer feedback, reuse decision, owner, and receipt together.",
+      nextGuarded: "Open guarded retrospective while one outcome, incident, support, billing, feedback, reuse, owner, or receipt lane stays watched.",
+      nextHold: "Hold retrospective gate until outcome proof, incident review, support lessons, and feedback are clear.",
+      nextRepair: "Repair learning proof before customer reference approval expands.",
+      axes: [
+        ["Outcome proof", "proofGuard", 0.8, 6, "Outcome proof is captured."],
+        ["Incident review", "supportGuard", 0.78, 5, "Incident review is complete."],
+        ["Support lessons", "supportGuard", 0.78, 5, "Support lessons are listed."],
+        ["Billing notes", "proofGuard", 0.76, 5, "Billing notes are attached."],
+        ["Customer feedback", "sponsorGuard", 0.78, 5, "Customer feedback is captured."],
+        ["Reuse decision", "tenantGuard", 0.78, 5, "Reuse decision is bounded."],
+        ["Learning owner", "ownerCommand", 0.78, 5, "Learning owner is named."],
+        ["Retrospective receipt", "guardClosure", 0.82, 6, "Retrospective receipt closes gate."],
+      ],
+    },
+    {
+      key: "customer-reference-approval-receipt",
+      version: "v993",
+      number: 993,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Approval Receipt",
+      shortLabel: "Customer Reference Approval Receipt",
+      phase: "First pilot expansion rollout reuse market pilot customer reference approval receipt",
+      track: "v993 first pilot expansion rollout reuse market pilot customer reference approval receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-reference-approval-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-reference-approval-receipt",
+      idSuffix: "CUSTOMER-REFERENCE-APPROVAL-RECEIPT",
+      scoreKey: "customerReferenceApprovalReceiptScore",
+      decisionKey: "customerReferenceApprovalReceiptDecision",
+      stateKey: "customerReferenceApprovalReceiptState",
+      lineKey: "customerReferenceApprovalReceiptLine",
+      primarySignal: "Pilot customer reference approval receipt",
+      primaryNote: "Turns retrospective learning into customer reference approval receipt with reference request, customer permission, quote boundary, logo permission, case study notes, privacy review, approval owner, and reference receipt.",
+      summary: "Capture customer reference approval with reference request, customer permission, quote boundary, logo permission, case study notes, privacy review, approval owner, and reference receipt.",
+      trackSummary: "Launch retrospective learning gate now becomes one customer reference approval receipt across request, permission, quote boundary, logo permission, case study notes, privacy review, approval owner, and receipt.",
+      stageSummary: "Launch learning now becomes customer reference approval with request, permission, quote, logo, case notes, privacy, owner, and receipt controls.",
+      openDecision: "Request customer reference",
+      guardedDecision: "Request guarded reference",
+      holdDecision: "Hold reference request",
+      repairDecision: "Repair reference proof",
+      nextOpen: "Request customer reference approval and keep request, permission, quote boundary, logo permission, case study notes, privacy review, owner, and receipt together.",
+      nextGuarded: "Request guarded reference while one request, permission, quote, logo, case note, privacy, owner, or receipt lane stays watched.",
+      nextHold: "Hold reference request until customer permission, quote boundary, privacy review, and owner are clear.",
+      nextRepair: "Repair reference proof before production monitoring expands.",
+      axes: [
+        ["Reference request", "ownerCommand", 0.8, 5, "Reference request is prepared."],
+        ["Customer permission", "sponsorGuard", 0.8, 6, "Customer permission is captured."],
+        ["Quote boundary", "tenantGuard", 0.78, 5, "Quote boundary is clear."],
+        ["Logo permission", "sponsorGuard", 0.76, 5, "Logo permission is known."],
+        ["Case study notes", "proofGuard", 0.78, 5, "Case study notes are drafted."],
+        ["Privacy review", "tenantGuard", 0.8, 5, "Privacy review is complete."],
+        ["Approval owner", "ownerCommand", 0.78, 5, "Approval owner is assigned."],
+        ["Reference receipt", "guardClosure", 0.82, 6, "Reference receipt closes approval."],
+      ],
+    },
+    {
+      key: "production-monitoring-evidence-board",
+      version: "v994",
+      number: 994,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Monitoring Evidence Board",
+      shortLabel: "Production Monitoring Evidence Board",
+      phase: "First pilot expansion rollout reuse market pilot production monitoring evidence board",
+      track: "v994 first pilot expansion rollout reuse market pilot production monitoring evidence board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-monitoring-evidence-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-monitoring-evidence-board",
+      idSuffix: "PRODUCTION-MONITORING-EVIDENCE-BOARD",
+      scoreKey: "productionMonitoringEvidenceBoardScore",
+      decisionKey: "productionMonitoringEvidenceBoardDecision",
+      stateKey: "productionMonitoringEvidenceBoardState",
+      lineKey: "productionMonitoringEvidenceBoardLine",
+      primarySignal: "Pilot production monitoring evidence board",
+      primaryNote: "Turns customer reference approval into production monitoring evidence board with uptime signal, error watch, support queue, usage health, billing health, audit watch, monitoring owner, and evidence board receipt.",
+      summary: "Add production monitoring evidence with uptime signal, error watch, support queue, usage health, billing health, audit watch, monitoring owner, and evidence board receipt.",
+      trackSummary: "Customer reference approval receipt now becomes one production monitoring evidence board across uptime signal, error watch, support queue, usage health, billing health, audit watch, monitoring owner, and evidence board receipt.",
+      stageSummary: "Reference approval now becomes production monitoring board with uptime, errors, support, usage, billing, audit, owner, and receipt controls.",
+      openDecision: "Open monitoring board",
+      guardedDecision: "Open guarded monitoring",
+      holdDecision: "Hold monitoring board",
+      repairDecision: "Repair monitoring proof",
+      nextOpen: "Open production monitoring evidence board and keep uptime signal, error watch, support queue, usage health, billing health, audit watch, owner, and receipt together.",
+      nextGuarded: "Open guarded monitoring while one uptime, error, support, usage, billing, audit, owner, or receipt lane stays watched.",
+      nextHold: "Hold monitoring board until uptime, error watch, support queue, and audit watch are clear.",
+      nextRepair: "Repair monitoring proof before first customer health scorecard expands.",
+      axes: [
+        ["Uptime signal", "supportGuard", 0.8, 5, "Uptime signal is visible."],
+        ["Error watch", "supportGuard", 0.8, 5, "Error watch is active."],
+        ["Support queue", "supportGuard", 0.78, 5, "Support queue is monitored."],
+        ["Usage health", "proofGuard", 0.78, 5, "Usage health is visible."],
+        ["Billing health", "proofGuard", 0.76, 5, "Billing health is visible."],
+        ["Audit watch", "reviewGuard", 0.78, 5, "Audit watch is active."],
+        ["Monitoring owner", "ownerCommand", 0.78, 6, "Monitoring owner is assigned."],
+        ["Evidence board receipt", "guardClosure", 0.82, 6, "Evidence board receipt closes board."],
       ],
     },
   ];
@@ -22870,6 +23065,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionMonitoringEvidenceBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceApprovalReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRetrospectiveLearningGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRealCustomerGoLiveChecklistPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCutoverRehearsalRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditExportReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportIncidentDrillPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessFirstWeekWatchPreview(model, autopilot)}",
@@ -30472,6 +30672,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditExportReceiptPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-audit-export-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCutoverRehearsalRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-cutover-rehearsal-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCutoverRehearsalRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-cutover-rehearsal-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCutoverRehearsalRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-cutover-rehearsal-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRealCustomerGoLiveChecklistSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "real-customer-go-live-checklist");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRealCustomerGoLiveChecklist(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "real-customer-go-live-checklist", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRealCustomerGoLiveChecklistPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "real-customer-go-live-checklist");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRetrospectiveLearningGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-retrospective-learning-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRetrospectiveLearningGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-retrospective-learning-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRetrospectiveLearningGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-retrospective-learning-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceApprovalReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-reference-approval-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceApprovalReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-reference-approval-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceApprovalReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-reference-approval-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionMonitoringEvidenceBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-monitoring-evidence-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionMonitoringEvidenceBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-monitoring-evidence-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionMonitoringEvidenceBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-monitoring-evidence-board");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -95283,9 +95543,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v990", "First Pilot Expansion Rollout Reuse Market Pilot Production Cutover Rehearsal Room", "Rehearse production cutover with data freeze, access switch, billing continuity, support watch, rollback timer, and sponsor notice."],
-      ["v991", "First Pilot Expansion Rollout Reuse Market Pilot Real Customer Go-Live Checklist", "Turn cutover rehearsal into a go-live checklist with owner, date, access, billing, support, audit, rollback, and customer signoff."],
-      ["v992", "First Pilot Expansion Rollout Reuse Market Pilot Launch Retrospective Learning Gate", "Close launch learning with outcome proof, incidents, support lessons, billing notes, customer feedback, and safe reuse decision."],
+      ["v995", "First Pilot Expansion Rollout Reuse Market Pilot First Customer Health Scorecard", "Turn production monitoring into a first customer health scorecard with uptime, adoption, support, billing, evidence, sponsor pulse, and renewal posture."],
+      ["v996", "First Pilot Expansion Rollout Reuse Market Pilot Operational Runbook Acceptance Receipt", "Capture runbook acceptance with owner, escalation, incident path, maintenance window, audit route, rollback proof, and customer-safe handoff."],
+      ["v997", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Evidence Gate", "Prepare public launch evidence with customer proof, monitoring proof, support proof, billing proof, privacy proof, reference approval, and final launch decision."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
