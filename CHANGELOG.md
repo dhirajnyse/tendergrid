@@ -1,5 +1,125 @@
 # Changelog
 
+## v999 - First Pilot Expansion Rollout Reuse Market Pilot Launch Candidate Freeze Room
+
+### Changes Made
+- Promoted launch candidate freeze room as the current build.
+- Added candidate scope, freeze owner, change lock, evidence lock, support lock, billing lock, rollback lock, and freeze receipt lanes.
+- Updated Build Phase to show v999 as current and queue v1000-v1002 for launch readiness lock, public launch day board, and post-launch trust monitor work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v999.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v999 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Launch Candidate Freeze Room visible and v1000-v1002 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v999 visible, no page-level horizontal overflow, and no console errors.
+- Passed: side-rail click QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, and Reports without hangs or console errors.
+- Passed: rail-side toggle QA moving the navigation rail right and back left with no horizontal overflow.
+
+### Known Risks
+- Launch candidate freeze room is still static; real launch requires live change freezes, evidence locks, support/billing/rollback lock enforcement, owner acceptance, and immutable freeze receipt storage.
+
+## v998 - First Pilot Expansion Rollout Reuse Market Pilot Founder Launch Decision Console
+
+### Changes Made
+- Added the founder launch decision console to the pilot rollout runway.
+- Added launch recommendation, risk summary, customer proof, support proof, financial proof, rollback posture, decision owner, and founder decision receipt lanes.
+- Added wrapper render paths and static registry coverage so final founder launch decision readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with founder launch decision console release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Founder launch decision console is not connected to live evidence approvals, financial proof, risk acceptance, rollback posture, or signed decision receipt storage.
+
+## v997 - First Pilot Expansion Rollout Reuse Market Pilot Public Launch Evidence Gate
+
+### Changes Made
+- Added the public launch evidence gate to the pilot rollout runway.
+- Added customer proof, monitoring proof, support proof, billing proof, privacy proof, reference approval, founder review, and evidence gate receipt lanes.
+- Added wrapper render paths and static registry coverage so public launch evidence readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with public launch evidence gate release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Public launch evidence gate is not connected to live customer proof, monitoring proof, billing proof, privacy approvals, reference approvals, founder review workflow, or evidence receipt storage.
+
+## v996 - First Pilot Expansion Rollout Reuse Market Pilot Operational Runbook Acceptance Receipt
+
+### Changes Made
+- Added the operational runbook acceptance receipt to the pilot rollout runway.
+- Added runbook owner, escalation route, incident path, maintenance window, audit route, rollback proof, customer-safe handoff, and acceptance receipt lanes.
+- Added wrapper render paths and static registry coverage so operational runbook readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with operational runbook acceptance receipt release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Operational runbook acceptance is not connected to live escalation ownership, incident routing, maintenance scheduling, audit routing, rollback proof, customer handoff, or receipt storage.
+
+## v995 - First Pilot Expansion Rollout Reuse Market Pilot First Customer Health Scorecard
+
+### Changes Made
+- Added the first customer health scorecard to the pilot rollout runway.
+- Added uptime health, adoption health, support health, billing health, evidence health, sponsor pulse, renewal posture, and scorecard receipt lanes.
+- Added wrapper render paths and static registry coverage so first customer health readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with first customer health scorecard release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- First customer health scorecard is not connected to live uptime, adoption analytics, support health, billing health, evidence scoring, sponsor pulse, renewal scoring, or receipt storage.
+
 ## v994 - First Pilot Expansion Rollout Reuse Market Pilot Production Monitoring Evidence Board
 
 ### Changes Made

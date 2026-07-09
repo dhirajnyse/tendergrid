@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v994";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Monitoring Evidence Board";
+  const BUILD_VERSION = "v999";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Candidate Freeze Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=994.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=994.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=999.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=999.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -7445,6 +7445,201 @@
         ["Audit watch", "reviewGuard", 0.78, 5, "Audit watch is active."],
         ["Monitoring owner", "ownerCommand", 0.78, 6, "Monitoring owner is assigned."],
         ["Evidence board receipt", "guardClosure", 0.82, 6, "Evidence board receipt closes board."],
+      ],
+    },
+    {
+      key: "first-customer-health-scorecard",
+      version: "v995",
+      number: 995,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Customer Health Scorecard",
+      shortLabel: "First Customer Health Scorecard",
+      phase: "First pilot expansion rollout reuse market pilot first customer health scorecard",
+      track: "v995 first pilot expansion rollout reuse market pilot first customer health scorecard",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-health-scorecard",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-health-scorecard",
+      idSuffix: "FIRST-CUSTOMER-HEALTH-SCORECARD",
+      scoreKey: "firstCustomerHealthScorecardScore",
+      decisionKey: "firstCustomerHealthScorecardDecision",
+      stateKey: "firstCustomerHealthScorecardState",
+      lineKey: "firstCustomerHealthScorecardLine",
+      primarySignal: "Pilot first customer health scorecard",
+      primaryNote: "Turns production monitoring into a first customer health scorecard with uptime health, adoption health, support health, billing health, evidence health, sponsor pulse, renewal posture, and scorecard receipt.",
+      summary: "Turn production monitoring into a first customer health scorecard with uptime, adoption, support, billing, evidence, sponsor pulse, renewal posture, and receipt proof.",
+      trackSummary: "Production monitoring evidence now becomes one first customer health scorecard across uptime health, adoption health, support health, billing health, evidence health, sponsor pulse, renewal posture, and scorecard receipt.",
+      stageSummary: "Monitoring now becomes customer health with uptime, adoption, support, billing, evidence, sponsor, renewal, and receipt controls.",
+      openDecision: "Open health scorecard",
+      guardedDecision: "Open guarded scorecard",
+      holdDecision: "Hold health scorecard",
+      repairDecision: "Repair health proof",
+      nextOpen: "Open first customer health scorecard and keep uptime, adoption, support, billing, evidence, sponsor pulse, renewal posture, and receipt together.",
+      nextGuarded: "Open guarded health scorecard while one uptime, adoption, support, billing, evidence, sponsor, renewal, or receipt lane stays watched.",
+      nextHold: "Hold health scorecard until uptime, adoption, support health, and sponsor pulse are clear.",
+      nextRepair: "Repair health proof before operational runbook acceptance expands.",
+      axes: [
+        ["Uptime health", "supportGuard", 0.8, 5, "Uptime health is visible."],
+        ["Adoption health", "proofGuard", 0.8, 5, "Adoption health is visible."],
+        ["Support health", "supportGuard", 0.8, 5, "Support health is calm."],
+        ["Billing health", "proofGuard", 0.78, 5, "Billing health is clear."],
+        ["Evidence health", "reviewGuard", 0.78, 5, "Evidence health is ready."],
+        ["Sponsor pulse", "sponsorGuard", 0.78, 5, "Sponsor pulse is captured."],
+        ["Renewal posture", "tenantGuard", 0.76, 5, "Renewal posture is named."],
+        ["Scorecard receipt", "guardClosure", 0.82, 6, "Scorecard receipt closes health."],
+      ],
+    },
+    {
+      key: "operational-runbook-acceptance-receipt",
+      version: "v996",
+      number: 996,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Operational Runbook Acceptance Receipt",
+      shortLabel: "Operational Runbook Acceptance Receipt",
+      phase: "First pilot expansion rollout reuse market pilot operational runbook acceptance receipt",
+      track: "v996 first pilot expansion rollout reuse market pilot operational runbook acceptance receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-operational-runbook-acceptance-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-operational-runbook-acceptance-receipt",
+      idSuffix: "OPERATIONAL-RUNBOOK-ACCEPTANCE-RECEIPT",
+      scoreKey: "operationalRunbookAcceptanceReceiptScore",
+      decisionKey: "operationalRunbookAcceptanceReceiptDecision",
+      stateKey: "operationalRunbookAcceptanceReceiptState",
+      lineKey: "operationalRunbookAcceptanceReceiptLine",
+      primarySignal: "Pilot operational runbook acceptance receipt",
+      primaryNote: "Turns customer health into operational runbook acceptance with runbook owner, escalation route, incident path, maintenance window, audit route, rollback proof, customer-safe handoff, and acceptance receipt.",
+      summary: "Capture runbook acceptance with owner, escalation, incident path, maintenance window, audit route, rollback proof, customer-safe handoff, and acceptance receipt.",
+      trackSummary: "First customer health scorecard now becomes one operational runbook acceptance receipt across owner, escalation, incident path, maintenance window, audit route, rollback proof, customer-safe handoff, and receipt.",
+      stageSummary: "Customer health now becomes runbook acceptance with owner, escalation, incident, maintenance, audit, rollback, handoff, and receipt controls.",
+      openDecision: "Accept runbook",
+      guardedDecision: "Accept guarded runbook",
+      holdDecision: "Hold runbook acceptance",
+      repairDecision: "Repair runbook proof",
+      nextOpen: "Accept operational runbook and keep owner, escalation, incident path, maintenance window, audit route, rollback proof, customer-safe handoff, and receipt together.",
+      nextGuarded: "Accept guarded runbook while one owner, escalation, incident, maintenance, audit, rollback, handoff, or receipt lane stays watched.",
+      nextHold: "Hold runbook acceptance until owner, escalation, incident path, and rollback proof are clear.",
+      nextRepair: "Repair runbook proof before public launch evidence expands.",
+      axes: [
+        ["Runbook owner", "ownerCommand", 0.8, 6, "Runbook owner is assigned."],
+        ["Escalation route", "supportGuard", 0.8, 5, "Escalation route is clear."],
+        ["Incident path", "supportGuard", 0.8, 5, "Incident path is accepted."],
+        ["Maintenance window", "reviewGuard", 0.76, 5, "Maintenance window is defined."],
+        ["Audit route", "reviewGuard", 0.78, 5, "Audit route is ready."],
+        ["Rollback proof", "rollbackGuard", 0.8, 5, "Rollback proof is attached."],
+        ["Customer-safe handoff", "tenantGuard", 0.78, 5, "Customer-safe handoff is ready."],
+        ["Acceptance receipt", "guardClosure", 0.82, 6, "Acceptance receipt closes runbook."],
+      ],
+    },
+    {
+      key: "public-launch-evidence-gate",
+      version: "v997",
+      number: 997,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Evidence Gate",
+      shortLabel: "Public Launch Evidence Gate",
+      phase: "First pilot expansion rollout reuse market pilot public launch evidence gate",
+      track: "v997 first pilot expansion rollout reuse market pilot public launch evidence gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-evidence-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-evidence-gate",
+      idSuffix: "PUBLIC-LAUNCH-EVIDENCE-GATE",
+      scoreKey: "publicLaunchEvidenceGateScore",
+      decisionKey: "publicLaunchEvidenceGateDecision",
+      stateKey: "publicLaunchEvidenceGateState",
+      lineKey: "publicLaunchEvidenceGateLine",
+      primarySignal: "Pilot public launch evidence gate",
+      primaryNote: "Turns runbook acceptance into public launch evidence with customer proof, monitoring proof, support proof, billing proof, privacy proof, reference approval, founder review, and evidence gate receipt.",
+      summary: "Prepare public launch evidence with customer proof, monitoring proof, support proof, billing proof, privacy proof, reference approval, founder review, and evidence gate receipt.",
+      trackSummary: "Operational runbook acceptance now becomes one public launch evidence gate across customer proof, monitoring proof, support proof, billing proof, privacy proof, reference approval, founder review, and receipt.",
+      stageSummary: "Runbook acceptance now becomes public launch evidence with customer, monitoring, support, billing, privacy, reference, founder, and receipt controls.",
+      openDecision: "Open launch evidence",
+      guardedDecision: "Open guarded evidence",
+      holdDecision: "Hold launch evidence",
+      repairDecision: "Repair launch proof",
+      nextOpen: "Open public launch evidence gate and keep customer proof, monitoring proof, support proof, billing proof, privacy proof, reference approval, founder review, and receipt together.",
+      nextGuarded: "Open guarded evidence while one customer, monitoring, support, billing, privacy, reference, founder, or receipt lane stays watched.",
+      nextHold: "Hold public launch evidence until customer proof, monitoring proof, privacy proof, and founder review are clear.",
+      nextRepair: "Repair launch proof before founder launch decision expands.",
+      axes: [
+        ["Customer proof", "sponsorGuard", 0.8, 6, "Customer proof is ready."],
+        ["Monitoring proof", "supportGuard", 0.8, 5, "Monitoring proof is ready."],
+        ["Support proof", "supportGuard", 0.78, 5, "Support proof is ready."],
+        ["Billing proof", "proofGuard", 0.78, 5, "Billing proof is ready."],
+        ["Privacy proof", "tenantGuard", 0.8, 5, "Privacy proof is ready."],
+        ["Reference approval", "sponsorGuard", 0.76, 5, "Reference approval is clear."],
+        ["Founder review", "ownerCommand", 0.78, 5, "Founder review is scheduled."],
+        ["Evidence gate receipt", "guardClosure", 0.82, 6, "Evidence gate receipt closes proof."],
+      ],
+    },
+    {
+      key: "founder-launch-decision-console",
+      version: "v998",
+      number: 998,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Founder Launch Decision Console",
+      shortLabel: "Founder Launch Decision Console",
+      phase: "First pilot expansion rollout reuse market pilot founder launch decision console",
+      track: "v998 first pilot expansion rollout reuse market pilot founder launch decision console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-founder-launch-decision-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-founder-launch-decision-console",
+      idSuffix: "FOUNDER-LAUNCH-DECISION-CONSOLE",
+      scoreKey: "founderLaunchDecisionConsoleScore",
+      decisionKey: "founderLaunchDecisionConsoleDecision",
+      stateKey: "founderLaunchDecisionConsoleState",
+      lineKey: "founderLaunchDecisionConsoleLine",
+      primarySignal: "Pilot founder launch decision console",
+      primaryNote: "Turns public launch evidence into founder launch decision with launch recommendation, risk summary, customer proof, support proof, financial proof, rollback posture, decision owner, and founder decision receipt.",
+      summary: "Give the founder launch call one console with recommendation, risk summary, customer proof, support proof, financial proof, rollback posture, decision owner, and receipt.",
+      trackSummary: "Public launch evidence gate now becomes one founder launch decision console across recommendation, risk summary, customer proof, support proof, financial proof, rollback posture, decision owner, and receipt.",
+      stageSummary: "Public evidence now becomes founder launch decision with recommendation, risk, customer, support, financial, rollback, owner, and receipt controls.",
+      openDecision: "Make launch decision",
+      guardedDecision: "Make guarded launch decision",
+      holdDecision: "Hold launch decision",
+      repairDecision: "Repair decision proof",
+      nextOpen: "Make founder launch decision and keep recommendation, risk summary, customer proof, support proof, financial proof, rollback posture, owner, and receipt together.",
+      nextGuarded: "Make guarded launch decision while one recommendation, risk, customer, support, financial, rollback, owner, or receipt lane stays watched.",
+      nextHold: "Hold launch decision until recommendation, risk summary, support proof, and rollback posture are clear.",
+      nextRepair: "Repair decision proof before launch candidate freeze expands.",
+      axes: [
+        ["Launch recommendation", "ownerCommand", 0.8, 6, "Launch recommendation is written."],
+        ["Risk summary", "reviewGuard", 0.8, 5, "Risk summary is clear."],
+        ["Customer proof", "sponsorGuard", 0.78, 5, "Customer proof is ready."],
+        ["Support proof", "supportGuard", 0.78, 5, "Support proof is ready."],
+        ["Financial proof", "proofGuard", 0.78, 5, "Financial proof is ready."],
+        ["Rollback posture", "rollbackGuard", 0.8, 5, "Rollback posture is accepted."],
+        ["Decision owner", "ownerCommand", 0.78, 5, "Decision owner is named."],
+        ["Founder decision receipt", "guardClosure", 0.82, 6, "Founder decision receipt closes console."],
+      ],
+    },
+    {
+      key: "launch-candidate-freeze-room",
+      version: "v999",
+      number: 999,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Candidate Freeze Room",
+      shortLabel: "Launch Candidate Freeze Room",
+      phase: "First pilot expansion rollout reuse market pilot launch candidate freeze room",
+      track: "v999 first pilot expansion rollout reuse market pilot launch candidate freeze room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-candidate-freeze-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-candidate-freeze-room",
+      idSuffix: "LAUNCH-CANDIDATE-FREEZE-ROOM",
+      scoreKey: "launchCandidateFreezeRoomScore",
+      decisionKey: "launchCandidateFreezeRoomDecision",
+      stateKey: "launchCandidateFreezeRoomState",
+      lineKey: "launchCandidateFreezeRoomLine",
+      primarySignal: "Pilot launch candidate freeze room",
+      primaryNote: "Turns founder decision into launch candidate freeze with candidate scope, freeze owner, change lock, evidence lock, support lock, billing lock, rollback lock, and freeze receipt.",
+      summary: "Lock the launch candidate with scope, freeze owner, change lock, evidence lock, support lock, billing lock, rollback lock, and freeze receipt.",
+      trackSummary: "Founder launch decision console now becomes one launch candidate freeze room across candidate scope, freeze owner, change lock, evidence lock, support lock, billing lock, rollback lock, and freeze receipt.",
+      stageSummary: "Founder decision now becomes launch candidate freeze with scope, owner, change, evidence, support, billing, rollback, and receipt controls.",
+      openDecision: "Freeze launch candidate",
+      guardedDecision: "Freeze guarded candidate",
+      holdDecision: "Hold launch freeze",
+      repairDecision: "Repair freeze proof",
+      nextOpen: "Freeze launch candidate and keep candidate scope, freeze owner, change lock, evidence lock, support lock, billing lock, rollback lock, and receipt together.",
+      nextGuarded: "Freeze guarded launch candidate while one scope, owner, change, evidence, support, billing, rollback, or receipt lane stays watched.",
+      nextHold: "Hold launch freeze until candidate scope, change lock, evidence lock, and rollback lock are clear.",
+      nextRepair: "Repair freeze proof before public launch day expands.",
+      axes: [
+        ["Candidate scope", "tenantGuard", 0.8, 6, "Candidate scope is locked."],
+        ["Freeze owner", "ownerCommand", 0.8, 5, "Freeze owner is assigned."],
+        ["Change lock", "reviewGuard", 0.8, 5, "Change lock is active."],
+        ["Evidence lock", "proofGuard", 0.8, 5, "Evidence lock is active."],
+        ["Support lock", "supportGuard", 0.78, 5, "Support lock is active."],
+        ["Billing lock", "proofGuard", 0.76, 5, "Billing lock is active."],
+        ["Rollback lock", "rollbackGuard", 0.8, 5, "Rollback lock is active."],
+        ["Freeze receipt", "guardClosure", 0.82, 6, "Freeze receipt closes candidate."],
       ],
     },
   ];
@@ -23065,6 +23260,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCandidateFreezeRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchDecisionConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotOperationalRunbookAcceptanceReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerHealthScorecardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionMonitoringEvidenceBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceApprovalReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRetrospectiveLearningGatePreview(model, autopilot)}",
@@ -30732,6 +30932,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionMonitoringEvidenceBoardPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-monitoring-evidence-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerHealthScorecardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-customer-health-scorecard");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerHealthScorecard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-customer-health-scorecard", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerHealthScorecardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-health-scorecard");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOperationalRunbookAcceptanceReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "operational-runbook-acceptance-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOperationalRunbookAcceptanceReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "operational-runbook-acceptance-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotOperationalRunbookAcceptanceReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "operational-runbook-acceptance-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "public-launch-evidence-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "public-launch-evidence-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "public-launch-evidence-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchDecisionConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "founder-launch-decision-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchDecisionConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "founder-launch-decision-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchDecisionConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "founder-launch-decision-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCandidateFreezeRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-candidate-freeze-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCandidateFreezeRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-candidate-freeze-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCandidateFreezeRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-candidate-freeze-room");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -95543,9 +95803,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v995", "First Pilot Expansion Rollout Reuse Market Pilot First Customer Health Scorecard", "Turn production monitoring into a first customer health scorecard with uptime, adoption, support, billing, evidence, sponsor pulse, and renewal posture."],
-      ["v996", "First Pilot Expansion Rollout Reuse Market Pilot Operational Runbook Acceptance Receipt", "Capture runbook acceptance with owner, escalation, incident path, maintenance window, audit route, rollback proof, and customer-safe handoff."],
-      ["v997", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Evidence Gate", "Prepare public launch evidence with customer proof, monitoring proof, support proof, billing proof, privacy proof, reference approval, and final launch decision."],
+      ["v1000", "First Pilot Expansion Rollout Reuse Market Pilot Launch Readiness Lock", "Lock public launch readiness with frozen candidate scope, launch-day owner, support watch, billing proof, privacy proof, rollback path, and customer-safe comms."],
+      ["v1001", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Day Board", "Run public launch day with live status, incident watch, customer note, support lane, founder decision, rollback timer, and launch receipt."],
+      ["v1002", "First Pilot Expansion Rollout Reuse Market Pilot Post Launch Trust Monitor", "Monitor post-launch trust with uptime, adoption, support load, billing confidence, customer sentiment, proof drift, and learning guardrails."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
