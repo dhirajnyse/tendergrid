@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v984";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Provisioning Proof";
+  const BUILD_VERSION = "v989";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Export Receipt";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=984.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=984.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=989.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=989.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -7055,6 +7055,201 @@
         ["Audit trail", "reviewGuard", 0.78, 6, "Audit trail is visible."],
         ["Rollback path", "rollbackGuard", 0.78, 5, "Rollback path is ready."],
         ["Provisioning receipt", "guardClosure", 0.82, 6, "Provisioning receipt closes proof."],
+      ],
+    },
+    {
+      key: "tenant-access-handoff-receipt",
+      version: "v985",
+      number: 985,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Access Handoff Receipt",
+      shortLabel: "Tenant Access Handoff Receipt",
+      phase: "First pilot expansion rollout reuse market pilot tenant access handoff receipt",
+      track: "v985 first pilot expansion rollout reuse market pilot tenant access handoff receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-access-handoff-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-access-handoff-receipt",
+      idSuffix: "TENANT-ACCESS-HANDOFF-RECEIPT",
+      scoreKey: "tenantAccessHandoffReceiptScore",
+      decisionKey: "tenantAccessHandoffReceiptDecision",
+      stateKey: "tenantAccessHandoffReceiptState",
+      lineKey: "tenantAccessHandoffReceiptLine",
+      primarySignal: "Pilot tenant access handoff receipt",
+      primaryNote: "Turns provisioning proof into tenant access handoff with owner acceptance, role validation, support route, access confirmation, audit receipt, rollback note, handoff owner, and closure proof.",
+      summary: "Turn provisioning proof into tenant access handoff with owner acceptance, role validation, support route, access confirmation, audit receipt, rollback note, and handoff closure.",
+      trackSummary: "Production tenant provisioning proof now becomes one tenant access handoff receipt across owner acceptance, role validation, support route, access confirmation, audit receipt, rollback note, handoff owner, and closure proof.",
+      stageSummary: "Provisioning proof now becomes tenant access handoff with owner, roles, support, access, audit, rollback, and closure controls.",
+      openDecision: "Open access handoff",
+      guardedDecision: "Open guarded handoff",
+      holdDecision: "Hold access handoff",
+      repairDecision: "Repair handoff proof",
+      nextOpen: "Open tenant access handoff and keep owner acceptance, role validation, support route, access confirmation, audit receipt, rollback note, handoff owner, and closure together.",
+      nextGuarded: "Open guarded access handoff while one owner, role, support, access, audit, rollback, handoff, or closure lane stays watched.",
+      nextHold: "Hold access handoff until owner acceptance, roles, support route, and rollback note are calm.",
+      nextRepair: "Repair handoff proof before production billing reconciliation expands.",
+      axes: [
+        ["Owner acceptance", "ownerCommand", 0.8, 6, "Owner acceptance is captured."],
+        ["Role validation", "tenantGuard", 0.8, 5, "Role validation is complete."],
+        ["Support route", "supportGuard", 0.78, 5, "Support route is visible."],
+        ["Access confirmation", "proofGuard", 0.78, 5, "Access confirmation is attached."],
+        ["Audit receipt", "reviewGuard", 0.78, 6, "Audit receipt is visible."],
+        ["Rollback note", "rollbackGuard", 0.76, 5, "Rollback note is ready."],
+        ["Handoff owner", "ownerCommand", 0.78, 5, "Handoff owner is named."],
+        ["Handoff closure", "guardClosure", 0.82, 6, "Handoff closure is recorded."],
+      ],
+    },
+    {
+      key: "production-billing-reconciliation-check",
+      version: "v986",
+      number: 986,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Reconciliation Check",
+      shortLabel: "Production Billing Reconciliation Check",
+      phase: "First pilot expansion rollout reuse market pilot production billing reconciliation check",
+      track: "v986 first pilot expansion rollout reuse market pilot production billing reconciliation check",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-billing-reconciliation-check",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-billing-reconciliation-check",
+      idSuffix: "PRODUCTION-BILLING-RECONCILIATION-CHECK",
+      scoreKey: "productionBillingReconciliationCheckScore",
+      decisionKey: "productionBillingReconciliationCheckDecision",
+      stateKey: "productionBillingReconciliationCheckState",
+      lineKey: "productionBillingReconciliationCheckLine",
+      primarySignal: "Pilot production billing reconciliation check",
+      primaryNote: "Turns access handoff into production billing reconciliation with invoice match, entitlement match, payment status, subscription boundary, exception list, finance signoff, reconciliation owner, and billing receipt.",
+      summary: "Confirm production billing reconciliation with invoice match, entitlement match, payment status, subscription boundary, exception list, finance signoff, owner, and billing receipt.",
+      trackSummary: "Tenant access handoff now becomes one production billing reconciliation check across invoice match, entitlement match, payment status, subscription boundary, exception list, finance signoff, reconciliation owner, and billing receipt.",
+      stageSummary: "Access handoff now becomes billing reconciliation with invoice, entitlement, payment, subscription, exception, finance, owner, and receipt controls.",
+      openDecision: "Open billing reconciliation",
+      guardedDecision: "Open guarded billing check",
+      holdDecision: "Hold billing reconciliation",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Open production billing reconciliation and keep invoice match, entitlement match, payment status, subscription boundary, exception list, finance signoff, owner, and receipt together.",
+      nextGuarded: "Open guarded billing reconciliation while one invoice, entitlement, payment, subscription, exception, finance, owner, or receipt lane stays watched.",
+      nextHold: "Hold billing reconciliation until invoice, entitlement, payment, and finance signoff are clear.",
+      nextRepair: "Repair billing proof before first-week customer success expands.",
+      axes: [
+        ["Invoice match", "proofGuard", 0.8, 5, "Invoice matches the pilot agreement."],
+        ["Entitlement match", "tenantGuard", 0.8, 5, "Entitlement matches access."],
+        ["Payment status", "proofGuard", 0.78, 5, "Payment status is known."],
+        ["Subscription boundary", "tenantGuard", 0.78, 5, "Subscription boundary is clear."],
+        ["Exception list", "rollbackGuard", 0.76, 5, "Billing exceptions are listed."],
+        ["Finance signoff", "reviewGuard", 0.8, 6, "Finance signoff is visible."],
+        ["Reconciliation owner", "ownerCommand", 0.78, 5, "Reconciliation owner is named."],
+        ["Billing receipt", "guardClosure", 0.82, 6, "Billing receipt closes check."],
+      ],
+    },
+    {
+      key: "customer-success-first-week-watch",
+      version: "v987",
+      number: 987,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Success First-Week Watch",
+      shortLabel: "Customer Success First-Week Watch",
+      phase: "First pilot expansion rollout reuse market pilot customer success first-week watch",
+      track: "v987 first pilot expansion rollout reuse market pilot customer success first-week watch",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-first-week-watch",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-first-week-watch",
+      idSuffix: "CUSTOMER-SUCCESS-FIRST-WEEK-WATCH",
+      scoreKey: "customerSuccessFirstWeekWatchScore",
+      decisionKey: "customerSuccessFirstWeekWatchDecision",
+      stateKey: "customerSuccessFirstWeekWatchState",
+      lineKey: "customerSuccessFirstWeekWatchLine",
+      primarySignal: "Pilot customer success first-week watch",
+      primaryNote: "Turns billing reconciliation into first-week customer success watch with adoption signal, support response, value proof, learning safety, sponsor pulse, renewal risk, success owner, and week-one receipt.",
+      summary: "Watch first-week customer success with adoption signal, support response, value proof, learning safety, sponsor pulse, renewal risk, success owner, and week-one receipt.",
+      trackSummary: "Production billing reconciliation now becomes one customer success first-week watch across adoption signal, support response, value proof, learning safety, sponsor pulse, renewal risk, success owner, and week-one receipt.",
+      stageSummary: "Billing reconciliation now becomes first-week customer success watch with adoption, support, value, learning, sponsor, renewal, owner, and receipt controls.",
+      openDecision: "Open first-week watch",
+      guardedDecision: "Open guarded success watch",
+      holdDecision: "Hold first-week watch",
+      repairDecision: "Repair success proof",
+      nextOpen: "Open first-week customer success watch and keep adoption signal, support response, value proof, learning safety, sponsor pulse, renewal risk, owner, and receipt together.",
+      nextGuarded: "Open guarded first-week watch while one adoption, support, value, learning, sponsor, renewal, owner, or receipt lane stays watched.",
+      nextHold: "Hold first-week watch until adoption, support response, value proof, and sponsor pulse are visible.",
+      nextRepair: "Repair success proof before support incident drill expands.",
+      axes: [
+        ["Adoption signal", "proofGuard", 0.8, 5, "Adoption signal is visible."],
+        ["Support response", "supportGuard", 0.8, 5, "Support response is calm."],
+        ["Value proof", "proofGuard", 0.8, 6, "Value proof is attached."],
+        ["Learning safety", "tenantGuard", 0.78, 5, "Learning safety is protected."],
+        ["Sponsor pulse", "sponsorGuard", 0.78, 5, "Sponsor pulse is captured."],
+        ["Renewal risk", "reviewGuard", 0.76, 5, "Renewal risk is named."],
+        ["Success owner", "ownerCommand", 0.78, 5, "Success owner is assigned."],
+        ["Week-one receipt", "guardClosure", 0.82, 6, "Week-one receipt closes watch."],
+      ],
+    },
+    {
+      key: "live-support-incident-drill",
+      version: "v988",
+      number: 988,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Support Incident Drill",
+      shortLabel: "Live Support Incident Drill",
+      phase: "First pilot expansion rollout reuse market pilot live support incident drill",
+      track: "v988 first pilot expansion rollout reuse market pilot live support incident drill",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-support-incident-drill",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-support-incident-drill",
+      idSuffix: "LIVE-SUPPORT-INCIDENT-DRILL",
+      scoreKey: "liveSupportIncidentDrillScore",
+      decisionKey: "liveSupportIncidentDrillDecision",
+      stateKey: "liveSupportIncidentDrillState",
+      lineKey: "liveSupportIncidentDrillLine",
+      primarySignal: "Pilot live support incident drill",
+      primaryNote: "Turns first-week success watch into live support incident drill with incident trigger, response clock, support owner, customer notice, rollback drill, evidence log, escalation route, and drill receipt.",
+      summary: "Rehearse live support incident handling with trigger, response clock, support owner, customer notice, rollback drill, evidence log, escalation route, and drill receipt.",
+      trackSummary: "Customer success first-week watch now becomes one live support incident drill across incident trigger, response clock, support owner, customer notice, rollback drill, evidence log, escalation route, and drill receipt.",
+      stageSummary: "First-week success now becomes support incident drill with trigger, clock, owner, notice, rollback, evidence, escalation, and receipt controls.",
+      openDecision: "Run support drill",
+      guardedDecision: "Run guarded drill",
+      holdDecision: "Hold support drill",
+      repairDecision: "Repair drill proof",
+      nextOpen: "Run live support incident drill and keep incident trigger, response clock, support owner, customer notice, rollback drill, evidence log, escalation route, and receipt together.",
+      nextGuarded: "Run guarded incident drill while one trigger, clock, owner, notice, rollback, evidence, escalation, or receipt lane stays watched.",
+      nextHold: "Hold support drill until trigger, response clock, support owner, and customer notice are clear.",
+      nextRepair: "Repair drill proof before tenant audit export expands.",
+      axes: [
+        ["Incident trigger", "supportGuard", 0.8, 5, "Incident trigger is defined."],
+        ["Response clock", "supportGuard", 0.8, 5, "Response clock is measurable."],
+        ["Support owner", "ownerCommand", 0.78, 6, "Support owner is assigned."],
+        ["Customer notice", "sponsorGuard", 0.78, 5, "Customer notice is ready."],
+        ["Rollback drill", "rollbackGuard", 0.78, 5, "Rollback drill is rehearsed."],
+        ["Evidence log", "proofGuard", 0.78, 5, "Evidence log is ready."],
+        ["Escalation route", "reviewGuard", 0.76, 5, "Escalation route is visible."],
+        ["Drill receipt", "guardClosure", 0.82, 6, "Drill receipt closes rehearsal."],
+      ],
+    },
+    {
+      key: "tenant-audit-export-receipt",
+      version: "v989",
+      number: 989,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Export Receipt",
+      shortLabel: "Tenant Audit Export Receipt",
+      phase: "First pilot expansion rollout reuse market pilot tenant audit export receipt",
+      track: "v989 first pilot expansion rollout reuse market pilot tenant audit export receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-audit-export-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-audit-export-receipt",
+      idSuffix: "TENANT-AUDIT-EXPORT-RECEIPT",
+      scoreKey: "tenantAuditExportReceiptScore",
+      decisionKey: "tenantAuditExportReceiptDecision",
+      stateKey: "tenantAuditExportReceiptState",
+      lineKey: "tenantAuditExportReceiptLine",
+      primarySignal: "Pilot tenant audit export receipt",
+      primaryNote: "Turns incident drill into tenant audit export receipt with export request, scope filter, evidence bundle, privacy review, admin approval, download receipt, retention note, and audit export receipt.",
+      summary: "Prove tenant audit export with export request, scope filter, evidence bundle, privacy review, admin approval, download receipt, retention note, and audit export receipt.",
+      trackSummary: "Live support incident drill now becomes one tenant audit export receipt across export request, scope filter, evidence bundle, privacy review, admin approval, download receipt, retention note, and audit export receipt.",
+      stageSummary: "Incident drill now becomes tenant audit export proof with request, scope, evidence, privacy, approval, download, retention, and receipt controls.",
+      openDecision: "Issue audit export",
+      guardedDecision: "Issue guarded export",
+      holdDecision: "Hold audit export",
+      repairDecision: "Repair export proof",
+      nextOpen: "Issue tenant audit export and keep export request, scope filter, evidence bundle, privacy review, admin approval, download receipt, retention note, and export receipt together.",
+      nextGuarded: "Issue guarded audit export while one request, scope, evidence, privacy, approval, download, retention, or receipt lane stays watched.",
+      nextHold: "Hold audit export until scope filter, privacy review, admin approval, and retention note are clear.",
+      nextRepair: "Repair export proof before production cutover rehearsal expands.",
+      axes: [
+        ["Export request", "ownerCommand", 0.8, 5, "Export request is captured."],
+        ["Scope filter", "tenantGuard", 0.8, 5, "Scope filter is bounded."],
+        ["Evidence bundle", "proofGuard", 0.8, 6, "Evidence bundle is attached."],
+        ["Privacy review", "tenantGuard", 0.8, 5, "Privacy review is complete."],
+        ["Admin approval", "reviewGuard", 0.78, 5, "Admin approval is visible."],
+        ["Download receipt", "proofGuard", 0.78, 5, "Download receipt is stored."],
+        ["Retention note", "rollbackGuard", 0.76, 5, "Retention note is ready."],
+        ["Audit export receipt", "guardClosure", 0.82, 6, "Audit export receipt closes proof."],
       ],
     },
   ];
@@ -22675,6 +22870,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditExportReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportIncidentDrillPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessFirstWeekWatchPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingReconciliationCheckPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAccessHandoffReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionTenantProvisioningProofPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerPilotInviteDeskPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerExpansionReadinessGatePreview(model, autopilot)}",
@@ -30212,6 +30412,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionTenantProvisioningProofPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-tenant-provisioning-proof");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAccessHandoffReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-access-handoff-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAccessHandoffReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-access-handoff-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAccessHandoffReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-access-handoff-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingReconciliationCheckSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-billing-reconciliation-check");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingReconciliationCheck(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-billing-reconciliation-check", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBillingReconciliationCheckPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-billing-reconciliation-check");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessFirstWeekWatchSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-success-first-week-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessFirstWeekWatch(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-success-first-week-watch", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessFirstWeekWatchPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-success-first-week-watch");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportIncidentDrillSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-support-incident-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportIncidentDrill(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-support-incident-drill", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveSupportIncidentDrillPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-support-incident-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditExportReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-audit-export-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditExportReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-audit-export-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantAuditExportReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-audit-export-receipt");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -95023,9 +95283,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v985", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Access Handoff Receipt", "Turn provisioning proof into tenant access handoff with owner acceptance, role validation, support route, and audit receipt."],
-      ["v986", "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Reconciliation Check", "Confirm invoice, entitlement, payment status, subscription boundary, exception list, and finance signoff after provisioning."],
-      ["v987", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success First-Week Watch", "Watch first-week adoption, support response, value proof, learning safety, sponsor pulse, and renewal risk after tenant provisioning."],
+      ["v990", "First Pilot Expansion Rollout Reuse Market Pilot Production Cutover Rehearsal Room", "Rehearse production cutover with data freeze, access switch, billing continuity, support watch, rollback timer, and sponsor notice."],
+      ["v991", "First Pilot Expansion Rollout Reuse Market Pilot Real Customer Go-Live Checklist", "Turn cutover rehearsal into a go-live checklist with owner, date, access, billing, support, audit, rollback, and customer signoff."],
+      ["v992", "First Pilot Expansion Rollout Reuse Market Pilot Launch Retrospective Learning Gate", "Close launch learning with outcome proof, incidents, support lessons, billing notes, customer feedback, and safe reuse decision."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

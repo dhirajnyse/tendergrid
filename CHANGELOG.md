@@ -1,5 +1,124 @@
 # Changelog
 
+## v989 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Audit Export Receipt
+
+### Changes Made
+- Promoted tenant audit export receipt as the current build.
+- Added export request, scope filter, evidence bundle, privacy review, admin approval, download receipt, retention note, and audit export receipt lanes.
+- Updated Build Phase to show v989 as current and queue v990-v992 for production cutover rehearsal, real customer go-live checklist, and launch retrospective learning gate work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v989.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v989 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Tenant Audit Export Receipt visible and v990-v992 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v989 visible, no page-level horizontal overflow, and no console errors.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, build badge, and Command without hangs or console errors.
+
+### Known Risks
+- Tenant audit export receipt is still static; real launch requires live audit export generation, scope filtering, privacy review workflow, admin approval, download receipt storage, retention policy enforcement, and audit storage.
+
+## v988 - First Pilot Expansion Rollout Reuse Market Pilot Live Support Incident Drill
+
+### Changes Made
+- Added the live support incident drill to the pilot rollout runway.
+- Added incident trigger, response clock, support owner, customer notice, rollback drill, evidence log, escalation route, and drill receipt lanes.
+- Added wrapper render paths and static registry coverage so live support drill readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with live support incident drill release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Live support incident drill is not connected to real incident intake, response clocks, customer notifications, rollback execution, evidence logs, escalation routing, or receipt storage.
+
+## v987 - First Pilot Expansion Rollout Reuse Market Pilot Customer Success First-Week Watch
+
+### Changes Made
+- Added the customer success first-week watch to the pilot rollout runway.
+- Added adoption signal, support response, value proof, learning safety, sponsor pulse, renewal risk, success owner, and week-one receipt lanes.
+- Added wrapper render paths and static registry coverage so first-week customer success readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with customer success first-week watch release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Customer success first-week watch is not connected to live adoption telemetry, support response tracking, sponsor pulse capture, renewal risk scoring, or week-one receipt storage.
+
+## v986 - First Pilot Expansion Rollout Reuse Market Pilot Production Billing Reconciliation Check
+
+### Changes Made
+- Added the production billing reconciliation check to the pilot rollout runway.
+- Added invoice match, entitlement match, payment status, subscription boundary, exception list, finance signoff, reconciliation owner, and billing receipt lanes.
+- Added wrapper render paths and static registry coverage so production billing reconciliation readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with production billing reconciliation check release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Production billing reconciliation is not connected to real invoices, entitlement enforcement, payment processor status, subscription boundaries, finance signoff, or billing receipt storage.
+
+## v985 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Access Handoff Receipt
+
+### Changes Made
+- Added the tenant access handoff receipt to the pilot rollout runway.
+- Added owner acceptance, role validation, support route, access confirmation, audit receipt, rollback note, handoff owner, and handoff closure lanes.
+- Added wrapper render paths and static registry coverage so tenant access handoff readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with tenant access handoff receipt release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Tenant access handoff is not connected to live owner acceptance, role validation, support routing, access confirmation, audit writes, rollback notes, or handoff closure storage.
+
 ## v984 - First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Provisioning Proof
 
 ### Changes Made
