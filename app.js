@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v974";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Evidence Pack";
+  const BUILD_VERSION = "v979";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Evidence Dashboard";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=974.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=974.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=979.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=979.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -6665,6 +6665,201 @@
         ["Learning boundary", "tenantGuard", 0.8, 5, "Learning boundary is safe."],
         ["Success metric", "reviewGuard", 0.76, 6, "Success metric is named."],
         ["Go-live receipt", "guardClosure", 0.82, 6, "Go-live receipt closes pack."],
+      ],
+    },
+    {
+      key: "day-one-support-watch-console",
+      version: "v975",
+      number: 975,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Day-One Support Watch Console",
+      shortLabel: "Day-One Support Watch Console",
+      phase: "First pilot expansion rollout reuse market pilot day-one support watch console",
+      track: "v975 first pilot expansion rollout reuse market pilot day-one support watch console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-day-one-support-watch-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-day-one-support-watch-console",
+      idSuffix: "DAY-ONE-SUPPORT-WATCH-CONSOLE",
+      scoreKey: "dayOneSupportWatchConsoleScore",
+      decisionKey: "dayOneSupportWatchConsoleDecision",
+      stateKey: "dayOneSupportWatchConsoleState",
+      lineKey: "dayOneSupportWatchConsoleLine",
+      primarySignal: "Pilot day-one support watch console",
+      primaryNote: "Turns customer go-live proof into a day-one support watch with SLA owner, support queue, response route, incident trigger, customer calm proof, and support receipt.",
+      summary: "Open day-one support watch with SLA owner, support queue, response route, incident trigger, customer calm proof, escalation note, cadence, and support receipt.",
+      trackSummary: "Customer go-live evidence now becomes one day-one support watch console across SLA owner, support queue, response route, incident trigger, customer calm proof, escalation note, cadence, and support receipt.",
+      stageSummary: "Customer go-live proof now becomes day-one support watch with owner, queue, response route, incident trigger, customer calm, escalation, cadence, and receipt controls.",
+      openDecision: "Open support watch",
+      guardedDecision: "Open guarded support watch",
+      holdDecision: "Hold support watch",
+      repairDecision: "Repair support watch",
+      nextOpen: "Open day-one support watch and keep SLA owner, support queue, response route, incident trigger, customer calm proof, escalation note, cadence, and support receipt together.",
+      nextGuarded: "Open guarded support watch while one SLA, queue, route, incident, calm, escalation, cadence, or receipt lane stays watched.",
+      nextHold: "Hold support watch until SLA owner, queue, response route, and incident trigger are clear.",
+      nextRepair: "Repair support watch before billing activation expands.",
+      axes: [
+        ["SLA owner", "ownerCommand", 0.8, 6, "SLA owner is named."],
+        ["Support queue", "supportGuard", 0.8, 5, "Support queue is visible."],
+        ["Response route", "supportGuard", 0.78, 5, "Response route is clear."],
+        ["Incident trigger", "rollbackGuard", 0.78, 5, "Incident trigger is defined."],
+        ["Customer calm proof", "sponsorGuard", 0.78, 6, "Customer calm proof is captured."],
+        ["Escalation note", "reviewGuard", 0.76, 5, "Escalation note is attached."],
+        ["Day-one cadence", "reviewGuard", 0.76, 6, "Day-one cadence is set."],
+        ["Support receipt", "guardClosure", 0.82, 6, "Support receipt closes console."],
+      ],
+    },
+    {
+      key: "billing-activation-entitlement-receipt",
+      version: "v976",
+      number: 976,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Billing Activation Entitlement Receipt",
+      shortLabel: "Billing Activation Entitlement Receipt",
+      phase: "First pilot expansion rollout reuse market pilot billing activation entitlement receipt",
+      track: "v976 first pilot expansion rollout reuse market pilot billing activation entitlement receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-billing-activation-entitlement-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-billing-activation-entitlement-receipt",
+      idSuffix: "BILLING-ACTIVATION-ENTITLEMENT-RECEIPT",
+      scoreKey: "billingActivationEntitlementReceiptScore",
+      decisionKey: "billingActivationEntitlementReceiptDecision",
+      stateKey: "billingActivationEntitlementReceiptState",
+      lineKey: "billingActivationEntitlementReceiptLine",
+      primarySignal: "Pilot billing activation entitlement receipt",
+      primaryNote: "Turns support watch into a billing activation receipt with plan proof, entitlement lock, invoice note, access receipt, finance review, and billing receipt.",
+      summary: "Confirm billing activation with plan proof, entitlement lock, invoice note, access receipt, finance review, billing owner, exception lane, and billing receipt.",
+      trackSummary: "Day-one support watch now becomes one billing activation entitlement receipt across plan proof, entitlement lock, invoice note, access receipt, finance review, billing owner, exception lane, and billing receipt.",
+      stageSummary: "Support watch now becomes billing activation proof with plan, entitlement, invoice, access, finance, owner, exception, and receipt controls.",
+      openDecision: "Issue billing receipt",
+      guardedDecision: "Issue guarded billing receipt",
+      holdDecision: "Hold billing receipt",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Issue billing activation entitlement receipt and keep plan proof, entitlement lock, invoice note, access receipt, finance review, billing owner, exception lane, and receipt together.",
+      nextGuarded: "Issue guarded billing receipt while one plan, entitlement, invoice, access, finance, owner, exception, or receipt lane stays watched.",
+      nextHold: "Hold billing receipt until plan proof, entitlement lock, invoice note, and access receipt are ready.",
+      nextRepair: "Repair billing proof before learning closeout expands.",
+      axes: [
+        ["Plan proof", "proofGuard", 0.78, 5, "Plan proof is attached."],
+        ["Entitlement lock", "tenantGuard", 0.8, 5, "Entitlement lock is clear."],
+        ["Invoice note", "reviewGuard", 0.76, 5, "Invoice note is written."],
+        ["Access receipt", "proofGuard", 0.78, 6, "Access receipt is captured."],
+        ["Finance review", "reviewGuard", 0.76, 6, "Finance review is ready."],
+        ["Billing owner", "ownerCommand", 0.8, 5, "Billing owner is named."],
+        ["Exception lane", "rollbackGuard", 0.76, 5, "Exception lane is defined."],
+        ["Billing receipt", "guardClosure", 0.82, 6, "Billing receipt closes activation."],
+      ],
+    },
+    {
+      key: "first-learning-closeout-review",
+      version: "v977",
+      number: 977,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Learning Closeout Review",
+      shortLabel: "First Learning Closeout Review",
+      phase: "First pilot expansion rollout reuse market pilot first learning closeout review",
+      track: "v977 first pilot expansion rollout reuse market pilot first learning closeout review",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-learning-closeout-review",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-learning-closeout-review",
+      idSuffix: "FIRST-LEARNING-CLOSEOUT-REVIEW",
+      scoreKey: "firstLearningCloseoutReviewScore",
+      decisionKey: "firstLearningCloseoutReviewDecision",
+      stateKey: "firstLearningCloseoutReviewState",
+      lineKey: "firstLearningCloseoutReviewLine",
+      primarySignal: "Pilot first learning closeout review",
+      primaryNote: "Turns billing activation into a learning closeout review with outcome proof, sponsor readback, safe reuse decision, lessons held, roadmap adjustment, and closeout receipt.",
+      summary: "Close first learning with outcome proof, sponsor readback, safe reuse decision, lessons held, roadmap adjustment, privacy boundary, owner review, and closeout receipt.",
+      trackSummary: "Billing activation receipt now becomes one first learning closeout review across outcome proof, sponsor readback, safe reuse decision, lessons held, roadmap adjustment, privacy boundary, owner review, and closeout receipt.",
+      stageSummary: "Billing proof now becomes first learning closeout with outcome, sponsor readback, reuse decision, lessons, roadmap, privacy, owner review, and receipt controls.",
+      openDecision: "Close learning review",
+      guardedDecision: "Close guarded learning review",
+      holdDecision: "Hold learning review",
+      repairDecision: "Repair learning closeout",
+      nextOpen: "Close first learning review and keep outcome proof, sponsor readback, safe reuse decision, lessons held, roadmap adjustment, privacy boundary, owner review, and receipt together.",
+      nextGuarded: "Close guarded learning review while one outcome, sponsor, reuse, lesson, roadmap, privacy, owner, or receipt lane stays watched.",
+      nextHold: "Hold learning review until outcome proof, sponsor readback, and reuse decision are ready.",
+      nextRepair: "Repair learning closeout before admin feedback intake expands.",
+      axes: [
+        ["Outcome proof", "proofGuard", 0.8, 5, "Outcome proof is attached."],
+        ["Sponsor readback", "sponsorGuard", 0.78, 6, "Sponsor readback is visible."],
+        ["Safe reuse decision", "tenantGuard", 0.8, 5, "Safe reuse decision is explicit."],
+        ["Lessons held", "reviewGuard", 0.76, 5, "Lessons held are listed."],
+        ["Roadmap adjustment", "reviewGuard", 0.76, 6, "Roadmap adjustment is named."],
+        ["Privacy boundary", "tenantGuard", 0.8, 5, "Privacy boundary is protected."],
+        ["Owner review", "ownerCommand", 0.78, 5, "Owner review is assigned."],
+        ["Closeout receipt", "guardClosure", 0.82, 6, "Closeout receipt closes learning."],
+      ],
+    },
+    {
+      key: "pilot-admin-feedback-intake",
+      version: "v978",
+      number: 978,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Pilot Admin Feedback Intake",
+      shortLabel: "Pilot Admin Feedback Intake",
+      phase: "First pilot expansion rollout reuse market pilot pilot admin feedback intake",
+      track: "v978 first pilot expansion rollout reuse market pilot pilot admin feedback intake",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-admin-feedback-intake",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-admin-feedback-intake",
+      idSuffix: "PILOT-ADMIN-FEEDBACK-INTAKE",
+      scoreKey: "pilotAdminFeedbackIntakeScore",
+      decisionKey: "pilotAdminFeedbackIntakeDecision",
+      stateKey: "pilotAdminFeedbackIntakeState",
+      lineKey: "pilotAdminFeedbackIntakeLine",
+      primarySignal: "Pilot admin feedback intake",
+      primaryNote: "Turns learning closeout into admin feedback intake with form, severity, product theme, owner, decision lane, evidence link, follow-up date, and feedback receipt.",
+      summary: "Capture admin feedback with form, severity, product theme, owner, decision lane, evidence link, follow-up date, and feedback receipt.",
+      trackSummary: "First learning closeout now becomes one pilot admin feedback intake across feedback form, severity, product theme, owner, decision lane, evidence link, follow-up date, and feedback receipt.",
+      stageSummary: "Learning closeout now becomes admin feedback intake with form, severity, theme, owner, decision lane, evidence link, date, and receipt controls.",
+      openDecision: "Open feedback intake",
+      guardedDecision: "Open guarded feedback intake",
+      holdDecision: "Hold feedback intake",
+      repairDecision: "Repair feedback proof",
+      nextOpen: "Open pilot admin feedback intake and keep form, severity, product theme, owner, decision lane, evidence link, follow-up date, and feedback receipt together.",
+      nextGuarded: "Open guarded feedback intake while one form, severity, theme, owner, decision, evidence, date, or receipt lane stays watched.",
+      nextHold: "Hold feedback intake until form, severity, product theme, and owner are clear.",
+      nextRepair: "Repair feedback proof before launch metrics expand.",
+      axes: [
+        ["Feedback form", "proofGuard", 0.78, 5, "Feedback form is ready."],
+        ["Severity", "rollbackGuard", 0.76, 5, "Severity is classified."],
+        ["Product theme", "reviewGuard", 0.76, 6, "Product theme is named."],
+        ["Owner", "ownerCommand", 0.8, 5, "Owner is assigned."],
+        ["Decision lane", "reviewGuard", 0.76, 5, "Decision lane is visible."],
+        ["Evidence link", "proofGuard", 0.78, 5, "Evidence link is attached."],
+        ["Follow-up date", "reviewGuard", 0.76, 6, "Follow-up date is set."],
+        ["Feedback receipt", "guardClosure", 0.82, 6, "Feedback receipt closes intake."],
+      ],
+    },
+    {
+      key: "launch-metrics-evidence-dashboard",
+      version: "v979",
+      number: 979,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Evidence Dashboard",
+      shortLabel: "Launch Metrics Evidence Dashboard",
+      phase: "First pilot expansion rollout reuse market pilot launch metrics evidence dashboard",
+      track: "v979 first pilot expansion rollout reuse market pilot launch metrics evidence dashboard",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-metrics-evidence-dashboard",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-metrics-evidence-dashboard",
+      idSuffix: "LAUNCH-METRICS-EVIDENCE-DASHBOARD",
+      scoreKey: "launchMetricsEvidenceDashboardScore",
+      decisionKey: "launchMetricsEvidenceDashboardDecision",
+      stateKey: "launchMetricsEvidenceDashboardState",
+      lineKey: "launchMetricsEvidenceDashboardLine",
+      primarySignal: "Pilot launch metrics evidence dashboard",
+      primaryNote: "Turns admin feedback intake into a launch metrics dashboard with usage signal, support signal, value proof, billing proof, learning signal, and metrics receipt.",
+      summary: "Show launch metrics with usage signal, support signal, value proof, billing proof, learning signal, review owner, and metrics receipt.",
+      trackSummary: "Pilot admin feedback intake now becomes one launch metrics evidence dashboard across launch metrics, usage signal, support signal, value proof, billing proof, learning signal, review owner, and metrics receipt.",
+      stageSummary: "Admin feedback now becomes launch metrics evidence with usage, support, value, billing, learning, owner, and receipt controls.",
+      openDecision: "Open metrics dashboard",
+      guardedDecision: "Open guarded metrics dashboard",
+      holdDecision: "Hold metrics dashboard",
+      repairDecision: "Repair metrics proof",
+      nextOpen: "Open launch metrics evidence dashboard and keep launch metrics, usage signal, support signal, value proof, billing proof, learning signal, review owner, and receipt together.",
+      nextGuarded: "Open guarded metrics dashboard while one metrics, usage, support, value, billing, learning, owner, or receipt lane stays watched.",
+      nextHold: "Hold metrics dashboard until launch metrics, usage signal, support signal, and value proof are ready.",
+      nextRepair: "Repair metrics proof before sponsor readout expands.",
+      axes: [
+        ["Launch metrics", "reviewGuard", 0.78, 6, "Launch metrics are visible."],
+        ["Usage signal", "tenantGuard", 0.78, 5, "Usage signal is captured."],
+        ["Support signal", "supportGuard", 0.78, 5, "Support signal is calm."],
+        ["Value proof", "proofGuard", 0.8, 5, "Value proof is attached."],
+        ["Billing proof", "proofGuard", 0.78, 5, "Billing proof is linked."],
+        ["Learning signal", "tenantGuard", 0.78, 6, "Learning signal is bounded."],
+        ["Review owner", "ownerCommand", 0.78, 5, "Review owner is named."],
+        ["Metrics receipt", "guardClosure", 0.82, 6, "Metrics receipt closes dashboard."],
       ],
     },
   ];
@@ -22285,6 +22480,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsEvidenceDashboardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminFeedbackIntakePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstLearningCloseoutReviewPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingActivationEntitlementReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotDayOneSupportWatchConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveEvidencePackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotBackendIssueImportSprintBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchDecisionBoardPreview(model, autopilot)}",
@@ -29692,6 +29892,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerPilotGoLiveEvidencePackPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-pilot-go-live-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotDayOneSupportWatchConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "day-one-support-watch-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotDayOneSupportWatchConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "day-one-support-watch-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotDayOneSupportWatchConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "day-one-support-watch-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBillingActivationEntitlementReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "billing-activation-entitlement-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotBillingActivationEntitlementReceipt(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "billing-activation-entitlement-receipt", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotBillingActivationEntitlementReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "billing-activation-entitlement-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstLearningCloseoutReviewSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-learning-closeout-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstLearningCloseoutReview(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-learning-closeout-review", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstLearningCloseoutReviewPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-learning-closeout-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminFeedbackIntakeSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-admin-feedback-intake");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminFeedbackIntake(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-admin-feedback-intake", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminFeedbackIntakePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-admin-feedback-intake");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsEvidenceDashboardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-metrics-evidence-dashboard");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsEvidenceDashboard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-metrics-evidence-dashboard", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsEvidenceDashboardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-metrics-evidence-dashboard");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -94503,9 +94763,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v975", "First Pilot Expansion Rollout Reuse Market Pilot Day-One Support Watch Console", "Turn go-live evidence into support watch, SLA owner, response route, incident trigger, and customer calm proof."],
-      ["v976", "First Pilot Expansion Rollout Reuse Market Pilot Billing Activation Entitlement Receipt", "Confirm billing activation, entitlement rules, plan proof, access lock, invoice note, and finance receipt before scale."],
-      ["v977", "First Pilot Expansion Rollout Reuse Market Pilot First Learning Closeout Review", "Close the first live learning loop with outcome proof, customer readback, safe reuse decision, and roadmap adjustment."],
+      ["v980", "First Pilot Expansion Rollout Reuse Market Pilot Launch Board Sponsor Readout Pack", "Turn launch metrics into sponsor readout, board narrative, outcome proof, revenue note, and follow-up ask."],
+      ["v981", "First Pilot Expansion Rollout Reuse Market Pilot Pilot Renewal Decision Signal", "Convert launch evidence into renewal intent, expansion option, sponsor decision, and commercial next step."],
+      ["v982", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Expansion Readiness Gate", "Check whether support, billing, security, evidence, and learning are strong enough to open another customer."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

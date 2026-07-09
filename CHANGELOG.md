@@ -1,5 +1,124 @@
 # Changelog
 
+## v979 - First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Evidence Dashboard
+
+### Changes Made
+- Promoted launch metrics evidence dashboard as the current build.
+- Added launch metrics, usage signal, support signal, value proof, billing proof, learning signal, review owner, and metrics receipt lanes.
+- Updated Build Phase to show v979 as current and queue v980-v982 for sponsor readout, renewal decision, and multi-customer expansion readiness work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v979.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v979 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Launch Metrics Evidence Dashboard visible and v980-v982 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v979 visible, no page-level horizontal overflow, and no console errors.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, build badge, and Command without hangs or console errors.
+
+### Known Risks
+- Launch metrics evidence dashboard is still static; real launch requires live usage telemetry, support events, value proof storage, billing receipt capture, learning signal controls, and review-owner workflow.
+
+## v978 - First Pilot Expansion Rollout Reuse Market Pilot Pilot Admin Feedback Intake
+
+### Changes Made
+- Added the pilot admin feedback intake to the pilot rollout runway.
+- Added feedback form, severity, product theme, owner, decision lane, evidence link, follow-up date, and feedback receipt lanes.
+- Added wrapper render paths and static registry coverage so pilot admin feedback can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with pilot admin feedback intake release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Pilot admin feedback intake is not connected to real submitted feedback, severity workflow, product issue routing, evidence upload, follow-up scheduling, or feedback receipt storage.
+
+## v977 - First Pilot Expansion Rollout Reuse Market Pilot First Learning Closeout Review
+
+### Changes Made
+- Added the first learning closeout review to the pilot rollout runway.
+- Added outcome proof, sponsor readback, safe reuse decision, lessons held, roadmap adjustment, privacy boundary, owner review, and closeout receipt lanes.
+- Added wrapper render paths and static registry coverage so first learning closeout can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with first learning closeout review release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- First learning closeout review is not connected to live outcomes, sponsor readback capture, reuse approvals, roadmap issue updates, privacy gate enforcement, or closeout receipt storage.
+
+## v976 - First Pilot Expansion Rollout Reuse Market Pilot Billing Activation Entitlement Receipt
+
+### Changes Made
+- Added the billing activation entitlement receipt to the pilot rollout runway.
+- Added plan proof, entitlement lock, invoice note, access receipt, finance review, billing owner, exception lane, and billing receipt lanes.
+- Added wrapper render paths and static registry coverage so billing activation readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with billing activation entitlement receipt release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Billing activation entitlement receipt is not connected to live checkout, plan entitlement enforcement, invoice creation, finance approval, access provisioning, exception workflow, or billing receipt storage.
+
+## v975 - First Pilot Expansion Rollout Reuse Market Pilot Day-One Support Watch Console
+
+### Changes Made
+- Added the day-one support watch console to the pilot rollout runway.
+- Added SLA owner, support queue, response route, incident trigger, customer calm proof, escalation note, day-one cadence, and support receipt lanes.
+- Added wrapper render paths and static registry coverage so day-one support readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with day-one support watch console release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Day-one support watch console is not connected to live SLA timers, support ticket queues, incident response triggers, escalation notifications, customer proof capture, or support receipt storage.
+
 ## v974 - First Pilot Expansion Rollout Reuse Market Pilot Customer Pilot Go-Live Evidence Pack
 
 ### Changes Made
