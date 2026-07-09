@@ -1,5 +1,124 @@
 # Changelog
 
+## v984 - First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Provisioning Proof
+
+### Changes Made
+- Promoted production tenant provisioning proof as the current build.
+- Added tenant record, admin owner, access roles, data import, billing entitlement, audit trail, rollback path, and provisioning receipt lanes.
+- Updated Build Phase to show v984 as current and queue v985-v987 for tenant access handoff, billing reconciliation, and first-week customer success watch work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v984.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser route QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v984 visible, no page-level horizontal overflow, and no console errors.
+- Passed: Build Phase browser QA with Production Tenant Provisioning Proof visible and v985-v987 next queue visible.
+- Passed: 390px mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v984 visible, no page-level horizontal overflow, and no console errors.
+- Passed: side-rail click QA for Autopilot, Reports, Build Phase, build badge, and Command without hangs or console errors.
+
+### Known Risks
+- Production tenant provisioning proof is still static; real launch requires live tenant creation, admin ownership, role provisioning, import execution, billing entitlement enforcement, audit writes, rollback tooling, and receipt storage.
+
+## v983 - First Pilot Expansion Rollout Reuse Market Pilot Second Customer Pilot Invite Desk
+
+### Changes Made
+- Added the second customer pilot invite desk to the pilot rollout runway.
+- Added invite list, target account, sponsor note, proof pack, pilot scope, access promise, response route, and invite receipt lanes.
+- Added wrapper render paths and static registry coverage so second-customer invite readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with second customer pilot invite desk release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Second customer pilot invite desk is not connected to real account selection, sponsor messages, invite delivery, access promises, response tracking, or invite receipt storage.
+
+## v982 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Expansion Readiness Gate
+
+### Changes Made
+- Added the multi-customer expansion readiness gate to the pilot rollout runway.
+- Added support capacity, billing repeatability, security posture, evidence reuse, learning safety, customer boundary, expansion owner, and gate receipt lanes.
+- Added wrapper render paths and static registry coverage so multi-customer expansion readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with multi-customer expansion readiness gate release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Multi-customer expansion readiness gate is not connected to live capacity, billing repeatability tests, security review, evidence reuse approval, learning safety controls, or expansion owner workflow.
+
+## v981 - First Pilot Expansion Rollout Reuse Market Pilot Pilot Renewal Decision Signal
+
+### Changes Made
+- Added the pilot renewal decision signal to the pilot rollout runway.
+- Added renewal intent, expansion option, sponsor decision, commercial next step, support condition, value continuity, learning boundary, and decision receipt lanes.
+- Added wrapper render paths and static registry coverage so renewal/expansion intent can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with pilot renewal decision signal release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Pilot renewal decision signal is not connected to real renewal intent capture, sponsor decision storage, commercial next-step workflow, support commitments, value continuity proof, or learning boundary enforcement.
+
+## v980 - First Pilot Expansion Rollout Reuse Market Pilot Launch Board Sponsor Readout Pack
+
+### Changes Made
+- Added the launch board sponsor readout pack to the pilot rollout runway.
+- Added board narrative, sponsor readout, outcome proof, revenue note, support posture, risk ask, follow-up ask, and readout receipt lanes.
+- Added wrapper render paths and static registry coverage so sponsor readout readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with launch board sponsor readout pack release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop, mobile, and side-rail click QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Launch board sponsor readout pack is not connected to live sponsor deck generation, outcome proof archive, revenue recognition, board approvals, follow-up ownership, or readout receipt storage.
+
 ## v979 - First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Evidence Dashboard
 
 ### Changes Made

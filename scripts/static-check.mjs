@@ -83,28 +83,28 @@ const seed = context.window.SEED_DATA;
 
 assert(index.includes("<title>PursuitDesk</title>"), "index.html has the wrong title.");
 assert(index.includes('<div id="app"></div>'), "index.html is missing the app mount.");
-assert(index.includes("styles.min.css?v=979.1"), "index.html is missing the v979.1 minified CSS cache token.");
-assert(index.includes("data/sample-data.js?v=979.1"), "index.html is missing the v979.1 data cache token.");
-assert(index.includes("app.min.js?v=979.1"), "index.html is missing the v979.1 minified app cache token.");
-assert(index.includes("assets/pursuitdesk-mark.svg?v=979.1"), "index.html is missing the v979.1 icon cache token.");
+assert(index.includes("styles.min.css?v=984.1"), "index.html is missing the v984.1 minified CSS cache token.");
+assert(index.includes("data/sample-data.js?v=984.1"), "index.html is missing the v984.1 data cache token.");
+assert(index.includes("app.min.js?v=984.1"), "index.html is missing the v984.1 minified app cache token.");
+assert(index.includes("assets/pursuitdesk-mark.svg?v=984.1"), "index.html is missing the v984.1 icon cache token.");
 assert(!/\son[a-z]+\s*=/i.test(index), "index.html contains an inline event handler.");
 assert(!/(?:src|href)\s*=\s*["'][^"']*https?:\/\//i.test(index), "index.html should not require remote assets.");
 assert(!/url\(\s*["']?https?:\/\//i.test(css), "styles.css should not require remote assets.");
 
 assert(manifest.name === "PursuitDesk", "site.webmanifest has the wrong app name.");
 assert(manifest.short_name === "PursuitDesk", "site.webmanifest has the wrong short name.");
-assert(pkg.version === "9.7.9", "package.json has the wrong release version.");
+assert(pkg.version === "9.8.4", "package.json has the wrong release version.");
 
 assert(app.includes('const BRAND_NAME = "PursuitDesk";'), "app.js has the wrong brand name.");
-assert(app.includes('const BUILD_VERSION = "v979";'), "app.js has the wrong build version.");
-assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Evidence Dashboard";'), "app.js has the wrong build label.");
-assert(app.includes('assets/pursuitdesk-mark.svg?v=979.1'), "app.js is missing the v979.1 brand mark cache token.");
-assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=979.1'), "app.js is missing the v979.1 3D logo cache token.");
-assert(appMin.includes("v979"), "app.min.js is missing the v979 build marker.");
-assert(appMin.includes("First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Evidence Dashboard"), "app.min.js is missing the v979 build label.");
-assert(appMin.includes("copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-metrics-evidence-dashboard"), "app.min.js is missing the v979 copy action.");
-assert(appMin.includes("v979 first pilot expansion rollout reuse market pilot launch metrics evidence dashboard"), "app.min.js is missing the v979 current Build Phase track.");
-assert(appMin.includes("v980") && appMin.includes("v981") && appMin.includes("v982"), "app.min.js is missing the v980-v981-v982 next queue.");
+assert(app.includes('const BUILD_VERSION = "v984";'), "app.js has the wrong build version.");
+assert(app.includes('const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Provisioning Proof";'), "app.js has the wrong build label.");
+assert(app.includes('assets/pursuitdesk-mark.svg?v=984.1'), "app.js is missing the v984.1 brand mark cache token.");
+assert(app.includes('assets/pursuitdesk-logo-3d.svg?v=984.1'), "app.js is missing the v984.1 3D logo cache token.");
+assert(appMin.includes("v984"), "app.min.js is missing the v984 build marker.");
+assert(appMin.includes("First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Provisioning Proof"), "app.min.js is missing the v984 build label.");
+assert(appMin.includes("copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-tenant-provisioning-proof"), "app.min.js is missing the v984 copy action.");
+assert(appMin.includes("v984 first pilot expansion rollout reuse market pilot production tenant provisioning proof"), "app.min.js is missing the v984 current Build Phase track.");
+assert(appMin.includes("v985") && appMin.includes("v986") && appMin.includes("v987"), "app.min.js is missing the v985-v986-v987 next queue.");
 assert(cssMin.includes("command-pilot-runway-stage"), "styles.min.css is missing the pilot runway stage class.");
 [
   "app.js",
@@ -2036,6 +2036,11 @@ assert(app.includes("v804 first pilot expansion rollout reuse market pilot launc
   ["FirstLearningCloseoutReview", "First Pilot Expansion Rollout Reuse Market Pilot First Learning Closeout Review", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-learning-closeout-review", "Pilot first learning closeout review", "v977 first pilot expansion rollout reuse market pilot first learning closeout review"],
   ["PilotAdminFeedbackIntake", "First Pilot Expansion Rollout Reuse Market Pilot Pilot Admin Feedback Intake", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-admin-feedback-intake", "Pilot admin feedback intake", "v978 first pilot expansion rollout reuse market pilot pilot admin feedback intake"],
   ["LaunchMetricsEvidenceDashboard", "First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Evidence Dashboard", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-metrics-evidence-dashboard", "Pilot launch metrics evidence dashboard", "v979 first pilot expansion rollout reuse market pilot launch metrics evidence dashboard"],
+  ["LaunchBoardSponsorReadoutPack", "First Pilot Expansion Rollout Reuse Market Pilot Launch Board Sponsor Readout Pack", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-board-sponsor-readout-pack", "Pilot launch board sponsor readout pack", "v980 first pilot expansion rollout reuse market pilot launch board sponsor readout pack"],
+  ["PilotRenewalDecisionSignal", "First Pilot Expansion Rollout Reuse Market Pilot Pilot Renewal Decision Signal", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-renewal-decision-signal", "Pilot renewal decision signal", "v981 first pilot expansion rollout reuse market pilot pilot renewal decision signal"],
+  ["MultiCustomerExpansionReadinessGate", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Expansion Readiness Gate", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-customer-expansion-readiness-gate", "Pilot multi-customer expansion readiness gate", "v982 first pilot expansion rollout reuse market pilot multi-customer expansion readiness gate"],
+  ["SecondCustomerPilotInviteDesk", "First Pilot Expansion Rollout Reuse Market Pilot Second Customer Pilot Invite Desk", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-second-customer-pilot-invite-desk", "Pilot second customer pilot invite desk", "v983 first pilot expansion rollout reuse market pilot second customer pilot invite desk"],
+  ["ProductionTenantProvisioningProof", "First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Provisioning Proof", "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-tenant-provisioning-proof", "Pilot production tenant provisioning proof", "v984 first pilot expansion rollout reuse market pilot production tenant provisioning proof"],
 ].forEach(([suffix, label, copyAction, signal, track]) => {
   assert(app.includes(label), `${label} release label is missing.`);
   assert(app.includes(`function buildCommandFirstPilotExpansionRolloutReuseMarketPilot${suffix}Summary`), `${label} summary model is missing.`);

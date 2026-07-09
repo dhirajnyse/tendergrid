@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v979";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Metrics Evidence Dashboard";
+  const BUILD_VERSION = "v984";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Provisioning Proof";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=979.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=979.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=984.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=984.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -6860,6 +6860,201 @@
         ["Learning signal", "tenantGuard", 0.78, 6, "Learning signal is bounded."],
         ["Review owner", "ownerCommand", 0.78, 5, "Review owner is named."],
         ["Metrics receipt", "guardClosure", 0.82, 6, "Metrics receipt closes dashboard."],
+      ],
+    },
+    {
+      key: "launch-board-sponsor-readout-pack",
+      version: "v980",
+      number: 980,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Board Sponsor Readout Pack",
+      shortLabel: "Launch Board Sponsor Readout Pack",
+      phase: "First pilot expansion rollout reuse market pilot launch board sponsor readout pack",
+      track: "v980 first pilot expansion rollout reuse market pilot launch board sponsor readout pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-board-sponsor-readout-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-board-sponsor-readout-pack",
+      idSuffix: "LAUNCH-BOARD-SPONSOR-READOUT-PACK",
+      scoreKey: "launchBoardSponsorReadoutPackScore",
+      decisionKey: "launchBoardSponsorReadoutPackDecision",
+      stateKey: "launchBoardSponsorReadoutPackState",
+      lineKey: "launchBoardSponsorReadoutPackLine",
+      primarySignal: "Pilot launch board sponsor readout pack",
+      primaryNote: "Turns launch metrics into a board-ready sponsor readout with narrative, outcome proof, revenue note, support posture, risk ask, follow-up ask, and readout receipt.",
+      summary: "Package launch metrics into board narrative, sponsor readout, outcome proof, revenue note, support posture, risk ask, follow-up ask, and readout receipt.",
+      trackSummary: "Launch metrics evidence now becomes one sponsor readout pack across board narrative, sponsor readout, outcome proof, revenue note, support posture, risk ask, follow-up ask, and readout receipt.",
+      stageSummary: "Launch metrics now become board-ready sponsor readout with narrative, sponsor proof, outcome, revenue, support, risk, ask, and receipt controls.",
+      openDecision: "Send sponsor readout",
+      guardedDecision: "Send guarded readout",
+      holdDecision: "Hold sponsor readout",
+      repairDecision: "Repair readout proof",
+      nextOpen: "Send launch board sponsor readout pack and keep board narrative, sponsor readout, outcome proof, revenue note, support posture, risk ask, follow-up ask, and receipt together.",
+      nextGuarded: "Send guarded sponsor readout while one narrative, sponsor, outcome, revenue, support, risk, ask, or receipt lane stays watched.",
+      nextHold: "Hold sponsor readout until narrative, outcome proof, revenue note, and support posture are clear.",
+      nextRepair: "Repair readout proof before renewal decision expands.",
+      axes: [
+        ["Board narrative", "reviewGuard", 0.8, 6, "Board narrative is written."],
+        ["Sponsor readout", "sponsorGuard", 0.8, 5, "Sponsor readout is ready."],
+        ["Outcome proof", "proofGuard", 0.8, 5, "Outcome proof is attached."],
+        ["Revenue note", "proofGuard", 0.76, 5, "Revenue note is visible."],
+        ["Support posture", "supportGuard", 0.78, 5, "Support posture is calm."],
+        ["Risk ask", "rollbackGuard", 0.76, 5, "Risk ask is named."],
+        ["Follow-up ask", "ownerCommand", 0.78, 6, "Follow-up ask is assigned."],
+        ["Readout receipt", "guardClosure", 0.82, 6, "Readout receipt closes pack."],
+      ],
+    },
+    {
+      key: "pilot-renewal-decision-signal",
+      version: "v981",
+      number: 981,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Pilot Renewal Decision Signal",
+      shortLabel: "Pilot Renewal Decision Signal",
+      phase: "First pilot expansion rollout reuse market pilot pilot renewal decision signal",
+      track: "v981 first pilot expansion rollout reuse market pilot pilot renewal decision signal",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-renewal-decision-signal",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-pilot-renewal-decision-signal",
+      idSuffix: "PILOT-RENEWAL-DECISION-SIGNAL",
+      scoreKey: "pilotRenewalDecisionSignalScore",
+      decisionKey: "pilotRenewalDecisionSignalDecision",
+      stateKey: "pilotRenewalDecisionSignalState",
+      lineKey: "pilotRenewalDecisionSignalLine",
+      primarySignal: "Pilot renewal decision signal",
+      primaryNote: "Turns sponsor readout into renewal intent, expansion option, sponsor decision, commercial next step, support condition, value continuity, learning boundary, and decision receipt.",
+      summary: "Convert sponsor readout into renewal intent, expansion option, sponsor decision, commercial next step, support condition, value continuity, learning boundary, and decision receipt.",
+      trackSummary: "Sponsor readout now becomes one renewal decision signal across renewal intent, expansion option, sponsor decision, commercial next step, support condition, value continuity, learning boundary, and decision receipt.",
+      stageSummary: "Sponsor readout now becomes renewal decision signal with intent, expansion, sponsor answer, commercial step, support, value, boundary, and receipt controls.",
+      openDecision: "Open renewal signal",
+      guardedDecision: "Open guarded signal",
+      holdDecision: "Hold renewal signal",
+      repairDecision: "Repair renewal proof",
+      nextOpen: "Open pilot renewal decision signal and keep renewal intent, expansion option, sponsor decision, commercial next step, support condition, value continuity, learning boundary, and receipt together.",
+      nextGuarded: "Open guarded renewal signal while one intent, expansion, sponsor, commercial, support, value, learning, or receipt lane stays watched.",
+      nextHold: "Hold renewal signal until sponsor decision, value continuity, and support condition are ready.",
+      nextRepair: "Repair renewal proof before multi-customer expansion expands.",
+      axes: [
+        ["Renewal intent", "sponsorGuard", 0.78, 6, "Renewal intent is visible."],
+        ["Expansion option", "tenantGuard", 0.78, 5, "Expansion option is bounded."],
+        ["Sponsor decision", "sponsorGuard", 0.8, 5, "Sponsor decision path is clear."],
+        ["Commercial next step", "ownerCommand", 0.76, 6, "Commercial next step is assigned."],
+        ["Support condition", "supportGuard", 0.78, 5, "Support condition is named."],
+        ["Value continuity", "proofGuard", 0.78, 5, "Value continuity is proven."],
+        ["Learning boundary", "tenantGuard", 0.8, 5, "Learning boundary stays safe."],
+        ["Decision receipt", "guardClosure", 0.82, 6, "Decision receipt closes signal."],
+      ],
+    },
+    {
+      key: "multi-customer-expansion-readiness-gate",
+      version: "v982",
+      number: 982,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Expansion Readiness Gate",
+      shortLabel: "Multi-Customer Expansion Readiness Gate",
+      phase: "First pilot expansion rollout reuse market pilot multi-customer expansion readiness gate",
+      track: "v982 first pilot expansion rollout reuse market pilot multi-customer expansion readiness gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-customer-expansion-readiness-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-customer-expansion-readiness-gate",
+      idSuffix: "MULTI-CUSTOMER-EXPANSION-READINESS-GATE",
+      scoreKey: "multiCustomerExpansionReadinessGateScore",
+      decisionKey: "multiCustomerExpansionReadinessGateDecision",
+      stateKey: "multiCustomerExpansionReadinessGateState",
+      lineKey: "multiCustomerExpansionReadinessGateLine",
+      primarySignal: "Pilot multi-customer expansion readiness gate",
+      primaryNote: "Checks whether support, billing, security, evidence, learning, customer boundary, expansion owner, and gate receipt are strong enough to open another customer.",
+      summary: "Gate multi-customer expansion with support capacity, billing repeatability, security posture, evidence reuse, learning safety, customer boundary, expansion owner, and gate receipt.",
+      trackSummary: "Renewal decision signal now becomes one multi-customer expansion readiness gate across support capacity, billing repeatability, security posture, evidence reuse, learning safety, customer boundary, expansion owner, and gate receipt.",
+      stageSummary: "Renewal signal now becomes multi-customer expansion gate with support, billing, security, evidence, learning, customer boundary, owner, and receipt controls.",
+      openDecision: "Open expansion gate",
+      guardedDecision: "Open guarded expansion",
+      holdDecision: "Hold expansion gate",
+      repairDecision: "Repair expansion proof",
+      nextOpen: "Open multi-customer expansion gate and keep support capacity, billing repeatability, security posture, evidence reuse, learning safety, customer boundary, expansion owner, and receipt together.",
+      nextGuarded: "Open guarded expansion while one support, billing, security, evidence, learning, boundary, owner, or receipt lane stays watched.",
+      nextHold: "Hold expansion gate until support, billing, security, and learning safety are calm.",
+      nextRepair: "Repair expansion proof before second-customer invite expands.",
+      axes: [
+        ["Support capacity", "supportGuard", 0.8, 5, "Support capacity is calm."],
+        ["Billing repeatability", "proofGuard", 0.78, 5, "Billing repeatability is proven."],
+        ["Security posture", "tenantGuard", 0.78, 5, "Security posture is ready."],
+        ["Evidence reuse", "proofGuard", 0.78, 6, "Evidence reuse is safe."],
+        ["Learning safety", "tenantGuard", 0.8, 5, "Learning safety is protected."],
+        ["Customer boundary", "tenantGuard", 0.8, 5, "Customer boundary is clear."],
+        ["Expansion owner", "ownerCommand", 0.78, 6, "Expansion owner is assigned."],
+        ["Gate receipt", "guardClosure", 0.82, 6, "Gate receipt closes readiness."],
+      ],
+    },
+    {
+      key: "second-customer-pilot-invite-desk",
+      version: "v983",
+      number: 983,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Second Customer Pilot Invite Desk",
+      shortLabel: "Second Customer Pilot Invite Desk",
+      phase: "First pilot expansion rollout reuse market pilot second customer pilot invite desk",
+      track: "v983 first pilot expansion rollout reuse market pilot second customer pilot invite desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-second-customer-pilot-invite-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-second-customer-pilot-invite-desk",
+      idSuffix: "SECOND-CUSTOMER-PILOT-INVITE-DESK",
+      scoreKey: "secondCustomerPilotInviteDeskScore",
+      decisionKey: "secondCustomerPilotInviteDeskDecision",
+      stateKey: "secondCustomerPilotInviteDeskState",
+      lineKey: "secondCustomerPilotInviteDeskLine",
+      primarySignal: "Pilot second customer pilot invite desk",
+      primaryNote: "Turns expansion readiness into a second-customer invite desk with invite list, target account, sponsor note, proof pack, pilot scope, access promise, response route, and invite receipt.",
+      summary: "Prepare second-customer invite with invite list, target account, sponsor note, proof pack, pilot scope, access promise, response route, and invite receipt.",
+      trackSummary: "Multi-customer expansion readiness now becomes one second customer pilot invite desk across invite list, target account, sponsor note, proof pack, pilot scope, access promise, response route, and invite receipt.",
+      stageSummary: "Expansion readiness now becomes second-customer invite with list, account, sponsor note, proof pack, scope, access, response, and receipt controls.",
+      openDecision: "Send pilot invite",
+      guardedDecision: "Send guarded invite",
+      holdDecision: "Hold pilot invite",
+      repairDecision: "Repair invite proof",
+      nextOpen: "Send second customer pilot invite and keep invite list, target account, sponsor note, proof pack, pilot scope, access promise, response route, and receipt together.",
+      nextGuarded: "Send guarded invite while one list, account, sponsor, proof, scope, access, response, or receipt lane stays watched.",
+      nextHold: "Hold invite until account, sponsor note, proof pack, and access promise are clear.",
+      nextRepair: "Repair invite proof before tenant provisioning expands.",
+      axes: [
+        ["Invite list", "ownerCommand", 0.78, 6, "Invite list is selected."],
+        ["Target account", "sponsorGuard", 0.78, 5, "Target account is named."],
+        ["Sponsor note", "sponsorGuard", 0.78, 5, "Sponsor note is ready."],
+        ["Proof pack", "proofGuard", 0.8, 5, "Proof pack is attached."],
+        ["Pilot scope", "tenantGuard", 0.78, 5, "Pilot scope is bounded."],
+        ["Access promise", "tenantGuard", 0.78, 6, "Access promise is clear."],
+        ["Response route", "supportGuard", 0.76, 5, "Response route is visible."],
+        ["Invite receipt", "guardClosure", 0.82, 6, "Invite receipt closes desk."],
+      ],
+    },
+    {
+      key: "production-tenant-provisioning-proof",
+      version: "v984",
+      number: 984,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Provisioning Proof",
+      shortLabel: "Production Tenant Provisioning Proof",
+      phase: "First pilot expansion rollout reuse market pilot production tenant provisioning proof",
+      track: "v984 first pilot expansion rollout reuse market pilot production tenant provisioning proof",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-tenant-provisioning-proof",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-tenant-provisioning-proof",
+      idSuffix: "PRODUCTION-TENANT-PROVISIONING-PROOF",
+      scoreKey: "productionTenantProvisioningProofScore",
+      decisionKey: "productionTenantProvisioningProofDecision",
+      stateKey: "productionTenantProvisioningProofState",
+      lineKey: "productionTenantProvisioningProofLine",
+      primarySignal: "Pilot production tenant provisioning proof",
+      primaryNote: "Turns second-customer invite into production tenant provisioning proof with tenant record, admin owner, access roles, data import, billing entitlement, audit trail, rollback path, and provisioning receipt.",
+      summary: "Prove tenant provisioning with tenant record, admin owner, access roles, data import, billing entitlement, audit trail, rollback path, and provisioning receipt.",
+      trackSummary: "Second-customer invite desk now becomes one production tenant provisioning proof across tenant record, admin owner, access roles, data import, billing entitlement, audit trail, rollback path, and provisioning receipt.",
+      stageSummary: "Second-customer invite now becomes tenant provisioning proof with tenant record, admin, access roles, import, billing, audit, rollback, and receipt controls.",
+      openDecision: "Provision tenant proof",
+      guardedDecision: "Provision guarded tenant",
+      holdDecision: "Hold provisioning proof",
+      repairDecision: "Repair provisioning proof",
+      nextOpen: "Provision production tenant proof and keep tenant record, admin owner, access roles, data import, billing entitlement, audit trail, rollback path, and receipt together.",
+      nextGuarded: "Provision guarded tenant proof while one tenant, admin, access, import, billing, audit, rollback, or receipt lane stays watched.",
+      nextHold: "Hold provisioning proof until tenant record, admin owner, access roles, and rollback path are clear.",
+      nextRepair: "Repair provisioning proof before tenant access handoff expands.",
+      axes: [
+        ["Tenant record", "tenantGuard", 0.8, 5, "Tenant record is created."],
+        ["Admin owner", "ownerCommand", 0.8, 6, "Admin owner is assigned."],
+        ["Access roles", "tenantGuard", 0.8, 5, "Access roles are mapped."],
+        ["Data import", "proofGuard", 0.78, 5, "Data import is proven."],
+        ["Billing entitlement", "proofGuard", 0.78, 5, "Billing entitlement is linked."],
+        ["Audit trail", "reviewGuard", 0.78, 6, "Audit trail is visible."],
+        ["Rollback path", "rollbackGuard", 0.78, 5, "Rollback path is ready."],
+        ["Provisioning receipt", "guardClosure", 0.82, 6, "Provisioning receipt closes proof."],
       ],
     },
   ];
@@ -22480,6 +22675,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionTenantProvisioningProofPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerPilotInviteDeskPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerExpansionReadinessGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRenewalDecisionSignalPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardSponsorReadoutPackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsEvidenceDashboardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotAdminFeedbackIntakePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstLearningCloseoutReviewPreview(model, autopilot)}",
@@ -29952,6 +30152,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchMetricsEvidenceDashboardPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-metrics-evidence-dashboard");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardSponsorReadoutPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-board-sponsor-readout-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardSponsorReadoutPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-board-sponsor-readout-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchBoardSponsorReadoutPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-board-sponsor-readout-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRenewalDecisionSignalSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "pilot-renewal-decision-signal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRenewalDecisionSignal(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "pilot-renewal-decision-signal", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotRenewalDecisionSignalPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-renewal-decision-signal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerExpansionReadinessGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-customer-expansion-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerExpansionReadinessGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-customer-expansion-readiness-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCustomerExpansionReadinessGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-customer-expansion-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerPilotInviteDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "second-customer-pilot-invite-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerPilotInviteDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "second-customer-pilot-invite-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerPilotInviteDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "second-customer-pilot-invite-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionTenantProvisioningProofSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-tenant-provisioning-proof");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionTenantProvisioningProof(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-tenant-provisioning-proof", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionTenantProvisioningProofPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-tenant-provisioning-proof");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -94763,9 +95023,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v980", "First Pilot Expansion Rollout Reuse Market Pilot Launch Board Sponsor Readout Pack", "Turn launch metrics into sponsor readout, board narrative, outcome proof, revenue note, and follow-up ask."],
-      ["v981", "First Pilot Expansion Rollout Reuse Market Pilot Pilot Renewal Decision Signal", "Convert launch evidence into renewal intent, expansion option, sponsor decision, and commercial next step."],
-      ["v982", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Customer Expansion Readiness Gate", "Check whether support, billing, security, evidence, and learning are strong enough to open another customer."],
+      ["v985", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Access Handoff Receipt", "Turn provisioning proof into tenant access handoff with owner acceptance, role validation, support route, and audit receipt."],
+      ["v986", "First Pilot Expansion Rollout Reuse Market Pilot Production Billing Reconciliation Check", "Confirm invoice, entitlement, payment status, subscription boundary, exception list, and finance signoff after provisioning."],
+      ["v987", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success First-Week Watch", "Watch first-week adoption, support response, value proof, learning safety, sponsor pulse, and renewal risk after tenant provisioning."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
