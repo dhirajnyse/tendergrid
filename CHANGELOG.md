@@ -1,5 +1,121 @@
 # Changelog
 
+## v1004 - First Pilot Expansion Rollout Reuse Market Pilot Launch Learning Reuse Approval Room
+
+### Changes Made
+- Promoted launch learning reuse approval room as the current build.
+- Added learning candidate, tenant boundary, country boundary, privacy clearance, support reuse, commercial reuse, approval owner, and reuse receipt lanes.
+- Updated Build Phase to show v1004 as current and queue v1005-v1007 for multi-tenant, country rollout, and learning trust work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1004.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop and mobile browser QA for Command, Tenders, Reports, and Build Phase with Build v1004 visible, Launch Learning Reuse Approval Room visible, v1005-v1007 queue visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Learning reuse approval is still static; real launch reuse requires tenant consent, privacy review, country policy checks, support/commercial approvals, audit storage, and reusable-learning enforcement.
+
+## v1003 - First Pilot Expansion Rollout Reuse Market Pilot First Customer Feedback Loop
+
+### Changes Made
+- Added the first customer feedback loop to the pilot rollout runway.
+- Added feedback intake, fix ranking, sponsor note, support response, product learning, reuse boundary, retest owner, and feedback receipt lanes.
+- Added wrapper render paths and static registry coverage so early customer feedback can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with first customer feedback loop release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- First customer feedback loop is not connected to live feedback intake, fix ranking, support replies, sponsor notes, retest workflow, or receipt storage.
+
+## v1002 - First Pilot Expansion Rollout Reuse Market Pilot Post Launch Trust Monitor
+
+### Changes Made
+- Added the post-launch trust monitor to the pilot rollout runway.
+- Added uptime watch, adoption watch, support load, billing confidence, customer sentiment, proof drift, learning guardrail, and trust receipt lanes.
+- Added wrapper render paths and static registry coverage so post-launch trust can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with post-launch trust monitor release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Post-launch trust monitor is not connected to live uptime, adoption analytics, support load, billing confidence, customer sentiment, proof drift, learning guardrails, or trust receipt storage.
+
+## v1001 - First Pilot Expansion Rollout Reuse Market Pilot Public Launch Day Board
+
+### Changes Made
+- Added the public launch day board to the pilot rollout runway.
+- Added live status, incident watch, customer note, support lane, founder call, rollback timer, launch receipt, and day close lanes.
+- Added wrapper render paths and static registry coverage so launch day operating readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with public launch day board release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Public launch day board is not connected to live status, incident routing, support staffing, founder decision logging, rollback timer automation, or launch receipt storage.
+
+## v1000 - First Pilot Expansion Rollout Reuse Market Pilot Launch Readiness Lock
+
+### Changes Made
+- Added the launch readiness lock to the pilot rollout runway.
+- Added frozen scope, launch-day owner, customer comms, billing proof, privacy proof, support watch, rollback path, and readiness receipt lanes.
+- Added wrapper render paths and static registry coverage so public launch readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with launch readiness lock release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Launch readiness lock is not connected to live scope freezing, launch-day ownership, customer comms approval, billing/privacy proof, support watch staffing, rollback path enforcement, or receipt storage.
+
 ## v999 - First Pilot Expansion Rollout Reuse Market Pilot Launch Candidate Freeze Room
 
 ### Changes Made

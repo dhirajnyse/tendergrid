@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v999";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Candidate Freeze Room";
+  const BUILD_VERSION = "v1004";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Learning Reuse Approval Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=999.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=999.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1004.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1004.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -7643,6 +7643,203 @@
       ],
     },
   ];
+  PILOT_REUSE_MARKET_RUNWAY_RELEASES.push(
+    {
+      key: "launch-readiness-lock",
+      version: "v1000",
+      number: 1000,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Readiness Lock",
+      shortLabel: "Launch Readiness Lock",
+      phase: "First pilot expansion rollout reuse market pilot launch readiness lock",
+      track: "v1000 first pilot expansion rollout reuse market pilot launch readiness lock",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-readiness-lock",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-readiness-lock",
+      idSuffix: "LAUNCH-READINESS-LOCK",
+      scoreKey: "launchReadinessLockScore",
+      decisionKey: "launchReadinessLockDecision",
+      stateKey: "launchReadinessLockState",
+      lineKey: "launchReadinessLockLine",
+      primarySignal: "Pilot launch readiness lock",
+      primaryNote: "Turns the frozen candidate into launch readiness with frozen scope, launch-day owner, customer comms, billing proof, privacy proof, support watch, rollback path, and readiness receipt.",
+      summary: "Lock public launch readiness with frozen scope, owner, comms, billing, privacy, support, rollback, and receipt in one room.",
+      trackSummary: "Launch candidate freeze room now becomes one launch readiness lock across frozen scope, launch-day owner, customer comms, billing proof, privacy proof, support watch, rollback path, and receipt.",
+      stageSummary: "Candidate freeze now becomes launch readiness lock with scope, owner, comms, billing, privacy, support, rollback, and receipt controls.",
+      openDecision: "Lock launch readiness",
+      guardedDecision: "Lock guarded readiness",
+      holdDecision: "Hold launch readiness",
+      repairDecision: "Repair readiness proof",
+      nextOpen: "Lock public launch readiness and keep frozen scope, launch-day owner, customer comms, billing proof, privacy proof, support watch, rollback path, and receipt together.",
+      nextGuarded: "Lock guarded launch readiness while one scope, owner, comms, billing, privacy, support, rollback, or receipt lane stays watched.",
+      nextHold: "Hold launch readiness until frozen scope, customer comms, privacy proof, and rollback path are clear.",
+      nextRepair: "Repair readiness proof before public launch day opens.",
+      axes: [
+        ["Frozen scope", "tenantGuard", 0.82, 6, "Frozen scope stays unchanged."],
+        ["Launch-day owner", "ownerCommand", 0.8, 5, "Launch-day owner is named."],
+        ["Customer comms", "sponsorGuard", 0.78, 5, "Customer comms are approved."],
+        ["Billing proof", "proofGuard", 0.78, 5, "Billing proof is ready."],
+        ["Privacy proof", "tenantGuard", 0.8, 5, "Privacy proof is ready."],
+        ["Support watch", "supportGuard", 0.8, 5, "Support watch is staffed."],
+        ["Rollback path", "rollbackGuard", 0.8, 5, "Rollback path is accepted."],
+        ["Readiness receipt", "guardClosure", 0.82, 6, "Readiness receipt closes lock."],
+      ],
+    },
+    {
+      key: "public-launch-day-board",
+      version: "v1001",
+      number: 1001,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Day Board",
+      shortLabel: "Public Launch Day Board",
+      phase: "First pilot expansion rollout reuse market pilot public launch day board",
+      track: "v1001 first pilot expansion rollout reuse market pilot public launch day board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-day-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-day-board",
+      idSuffix: "PUBLIC-LAUNCH-DAY-BOARD",
+      scoreKey: "publicLaunchDayBoardScore",
+      decisionKey: "publicLaunchDayBoardDecision",
+      stateKey: "publicLaunchDayBoardState",
+      lineKey: "publicLaunchDayBoardLine",
+      primarySignal: "Pilot public launch day board",
+      primaryNote: "Turns launch readiness into launch day control with live status, incident watch, customer note, support lane, founder call, rollback timer, launch receipt, and day close.",
+      summary: "Run public launch day with live status, incidents, customer note, support, founder call, rollback timer, receipt, and closeout.",
+      trackSummary: "Launch readiness lock now becomes one public launch day board across live status, incident watch, customer note, support lane, founder call, rollback timer, launch receipt, and day close.",
+      stageSummary: "Launch readiness now becomes launch day board with status, incidents, customer, support, founder, rollback, receipt, and close controls.",
+      openDecision: "Run launch day",
+      guardedDecision: "Run guarded launch day",
+      holdDecision: "Hold launch day",
+      repairDecision: "Repair launch-day proof",
+      nextOpen: "Run launch day and keep live status, incident watch, customer note, support lane, founder call, rollback timer, launch receipt, and day close together.",
+      nextGuarded: "Run guarded launch day while one status, incident, customer, support, founder, rollback, receipt, or close lane stays watched.",
+      nextHold: "Hold launch day until live status, support lane, customer note, and rollback timer are clear.",
+      nextRepair: "Repair launch-day proof before post-launch trust monitor opens.",
+      axes: [
+        ["Live status", "launchMoment", 0.82, 6, "Live status is visible."],
+        ["Incident watch", "supportGuard", 0.8, 5, "Incident watch is staffed."],
+        ["Customer note", "sponsorGuard", 0.78, 5, "Customer note is ready."],
+        ["Support lane", "supportGuard", 0.8, 5, "Support lane is active."],
+        ["Founder call", "ownerCommand", 0.78, 5, "Founder call is scheduled."],
+        ["Rollback timer", "rollbackGuard", 0.8, 5, "Rollback timer is visible."],
+        ["Launch receipt", "guardClosure", 0.82, 6, "Launch receipt is captured."],
+        ["Day close", "reviewGuard", 0.78, 5, "Day close is defined."],
+      ],
+    },
+    {
+      key: "post-launch-trust-monitor",
+      version: "v1002",
+      number: 1002,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Post Launch Trust Monitor",
+      shortLabel: "Post Launch Trust Monitor",
+      phase: "First pilot expansion rollout reuse market pilot post launch trust monitor",
+      track: "v1002 first pilot expansion rollout reuse market pilot post launch trust monitor",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-post-launch-trust-monitor",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-post-launch-trust-monitor",
+      idSuffix: "POST-LAUNCH-TRUST-MONITOR",
+      scoreKey: "postLaunchTrustMonitorScore",
+      decisionKey: "postLaunchTrustMonitorDecision",
+      stateKey: "postLaunchTrustMonitorState",
+      lineKey: "postLaunchTrustMonitorLine",
+      primarySignal: "Pilot post launch trust monitor",
+      primaryNote: "Turns launch day into post-launch trust monitoring with uptime watch, adoption watch, support load, billing confidence, customer sentiment, proof drift, learning guardrail, and trust receipt.",
+      summary: "Monitor post-launch trust with uptime, adoption, support load, billing confidence, customer sentiment, proof drift, learning guardrails, and receipt.",
+      trackSummary: "Public launch day board now becomes one post-launch trust monitor across uptime watch, adoption watch, support load, billing confidence, customer sentiment, proof drift, learning guardrail, and receipt.",
+      stageSummary: "Launch day now becomes trust monitor with uptime, adoption, support, billing, sentiment, proof drift, learning, and receipt controls.",
+      openDecision: "Monitor launch trust",
+      guardedDecision: "Monitor guarded trust",
+      holdDecision: "Hold trust widening",
+      repairDecision: "Repair trust proof",
+      nextOpen: "Monitor post-launch trust and keep uptime watch, adoption watch, support load, billing confidence, customer sentiment, proof drift, learning guardrail, and receipt together.",
+      nextGuarded: "Monitor guarded trust while one uptime, adoption, support, billing, sentiment, proof, learning, or receipt lane stays watched.",
+      nextHold: "Hold trust widening until uptime, support load, billing confidence, and proof drift are clear.",
+      nextRepair: "Repair trust proof before feedback loop opens.",
+      axes: [
+        ["Uptime watch", "launchMoment", 0.82, 6, "Uptime watch is green."],
+        ["Adoption watch", "sponsorGuard", 0.78, 5, "Adoption watch is readable."],
+        ["Support load", "supportGuard", 0.8, 5, "Support load is controlled."],
+        ["Billing confidence", "proofGuard", 0.78, 5, "Billing confidence is visible."],
+        ["Customer sentiment", "sponsorGuard", 0.78, 5, "Customer sentiment is captured."],
+        ["Proof drift", "proofGuard", 0.8, 5, "Proof drift is watched."],
+        ["Learning guardrail", "reviewGuard", 0.78, 5, "Learning guardrail is active."],
+        ["Trust receipt", "guardClosure", 0.82, 6, "Trust receipt closes monitor."],
+      ],
+    },
+    {
+      key: "first-customer-feedback-loop",
+      version: "v1003",
+      number: 1003,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Customer Feedback Loop",
+      shortLabel: "First Customer Feedback Loop",
+      phase: "First pilot expansion rollout reuse market pilot first customer feedback loop",
+      track: "v1003 first pilot expansion rollout reuse market pilot first customer feedback loop",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-feedback-loop",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-customer-feedback-loop",
+      idSuffix: "FIRST-CUSTOMER-FEEDBACK-LOOP",
+      scoreKey: "firstCustomerFeedbackLoopScore",
+      decisionKey: "firstCustomerFeedbackLoopDecision",
+      stateKey: "firstCustomerFeedbackLoopState",
+      lineKey: "firstCustomerFeedbackLoopLine",
+      primarySignal: "Pilot first customer feedback loop",
+      primaryNote: "Turns post-launch trust into first customer feedback movement with feedback intake, fix ranking, sponsor note, support response, product learning, reuse boundary, retest owner, and feedback receipt.",
+      summary: "Turn first customer feedback into ranked fixes, sponsor notes, support response, learning, reuse boundary, retest owner, and receipt.",
+      trackSummary: "Post-launch trust monitor now becomes one first customer feedback loop across feedback intake, fix ranking, sponsor note, support response, product learning, reuse boundary, retest owner, and receipt.",
+      stageSummary: "Post-launch trust now becomes feedback loop with intake, ranking, sponsor, support, learning, boundary, retest, and receipt controls.",
+      openDecision: "Open feedback loop",
+      guardedDecision: "Open guarded feedback",
+      holdDecision: "Hold feedback reuse",
+      repairDecision: "Repair feedback proof",
+      nextOpen: "Open the first customer feedback loop and keep intake, fix ranking, sponsor note, support response, product learning, reuse boundary, retest owner, and receipt together.",
+      nextGuarded: "Open guarded feedback while one intake, ranking, sponsor, support, learning, boundary, retest, or receipt lane stays watched.",
+      nextHold: "Hold feedback reuse until sponsor note, product learning, reuse boundary, and retest owner are clear.",
+      nextRepair: "Repair feedback proof before learning reuse approval opens.",
+      axes: [
+        ["Feedback intake", "sponsorGuard", 0.82, 6, "Feedback intake is captured."],
+        ["Fix ranking", "reviewGuard", 0.8, 5, "Fix ranking is clear."],
+        ["Sponsor note", "sponsorGuard", 0.78, 5, "Sponsor note is written."],
+        ["Support response", "supportGuard", 0.8, 5, "Support response is ready."],
+        ["Product learning", "proofGuard", 0.78, 5, "Product learning is visible."],
+        ["Reuse boundary", "tenantGuard", 0.8, 5, "Reuse boundary is named."],
+        ["Retest owner", "ownerCommand", 0.78, 5, "Retest owner is assigned."],
+        ["Feedback receipt", "guardClosure", 0.82, 6, "Feedback receipt closes loop."],
+      ],
+    },
+    {
+      key: "launch-learning-reuse-approval-room",
+      version: "v1004",
+      number: 1004,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Learning Reuse Approval Room",
+      shortLabel: "Launch Learning Reuse Approval Room",
+      phase: "First pilot expansion rollout reuse market pilot launch learning reuse approval room",
+      track: "v1004 first pilot expansion rollout reuse market pilot launch learning reuse approval room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-learning-reuse-approval-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-learning-reuse-approval-room",
+      idSuffix: "LAUNCH-LEARNING-REUSE-APPROVAL-ROOM",
+      scoreKey: "launchLearningReuseApprovalRoomScore",
+      decisionKey: "launchLearningReuseApprovalRoomDecision",
+      stateKey: "launchLearningReuseApprovalRoomState",
+      lineKey: "launchLearningReuseApprovalRoomLine",
+      primarySignal: "Pilot launch learning reuse approval room",
+      primaryNote: "Turns first customer feedback into reusable learning approval with learning candidate, tenant boundary, country boundary, privacy clearance, support reuse, commercial reuse, approval owner, and reuse receipt.",
+      summary: "Approve what launch learning can safely become reusable across tenants, countries, support, and commercial playbooks.",
+      trackSummary: "First customer feedback loop now becomes one launch learning reuse approval room across learning candidate, tenant boundary, country boundary, privacy clearance, support reuse, commercial reuse, approval owner, and receipt.",
+      stageSummary: "Feedback loop now becomes learning reuse approval with candidate, tenant, country, privacy, support, commercial, owner, and receipt controls.",
+      openDecision: "Approve learning reuse",
+      guardedDecision: "Approve guarded reuse",
+      holdDecision: "Hold learning reuse",
+      repairDecision: "Repair reuse proof",
+      nextOpen: "Approve learning reuse and keep learning candidate, tenant boundary, country boundary, privacy clearance, support reuse, commercial reuse, approval owner, and receipt together.",
+      nextGuarded: "Approve guarded reuse while one learning, tenant, country, privacy, support, commercial, owner, or receipt lane stays watched.",
+      nextHold: "Hold learning reuse until tenant boundary, country boundary, privacy clearance, and approval owner are clear.",
+      nextRepair: "Repair reuse proof before multi-tenant readiness expands.",
+      axes: [
+        ["Learning candidate", "reviewGuard", 0.82, 6, "Learning candidate is named."],
+        ["Tenant boundary", "tenantGuard", 0.82, 5, "Tenant boundary is safe."],
+        ["Country boundary", "tenantGuard", 0.8, 5, "Country boundary is safe."],
+        ["Privacy clearance", "proofGuard", 0.8, 5, "Privacy clearance is ready."],
+        ["Support reuse", "supportGuard", 0.78, 5, "Support reuse is approved."],
+        ["Commercial reuse", "sponsorGuard", 0.78, 5, "Commercial reuse is approved."],
+        ["Approval owner", "ownerCommand", 0.8, 5, "Approval owner is accountable."],
+        ["Reuse receipt", "guardClosure", 0.82, 6, "Reuse receipt closes room."],
+      ],
+    },
+  );
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
   const BILLING_MANAGER_SEAT_PRICE = 15;
@@ -23260,6 +23457,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningReuseApprovalRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerFeedbackLoopPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchTrustMonitorPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchDayBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchReadinessLockPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCandidateFreezeRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchDecisionConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceGatePreview(model, autopilot)}",
@@ -30992,6 +31194,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCandidateFreezeRoomPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-candidate-freeze-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchReadinessLockSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-readiness-lock");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchReadinessLock(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-readiness-lock", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchReadinessLockPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-readiness-lock");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchDayBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "public-launch-day-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchDayBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "public-launch-day-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchDayBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "public-launch-day-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchTrustMonitorSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "post-launch-trust-monitor");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchTrustMonitor(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "post-launch-trust-monitor", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchTrustMonitorPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "post-launch-trust-monitor");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerFeedbackLoopSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-customer-feedback-loop");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerFeedbackLoop(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-customer-feedback-loop", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerFeedbackLoopPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-customer-feedback-loop");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningReuseApprovalRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-learning-reuse-approval-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningReuseApprovalRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-learning-reuse-approval-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningReuseApprovalRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-learning-reuse-approval-room");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -95803,9 +96065,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1000", "First Pilot Expansion Rollout Reuse Market Pilot Launch Readiness Lock", "Lock public launch readiness with frozen candidate scope, launch-day owner, support watch, billing proof, privacy proof, rollback path, and customer-safe comms."],
-      ["v1001", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Day Board", "Run public launch day with live status, incident watch, customer note, support lane, founder decision, rollback timer, and launch receipt."],
-      ["v1002", "First Pilot Expansion Rollout Reuse Market Pilot Post Launch Trust Monitor", "Monitor post-launch trust with uptime, adoption, support load, billing confidence, customer sentiment, proof drift, and learning guardrails."],
+      ["v1005", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Readiness Gate", "Prepare the next tenant path with access proof, setup proof, privacy boundary, support readiness, billing readiness, and learning reuse limits."],
+      ["v1006", "First Pilot Expansion Rollout Reuse Market Pilot Country Rollout Control Board", "Shape country rollout controls for localization, currency posture, support route, privacy review, sponsor story, and rollback proof."],
+      ["v1007", "First Pilot Expansion Rollout Reuse Market Pilot Learning Network Trust Ledger", "Keep shared learning safe with tenant consent, anonymized evidence, policy guardrails, review owners, and trust receipts."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
