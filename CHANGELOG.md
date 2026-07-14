@@ -1,5 +1,121 @@
 # Changelog
 
+## v1009 - First Pilot Expansion Rollout Reuse Market Pilot Reuse Learning Policy Enforcement Room
+
+### Changes Made
+- Promoted reuse learning policy enforcement room as the current build.
+- Added allowed use, blocked use, consent check, country check, reviewer override, audit event, rollback lock, and enforcement receipt lanes.
+- Updated Build Phase to show v1009 as current and queue v1010-v1012 for multi-organization trust, country compliance, and reinforcement outcome guardrail work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1009.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop and mobile browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, and Build Phase with Build v1009 visible, Reuse Learning Policy Enforcement Room visible, v1010-v1012 queue visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Policy enforcement is still static; real reuse enforcement requires a backend policy engine, tenant consent records, country rules, immutable audit events, reviewer override workflows, and rollback enforcement.
+
+## v1008 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Consent and Anonymization Studio
+
+### Changes Made
+- Added the tenant consent and anonymization studio to the pilot rollout runway.
+- Added consent scope, opt-out path, anonymization pass, redaction proof, value masking, country privacy, reviewer approval, and studio receipt lanes.
+- Added wrapper render paths and static registry coverage so consent and anonymization readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with tenant consent and anonymization studio release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Consent and anonymization studio is not connected to live consent capture, opt-out handling, anonymization jobs, redaction proof storage, country privacy rules, reviewer approvals, or receipt storage.
+
+## v1007 - First Pilot Expansion Rollout Reuse Market Pilot Learning Network Trust Ledger
+
+### Changes Made
+- Added the learning network trust ledger to the pilot rollout runway.
+- Added consent source, anonymized evidence, policy tag, reviewer owner, trust score, benefit route, dispute path, and ledger receipt lanes.
+- Added wrapper render paths and static registry coverage so network learning trust can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with learning network trust ledger release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Learning network trust ledger is not connected to live consent records, anonymized evidence stores, policy tagging, reviewer approvals, benefit routing, disputes, or immutable ledger receipts.
+
+## v1006 - First Pilot Expansion Rollout Reuse Market Pilot Country Rollout Control Board
+
+### Changes Made
+- Added the country rollout control board to the pilot rollout runway.
+- Added localization, currency posture, legal/privacy review, sponsor story, support route, rollout owner, rollback proof, and country receipt lanes.
+- Added wrapper render paths and static registry coverage so country rollout control can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with country rollout control board release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Country rollout control board is not connected to live localization, currency, country privacy/legal review, support routing, sponsor approvals, rollback proof, or country launch receipt storage.
+
+## v1005 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Readiness Gate
+
+### Changes Made
+- Added the multi-tenant readiness gate to the pilot rollout runway.
+- Added tenant setup, access split, privacy boundary, support route, billing route, learning limit, isolation proof, and readiness receipt lanes.
+- Added wrapper render paths and static registry coverage so multi-tenant readiness can be reviewed from Build Phase.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd run check` with multi-tenant readiness gate release registry coverage.
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: desktop and mobile browser QA after the batch promotion with Build Phase opening cleanly and no console errors.
+
+### Known Risks
+- Multi-tenant readiness gate is not connected to live tenant provisioning, access isolation, privacy boundaries, support routing, billing routing, learning limit enforcement, or tenant-isolation proof storage.
+
 ## v1004 - First Pilot Expansion Rollout Reuse Market Pilot Launch Learning Reuse Approval Room
 
 ### Changes Made

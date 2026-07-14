@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1004";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Learning Reuse Approval Room";
+  const BUILD_VERSION = "v1009";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Reuse Learning Policy Enforcement Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1004.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1004.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1009.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1009.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -7837,6 +7837,201 @@
         ["Commercial reuse", "sponsorGuard", 0.78, 5, "Commercial reuse is approved."],
         ["Approval owner", "ownerCommand", 0.8, 5, "Approval owner is accountable."],
         ["Reuse receipt", "guardClosure", 0.82, 6, "Reuse receipt closes room."],
+      ],
+    },
+    {
+      key: "multi-tenant-readiness-gate",
+      version: "v1005",
+      number: 1005,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Readiness Gate",
+      shortLabel: "Multi-Tenant Readiness Gate",
+      phase: "First pilot expansion rollout reuse market pilot multi-tenant readiness gate",
+      track: "v1005 first pilot expansion rollout reuse market pilot multi-tenant readiness gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-readiness-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-readiness-gate",
+      idSuffix: "MULTI-TENANT-READINESS-GATE",
+      scoreKey: "multiTenantReadinessGateScore",
+      decisionKey: "multiTenantReadinessGateDecision",
+      stateKey: "multiTenantReadinessGateState",
+      lineKey: "multiTenantReadinessGateLine",
+      primarySignal: "Pilot multi-tenant readiness gate",
+      primaryNote: "Turns approved launch learning into multi-tenant readiness with tenant setup, access split, privacy boundary, support route, billing route, learning limit, isolation proof, and readiness receipt.",
+      summary: "Prove the next tenant path with setup, access split, privacy boundary, support, billing, learning limits, isolation proof, and receipt.",
+      trackSummary: "Learning reuse approval now becomes one multi-tenant readiness gate across tenant setup, access split, privacy boundary, support route, billing route, learning limit, isolation proof, and receipt.",
+      stageSummary: "Learning reuse approval now becomes tenant readiness with setup, access, privacy, support, billing, learning, isolation, and receipt controls.",
+      openDecision: "Open tenant gate",
+      guardedDecision: "Open guarded tenant gate",
+      holdDecision: "Hold tenant expansion",
+      repairDecision: "Repair tenant proof",
+      nextOpen: "Open the multi-tenant readiness gate and keep tenant setup, access split, privacy boundary, support route, billing route, learning limit, isolation proof, and receipt together.",
+      nextGuarded: "Open guarded tenant readiness while one setup, access, privacy, support, billing, learning, isolation, or receipt lane stays watched.",
+      nextHold: "Hold tenant expansion until access split, privacy boundary, billing route, and isolation proof are clear.",
+      nextRepair: "Repair tenant proof before country rollout expands.",
+      axes: [
+        ["Tenant setup", "tenantGuard", 0.82, 6, "Tenant setup path is visible."],
+        ["Access split", "tenantGuard", 0.82, 5, "Access split is safe."],
+        ["Privacy boundary", "proofGuard", 0.82, 5, "Privacy boundary is clear."],
+        ["Support route", "supportGuard", 0.8, 5, "Support route is staffed."],
+        ["Billing route", "proofGuard", 0.78, 5, "Billing route is ready."],
+        ["Learning limit", "reviewGuard", 0.8, 5, "Learning reuse limit is named."],
+        ["Isolation proof", "tenantGuard", 0.82, 5, "Isolation proof is attached."],
+        ["Readiness receipt", "guardClosure", 0.82, 6, "Readiness receipt closes gate."],
+      ],
+    },
+    {
+      key: "country-rollout-control-board",
+      version: "v1006",
+      number: 1006,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Country Rollout Control Board",
+      shortLabel: "Country Rollout Control Board",
+      phase: "First pilot expansion rollout reuse market pilot country rollout control board",
+      track: "v1006 first pilot expansion rollout reuse market pilot country rollout control board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-country-rollout-control-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-country-rollout-control-board",
+      idSuffix: "COUNTRY-ROLLOUT-CONTROL-BOARD",
+      scoreKey: "countryRolloutControlBoardScore",
+      decisionKey: "countryRolloutControlBoardDecision",
+      stateKey: "countryRolloutControlBoardState",
+      lineKey: "countryRolloutControlBoardLine",
+      primarySignal: "Pilot country rollout control board",
+      primaryNote: "Turns multi-tenant readiness into country rollout control with localization, currency posture, legal/privacy review, sponsor story, support route, rollout owner, rollback proof, and country receipt.",
+      summary: "Shape the next country rollout with localization, currency, privacy review, sponsor story, support, owner, rollback, and receipt.",
+      trackSummary: "Multi-tenant readiness now becomes one country rollout control board across localization, currency posture, legal/privacy review, sponsor story, support route, owner, rollback proof, and receipt.",
+      stageSummary: "Tenant readiness now becomes country rollout control with localization, currency, privacy, sponsor, support, owner, rollback, and receipt controls.",
+      openDecision: "Open country rollout",
+      guardedDecision: "Open guarded country rollout",
+      holdDecision: "Hold country rollout",
+      repairDecision: "Repair country proof",
+      nextOpen: "Open country rollout control and keep localization, currency posture, legal/privacy review, sponsor story, support route, owner, rollback proof, and receipt together.",
+      nextGuarded: "Open guarded country rollout while one localization, currency, privacy, sponsor, support, owner, rollback, or receipt lane stays watched.",
+      nextHold: "Hold country rollout until legal/privacy review, support route, sponsor story, and rollback proof are clear.",
+      nextRepair: "Repair country proof before learning trust expands.",
+      axes: [
+        ["Localization", "tenantGuard", 0.8, 6, "Localization needs are named."],
+        ["Currency posture", "proofGuard", 0.78, 5, "Currency posture is visible."],
+        ["Legal/privacy review", "reviewGuard", 0.82, 5, "Legal and privacy review is open."],
+        ["Sponsor story", "sponsorGuard", 0.78, 5, "Sponsor story is country-safe."],
+        ["Support route", "supportGuard", 0.8, 5, "Support route is ready."],
+        ["Rollout owner", "ownerCommand", 0.8, 5, "Rollout owner is accountable."],
+        ["Rollback proof", "rollbackGuard", 0.8, 5, "Rollback proof travels."],
+        ["Country receipt", "guardClosure", 0.82, 6, "Country receipt closes board."],
+      ],
+    },
+    {
+      key: "learning-network-trust-ledger",
+      version: "v1007",
+      number: 1007,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Learning Network Trust Ledger",
+      shortLabel: "Learning Network Trust Ledger",
+      phase: "First pilot expansion rollout reuse market pilot learning network trust ledger",
+      track: "v1007 first pilot expansion rollout reuse market pilot learning network trust ledger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-learning-network-trust-ledger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-learning-network-trust-ledger",
+      idSuffix: "LEARNING-NETWORK-TRUST-LEDGER",
+      scoreKey: "learningNetworkTrustLedgerScore",
+      decisionKey: "learningNetworkTrustLedgerDecision",
+      stateKey: "learningNetworkTrustLedgerState",
+      lineKey: "learningNetworkTrustLedgerLine",
+      primarySignal: "Pilot learning network trust ledger",
+      primaryNote: "Turns country rollout control into a learning network ledger with consent source, anonymized evidence, policy tag, reviewer owner, trust score, benefit route, dispute path, and ledger receipt.",
+      summary: "Keep shared learning trustworthy with consent, anonymized evidence, policy tags, reviewer owner, trust score, benefit route, dispute path, and receipt.",
+      trackSummary: "Country rollout control now becomes one learning network trust ledger across consent source, anonymized evidence, policy tag, reviewer owner, trust score, benefit route, dispute path, and receipt.",
+      stageSummary: "Country rollout now becomes learning trust ledger with consent, anonymization, policy, reviewer, trust, benefit, dispute, and receipt controls.",
+      openDecision: "Open trust ledger",
+      guardedDecision: "Open guarded ledger",
+      holdDecision: "Hold network learning",
+      repairDecision: "Repair ledger proof",
+      nextOpen: "Open the learning network trust ledger and keep consent source, anonymized evidence, policy tag, reviewer owner, trust score, benefit route, dispute path, and receipt together.",
+      nextGuarded: "Open guarded trust ledger while one consent, anonymization, policy, reviewer, trust, benefit, dispute, or receipt lane stays watched.",
+      nextHold: "Hold network learning until consent source, anonymized evidence, reviewer owner, and dispute path are clear.",
+      nextRepair: "Repair ledger proof before consent studio expands.",
+      axes: [
+        ["Consent source", "tenantGuard", 0.82, 6, "Consent source is recorded."],
+        ["Anonymized evidence", "proofGuard", 0.82, 5, "Evidence is anonymized."],
+        ["Policy tag", "reviewGuard", 0.8, 5, "Policy tag is attached."],
+        ["Reviewer owner", "ownerCommand", 0.8, 5, "Reviewer owner is accountable."],
+        ["Trust score", "reviewGuard", 0.78, 5, "Trust score is visible."],
+        ["Benefit route", "sponsorGuard", 0.78, 5, "Benefit route is fair."],
+        ["Dispute path", "rollbackGuard", 0.78, 5, "Dispute path is open."],
+        ["Ledger receipt", "guardClosure", 0.82, 6, "Ledger receipt closes trust."],
+      ],
+    },
+    {
+      key: "tenant-consent-and-anonymization-studio",
+      version: "v1008",
+      number: 1008,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Consent and Anonymization Studio",
+      shortLabel: "Tenant Consent and Anonymization Studio",
+      phase: "First pilot expansion rollout reuse market pilot tenant consent and anonymization studio",
+      track: "v1008 first pilot expansion rollout reuse market pilot tenant consent and anonymization studio",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-consent-and-anonymization-studio",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-consent-and-anonymization-studio",
+      idSuffix: "TENANT-CONSENT-AND-ANONYMIZATION-STUDIO",
+      scoreKey: "tenantConsentAndAnonymizationStudioScore",
+      decisionKey: "tenantConsentAndAnonymizationStudioDecision",
+      stateKey: "tenantConsentAndAnonymizationStudioState",
+      lineKey: "tenantConsentAndAnonymizationStudioLine",
+      primarySignal: "Pilot tenant consent and anonymization studio",
+      primaryNote: "Turns the trust ledger into a consent studio with consent scope, opt-out path, anonymization pass, redaction proof, value masking, country privacy, reviewer approval, and studio receipt.",
+      summary: "Make consent and anonymization explicit with scope, opt-out, redaction, value masking, country privacy, reviewer approval, and receipt.",
+      trackSummary: "Learning network trust ledger now becomes one tenant consent and anonymization studio across consent scope, opt-out path, anonymization pass, redaction proof, value masking, country privacy, reviewer approval, and receipt.",
+      stageSummary: "Trust ledger now becomes consent studio with scope, opt-out, anonymization, redaction, masking, country privacy, reviewer, and receipt controls.",
+      openDecision: "Open consent studio",
+      guardedDecision: "Open guarded consent studio",
+      holdDecision: "Hold anonymization",
+      repairDecision: "Repair consent proof",
+      nextOpen: "Open the consent and anonymization studio and keep consent scope, opt-out path, anonymization pass, redaction proof, value masking, country privacy, reviewer approval, and receipt together.",
+      nextGuarded: "Open guarded consent studio while one scope, opt-out, anonymization, redaction, masking, country, reviewer, or receipt lane stays watched.",
+      nextHold: "Hold anonymization until consent scope, opt-out path, redaction proof, and reviewer approval are clear.",
+      nextRepair: "Repair consent proof before policy enforcement opens.",
+      axes: [
+        ["Consent scope", "tenantGuard", 0.82, 6, "Consent scope is explicit."],
+        ["Opt-out path", "rollbackGuard", 0.78, 5, "Opt-out path is visible."],
+        ["Anonymization pass", "proofGuard", 0.82, 5, "Anonymization pass is ready."],
+        ["Redaction proof", "proofGuard", 0.8, 5, "Redaction proof is attached."],
+        ["Value masking", "tenantGuard", 0.8, 5, "Commercial values stay masked."],
+        ["Country privacy", "reviewGuard", 0.8, 5, "Country privacy is checked."],
+        ["Reviewer approval", "ownerCommand", 0.8, 5, "Reviewer approval is named."],
+        ["Studio receipt", "guardClosure", 0.82, 6, "Studio receipt closes consent."],
+      ],
+    },
+    {
+      key: "reuse-learning-policy-enforcement-room",
+      version: "v1009",
+      number: 1009,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Reuse Learning Policy Enforcement Room",
+      shortLabel: "Reuse Learning Policy Enforcement Room",
+      phase: "First pilot expansion rollout reuse market pilot reuse learning policy enforcement room",
+      track: "v1009 first pilot expansion rollout reuse market pilot reuse learning policy enforcement room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-reuse-learning-policy-enforcement-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-reuse-learning-policy-enforcement-room",
+      idSuffix: "REUSE-LEARNING-POLICY-ENFORCEMENT-ROOM",
+      scoreKey: "reuseLearningPolicyEnforcementRoomScore",
+      decisionKey: "reuseLearningPolicyEnforcementRoomDecision",
+      stateKey: "reuseLearningPolicyEnforcementRoomState",
+      lineKey: "reuseLearningPolicyEnforcementRoomLine",
+      primarySignal: "Pilot reuse learning policy enforcement room",
+      primaryNote: "Turns consent and anonymization into policy enforcement with allowed use, blocked use, consent check, country check, reviewer override, audit event, rollback lock, and enforcement receipt.",
+      summary: "Control reusable learning with allowed use, blocked use, consent checks, country checks, reviewer override, audit event, rollback lock, and receipt.",
+      trackSummary: "Tenant consent and anonymization now becomes one reuse learning policy enforcement room across allowed use, blocked use, consent check, country check, reviewer override, audit event, rollback lock, and receipt.",
+      stageSummary: "Consent studio now becomes policy enforcement with allowed use, blocked use, consent, country, reviewer, audit, rollback, and receipt controls.",
+      openDecision: "Enforce reuse policy",
+      guardedDecision: "Enforce guarded policy",
+      holdDecision: "Hold policy enforcement",
+      repairDecision: "Repair policy proof",
+      nextOpen: "Enforce reusable-learning policy and keep allowed use, blocked use, consent check, country check, reviewer override, audit event, rollback lock, and receipt together.",
+      nextGuarded: "Enforce guarded policy while one allowed use, blocked use, consent, country, reviewer, audit, rollback, or receipt lane stays watched.",
+      nextHold: "Hold policy enforcement until consent check, country check, reviewer override, and rollback lock are clear.",
+      nextRepair: "Repair policy proof before multi-organization trust expands.",
+      axes: [
+        ["Allowed use", "reviewGuard", 0.82, 6, "Allowed reuse is defined."],
+        ["Blocked use", "tenantGuard", 0.82, 5, "Blocked reuse is enforced."],
+        ["Consent check", "tenantGuard", 0.82, 5, "Consent check is mandatory."],
+        ["Country check", "reviewGuard", 0.8, 5, "Country check is mandatory."],
+        ["Reviewer override", "ownerCommand", 0.78, 5, "Override owner is named."],
+        ["Audit event", "proofGuard", 0.8, 5, "Audit event is captured."],
+        ["Rollback lock", "rollbackGuard", 0.8, 5, "Rollback lock is active."],
+        ["Enforcement receipt", "guardClosure", 0.82, 6, "Enforcement receipt closes room."],
       ],
     },
   );
@@ -23457,6 +23652,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotReuseLearningPolicyEnforcementRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantConsentAndAnonymizationStudioPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningNetworkTrustLedgerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryRolloutControlBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantReadinessGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningReuseApprovalRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstCustomerFeedbackLoopPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPostLaunchTrustMonitorPreview(model, autopilot)}",
@@ -31254,6 +31454,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningReuseApprovalRoomPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-learning-reuse-approval-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantReadinessGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-tenant-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantReadinessGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-tenant-readiness-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantReadinessGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-tenant-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryRolloutControlBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "country-rollout-control-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryRolloutControlBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "country-rollout-control-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryRolloutControlBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "country-rollout-control-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLearningNetworkTrustLedgerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "learning-network-trust-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLearningNetworkTrustLedger(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "learning-network-trust-ledger", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningNetworkTrustLedgerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "learning-network-trust-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantConsentAndAnonymizationStudioSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-consent-and-anonymization-studio");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantConsentAndAnonymizationStudio(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-consent-and-anonymization-studio", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantConsentAndAnonymizationStudioPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-consent-and-anonymization-studio");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotReuseLearningPolicyEnforcementRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "reuse-learning-policy-enforcement-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotReuseLearningPolicyEnforcementRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "reuse-learning-policy-enforcement-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotReuseLearningPolicyEnforcementRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "reuse-learning-policy-enforcement-room");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -96065,9 +96325,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1005", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Readiness Gate", "Prepare the next tenant path with access proof, setup proof, privacy boundary, support readiness, billing readiness, and learning reuse limits."],
-      ["v1006", "First Pilot Expansion Rollout Reuse Market Pilot Country Rollout Control Board", "Shape country rollout controls for localization, currency posture, support route, privacy review, sponsor story, and rollback proof."],
-      ["v1007", "First Pilot Expansion Rollout Reuse Market Pilot Learning Network Trust Ledger", "Keep shared learning safe with tenant consent, anonymized evidence, policy guardrails, review owners, and trust receipts."],
+      ["v1010", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Organization Trust Council", "Prepare shared-learning council governance with tenant representatives, evidence acceptance, dispute routes, fairness review, and trust receipts."],
+      ["v1011", "First Pilot Expansion Rollout Reuse Market Pilot Country Compliance Launch Pack", "Turn country rollout controls into launch-ready compliance packs for privacy, currency, local support, sponsor story, and rollback acceptance."],
+      ["v1012", "First Pilot Expansion Rollout Reuse Market Pilot Reinforcement Outcome Guardrail", "Keep AI guidance learning safe with reward proof, outcome drift checks, tenant-safe canaries, rollback gates, and human approval receipts."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
