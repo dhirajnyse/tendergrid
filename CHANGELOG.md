@@ -1,5 +1,140 @@
 # Changelog
 
+## v1029 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Expansion Approval Gate
+
+### Changes Made
+- Promoted multi-tenant expansion approval gate as the current build.
+- Added expansion readiness, security clearance, support capacity, revenue proof, tenant isolation, learning boundary, rollback route, and approval receipt lanes.
+- Updated Build Phase to show v1029 as current and queue v1030-v1032 for provisioning runbook, support scale, and global evidence passport work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1029.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop Chrome QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1029 visible, Multi-Tenant Expansion Approval Gate visible, v1030-v1032 queue visible, no page-level horizontal overflow, and no console errors.
+- Passed: rail-side toggle QA from left to right and back left with Build Phase intact.
+- Passed: mobile Chrome QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+- Note: in-app browser attach was attempted first but unavailable in this session, so installed Chrome was used for equivalent visual QA.
+
+### Known Risks
+- Multi-tenant expansion approval is still static; real launch requires tenant isolation proof, security signoff, support capacity planning, revenue records, rollback testing, and signed expansion approval storage.
+
+## v1028 - First Pilot Expansion Rollout Reuse Market Pilot Production Security Evidence Pack
+
+### Changes Made
+- Added production security evidence pack to the pilot rollout runway.
+- Added auth evidence, access review, data boundary, audit evidence, incident route, backup proof, vulnerability watch, and security signoff lanes.
+- Added command runway preview wiring and static coverage for production security evidence.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: static release coverage for Production Security Evidence Pack model, summary model, render path, copy action, primary signal, and Build Phase track.
+- Passed: desktop and mobile Chrome route QA with Build v1029 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Security evidence is still static; real launch requires authentication logs, access review workflow, backup restore tests, vulnerability monitoring, incident workflow, and audit evidence storage.
+
+## v1027 - First Pilot Expansion Rollout Reuse Market Pilot Customer Success Day-0 Handoff Room
+
+### Changes Made
+- Added customer success Day-0 handoff room to the pilot rollout runway.
+- Added success owner, cadence plan, success plan, open issues, value proof, support bridge, escalation route, and handoff receipt lanes.
+- Added command runway preview wiring and static coverage for the customer-success handoff after launch.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: static release coverage for Customer Success Day-0 Handoff Room model, summary model, render path, copy action, primary signal, and Build Phase track.
+- Passed: desktop and mobile Chrome route QA with Build v1029 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Customer-success handoff is still static; real launch requires live ownership assignment, issue tracking, support escalation, success-plan storage, value evidence, and customer-success receipt capture.
+
+## v1026 - First Pilot Expansion Rollout Reuse Market Pilot Launch Revenue Proof Ledger
+
+### Changes Made
+- Added launch revenue proof ledger to the pilot rollout runway.
+- Added invoice receipt, payment status, seat count, support cost, renewal signal, margin check, audit trail, and revenue receipt lanes.
+- Added command runway preview wiring and static coverage for paid launch revenue proof.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: static release coverage for Launch Revenue Proof Ledger model, summary model, render path, copy action, primary signal, and Build Phase track.
+- Passed: desktop and mobile Chrome route QA with Build v1029 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Revenue proof is still static; real launch requires billing integration, invoice/payment evidence, seat reconciliation, support-cost tracking, margin calculation, and audit receipts.
+
+## v1025 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Monitor
+
+### Changes Made
+- Added tenant health monitor to the pilot rollout runway.
+- Added usage pulse, support tickets, data confidence, billing status, admin adoption, rollback readiness, renewal signal, and health receipt lanes.
+- Added command runway preview wiring and static coverage for first-tenant health monitoring.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: static release coverage for Tenant Health Monitor model, summary model, render path, copy action, primary signal, and Build Phase track.
+- Passed: desktop and mobile Chrome route QA with Build v1029 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Tenant health monitoring is still static; real launch requires usage telemetry, support tickets, billing state, admin adoption events, rollback readiness evidence, and renewal signals.
+
 ## v1024 - First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Day-0 Command
 
 ### Changes Made

@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1024";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Day-0 Command";
+  const BUILD_VERSION = "v1029";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Expansion Approval Gate";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1024.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1024.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1029.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1029.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -8617,6 +8617,201 @@
         ["Issue lane", "rollbackGuard", 0.78, 5, "Issue lane is ready."],
         ["Success measure", "sponsorGuard", 0.8, 5, "Success measure is clear."],
         ["Day-0 receipt", "guardClosure", 0.84, 6, "Day-0 receipt closes onboarding."],
+      ],
+    },
+    {
+      key: "tenant-health-monitor",
+      version: "v1025",
+      number: 1025,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Monitor",
+      shortLabel: "Tenant Health Monitor",
+      phase: "first pilot expansion rollout reuse market pilot tenant health monitor",
+      track: "v1025 first pilot expansion rollout reuse market pilot tenant health monitor",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-health-monitor",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-health-monitor",
+      idSuffix: "TENANT-HEALTH-MONITOR",
+      scoreKey: "tenantHealthMonitorScore",
+      decisionKey: "tenantHealthMonitorDecision",
+      stateKey: "tenantHealthMonitorState",
+      lineKey: "tenantHealthMonitorLine",
+      primarySignal: "Pilot tenant health monitor",
+      primaryNote: "Turns Day-0 onboarding into first-tenant health monitoring with usage pulse, support tickets, data confidence, billing status, admin adoption, rollback readiness, renewal signal, and health receipt.",
+      summary: "Watch first-tenant health with usage pulse, support tickets, data confidence, billing status, admin adoption, rollback readiness, renewal signal, and receipt.",
+      trackSummary: "Customer onboarding Day-0 command now becomes tenant health monitoring across usage, support, data, billing, admin adoption, rollback, renewal, and receipt.",
+      stageSummary: "Tenant health now has usage, support, data, billing, admin adoption, rollback, renewal, and receipt controls.",
+      openDecision: "Open tenant health",
+      guardedDecision: "Open guarded monitor",
+      holdDecision: "Hold health expansion",
+      repairDecision: "Repair health proof",
+      nextOpen: "Open tenant health monitor and keep usage, support, data, billing, admin adoption, rollback, renewal, and receipt together.",
+      nextGuarded: "Run tenant health monitoring while one usage, support, data, billing, admin, rollback, renewal, or receipt lane stays watched.",
+      nextHold: "Hold health expansion until usage, support, billing, and rollback proof are clear.",
+      nextRepair: "Repair tenant health proof before revenue proof expands.",
+      axes: [
+        ["Usage pulse", "tenantGuard", 0.82, 6, "Usage pulse is visible."],
+        ["Support tickets", "supportGuard", 0.82, 6, "Support tickets are triaged."],
+        ["Data confidence", "proofGuard", 0.82, 6, "Data confidence is scored."],
+        ["Billing status", "sponsorGuard", 0.82, 6, "Billing status is known."],
+        ["Admin adoption", "ownerCommand", 0.8, 5, "Admin adoption is tracked."],
+        ["Rollback readiness", "rollbackGuard", 0.82, 6, "Rollback readiness is live."],
+        ["Renewal signal", "reviewGuard", 0.78, 5, "Renewal signal is captured."],
+        ["Health receipt", "guardClosure", 0.84, 6, "Health receipt closes monitoring."],
+      ],
+    },
+    {
+      key: "launch-revenue-proof-ledger",
+      version: "v1026",
+      number: 1026,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Revenue Proof Ledger",
+      shortLabel: "Launch Revenue Proof Ledger",
+      phase: "first pilot expansion rollout reuse market pilot launch revenue proof ledger",
+      track: "v1026 first pilot expansion rollout reuse market pilot launch revenue proof ledger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-revenue-proof-ledger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-revenue-proof-ledger",
+      idSuffix: "LAUNCH-REVENUE-PROOF-LEDGER",
+      scoreKey: "launchRevenueProofLedgerScore",
+      decisionKey: "launchRevenueProofLedgerDecision",
+      stateKey: "launchRevenueProofLedgerState",
+      lineKey: "launchRevenueProofLedgerLine",
+      primarySignal: "Pilot launch revenue proof ledger",
+      primaryNote: "Connects first-tenant health to revenue proof with invoice receipt, payment status, seat count, support cost, renewal signal, margin check, audit trail, and revenue receipt.",
+      summary: "Prove launch revenue with invoice receipt, payment status, seat count, support cost, renewal signal, margin check, audit trail, and receipt.",
+      trackSummary: "Tenant health monitoring now becomes launch revenue proof across invoice, payment, seats, support cost, renewal, margin, audit, and receipt.",
+      stageSummary: "Launch revenue now has invoice, payment, seats, support cost, renewal, margin, audit, and receipt controls.",
+      openDecision: "Open revenue ledger",
+      guardedDecision: "Open guarded ledger",
+      holdDecision: "Hold revenue proof",
+      repairDecision: "Repair revenue proof",
+      nextOpen: "Open launch revenue proof ledger and keep invoice, payment, seats, support cost, renewal, margin, audit, and receipt together.",
+      nextGuarded: "Run revenue proof while one invoice, payment, seat, support cost, renewal, margin, audit, or receipt lane stays watched.",
+      nextHold: "Hold revenue proof until invoice, payment, support cost, and audit trail are clear.",
+      nextRepair: "Repair revenue proof before customer-success handoff expands.",
+      axes: [
+        ["Invoice receipt", "sponsorGuard", 0.82, 6, "Invoice receipt is attached."],
+        ["Payment status", "sponsorGuard", 0.82, 6, "Payment status is known."],
+        ["Seat count", "tenantGuard", 0.8, 5, "Seat count is visible."],
+        ["Support cost", "supportGuard", 0.8, 5, "Support cost is bounded."],
+        ["Renewal signal", "reviewGuard", 0.78, 5, "Renewal signal is noted."],
+        ["Margin check", "proofGuard", 0.8, 5, "Margin check is readable."],
+        ["Audit trail", "proofGuard", 0.82, 6, "Audit trail is attached."],
+        ["Revenue receipt", "guardClosure", 0.84, 6, "Revenue receipt closes proof."],
+      ],
+    },
+    {
+      key: "customer-success-day-0-handoff-room",
+      version: "v1027",
+      number: 1027,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Day-0 Handoff Room",
+      shortLabel: "Customer Success Day-0 Handoff Room",
+      phase: "first pilot expansion rollout reuse market pilot customer success day-0 handoff room",
+      track: "v1027 first pilot expansion rollout reuse market pilot customer success day-0 handoff room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-day-0-handoff-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-day-0-handoff-room",
+      idSuffix: "CUSTOMER-SUCCESS-DAY-0-HANDOFF-ROOM",
+      scoreKey: "customerSuccessDay0HandoffRoomScore",
+      decisionKey: "customerSuccessDay0HandoffRoomDecision",
+      stateKey: "customerSuccessDay0HandoffRoomState",
+      lineKey: "customerSuccessDay0HandoffRoomLine",
+      primarySignal: "Pilot customer success Day-0 handoff room",
+      primaryNote: "Moves Day-0 onboarding into customer-success ownership with success owner, cadence plan, success plan, open issues, value proof, support bridge, escalation route, and handoff receipt.",
+      summary: "Hand off Day-0 onboarding to customer success with success owner, cadence plan, success plan, open issues, value proof, support bridge, escalation route, and receipt.",
+      trackSummary: "Launch revenue proof now becomes customer success Day-0 handoff across owner, cadence, success plan, issues, value proof, support, escalation, and receipt.",
+      stageSummary: "Customer success handoff now has owner, cadence, success plan, issues, value proof, support, escalation, and receipt controls.",
+      openDecision: "Open CS handoff",
+      guardedDecision: "Open guarded handoff",
+      holdDecision: "Hold CS handoff",
+      repairDecision: "Repair handoff proof",
+      nextOpen: "Open customer success Day-0 handoff and keep owner, cadence, success plan, issues, value proof, support, escalation, and receipt together.",
+      nextGuarded: "Run CS handoff while one owner, cadence, success plan, issue, value, support, escalation, or receipt lane stays watched.",
+      nextHold: "Hold CS handoff until success owner, issue lane, support bridge, and escalation route are clear.",
+      nextRepair: "Repair handoff proof before security evidence expands.",
+      axes: [
+        ["Success owner", "ownerCommand", 0.82, 6, "Success owner is named."],
+        ["Cadence plan", "reviewGuard", 0.8, 5, "Cadence plan is visible."],
+        ["Success plan", "proofGuard", 0.82, 6, "Success plan is written."],
+        ["Open issues", "rollbackGuard", 0.78, 5, "Open issues are routed."],
+        ["Value proof", "sponsorGuard", 0.82, 6, "Value proof is sponsor-readable."],
+        ["Support bridge", "supportGuard", 0.82, 6, "Support bridge is active."],
+        ["Escalation route", "rollbackGuard", 0.8, 5, "Escalation route is clear."],
+        ["Handoff receipt", "guardClosure", 0.84, 6, "Handoff receipt closes CS ownership."],
+      ],
+    },
+    {
+      key: "production-security-evidence-pack",
+      version: "v1028",
+      number: 1028,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Security Evidence Pack",
+      shortLabel: "Production Security Evidence Pack",
+      phase: "first pilot expansion rollout reuse market pilot production security evidence pack",
+      track: "v1028 first pilot expansion rollout reuse market pilot production security evidence pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-security-evidence-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-security-evidence-pack",
+      idSuffix: "PRODUCTION-SECURITY-EVIDENCE-PACK",
+      scoreKey: "productionSecurityEvidencePackScore",
+      decisionKey: "productionSecurityEvidencePackDecision",
+      stateKey: "productionSecurityEvidencePackState",
+      lineKey: "productionSecurityEvidencePackLine",
+      primarySignal: "Pilot production security evidence pack",
+      primaryNote: "Packages production security evidence with auth evidence, access review, data boundary, audit evidence, incident route, backup proof, vulnerability watch, and security signoff.",
+      summary: "Package security evidence with auth evidence, access review, data boundary, audit evidence, incident route, backup proof, vulnerability watch, and signoff.",
+      trackSummary: "Customer success Day-0 handoff now becomes production security evidence across auth, access, data, audit, incident, backup, vulnerability, and signoff.",
+      stageSummary: "Production security now has auth, access, data boundary, audit, incident, backup, vulnerability, and signoff controls.",
+      openDecision: "Open security pack",
+      guardedDecision: "Open guarded security",
+      holdDecision: "Hold security signoff",
+      repairDecision: "Repair security proof",
+      nextOpen: "Open production security evidence pack and keep auth, access, data, audit, incident, backup, vulnerability, and signoff together.",
+      nextGuarded: "Run security evidence while one auth, access, data, audit, incident, backup, vulnerability, or signoff lane stays watched.",
+      nextHold: "Hold security signoff until auth, access, data boundary, and backup proof are clear.",
+      nextRepair: "Repair security proof before multi-tenant approval expands.",
+      axes: [
+        ["Auth evidence", "tenantGuard", 0.82, 6, "Auth evidence is attached."],
+        ["Access review", "reviewGuard", 0.82, 6, "Access review is complete."],
+        ["Data boundary", "tenantGuard", 0.82, 6, "Data boundary is clear."],
+        ["Audit evidence", "proofGuard", 0.82, 6, "Audit evidence is attached."],
+        ["Incident route", "supportGuard", 0.8, 5, "Incident route is staffed."],
+        ["Backup proof", "rollbackGuard", 0.82, 6, "Backup proof is ready."],
+        ["Vulnerability watch", "proofGuard", 0.78, 5, "Vulnerability watch is active."],
+        ["Security signoff", "guardClosure", 0.84, 6, "Security signoff closes evidence."],
+      ],
+    },
+    {
+      key: "multi-tenant-expansion-approval-gate",
+      version: "v1029",
+      number: 1029,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Expansion Approval Gate",
+      shortLabel: "Multi-Tenant Expansion Approval Gate",
+      phase: "first pilot expansion rollout reuse market pilot multi-tenant expansion approval gate",
+      track: "v1029 first pilot expansion rollout reuse market pilot multi-tenant expansion approval gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-expansion-approval-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-expansion-approval-gate",
+      idSuffix: "MULTI-TENANT-EXPANSION-APPROVAL-GATE",
+      scoreKey: "multiTenantExpansionApprovalGateScore",
+      decisionKey: "multiTenantExpansionApprovalGateDecision",
+      stateKey: "multiTenantExpansionApprovalGateState",
+      lineKey: "multiTenantExpansionApprovalGateLine",
+      primarySignal: "Pilot multi-tenant expansion approval gate",
+      primaryNote: "Turns production security evidence into a multi-tenant expansion decision with expansion readiness, security clearance, support capacity, revenue proof, tenant isolation, learning boundary, rollback route, and approval receipt.",
+      summary: "Approve or hold multi-tenant expansion with expansion readiness, security clearance, support capacity, revenue proof, tenant isolation, learning boundary, rollback route, and receipt.",
+      trackSummary: "Production security evidence now becomes a multi-tenant expansion approval gate across readiness, security, support, revenue, isolation, learning, rollback, and receipt.",
+      stageSummary: "Multi-tenant expansion now has readiness, security, support capacity, revenue, tenant isolation, learning boundary, rollback, and receipt controls.",
+      openDecision: "Open expansion gate",
+      guardedDecision: "Open guarded expansion",
+      holdDecision: "Hold expansion",
+      repairDecision: "Repair expansion proof",
+      nextOpen: "Open multi-tenant expansion approval gate and keep readiness, security, support, revenue, isolation, learning, rollback, and receipt together.",
+      nextGuarded: "Run expansion approval while one readiness, security, support, revenue, isolation, learning, rollback, or receipt lane stays watched.",
+      nextHold: "Hold expansion until security clearance, support capacity, tenant isolation, and rollback route are clear.",
+      nextRepair: "Repair expansion proof before provisioning runbook expands.",
+      axes: [
+        ["Expansion readiness", "reviewGuard", 0.84, 6, "Expansion readiness is explicit."],
+        ["Security clearance", "tenantGuard", 0.84, 6, "Security clearance is signed."],
+        ["Support capacity", "supportGuard", 0.82, 6, "Support capacity is known."],
+        ["Revenue proof", "sponsorGuard", 0.82, 6, "Revenue proof is visible."],
+        ["Tenant isolation", "tenantGuard", 0.82, 6, "Tenant isolation is proven."],
+        ["Learning boundary", "proofGuard", 0.8, 5, "Learning boundary is safe."],
+        ["Rollback route", "rollbackGuard", 0.82, 6, "Rollback route is ready."],
+        ["Approval receipt", "guardClosure", 0.84, 6, "Approval receipt closes expansion."],
       ],
     },
   );
@@ -24237,6 +24432,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionApprovalGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidencePackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessDay0HandoffRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRevenueProofLedgerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthMonitorPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingDay0CommandPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataMigrationRehearsalPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchCouncilSignoffPreview(model, autopilot)}",
@@ -32294,6 +32494,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingDay0CommandPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-onboarding-day-0-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthMonitorSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-health-monitor");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthMonitor(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-health-monitor", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthMonitorPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-health-monitor");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRevenueProofLedgerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-revenue-proof-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRevenueProofLedger(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-revenue-proof-ledger", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchRevenueProofLedgerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-revenue-proof-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessDay0HandoffRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-success-day-0-handoff-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessDay0HandoffRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-success-day-0-handoff-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessDay0HandoffRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-success-day-0-handoff-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidencePackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-security-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidencePack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-security-evidence-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidencePackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-security-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionApprovalGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-tenant-expansion-approval-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionApprovalGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-tenant-expansion-approval-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionApprovalGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-tenant-expansion-approval-gate");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -97105,9 +97365,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1025", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Monitor", "Watch first tenant health after Day-0 with usage, support, data confidence, billing status, admin adoption, and rollback readiness."],
-      ["v1026", "First Pilot Expansion Rollout Reuse Market Pilot Launch Revenue Proof Ledger", "Connect paid tenant evidence to launch revenue proof with invoice, payment, seat count, support cost, renewal signal, and audit receipt."],
-      ["v1027", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Handoff Room", "Move Day-0 onboarding into customer success ownership with health score, cadence, success plan, open issues, and value receipt."],
+      ["v1030", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Provisioning Runbook", "Turn expansion approval into a repeatable tenant provisioning runbook with environment, data, access, billing, support, rollback, and receipt steps."],
+      ["v1031", "First Pilot Expansion Rollout Reuse Market Pilot Launch Support Scale Desk", "Scale support from one tenant to many with queues, severity, owner capacity, SLA evidence, incident memory, and management pulse."],
+      ["v1032", "First Pilot Expansion Rollout Reuse Market Pilot Global Pilot Evidence Passport", "Package launch, security, revenue, support, and learning proof into a reusable country and tenant expansion passport."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
