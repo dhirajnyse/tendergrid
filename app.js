@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1049";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Renewal Contract Handoff Pack";
+  const BUILD_VERSION = "v1054";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Pilot Governance Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1049.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1049.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1054.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1054.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -9592,6 +9592,201 @@
         ["Term sheet", "proofGuard", 0.8, 5, "Term sheet is drafted."],
         ["Redline route", "rollbackGuard", 0.8, 5, "Redline route is visible."],
         ["Handoff receipt", "guardClosure", 0.84, 6, "Handoff receipt closes contract pack."],
+      ],
+    },
+    {
+      key: "regional-partner-operations-room",
+      version: "v1050",
+      number: 1050,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Operations Room",
+      shortLabel: "Regional Partner Operations Room",
+      phase: "first pilot expansion rollout reuse market pilot regional partner operations room",
+      track: "v1050 first pilot expansion rollout reuse market pilot regional partner operations room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-regional-partner-operations-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-regional-partner-operations-room",
+      idSuffix: "REGIONAL-PARTNER-OPERATIONS-ROOM",
+      scoreKey: "regionalPartnerOperationsRoomScore",
+      decisionKey: "regionalPartnerOperationsRoomDecision",
+      stateKey: "regionalPartnerOperationsRoomState",
+      lineKey: "regionalPartnerOperationsRoomLine",
+      primarySignal: "Pilot regional partner operations room",
+      primaryNote: "Turns partner rollout into operating cadence with enablement owner, local backlog, support rota, sales rhythm, compliance watch, escalation lane, review cadence, and operations receipt.",
+      summary: "Run partner operations with enablement owner, local backlog, support rota, sales rhythm, compliance watch, escalation lane, review cadence, and receipt.",
+      trackSummary: "Renewal contract handoff now becomes regional partner operations across enablement, backlog, support, sales, compliance, escalation, review, and receipt.",
+      stageSummary: "Partner operations now have enablement, backlog, support, sales, compliance, escalation, review, and receipt controls.",
+      openDecision: "Open partner operations",
+      guardedDecision: "Open guarded operations",
+      holdDecision: "Hold partner operations",
+      repairDecision: "Repair partner operations proof",
+      nextOpen: "Open regional partner operations and keep enablement owner, local backlog, support rota, sales rhythm, compliance watch, escalation lane, review cadence, and receipt together.",
+      nextGuarded: "Open guarded partner operations while one enablement, backlog, support, sales, compliance, escalation, review, or receipt lane stays watched.",
+      nextHold: "Hold partner operations until support rota, compliance watch, escalation lane, and review cadence are clear.",
+      nextRepair: "Repair partner operations proof before enterprise security questionnaire expands.",
+      axes: [
+        ["Enablement owner", "ownerCommand", 0.82, 6, "Enablement owner is accountable."],
+        ["Local backlog", "reviewGuard", 0.8, 5, "Local backlog is triaged."],
+        ["Support rota", "supportGuard", 0.82, 6, "Support rota is staffed."],
+        ["Sales rhythm", "sponsorGuard", 0.8, 5, "Sales rhythm is visible."],
+        ["Compliance watch", "reviewGuard", 0.82, 6, "Compliance watch is active."],
+        ["Escalation lane", "rollbackGuard", 0.8, 5, "Escalation lane is named."],
+        ["Review cadence", "ownerCommand", 0.8, 5, "Review cadence is scheduled."],
+        ["Operations receipt", "guardClosure", 0.84, 6, "Operations receipt closes partner room."],
+      ],
+    },
+    {
+      key: "enterprise-security-questionnaire-desk",
+      version: "v1051",
+      number: 1051,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Security Questionnaire Desk",
+      shortLabel: "Enterprise Security Questionnaire Desk",
+      phase: "first pilot expansion rollout reuse market pilot enterprise security questionnaire desk",
+      track: "v1051 first pilot expansion rollout reuse market pilot enterprise security questionnaire desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-security-questionnaire-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-security-questionnaire-desk",
+      idSuffix: "ENTERPRISE-SECURITY-QUESTIONNAIRE-DESK",
+      scoreKey: "enterpriseSecurityQuestionnaireDeskScore",
+      decisionKey: "enterpriseSecurityQuestionnaireDeskDecision",
+      stateKey: "enterpriseSecurityQuestionnaireDeskState",
+      lineKey: "enterpriseSecurityQuestionnaireDeskLine",
+      primarySignal: "Pilot enterprise security questionnaire desk",
+      primaryNote: "Prepares security questionnaire answers from audit vault, tenant boundary, privacy proof, access control, support trail, billing route, reviewer owner, and questionnaire receipt.",
+      summary: "Prepare enterprise security questionnaire answers from audit vault, tenant boundary, privacy proof, access control, support trail, billing route, reviewer owner, and receipt.",
+      trackSummary: "Partner operations now become enterprise security questionnaire desk across audit vault, tenant boundary, privacy, access, support, billing, reviewer, and receipt.",
+      stageSummary: "Security questionnaire now has audit, tenant, privacy, access, support, billing, reviewer, and receipt controls.",
+      openDecision: "Open security questionnaire",
+      guardedDecision: "Open guarded questionnaire",
+      holdDecision: "Hold questionnaire",
+      repairDecision: "Repair security proof",
+      nextOpen: "Open enterprise security questionnaire desk and keep audit vault, tenant boundary, privacy proof, access control, support trail, billing route, reviewer owner, and receipt together.",
+      nextGuarded: "Open guarded questionnaire while one audit, tenant, privacy, access, support, billing, reviewer, or receipt lane stays watched.",
+      nextHold: "Hold questionnaire until tenant boundary, privacy proof, access control, and reviewer owner are clear.",
+      nextRepair: "Repair security proof before renewal signature readiness expands.",
+      axes: [
+        ["Audit vault", "proofGuard", 0.82, 6, "Audit vault source is ready."],
+        ["Tenant boundary", "tenantGuard", 0.82, 6, "Tenant boundary is documented."],
+        ["Privacy proof", "tenantGuard", 0.82, 6, "Privacy proof is attached."],
+        ["Access control", "reviewGuard", 0.82, 6, "Access control is explainable."],
+        ["Support trail", "supportGuard", 0.8, 5, "Support trail is readable."],
+        ["Billing route", "proofGuard", 0.78, 5, "Billing route is documented."],
+        ["Reviewer owner", "ownerCommand", 0.82, 6, "Reviewer owner is assigned."],
+        ["Questionnaire receipt", "guardClosure", 0.84, 6, "Questionnaire receipt closes desk."],
+      ],
+    },
+    {
+      key: "renewal-signature-readiness-room",
+      version: "v1052",
+      number: 1052,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Renewal Signature Readiness Room",
+      shortLabel: "Renewal Signature Readiness Room",
+      phase: "first pilot expansion rollout reuse market pilot renewal signature readiness room",
+      track: "v1052 first pilot expansion rollout reuse market pilot renewal signature readiness room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-signature-readiness-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-signature-readiness-room",
+      idSuffix: "RENEWAL-SIGNATURE-READINESS-ROOM",
+      scoreKey: "renewalSignatureReadinessRoomScore",
+      decisionKey: "renewalSignatureReadinessRoomDecision",
+      stateKey: "renewalSignatureReadinessRoomState",
+      lineKey: "renewalSignatureReadinessRoomLine",
+      primarySignal: "Pilot renewal signature readiness room",
+      primaryNote: "Closes renewal signature readiness with legal redlines, commercial approval, customer proof, billing route, signature owner, sign date, fallback path, and signature receipt.",
+      summary: "Close renewal signature readiness with legal redlines, commercial approval, customer proof, billing route, signature owner, sign date, fallback path, and receipt.",
+      trackSummary: "Security questionnaire desk now becomes renewal signature readiness across redlines, approvals, proof, billing, owner, sign date, fallback, and receipt.",
+      stageSummary: "Renewal signature now has legal, commercial, proof, billing, owner, date, fallback, and receipt controls.",
+      openDecision: "Open signature readiness",
+      guardedDecision: "Open guarded signature",
+      holdDecision: "Hold signature readiness",
+      repairDecision: "Repair signature proof",
+      nextOpen: "Open renewal signature readiness and keep legal redlines, commercial approval, customer proof, billing route, signature owner, sign date, fallback path, and receipt together.",
+      nextGuarded: "Open guarded signature readiness while one legal, commercial, proof, billing, owner, date, fallback, or receipt lane stays watched.",
+      nextHold: "Hold signature readiness until legal redlines, commercial approval, billing route, and sign date are clear.",
+      nextRepair: "Repair signature proof before customer success SLA expands.",
+      axes: [
+        ["Legal redlines", "reviewGuard", 0.82, 6, "Legal redlines are controlled."],
+        ["Commercial approval", "ownerCommand", 0.82, 6, "Commercial approval is clear."],
+        ["Customer proof", "sponsorGuard", 0.82, 6, "Customer proof supports renewal."],
+        ["Billing route", "proofGuard", 0.8, 5, "Billing route is ready."],
+        ["Signature owner", "ownerCommand", 0.82, 6, "Signature owner is accountable."],
+        ["Sign date", "reviewGuard", 0.8, 5, "Sign date is visible."],
+        ["Fallback path", "rollbackGuard", 0.8, 5, "Fallback path is accepted."],
+        ["Signature receipt", "guardClosure", 0.84, 6, "Signature receipt closes readiness."],
+      ],
+    },
+    {
+      key: "launch-customer-success-sla-console",
+      version: "v1053",
+      number: 1053,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Customer Success SLA Console",
+      shortLabel: "Launch Customer Success SLA Console",
+      phase: "first pilot expansion rollout reuse market pilot launch customer success sla console",
+      track: "v1053 first pilot expansion rollout reuse market pilot launch customer success sla console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-customer-success-sla-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-customer-success-sla-console",
+      idSuffix: "LAUNCH-CUSTOMER-SUCCESS-SLA-CONSOLE",
+      scoreKey: "launchCustomerSuccessSlaConsoleScore",
+      decisionKey: "launchCustomerSuccessSlaConsoleDecision",
+      stateKey: "launchCustomerSuccessSlaConsoleState",
+      lineKey: "launchCustomerSuccessSlaConsoleLine",
+      primarySignal: "Pilot launch customer success SLA console",
+      primaryNote: "Makes customer success promises measurable with response SLA, escalation SLA, onboarding SLA, renewal SLA, partner SLA, support owner, breach route, and SLA receipt.",
+      summary: "Make customer success promises measurable with response SLA, escalation SLA, onboarding SLA, renewal SLA, partner SLA, support owner, breach route, and receipt.",
+      trackSummary: "Renewal signature readiness now becomes customer success SLA console across response, escalation, onboarding, renewal, partner, owner, breach, and receipt.",
+      stageSummary: "Customer success SLA now has response, escalation, onboarding, renewal, partner, owner, breach, and receipt controls.",
+      openDecision: "Open SLA console",
+      guardedDecision: "Open guarded SLA",
+      holdDecision: "Hold SLA console",
+      repairDecision: "Repair SLA proof",
+      nextOpen: "Open customer success SLA console and keep response SLA, escalation SLA, onboarding SLA, renewal SLA, partner SLA, support owner, breach route, and receipt together.",
+      nextGuarded: "Open guarded SLA console while one response, escalation, onboarding, renewal, partner, owner, breach, or receipt lane stays watched.",
+      nextHold: "Hold SLA console until response SLA, escalation SLA, support owner, and breach route are clear.",
+      nextRepair: "Repair SLA proof before multi-country governance expands.",
+      axes: [
+        ["Response SLA", "supportGuard", 0.82, 6, "Response SLA is defined."],
+        ["Escalation SLA", "rollbackGuard", 0.8, 5, "Escalation SLA is visible."],
+        ["Onboarding SLA", "supportGuard", 0.8, 5, "Onboarding SLA is committed."],
+        ["Renewal SLA", "sponsorGuard", 0.8, 5, "Renewal SLA is committed."],
+        ["Partner SLA", "supportGuard", 0.8, 5, "Partner SLA is aligned."],
+        ["Support owner", "ownerCommand", 0.82, 6, "Support owner is accountable."],
+        ["Breach route", "rollbackGuard", 0.8, 5, "Breach route is clear."],
+        ["SLA receipt", "guardClosure", 0.84, 6, "SLA receipt closes console."],
+      ],
+    },
+    {
+      key: "multi-country-pilot-governance-pack",
+      version: "v1054",
+      number: 1054,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Pilot Governance Pack",
+      shortLabel: "Multi-Country Pilot Governance Pack",
+      phase: "first pilot expansion rollout reuse market pilot multi-country pilot governance pack",
+      track: "v1054 first pilot expansion rollout reuse market pilot multi-country pilot governance pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-country-pilot-governance-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-country-pilot-governance-pack",
+      idSuffix: "MULTI-COUNTRY-PILOT-GOVERNANCE-PACK",
+      scoreKey: "multiCountryPilotGovernancePackScore",
+      decisionKey: "multiCountryPilotGovernancePackDecision",
+      stateKey: "multiCountryPilotGovernancePackState",
+      lineKey: "multiCountryPilotGovernancePackLine",
+      primarySignal: "Pilot multi-country governance pack",
+      primaryNote: "Keeps country expansion controlled with country owner, policy map, currency rule, data boundary, support model, partner boundary, launch gate, and governance receipt.",
+      summary: "Govern multi-country pilots with country owner, policy map, currency rule, data boundary, support model, partner boundary, launch gate, and receipt.",
+      trackSummary: "Customer success SLA console now becomes multi-country pilot governance across country owner, policy, currency, data, support, partner, launch gate, and receipt.",
+      stageSummary: "Multi-country governance now has country, policy, currency, data, support, partner, launch, and receipt controls.",
+      openDecision: "Open country governance",
+      guardedDecision: "Open guarded governance",
+      holdDecision: "Hold country governance",
+      repairDecision: "Repair governance proof",
+      nextOpen: "Open multi-country pilot governance and keep country owner, policy map, currency rule, data boundary, support model, partner boundary, launch gate, and receipt together.",
+      nextGuarded: "Open guarded country governance while one country, policy, currency, data, support, partner, launch, or receipt lane stays watched.",
+      nextHold: "Hold multi-country governance until policy map, data boundary, support model, and partner boundary are clear.",
+      nextRepair: "Repair governance proof before production incident drills expand.",
+      axes: [
+        ["Country owner", "ownerCommand", 0.82, 6, "Country owner is accountable."],
+        ["Policy map", "reviewGuard", 0.82, 6, "Policy map is visible."],
+        ["Currency rule", "proofGuard", 0.8, 5, "Currency rule is controlled."],
+        ["Data boundary", "tenantGuard", 0.82, 6, "Data boundary is explicit."],
+        ["Support model", "supportGuard", 0.82, 6, "Support model is staffed."],
+        ["Partner boundary", "tenantGuard", 0.8, 5, "Partner boundary is safe."],
+        ["Launch gate", "reviewGuard", 0.8, 5, "Launch gate is named."],
+        ["Governance receipt", "guardClosure", 0.84, 6, "Governance receipt closes pack."],
       ],
     }
   );
@@ -25212,6 +25407,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryPilotGovernancePackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCustomerSuccessSlaConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignatureReadinessRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseSecurityQuestionnaireDeskPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerOperationsRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalContractHandoffPackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionPricingGovernanceRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceProofStudioPreview(model, autopilot)}",
@@ -33594,6 +33794,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalContractHandoffPackPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "renewal-contract-handoff-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerOperationsRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "regional-partner-operations-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerOperationsRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "regional-partner-operations-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerOperationsRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "regional-partner-operations-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseSecurityQuestionnaireDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "enterprise-security-questionnaire-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseSecurityQuestionnaireDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "enterprise-security-questionnaire-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseSecurityQuestionnaireDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "enterprise-security-questionnaire-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignatureReadinessRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "renewal-signature-readiness-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignatureReadinessRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "renewal-signature-readiness-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignatureReadinessRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "renewal-signature-readiness-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCustomerSuccessSlaConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-customer-success-sla-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCustomerSuccessSlaConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-customer-success-sla-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCustomerSuccessSlaConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-customer-success-sla-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryPilotGovernancePackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-country-pilot-governance-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryPilotGovernancePack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-country-pilot-governance-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryPilotGovernancePackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-country-pilot-governance-pack");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -98405,9 +98665,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1050", "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Operations Room", "Turn partner rollout into operating cadence with enablement owner, local backlog, support rota, sales rhythm, compliance watch, and operations receipt."],
-      ["v1051", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Security Questionnaire Desk", "Prepare enterprise security questionnaire answers from audit vault, tenant boundary, privacy proof, support trail, and reviewer receipt."],
-      ["v1052", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Signature Readiness Room", "Close renewal signature readiness with legal redlines, commercial approval, customer proof, billing route, and signature receipt."],
+      ["v1055", "First Pilot Expansion Rollout Reuse Market Pilot Production Incident Response Drill", "Run production incident rehearsal with severity owner, response timer, customer comms, rollback option, and drill receipt."],
+      ["v1056", "First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Evidence Portal", "Collect onboarding evidence for first customers with import proof, access proof, training proof, support proof, and portal receipt."],
+      ["v1057", "First Pilot Expansion Rollout Reuse Market Pilot Expansion Revenue Forecast Board", "Forecast expansion revenue across country pipeline, partner motion, renewal conversion, pricing governance, and revenue receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

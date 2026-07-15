@@ -1,5 +1,147 @@
 # Changelog
 
+## v1054 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Pilot Governance Pack
+
+### Changes Made
+- Added multi-country pilot governance pack to keep expansion controlled across markets.
+- Added country owner, policy map, currency rule, data boundary, support model, partner boundary, launch gate, and governance receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1054.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: `curl.exe -sS -I http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visibility, controlled-tab, and retry checks.
+
+### Known Risks
+- Multi-country governance is still static; real launch requires country-specific legal review, data residency controls, currency/tax rules, partner access boundaries, support model staffing, launch approvals, and governance receipts.
+
+## v1053 - First Pilot Expansion Rollout Reuse Market Pilot Launch Customer Success SLA Console
+
+### Changes Made
+- Added launch customer success SLA console to make support and renewal promises measurable.
+- Added response SLA, escalation SLA, onboarding SLA, renewal SLA, partner SLA, support owner, breach route, and SLA receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1053.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: `curl.exe -sS -I http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visibility, controlled-tab, and retry checks.
+
+### Known Risks
+- Customer success SLA console is still static; real launch requires support ticket telemetry, SLA timers, escalation ownership, breach alerts, partner SLA rules, renewal support commitments, and SLA receipts.
+
+## v1052 - First Pilot Expansion Rollout Reuse Market Pilot Renewal Signature Readiness Room
+
+### Changes Made
+- Added renewal signature readiness room to close the path from contract handoff to signature.
+- Added legal redlines, commercial approval, customer proof, billing route, signature owner, sign date, fallback path, and signature receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1052.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: `curl.exe -sS -I http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visibility, controlled-tab, and retry checks.
+
+### Known Risks
+- Renewal signature readiness is still static; real launch requires legal redline workflow, commercial approvals, customer proof, billing route confirmation, e-signature integration, fallback controls, and signature receipts.
+
+## v1051 - First Pilot Expansion Rollout Reuse Market Pilot Enterprise Security Questionnaire Desk
+
+### Changes Made
+- Added enterprise security questionnaire desk to make buyer security review answer-ready.
+- Added audit vault, tenant boundary, privacy proof, access control, support trail, billing route, reviewer owner, and questionnaire receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1051.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: `curl.exe -sS -I http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visibility, controlled-tab, and retry checks.
+
+### Known Risks
+- Security questionnaire support is still static; real launch requires security policy documents, access-control evidence, privacy reviews, infrastructure answers, reviewer workflow, and signed questionnaire receipts.
+
+## v1050 - First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Operations Room
+
+### Changes Made
+- Added regional partner operations room to turn partner rollout into daily operating cadence.
+- Added enablement owner, local backlog, support rota, sales rhythm, compliance watch, escalation lane, review cadence, and operations receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1050.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: `curl.exe -sS -I http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visibility, controlled-tab, and retry checks.
+
+### Known Risks
+- Regional partner operations are still static; real launch requires partner user roles, enablement workflow, support rota ownership, sales cadence tracking, compliance monitoring, escalation workflow, and operations receipts.
+
 ## v1049 - First Pilot Expansion Rollout Reuse Market Pilot Renewal Contract Handoff Pack
 
 ### Changes Made
