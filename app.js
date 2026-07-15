@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1029";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Expansion Approval Gate";
+  const BUILD_VERSION = "v1034";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Live Billing Reconciliation Desk";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1029.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1029.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1034.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1034.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -8812,6 +8812,201 @@
         ["Learning boundary", "proofGuard", 0.8, 5, "Learning boundary is safe."],
         ["Rollback route", "rollbackGuard", 0.82, 6, "Rollback route is ready."],
         ["Approval receipt", "guardClosure", 0.84, 6, "Approval receipt closes expansion."],
+      ],
+    },
+    {
+      key: "multi-tenant-provisioning-runbook",
+      version: "v1030",
+      number: 1030,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Provisioning Runbook",
+      shortLabel: "Multi-Tenant Provisioning Runbook",
+      phase: "first pilot expansion rollout reuse market pilot multi-tenant provisioning runbook",
+      track: "v1030 first pilot expansion rollout reuse market pilot multi-tenant provisioning runbook",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-provisioning-runbook",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-provisioning-runbook",
+      idSuffix: "MULTI-TENANT-PROVISIONING-RUNBOOK",
+      scoreKey: "multiTenantProvisioningRunbookScore",
+      decisionKey: "multiTenantProvisioningRunbookDecision",
+      stateKey: "multiTenantProvisioningRunbookState",
+      lineKey: "multiTenantProvisioningRunbookLine",
+      primarySignal: "Pilot multi-tenant provisioning runbook",
+      primaryNote: "Turns expansion approval into a repeatable provisioning runbook with environment slot, tenant record, access roles, data import, billing setup, support setup, rollback checkpoint, and provisioning receipt.",
+      summary: "Provision the next tenant with environment slot, tenant record, access roles, data import, billing setup, support setup, rollback checkpoint, and receipt.",
+      trackSummary: "Multi-tenant expansion approval now becomes a provisioning runbook across environment, tenant record, access, data, billing, support, rollback, and receipt.",
+      stageSummary: "Provisioning now has environment, tenant record, access, data import, billing, support, rollback, and receipt controls.",
+      openDecision: "Open provisioning runbook",
+      guardedDecision: "Open guarded provisioning",
+      holdDecision: "Hold provisioning",
+      repairDecision: "Repair provisioning proof",
+      nextOpen: "Open multi-tenant provisioning runbook and keep environment, tenant record, access, data, billing, support, rollback, and receipt together.",
+      nextGuarded: "Run provisioning while one environment, tenant, access, data, billing, support, rollback, or receipt lane stays watched.",
+      nextHold: "Hold provisioning until tenant record, access roles, billing setup, and rollback checkpoint are clear.",
+      nextRepair: "Repair provisioning proof before support scale expands.",
+      axes: [
+        ["Environment slot", "tenantGuard", 0.82, 6, "Environment slot is named."],
+        ["Tenant record", "proofGuard", 0.82, 6, "Tenant record is created."],
+        ["Access roles", "tenantGuard", 0.82, 6, "Access roles are mapped."],
+        ["Data import", "proofGuard", 0.8, 5, "Data import path is ready."],
+        ["Billing setup", "sponsorGuard", 0.82, 6, "Billing setup is visible."],
+        ["Support setup", "supportGuard", 0.8, 5, "Support setup is staffed."],
+        ["Rollback checkpoint", "rollbackGuard", 0.82, 6, "Rollback checkpoint is ready."],
+        ["Provisioning receipt", "guardClosure", 0.84, 6, "Provisioning receipt closes runbook."],
+      ],
+    },
+    {
+      key: "launch-support-scale-desk",
+      version: "v1031",
+      number: 1031,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Support Scale Desk",
+      shortLabel: "Launch Support Scale Desk",
+      phase: "first pilot expansion rollout reuse market pilot launch support scale desk",
+      track: "v1031 first pilot expansion rollout reuse market pilot launch support scale desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-support-scale-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-support-scale-desk",
+      idSuffix: "LAUNCH-SUPPORT-SCALE-DESK",
+      scoreKey: "launchSupportScaleDeskScore",
+      decisionKey: "launchSupportScaleDeskDecision",
+      stateKey: "launchSupportScaleDeskState",
+      lineKey: "launchSupportScaleDeskLine",
+      primarySignal: "Pilot launch support scale desk",
+      primaryNote: "Scales launch support from one tenant to many with queue split, severity policy, owner capacity, SLA evidence, incident memory, knowledge seed, management pulse, and support receipt.",
+      summary: "Scale launch support with queue split, severity policy, owner capacity, SLA evidence, incident memory, knowledge seed, management pulse, and receipt.",
+      trackSummary: "Provisioning runbook now becomes launch support scale across queue, severity, capacity, SLA, incident memory, knowledge, management pulse, and receipt.",
+      stageSummary: "Launch support now has queue, severity, capacity, SLA, incident, knowledge, management, and receipt controls.",
+      openDecision: "Open support scale",
+      guardedDecision: "Open guarded support",
+      holdDecision: "Hold support scale",
+      repairDecision: "Repair support proof",
+      nextOpen: "Open launch support scale desk and keep queue, severity, capacity, SLA, incident memory, knowledge, management pulse, and receipt together.",
+      nextGuarded: "Run support scale while one queue, severity, capacity, SLA, incident, knowledge, management, or receipt lane stays watched.",
+      nextHold: "Hold support scale until owner capacity, SLA evidence, and escalation coverage are clear.",
+      nextRepair: "Repair support proof before evidence passport expands.",
+      axes: [
+        ["Queue split", "supportGuard", 0.82, 6, "Queue split is visible."],
+        ["Severity policy", "reviewGuard", 0.8, 5, "Severity policy is clear."],
+        ["Owner capacity", "ownerCommand", 0.82, 6, "Owner capacity is known."],
+        ["SLA evidence", "supportGuard", 0.82, 6, "SLA evidence is attached."],
+        ["Incident memory", "proofGuard", 0.8, 5, "Incident memory is reusable."],
+        ["Knowledge seed", "proofGuard", 0.78, 5, "Knowledge seed is drafted."],
+        ["Management pulse", "reviewGuard", 0.8, 5, "Management pulse is scheduled."],
+        ["Support receipt", "guardClosure", 0.84, 6, "Support receipt closes scale desk."],
+      ],
+    },
+    {
+      key: "global-pilot-evidence-passport",
+      version: "v1032",
+      number: 1032,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Pilot Evidence Passport",
+      shortLabel: "Global Pilot Evidence Passport",
+      phase: "first pilot expansion rollout reuse market pilot global pilot evidence passport",
+      track: "v1032 first pilot expansion rollout reuse market pilot global pilot evidence passport",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-pilot-evidence-passport",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-pilot-evidence-passport",
+      idSuffix: "GLOBAL-PILOT-EVIDENCE-PASSPORT",
+      scoreKey: "globalPilotEvidencePassportScore",
+      decisionKey: "globalPilotEvidencePassportDecision",
+      stateKey: "globalPilotEvidencePassportState",
+      lineKey: "globalPilotEvidencePassportLine",
+      primarySignal: "Pilot global evidence passport",
+      primaryNote: "Packages launch proof for global reuse with launch receipt, security receipt, revenue receipt, support receipt, tenant boundary, learning boundary, country note, and passport receipt.",
+      summary: "Package global pilot proof with launch receipt, security receipt, revenue receipt, support receipt, tenant boundary, learning boundary, country note, and passport receipt.",
+      trackSummary: "Launch support scale now becomes a global pilot evidence passport across launch, security, revenue, support, tenant, learning, country, and receipt.",
+      stageSummary: "Global evidence now has launch, security, revenue, support, tenant boundary, learning boundary, country note, and receipt controls.",
+      openDecision: "Open evidence passport",
+      guardedDecision: "Open guarded passport",
+      holdDecision: "Hold passport",
+      repairDecision: "Repair passport proof",
+      nextOpen: "Open global pilot evidence passport and keep launch, security, revenue, support, tenant, learning, country, and receipt together.",
+      nextGuarded: "Run evidence passport while one launch, security, revenue, support, tenant, learning, country, or receipt lane stays watched.",
+      nextHold: "Hold passport until security, revenue, support, and tenant boundary receipts are clear.",
+      nextRepair: "Repair passport proof before tenant isolation smoke test expands.",
+      axes: [
+        ["Launch receipt", "proofGuard", 0.82, 6, "Launch receipt is attached."],
+        ["Security receipt", "tenantGuard", 0.82, 6, "Security receipt is attached."],
+        ["Revenue receipt", "sponsorGuard", 0.82, 6, "Revenue receipt is attached."],
+        ["Support receipt", "supportGuard", 0.82, 6, "Support receipt is attached."],
+        ["Tenant boundary", "tenantGuard", 0.82, 6, "Tenant boundary is written."],
+        ["Learning boundary", "proofGuard", 0.8, 5, "Learning boundary is safe."],
+        ["Country note", "reviewGuard", 0.78, 5, "Country note is prepared."],
+        ["Passport receipt", "guardClosure", 0.84, 6, "Passport receipt closes reuse proof."],
+      ],
+    },
+    {
+      key: "tenant-isolation-smoke-test",
+      version: "v1033",
+      number: 1033,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Isolation Smoke Test",
+      shortLabel: "Tenant Isolation Smoke Test",
+      phase: "first pilot expansion rollout reuse market pilot tenant isolation smoke test",
+      track: "v1033 first pilot expansion rollout reuse market pilot tenant isolation smoke test",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-isolation-smoke-test",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-isolation-smoke-test",
+      idSuffix: "TENANT-ISOLATION-SMOKE-TEST",
+      scoreKey: "tenantIsolationSmokeTestScore",
+      decisionKey: "tenantIsolationSmokeTestDecision",
+      stateKey: "tenantIsolationSmokeTestState",
+      lineKey: "tenantIsolationSmokeTestLine",
+      primarySignal: "Pilot tenant isolation smoke test",
+      primaryNote: "Turns passport proof into a tenant isolation smoke test with login separation, record boundary, role boundary, billing boundary, audit boundary, export boundary, rollback proof, and isolation receipt.",
+      summary: "Smoke-test tenant isolation with login separation, record boundary, role boundary, billing boundary, audit boundary, export boundary, rollback proof, and receipt.",
+      trackSummary: "Global evidence passport now becomes tenant isolation smoke testing across login, record, role, billing, audit, export, rollback, and receipt.",
+      stageSummary: "Tenant isolation now has login, record, role, billing, audit, export, rollback, and receipt controls.",
+      openDecision: "Run isolation smoke test",
+      guardedDecision: "Run guarded isolation",
+      holdDecision: "Hold tenant isolation",
+      repairDecision: "Repair isolation proof",
+      nextOpen: "Run tenant isolation smoke test and keep login, record, role, billing, audit, export, rollback, and receipt together.",
+      nextGuarded: "Run isolation test while one login, record, role, billing, audit, export, rollback, or receipt lane stays watched.",
+      nextHold: "Hold tenant isolation until record, role, billing, export, and rollback boundaries are clear.",
+      nextRepair: "Repair isolation proof before billing reconciliation expands.",
+      axes: [
+        ["Login separation", "tenantGuard", 0.82, 6, "Login separation is proven."],
+        ["Record boundary", "tenantGuard", 0.84, 6, "Record boundary is enforced."],
+        ["Role boundary", "tenantGuard", 0.82, 6, "Role boundary is enforced."],
+        ["Billing boundary", "sponsorGuard", 0.8, 5, "Billing boundary is isolated."],
+        ["Audit boundary", "proofGuard", 0.82, 6, "Audit boundary is visible."],
+        ["Export boundary", "proofGuard", 0.8, 5, "Export boundary is controlled."],
+        ["Rollback proof", "rollbackGuard", 0.82, 6, "Rollback proof is isolated."],
+        ["Isolation receipt", "guardClosure", 0.84, 6, "Isolation receipt closes smoke test."],
+      ],
+    },
+    {
+      key: "live-billing-reconciliation-desk",
+      version: "v1034",
+      number: 1034,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Billing Reconciliation Desk",
+      shortLabel: "Live Billing Reconciliation Desk",
+      phase: "first pilot expansion rollout reuse market pilot live billing reconciliation desk",
+      track: "v1034 first pilot expansion rollout reuse market pilot live billing reconciliation desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-billing-reconciliation-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-billing-reconciliation-desk",
+      idSuffix: "LIVE-BILLING-RECONCILIATION-DESK",
+      scoreKey: "liveBillingReconciliationDeskScore",
+      decisionKey: "liveBillingReconciliationDeskDecision",
+      stateKey: "liveBillingReconciliationDeskState",
+      lineKey: "liveBillingReconciliationDeskLine",
+      primarySignal: "Pilot live billing reconciliation desk",
+      primaryNote: "Turns tenant isolation proof into live billing reconciliation with invoice match, payment match, seat match, support credit, tax note, renewal amount, exception lane, and reconciliation receipt.",
+      summary: "Reconcile live billing with invoice match, payment match, seat match, support credit, tax note, renewal amount, exception lane, and receipt.",
+      trackSummary: "Tenant isolation smoke test now becomes live billing reconciliation across invoice, payment, seats, support credit, tax, renewal, exceptions, and receipt.",
+      stageSummary: "Live billing now has invoice, payment, seats, support credit, tax, renewal, exception, and receipt controls.",
+      openDecision: "Open billing reconciliation",
+      guardedDecision: "Open guarded billing",
+      holdDecision: "Hold billing close",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Open live billing reconciliation desk and keep invoice, payment, seats, support credit, tax, renewal, exceptions, and receipt together.",
+      nextGuarded: "Run billing reconciliation while one invoice, payment, seat, support credit, tax, renewal, exception, or receipt lane stays watched.",
+      nextHold: "Hold billing close until invoice, payment, seat, and exception proof are clear.",
+      nextRepair: "Repair billing proof before onboarding automation expands.",
+      axes: [
+        ["Invoice match", "sponsorGuard", 0.82, 6, "Invoice match is confirmed."],
+        ["Payment match", "sponsorGuard", 0.82, 6, "Payment match is confirmed."],
+        ["Seat match", "tenantGuard", 0.8, 5, "Seat match is reconciled."],
+        ["Support credit", "supportGuard", 0.78, 5, "Support credit is noted."],
+        ["Tax note", "proofGuard", 0.78, 5, "Tax note is visible."],
+        ["Renewal amount", "reviewGuard", 0.8, 5, "Renewal amount is drafted."],
+        ["Exception lane", "rollbackGuard", 0.82, 6, "Exception lane is routed."],
+        ["Reconciliation receipt", "guardClosure", 0.84, 6, "Reconciliation receipt closes billing."],
       ],
     },
   );
@@ -24432,6 +24627,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationDeskPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantIsolationSmokeTestPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPilotEvidencePassportPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportScaleDeskPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantProvisioningRunbookPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionApprovalGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidencePackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessDay0HandoffRoomPreview(model, autopilot)}",
@@ -32554,6 +32754,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionApprovalGatePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-tenant-expansion-approval-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantProvisioningRunbookSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-tenant-provisioning-runbook");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantProvisioningRunbook(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-tenant-provisioning-runbook", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantProvisioningRunbookPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-tenant-provisioning-runbook");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportScaleDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-support-scale-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportScaleDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-support-scale-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchSupportScaleDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-support-scale-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPilotEvidencePassportSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-pilot-evidence-passport");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPilotEvidencePassport(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-pilot-evidence-passport", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPilotEvidencePassportPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-pilot-evidence-passport");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantIsolationSmokeTestSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-isolation-smoke-test");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantIsolationSmokeTest(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-isolation-smoke-test", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantIsolationSmokeTestPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-isolation-smoke-test");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-billing-reconciliation-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-billing-reconciliation-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingReconciliationDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-billing-reconciliation-desk");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -97365,9 +97625,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1030", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Provisioning Runbook", "Turn expansion approval into a repeatable tenant provisioning runbook with environment, data, access, billing, support, rollback, and receipt steps."],
-      ["v1031", "First Pilot Expansion Rollout Reuse Market Pilot Launch Support Scale Desk", "Scale support from one tenant to many with queues, severity, owner capacity, SLA evidence, incident memory, and management pulse."],
-      ["v1032", "First Pilot Expansion Rollout Reuse Market Pilot Global Pilot Evidence Passport", "Package launch, security, revenue, support, and learning proof into a reusable country and tenant expansion passport."],
+      ["v1035", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Onboarding Automation Queue", "Turn billing reconciliation into automated tenant onboarding jobs with invitation, role, data import, billing, support, rollback, and receipt states."],
+      ["v1036", "First Pilot Expansion Rollout Reuse Market Pilot Support Knowledge Base Seed", "Convert support scale into reusable launch support knowledge with incident lessons, FAQs, escalation scripts, owner review, and evidence receipts."],
+      ["v1037", "First Pilot Expansion Rollout Reuse Market Pilot Expansion Renewal Signal Board", "Watch expansion renewal signals across usage, support, value proof, billing confidence, sponsor sentiment, and next-market readiness."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

@@ -1,5 +1,137 @@
 # Changelog
 
+## v1034 - First Pilot Expansion Rollout Reuse Market Pilot Live Billing Reconciliation Desk
+
+### Changes Made
+- Promoted live billing reconciliation desk as the current build for closing launch billing proof.
+- Added invoice match, payment match, seat match, support credit, tax note, renewal amount, exception lane, and reconciliation receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1034.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1034, Live Billing Reconciliation Desk, v1035-v1037 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Billing reconciliation is still static; real launch requires invoice records, payment reconciliation, seat counts, tax review, exception handling, renewal math, and auditable billing receipts.
+
+## v1033 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Isolation Smoke Test
+
+### Changes Made
+- Added tenant isolation smoke test to protect multi-tenant boundaries before billing and onboarding automation widen.
+- Added login separation, record boundary, role boundary, billing boundary, audit boundary, export boundary, rollback proof, and isolation receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1033.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1034, Live Billing Reconciliation Desk, v1035-v1037 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Tenant isolation is still static; real launch requires auth, record, role, billing, audit, export, and rollback tests against real backend tenancy.
+
+## v1032 - First Pilot Expansion Rollout Reuse Market Pilot Global Pilot Evidence Passport
+
+### Changes Made
+- Added global pilot evidence passport to package reusable launch proof for country and tenant expansion.
+- Added launch receipt, security receipt, revenue receipt, support receipt, tenant boundary, learning boundary, country note, and passport receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1032.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1034, Live Billing Reconciliation Desk, v1035-v1037 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Evidence passport is still static; real launch requires signed launch/security/revenue/support receipts, tenant learning boundaries, country notes, and exportable evidence storage.
+
+## v1031 - First Pilot Expansion Rollout Reuse Market Pilot Launch Support Scale Desk
+
+### Changes Made
+- Added launch support scale desk to keep multi-tenant support workload calm before expansion.
+- Added queue split, severity policy, owner capacity, SLA evidence, incident memory, knowledge seed, management pulse, and support receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1031.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1034, Live Billing Reconciliation Desk, v1035-v1037 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Support scale is still static; real launch requires ticket queues, severity policy, SLA logging, staffing plans, incident history, knowledge base workflows, and support receipts.
+
+## v1030 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Provisioning Runbook
+
+### Changes Made
+- Promoted multi-tenant provisioning runbook as the next tenant setup control after expansion approval.
+- Added environment slot, tenant record, access roles, data import, billing setup, support setup, rollback checkpoint, and provisioning receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1030.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1034, Live Billing Reconciliation Desk, v1035-v1037 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Provisioning is still static; real launch requires environment provisioning, tenant records, role grants, import jobs, billing setup, support coverage, rollback tests, and signed provisioning receipts.
+
 ## v1029 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Expansion Approval Gate
 
 ### Changes Made
