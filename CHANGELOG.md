@@ -1,5 +1,137 @@
 # Changelog
 
+## v1049 - First Pilot Expansion Rollout Reuse Market Pilot Renewal Contract Handoff Pack
+
+### Changes Made
+- Added renewal contract handoff pack to move renewal intent into contract-ready execution.
+- Added renewal scope, commercial owner, legal owner, pricing receipt, customer proof, term sheet, redline route, and handoff receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1049.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1049, Renewal Contract Handoff Pack, v1050-v1052 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Renewal contract handoff is still static; real launch requires contract workflow, legal owner assignment, term-sheet generation, redline tracking, pricing receipts, customer proof approvals, and handoff audit storage.
+
+## v1048 - First Pilot Expansion Rollout Reuse Market Pilot Expansion Pricing Governance Room
+
+### Changes Made
+- Added expansion pricing governance room to keep regional, partner, and renewal pricing controlled.
+- Added country price band, partner margin, discount rule, renewal uplift, tax note, approval owner, exception route, and pricing receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1048.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1049, Renewal Contract Handoff Pack, v1050-v1052 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Expansion pricing governance is still static; real launch requires pricing engine rules, tax validation, approval workflow, partner margin contracts, discount policy, renewal pricing evidence, and exception receipts.
+
+## v1047 - First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Proof Studio
+
+### Changes Made
+- Added customer reference proof studio to convert pilot success into approved market proof.
+- Added story angle, quote approval, metric proof, consent boundary, logo permission, reuse scope, reviewer signoff, and reference receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1047.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1049, Renewal Contract Handoff Pack, v1050-v1052 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Customer reference proof is still static; real launch requires customer approvals, legal/brand consent, metric validation, logo permission, reference workflow, and evidence-backed story receipts.
+
+## v1046 - First Pilot Expansion Rollout Reuse Market Pilot Enterprise Audit Evidence Vault
+
+### Changes Made
+- Added enterprise audit evidence vault to prepare serious customer and security review proof.
+- Added access proof, tenant boundary, billing proof, support trail, renewal health, compliance receipt, reviewer owner, and vault receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1046.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1049, Renewal Contract Handoff Pack, v1050-v1052 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Enterprise audit evidence is still static; real launch requires access logs, tenant-boundary proof, billing receipts, support history, renewal telemetry, compliance signoff, reviewer workflow, and immutable evidence storage.
+
+## v1045 - First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Rollout Desk
+
+### Changes Made
+- Added regional partner rollout desk to make partner-led country expansion accountable.
+- Added referral owner, partner scope, local support, pricing proof, compliance bridge, launch owner, rollback path, and partner launch receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1045.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1049, Renewal Contract Handoff Pack, v1050-v1052 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Regional partner rollout is still static; real launch requires partner contracts, regional support coverage, referral tracking, country compliance review, pricing approval, rollback ownership, and signed launch receipts.
+
 ## v1044 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Renewal Forecast
 
 ### Changes Made

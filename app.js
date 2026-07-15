@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1044";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Renewal Forecast";
+  const BUILD_VERSION = "v1049";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Renewal Contract Handoff Pack";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1044.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1044.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1049.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1049.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -9399,6 +9399,201 @@
         ["Forecast receipt", "guardClosure", 0.84, 6, "Forecast receipt closes health forecast."],
       ],
     },
+    {
+      key: "regional-partner-rollout-desk",
+      version: "v1045",
+      number: 1045,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Rollout Desk",
+      shortLabel: "Regional Partner Rollout Desk",
+      phase: "first pilot expansion rollout reuse market pilot regional partner rollout desk",
+      track: "v1045 first pilot expansion rollout reuse market pilot regional partner rollout desk",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-regional-partner-rollout-desk",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-regional-partner-rollout-desk",
+      idSuffix: "REGIONAL-PARTNER-ROLLOUT-DESK",
+      scoreKey: "regionalPartnerRolloutDeskScore",
+      decisionKey: "regionalPartnerRolloutDeskDecision",
+      stateKey: "regionalPartnerRolloutDeskState",
+      lineKey: "regionalPartnerRolloutDeskLine",
+      primarySignal: "Pilot regional partner rollout desk",
+      primaryNote: "Prepares partner-led country rollout with referral owner, partner scope, local support, pricing proof, compliance bridge, launch owner, rollback path, and partner launch receipt.",
+      summary: "Prepare partner-led regional rollout with referral owner, partner scope, local support, pricing proof, compliance bridge, launch owner, rollback path, and receipt.",
+      trackSummary: "Tenant renewal forecast now becomes regional partner rollout across referral owner, partner scope, local support, pricing, compliance, launch owner, rollback, and receipt.",
+      stageSummary: "Partner rollout now has referral, scope, support, pricing, compliance, launch owner, rollback, and receipt controls.",
+      openDecision: "Open partner rollout",
+      guardedDecision: "Open guarded rollout",
+      holdDecision: "Hold partner rollout",
+      repairDecision: "Repair partner proof",
+      nextOpen: "Open regional partner rollout and keep referral owner, partner scope, local support, pricing proof, compliance bridge, launch owner, rollback path, and receipt together.",
+      nextGuarded: "Open guarded partner rollout while one referral, scope, support, pricing, compliance, owner, rollback, or receipt lane stays watched.",
+      nextHold: "Hold partner rollout until partner scope, local support, pricing proof, and compliance bridge are clear.",
+      nextRepair: "Repair partner rollout proof before enterprise audit expands.",
+      axes: [
+        ["Referral owner", "ownerCommand", 0.82, 6, "Referral owner is accountable."],
+        ["Partner scope", "tenantGuard", 0.82, 6, "Partner scope is bounded."],
+        ["Local support", "supportGuard", 0.82, 6, "Local support route is visible."],
+        ["Pricing proof", "proofGuard", 0.82, 6, "Partner pricing proof is ready."],
+        ["Compliance bridge", "reviewGuard", 0.82, 6, "Compliance bridge is named."],
+        ["Launch owner", "ownerCommand", 0.8, 5, "Launch owner is ready."],
+        ["Rollback path", "rollbackGuard", 0.8, 5, "Rollback path travels with the partner."],
+        ["Partner launch receipt", "guardClosure", 0.84, 6, "Partner launch receipt closes rollout."],
+      ],
+    },
+    {
+      key: "enterprise-audit-evidence-vault",
+      version: "v1046",
+      number: 1046,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Audit Evidence Vault",
+      shortLabel: "Enterprise Audit Evidence Vault",
+      phase: "first pilot expansion rollout reuse market pilot enterprise audit evidence vault",
+      track: "v1046 first pilot expansion rollout reuse market pilot enterprise audit evidence vault",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-audit-evidence-vault",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-enterprise-audit-evidence-vault",
+      idSuffix: "ENTERPRISE-AUDIT-EVIDENCE-VAULT",
+      scoreKey: "enterpriseAuditEvidenceVaultScore",
+      decisionKey: "enterpriseAuditEvidenceVaultDecision",
+      stateKey: "enterpriseAuditEvidenceVaultState",
+      lineKey: "enterpriseAuditEvidenceVaultLine",
+      primarySignal: "Pilot enterprise audit evidence vault",
+      primaryNote: "Collects enterprise audit evidence across access proof, tenant boundary, billing proof, support trail, renewal health, compliance receipt, reviewer owner, and vault receipt.",
+      summary: "Collect enterprise audit evidence across access proof, tenant boundary, billing proof, support trail, renewal health, compliance receipt, reviewer owner, and vault receipt.",
+      trackSummary: "Partner rollout now becomes an enterprise audit evidence vault across access, tenant boundary, billing, support, renewal, compliance, reviewer, and receipt.",
+      stageSummary: "Enterprise audit proof now has access, tenant, billing, support, renewal, compliance, reviewer, and receipt controls.",
+      openDecision: "Open audit vault",
+      guardedDecision: "Open guarded vault",
+      holdDecision: "Hold audit vault",
+      repairDecision: "Repair audit proof",
+      nextOpen: "Open enterprise audit evidence vault and keep access proof, tenant boundary, billing proof, support trail, renewal health, compliance receipt, reviewer owner, and vault receipt together.",
+      nextGuarded: "Open guarded audit vault while one access, tenant, billing, support, renewal, compliance, reviewer, or receipt lane stays watched.",
+      nextHold: "Hold audit vault until access proof, tenant boundary, billing proof, and compliance receipt are clear.",
+      nextRepair: "Repair audit proof before customer reference reuse expands.",
+      axes: [
+        ["Access proof", "tenantGuard", 0.82, 6, "Access proof is attached."],
+        ["Tenant boundary", "tenantGuard", 0.82, 6, "Tenant boundary is explicit."],
+        ["Billing proof", "proofGuard", 0.82, 6, "Billing proof is ready."],
+        ["Support trail", "supportGuard", 0.82, 6, "Support trail is readable."],
+        ["Renewal health", "sponsorGuard", 0.8, 5, "Renewal health is current."],
+        ["Compliance receipt", "reviewGuard", 0.82, 6, "Compliance receipt is captured."],
+        ["Reviewer owner", "ownerCommand", 0.8, 5, "Reviewer owner is named."],
+        ["Vault receipt", "guardClosure", 0.84, 6, "Vault receipt closes audit evidence."],
+      ],
+    },
+    {
+      key: "customer-reference-proof-studio",
+      version: "v1047",
+      number: 1047,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Proof Studio",
+      shortLabel: "Customer Reference Proof Studio",
+      phase: "first pilot expansion rollout reuse market pilot customer reference proof studio",
+      track: "v1047 first pilot expansion rollout reuse market pilot customer reference proof studio",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-reference-proof-studio",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-reference-proof-studio",
+      idSuffix: "CUSTOMER-REFERENCE-PROOF-STUDIO",
+      scoreKey: "customerReferenceProofStudioScore",
+      decisionKey: "customerReferenceProofStudioDecision",
+      stateKey: "customerReferenceProofStudioState",
+      lineKey: "customerReferenceProofStudioLine",
+      primarySignal: "Pilot customer reference proof studio",
+      primaryNote: "Turns pilot outcomes into approved customer reference proof with story angle, quote approval, metric proof, consent boundary, logo permission, reuse scope, reviewer signoff, and reference receipt.",
+      summary: "Turn pilot outcomes into approved customer reference proof with story angle, quote approval, metric proof, consent boundary, logo permission, reuse scope, reviewer signoff, and receipt.",
+      trackSummary: "Audit evidence now becomes customer reference proof across story, quote, metrics, consent, logo, reuse scope, reviewer, and receipt.",
+      stageSummary: "Reference proof now has story, quote, metrics, consent, logo, reuse, reviewer, and receipt controls.",
+      openDecision: "Open reference proof",
+      guardedDecision: "Open guarded reference",
+      holdDecision: "Hold reference proof",
+      repairDecision: "Repair reference proof",
+      nextOpen: "Open customer reference proof studio and keep story angle, quote approval, metric proof, consent boundary, logo permission, reuse scope, reviewer signoff, and reference receipt together.",
+      nextGuarded: "Open guarded reference proof while one story, quote, metric, consent, logo, reuse, reviewer, or receipt lane stays watched.",
+      nextHold: "Hold customer reference proof until quote approval, metric proof, consent boundary, and reuse scope are clear.",
+      nextRepair: "Repair reference proof before expansion pricing expands.",
+      axes: [
+        ["Story angle", "sponsorGuard", 0.82, 6, "Story angle is customer-safe."],
+        ["Quote approval", "sponsorGuard", 0.82, 6, "Quote approval is named."],
+        ["Metric proof", "proofGuard", 0.82, 6, "Metric proof is attached."],
+        ["Consent boundary", "tenantGuard", 0.82, 6, "Consent boundary is explicit."],
+        ["Logo permission", "reviewGuard", 0.8, 5, "Logo permission is controlled."],
+        ["Reuse scope", "tenantGuard", 0.8, 5, "Reuse scope is bounded."],
+        ["Reviewer signoff", "ownerCommand", 0.8, 5, "Reviewer signoff is assigned."],
+        ["Reference receipt", "guardClosure", 0.84, 6, "Reference receipt closes studio."],
+      ],
+    },
+    {
+      key: "expansion-pricing-governance-room",
+      version: "v1048",
+      number: 1048,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Expansion Pricing Governance Room",
+      shortLabel: "Expansion Pricing Governance Room",
+      phase: "first pilot expansion rollout reuse market pilot expansion pricing governance room",
+      track: "v1048 first pilot expansion rollout reuse market pilot expansion pricing governance room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-pricing-governance-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-pricing-governance-room",
+      idSuffix: "EXPANSION-PRICING-GOVERNANCE-ROOM",
+      scoreKey: "expansionPricingGovernanceRoomScore",
+      decisionKey: "expansionPricingGovernanceRoomDecision",
+      stateKey: "expansionPricingGovernanceRoomState",
+      lineKey: "expansionPricingGovernanceRoomLine",
+      primarySignal: "Pilot expansion pricing governance room",
+      primaryNote: "Controls expansion pricing with country price band, partner margin, discount rule, renewal uplift, tax note, approval owner, exception route, and pricing receipt.",
+      summary: "Control expansion pricing with country price band, partner margin, discount rule, renewal uplift, tax note, approval owner, exception route, and pricing receipt.",
+      trackSummary: "Customer reference proof now becomes expansion pricing governance across country bands, partner margin, discount, renewal uplift, tax, approval, exception, and receipt.",
+      stageSummary: "Expansion pricing now has country, margin, discount, renewal, tax, approval, exception, and receipt controls.",
+      openDecision: "Open pricing governance",
+      guardedDecision: "Open guarded pricing",
+      holdDecision: "Hold pricing governance",
+      repairDecision: "Repair pricing proof",
+      nextOpen: "Open expansion pricing governance and keep country price band, partner margin, discount rule, renewal uplift, tax note, approval owner, exception route, and pricing receipt together.",
+      nextGuarded: "Open guarded pricing governance while one country, margin, discount, renewal, tax, approval, exception, or receipt lane stays watched.",
+      nextHold: "Hold pricing governance until country price band, partner margin, tax note, and approval owner are clear.",
+      nextRepair: "Repair pricing proof before renewal contract handoff expands.",
+      axes: [
+        ["Country price band", "proofGuard", 0.82, 6, "Country price band is visible."],
+        ["Partner margin", "sponsorGuard", 0.8, 5, "Partner margin is controlled."],
+        ["Discount rule", "reviewGuard", 0.82, 6, "Discount rule is written."],
+        ["Renewal uplift", "sponsorGuard", 0.8, 5, "Renewal uplift is explainable."],
+        ["Tax note", "proofGuard", 0.8, 5, "Tax note is captured."],
+        ["Approval owner", "ownerCommand", 0.82, 6, "Approval owner is accountable."],
+        ["Exception route", "rollbackGuard", 0.8, 5, "Exception route is open."],
+        ["Pricing receipt", "guardClosure", 0.84, 6, "Pricing receipt closes governance."],
+      ],
+    },
+    {
+      key: "renewal-contract-handoff-pack",
+      version: "v1049",
+      number: 1049,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Renewal Contract Handoff Pack",
+      shortLabel: "Renewal Contract Handoff Pack",
+      phase: "first pilot expansion rollout reuse market pilot renewal contract handoff pack",
+      track: "v1049 first pilot expansion rollout reuse market pilot renewal contract handoff pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-contract-handoff-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-renewal-contract-handoff-pack",
+      idSuffix: "RENEWAL-CONTRACT-HANDOFF-PACK",
+      scoreKey: "renewalContractHandoffPackScore",
+      decisionKey: "renewalContractHandoffPackDecision",
+      stateKey: "renewalContractHandoffPackState",
+      lineKey: "renewalContractHandoffPackLine",
+      primarySignal: "Pilot renewal contract handoff pack",
+      primaryNote: "Turns renewal intent into contract-ready handoff with renewal scope, commercial owner, legal owner, pricing receipt, customer proof, term sheet, redline route, and handoff receipt.",
+      summary: "Turn renewal intent into contract-ready handoff with renewal scope, commercial owner, legal owner, pricing receipt, customer proof, term sheet, redline route, and handoff receipt.",
+      trackSummary: "Expansion pricing governance now becomes renewal contract handoff across renewal scope, commercial owner, legal owner, pricing receipt, customer proof, term sheet, redline route, and receipt.",
+      stageSummary: "Renewal contract handoff now has scope, commercial, legal, pricing, proof, term sheet, redline, and receipt controls.",
+      openDecision: "Open contract handoff",
+      guardedDecision: "Open guarded handoff",
+      holdDecision: "Hold contract handoff",
+      repairDecision: "Repair handoff proof",
+      nextOpen: "Open renewal contract handoff and keep renewal scope, commercial owner, legal owner, pricing receipt, customer proof, term sheet, redline route, and handoff receipt together.",
+      nextGuarded: "Open guarded contract handoff while one scope, commercial, legal, pricing, proof, term sheet, redline, or receipt lane stays watched.",
+      nextHold: "Hold contract handoff until renewal scope, legal owner, pricing receipt, and term sheet are clear.",
+      nextRepair: "Repair contract handoff proof before partner rollout operations expand.",
+      axes: [
+        ["Renewal scope", "tenantGuard", 0.82, 6, "Renewal scope is clear."],
+        ["Commercial owner", "ownerCommand", 0.82, 6, "Commercial owner is accountable."],
+        ["Legal owner", "reviewGuard", 0.82, 6, "Legal owner is assigned."],
+        ["Pricing receipt", "proofGuard", 0.82, 6, "Pricing receipt is attached."],
+        ["Customer proof", "sponsorGuard", 0.82, 6, "Customer proof supports renewal."],
+        ["Term sheet", "proofGuard", 0.8, 5, "Term sheet is drafted."],
+        ["Redline route", "rollbackGuard", 0.8, 5, "Redline route is visible."],
+        ["Handoff receipt", "guardClosure", 0.84, 6, "Handoff receipt closes contract pack."],
+      ],
+    }
   );
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
@@ -25017,6 +25212,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalContractHandoffPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionPricingGovernanceRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceProofStudioPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseAuditEvidenceVaultPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerRolloutDeskPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthRenewalForecastPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchComplianceChecklistPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionReadinessReviewPreview(model, autopilot)}",
@@ -33334,6 +33534,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthRenewalForecastPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-health-renewal-forecast");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerRolloutDeskSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "regional-partner-rollout-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerRolloutDesk(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "regional-partner-rollout-desk", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalPartnerRolloutDeskPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "regional-partner-rollout-desk");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseAuditEvidenceVaultSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "enterprise-audit-evidence-vault");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseAuditEvidenceVault(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "enterprise-audit-evidence-vault", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotEnterpriseAuditEvidenceVaultPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "enterprise-audit-evidence-vault");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceProofStudioSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-reference-proof-studio");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceProofStudio(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-reference-proof-studio", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerReferenceProofStudioPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-reference-proof-studio");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionPricingGovernanceRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "expansion-pricing-governance-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionPricingGovernanceRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "expansion-pricing-governance-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionPricingGovernanceRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "expansion-pricing-governance-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalContractHandoffPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "renewal-contract-handoff-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalContractHandoffPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "renewal-contract-handoff-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalContractHandoffPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "renewal-contract-handoff-pack");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -98145,9 +98405,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1045", "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Rollout Desk", "Prepare partner-led country rollout with referral owner, local support, pricing proof, compliance bridge, and launch receipt."],
-      ["v1046", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Audit Evidence Vault", "Collect enterprise audit evidence across access, tenant boundary, billing proof, support trail, renewal health, and compliance receipt."],
-      ["v1047", "First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Proof Studio", "Turn successful pilot outcomes into approved customer reference proof with story, quote, metrics, consent, and reuse boundary."],
+      ["v1050", "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Operations Room", "Turn partner rollout into operating cadence with enablement owner, local backlog, support rota, sales rhythm, compliance watch, and operations receipt."],
+      ["v1051", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Security Questionnaire Desk", "Prepare enterprise security questionnaire answers from audit vault, tenant boundary, privacy proof, support trail, and reviewer receipt."],
+      ["v1052", "First Pilot Expansion Rollout Reuse Market Pilot Renewal Signature Readiness Room", "Close renewal signature readiness with legal redlines, commercial approval, customer proof, billing route, and signature receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
