@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1014";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Live Learning Audit Console";
+  const BUILD_VERSION = "v1019";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Real Launch Readiness Evidence Score";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1014.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1014.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1019.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1019.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -8227,6 +8227,201 @@
         ["Rollback event", "rollbackGuard", 0.8, 5, "Rollback event is ready."],
         ["Audit export", "supportGuard", 0.8, 5, "Audit export is supportable."],
         ["Console receipt", "guardClosure", 0.82, 6, "Console receipt closes live learning audit."],
+      ],
+    },
+    {
+      key: "customer-evidence-api-gate",
+      version: "v1015",
+      number: 1015,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Evidence API Gate",
+      shortLabel: "Customer Evidence API Gate",
+      phase: "first pilot expansion rollout reuse market pilot customer evidence api gate",
+      track: "v1015 first pilot expansion rollout reuse market pilot customer evidence api gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-evidence-api-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-evidence-api-gate",
+      idSuffix: "CUSTOMER-EVIDENCE-API-GATE",
+      scoreKey: "customerEvidenceApiGateScore",
+      decisionKey: "customerEvidenceApiGateDecision",
+      stateKey: "customerEvidenceApiGateState",
+      lineKey: "customerEvidenceApiGateLine",
+      primarySignal: "Pilot customer evidence API gate",
+      primaryNote: "Turns static customer proof into an API-ready gate with contract shape, auth scope, customer proof, tenant boundary, audit export, rollback receipt, rate limit, and gate receipt.",
+      summary: "Prepare customer evidence for backend launch with API contract, auth scope, proof payload, tenant boundary, audit export, rollback receipt, rate limit, and receipt.",
+      trackSummary: "Live learning audit now becomes a customer evidence API gate across API contract, auth, proof, tenant boundary, export, rollback, rate limit, and receipt.",
+      stageSummary: "Customer evidence now has API contract, auth scope, proof payload, tenant boundary, export, rollback, rate limit, and receipt controls.",
+      openDecision: "Open evidence API gate",
+      guardedDecision: "Open guarded API gate",
+      holdDecision: "Hold API exposure",
+      repairDecision: "Repair API proof",
+      nextOpen: "Open the customer evidence API gate and keep contract, auth, proof, tenant boundary, export, rollback, rate limit, and receipt together.",
+      nextGuarded: "Run the API gate while one contract, auth, proof, boundary, export, rollback, rate limit, or receipt lane stays watched.",
+      nextHold: "Hold API exposure until auth scope, tenant boundary, audit export, and rollback receipt are clear.",
+      nextRepair: "Repair API proof before billing enforcement expands.",
+      axes: [
+        ["API contract", "reviewGuard", 0.82, 6, "Evidence API contract is readable."],
+        ["Auth scope", "tenantGuard", 0.82, 6, "Auth scope limits customer evidence."],
+        ["Customer proof", "proofGuard", 0.84, 6, "Customer proof payload is mapped."],
+        ["Tenant boundary", "tenantGuard", 0.82, 6, "Tenant boundary is enforced."],
+        ["Audit export", "supportGuard", 0.8, 5, "Audit export path is prepared."],
+        ["Rollback receipt", "rollbackGuard", 0.82, 6, "Rollback receipt is attached."],
+        ["Rate limit", "sponsorGuard", 0.78, 5, "Rate limit protects shared infrastructure."],
+        ["Gate receipt", "guardClosure", 0.82, 6, "Gate receipt closes API readiness."],
+      ],
+    },
+    {
+      key: "tenant-billing-enforcement-console",
+      version: "v1016",
+      number: 1016,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Billing Enforcement Console",
+      shortLabel: "Tenant Billing Enforcement Console",
+      phase: "first pilot expansion rollout reuse market pilot tenant billing enforcement console",
+      track: "v1016 first pilot expansion rollout reuse market pilot tenant billing enforcement console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-billing-enforcement-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-billing-enforcement-console",
+      idSuffix: "TENANT-BILLING-ENFORCEMENT-CONSOLE",
+      scoreKey: "tenantBillingEnforcementConsoleScore",
+      decisionKey: "tenantBillingEnforcementConsoleDecision",
+      stateKey: "tenantBillingEnforcementConsoleState",
+      lineKey: "tenantBillingEnforcementConsoleLine",
+      primarySignal: "Pilot tenant billing enforcement console",
+      primaryNote: "Turns membership readiness into a billing enforcement console with plan gate, invoice proof, payment status, access lock, grace policy, support handoff, billing audit, and enforcement receipt.",
+      summary: "Control tenant billing launch with plan gate, invoice proof, payment status, access lock, grace policy, support handoff, billing audit, and receipt.",
+      trackSummary: "Customer evidence API now becomes tenant billing enforcement across plan, invoice, payment, access, grace, support, audit, and receipt.",
+      stageSummary: "Billing now has plan gate, invoice proof, payment status, access lock, grace policy, support handoff, audit, and receipt controls.",
+      openDecision: "Open billing enforcement",
+      guardedDecision: "Open guarded billing",
+      holdDecision: "Hold billing enforcement",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Open tenant billing enforcement and keep plan, invoice, payment, access, grace, support, audit, and receipt together.",
+      nextGuarded: "Run billing enforcement while one plan, invoice, payment, access, grace, support, audit, or receipt lane stays watched.",
+      nextHold: "Hold billing enforcement until payment status, access lock, grace policy, and support handoff are clear.",
+      nextRepair: "Repair billing proof before production rollback expands.",
+      axes: [
+        ["Plan gate", "sponsorGuard", 0.82, 6, "Plan gate is defined."],
+        ["Invoice proof", "proofGuard", 0.82, 6, "Invoice proof is attached."],
+        ["Payment status", "ownerCommand", 0.8, 5, "Payment status is visible."],
+        ["Access lock", "tenantGuard", 0.82, 6, "Access lock follows billing state."],
+        ["Grace policy", "reviewGuard", 0.78, 5, "Grace policy is explicit."],
+        ["Support handoff", "supportGuard", 0.8, 5, "Support handoff is named."],
+        ["Billing audit", "proofGuard", 0.8, 5, "Billing audit is captured."],
+        ["Enforcement receipt", "guardClosure", 0.82, 6, "Enforcement receipt closes billing."],
+      ],
+    },
+    {
+      key: "production-learning-rollback-drill",
+      version: "v1017",
+      number: 1017,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Learning Rollback Drill",
+      shortLabel: "Production Learning Rollback Drill",
+      phase: "first pilot expansion rollout reuse market pilot production learning rollback drill",
+      track: "v1017 first pilot expansion rollout reuse market pilot production learning rollback drill",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-learning-rollback-drill",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-learning-rollback-drill",
+      idSuffix: "PRODUCTION-LEARNING-ROLLBACK-DRILL",
+      scoreKey: "productionLearningRollbackDrillScore",
+      decisionKey: "productionLearningRollbackDrillDecision",
+      stateKey: "productionLearningRollbackDrillState",
+      lineKey: "productionLearningRollbackDrillLine",
+      primarySignal: "Pilot production learning rollback drill",
+      primaryNote: "Turns learning safety into a production rollback drill with trigger condition, affected tenants, evidence restore, owner approval, incident note, recovery timer, proof replay, and drill receipt.",
+      summary: "Rehearse production learning rollback with trigger condition, affected tenants, evidence restore, owner approval, incident note, recovery timer, proof replay, and receipt.",
+      trackSummary: "Billing enforcement now becomes a production learning rollback drill across trigger, tenants, restore, approval, incident, timer, replay, and receipt.",
+      stageSummary: "Production learning now has trigger, affected tenants, evidence restore, owner approval, incident note, recovery timer, proof replay, and receipt controls.",
+      openDecision: "Run rollback drill",
+      guardedDecision: "Run guarded drill",
+      holdDecision: "Hold production learning",
+      repairDecision: "Repair rollback proof",
+      nextOpen: "Run the production learning rollback drill and keep trigger, tenants, restore, approval, incident, timer, replay, and receipt together.",
+      nextGuarded: "Run the drill while one trigger, tenant, restore, approval, incident, timer, replay, or receipt lane stays watched.",
+      nextHold: "Hold production learning until trigger, affected tenants, evidence restore, and owner approval are clear.",
+      nextRepair: "Repair rollback proof before support incident command expands.",
+      axes: [
+        ["Rollback trigger", "rollbackGuard", 0.84, 6, "Rollback trigger is explicit."],
+        ["Affected tenants", "tenantGuard", 0.82, 6, "Affected tenants are bounded."],
+        ["Evidence restore", "proofGuard", 0.82, 6, "Evidence restore path is ready."],
+        ["Owner approval", "ownerCommand", 0.82, 6, "Owner approval gates rollback."],
+        ["Incident note", "supportGuard", 0.78, 5, "Incident note is prepared."],
+        ["Recovery timer", "reviewGuard", 0.78, 5, "Recovery timer is visible."],
+        ["Proof replay", "proofGuard", 0.8, 5, "Proof replay is available."],
+        ["Drill receipt", "guardClosure", 0.82, 6, "Drill receipt closes rollback readiness."],
+      ],
+    },
+    {
+      key: "support-incident-command",
+      version: "v1018",
+      number: 1018,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Support Incident Command",
+      shortLabel: "Support Incident Command",
+      phase: "first pilot expansion rollout reuse market pilot support incident command",
+      track: "v1018 first pilot expansion rollout reuse market pilot support incident command",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-support-incident-command",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-support-incident-command",
+      idSuffix: "SUPPORT-INCIDENT-COMMAND",
+      scoreKey: "pilotSupportIncidentCommandScore",
+      decisionKey: "pilotSupportIncidentCommandDecision",
+      stateKey: "pilotSupportIncidentCommandState",
+      lineKey: "pilotSupportIncidentCommandLine",
+      primarySignal: "Pilot support incident command",
+      primaryNote: "Turns first live support incidents into a command room with severity lane, owner bridge, tenant impact, evidence snapshot, response SLA, escalation route, resolution proof, and incident receipt.",
+      summary: "Control first live support incidents with severity lane, owner bridge, tenant impact, evidence snapshot, response SLA, escalation route, resolution proof, and receipt.",
+      trackSummary: "Production rollback drill now becomes support incident command across severity, owner, tenant impact, evidence, SLA, escalation, resolution, and receipt.",
+      stageSummary: "Pilot support now has severity, owner bridge, tenant impact, evidence snapshot, response SLA, escalation, resolution proof, and receipt controls.",
+      openDecision: "Open incident command",
+      guardedDecision: "Open guarded incident",
+      holdDecision: "Hold incident handoff",
+      repairDecision: "Repair incident proof",
+      nextOpen: "Open pilot support incident command and keep severity, owner, tenant impact, evidence, SLA, escalation, resolution, and receipt together.",
+      nextGuarded: "Run incident command while one severity, owner, tenant, evidence, SLA, escalation, resolution, or receipt lane stays watched.",
+      nextHold: "Hold incident handoff until tenant impact, owner bridge, response SLA, and escalation route are clear.",
+      nextRepair: "Repair incident proof before real launch score expands.",
+      axes: [
+        ["Severity lane", "reviewGuard", 0.8, 5, "Severity lane is chosen."],
+        ["Owner bridge", "ownerCommand", 0.82, 6, "Owner bridge is named."],
+        ["Tenant impact", "tenantGuard", 0.82, 6, "Tenant impact is bounded."],
+        ["Evidence snapshot", "proofGuard", 0.82, 6, "Evidence snapshot is captured."],
+        ["Response SLA", "supportGuard", 0.82, 6, "Response SLA is visible."],
+        ["Escalation route", "rollbackGuard", 0.78, 5, "Escalation route is ready."],
+        ["Resolution proof", "proofGuard", 0.8, 5, "Resolution proof is attached."],
+        ["Incident receipt", "guardClosure", 0.82, 6, "Incident receipt closes support readiness."],
+      ],
+    },
+    {
+      key: "real-launch-readiness-evidence-score",
+      version: "v1019",
+      number: 1019,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Real Launch Readiness Evidence Score",
+      shortLabel: "Real Launch Readiness Evidence Score",
+      phase: "first pilot expansion rollout reuse market pilot real launch readiness evidence score",
+      track: "v1019 first pilot expansion rollout reuse market pilot real launch readiness evidence score",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-real-launch-readiness-evidence-score",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-real-launch-readiness-evidence-score",
+      idSuffix: "REAL-LAUNCH-READINESS-EVIDENCE-SCORE",
+      scoreKey: "realLaunchReadinessEvidenceScoreScore",
+      decisionKey: "realLaunchReadinessEvidenceScoreDecision",
+      stateKey: "realLaunchReadinessEvidenceScoreState",
+      lineKey: "realLaunchReadinessEvidenceScoreLine",
+      primarySignal: "Pilot real launch readiness evidence score",
+      primaryNote: "Turns launch readiness into one evidence score with launch score, backend proof, billing proof, support proof, compliance proof, customer proof, rollback proof, and readiness receipt.",
+      summary: "Summarize real launch readiness with launch score, backend proof, billing proof, support proof, compliance proof, customer proof, rollback proof, and receipt.",
+      trackSummary: "Support incident command now becomes a real launch readiness evidence score across launch, backend, billing, support, compliance, customer, rollback, and receipt.",
+      stageSummary: "Launch readiness now has one evidence score covering backend, billing, support, compliance, customer, rollback, and receipt controls.",
+      openDecision: "Score real launch readiness",
+      guardedDecision: "Score with guardrails",
+      holdDecision: "Hold launch score",
+      repairDecision: "Repair readiness proof",
+      nextOpen: "Score real launch readiness and keep launch, backend, billing, support, compliance, customer, rollback, and receipt together.",
+      nextGuarded: "Score readiness while one backend, billing, support, compliance, customer, rollback, or receipt lane stays watched.",
+      nextHold: "Hold real launch score until backend proof, billing proof, support proof, and rollback proof are clear.",
+      nextRepair: "Repair launch readiness proof before private backend cutover expands.",
+      axes: [
+        ["Launch score", "reviewGuard", 0.84, 6, "Launch score is explicit."],
+        ["Backend proof", "proofGuard", 0.82, 6, "Backend proof is visible."],
+        ["Billing proof", "sponsorGuard", 0.82, 6, "Billing proof is visible."],
+        ["Support proof", "supportGuard", 0.82, 6, "Support proof is visible."],
+        ["Compliance proof", "tenantGuard", 0.82, 6, "Compliance proof is visible."],
+        ["Customer proof", "ownerCommand", 0.82, 6, "Customer proof is sponsor-readable."],
+        ["Rollback proof", "rollbackGuard", 0.82, 6, "Rollback proof is ready."],
+        ["Readiness receipt", "guardClosure", 0.84, 6, "Readiness receipt closes launch scoring."],
       ],
     },
   );
@@ -23847,6 +24042,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRealLaunchReadinessEvidenceScorePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportIncidentCommandPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningRollbackDrillPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingEnforcementConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceApiGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveLearningAuditConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantPolicySimulatorPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotReinforcementOutcomeGuardrailPreview(model, autopilot)}",
@@ -31774,6 +31974,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveLearningAuditConsolePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "live-learning-audit-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceApiGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-evidence-api-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceApiGate(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-evidence-api-gate", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceApiGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-evidence-api-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingEnforcementConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-billing-enforcement-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingEnforcementConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-billing-enforcement-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingEnforcementConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-billing-enforcement-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningRollbackDrillSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-learning-rollback-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningRollbackDrill(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-learning-rollback-drill", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningRollbackDrillPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-learning-rollback-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportIncidentCommandSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "support-incident-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportIncidentCommand(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "support-incident-command", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportIncidentCommandPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "support-incident-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRealLaunchReadinessEvidenceScoreSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "real-launch-readiness-evidence-score");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRealLaunchReadinessEvidenceScore(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "real-launch-readiness-evidence-score", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRealLaunchReadinessEvidenceScorePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "real-launch-readiness-evidence-score");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -96585,9 +96845,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1015", "First Pilot Expansion Rollout Reuse Market Pilot Customer Evidence API Gate", "Prepare the first backend-facing evidence API gate for customer proof, tenant scope, auth posture, audit export, rollback receipt, and launch-safe data boundaries."],
-      ["v1016", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Billing Enforcement Console", "Turn membership and billing readiness into tenant billing enforcement with plan gates, invoice proof, payment status, access lock, and support handoff."],
-      ["v1017", "First Pilot Expansion Rollout Reuse Market Pilot Production Learning Rollback Drill", "Rehearse production learning rollback with trigger conditions, affected tenants, evidence restore, owner approval, incident note, and recovery receipt."],
+      ["v1020", "First Pilot Expansion Rollout Reuse Market Pilot Private Backend Cutover Board", "Move from static readiness into private backend cutover with database, auth, audit, migration, rollback, and support proof."],
+      ["v1021", "First Pilot Expansion Rollout Reuse Market Pilot First Paying Tenant Readiness Room", "Prepare the first paying tenant with contract, invoice, admin user, billing state, onboarding, support, and acceptance receipt."],
+      ["v1022", "First Pilot Expansion Rollout Reuse Market Pilot Production Launch Council Signoff", "Close production launch signoff with founder approval, customer proof, backend proof, billing proof, support proof, compliance proof, and rollback proof."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

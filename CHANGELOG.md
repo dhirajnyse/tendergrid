@@ -1,5 +1,139 @@
 # Changelog
 
+## v1019 - First Pilot Expansion Rollout Reuse Market Pilot Real Launch Readiness Evidence Score
+
+### Changes Made
+- Promoted real launch readiness evidence score as the current build.
+- Added launch score, backend proof, billing proof, support proof, compliance proof, customer proof, rollback proof, and readiness receipt lanes.
+- Updated Build Phase to show v1019 as current and queue v1020-v1022 for private backend cutover, first paying tenant readiness, and production launch council signoff work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1019.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1019 visible, Real Launch Readiness Evidence Score visible, v1020-v1022 queue visible, no page-level horizontal overflow, and no console errors.
+- Passed: rail-side toggle QA from left to right and back left with Build Phase intact.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Launch readiness scoring is still static; real launch requires backend proof, billing proof, customer proof, support incident evidence, compliance evidence, rollback execution, and production monitoring.
+
+## v1018 - First Pilot Expansion Rollout Reuse Market Pilot Support Incident Command
+
+### Changes Made
+- Added support incident command to the pilot rollout runway.
+- Added severity lane, owner bridge, tenant impact, evidence snapshot, response SLA, escalation route, resolution proof, and incident receipt lanes.
+- Added command runway preview wiring and static coverage for live support readiness.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1019 visible and no console errors.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Support incident command is still static; real launch requires support queue integration, SLA tracking, tenant-impact logging, escalation ownership, incident notifications, and resolution evidence storage.
+
+## v1017 - First Pilot Expansion Rollout Reuse Market Pilot Production Learning Rollback Drill
+
+### Changes Made
+- Added production learning rollback drill to the pilot rollout runway.
+- Added rollback trigger, affected tenants, evidence restore, owner approval, incident note, recovery timer, proof replay, and drill receipt lanes.
+- Added command runway preview wiring and static coverage for production learning reversibility.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1019 visible and no console errors.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Production rollback drill is still static; real launch requires event capture, tenant isolation, evidence restore automation, owner approvals, incident timeline storage, and recovery verification.
+
+## v1016 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Billing Enforcement Console
+
+### Changes Made
+- Added tenant billing enforcement console to the pilot rollout runway.
+- Added plan gate, invoice proof, payment status, access lock, grace policy, support handoff, billing audit, and enforcement receipt lanes.
+- Added command runway preview wiring and static coverage for billing-to-access readiness.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1019 visible and no console errors.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Billing enforcement is still static; real launch requires payment provider integration, invoice generation, account states, access enforcement, grace-period rules, and audit-backed support workflows.
+
+## v1015 - First Pilot Expansion Rollout Reuse Market Pilot Customer Evidence API Gate
+
+### Changes Made
+- Added customer evidence API gate to the pilot rollout runway.
+- Added API contract, auth scope, customer proof, tenant boundary, audit export, rollback receipt, rate limit, and gate receipt lanes.
+- Added command runway preview wiring and static coverage for backend-facing customer proof.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1019 visible and no console errors.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Customer evidence API gate is still static; real launch requires backend API contracts, authentication scopes, tenant isolation, rate limiting, audit export, and rollback receipts.
+
 ## v1014 - First Pilot Expansion Rollout Reuse Market Pilot Live Learning Audit Console
 
 ### Changes Made
