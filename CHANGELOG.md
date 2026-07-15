@@ -1,5 +1,137 @@
 # Changelog
 
+## v1039 - First Pilot Expansion Rollout Reuse Market Pilot Billing Exception Resolver
+
+### Changes Made
+- Promoted billing exception resolver as the current build to handle launch finance exceptions before closeout.
+- Added invoice exception, payment mismatch, seat variance, tax exception, credit decision, owner escalation, rollback option, and exception receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1039.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1039, Billing Exception Resolver, v1040-v1042 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Billing exception resolution is still static; real launch requires invoice exception workflows, payment reconciliation, seat variance checks, tax review, credit approval, owner escalation, rollback options, and auditable exception receipts.
+
+## v1038 - First Pilot Expansion Rollout Reuse Market Pilot Production Tenant Setup Receipt
+
+### Changes Made
+- Added production tenant setup receipt to close tenant creation, access, data, billing, support, and smoke proof in one place.
+- Added tenant created, admin invited, roles assigned, data imported, billing connected, support connected, smoke passed, and setup receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1038.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1039, Billing Exception Resolver, v1040-v1042 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Tenant setup receipts are still static; real launch requires production tenant provisioning, admin invitation, role assignment, data import completion, billing connection, support connection, and smoke-test evidence.
+
+## v1037 - First Pilot Expansion Rollout Reuse Market Pilot Expansion Renewal Signal Board
+
+### Changes Made
+- Added expansion renewal signal board to watch renewal and expansion readiness after the first tenant goes live.
+- Added usage signal, sponsor sentiment, support health, value proof, billing confidence, renewal amount, expansion candidate, and signal receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1037.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1039, Billing Exception Resolver, v1040-v1042 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Renewal signals are still static; real launch requires usage telemetry, sponsor feedback, support health, value proof, billing confidence, renewal math, and expansion candidate approvals.
+
+## v1036 - First Pilot Expansion Rollout Reuse Market Pilot Support Knowledge Base Seed
+
+### Changes Made
+- Added support knowledge base seed to make support scale reusable across the next tenant and country rollout.
+- Added incident lessons, FAQ draft, escalation scripts, owner review, SLA answer, billing answer, rollback answer, and knowledge receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1036.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1039, Billing Exception Resolver, v1040-v1042 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Support knowledge is still static; real launch requires incident capture, FAQ publishing, escalation scripts, owner review, SLA answers, billing answers, and support content governance.
+
+## v1035 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Onboarding Automation Queue
+
+### Changes Made
+- Added tenant onboarding automation queue to turn billing reconciliation into repeatable tenant setup jobs.
+- Added invitation job, role grant, data import job, billing activation, support handoff, welcome receipt, rollback job, and onboarding receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1035.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1039, Billing Exception Resolver, v1040-v1042 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Onboarding automation is still static; real launch requires invitation jobs, role grants, data import workers, billing activation, support handoff, rollback jobs, and signed onboarding receipts.
+
 ## v1034 - First Pilot Expansion Rollout Reuse Market Pilot Live Billing Reconciliation Desk
 
 ### Changes Made
