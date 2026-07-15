@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1064";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Live Customer Renewal Command Room";
+  const BUILD_VERSION = "v1069";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Health Control Room";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1064.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1064.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1069.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1069.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -10177,6 +10177,201 @@
         ["Risk watch", "rollbackGuard", 0.8, 5, "Risk watch is active."],
         ["Decision date", "reviewGuard", 0.8, 5, "Decision date is controlled."],
         ["Renewal receipt", "guardClosure", 0.84, 6, "Renewal receipt closes command room."],
+      ],
+    },
+    {
+      key: "customer-revenue-expansion-approval-gate",
+      version: "v1065",
+      number: 1065,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Revenue Expansion Approval Gate",
+      shortLabel: "Customer Revenue Expansion Approval Gate",
+      phase: "first pilot expansion rollout reuse market pilot customer revenue expansion approval gate",
+      track: "v1065 first pilot expansion rollout reuse market pilot customer revenue expansion approval gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-revenue-expansion-approval-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-revenue-expansion-approval-gate",
+      idSuffix: "CUSTOMER-REVENUE-EXPANSION-APPROVAL-GATE",
+      scoreKey: "customerRevenueExpansionApprovalGateScore",
+      decisionKey: "customerRevenueExpansionApprovalGateDecision",
+      stateKey: "customerRevenueExpansionApprovalGateState",
+      lineKey: "customerRevenueExpansionApprovalGateLine",
+      primarySignal: "Pilot customer revenue expansion approval gate",
+      primaryNote: "Approves customer revenue expansion only when renewal proof, usage proof, commercial case, support capacity, risk exception, approval owner, approval date, and receipt are controlled.",
+      summary: "Approve customer revenue expansion with renewal proof, usage proof, commercial case, support capacity, risk exception, approval owner, approval date, and receipt.",
+      trackSummary: "First live customer renewal now becomes customer revenue expansion approval across renewal, usage, commercial, support, risk, owner, date, and receipt.",
+      stageSummary: "Customer revenue expansion approval now has renewal, usage, commercial, support, risk, owner, date, and receipt controls.",
+      openDecision: "Open expansion approval",
+      guardedDecision: "Open guarded approval",
+      holdDecision: "Hold expansion approval",
+      repairDecision: "Repair approval proof",
+      nextOpen: "Open customer revenue expansion approval gate and keep renewal proof, usage proof, commercial case, support capacity, risk exception, approval owner, approval date, and receipt together.",
+      nextGuarded: "Open guarded expansion approval while one renewal, usage, commercial, support, risk, owner, date, or receipt lane stays watched.",
+      nextHold: "Hold expansion approval until renewal proof, usage proof, support capacity, and commercial case are clear.",
+      nextRepair: "Repair expansion approval proof before global rollout compliance expands.",
+      axes: [
+        ["Renewal proof", "proofGuard", 0.82, 6, "Renewal proof is attached."],
+        ["Usage proof", "proofGuard", 0.82, 6, "Usage proof is visible."],
+        ["Commercial case", "sponsorGuard", 0.82, 6, "Commercial case is ready."],
+        ["Support capacity", "supportGuard", 0.8, 5, "Support capacity is confirmed."],
+        ["Risk exception", "rollbackGuard", 0.8, 5, "Risk exception is controlled."],
+        ["Approval owner", "ownerCommand", 0.82, 6, "Approval owner is accountable."],
+        ["Approval date", "reviewGuard", 0.8, 5, "Approval date is set."],
+        ["Approval receipt", "guardClosure", 0.84, 6, "Approval receipt closes expansion gate."],
+      ],
+    },
+    {
+      key: "global-rollout-compliance-evidence-pack",
+      version: "v1066",
+      number: 1066,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Global Rollout Compliance Evidence Pack",
+      shortLabel: "Global Rollout Compliance Evidence Pack",
+      phase: "first pilot expansion rollout reuse market pilot global rollout compliance evidence pack",
+      track: "v1066 first pilot expansion rollout reuse market pilot global rollout compliance evidence pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-global-rollout-compliance-evidence-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-global-rollout-compliance-evidence-pack",
+      idSuffix: "GLOBAL-ROLLOUT-COMPLIANCE-EVIDENCE-PACK",
+      scoreKey: "globalRolloutComplianceEvidencePackScore",
+      decisionKey: "globalRolloutComplianceEvidencePackDecision",
+      stateKey: "globalRolloutComplianceEvidencePackState",
+      lineKey: "globalRolloutComplianceEvidencePackLine",
+      primarySignal: "Pilot global rollout compliance evidence pack",
+      primaryNote: "Packages global rollout compliance with country rule, partner consent, data boundary, security proof, support SLA, billing tax, reviewer signoff, and compliance receipt.",
+      summary: "Package global rollout compliance with country rule, partner consent, data boundary, security proof, support SLA, billing tax, reviewer signoff, and receipt.",
+      trackSummary: "Customer revenue expansion approval now becomes global rollout compliance across country, partner, boundary, security, support, billing, reviewer, and receipt.",
+      stageSummary: "Global rollout compliance now has country, partner, boundary, security, support, billing, reviewer, and receipt controls.",
+      openDecision: "Open compliance pack",
+      guardedDecision: "Open guarded compliance",
+      holdDecision: "Hold rollout pack",
+      repairDecision: "Repair compliance proof",
+      nextOpen: "Open global rollout compliance evidence pack and keep country rule, partner consent, data boundary, security proof, support SLA, billing tax, reviewer signoff, and receipt together.",
+      nextGuarded: "Open guarded compliance pack while one country, partner, boundary, security, support, billing, reviewer, or receipt lane stays watched.",
+      nextHold: "Hold rollout pack until country rule, data boundary, security proof, and billing tax are clear.",
+      nextRepair: "Repair compliance proof before launch learning monetization expands.",
+      axes: [
+        ["Country rule", "tenantGuard", 0.82, 6, "Country rule is documented."],
+        ["Partner consent", "sponsorGuard", 0.8, 5, "Partner consent is controlled."],
+        ["Data boundary", "tenantGuard", 0.82, 6, "Data boundary is safe."],
+        ["Security proof", "proofGuard", 0.82, 6, "Security proof is attached."],
+        ["Support SLA", "supportGuard", 0.8, 5, "Support SLA is visible."],
+        ["Billing tax", "reviewGuard", 0.8, 5, "Billing tax rule is known."],
+        ["Reviewer signoff", "ownerCommand", 0.8, 5, "Reviewer signoff is named."],
+        ["Compliance receipt", "guardClosure", 0.84, 6, "Compliance receipt closes rollout pack."],
+      ],
+    },
+    {
+      key: "launch-learning-monetization-ledger",
+      version: "v1067",
+      number: 1067,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Learning Monetization Ledger",
+      shortLabel: "Launch Learning Monetization Ledger",
+      phase: "first pilot expansion rollout reuse market pilot launch learning monetization ledger",
+      track: "v1067 first pilot expansion rollout reuse market pilot launch learning monetization ledger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-learning-monetization-ledger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-learning-monetization-ledger",
+      idSuffix: "LAUNCH-LEARNING-MONETIZATION-LEDGER",
+      scoreKey: "launchLearningMonetizationLedgerScore",
+      decisionKey: "launchLearningMonetizationLedgerDecision",
+      stateKey: "launchLearningMonetizationLedgerState",
+      lineKey: "launchLearningMonetizationLedgerLine",
+      primarySignal: "Pilot launch learning monetization ledger",
+      primaryNote: "Turns launch learning into monetization controls with reusable guidance, customer proof, pricing impact, partner route, consent boundary, revenue attribution, learning reviewer, and monetization receipt.",
+      summary: "Monetize launch learning with reusable guidance, customer proof, pricing impact, partner route, consent boundary, revenue attribution, learning reviewer, and receipt.",
+      trackSummary: "Global rollout compliance now becomes launch learning monetization across guidance, proof, price, partner, consent, revenue, reviewer, and receipt.",
+      stageSummary: "Launch learning monetization now has guidance, proof, price, partner, consent, revenue, reviewer, and receipt controls.",
+      openDecision: "Open learning ledger",
+      guardedDecision: "Open guarded ledger",
+      holdDecision: "Hold monetization ledger",
+      repairDecision: "Repair learning proof",
+      nextOpen: "Open launch learning monetization ledger and keep reusable guidance, customer proof, pricing impact, partner route, consent boundary, revenue attribution, learning reviewer, and receipt together.",
+      nextGuarded: "Open guarded learning ledger while one guidance, proof, price, partner, consent, revenue, reviewer, or receipt lane stays watched.",
+      nextHold: "Hold monetization ledger until consent boundary, customer proof, pricing impact, and revenue attribution are clear.",
+      nextRepair: "Repair learning monetization proof before tenant billing activation expands.",
+      axes: [
+        ["Reusable guidance", "tenantGuard", 0.82, 6, "Reusable guidance is consent-safe."],
+        ["Customer proof", "proofGuard", 0.82, 6, "Customer proof is approved."],
+        ["Pricing impact", "sponsorGuard", 0.8, 5, "Pricing impact is visible."],
+        ["Partner route", "reviewGuard", 0.8, 5, "Partner route is known."],
+        ["Consent boundary", "tenantGuard", 0.82, 6, "Consent boundary is locked."],
+        ["Revenue attribution", "proofGuard", 0.8, 5, "Revenue attribution is attached."],
+        ["Learning reviewer", "ownerCommand", 0.8, 5, "Learning reviewer is accountable."],
+        ["Monetization receipt", "guardClosure", 0.84, 6, "Monetization receipt closes learning ledger."],
+      ],
+    },
+    {
+      key: "tenant-billing-activation-receipt",
+      version: "v1068",
+      number: 1068,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Billing Activation Receipt",
+      shortLabel: "Tenant Billing Activation Receipt",
+      phase: "first pilot expansion rollout reuse market pilot tenant billing activation receipt",
+      track: "v1068 first pilot expansion rollout reuse market pilot tenant billing activation receipt",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-billing-activation-receipt",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-billing-activation-receipt",
+      idSuffix: "TENANT-BILLING-ACTIVATION-RECEIPT",
+      scoreKey: "tenantBillingActivationReceiptScore",
+      decisionKey: "tenantBillingActivationReceiptDecision",
+      stateKey: "tenantBillingActivationReceiptState",
+      lineKey: "tenantBillingActivationReceiptLine",
+      primarySignal: "Pilot tenant billing activation receipt",
+      primaryNote: "Activates tenant billing with tenant account, plan selection, seat count, invoice route, payment proof, access activation, billing audit, and activation receipt.",
+      summary: "Activate tenant billing with tenant account, plan selection, seat count, invoice route, payment proof, access activation, billing audit, and receipt.",
+      trackSummary: "Launch learning monetization now becomes tenant billing activation across account, plan, seats, invoice, payment, access, audit, and receipt.",
+      stageSummary: "Tenant billing activation now has account, plan, seats, invoice, payment, access, audit, and receipt controls.",
+      openDecision: "Open billing activation",
+      guardedDecision: "Open guarded billing",
+      holdDecision: "Hold billing activation",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Open tenant billing activation receipt and keep tenant account, plan selection, seat count, invoice route, payment proof, access activation, billing audit, and receipt together.",
+      nextGuarded: "Open guarded billing activation while one account, plan, seat, invoice, payment, access, audit, or receipt lane stays watched.",
+      nextHold: "Hold billing activation until invoice route, payment proof, access activation, and billing audit are clear.",
+      nextRepair: "Repair billing activation proof before production customer health expands.",
+      axes: [
+        ["Tenant account", "tenantGuard", 0.82, 6, "Tenant account is named."],
+        ["Plan selection", "sponsorGuard", 0.8, 5, "Plan selection is approved."],
+        ["Seat count", "reviewGuard", 0.8, 5, "Seat count is confirmed."],
+        ["Invoice route", "proofGuard", 0.82, 6, "Invoice route is ready."],
+        ["Payment proof", "proofGuard", 0.8, 5, "Payment proof is attached."],
+        ["Access activation", "supportGuard", 0.8, 5, "Access activation is complete."],
+        ["Billing audit", "tenantGuard", 0.8, 5, "Billing audit is captured."],
+        ["Activation receipt", "guardClosure", 0.84, 6, "Activation receipt closes billing activation."],
+      ],
+    },
+    {
+      key: "production-customer-health-control-room",
+      version: "v1069",
+      number: 1069,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Health Control Room",
+      shortLabel: "Production Customer Health Control Room",
+      phase: "first pilot expansion rollout reuse market pilot production customer health control room",
+      track: "v1069 first pilot expansion rollout reuse market pilot production customer health control room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-customer-health-control-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-customer-health-control-room",
+      idSuffix: "PRODUCTION-CUSTOMER-HEALTH-CONTROL-ROOM",
+      scoreKey: "productionCustomerHealthControlRoomScore",
+      decisionKey: "productionCustomerHealthControlRoomDecision",
+      stateKey: "productionCustomerHealthControlRoomState",
+      lineKey: "productionCustomerHealthControlRoomLine",
+      primarySignal: "Pilot production customer health control room",
+      primaryNote: "Controls production customer health with health owner, usage rhythm, support pulse, renewal risk, expansion signal, executive readout, recovery lane, and health receipt.",
+      summary: "Control production customer health with health owner, usage rhythm, support pulse, renewal risk, expansion signal, executive readout, recovery lane, and receipt.",
+      trackSummary: "Tenant billing activation now becomes production customer health across owner, usage, support, renewal, expansion, executive readout, recovery, and receipt.",
+      stageSummary: "Production customer health now has owner, usage, support, renewal, expansion, executive readout, recovery, and receipt controls.",
+      openDecision: "Open health control",
+      guardedDecision: "Open guarded health",
+      holdDecision: "Hold health room",
+      repairDecision: "Repair health proof",
+      nextOpen: "Open production customer health control room and keep health owner, usage rhythm, support pulse, renewal risk, expansion signal, executive readout, recovery lane, and receipt together.",
+      nextGuarded: "Open guarded customer health while one owner, usage, support, renewal, expansion, executive, recovery, or receipt lane stays watched.",
+      nextHold: "Hold health room until support pulse, renewal risk, expansion signal, and recovery lane are clear.",
+      nextRepair: "Repair production customer health proof before customer success renewal expands.",
+      axes: [
+        ["Health owner", "ownerCommand", 0.82, 6, "Health owner is accountable."],
+        ["Usage rhythm", "proofGuard", 0.82, 6, "Usage rhythm is visible."],
+        ["Support pulse", "supportGuard", 0.82, 6, "Support pulse is calm."],
+        ["Renewal risk", "rollbackGuard", 0.8, 5, "Renewal risk is watched."],
+        ["Expansion signal", "sponsorGuard", 0.8, 5, "Expansion signal is named."],
+        ["Executive readout", "reviewGuard", 0.8, 5, "Executive readout is ready."],
+        ["Recovery lane", "supportGuard", 0.8, 5, "Recovery lane is open."],
+        ["Health receipt", "guardClosure", 0.84, 6, "Health receipt closes control room."],
       ],
     }
   );
@@ -25797,6 +25992,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerHealthControlRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingActivationReceiptPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningMonetizationLedgerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalRolloutComplianceEvidencePackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRevenueExpansionApprovalGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstLiveCustomerRenewalCommandRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportEvidenceConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalPartnerExpansionControlTowerPreview(model, autopilot)}",
@@ -34374,6 +34574,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstLiveCustomerRenewalCommandRoomPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "first-live-customer-renewal-command-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRevenueExpansionApprovalGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-revenue-expansion-approval-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRevenueExpansionApprovalGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-revenue-expansion-approval-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerRevenueExpansionApprovalGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-revenue-expansion-approval-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalRolloutComplianceEvidencePackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "global-rollout-compliance-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalRolloutComplianceEvidencePack(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "global-rollout-compliance-evidence-pack");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotGlobalRolloutComplianceEvidencePackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "global-rollout-compliance-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningMonetizationLedgerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-learning-monetization-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningMonetizationLedger(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-learning-monetization-ledger");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningMonetizationLedgerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-learning-monetization-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingActivationReceiptSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-billing-activation-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingActivationReceipt(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-billing-activation-receipt");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingActivationReceiptPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-billing-activation-receipt");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerHealthControlRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-customer-health-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerHealthControlRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-customer-health-control-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerHealthControlRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-customer-health-control-room");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -99185,9 +99445,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1065", "First Pilot Expansion Rollout Reuse Market Pilot Customer Revenue Expansion Approval Gate", "Approve customer revenue expansion only after renewal proof, usage signal, support promise, risk watch, and commercial ask are clear."],
-      ["v1066", "First Pilot Expansion Rollout Reuse Market Pilot Global Rollout Compliance Evidence Pack", "Package country, partner, support, revenue, and audit evidence into one global rollout compliance pack."],
-      ["v1067", "First Pilot Expansion Rollout Reuse Market Pilot Launch Learning Monetization Ledger", "Turn launch learning into monetization controls for reusable guidance, customer proof, partner route, and revenue receipt."],
+      ["v1070", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Renewal Board", "Turn customer health into renewal board controls for value proof, usage rhythm, support calm, commercial ask, and renewal receipt."],
+      ["v1071", "First Pilot Expansion Rollout Reuse Market Pilot Partner Revenue Sharing Room", "Control partner revenue sharing with partner route, country rule, margin proof, invoice split, support promise, and audit receipt."],
+      ["v1072", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Evidence Seal", "Seal public launch evidence only after customer health, billing, compliance, support, revenue, and proof lanes are ready."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
