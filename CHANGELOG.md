@@ -1,5 +1,147 @@
 # Changelog
 
+## v1059 - First Pilot Expansion Rollout Reuse Market Pilot Country Revenue Governance Ledger
+
+### Changes Made
+- Added country revenue governance ledger to strengthen the first-pilot launch runway.
+- Added country ledger, price rule, tax rule, approval owner, partner margin, billing route, audit lock, revenue receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1059.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: local HTTP smoke on `http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visible retry, and tab-open checks.
+
+### Known Risks
+- Country revenue governance is still static; real launch requires country ledgers, pricing rules, tax validation, approval workflow, partner margin contracts, billing route integration, audit locking, and revenue receipts.
+
+## v1058 - First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Readiness Cockpit
+
+### Changes Made
+- Added launch operations readiness cockpit to strengthen the first-pilot launch runway.
+- Added operating owner, support rota, incident rehearsal, onboarding queue, success cadence, adoption watch, escalation bridge, readiness receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1058.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: local HTTP smoke on `http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visible retry, and tab-open checks.
+
+### Known Risks
+- Launch operations readiness is still static; real launch requires live staffing, support rota ownership, incident rehearsals, onboarding queue data, success cadence tracking, adoption telemetry, escalation bridges, and readiness receipts.
+
+## v1057 - First Pilot Expansion Rollout Reuse Market Pilot Expansion Revenue Forecast Board
+
+### Changes Made
+- Added expansion revenue forecast board to strengthen the first-pilot launch runway.
+- Added country pipeline, partner motion, renewal conversion, pricing governance, tax assumption, forecast owner, variance watch, revenue receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1057.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: local HTTP smoke on `http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visible retry, and tab-open checks.
+
+### Known Risks
+- Expansion revenue forecast is still static; real launch requires pipeline data, renewal conversion telemetry, pricing rules, tax review, forecast ownership, variance tracking, partner revenue attribution, and revenue receipts.
+
+## v1056 - First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Evidence Portal
+
+### Changes Made
+- Added customer onboarding evidence portal to strengthen the first-pilot launch runway.
+- Added import proof, access proof, training proof, support proof, billing proof, owner route, first success marker, portal receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1056.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: local HTTP smoke on `http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visible retry, and tab-open checks.
+
+### Known Risks
+- Customer onboarding evidence is still static; real launch requires upload/storage flows, access logs, training acknowledgements, support events, billing confirmation, owner workflow, success telemetry, and portal receipts.
+
+## v1055 - First Pilot Expansion Rollout Reuse Market Pilot Production Incident Response Drill
+
+### Changes Made
+- Added production incident response drill to strengthen the first-pilot launch runway.
+- Added severity owner, response timer, customer comms, rollback option, escalation route, support bridge, evidence capture, drill receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1055.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: `git diff --check`
+- Passed: local HTTP smoke on `http://127.0.0.1:4177/`
+- Blocked: in-app browser desktop/mobile QA because the Browser webview could not attach to a tab after binding, visible retry, and tab-open checks.
+
+### Known Risks
+- Production incident response is still static; real launch requires live monitoring, incident ownership, response timers, customer communication workflow, rollback playbook, escalation contacts, evidence storage, and drill receipts.
+
 ## v1054 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Pilot Governance Pack
 
 ### Changes Made

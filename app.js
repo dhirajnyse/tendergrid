@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1054";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Pilot Governance Pack";
+  const BUILD_VERSION = "v1059";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Country Revenue Governance Ledger";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1054.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1054.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1059.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1059.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -9787,6 +9787,201 @@
         ["Partner boundary", "tenantGuard", 0.8, 5, "Partner boundary is safe."],
         ["Launch gate", "reviewGuard", 0.8, 5, "Launch gate is named."],
         ["Governance receipt", "guardClosure", 0.84, 6, "Governance receipt closes pack."],
+      ],
+    },
+    {
+      key: "production-incident-response-drill",
+      version: "v1055",
+      number: 1055,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Incident Response Drill",
+      shortLabel: "Production Incident Response Drill",
+      phase: "first pilot expansion rollout reuse market pilot production incident response drill",
+      track: "v1055 first pilot expansion rollout reuse market pilot production incident response drill",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-incident-response-drill",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-incident-response-drill",
+      idSuffix: "PRODUCTION-INCIDENT-RESPONSE-DRILL",
+      scoreKey: "productionIncidentResponseDrillScore",
+      decisionKey: "productionIncidentResponseDrillDecision",
+      stateKey: "productionIncidentResponseDrillState",
+      lineKey: "productionIncidentResponseDrillLine",
+      primarySignal: "Pilot production incident response drill",
+      primaryNote: "Runs production incident rehearsal with severity owner, response timer, customer comms, rollback option, escalation route, support bridge, evidence capture, and drill receipt.",
+      summary: "Run production incident rehearsal with severity owner, response timer, customer comms, rollback option, escalation route, support bridge, evidence capture, and receipt.",
+      trackSummary: "Multi-country pilot governance now becomes production incident response drill across severity, response, customer comms, rollback, escalation, support, evidence, and receipt.",
+      stageSummary: "Production incident response now has severity, response, customer comms, rollback, escalation, support, evidence, and receipt controls.",
+      openDecision: "Open incident drill",
+      guardedDecision: "Open guarded drill",
+      holdDecision: "Hold incident drill",
+      repairDecision: "Repair incident proof",
+      nextOpen: "Open the production incident response drill and keep severity owner, response timer, customer comms, rollback option, escalation route, support bridge, evidence capture, and receipt together.",
+      nextGuarded: "Open guarded incident drill while one severity, response, customer comms, rollback, escalation, support, evidence, or receipt lane stays watched.",
+      nextHold: "Hold incident drill until severity owner, rollback option, support bridge, and evidence capture are clear.",
+      nextRepair: "Repair incident drill proof before onboarding evidence expands.",
+      axes: [
+        ["Severity owner", "ownerCommand", 0.82, 6, "Severity owner is accountable."],
+        ["Response timer", "supportGuard", 0.82, 6, "Response timer is rehearsed."],
+        ["Customer comms", "sponsorGuard", 0.8, 5, "Customer communication is drafted."],
+        ["Rollback option", "rollbackGuard", 0.82, 6, "Rollback option is named."],
+        ["Escalation route", "rollbackGuard", 0.8, 5, "Escalation route is visible."],
+        ["Support bridge", "supportGuard", 0.82, 6, "Support bridge is staffed."],
+        ["Evidence capture", "proofGuard", 0.8, 5, "Evidence capture is ready."],
+        ["Drill receipt", "guardClosure", 0.84, 6, "Drill receipt closes incident rehearsal."],
+      ],
+    },
+    {
+      key: "customer-onboarding-evidence-portal",
+      version: "v1056",
+      number: 1056,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Evidence Portal",
+      shortLabel: "Customer Onboarding Evidence Portal",
+      phase: "first pilot expansion rollout reuse market pilot customer onboarding evidence portal",
+      track: "v1056 first pilot expansion rollout reuse market pilot customer onboarding evidence portal",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-onboarding-evidence-portal",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-onboarding-evidence-portal",
+      idSuffix: "CUSTOMER-ONBOARDING-EVIDENCE-PORTAL",
+      scoreKey: "customerOnboardingEvidencePortalScore",
+      decisionKey: "customerOnboardingEvidencePortalDecision",
+      stateKey: "customerOnboardingEvidencePortalState",
+      lineKey: "customerOnboardingEvidencePortalLine",
+      primarySignal: "Pilot customer onboarding evidence portal",
+      primaryNote: "Collects onboarding proof with import proof, access proof, training proof, support proof, billing proof, owner route, first success marker, and portal receipt.",
+      summary: "Collect customer onboarding evidence with import proof, access proof, training proof, support proof, billing proof, owner route, first success marker, and receipt.",
+      trackSummary: "Incident response drill now becomes customer onboarding evidence portal across import, access, training, support, billing, owner, success, and receipt.",
+      stageSummary: "Customer onboarding evidence now has import, access, training, support, billing, owner, success, and receipt controls.",
+      openDecision: "Open onboarding portal",
+      guardedDecision: "Open guarded onboarding",
+      holdDecision: "Hold onboarding portal",
+      repairDecision: "Repair onboarding proof",
+      nextOpen: "Open customer onboarding evidence portal and keep import proof, access proof, training proof, support proof, billing proof, owner route, first success marker, and receipt together.",
+      nextGuarded: "Open guarded onboarding while one import, access, training, support, billing, owner, success, or receipt lane stays watched.",
+      nextHold: "Hold onboarding portal until access proof, support proof, billing proof, and owner route are clear.",
+      nextRepair: "Repair onboarding proof before expansion revenue forecasting widens.",
+      axes: [
+        ["Import proof", "proofGuard", 0.82, 6, "Import proof is attached."],
+        ["Access proof", "tenantGuard", 0.82, 6, "Access proof is captured."],
+        ["Training proof", "supportGuard", 0.8, 5, "Training proof is visible."],
+        ["Support proof", "supportGuard", 0.82, 6, "Support proof is ready."],
+        ["Billing proof", "proofGuard", 0.8, 5, "Billing proof is documented."],
+        ["Owner route", "ownerCommand", 0.82, 6, "Owner route is accountable."],
+        ["First success marker", "sponsorGuard", 0.8, 5, "First success marker is named."],
+        ["Portal receipt", "guardClosure", 0.84, 6, "Portal receipt closes onboarding evidence."],
+      ],
+    },
+    {
+      key: "expansion-revenue-forecast-board",
+      version: "v1057",
+      number: 1057,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Expansion Revenue Forecast Board",
+      shortLabel: "Expansion Revenue Forecast Board",
+      phase: "first pilot expansion rollout reuse market pilot expansion revenue forecast board",
+      track: "v1057 first pilot expansion rollout reuse market pilot expansion revenue forecast board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-revenue-forecast-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-revenue-forecast-board",
+      idSuffix: "EXPANSION-REVENUE-FORECAST-BOARD",
+      scoreKey: "expansionRevenueForecastBoardScore",
+      decisionKey: "expansionRevenueForecastBoardDecision",
+      stateKey: "expansionRevenueForecastBoardState",
+      lineKey: "expansionRevenueForecastBoardLine",
+      primarySignal: "Pilot expansion revenue forecast board",
+      primaryNote: "Forecasts expansion revenue with country pipeline, partner motion, renewal conversion, pricing governance, tax assumption, forecast owner, variance watch, and revenue receipt.",
+      summary: "Forecast expansion revenue with country pipeline, partner motion, renewal conversion, pricing governance, tax assumption, forecast owner, variance watch, and receipt.",
+      trackSummary: "Onboarding evidence now becomes expansion revenue forecast board across country pipeline, partner motion, renewal conversion, pricing, tax, owner, variance, and receipt.",
+      stageSummary: "Expansion revenue forecast now has pipeline, partner, renewal, pricing, tax, owner, variance, and receipt controls.",
+      openDecision: "Open revenue forecast",
+      guardedDecision: "Open guarded forecast",
+      holdDecision: "Hold revenue forecast",
+      repairDecision: "Repair forecast proof",
+      nextOpen: "Open expansion revenue forecast board and keep country pipeline, partner motion, renewal conversion, pricing governance, tax assumption, forecast owner, variance watch, and receipt together.",
+      nextGuarded: "Open guarded forecast while one pipeline, partner, renewal, pricing, tax, owner, variance, or receipt lane stays watched.",
+      nextHold: "Hold revenue forecast until pricing governance, tax assumption, forecast owner, and variance watch are clear.",
+      nextRepair: "Repair revenue forecast proof before launch operations readiness expands.",
+      axes: [
+        ["Country pipeline", "sponsorGuard", 0.82, 6, "Country pipeline is visible."],
+        ["Partner motion", "ownerCommand", 0.8, 5, "Partner motion is owned."],
+        ["Renewal conversion", "sponsorGuard", 0.82, 6, "Renewal conversion is tracked."],
+        ["Pricing governance", "proofGuard", 0.82, 6, "Pricing governance is controlled."],
+        ["Tax assumption", "reviewGuard", 0.8, 5, "Tax assumption is documented."],
+        ["Forecast owner", "ownerCommand", 0.82, 6, "Forecast owner is accountable."],
+        ["Variance watch", "reviewGuard", 0.8, 5, "Variance watch is open."],
+        ["Revenue receipt", "guardClosure", 0.84, 6, "Revenue receipt closes forecast board."],
+      ],
+    },
+    {
+      key: "launch-operations-readiness-cockpit",
+      version: "v1058",
+      number: 1058,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Readiness Cockpit",
+      shortLabel: "Launch Operations Readiness Cockpit",
+      phase: "first pilot expansion rollout reuse market pilot launch operations readiness cockpit",
+      track: "v1058 first pilot expansion rollout reuse market pilot launch operations readiness cockpit",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-operations-readiness-cockpit",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-operations-readiness-cockpit",
+      idSuffix: "LAUNCH-OPERATIONS-READINESS-COCKPIT",
+      scoreKey: "launchOperationsReadinessCockpitScore",
+      decisionKey: "launchOperationsReadinessCockpitDecision",
+      stateKey: "launchOperationsReadinessCockpitState",
+      lineKey: "launchOperationsReadinessCockpitLine",
+      primarySignal: "Pilot launch operations readiness cockpit",
+      primaryNote: "Keeps launch operations ready with operating owner, support rota, incident rehearsal, onboarding queue, success cadence, adoption watch, escalation bridge, and readiness receipt.",
+      summary: "Keep launch operations ready with operating owner, support rota, incident rehearsal, onboarding queue, success cadence, adoption watch, escalation bridge, and receipt.",
+      trackSummary: "Revenue forecast now becomes launch operations readiness cockpit across owner, support, incident, onboarding, success, adoption, escalation, and receipt.",
+      stageSummary: "Launch operations readiness now has owner, support, incident, onboarding, success, adoption, escalation, and receipt controls.",
+      openDecision: "Open operations cockpit",
+      guardedDecision: "Open guarded cockpit",
+      holdDecision: "Hold operations cockpit",
+      repairDecision: "Repair readiness proof",
+      nextOpen: "Open launch operations readiness cockpit and keep operating owner, support rota, incident rehearsal, onboarding queue, success cadence, adoption watch, escalation bridge, and receipt together.",
+      nextGuarded: "Open guarded operations cockpit while one owner, support, incident, onboarding, success, adoption, escalation, or receipt lane stays watched.",
+      nextHold: "Hold operations cockpit until support rota, incident rehearsal, onboarding queue, and escalation bridge are clear.",
+      nextRepair: "Repair launch operations proof before country revenue governance expands.",
+      axes: [
+        ["Operating owner", "ownerCommand", 0.82, 6, "Operating owner is accountable."],
+        ["Support rota", "supportGuard", 0.82, 6, "Support rota is staffed."],
+        ["Incident rehearsal", "rollbackGuard", 0.82, 6, "Incident rehearsal is complete."],
+        ["Onboarding queue", "supportGuard", 0.8, 5, "Onboarding queue is visible."],
+        ["Success cadence", "sponsorGuard", 0.8, 5, "Success cadence is scheduled."],
+        ["Adoption watch", "reviewGuard", 0.8, 5, "Adoption watch is active."],
+        ["Escalation bridge", "rollbackGuard", 0.8, 5, "Escalation bridge is named."],
+        ["Readiness receipt", "guardClosure", 0.84, 6, "Readiness receipt closes operations cockpit."],
+      ],
+    },
+    {
+      key: "country-revenue-governance-ledger",
+      version: "v1059",
+      number: 1059,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Country Revenue Governance Ledger",
+      shortLabel: "Country Revenue Governance Ledger",
+      phase: "first pilot expansion rollout reuse market pilot country revenue governance ledger",
+      track: "v1059 first pilot expansion rollout reuse market pilot country revenue governance ledger",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-country-revenue-governance-ledger",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-country-revenue-governance-ledger",
+      idSuffix: "COUNTRY-REVENUE-GOVERNANCE-LEDGER",
+      scoreKey: "countryRevenueGovernanceLedgerScore",
+      decisionKey: "countryRevenueGovernanceLedgerDecision",
+      stateKey: "countryRevenueGovernanceLedgerState",
+      lineKey: "countryRevenueGovernanceLedgerLine",
+      primarySignal: "Pilot country revenue governance ledger",
+      primaryNote: "Governs country revenue with country ledger, price rule, tax rule, approval owner, partner margin, billing route, audit lock, and revenue receipt.",
+      summary: "Govern country revenue with country ledger, price rule, tax rule, approval owner, partner margin, billing route, audit lock, and receipt.",
+      trackSummary: "Launch operations readiness now becomes country revenue governance ledger across ledger, price, tax, approval, partner margin, billing, audit, and receipt.",
+      stageSummary: "Country revenue governance now has ledger, price, tax, approval, margin, billing, audit, and receipt controls.",
+      openDecision: "Open revenue ledger",
+      guardedDecision: "Open guarded ledger",
+      holdDecision: "Hold revenue ledger",
+      repairDecision: "Repair revenue proof",
+      nextOpen: "Open country revenue governance ledger and keep country ledger, price rule, tax rule, approval owner, partner margin, billing route, audit lock, and receipt together.",
+      nextGuarded: "Open guarded revenue ledger while one country, price, tax, approval, partner, billing, audit, or receipt lane stays watched.",
+      nextHold: "Hold country revenue ledger until price rule, tax rule, approval owner, and audit lock are clear.",
+      nextRepair: "Repair revenue governance proof before launch decision audit expands.",
+      axes: [
+        ["Country ledger", "proofGuard", 0.82, 6, "Country ledger is visible."],
+        ["Price rule", "proofGuard", 0.82, 6, "Price rule is controlled."],
+        ["Tax rule", "reviewGuard", 0.82, 6, "Tax rule is documented."],
+        ["Approval owner", "ownerCommand", 0.82, 6, "Approval owner is accountable."],
+        ["Partner margin", "sponsorGuard", 0.8, 5, "Partner margin is governed."],
+        ["Billing route", "proofGuard", 0.8, 5, "Billing route is ready."],
+        ["Audit lock", "tenantGuard", 0.82, 6, "Audit lock is active."],
+        ["Revenue receipt", "guardClosure", 0.84, 6, "Revenue receipt closes country ledger."],
       ],
     }
   );
@@ -25407,6 +25602,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryRevenueGovernanceLedgerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsReadinessCockpitPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionRevenueForecastBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingEvidencePortalPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentResponseDrillPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryPilotGovernancePackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchCustomerSuccessSlaConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRenewalSignatureReadinessRoomPreview(model, autopilot)}",
@@ -33854,6 +34054,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryPilotGovernancePackPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-country-pilot-governance-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentResponseDrillSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-incident-response-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentResponseDrill(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-incident-response-drill", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionIncidentResponseDrillPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-incident-response-drill");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingEvidencePortalSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-onboarding-evidence-portal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingEvidencePortal(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-onboarding-evidence-portal", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingEvidencePortalPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-onboarding-evidence-portal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionRevenueForecastBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "expansion-revenue-forecast-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionRevenueForecastBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "expansion-revenue-forecast-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionRevenueForecastBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "expansion-revenue-forecast-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsReadinessCockpitSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-operations-readiness-cockpit");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsReadinessCockpit(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-operations-readiness-cockpit", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsReadinessCockpitPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-operations-readiness-cockpit");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryRevenueGovernanceLedgerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "country-revenue-governance-ledger");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryRevenueGovernanceLedger(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "country-revenue-governance-ledger", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryRevenueGovernanceLedgerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "country-revenue-governance-ledger");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -98665,9 +98925,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1055", "First Pilot Expansion Rollout Reuse Market Pilot Production Incident Response Drill", "Run production incident rehearsal with severity owner, response timer, customer comms, rollback option, and drill receipt."],
-      ["v1056", "First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Evidence Portal", "Collect onboarding evidence for first customers with import proof, access proof, training proof, support proof, and portal receipt."],
-      ["v1057", "First Pilot Expansion Rollout Reuse Market Pilot Expansion Revenue Forecast Board", "Forecast expansion revenue across country pipeline, partner motion, renewal conversion, pricing governance, and revenue receipt."],
+      ["v1060", "First Pilot Expansion Rollout Reuse Market Pilot Launch Decision Audit Room", "Audit the launch decision with decision owner, proof trail, customer answer, revenue guard, support route, rollback proof, and audit receipt."],
+      ["v1061", "First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Revenue Proof Pack", "Tie reference proof to revenue proof with approved story, invoice signal, renewal intent, customer quote, and proof receipt."],
+      ["v1062", "First Pilot Expansion Rollout Reuse Market Pilot Global Partner Expansion Control Tower", "Control global partner expansion with partner tier, country owner, revenue route, compliance gate, support model, and tower receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
