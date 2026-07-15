@@ -1,5 +1,139 @@
 # Changelog
 
+## v1024 - First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Day-0 Command
+
+### Changes Made
+- Promoted customer onboarding Day-0 command as the current build.
+- Added kickoff agenda, admin login, data check, first workflow, support bridge, issue lane, success measure, and Day-0 receipt lanes.
+- Updated Build Phase to show v1024 as current and queue v1025-v1027 for tenant health monitoring, launch revenue proof, and customer success handoff work.
+- Updated cache tokens, package metadata, and static expectations for v1024.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop Chrome QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1024 visible, Customer Onboarding Day-0 Command visible, v1025-v1027 queue visible, no page-level horizontal overflow, and no console errors.
+- Passed: rail-side toggle QA from left to right and back left with Build Phase intact.
+- Passed: mobile Chrome QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Day-0 onboarding is still static; real launch requires live admin authentication, tenant data checks, issue tracking, support bridge logging, success metrics, and signed customer receipt storage.
+
+## v1023 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Data Migration Rehearsal
+
+### Changes Made
+- Added tenant data migration rehearsal to the pilot rollout runway.
+- Added source inventory, field mapping, validation sample, dry-run import, exception lane, rollback import, acceptance owner, and rehearsal receipt lanes.
+- Added command runway preview wiring and static coverage for migration rehearsal readiness.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: static release coverage for Tenant Data Migration Rehearsal model, summary model, render path, copy action, primary signal, and Build Phase track.
+- Passed: desktop and mobile Chrome route QA with Build v1024 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Migration rehearsal is still static; real launch requires source workbook parsing, field mapping validation, import dry-run logs, exception queues, rollback import testing, and customer acceptance evidence.
+
+## v1022 - First Pilot Expansion Rollout Reuse Market Pilot Production Launch Council Signoff
+
+### Changes Made
+- Added production launch council signoff to the pilot rollout runway.
+- Added founder approval, customer proof, backend proof, billing proof, support proof, compliance proof, rollback proof, and signoff receipt lanes.
+- Added command runway preview wiring and static coverage for production signoff discipline.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: static release coverage for Production Launch Council Signoff model, summary model, render path, copy action, primary signal, and Build Phase track.
+- Passed: desktop and mobile Chrome route QA with Build v1024 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Launch council signoff is still static; real launch requires approver identity, dated proof attachments, compliance review, rollback drill evidence, and immutable signoff receipts.
+
+## v1021 - First Pilot Expansion Rollout Reuse Market Pilot First Paying Tenant Readiness Room
+
+### Changes Made
+- Added first paying tenant readiness room to the pilot rollout runway.
+- Added contract proof, invoice line, admin account, tenant data, access policy, onboarding owner, support promise, and tenant receipt lanes.
+- Added command runway preview wiring and static coverage for paid-tenant readiness.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: static release coverage for First Paying Tenant Readiness Room model, summary model, render path, copy action, primary signal, and Build Phase track.
+- Passed: desktop and mobile Chrome route QA with Build v1024 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Paid-tenant readiness is still static; real launch requires billing integration, tenant identity, access policy enforcement, onboarding ownership, support commitment, and customer receipt capture.
+
+## v1020 - First Pilot Expansion Rollout Reuse Market Pilot Private Backend Cutover Board
+
+### Changes Made
+- Added private backend cutover board to the pilot rollout runway.
+- Added database plan, auth route, audit log, migration run, secret boundary, rollback switch, support window, and cutover receipt lanes.
+- Added command runway preview wiring and static coverage for backend cutover readiness.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: static release coverage for Private Backend Cutover Board model, summary model, render path, copy action, primary signal, and Build Phase track.
+- Passed: desktop and mobile Chrome route QA with Build v1024 visible, no page-level horizontal overflow, and no console errors.
+
+### Known Risks
+- Backend cutover is still static; real launch requires a private backend, database migrations, authentication, audit logging, secret storage, rollback execution, and monitored support windows.
+
 ## v1019 - First Pilot Expansion Rollout Reuse Market Pilot Real Launch Readiness Evidence Score
 
 ### Changes Made

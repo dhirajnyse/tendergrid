@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1019";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Real Launch Readiness Evidence Score";
+  const BUILD_VERSION = "v1024";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Day-0 Command";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1019.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1019.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1024.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1024.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -8422,6 +8422,201 @@
         ["Customer proof", "ownerCommand", 0.82, 6, "Customer proof is sponsor-readable."],
         ["Rollback proof", "rollbackGuard", 0.82, 6, "Rollback proof is ready."],
         ["Readiness receipt", "guardClosure", 0.84, 6, "Readiness receipt closes launch scoring."],
+      ],
+    },
+    {
+      key: "private-backend-cutover-board",
+      version: "v1020",
+      number: 1020,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Private Backend Cutover Board",
+      shortLabel: "Private Backend Cutover Board",
+      phase: "first pilot expansion rollout reuse market pilot private backend cutover board",
+      track: "v1020 first pilot expansion rollout reuse market pilot private backend cutover board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-private-backend-cutover-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-private-backend-cutover-board",
+      idSuffix: "PRIVATE-BACKEND-CUTOVER-BOARD",
+      scoreKey: "privateBackendCutoverBoardScore",
+      decisionKey: "privateBackendCutoverBoardDecision",
+      stateKey: "privateBackendCutoverBoardState",
+      lineKey: "privateBackendCutoverBoardLine",
+      primarySignal: "Pilot private backend cutover board",
+      primaryNote: "Turns launch scoring into backend cutover proof with database plan, auth route, audit log, migration run, secret boundary, rollback switch, support window, and cutover receipt.",
+      summary: "Prepare private backend cutover with database plan, auth route, audit log, migration run, secret boundary, rollback switch, support window, and receipt.",
+      trackSummary: "Launch readiness score now becomes private backend cutover across database, auth, audit, migration, secret boundary, rollback, support, and receipt.",
+      stageSummary: "Backend cutover now has database, auth, audit, migration, secret boundary, rollback, support, and receipt controls.",
+      openDecision: "Open backend cutover",
+      guardedDecision: "Open guarded cutover",
+      holdDecision: "Hold backend cutover",
+      repairDecision: "Repair backend proof",
+      nextOpen: "Open private backend cutover and keep database, auth, audit, migration, secret boundary, rollback, support, and receipt together.",
+      nextGuarded: "Run backend cutover while one database, auth, audit, migration, secret, rollback, support, or receipt lane stays watched.",
+      nextHold: "Hold backend cutover until auth, audit, migration, rollback, and support proof are clear.",
+      nextRepair: "Repair backend proof before first paying tenant expands.",
+      axes: [
+        ["Database plan", "proofGuard", 0.82, 6, "Database plan is mapped."],
+        ["Auth route", "tenantGuard", 0.82, 6, "Auth route is private and bounded."],
+        ["Audit log", "proofGuard", 0.82, 6, "Audit log path is ready."],
+        ["Migration run", "reviewGuard", 0.8, 5, "Migration run has a dry path."],
+        ["Secret boundary", "tenantGuard", 0.82, 6, "Secrets stay out of static demo."],
+        ["Rollback switch", "rollbackGuard", 0.82, 6, "Rollback switch is named."],
+        ["Support window", "supportGuard", 0.8, 5, "Support window is staffed."],
+        ["Cutover receipt", "guardClosure", 0.84, 6, "Cutover receipt closes backend readiness."],
+      ],
+    },
+    {
+      key: "first-paying-tenant-readiness-room",
+      version: "v1021",
+      number: 1021,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Paying Tenant Readiness Room",
+      shortLabel: "First Paying Tenant Readiness Room",
+      phase: "first pilot expansion rollout reuse market pilot first paying tenant readiness room",
+      track: "v1021 first pilot expansion rollout reuse market pilot first paying tenant readiness room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-paying-tenant-readiness-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-paying-tenant-readiness-room",
+      idSuffix: "FIRST-PAYING-TENANT-READINESS-ROOM",
+      scoreKey: "firstPayingTenantReadinessRoomScore",
+      decisionKey: "firstPayingTenantReadinessRoomDecision",
+      stateKey: "firstPayingTenantReadinessRoomState",
+      lineKey: "firstPayingTenantReadinessRoomLine",
+      primarySignal: "Pilot first paying tenant readiness room",
+      primaryNote: "Turns backend cutover into first paying tenant readiness with contract proof, invoice line, admin account, tenant data, access policy, onboarding owner, support promise, and tenant receipt.",
+      summary: "Prepare the first paying tenant with contract proof, invoice line, admin account, tenant data, access policy, onboarding owner, support promise, and receipt.",
+      trackSummary: "Private backend cutover now becomes first paying tenant readiness across contract, invoice, admin, tenant data, access, onboarding, support, and receipt.",
+      stageSummary: "First tenant launch now has contract, invoice, admin, data, access, onboarding, support, and receipt controls.",
+      openDecision: "Open first tenant room",
+      guardedDecision: "Open guarded tenant room",
+      holdDecision: "Hold first tenant",
+      repairDecision: "Repair tenant proof",
+      nextOpen: "Open first paying tenant readiness and keep contract, invoice, admin, tenant data, access, onboarding, support, and receipt together.",
+      nextGuarded: "Run tenant readiness while one contract, invoice, admin, data, access, onboarding, support, or receipt lane stays watched.",
+      nextHold: "Hold first tenant until invoice, access policy, admin account, and support promise are clear.",
+      nextRepair: "Repair tenant proof before production signoff expands.",
+      axes: [
+        ["Contract proof", "proofGuard", 0.82, 6, "Contract proof is attached."],
+        ["Invoice line", "sponsorGuard", 0.82, 6, "Invoice line is visible."],
+        ["Admin account", "ownerCommand", 0.8, 5, "Admin account owner is named."],
+        ["Tenant data", "tenantGuard", 0.82, 6, "Tenant data boundary is clear."],
+        ["Access policy", "tenantGuard", 0.8, 5, "Access policy is ready."],
+        ["Onboarding owner", "ownerCommand", 0.82, 6, "Onboarding owner is named."],
+        ["Support promise", "supportGuard", 0.8, 5, "Support promise is accepted."],
+        ["Tenant receipt", "guardClosure", 0.84, 6, "Tenant receipt closes readiness."],
+      ],
+    },
+    {
+      key: "production-launch-council-signoff",
+      version: "v1022",
+      number: 1022,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Launch Council Signoff",
+      shortLabel: "Production Launch Council Signoff",
+      phase: "first pilot expansion rollout reuse market pilot production launch council signoff",
+      track: "v1022 first pilot expansion rollout reuse market pilot production launch council signoff",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-launch-council-signoff",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-launch-council-signoff",
+      idSuffix: "PRODUCTION-LAUNCH-COUNCIL-SIGNOFF",
+      scoreKey: "productionLaunchCouncilSignoffScore",
+      decisionKey: "productionLaunchCouncilSignoffDecision",
+      stateKey: "productionLaunchCouncilSignoffState",
+      lineKey: "productionLaunchCouncilSignoffLine",
+      primarySignal: "Pilot production launch council signoff",
+      primaryNote: "Turns first tenant readiness into launch council signoff with founder approval, customer proof, backend proof, billing proof, support proof, compliance proof, rollback proof, and signoff receipt.",
+      summary: "Close launch council signoff with founder approval, customer proof, backend proof, billing proof, support proof, compliance proof, rollback proof, and receipt.",
+      trackSummary: "First paying tenant readiness now becomes production launch council signoff across founder, customer, backend, billing, support, compliance, rollback, and receipt.",
+      stageSummary: "Production signoff now has founder, customer, backend, billing, support, compliance, rollback, and receipt controls.",
+      openDecision: "Open launch council",
+      guardedDecision: "Open guarded signoff",
+      holdDecision: "Hold production signoff",
+      repairDecision: "Repair signoff proof",
+      nextOpen: "Open production launch council signoff and keep founder, customer, backend, billing, support, compliance, rollback, and receipt together.",
+      nextGuarded: "Run signoff while one founder, customer, backend, billing, support, compliance, rollback, or receipt lane stays watched.",
+      nextHold: "Hold production signoff until backend, billing, support, compliance, and rollback proof are clear.",
+      nextRepair: "Repair signoff proof before migration rehearsal expands.",
+      axes: [
+        ["Founder approval", "ownerCommand", 0.84, 6, "Founder approval is explicit."],
+        ["Customer proof", "proofGuard", 0.82, 6, "Customer proof is sponsor-readable."],
+        ["Backend proof", "proofGuard", 0.82, 6, "Backend proof is attached."],
+        ["Billing proof", "sponsorGuard", 0.82, 6, "Billing proof is attached."],
+        ["Support proof", "supportGuard", 0.82, 6, "Support proof is attached."],
+        ["Compliance proof", "tenantGuard", 0.82, 6, "Compliance proof is attached."],
+        ["Rollback proof", "rollbackGuard", 0.82, 6, "Rollback proof is attached."],
+        ["Signoff receipt", "guardClosure", 0.84, 6, "Signoff receipt closes production council."],
+      ],
+    },
+    {
+      key: "tenant-data-migration-rehearsal",
+      version: "v1023",
+      number: 1023,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Data Migration Rehearsal",
+      shortLabel: "Tenant Data Migration Rehearsal",
+      phase: "first pilot expansion rollout reuse market pilot tenant data migration rehearsal",
+      track: "v1023 first pilot expansion rollout reuse market pilot tenant data migration rehearsal",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-data-migration-rehearsal",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-data-migration-rehearsal",
+      idSuffix: "TENANT-DATA-MIGRATION-REHEARSAL",
+      scoreKey: "tenantDataMigrationRehearsalScore",
+      decisionKey: "tenantDataMigrationRehearsalDecision",
+      stateKey: "tenantDataMigrationRehearsalState",
+      lineKey: "tenantDataMigrationRehearsalLine",
+      primarySignal: "Pilot tenant data migration rehearsal",
+      primaryNote: "Turns production signoff into migration rehearsal with source inventory, field mapping, validation sample, dry-run import, exception lane, rollback import, acceptance owner, and rehearsal receipt.",
+      summary: "Rehearse tenant data migration with source inventory, field mapping, validation sample, dry-run import, exception lane, rollback import, acceptance owner, and receipt.",
+      trackSummary: "Production signoff now becomes tenant data migration rehearsal across source, mapping, validation, dry-run, exceptions, rollback, owner, and receipt.",
+      stageSummary: "Migration now has source, mapping, validation, dry-run, exception, rollback, owner, and receipt controls.",
+      openDecision: "Run migration rehearsal",
+      guardedDecision: "Run guarded rehearsal",
+      holdDecision: "Hold migration",
+      repairDecision: "Repair migration proof",
+      nextOpen: "Run tenant data migration rehearsal and keep source, mapping, validation, dry-run, exception, rollback, owner, and receipt together.",
+      nextGuarded: "Run migration rehearsal while one source, mapping, validation, dry-run, exception, rollback, owner, or receipt lane stays watched.",
+      nextHold: "Hold migration until field mapping, validation sample, rollback import, and acceptance owner are clear.",
+      nextRepair: "Repair migration proof before Day-0 onboarding expands.",
+      axes: [
+        ["Source inventory", "proofGuard", 0.82, 6, "Source inventory is listed."],
+        ["Field mapping", "reviewGuard", 0.82, 6, "Field mapping is checked."],
+        ["Validation sample", "proofGuard", 0.8, 5, "Validation sample is ready."],
+        ["Dry-run import", "supportGuard", 0.8, 5, "Dry-run import is rehearsed."],
+        ["Exception lane", "reviewGuard", 0.78, 5, "Exception lane is defined."],
+        ["Rollback import", "rollbackGuard", 0.82, 6, "Rollback import is ready."],
+        ["Acceptance owner", "ownerCommand", 0.82, 6, "Acceptance owner is named."],
+        ["Rehearsal receipt", "guardClosure", 0.84, 6, "Rehearsal receipt closes migration."],
+      ],
+    },
+    {
+      key: "customer-onboarding-day-0-command",
+      version: "v1024",
+      number: 1024,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Day-0 Command",
+      shortLabel: "Customer Onboarding Day-0 Command",
+      phase: "first pilot expansion rollout reuse market pilot customer onboarding day-0 command",
+      track: "v1024 first pilot expansion rollout reuse market pilot customer onboarding day-0 command",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-onboarding-day-0-command",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-onboarding-day-0-command",
+      idSuffix: "CUSTOMER-ONBOARDING-DAY-0-COMMAND",
+      scoreKey: "customerOnboardingDay0CommandScore",
+      decisionKey: "customerOnboardingDay0CommandDecision",
+      stateKey: "customerOnboardingDay0CommandState",
+      lineKey: "customerOnboardingDay0CommandLine",
+      primarySignal: "Pilot customer onboarding Day-0 command",
+      primaryNote: "Turns migration rehearsal into customer onboarding Day-0 command with kickoff agenda, admin login, data check, first workflow, support bridge, issue lane, success measure, and Day-0 receipt.",
+      summary: "Run customer onboarding Day-0 with kickoff agenda, admin login, data check, first workflow, support bridge, issue lane, success measure, and receipt.",
+      trackSummary: "Migration rehearsal now becomes customer onboarding Day-0 command across kickoff, admin, data, workflow, support, issue, success, and receipt.",
+      stageSummary: "Customer onboarding now has kickoff, admin login, data check, first workflow, support bridge, issue lane, success measure, and receipt controls.",
+      openDecision: "Run Day-0 command",
+      guardedDecision: "Run guarded Day-0",
+      holdDecision: "Hold Day-0",
+      repairDecision: "Repair Day-0 proof",
+      nextOpen: "Run customer onboarding Day-0 command and keep kickoff, admin, data, workflow, support, issue, success, and receipt together.",
+      nextGuarded: "Run Day-0 while one kickoff, admin, data, workflow, support, issue, success, or receipt lane stays watched.",
+      nextHold: "Hold Day-0 until admin login, data check, first workflow, and support bridge are clear.",
+      nextRepair: "Repair Day-0 proof before tenant health monitoring expands.",
+      axes: [
+        ["Kickoff agenda", "reviewGuard", 0.82, 6, "Kickoff agenda is ready."],
+        ["Admin login", "tenantGuard", 0.82, 6, "Admin login is confirmed."],
+        ["Data check", "proofGuard", 0.82, 6, "Data check is passed."],
+        ["First workflow", "ownerCommand", 0.82, 6, "First workflow owner is named."],
+        ["Support bridge", "supportGuard", 0.82, 6, "Support bridge is live."],
+        ["Issue lane", "rollbackGuard", 0.78, 5, "Issue lane is ready."],
+        ["Success measure", "sponsorGuard", 0.8, 5, "Success measure is clear."],
+        ["Day-0 receipt", "guardClosure", 0.84, 6, "Day-0 receipt closes onboarding."],
       ],
     },
   );
@@ -24042,6 +24237,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingDay0CommandPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataMigrationRehearsalPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchCouncilSignoffPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPayingTenantReadinessRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendCutoverBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRealLaunchReadinessEvidenceScorePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotSupportIncidentCommandPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLearningRollbackDrillPreview(model, autopilot)}",
@@ -32034,6 +32234,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRealLaunchReadinessEvidenceScorePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "real-launch-readiness-evidence-score");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendCutoverBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "private-backend-cutover-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendCutoverBoard(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "private-backend-cutover-board", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPrivateBackendCutoverBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "private-backend-cutover-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPayingTenantReadinessRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-paying-tenant-readiness-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPayingTenantReadinessRoom(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-paying-tenant-readiness-room", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPayingTenantReadinessRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-paying-tenant-readiness-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchCouncilSignoffSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-launch-council-signoff");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchCouncilSignoff(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-launch-council-signoff", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionLaunchCouncilSignoffPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-launch-council-signoff");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataMigrationRehearsalSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-data-migration-rehearsal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataMigrationRehearsal(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-data-migration-rehearsal", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantDataMigrationRehearsalPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-data-migration-rehearsal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingDay0CommandSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-onboarding-day-0-command");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingDay0Command(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-onboarding-day-0-command", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingDay0CommandPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-onboarding-day-0-command");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -96845,9 +97105,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1020", "First Pilot Expansion Rollout Reuse Market Pilot Private Backend Cutover Board", "Move from static readiness into private backend cutover with database, auth, audit, migration, rollback, and support proof."],
-      ["v1021", "First Pilot Expansion Rollout Reuse Market Pilot First Paying Tenant Readiness Room", "Prepare the first paying tenant with contract, invoice, admin user, billing state, onboarding, support, and acceptance receipt."],
-      ["v1022", "First Pilot Expansion Rollout Reuse Market Pilot Production Launch Council Signoff", "Close production launch signoff with founder approval, customer proof, backend proof, billing proof, support proof, compliance proof, and rollback proof."],
+      ["v1025", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Monitor", "Watch first tenant health after Day-0 with usage, support, data confidence, billing status, admin adoption, and rollback readiness."],
+      ["v1026", "First Pilot Expansion Rollout Reuse Market Pilot Launch Revenue Proof Ledger", "Connect paid tenant evidence to launch revenue proof with invoice, payment, seat count, support cost, renewal signal, and audit receipt."],
+      ["v1027", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Handoff Room", "Move Day-0 onboarding into customer success ownership with health score, cadence, success plan, open issues, and value receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
