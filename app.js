@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1009";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Reuse Learning Policy Enforcement Room";
+  const BUILD_VERSION = "v1014";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Live Learning Audit Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1009.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1009.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1014.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1014.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -8032,6 +8032,201 @@
         ["Audit event", "proofGuard", 0.8, 5, "Audit event is captured."],
         ["Rollback lock", "rollbackGuard", 0.8, 5, "Rollback lock is active."],
         ["Enforcement receipt", "guardClosure", 0.82, 6, "Enforcement receipt closes room."],
+      ],
+    },
+    {
+      key: "multi-organization-trust-council",
+      version: "v1010",
+      number: 1010,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Organization Trust Council",
+      shortLabel: "Multi-Organization Trust Council",
+      phase: "first pilot expansion rollout reuse market pilot multi-organization trust council",
+      track: "v1010 first pilot expansion rollout reuse market pilot multi-organization trust council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-organization-trust-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-organization-trust-council",
+      idSuffix: "MULTI-ORGANIZATION-TRUST-COUNCIL",
+      scoreKey: "multiOrganizationTrustCouncilScore",
+      decisionKey: "multiOrganizationTrustCouncilDecision",
+      stateKey: "multiOrganizationTrustCouncilState",
+      lineKey: "multiOrganizationTrustCouncilLine",
+      primarySignal: "Pilot multi-organization trust council",
+      primaryNote: "Turns reusable learning into a tenant council with org representatives, evidence acceptance, consent quorum, fairness review, dispute route, benefit balance, council cadence, and trust receipt.",
+      summary: "Govern shared learning with named tenant representatives, evidence acceptance, consent quorum, fairness review, dispute route, benefit balance, cadence, and receipt.",
+      trackSummary: "Policy enforcement now becomes a multi-organization trust council across representatives, evidence, consent, fairness, disputes, benefits, cadence, and receipt.",
+      stageSummary: "Reuse policy now has a trust council with representation, evidence acceptance, fairness, disputes, benefit balance, cadence, and receipt controls.",
+      openDecision: "Open trust council",
+      guardedDecision: "Open guarded council",
+      holdDecision: "Hold council",
+      repairDecision: "Repair council proof",
+      nextOpen: "Open the multi-organization trust council and keep representative, evidence, consent, fairness, dispute, benefit, cadence, and receipt lanes together.",
+      nextGuarded: "Run the council while one representative, consent, fairness, dispute, benefit, cadence, or receipt lane stays watched.",
+      nextHold: "Hold council expansion until consent quorum, fairness review, and dispute route are clear.",
+      nextRepair: "Repair council proof before country compliance expands.",
+      axes: [
+        ["Org representative", "ownerCommand", 0.82, 6, "Each pilot organization has a named representative."],
+        ["Evidence acceptance", "proofGuard", 0.82, 6, "Reusable evidence acceptance is explicit."],
+        ["Consent quorum", "tenantGuard", 0.8, 5, "Consent quorum is visible before reuse."],
+        ["Fairness review", "reviewGuard", 0.8, 5, "Fairness review protects cross-tenant learning."],
+        ["Dispute route", "rollbackGuard", 0.78, 5, "Dispute handling has a rollback path."],
+        ["Benefit balance", "sponsorGuard", 0.8, 5, "Benefit is balanced across participating tenants."],
+        ["Council cadence", "supportGuard", 0.8, 5, "Council cadence is supportable."],
+        ["Trust receipt", "guardClosure", 0.82, 6, "Trust receipt closes the council."],
+      ],
+    },
+    {
+      key: "country-compliance-launch-pack",
+      version: "v1011",
+      number: 1011,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Country Compliance Launch Pack",
+      shortLabel: "Country Compliance Launch Pack",
+      phase: "first pilot expansion rollout reuse market pilot country compliance launch pack",
+      track: "v1011 first pilot expansion rollout reuse market pilot country compliance launch pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-country-compliance-launch-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-country-compliance-launch-pack",
+      idSuffix: "COUNTRY-COMPLIANCE-LAUNCH-PACK",
+      scoreKey: "countryComplianceLaunchPackScore",
+      decisionKey: "countryComplianceLaunchPackDecision",
+      stateKey: "countryComplianceLaunchPackState",
+      lineKey: "countryComplianceLaunchPackLine",
+      primarySignal: "Pilot country compliance launch pack",
+      primaryNote: "Turns country rollout into a launch pack with privacy clause, currency rule, local support, data residency, sponsor approval, rollback acceptance, compliance owner, and launch pack receipt.",
+      summary: "Package country launch readiness across privacy, currency, local support, residency, sponsor approval, rollback acceptance, compliance ownership, and receipt.",
+      trackSummary: "Trust council now becomes a country compliance launch pack across privacy, currency, local support, residency, sponsor approval, rollback, owner, and receipt.",
+      stageSummary: "Country launch now has privacy, currency, support, residency, sponsor, rollback, owner, and receipt controls.",
+      openDecision: "Open compliance pack",
+      guardedDecision: "Open guarded pack",
+      holdDecision: "Hold country pack",
+      repairDecision: "Repair compliance proof",
+      nextOpen: "Open the country compliance launch pack and keep privacy, currency, support, residency, sponsor, rollback, owner, and receipt together.",
+      nextGuarded: "Run the country pack while one privacy, currency, support, residency, sponsor, rollback, owner, or receipt lane stays watched.",
+      nextHold: "Hold country expansion until residency, sponsor approval, and rollback acceptance are clear.",
+      nextRepair: "Repair country compliance proof before reinforcement guardrails expand.",
+      axes: [
+        ["Privacy clause", "reviewGuard", 0.82, 6, "Country privacy clause is attached."],
+        ["Currency rule", "sponsorGuard", 0.78, 5, "Currency rule is ready for sales and billing."],
+        ["Local support", "supportGuard", 0.8, 5, "Local support promise is named."],
+        ["Data residency", "tenantGuard", 0.8, 5, "Residency posture is documented."],
+        ["Sponsor approval", "ownerCommand", 0.82, 6, "Country sponsor approval is named."],
+        ["Rollback acceptance", "rollbackGuard", 0.8, 5, "Rollback is accepted before rollout."],
+        ["Compliance owner", "ownerCommand", 0.8, 5, "Compliance owner is visible."],
+        ["Launch pack receipt", "guardClosure", 0.82, 6, "Launch pack receipt closes country readiness."],
+      ],
+    },
+    {
+      key: "reinforcement-outcome-guardrail",
+      version: "v1012",
+      number: 1012,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Reinforcement Outcome Guardrail",
+      shortLabel: "Reinforcement Outcome Guardrail",
+      phase: "first pilot expansion rollout reuse market pilot reinforcement outcome guardrail",
+      track: "v1012 first pilot expansion rollout reuse market pilot reinforcement outcome guardrail",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-reinforcement-outcome-guardrail",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-reinforcement-outcome-guardrail",
+      idSuffix: "REINFORCEMENT-OUTCOME-GUARDRAIL",
+      scoreKey: "reinforcementOutcomeGuardrailScore",
+      decisionKey: "reinforcementOutcomeGuardrailDecision",
+      stateKey: "reinforcementOutcomeGuardrailState",
+      lineKey: "reinforcementOutcomeGuardrailLine",
+      primarySignal: "Pilot reinforcement outcome guardrail",
+      primaryNote: "Turns learning outcomes into a safe reinforcement guardrail with reward proof, outcome drift, canary tenant, human approval, rollback gate, model note, retune owner, and guardrail receipt.",
+      summary: "Guard AI reinforcement with reward proof, drift checks, tenant canaries, human approval, rollback gate, model note, retune owner, and receipt.",
+      trackSummary: "Country launch packs now become reinforcement guardrails across reward proof, drift, canary tenants, approval, rollback, model note, retune owner, and receipt.",
+      stageSummary: "Outcome learning now has reward, drift, canary, approval, rollback, model note, retune, and receipt controls.",
+      openDecision: "Open reinforcement guardrail",
+      guardedDecision: "Open guarded learning",
+      holdDecision: "Hold reinforcement",
+      repairDecision: "Repair outcome proof",
+      nextOpen: "Open the reinforcement outcome guardrail and keep reward, drift, canary, approval, rollback, model note, retune owner, and receipt together.",
+      nextGuarded: "Run reinforcement while one reward, drift, canary, approval, rollback, model, retune, or receipt lane stays watched.",
+      nextHold: "Hold reinforcement until drift, canary, human approval, and rollback proof are clear.",
+      nextRepair: "Repair outcome proof before tenant policy simulation expands.",
+      axes: [
+        ["Reward proof", "proofGuard", 0.82, 6, "Reward signal is evidence-backed."],
+        ["Outcome drift", "reviewGuard", 0.78, 5, "Outcome drift is watched."],
+        ["Canary tenant", "tenantGuard", 0.8, 5, "Tenant canary limits learning exposure."],
+        ["Human approval", "ownerCommand", 0.82, 6, "Human approval gates reinforcement."],
+        ["Rollback gate", "rollbackGuard", 0.82, 6, "Rollback gate is active."],
+        ["Model note", "proofGuard", 0.78, 5, "Model note explains learning change."],
+        ["Retune owner", "supportGuard", 0.8, 5, "Retune owner is named."],
+        ["Guardrail receipt", "guardClosure", 0.82, 6, "Guardrail receipt closes the learning move."],
+      ],
+    },
+    {
+      key: "tenant-policy-simulator",
+      version: "v1013",
+      number: 1013,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Policy Simulator",
+      shortLabel: "Tenant Policy Simulator",
+      phase: "first pilot expansion rollout reuse market pilot tenant policy simulator",
+      track: "v1013 first pilot expansion rollout reuse market pilot tenant policy simulator",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-policy-simulator",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-policy-simulator",
+      idSuffix: "TENANT-POLICY-SIMULATOR",
+      scoreKey: "tenantPolicySimulatorScore",
+      decisionKey: "tenantPolicySimulatorDecision",
+      stateKey: "tenantPolicySimulatorState",
+      lineKey: "tenantPolicySimulatorLine",
+      primarySignal: "Pilot tenant policy simulator",
+      primaryNote: "Turns guardrails into a simulator for policy variant, tenant sample, consent scenario, country scenario, risk forecast, outcome preview, reviewer decision, and simulation receipt.",
+      summary: "Preview tenant policy outcomes before rollout with policy variants, tenant samples, consent and country scenarios, risk forecast, outcome preview, reviewer decision, and receipt.",
+      trackSummary: "Reinforcement guardrails now become a tenant policy simulator across variants, tenant sample, consent, country, risk forecast, outcome preview, reviewer decision, and receipt.",
+      stageSummary: "Tenant policy now has scenario simulation with variant, sample, consent, country, risk, outcome, reviewer, and receipt controls.",
+      openDecision: "Run policy simulation",
+      guardedDecision: "Run guarded simulation",
+      holdDecision: "Hold policy change",
+      repairDecision: "Repair simulation proof",
+      nextOpen: "Run the tenant policy simulator and keep policy variant, tenant sample, consent, country, risk, outcome, reviewer, and receipt together.",
+      nextGuarded: "Run simulation while one variant, tenant, consent, country, risk, outcome, reviewer, or receipt lane stays watched.",
+      nextHold: "Hold policy changes until risk forecast, reviewer decision, and simulation receipt are clear.",
+      nextRepair: "Repair simulation proof before live learning audit expands.",
+      axes: [
+        ["Policy variant", "reviewGuard", 0.82, 6, "Policy variant is explicit."],
+        ["Tenant sample", "tenantGuard", 0.8, 5, "Tenant sample is bounded."],
+        ["Consent scenario", "tenantGuard", 0.8, 5, "Consent scenario is visible."],
+        ["Country scenario", "reviewGuard", 0.78, 5, "Country scenario is checked."],
+        ["Risk forecast", "proofGuard", 0.8, 5, "Risk forecast is attached."],
+        ["Outcome preview", "sponsorGuard", 0.8, 5, "Outcome preview is sponsor-readable."],
+        ["Reviewer decision", "ownerCommand", 0.82, 6, "Reviewer decision is named."],
+        ["Simulation receipt", "guardClosure", 0.82, 6, "Simulation receipt closes the policy change."],
+      ],
+    },
+    {
+      key: "live-learning-audit-console",
+      version: "v1014",
+      number: 1014,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Learning Audit Console",
+      shortLabel: "Live Learning Audit Console",
+      phase: "first pilot expansion rollout reuse market pilot live learning audit console",
+      track: "v1014 first pilot expansion rollout reuse market pilot live learning audit console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-learning-audit-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-learning-audit-console",
+      idSuffix: "LIVE-LEARNING-AUDIT-CONSOLE",
+      scoreKey: "liveLearningAuditConsoleScore",
+      decisionKey: "liveLearningAuditConsoleDecision",
+      stateKey: "liveLearningAuditConsoleState",
+      lineKey: "liveLearningAuditConsoleLine",
+      primarySignal: "Pilot live learning audit console",
+      primaryNote: "Turns simulated tenant policy into a live audit console with event capture, tenant source, policy decision, anonymization proof, reviewer override, rollback event, audit export, and console receipt.",
+      summary: "Audit live learning safely across event capture, tenant source, policy decision, anonymization proof, reviewer override, rollback event, audit export, and receipt.",
+      trackSummary: "Tenant simulation now becomes a live learning audit console across events, source, policy, anonymization, override, rollback, export, and receipt.",
+      stageSummary: "Live learning now has event, source, policy, anonymization, override, rollback, export, and receipt controls.",
+      openDecision: "Open live audit console",
+      guardedDecision: "Open guarded audit",
+      holdDecision: "Hold live learning",
+      repairDecision: "Repair audit proof",
+      nextOpen: "Open the live learning audit console and keep event, source, policy, anonymization, override, rollback, export, and receipt together.",
+      nextGuarded: "Run live audit while one event, source, policy, anonymization, override, rollback, export, or receipt lane stays watched.",
+      nextHold: "Hold live learning until anonymization proof, reviewer override, rollback event, and audit export are clear.",
+      nextRepair: "Repair audit proof before customer evidence API gates expand.",
+      axes: [
+        ["Live event", "proofGuard", 0.82, 6, "Live learning event is captured."],
+        ["Tenant source", "tenantGuard", 0.8, 5, "Tenant source is bounded."],
+        ["Policy decision", "reviewGuard", 0.8, 5, "Policy decision is visible."],
+        ["Anonymization proof", "tenantGuard", 0.82, 6, "Anonymization proof is attached."],
+        ["Reviewer override", "ownerCommand", 0.8, 5, "Reviewer override is auditable."],
+        ["Rollback event", "rollbackGuard", 0.8, 5, "Rollback event is ready."],
+        ["Audit export", "supportGuard", 0.8, 5, "Audit export is supportable."],
+        ["Console receipt", "guardClosure", 0.82, 6, "Console receipt closes live learning audit."],
       ],
     },
   );
@@ -23652,6 +23847,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveLearningAuditConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantPolicySimulatorPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotReinforcementOutcomeGuardrailPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryComplianceLaunchPackPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiOrganizationTrustCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotReuseLearningPolicyEnforcementRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantConsentAndAnonymizationStudioPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLearningNetworkTrustLedgerPreview(model, autopilot)}",
@@ -31514,6 +31714,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotReuseLearningPolicyEnforcementRoomPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "reuse-learning-policy-enforcement-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiOrganizationTrustCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-organization-trust-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiOrganizationTrustCouncil(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-organization-trust-council", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiOrganizationTrustCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-organization-trust-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryComplianceLaunchPackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "country-compliance-launch-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryComplianceLaunchPack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "country-compliance-launch-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryComplianceLaunchPackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "country-compliance-launch-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotReinforcementOutcomeGuardrailSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "reinforcement-outcome-guardrail");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotReinforcementOutcomeGuardrail(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "reinforcement-outcome-guardrail", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotReinforcementOutcomeGuardrailPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "reinforcement-outcome-guardrail");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantPolicySimulatorSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-policy-simulator");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantPolicySimulator(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-policy-simulator", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantPolicySimulatorPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-policy-simulator");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveLearningAuditConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-learning-audit-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveLearningAuditConsole(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-learning-audit-console", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveLearningAuditConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-learning-audit-console");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -96325,9 +96585,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1010", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Organization Trust Council", "Prepare shared-learning council governance with tenant representatives, evidence acceptance, dispute routes, fairness review, and trust receipts."],
-      ["v1011", "First Pilot Expansion Rollout Reuse Market Pilot Country Compliance Launch Pack", "Turn country rollout controls into launch-ready compliance packs for privacy, currency, local support, sponsor story, and rollback acceptance."],
-      ["v1012", "First Pilot Expansion Rollout Reuse Market Pilot Reinforcement Outcome Guardrail", "Keep AI guidance learning safe with reward proof, outcome drift checks, tenant-safe canaries, rollback gates, and human approval receipts."],
+      ["v1015", "First Pilot Expansion Rollout Reuse Market Pilot Customer Evidence API Gate", "Prepare the first backend-facing evidence API gate for customer proof, tenant scope, auth posture, audit export, rollback receipt, and launch-safe data boundaries."],
+      ["v1016", "First Pilot Expansion Rollout Reuse Market Pilot Tenant Billing Enforcement Console", "Turn membership and billing readiness into tenant billing enforcement with plan gates, invoice proof, payment status, access lock, and support handoff."],
+      ["v1017", "First Pilot Expansion Rollout Reuse Market Pilot Production Learning Rollback Drill", "Rehearse production learning rollback with trigger conditions, affected tenants, evidence restore, owner approval, incident note, and recovery receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

@@ -1,5 +1,139 @@
 # Changelog
 
+## v1014 - First Pilot Expansion Rollout Reuse Market Pilot Live Learning Audit Console
+
+### Changes Made
+- Promoted live learning audit console as the current build.
+- Added live event, tenant source, policy decision, anonymization proof, reviewer override, rollback event, audit export, and console receipt lanes.
+- Updated Build Phase to show v1014 as current and queue v1015-v1017 for customer evidence API, tenant billing enforcement, and production learning rollback work.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1014.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1014 visible, Live Learning Audit Console visible, v1015-v1017 queue visible, no page-level horizontal overflow, and no console errors.
+- Passed: rail-side toggle QA from left to right and back left with Build Phase intact.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Live learning audit is still static; real launch requires immutable audit event storage, tenant policy enforcement, anonymization verification, reviewer override workflows, export access control, and rollback execution.
+
+## v1013 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Policy Simulator
+
+### Changes Made
+- Added tenant policy simulator to the pilot rollout runway.
+- Added policy variant, tenant sample, consent scenario, country scenario, risk forecast, outcome preview, reviewer decision, and simulation receipt lanes.
+- Added command runway preview wiring and static coverage for the simulator release.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1014 visible and no console errors.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Tenant policy simulation is still modeled in static release metadata; real simulation requires backend tenant policies, scenario inputs, risk scoring, reviewer approval records, and replayable outputs.
+
+## v1012 - First Pilot Expansion Rollout Reuse Market Pilot Reinforcement Outcome Guardrail
+
+### Changes Made
+- Added reinforcement outcome guardrail to the pilot rollout runway.
+- Added reward proof, outcome drift, canary tenant, human approval, rollback gate, model note, retune owner, and guardrail receipt lanes.
+- Added command runway preview wiring and static coverage for reinforcement safety.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1014 visible and no console errors.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Reinforcement guardrails are still static; real AI learning needs measured rewards, drift detection, tenant-safe canaries, human approval storage, rollback automation, and model-change receipts.
+
+## v1011 - First Pilot Expansion Rollout Reuse Market Pilot Country Compliance Launch Pack
+
+### Changes Made
+- Added country compliance launch pack to the pilot rollout runway.
+- Added privacy clause, currency rule, local support, data residency, sponsor approval, rollback acceptance, compliance owner, and launch pack receipt lanes.
+- Added command runway preview wiring and static coverage for country readiness.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1014 visible and no console errors.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Country compliance is still a static launch pack; real release requires legal review, billing localization, residency controls, regional support, and country-specific rollback acceptance.
+
+## v1010 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Organization Trust Council
+
+### Changes Made
+- Added multi-organization trust council to the pilot rollout runway.
+- Added organization representative, evidence acceptance, consent quorum, fairness review, dispute route, benefit balance, council cadence, and trust receipt lanes.
+- Added command runway preview wiring and static coverage for shared-learning governance.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\static-check.mjs`
+- Passed: desktop browser QA for Command, Autopilot, Advisor, Weekly Review, Tenders, Projects, Reports, Tenders Insights, and Build Phase with Build v1014 visible and no console errors.
+- Passed: mobile browser QA at 390px for Command, Autopilot, Reports, Tenders Insights, and Build Phase with no page-level horizontal overflow and no console errors.
+
+### Known Risks
+- Trust council governance is still a static planning room; real multi-organization use requires tenant contracts, consent records, dispute workflows, fairness review policy, and audit-backed benefit distribution.
+
 ## v1009 - First Pilot Expansion Rollout Reuse Market Pilot Reuse Learning Policy Enforcement Room
 
 ### Changes Made
