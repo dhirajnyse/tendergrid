@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1039";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Billing Exception Resolver";
+  const BUILD_VERSION = "v1044";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Renewal Forecast";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1039.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1039.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1044.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1044.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -9202,6 +9202,201 @@
         ["Owner escalation", "ownerCommand", 0.82, 6, "Owner escalation is clear."],
         ["Rollback option", "rollbackGuard", 0.82, 6, "Rollback option is ready."],
         ["Exception receipt", "guardClosure", 0.84, 6, "Exception receipt closes resolver."],
+      ],
+    },
+    {
+      key: "finance-closeout-evidence-pack",
+      version: "v1040",
+      number: 1040,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Finance Closeout Evidence Pack",
+      shortLabel: "Finance Closeout Evidence Pack",
+      phase: "first pilot expansion rollout reuse market pilot finance closeout evidence pack",
+      track: "v1040 first pilot expansion rollout reuse market pilot finance closeout evidence pack",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-finance-closeout-evidence-pack",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-finance-closeout-evidence-pack",
+      idSuffix: "FINANCE-CLOSEOUT-EVIDENCE-PACK",
+      scoreKey: "financeCloseoutEvidencePackScore",
+      decisionKey: "financeCloseoutEvidencePackDecision",
+      stateKey: "financeCloseoutEvidencePackState",
+      lineKey: "financeCloseoutEvidencePackLine",
+      primarySignal: "Pilot finance closeout evidence pack",
+      primaryNote: "Closes launch finance with invoice receipt, payment receipt, credit note, tax review, exception closure, approval trail, archive proof, and finance receipt.",
+      summary: "Close launch finance with invoice receipt, payment receipt, credit note, tax review, exception closure, approval trail, archive proof, and finance receipt.",
+      trackSummary: "Billing exception resolution now becomes finance closeout evidence across invoice, payment, credit, tax, exceptions, approvals, archive, and receipt.",
+      stageSummary: "Finance closeout now has invoice, payment, credit, tax, exception, approval, archive, and receipt controls.",
+      openDecision: "Open finance closeout",
+      guardedDecision: "Run guarded closeout",
+      holdDecision: "Hold finance closeout",
+      repairDecision: "Repair finance proof",
+      nextOpen: "Open finance closeout evidence pack and keep invoice, payment, credit, tax, exception, approval, archive, and receipt together.",
+      nextGuarded: "Run finance closeout while one invoice, payment, credit, tax, exception, approval, archive, or receipt lane stays watched.",
+      nextHold: "Hold finance closeout until invoice, payment, credit, tax, and exception proof are clear.",
+      nextRepair: "Repair finance proof before renewal autopilot expands.",
+      axes: [
+        ["Invoice receipt", "sponsorGuard", 0.82, 6, "Invoice receipt is attached."],
+        ["Payment receipt", "sponsorGuard", 0.82, 6, "Payment receipt is attached."],
+        ["Credit note", "reviewGuard", 0.8, 5, "Credit note is resolved."],
+        ["Tax review", "proofGuard", 0.8, 5, "Tax review is complete."],
+        ["Exception closure", "rollbackGuard", 0.82, 6, "Exceptions are closed."],
+        ["Approval trail", "ownerCommand", 0.82, 6, "Approval trail is clear."],
+        ["Archive proof", "proofGuard", 0.82, 6, "Archive proof is ready."],
+        ["Finance receipt", "guardClosure", 0.84, 6, "Finance receipt closes evidence pack."],
+      ],
+    },
+    {
+      key: "customer-success-renewal-autopilot-queue",
+      version: "v1041",
+      number: 1041,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Renewal Autopilot Queue",
+      shortLabel: "Customer Success Renewal Autopilot Queue",
+      phase: "first pilot expansion rollout reuse market pilot customer success renewal autopilot queue",
+      track: "v1041 first pilot expansion rollout reuse market pilot customer success renewal autopilot queue",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-renewal-autopilot-queue",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-renewal-autopilot-queue",
+      idSuffix: "CUSTOMER-SUCCESS-RENEWAL-AUTOPILOT-QUEUE",
+      scoreKey: "customerSuccessRenewalAutopilotQueueScore",
+      decisionKey: "customerSuccessRenewalAutopilotQueueDecision",
+      stateKey: "customerSuccessRenewalAutopilotQueueState",
+      lineKey: "customerSuccessRenewalAutopilotQueueLine",
+      primarySignal: "Pilot customer success renewal autopilot queue",
+      primaryNote: "Turns renewal signals into customer-success jobs with sponsor follow-up, value proof task, support health task, renewal ask, expansion ask, owner cadence, risk note, and renewal receipt.",
+      summary: "Run customer-success renewal jobs with sponsor follow-up, value proof task, support health task, renewal ask, expansion ask, owner cadence, risk note, and receipt.",
+      trackSummary: "Finance closeout now becomes customer-success renewal autopilot across sponsor, value, support, renewal, expansion, cadence, risk, and receipt.",
+      stageSummary: "Renewal autopilot now has sponsor, value, support, renewal, expansion, cadence, risk, and receipt controls.",
+      openDecision: "Open renewal autopilot",
+      guardedDecision: "Run guarded renewal jobs",
+      holdDecision: "Hold renewal autopilot",
+      repairDecision: "Repair renewal queue",
+      nextOpen: "Open customer-success renewal autopilot queue and keep sponsor, value, support, renewal, expansion, cadence, risk, and receipt together.",
+      nextGuarded: "Run renewal autopilot while one sponsor, value, support, renewal, expansion, cadence, risk, or receipt lane stays watched.",
+      nextHold: "Hold renewal autopilot until sponsor follow-up, value proof, support health, and owner cadence are clear.",
+      nextRepair: "Repair renewal queue before expansion readiness review expands.",
+      axes: [
+        ["Sponsor follow-up", "sponsorGuard", 0.82, 6, "Sponsor follow-up is queued."],
+        ["Value proof task", "proofGuard", 0.82, 6, "Value proof task is ready."],
+        ["Support health task", "supportGuard", 0.82, 6, "Support health task is ready."],
+        ["Renewal ask", "reviewGuard", 0.8, 5, "Renewal ask is drafted."],
+        ["Expansion ask", "tenantGuard", 0.78, 5, "Expansion ask is guarded."],
+        ["Owner cadence", "ownerCommand", 0.82, 6, "Owner cadence is scheduled."],
+        ["Risk note", "rollbackGuard", 0.78, 5, "Risk note is visible."],
+        ["Renewal receipt", "guardClosure", 0.84, 6, "Renewal receipt closes autopilot."],
+      ],
+    },
+    {
+      key: "multi-tenant-expansion-readiness-review",
+      version: "v1042",
+      number: 1042,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Expansion Readiness Review",
+      shortLabel: "Multi-Tenant Expansion Readiness Review",
+      phase: "first pilot expansion rollout reuse market pilot multi-tenant expansion readiness review",
+      track: "v1042 first pilot expansion rollout reuse market pilot multi-tenant expansion readiness review",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-expansion-readiness-review",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-expansion-readiness-review",
+      idSuffix: "MULTI-TENANT-EXPANSION-READINESS-REVIEW",
+      scoreKey: "multiTenantExpansionReadinessReviewScore",
+      decisionKey: "multiTenantExpansionReadinessReviewDecision",
+      stateKey: "multiTenantExpansionReadinessReviewState",
+      lineKey: "multiTenantExpansionReadinessReviewLine",
+      primarySignal: "Pilot multi-tenant expansion readiness review",
+      primaryNote: "Reviews multi-tenant expansion readiness across tenant health, support load, billing proof, learning boundary, country gate, security posture, expansion decision, and readiness receipt.",
+      summary: "Review multi-tenant expansion readiness with tenant health, support load, billing proof, learning boundary, country gate, security posture, expansion decision, and receipt.",
+      trackSummary: "Renewal autopilot now becomes multi-tenant expansion readiness across tenant health, support, billing, learning, country, security, decision, and receipt.",
+      stageSummary: "Expansion readiness now has tenant health, support load, billing proof, learning boundary, country gate, security posture, decision, and receipt controls.",
+      openDecision: "Open expansion review",
+      guardedDecision: "Run guarded expansion review",
+      holdDecision: "Hold expansion review",
+      repairDecision: "Repair readiness proof",
+      nextOpen: "Open multi-tenant expansion readiness review and keep tenant health, support, billing, learning, country, security, decision, and receipt together.",
+      nextGuarded: "Run expansion review while one tenant, support, billing, learning, country, security, decision, or receipt lane stays watched.",
+      nextHold: "Hold expansion review until tenant health, support load, billing proof, and security posture are clear.",
+      nextRepair: "Repair readiness proof before country compliance expands.",
+      axes: [
+        ["Tenant health", "tenantGuard", 0.82, 6, "Tenant health is calm."],
+        ["Support load", "supportGuard", 0.82, 6, "Support load is known."],
+        ["Billing proof", "sponsorGuard", 0.82, 6, "Billing proof is accepted."],
+        ["Learning boundary", "proofGuard", 0.8, 5, "Learning boundary is safe."],
+        ["Country gate", "reviewGuard", 0.78, 5, "Country gate is visible."],
+        ["Security posture", "tenantGuard", 0.82, 6, "Security posture is clear."],
+        ["Expansion decision", "ownerCommand", 0.82, 6, "Expansion decision is named."],
+        ["Readiness receipt", "guardClosure", 0.84, 6, "Readiness receipt closes review."],
+      ],
+    },
+    {
+      key: "country-launch-compliance-checklist",
+      version: "v1043",
+      number: 1043,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Country Launch Compliance Checklist",
+      shortLabel: "Country Launch Compliance Checklist",
+      phase: "first pilot expansion rollout reuse market pilot country launch compliance checklist",
+      track: "v1043 first pilot expansion rollout reuse market pilot country launch compliance checklist",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-country-launch-compliance-checklist",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-country-launch-compliance-checklist",
+      idSuffix: "COUNTRY-LAUNCH-COMPLIANCE-CHECKLIST",
+      scoreKey: "countryLaunchComplianceChecklistScore",
+      decisionKey: "countryLaunchComplianceChecklistDecision",
+      stateKey: "countryLaunchComplianceChecklistState",
+      lineKey: "countryLaunchComplianceChecklistLine",
+      primarySignal: "Pilot country launch compliance checklist",
+      primaryNote: "Prepares country launch compliance with country rules, data residency, tax treatment, contract wording, support hours, language note, legal review, and compliance receipt.",
+      summary: "Prepare country launch compliance with country rules, data residency, tax treatment, contract wording, support hours, language note, legal review, and receipt.",
+      trackSummary: "Expansion readiness now becomes country launch compliance across rules, residency, tax, contract, support hours, language, legal, and receipt.",
+      stageSummary: "Country compliance now has rules, residency, tax, contract, support hours, language, legal, and receipt controls.",
+      openDecision: "Open compliance checklist",
+      guardedDecision: "Run guarded compliance",
+      holdDecision: "Hold country launch",
+      repairDecision: "Repair compliance proof",
+      nextOpen: "Open country launch compliance checklist and keep rules, residency, tax, contract, support, language, legal, and receipt together.",
+      nextGuarded: "Run country compliance while one rule, residency, tax, contract, support, language, legal, or receipt lane stays watched.",
+      nextHold: "Hold country launch until rules, residency, tax, contract, and legal review are clear.",
+      nextRepair: "Repair compliance proof before tenant health forecast expands.",
+      axes: [
+        ["Country rules", "reviewGuard", 0.82, 6, "Country rules are listed."],
+        ["Data residency", "tenantGuard", 0.82, 6, "Data residency is reviewed."],
+        ["Tax treatment", "sponsorGuard", 0.8, 5, "Tax treatment is known."],
+        ["Contract wording", "proofGuard", 0.8, 5, "Contract wording is updated."],
+        ["Support hours", "supportGuard", 0.8, 5, "Support hours are covered."],
+        ["Language note", "reviewGuard", 0.78, 5, "Language note is ready."],
+        ["Legal review", "ownerCommand", 0.82, 6, "Legal review is assigned."],
+        ["Compliance receipt", "guardClosure", 0.84, 6, "Compliance receipt closes checklist."],
+      ],
+    },
+    {
+      key: "tenant-health-renewal-forecast",
+      version: "v1044",
+      number: 1044,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Renewal Forecast",
+      shortLabel: "Tenant Health Renewal Forecast",
+      phase: "first pilot expansion rollout reuse market pilot tenant health renewal forecast",
+      track: "v1044 first pilot expansion rollout reuse market pilot tenant health renewal forecast",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-health-renewal-forecast",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-tenant-health-renewal-forecast",
+      idSuffix: "TENANT-HEALTH-RENEWAL-FORECAST",
+      scoreKey: "tenantHealthRenewalForecastScore",
+      decisionKey: "tenantHealthRenewalForecastDecision",
+      stateKey: "tenantHealthRenewalForecastState",
+      lineKey: "tenantHealthRenewalForecastLine",
+      primarySignal: "Pilot tenant health renewal forecast",
+      primaryNote: "Forecasts tenant renewal health with usage trend, sponsor health, support trend, value realization, billing posture, risk forecast, renewal forecast, and forecast receipt.",
+      summary: "Forecast tenant renewal health with usage trend, sponsor health, support trend, value realization, billing posture, risk forecast, renewal forecast, and receipt.",
+      trackSummary: "Country compliance now becomes tenant health renewal forecast across usage, sponsor, support, value, billing, risk, renewal, and receipt.",
+      stageSummary: "Tenant health forecast now has usage, sponsor, support, value, billing, risk, renewal, and receipt controls.",
+      openDecision: "Open renewal forecast",
+      guardedDecision: "Run guarded forecast",
+      holdDecision: "Hold renewal forecast",
+      repairDecision: "Repair forecast proof",
+      nextOpen: "Open tenant health renewal forecast and keep usage, sponsor, support, value, billing, risk, renewal, and receipt together.",
+      nextGuarded: "Run renewal forecast while one usage, sponsor, support, value, billing, risk, renewal, or receipt lane stays watched.",
+      nextHold: "Hold renewal forecast until usage, sponsor health, support trend, and billing posture are clear.",
+      nextRepair: "Repair forecast proof before partner rollout expands.",
+      axes: [
+        ["Usage trend", "proofGuard", 0.82, 6, "Usage trend is visible."],
+        ["Sponsor health", "sponsorGuard", 0.82, 6, "Sponsor health is current."],
+        ["Support trend", "supportGuard", 0.82, 6, "Support trend is calm."],
+        ["Value realization", "reviewGuard", 0.82, 6, "Value realization is proven."],
+        ["Billing posture", "sponsorGuard", 0.8, 5, "Billing posture is clean."],
+        ["Risk forecast", "rollbackGuard", 0.8, 5, "Risk forecast is named."],
+        ["Renewal forecast", "ownerCommand", 0.82, 6, "Renewal forecast is drafted."],
+        ["Forecast receipt", "guardClosure", 0.84, 6, "Forecast receipt closes health forecast."],
       ],
     },
   );
@@ -24822,6 +25017,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthRenewalForecastPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchComplianceChecklistPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionReadinessReviewPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessRenewalAutopilotQueuePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFinanceCloseoutEvidencePackPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotBillingExceptionResolverPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionTenantSetupReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionRenewalSignalBoardPreview(model, autopilot)}",
@@ -33074,6 +33274,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPilotBillingExceptionResolverPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "pilot-billing-exception-resolver");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFinanceCloseoutEvidencePackSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "finance-closeout-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFinanceCloseoutEvidencePack(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "finance-closeout-evidence-pack", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFinanceCloseoutEvidencePackPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "finance-closeout-evidence-pack");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessRenewalAutopilotQueueSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-success-renewal-autopilot-queue");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessRenewalAutopilotQueue(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-success-renewal-autopilot-queue", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessRenewalAutopilotQueuePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-success-renewal-autopilot-queue");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionReadinessReviewSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-tenant-expansion-readiness-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionReadinessReview(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-tenant-expansion-readiness-review", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantExpansionReadinessReviewPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-tenant-expansion-readiness-review");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchComplianceChecklistSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "country-launch-compliance-checklist");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchComplianceChecklist(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "country-launch-compliance-checklist", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCountryLaunchComplianceChecklistPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "country-launch-compliance-checklist");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthRenewalForecastSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "tenant-health-renewal-forecast");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthRenewalForecast(model, autopilot, seed = {}) {
+    return buildCommandPilotRunwayStage(model, autopilot, "tenant-health-renewal-forecast", seed);
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantHealthRenewalForecastPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "tenant-health-renewal-forecast");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -97885,9 +98145,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1040", "First Pilot Expansion Rollout Reuse Market Pilot Finance Closeout Evidence Pack", "Close launch finance with invoice, payment, credit, tax, renewal, exception, approval, and archive evidence."],
-      ["v1041", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Renewal Autopilot Queue", "Turn renewal signals into customer-success jobs with sponsor follow-up, value proof, support health, expansion ask, and renewal receipt."],
-      ["v1042", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Expansion Readiness Review", "Review multi-tenant expansion readiness across tenant health, support load, billing proof, learning boundaries, and country rollout gates."],
+      ["v1045", "First Pilot Expansion Rollout Reuse Market Pilot Regional Partner Rollout Desk", "Prepare partner-led country rollout with referral owner, local support, pricing proof, compliance bridge, and launch receipt."],
+      ["v1046", "First Pilot Expansion Rollout Reuse Market Pilot Enterprise Audit Evidence Vault", "Collect enterprise audit evidence across access, tenant boundary, billing proof, support trail, renewal health, and compliance receipt."],
+      ["v1047", "First Pilot Expansion Rollout Reuse Market Pilot Customer Reference Proof Studio", "Turn successful pilot outcomes into approved customer reference proof with story, quote, metrics, consent, and reuse boundary."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

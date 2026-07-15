@@ -1,5 +1,137 @@
 # Changelog
 
+## v1044 - First Pilot Expansion Rollout Reuse Market Pilot Tenant Health Renewal Forecast
+
+### Changes Made
+- Promoted tenant health renewal forecast as the current build to estimate renewal readiness before wider rollout.
+- Added usage trend, sponsor health, support trend, value realization, billing posture, risk forecast, renewal forecast, forecast receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated cache tokens, package metadata, minified app asset, and static expectations for v1044.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1044, Tenant Health Renewal Forecast, v1045-v1047 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Tenant health forecasting is still static; real launch requires usage telemetry, sponsor health records, support trend data, value realization proof, billing posture, risk modeling, and forecast receipts.
+
+## v1043 - First Pilot Expansion Rollout Reuse Market Pilot Country Launch Compliance Checklist
+
+### Changes Made
+- Added country launch compliance checklist to keep country rollout decisions calm and auditable.
+- Added country rules, data residency, tax treatment, contract wording, support hours, language note, legal review, compliance receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1043.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1044, Tenant Health Renewal Forecast, v1045-v1047 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Country compliance is still static; real launch requires legal review, data residency decisioning, tax treatment validation, contract wording, support-hours coverage, and compliance receipts.
+
+## v1042 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Expansion Readiness Review
+
+### Changes Made
+- Added multi-tenant expansion readiness review to decide whether the product can safely widen after the first tenant.
+- Added tenant health, support load, billing proof, learning boundary, country gate, security posture, expansion decision, readiness receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1042.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1044, Tenant Health Renewal Forecast, v1045-v1047 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Expansion review is still static; real launch requires tenant health telemetry, support capacity planning, billing proof, learning-boundary signoff, country gates, and security review.
+
+## v1041 - First Pilot Expansion Rollout Reuse Market Pilot Customer Success Renewal Autopilot Queue
+
+### Changes Made
+- Added customer-success renewal autopilot queue to convert renewal signals into owner jobs.
+- Added sponsor follow-up, value proof task, support health task, renewal ask, expansion ask, owner cadence, risk note, renewal receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1041.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1044, Tenant Health Renewal Forecast, v1045-v1047 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Renewal autopilot is still static; real launch requires task scheduling, sponsor follow-up tracking, value proof capture, support health telemetry, expansion ask approvals, and renewal receipts.
+
+## v1040 - First Pilot Expansion Rollout Reuse Market Pilot Finance Closeout Evidence Pack
+
+### Changes Made
+- Added finance closeout evidence pack to close launch finance after exception resolution.
+- Added invoice receipt, payment receipt, credit note, tax review, exception closure, approval trail, archive proof, finance receipt lanes.
+- Wired the release into the command release rail, Build Phase runway, and static release coverage.
+- Updated static release expectations for v1040.
+
+### Files Changed
+- `app.js`
+- `app.min.js`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks Run
+- Passed: `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`
+- Passed: `npm.cmd exec --yes clean-css-cli -- -o styles.min.css styles.css`
+- Passed: `npm.cmd run check`
+- Passed: `node --check app.js`
+- Passed: `node --check app.min.js`
+- Passed: `node --check scripts\\static-check.mjs`
+- Passed: desktop and mobile Chrome QA for authenticated main routes, Tenders Insights, Build Phase, rail-side toggle, Build v1044, Tenant Health Renewal Forecast, v1045-v1047 queue visibility, no console errors, and no page-level horizontal overflow.
+
+### Known Risks
+- Finance closeout is still static; real launch requires invoice receipts, payment receipts, tax review, credit decisions, exception closure, approval trail, archive proof, and signed finance receipts.
+
 ## v1039 - First Pilot Expansion Rollout Reuse Market Pilot Billing Exception Resolver
 
 ### Changes Made
