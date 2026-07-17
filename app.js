@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1074";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Closeout Council";
+  const BUILD_VERSION = "v1079";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Assurance Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1074.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1074.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1079.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1079.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -10568,7 +10568,202 @@
         ["Launch decision", "ownerCommand", 0.8, 5, "Launch decision owner is accountable."],
         ["Closeout receipt", "guardClosure", 0.84, 6, "Closeout receipt closes council."],
       ],
-    }
+    },
+    {
+      key: "public-launch-hardening-board",
+      version: "v1075",
+      number: 1075,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Hardening Board",
+      shortLabel: "Public Launch Hardening Board",
+      phase: "first pilot expansion rollout reuse market pilot public launch hardening board",
+      track: "v1075 first pilot expansion rollout reuse market pilot public launch hardening board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-hardening-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-hardening-board",
+      idSuffix: "PUBLIC-LAUNCH-HARDENING-BOARD",
+      scoreKey: "publicLaunchHardeningBoardScore",
+      decisionKey: "publicLaunchHardeningBoardDecision",
+      stateKey: "publicLaunchHardeningBoardState",
+      lineKey: "publicLaunchHardeningBoardLine",
+      primarySignal: "Pilot public launch hardening board",
+      primaryNote: "Hardens public launch readiness with security proof, billing proof, support proof, customer proof, partner proof, rollback receipt, public checklist, and launch hardening receipt.",
+      summary: "Harden public launch readiness with security proof, billing proof, support proof, customer proof, partner proof, rollback receipt, public checklist, and receipt.",
+      trackSummary: "Production pilot closeout now becomes public launch hardening across security, billing, support, customer, partner, rollback, checklist, and receipt.",
+      stageSummary: "Public launch hardening now has security, billing, support, customer, partner, rollback, checklist, and receipt controls.",
+      openDecision: "Open hardening board",
+      guardedDecision: "Open guarded hardening",
+      holdDecision: "Hold public launch",
+      repairDecision: "Repair hardening proof",
+      nextOpen: "Open public launch hardening board and keep security proof, billing proof, support proof, customer proof, partner proof, rollback receipt, checklist, and receipt together.",
+      nextGuarded: "Open guarded public launch hardening while one security, billing, support, customer, partner, rollback, checklist, or receipt lane stays watched.",
+      nextHold: "Hold public launch until security proof, billing proof, support proof, and rollback receipt are clear.",
+      nextRepair: "Repair public launch hardening proof before founder launch narrative expands.",
+      axes: [
+        ["Security proof", "tenantGuard", 0.84, 6, "Security proof is ready for launch."],
+        ["Billing proof", "proofGuard", 0.82, 6, "Billing proof is attached."],
+        ["Support proof", "supportGuard", 0.82, 6, "Support proof is controlled."],
+        ["Customer proof", "proofGuard", 0.82, 6, "Customer proof is visible."],
+        ["Partner proof", "sponsorGuard", 0.8, 5, "Partner proof is named."],
+        ["Rollback receipt", "rollbackGuard", 0.82, 5, "Rollback receipt is ready."],
+        ["Public checklist", "reviewGuard", 0.8, 5, "Public checklist is owned."],
+        ["Hardening receipt", "guardClosure", 0.84, 6, "Hardening receipt closes launch board."],
+      ],
+    },
+    {
+      key: "founder-launch-narrative-room",
+      version: "v1076",
+      number: 1076,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Founder Launch Narrative Room",
+      shortLabel: "Founder Launch Narrative Room",
+      phase: "first pilot expansion rollout reuse market pilot founder launch narrative room",
+      track: "v1076 first pilot expansion rollout reuse market pilot founder launch narrative room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-founder-launch-narrative-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-founder-launch-narrative-room",
+      idSuffix: "FOUNDER-LAUNCH-NARRATIVE-ROOM",
+      scoreKey: "founderLaunchNarrativeRoomScore",
+      decisionKey: "founderLaunchNarrativeRoomDecision",
+      stateKey: "founderLaunchNarrativeRoomState",
+      lineKey: "founderLaunchNarrativeRoomLine",
+      primarySignal: "Pilot founder launch narrative room",
+      primaryNote: "Turns launch proof into a founder-safe story with proof spine, market proof, revenue proof, customer health, support calm, risk honesty, launch ask, and narrative receipt.",
+      summary: "Turn proof into a founder-safe launch story with proof spine, market proof, revenue proof, customer health, support calm, risk honesty, launch ask, and receipt.",
+      trackSummary: "Public launch hardening now becomes founder launch narrative across proof spine, market, revenue, health, support, risk, ask, and receipt.",
+      stageSummary: "Founder launch narrative now has proof spine, market proof, revenue proof, customer health, support calm, risk honesty, launch ask, and receipt controls.",
+      openDecision: "Open narrative room",
+      guardedDecision: "Open guarded narrative",
+      holdDecision: "Hold launch story",
+      repairDecision: "Repair narrative proof",
+      nextOpen: "Open founder launch narrative room and keep proof spine, market proof, revenue proof, customer health, support calm, risk honesty, launch ask, and receipt together.",
+      nextGuarded: "Open guarded founder narrative while one proof, market, revenue, health, support, risk, ask, or receipt lane stays watched.",
+      nextHold: "Hold launch story until risk honesty, proof spine, and revenue proof are clear.",
+      nextRepair: "Repair founder launch narrative proof before operations memory expands.",
+      axes: [
+        ["Proof spine", "proofGuard", 0.84, 6, "Proof spine reads clearly."],
+        ["Market proof", "sponsorGuard", 0.8, 5, "Market proof is credible."],
+        ["Revenue proof", "proofGuard", 0.82, 6, "Revenue proof is attached."],
+        ["Customer health", "proofGuard", 0.8, 5, "Customer health supports the story."],
+        ["Support calm", "supportGuard", 0.82, 5, "Support calm is visible."],
+        ["Risk honesty", "rollbackGuard", 0.82, 5, "Risk is stated honestly."],
+        ["Launch ask", "ownerCommand", 0.8, 5, "Launch ask has one owner."],
+        ["Narrative receipt", "guardClosure", 0.84, 6, "Narrative receipt closes room."],
+      ],
+    },
+    {
+      key: "launch-operations-memory-vault",
+      version: "v1077",
+      number: 1077,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Memory Vault",
+      shortLabel: "Launch Operations Memory Vault",
+      phase: "first pilot expansion rollout reuse market pilot launch operations memory vault",
+      track: "v1077 first pilot expansion rollout reuse market pilot launch operations memory vault",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-operations-memory-vault",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-operations-memory-vault",
+      idSuffix: "LAUNCH-OPERATIONS-MEMORY-VAULT",
+      scoreKey: "launchOperationsMemoryVaultScore",
+      decisionKey: "launchOperationsMemoryVaultDecision",
+      stateKey: "launchOperationsMemoryVaultState",
+      lineKey: "launchOperationsMemoryVaultLine",
+      primarySignal: "Pilot launch operations memory vault",
+      primaryNote: "Stores launch operating memory with decision memory, receipt index, support evidence, rollback path, learning boundary, owner memory, review cadence, and vault receipt.",
+      summary: "Store launch operating memory with decision memory, receipt index, support evidence, rollback path, learning boundary, owner memory, review cadence, and receipt.",
+      trackSummary: "Founder narrative now becomes launch operations memory across decisions, receipts, support, rollback, learning, owners, review cadence, and receipt.",
+      stageSummary: "Launch operations memory now has decisions, receipts, support evidence, rollback path, learning boundary, owners, review cadence, and vault receipt controls.",
+      openDecision: "Open memory vault",
+      guardedDecision: "Open guarded vault",
+      holdDecision: "Hold launch memory",
+      repairDecision: "Repair memory proof",
+      nextOpen: "Open launch operations memory vault and keep decisions, receipts, support evidence, rollback path, learning boundary, owners, review cadence, and receipt together.",
+      nextGuarded: "Open guarded launch memory while one decision, receipt, support, rollback, learning, owner, cadence, or receipt lane stays watched.",
+      nextHold: "Hold launch memory until receipt index, rollback path, and learning boundary are clear.",
+      nextRepair: "Repair launch operations memory proof before customer onboarding expands.",
+      axes: [
+        ["Decision memory", "ownerCommand", 0.82, 6, "Decisions are stored."],
+        ["Receipt index", "proofGuard", 0.84, 6, "Receipts are indexed."],
+        ["Support evidence", "supportGuard", 0.82, 5, "Support evidence is stored."],
+        ["Rollback path", "rollbackGuard", 0.84, 5, "Rollback path is visible."],
+        ["Learning boundary", "tenantGuard", 0.82, 5, "Learning boundary is locked."],
+        ["Owner memory", "ownerCommand", 0.8, 5, "Owners are remembered."],
+        ["Review cadence", "reviewGuard", 0.8, 5, "Review cadence is named."],
+        ["Vault receipt", "guardClosure", 0.84, 6, "Vault receipt closes memory."],
+      ],
+    },
+    {
+      key: "customer-onboarding-proof-room",
+      version: "v1078",
+      number: 1078,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Onboarding Proof Room",
+      shortLabel: "Customer Onboarding Proof Room",
+      phase: "first pilot expansion rollout reuse market pilot customer onboarding proof room",
+      track: "v1078 first pilot expansion rollout reuse market pilot customer onboarding proof room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-onboarding-proof-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-onboarding-proof-room",
+      idSuffix: "CUSTOMER-ONBOARDING-PROOF-ROOM",
+      scoreKey: "customerOnboardingProofRoomScore",
+      decisionKey: "customerOnboardingProofRoomDecision",
+      stateKey: "customerOnboardingProofRoomState",
+      lineKey: "customerOnboardingProofRoomLine",
+      primarySignal: "Pilot customer onboarding proof room",
+      primaryNote: "Proves the first customer can onboard with signup path, import proof, access role, first task, support touch, training proof, success signal, and onboarding receipt.",
+      summary: "Prove first customer onboarding with signup path, import proof, access role, first task, support touch, training proof, success signal, and receipt.",
+      trackSummary: "Launch operations memory now becomes customer onboarding proof across signup, import, access, first task, support, training, success, and receipt.",
+      stageSummary: "Customer onboarding proof now has signup, import, access, first task, support, training, success, and receipt controls.",
+      openDecision: "Open onboarding proof",
+      guardedDecision: "Open guarded onboarding",
+      holdDecision: "Hold onboarding",
+      repairDecision: "Repair onboarding proof",
+      nextOpen: "Open customer onboarding proof room and keep signup path, import proof, access role, first task, support touch, training proof, success signal, and receipt together.",
+      nextGuarded: "Open guarded onboarding while one signup, import, access, first task, support, training, success, or receipt lane stays watched.",
+      nextHold: "Hold onboarding until import proof, access role, support touch, and success signal are clear.",
+      nextRepair: "Repair customer onboarding proof before rollback assurance expands.",
+      axes: [
+        ["Signup path", "tenantGuard", 0.82, 6, "Signup path is clear."],
+        ["Import proof", "proofGuard", 0.84, 6, "Import proof is ready."],
+        ["Access role", "tenantGuard", 0.82, 5, "Access role is assigned."],
+        ["First task", "ownerCommand", 0.8, 5, "First task is visible."],
+        ["Support touch", "supportGuard", 0.82, 5, "Support touch is named."],
+        ["Training proof", "reviewGuard", 0.8, 5, "Training proof is attached."],
+        ["Success signal", "proofGuard", 0.8, 5, "Success signal is readable."],
+        ["Onboarding receipt", "guardClosure", 0.84, 6, "Onboarding receipt closes room."],
+      ],
+    },
+    {
+      key: "production-rollback-assurance-console",
+      version: "v1079",
+      number: 1079,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Assurance Console",
+      shortLabel: "Production Rollback Assurance Console",
+      phase: "first pilot expansion rollout reuse market pilot production rollback assurance console",
+      track: "v1079 first pilot expansion rollout reuse market pilot production rollback assurance console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-rollback-assurance-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-rollback-assurance-console",
+      idSuffix: "PRODUCTION-ROLLBACK-ASSURANCE-CONSOLE",
+      scoreKey: "productionRollbackAssuranceConsoleScore",
+      decisionKey: "productionRollbackAssuranceConsoleDecision",
+      stateKey: "productionRollbackAssuranceConsoleState",
+      lineKey: "productionRollbackAssuranceConsoleLine",
+      primarySignal: "Pilot production rollback assurance console",
+      primaryNote: "Proves production can recover calmly with rollback runbook, restore point, data safety, support trigger, billing pause, customer notice, rehearsal proof, and assurance receipt.",
+      summary: "Prove production rollback assurance with rollback runbook, restore point, data safety, support trigger, billing pause, customer notice, rehearsal proof, and receipt.",
+      trackSummary: "Customer onboarding proof now becomes rollback assurance across runbook, restore point, data safety, support trigger, billing pause, customer notice, rehearsal, and receipt.",
+      stageSummary: "Production rollback assurance now has runbook, restore point, data safety, support trigger, billing pause, customer notice, rehearsal proof, and receipt controls.",
+      openDecision: "Open rollback assurance",
+      guardedDecision: "Open guarded rollback",
+      holdDecision: "Hold launch widening",
+      repairDecision: "Repair rollback proof",
+      nextOpen: "Open production rollback assurance console and keep rollback runbook, restore point, data safety, support trigger, billing pause, customer notice, rehearsal proof, and receipt together.",
+      nextGuarded: "Open guarded rollback assurance while one runbook, restore, data, support, billing, customer, rehearsal, or receipt lane stays watched.",
+      nextHold: "Hold launch widening until rollback runbook, restore point, data safety, and customer notice are clear.",
+      nextRepair: "Repair rollback assurance proof before launch pricing confidence expands.",
+      axes: [
+        ["Rollback runbook", "rollbackGuard", 0.84, 6, "Rollback runbook is ready."],
+        ["Restore point", "proofGuard", 0.82, 6, "Restore point is verified."],
+        ["Data safety", "tenantGuard", 0.84, 6, "Data safety is protected."],
+        ["Support trigger", "supportGuard", 0.82, 5, "Support trigger is named."],
+        ["Billing pause", "proofGuard", 0.8, 5, "Billing pause is controlled."],
+        ["Customer notice", "sponsorGuard", 0.8, 5, "Customer notice is prepared."],
+        ["Rehearsal proof", "reviewGuard", 0.82, 5, "Rehearsal proof is attached."],
+        ["Assurance receipt", "guardClosure", 0.84, 6, "Assurance receipt closes console."],
+      ],
+    },
   );
   const BILLING_CURRENCY = "USD";
   const BILLING_PRICE_PER_USER = 5;
@@ -26187,6 +26382,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackAssuranceConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingProofRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsMemoryVaultPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchNarrativeRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchHardeningBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCloseoutCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveTenantContractActivationRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceSealPreview(model, autopilot)}",
@@ -34894,6 +35094,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCloseoutCouncilPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-pilot-closeout-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchHardeningBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "public-launch-hardening-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchHardeningBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "public-launch-hardening-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchHardeningBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "public-launch-hardening-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchNarrativeRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "founder-launch-narrative-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchNarrativeRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "founder-launch-narrative-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFounderLaunchNarrativeRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "founder-launch-narrative-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsMemoryVaultSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-operations-memory-vault");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsMemoryVault(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-operations-memory-vault");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsMemoryVaultPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-operations-memory-vault");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingProofRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-onboarding-proof-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingProofRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-onboarding-proof-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingProofRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-onboarding-proof-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackAssuranceConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-rollback-assurance-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackAssuranceConsole(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-rollback-assurance-console");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackAssuranceConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-rollback-assurance-console");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -99705,9 +99965,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1075", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Hardening Board", "Harden public launch readiness with security proof, billing proof, support proof, customer proof, partner proof, and rollback receipt."],
-      ["v1076", "First Pilot Expansion Rollout Reuse Market Pilot Founder Launch Narrative Room", "Turn proof, health, revenue, renewal, support, and market learning into one founder-safe launch narrative."],
-      ["v1077", "First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Memory Vault", "Store the launch operating memory with decisions, receipts, support evidence, rollback paths, and reusable learning boundaries."],
+      ["v1080", "First Pilot Expansion Rollout Reuse Market Pilot Launch Pricing Confidence Board", "Lock launch pricing confidence with pilot price, discount rules, invoice terms, renewal trigger, refund path, partner margin, and approval receipt."],
+      ["v1081", "First Pilot Expansion Rollout Reuse Market Pilot Customer Migration Runbook Room", "Turn first customer migration into a repeatable runbook with import, mapping, validation, training, support, rollback, and success receipt."],
+      ["v1082", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Readiness Gate", "Prepare multi-country readiness with region rules, currency, compliance, support hours, data boundary, partner lane, and launch receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
