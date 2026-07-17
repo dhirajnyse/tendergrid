@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1069";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Health Control Room";
+  const BUILD_VERSION = "v1074";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Closeout Council";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1069.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1069.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1074.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1074.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -10372,6 +10372,201 @@
         ["Executive readout", "reviewGuard", 0.8, 5, "Executive readout is ready."],
         ["Recovery lane", "supportGuard", 0.8, 5, "Recovery lane is open."],
         ["Health receipt", "guardClosure", 0.84, 6, "Health receipt closes control room."],
+      ],
+    },
+    {
+      key: "customer-success-renewal-board",
+      version: "v1070",
+      number: 1070,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Renewal Board",
+      shortLabel: "Customer Success Renewal Board",
+      phase: "first pilot expansion rollout reuse market pilot customer success renewal board",
+      track: "v1070 first pilot expansion rollout reuse market pilot customer success renewal board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-renewal-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-success-renewal-board",
+      idSuffix: "CUSTOMER-SUCCESS-RENEWAL-BOARD",
+      scoreKey: "customerSuccessRenewalBoardScore",
+      decisionKey: "customerSuccessRenewalBoardDecision",
+      stateKey: "customerSuccessRenewalBoardState",
+      lineKey: "customerSuccessRenewalBoardLine",
+      primarySignal: "Pilot customer success renewal board",
+      primaryNote: "Turns customer health into renewal board controls with value proof, usage rhythm, support calm, commercial ask, renewal owner, decision date, risk route, and renewal receipt.",
+      summary: "Turn customer health into renewal board controls for value proof, usage rhythm, support calm, commercial ask, owner, date, risk route, and receipt.",
+      trackSummary: "Production customer health now becomes customer success renewal across value, usage, support, commercial, owner, date, risk, and receipt.",
+      stageSummary: "Customer success renewal now has value, usage, support, commercial, owner, date, risk, and receipt controls.",
+      openDecision: "Open renewal board",
+      guardedDecision: "Open guarded renewal",
+      holdDecision: "Hold renewal board",
+      repairDecision: "Repair renewal proof",
+      nextOpen: "Open customer success renewal board and keep value proof, usage rhythm, support calm, commercial ask, renewal owner, decision date, risk route, and receipt together.",
+      nextGuarded: "Open guarded renewal board while one value, usage, support, commercial, owner, date, risk, or receipt lane stays watched.",
+      nextHold: "Hold renewal board until value proof, usage rhythm, support calm, and commercial ask are clear.",
+      nextRepair: "Repair renewal board proof before partner revenue sharing expands.",
+      axes: [
+        ["Value proof", "proofGuard", 0.82, 6, "Value proof is visible."],
+        ["Usage rhythm", "proofGuard", 0.82, 6, "Usage rhythm is steady."],
+        ["Support calm", "supportGuard", 0.82, 6, "Support calm is proven."],
+        ["Commercial ask", "sponsorGuard", 0.8, 5, "Commercial ask is ready."],
+        ["Renewal owner", "ownerCommand", 0.82, 6, "Renewal owner is accountable."],
+        ["Decision date", "reviewGuard", 0.8, 5, "Decision date is set."],
+        ["Risk route", "rollbackGuard", 0.8, 5, "Risk route is named."],
+        ["Renewal receipt", "guardClosure", 0.84, 6, "Renewal receipt closes board."],
+      ],
+    },
+    {
+      key: "partner-revenue-sharing-room",
+      version: "v1071",
+      number: 1071,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Partner Revenue Sharing Room",
+      shortLabel: "Partner Revenue Sharing Room",
+      phase: "first pilot expansion rollout reuse market pilot partner revenue sharing room",
+      track: "v1071 first pilot expansion rollout reuse market pilot partner revenue sharing room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-partner-revenue-sharing-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-partner-revenue-sharing-room",
+      idSuffix: "PARTNER-REVENUE-SHARING-ROOM",
+      scoreKey: "partnerRevenueSharingRoomScore",
+      decisionKey: "partnerRevenueSharingRoomDecision",
+      stateKey: "partnerRevenueSharingRoomState",
+      lineKey: "partnerRevenueSharingRoomLine",
+      primarySignal: "Pilot partner revenue sharing room",
+      primaryNote: "Controls partner revenue sharing with partner route, country rule, margin proof, invoice split, support promise, dispute guard, finance owner, and sharing receipt.",
+      summary: "Control partner revenue sharing with partner route, country rule, margin proof, invoice split, support promise, dispute guard, finance owner, and receipt.",
+      trackSummary: "Customer success renewal now becomes partner revenue sharing across route, country, margin, invoice, support, dispute, owner, and receipt.",
+      stageSummary: "Partner revenue sharing now has route, country, margin, invoice, support, dispute, owner, and receipt controls.",
+      openDecision: "Open sharing room",
+      guardedDecision: "Open guarded sharing",
+      holdDecision: "Hold revenue sharing",
+      repairDecision: "Repair sharing proof",
+      nextOpen: "Open partner revenue sharing room and keep partner route, country rule, margin proof, invoice split, support promise, dispute guard, finance owner, and receipt together.",
+      nextGuarded: "Open guarded sharing room while one route, country, margin, invoice, support, dispute, owner, or receipt lane stays watched.",
+      nextHold: "Hold revenue sharing until country rule, margin proof, invoice split, and dispute guard are clear.",
+      nextRepair: "Repair partner revenue sharing proof before public launch evidence expands.",
+      axes: [
+        ["Partner route", "sponsorGuard", 0.82, 6, "Partner route is selected."],
+        ["Country rule", "tenantGuard", 0.82, 6, "Country rule is documented."],
+        ["Margin proof", "proofGuard", 0.82, 6, "Margin proof is attached."],
+        ["Invoice split", "proofGuard", 0.8, 5, "Invoice split is ready."],
+        ["Support promise", "supportGuard", 0.8, 5, "Support promise is named."],
+        ["Dispute guard", "rollbackGuard", 0.8, 5, "Dispute guard is ready."],
+        ["Finance owner", "ownerCommand", 0.8, 5, "Finance owner is accountable."],
+        ["Sharing receipt", "guardClosure", 0.84, 6, "Sharing receipt closes partner room."],
+      ],
+    },
+    {
+      key: "public-launch-evidence-seal",
+      version: "v1072",
+      number: 1072,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Evidence Seal",
+      shortLabel: "Public Launch Evidence Seal",
+      phase: "first pilot expansion rollout reuse market pilot public launch evidence seal",
+      track: "v1072 first pilot expansion rollout reuse market pilot public launch evidence seal",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-evidence-seal",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-evidence-seal",
+      idSuffix: "PUBLIC-LAUNCH-EVIDENCE-SEAL",
+      scoreKey: "publicLaunchEvidenceSealScore",
+      decisionKey: "publicLaunchEvidenceSealDecision",
+      stateKey: "publicLaunchEvidenceSealState",
+      lineKey: "publicLaunchEvidenceSealLine",
+      primarySignal: "Pilot public launch evidence seal",
+      primaryNote: "Seals public launch evidence after customer health, billing activation, compliance pack, support proof, revenue proof, rollout owner, seal date, and public receipt are ready.",
+      summary: "Seal public launch evidence with customer health, billing activation, compliance pack, support proof, revenue proof, rollout owner, seal date, and receipt.",
+      trackSummary: "Partner revenue sharing now becomes public launch evidence across health, billing, compliance, support, revenue, owner, date, and receipt.",
+      stageSummary: "Public launch evidence now has health, billing, compliance, support, revenue, owner, date, and receipt controls.",
+      openDecision: "Open evidence seal",
+      guardedDecision: "Open guarded seal",
+      holdDecision: "Hold public seal",
+      repairDecision: "Repair launch proof",
+      nextOpen: "Open public launch evidence seal and keep customer health, billing activation, compliance pack, support proof, revenue proof, rollout owner, seal date, and receipt together.",
+      nextGuarded: "Open guarded evidence seal while one health, billing, compliance, support, revenue, owner, date, or receipt lane stays watched.",
+      nextHold: "Hold public seal until billing, compliance, support proof, and revenue proof are clear.",
+      nextRepair: "Repair public launch proof before live tenant contract activation expands.",
+      axes: [
+        ["Customer health", "sponsorGuard", 0.82, 6, "Customer health is green enough."],
+        ["Billing activation", "proofGuard", 0.82, 6, "Billing activation is visible."],
+        ["Compliance pack", "tenantGuard", 0.82, 6, "Compliance pack is ready."],
+        ["Support proof", "supportGuard", 0.8, 5, "Support proof is attached."],
+        ["Revenue proof", "proofGuard", 0.8, 5, "Revenue proof is attached."],
+        ["Rollout owner", "ownerCommand", 0.8, 5, "Rollout owner is accountable."],
+        ["Seal date", "reviewGuard", 0.8, 5, "Seal date is set."],
+        ["Public receipt", "guardClosure", 0.84, 6, "Public receipt closes launch seal."],
+      ],
+    },
+    {
+      key: "live-tenant-contract-activation-room",
+      version: "v1073",
+      number: 1073,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Tenant Contract Activation Room",
+      shortLabel: "Live Tenant Contract Activation Room",
+      phase: "first pilot expansion rollout reuse market pilot live tenant contract activation room",
+      track: "v1073 first pilot expansion rollout reuse market pilot live tenant contract activation room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-tenant-contract-activation-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-tenant-contract-activation-room",
+      idSuffix: "LIVE-TENANT-CONTRACT-ACTIVATION-ROOM",
+      scoreKey: "liveTenantContractActivationRoomScore",
+      decisionKey: "liveTenantContractActivationRoomDecision",
+      stateKey: "liveTenantContractActivationRoomState",
+      lineKey: "liveTenantContractActivationRoomLine",
+      primarySignal: "Pilot live tenant contract activation room",
+      primaryNote: "Activates the first live tenant contract with contract owner, subscription line, legal proof, invoice proof, access activation, support route, renewal term, and activation receipt.",
+      summary: "Activate live tenant contract with contract owner, subscription line, legal proof, invoice proof, access activation, support route, renewal term, and receipt.",
+      trackSummary: "Public launch evidence now becomes live tenant contract activation across owner, subscription, legal, invoice, access, support, renewal, and receipt.",
+      stageSummary: "Live tenant contract activation now has owner, subscription, legal, invoice, access, support, renewal, and receipt controls.",
+      openDecision: "Open contract activation",
+      guardedDecision: "Open guarded contract",
+      holdDecision: "Hold contract activation",
+      repairDecision: "Repair contract proof",
+      nextOpen: "Open live tenant contract activation room and keep contract owner, subscription line, legal proof, invoice proof, access activation, support route, renewal term, and receipt together.",
+      nextGuarded: "Open guarded contract activation while one owner, subscription, legal, invoice, access, support, renewal, or receipt lane stays watched.",
+      nextHold: "Hold contract activation until legal proof, invoice proof, access activation, and support route are clear.",
+      nextRepair: "Repair live tenant contract proof before production pilot closeout expands.",
+      axes: [
+        ["Contract owner", "ownerCommand", 0.82, 6, "Contract owner is accountable."],
+        ["Subscription line", "sponsorGuard", 0.82, 6, "Subscription line is approved."],
+        ["Legal proof", "tenantGuard", 0.82, 6, "Legal proof is attached."],
+        ["Invoice proof", "proofGuard", 0.8, 5, "Invoice proof is ready."],
+        ["Access activation", "supportGuard", 0.8, 5, "Access activation is complete."],
+        ["Support route", "supportGuard", 0.8, 5, "Support route is named."],
+        ["Renewal term", "reviewGuard", 0.8, 5, "Renewal term is visible."],
+        ["Activation receipt", "guardClosure", 0.84, 6, "Activation receipt closes contract room."],
+      ],
+    },
+    {
+      key: "production-pilot-closeout-council",
+      version: "v1074",
+      number: 1074,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Closeout Council",
+      shortLabel: "Production Pilot Closeout Council",
+      phase: "first pilot expansion rollout reuse market pilot production pilot closeout council",
+      track: "v1074 first pilot expansion rollout reuse market pilot production pilot closeout council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-pilot-closeout-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-pilot-closeout-council",
+      idSuffix: "PRODUCTION-PILOT-CLOSEOUT-COUNCIL",
+      scoreKey: "productionPilotCloseoutCouncilScore",
+      decisionKey: "productionPilotCloseoutCouncilDecision",
+      stateKey: "productionPilotCloseoutCouncilState",
+      lineKey: "productionPilotCloseoutCouncilLine",
+      primarySignal: "Pilot production pilot closeout council",
+      primaryNote: "Closes the production pilot with council minutes, proof archive, renewal path, expansion path, customer health, support SLA, public launch decision, and closeout receipt.",
+      summary: "Close the production pilot with council minutes, proof archive, renewal path, expansion path, customer health, support SLA, public launch decision, and receipt.",
+      trackSummary: "Live tenant contract activation now becomes production pilot closeout across minutes, archive, renewal, expansion, health, support, launch decision, and receipt.",
+      stageSummary: "Production pilot closeout now has minutes, archive, renewal, expansion, health, support, launch decision, and receipt controls.",
+      openDecision: "Open closeout council",
+      guardedDecision: "Open guarded closeout",
+      holdDecision: "Hold pilot closeout",
+      repairDecision: "Repair closeout proof",
+      nextOpen: "Open production pilot closeout council and keep council minutes, proof archive, renewal path, expansion path, customer health, support SLA, public launch decision, and receipt together.",
+      nextGuarded: "Open guarded closeout council while one minutes, archive, renewal, expansion, health, support, launch, or receipt lane stays watched.",
+      nextHold: "Hold pilot closeout until proof archive, support SLA, customer health, and launch decision are clear.",
+      nextRepair: "Repair production pilot closeout proof before public launch hardening expands.",
+      axes: [
+        ["Council minutes", "reviewGuard", 0.82, 6, "Council minutes are ready."],
+        ["Proof archive", "proofGuard", 0.82, 6, "Proof archive is complete."],
+        ["Renewal path", "sponsorGuard", 0.82, 6, "Renewal path is decided."],
+        ["Expansion path", "sponsorGuard", 0.8, 5, "Expansion path is named."],
+        ["Customer health", "proofGuard", 0.8, 5, "Customer health is visible."],
+        ["Support SLA", "supportGuard", 0.8, 5, "Support SLA is controlled."],
+        ["Launch decision", "ownerCommand", 0.8, 5, "Launch decision owner is accountable."],
+        ["Closeout receipt", "guardClosure", 0.84, 6, "Closeout receipt closes council."],
       ],
     }
   );
@@ -25992,6 +26187,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCloseoutCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveTenantContractActivationRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceSealPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerRevenueSharingRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessRenewalBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerHealthControlRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotTenantBillingActivationReceiptPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchLearningMonetizationLedgerPreview(model, autopilot)}",
@@ -34634,6 +34834,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerHealthControlRoomPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-customer-health-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessRenewalBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-success-renewal-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessRenewalBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-success-renewal-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerSuccessRenewalBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-success-renewal-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerRevenueSharingRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "partner-revenue-sharing-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerRevenueSharingRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "partner-revenue-sharing-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPartnerRevenueSharingRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "partner-revenue-sharing-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceSealSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "public-launch-evidence-seal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceSeal(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "public-launch-evidence-seal");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchEvidenceSealPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "public-launch-evidence-seal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveTenantContractActivationRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-tenant-contract-activation-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveTenantContractActivationRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-tenant-contract-activation-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveTenantContractActivationRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-tenant-contract-activation-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCloseoutCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-pilot-closeout-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCloseoutCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-pilot-closeout-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionPilotCloseoutCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-pilot-closeout-council");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -99445,9 +99705,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1070", "First Pilot Expansion Rollout Reuse Market Pilot Customer Success Renewal Board", "Turn customer health into renewal board controls for value proof, usage rhythm, support calm, commercial ask, and renewal receipt."],
-      ["v1071", "First Pilot Expansion Rollout Reuse Market Pilot Partner Revenue Sharing Room", "Control partner revenue sharing with partner route, country rule, margin proof, invoice split, support promise, and audit receipt."],
-      ["v1072", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Evidence Seal", "Seal public launch evidence only after customer health, billing, compliance, support, revenue, and proof lanes are ready."],
+      ["v1075", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Hardening Board", "Harden public launch readiness with security proof, billing proof, support proof, customer proof, partner proof, and rollback receipt."],
+      ["v1076", "First Pilot Expansion Rollout Reuse Market Pilot Founder Launch Narrative Room", "Turn proof, health, revenue, renewal, support, and market learning into one founder-safe launch narrative."],
+      ["v1077", "First Pilot Expansion Rollout Reuse Market Pilot Launch Operations Memory Vault", "Store the launch operating memory with decisions, receipts, support evidence, rollback paths, and reusable learning boundaries."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

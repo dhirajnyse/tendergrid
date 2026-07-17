@@ -1,5 +1,125 @@
 # Changelog
 
+## v1074 - First Pilot Expansion Rollout Reuse Market Pilot Production Pilot Closeout Council
+
+### Changes made
+- Added Production Pilot Closeout Council to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1074.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1074.1` assets.
+- Passed in-app browser QA for Build Phase `v1074` markers, next queue, and Command `Build v1074` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1073 - First Pilot Expansion Rollout Reuse Market Pilot Live Tenant Contract Activation Room
+
+### Changes made
+- Added Live Tenant Contract Activation Room to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1073.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1074.1` assets.
+- Passed in-app browser QA for Build Phase `v1074` markers, next queue, and Command `Build v1074` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1072 - First Pilot Expansion Rollout Reuse Market Pilot Public Launch Evidence Seal
+
+### Changes made
+- Added Public Launch Evidence Seal to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1072.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1074.1` assets.
+- Passed in-app browser QA for Build Phase `v1074` markers, next queue, and Command `Build v1074` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1071 - First Pilot Expansion Rollout Reuse Market Pilot Partner Revenue Sharing Room
+
+### Changes made
+- Added Partner Revenue Sharing Room to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1071.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1074.1` assets.
+- Passed in-app browser QA for Build Phase `v1074` markers, next queue, and Command `Build v1074` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1070 - First Pilot Expansion Rollout Reuse Market Pilot Customer Success Renewal Board
+
+### Changes made
+- Added Customer Success Renewal Board to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1070.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1074.1` assets.
+- Passed in-app browser QA for Build Phase `v1074` markers, next queue, and Command `Build v1074` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
 ## v1069 - First Pilot Expansion Rollout Reuse Market Pilot Production Customer Health Control Room
 
 ### Changes made
