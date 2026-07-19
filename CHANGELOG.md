@@ -1,5 +1,119 @@
 # Changelog
 
+## v1104 - First Pilot Expansion Rollout Reuse Market Pilot Staging Environment Readiness Council
+
+### Changes made
+- Added Staging Environment Readiness Council to the production-foundation runway.
+- Added evidence axes, decision language, Command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1104.
+- Tightened minified-bundle verification so the current v1104 marker and label are required instead of allowing a historical release string to satisfy the guard.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with the `v1104.1` assets.
+- Passed in-app browser QA for Build Phase and Command at desktop and mobile widths with no horizontal overflow or console warnings or errors.
+
+### Known risks
+- Static prototype only; the release defines production controls and handoffs, but live backend infrastructure, credentials, provider accounts, and customer-data persistence are not provisioned by this static repository.
+
+## v1103 - First Pilot Expansion Rollout Reuse Market Pilot Live Billing Integration Control
+
+### Changes made
+- Added Live Billing Integration Control to the production-foundation runway.
+- Added evidence axes, decision language, Command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1103.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Static prototype only; the release defines production controls and handoffs, but live backend infrastructure, credentials, provider accounts, and customer-data persistence are not provisioned by this static repository.
+
+## v1102 - First Pilot Expansion Rollout Reuse Market Pilot Persistent Data Migration Rehearsal
+
+### Changes made
+- Added Persistent Data Migration Rehearsal to the production-foundation runway.
+- Added evidence axes, decision language, Command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1102.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Static prototype only; the release defines production controls and handoffs, but live backend infrastructure, credentials, provider accounts, and customer-data persistence are not provisioned by this static repository.
+
+## v1101 - First Pilot Expansion Rollout Reuse Market Pilot Authentication and Tenant Isolation Gate
+
+### Changes made
+- Added Authentication and Tenant Isolation Gate to the production-foundation runway.
+- Added evidence axes, decision language, Command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1101.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Static prototype only; the release defines production controls and handoffs, but live backend infrastructure, credentials, provider accounts, and customer-data persistence are not provisioned by this static repository.
+
+## v1100 - First Pilot Expansion Rollout Reuse Market Pilot Production Backend Foundation Blueprint
+
+### Changes made
+- Added Production Backend Foundation Blueprint to the production-foundation runway.
+- Added evidence axes, decision language, Command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1100.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Static prototype only; the release defines production controls and handoffs, but live backend infrastructure, credentials, provider accounts, and customer-data persistence are not provisioned by this static repository.
+
 ## v1099 - First Pilot Expansion Rollout Reuse Market Pilot Scale Authorization Council
 
 ### Changes made

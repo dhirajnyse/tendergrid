@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1099";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Scale Authorization Council";
+  const BUILD_VERSION = "v1104";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Staging Environment Readiness Council";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1099.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1099.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1104.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1104.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -11542,6 +11542,201 @@
         ["Rollback posture", "rollbackGuard", 0.82, 5, "Rollback posture is rehearsed."],
         ["Executive owner", "ownerCommand", 0.82, 5, "One executive owner is accountable."],
         ["Scale receipt", "guardClosure", 0.84, 6, "Signed scale receipt closes the council."],
+      ],
+    },
+    {
+      key: "production-backend-foundation-blueprint",
+      version: "v1100",
+      number: 1100,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Foundation Blueprint",
+      shortLabel: "Production Backend Foundation Blueprint",
+      phase: "production backend foundation blueprint",
+      track: "v1100 production backend foundation blueprint",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-foundation-blueprint",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-backend-foundation-blueprint",
+      idSuffix: "PRODUCTION-BACKEND-FOUNDATION-BLUEPRINT",
+      scoreKey: "productionBackendFoundationBlueprintScore",
+      decisionKey: "productionBackendFoundationBlueprintDecision",
+      stateKey: "productionBackendFoundationBlueprintState",
+      lineKey: "productionBackendFoundationBlueprintLine",
+      primarySignal: "Pilot production backend foundation blueprint",
+      primaryNote: "Defines the private production foundation across API boundaries, tenant storage, audit events, import jobs, secrets, deployment environments, rollback route, and signed foundation receipt.",
+      summary: "Define the private production backend across API boundaries, tenant storage, audit events, import jobs, secrets, deployment environments, rollback, and foundation receipt.",
+      trackSummary: "Scale authorization now becomes a production foundation across APIs, tenant storage, audit, imports, secrets, environments, rollback, and signed receipt.",
+      stageSummary: "Production backend foundation now has API, storage, audit, import, secret, environment, rollback, and receipt controls.",
+      openDecision: "Approve backend foundation",
+      guardedDecision: "Approve guarded foundation",
+      holdDecision: "Hold backend build",
+      repairDecision: "Repair foundation proof",
+      nextOpen: "Approve the backend foundation and keep API boundaries, tenant storage, audit events, import jobs, secrets, deployment environments, rollback, and receipt together.",
+      nextGuarded: "Approve a guarded foundation while one API, storage, audit, import, secret, environment, rollback, or receipt lane stays watched.",
+      nextHold: "Hold backend build until API boundaries, tenant storage, audit events, and secrets posture are clear.",
+      nextRepair: "Repair the foundation blueprint before production identity and tenant isolation are approved.",
+      axes: [
+        ["API boundaries", "reviewGuard", 0.84, 6, "API ownership and contracts are explicit."],
+        ["Tenant storage", "tenantGuard", 0.86, 7, "Tenant data has an isolated storage model."],
+        ["Audit events", "proofGuard", 0.84, 6, "Material writes produce immutable audit evidence."],
+        ["Import jobs", "launchMoment", 0.82, 5, "Imports have validation, idempotency, and job state."],
+        ["Secrets posture", "supportGuard", 0.84, 6, "Secrets stay outside source and browser storage."],
+        ["Environment map", "reviewGuard", 0.82, 5, "Local, staging, and production boundaries are named."],
+        ["Rollback route", "rollbackGuard", 0.84, 6, "Foundation changes have a reversible path."],
+        ["Foundation receipt", "guardClosure", 0.86, 7, "Signed architecture receipt closes the blueprint."],
+      ],
+    },
+    {
+      key: "authentication-and-tenant-isolation-gate",
+      version: "v1101",
+      number: 1101,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Authentication and Tenant Isolation Gate",
+      shortLabel: "Authentication and Tenant Isolation Gate",
+      phase: "authentication and tenant isolation gate",
+      track: "v1101 authentication and tenant isolation gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-authentication-and-tenant-isolation-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-authentication-and-tenant-isolation-gate",
+      idSuffix: "AUTHENTICATION-AND-TENANT-ISOLATION-GATE",
+      scoreKey: "authenticationAndTenantIsolationGateScore",
+      decisionKey: "authenticationAndTenantIsolationGateDecision",
+      stateKey: "authenticationAndTenantIsolationGateState",
+      lineKey: "authenticationAndTenantIsolationGateLine",
+      primarySignal: "Pilot authentication and tenant isolation gate",
+      primaryNote: "Gates production access across identity provider, session policy, role mapping, tenant scope, privileged recovery, audit evidence, accountable owner, and signed access receipt.",
+      summary: "Gate production access with identity provider, session policy, role mapping, tenant isolation, admin recovery, audit proof, owner, and approval receipt.",
+      trackSummary: "The backend foundation now becomes an access gate across identity, sessions, roles, tenant scope, recovery, audit, ownership, and signed receipt.",
+      stageSummary: "Production access now has identity, session, role, tenant, recovery, audit, owner, and receipt controls.",
+      openDecision: "Approve production access",
+      guardedDecision: "Approve guarded access",
+      holdDecision: "Hold production access",
+      repairDecision: "Repair access proof",
+      nextOpen: "Approve production access and keep identity, session policy, role mapping, tenant scope, recovery, audit evidence, owner, and signed receipt together.",
+      nextGuarded: "Approve guarded access while one identity, session, role, tenant, recovery, audit, owner, or receipt lane stays watched.",
+      nextHold: "Hold production access until identity, sessions, role mapping, and tenant isolation are clear.",
+      nextRepair: "Repair access isolation before persistent customer data is rehearsed.",
+      axes: [
+        ["Identity provider", "sponsorGuard", 0.84, 6, "Identity provider and trust boundary are selected."],
+        ["Session policy", "supportGuard", 0.84, 6, "Session lifetime, revocation, and device posture are governed."],
+        ["Role mapping", "reviewGuard", 0.82, 5, "Application roles map to least-privilege permissions."],
+        ["Tenant isolation", "tenantGuard", 0.88, 8, "Every read and write is tenant-scoped."],
+        ["Admin recovery", "rollbackGuard", 0.82, 5, "Privileged recovery is controlled and auditable."],
+        ["Access audit", "proofGuard", 0.86, 7, "Sign-in and privileged actions produce evidence."],
+        ["Access owner", "ownerCommand", 0.82, 5, "One access-control owner is accountable."],
+        ["Access receipt", "guardClosure", 0.86, 7, "Signed access receipt closes the gate."],
+      ],
+    },
+    {
+      key: "persistent-data-migration-rehearsal",
+      version: "v1102",
+      number: 1102,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Persistent Data Migration Rehearsal",
+      shortLabel: "Persistent Data Migration Rehearsal",
+      phase: "persistent data migration rehearsal",
+      track: "v1102 persistent data migration rehearsal",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-persistent-data-migration-rehearsal",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-persistent-data-migration-rehearsal",
+      idSuffix: "PERSISTENT-DATA-MIGRATION-REHEARSAL",
+      scoreKey: "persistentDataMigrationRehearsalScore",
+      decisionKey: "persistentDataMigrationRehearsalDecision",
+      stateKey: "persistentDataMigrationRehearsalState",
+      lineKey: "persistentDataMigrationRehearsalLine",
+      primarySignal: "Pilot persistent data migration rehearsal",
+      primaryNote: "Rehearses customer data persistence across schema mapping, source validation, dry run, reconciliation, rollback, privacy evidence, accountable owner, and signed migration receipt.",
+      summary: "Rehearse customer data migration with schema mapping, validation, dry run, reconciliation, rollback, privacy proof, owner, and migration receipt.",
+      trackSummary: "Tenant-safe access now becomes a data rehearsal across schema, validation, dry run, reconciliation, rollback, privacy, ownership, and signed receipt.",
+      stageSummary: "Persistent data migration now has schema, validation, dry-run, reconciliation, rollback, privacy, owner, and receipt controls.",
+      openDecision: "Approve migration rehearsal",
+      guardedDecision: "Approve guarded migration",
+      holdDecision: "Hold migration",
+      repairDecision: "Repair migration proof",
+      nextOpen: "Approve the migration rehearsal and keep schema mapping, source validation, dry run, reconciliation, rollback, privacy evidence, owner, and signed receipt together.",
+      nextGuarded: "Approve a guarded migration while one schema, validation, dry-run, reconciliation, rollback, privacy, owner, or receipt lane stays watched.",
+      nextHold: "Hold migration until schema mapping, validation, dry run, and reconciliation are clear.",
+      nextRepair: "Repair migration proof before live billing entitlements can depend on persistent tenant data.",
+      axes: [
+        ["Schema mapping", "reviewGuard", 0.84, 6, "Every source field has a typed destination or exception."],
+        ["Source validation", "proofGuard", 0.84, 6, "Invalid, duplicate, and missing records are measured."],
+        ["Dry run", "launchMoment", 0.84, 6, "A repeatable non-production migration completes."],
+        ["Reconciliation", "proofGuard", 0.86, 7, "Counts, values, relationships, and audit totals reconcile."],
+        ["Rollback plan", "rollbackGuard", 0.84, 6, "Failed migration can be reversed without source loss."],
+        ["Privacy proof", "tenantGuard", 0.86, 7, "Sensitive data handling and retention are evidenced."],
+        ["Migration owner", "ownerCommand", 0.82, 5, "One migration owner is accountable."],
+        ["Migration receipt", "guardClosure", 0.86, 7, "Signed rehearsal receipt closes the migration gate."],
+      ],
+    },
+    {
+      key: "live-billing-integration-control",
+      version: "v1103",
+      number: 1103,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Live Billing Integration Control",
+      shortLabel: "Live Billing Integration Control",
+      phase: "live billing integration control",
+      track: "v1103 live billing integration control",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-live-billing-integration-control",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-live-billing-integration-control",
+      idSuffix: "LIVE-BILLING-INTEGRATION-CONTROL",
+      scoreKey: "liveBillingIntegrationControlScore",
+      decisionKey: "liveBillingIntegrationControlDecision",
+      stateKey: "liveBillingIntegrationControlState",
+      lineKey: "liveBillingIntegrationControlLine",
+      primarySignal: "Pilot live billing integration control",
+      primaryNote: "Controls monetization across plan catalog, checkout, signed webhooks, invoice lifecycle, entitlement sync, tax posture, dunning route, and signed billing receipt.",
+      summary: "Control live billing across plan catalog, checkout, signed webhooks, invoices, entitlements, tax, dunning, and billing receipt.",
+      trackSummary: "Persistent tenant data now becomes live billing control across plans, checkout, webhooks, invoices, entitlements, tax, dunning, and signed receipt.",
+      stageSummary: "Live billing now has plan, checkout, webhook, invoice, entitlement, tax, dunning, and receipt controls.",
+      openDecision: "Approve billing integration",
+      guardedDecision: "Approve guarded billing",
+      holdDecision: "Hold live billing",
+      repairDecision: "Repair billing proof",
+      nextOpen: "Approve live billing and keep plan catalog, checkout, signed webhooks, invoices, entitlements, tax, dunning, and signed receipt together.",
+      nextGuarded: "Approve guarded billing while one plan, checkout, webhook, invoice, entitlement, tax, dunning, or receipt lane stays watched.",
+      nextHold: "Hold live billing until checkout, signed webhooks, invoice lifecycle, and entitlement sync are clear.",
+      nextRepair: "Repair billing proof before staging readiness can be signed.",
+      axes: [
+        ["Plan catalog", "sponsorGuard", 0.84, 6, "Billable plans and seat rules match product access."],
+        ["Checkout flow", "launchMoment", 0.84, 6, "Checkout creates an auditable pending subscription."],
+        ["Signed webhooks", "tenantGuard", 0.88, 8, "Webhook signatures and replay protection are enforced."],
+        ["Invoice lifecycle", "proofGuard", 0.84, 6, "Invoices, credits, refunds, and failures are traceable."],
+        ["Entitlement sync", "supportGuard", 0.86, 7, "Paid status maps safely to tenant capabilities."],
+        ["Tax posture", "reviewGuard", 0.8, 5, "Currency, tax evidence, and regional boundaries are named."],
+        ["Dunning route", "rollbackGuard", 0.82, 5, "Failed payments have notice, grace, and recovery rules."],
+        ["Billing receipt", "guardClosure", 0.86, 7, "Signed billing receipt closes the control."],
+      ],
+    },
+    {
+      key: "staging-environment-readiness-council",
+      version: "v1104",
+      number: 1104,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Staging Environment Readiness Council",
+      shortLabel: "Staging Environment Readiness Council",
+      phase: "staging environment readiness council",
+      track: "v1104 staging environment readiness council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-staging-environment-readiness-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-staging-environment-readiness-council",
+      idSuffix: "STAGING-ENVIRONMENT-READINESS-COUNCIL",
+      scoreKey: "stagingEnvironmentReadinessCouncilScore",
+      decisionKey: "stagingEnvironmentReadinessCouncilDecision",
+      stateKey: "stagingEnvironmentReadinessCouncilState",
+      lineKey: "stagingEnvironmentReadinessCouncilLine",
+      primarySignal: "Pilot staging environment readiness council",
+      primaryNote: "Combines production-like environment parity, secrets, migrations, monitoring, security smoke, rollback drill, accountable sign-off, and signed staging receipt.",
+      summary: "Authorize staging with environment parity, secrets, migrations, monitoring, security smoke, rollback drill, sign-off, and staging receipt.",
+      trackSummary: "Backend, access, migration, and billing proof now become staging readiness across parity, secrets, migrations, monitoring, security, rollback, sign-off, and receipt.",
+      stageSummary: "Staging readiness now has parity, secret, migration, monitoring, security, rollback, sign-off, and receipt controls.",
+      openDecision: "Authorize staging",
+      guardedDecision: "Authorize guarded staging",
+      holdDecision: "Hold staging promotion",
+      repairDecision: "Repair staging proof",
+      nextOpen: "Authorize staging and keep environment parity, secrets, migrations, monitoring, security smoke, rollback drill, sign-off, and receipt together.",
+      nextGuarded: "Authorize guarded staging while one parity, secret, migration, monitoring, security, rollback, sign-off, or receipt lane stays watched.",
+      nextHold: "Hold staging promotion until environment parity, secrets, migrations, and monitoring are clear.",
+      nextRepair: "Repair staging proof before production observability and tenant cutover rehearsals begin.",
+      axes: [
+        ["Environment parity", "reviewGuard", 0.86, 7, "Runtime, bindings, and configuration mirror production."],
+        ["Staging secrets", "tenantGuard", 0.86, 7, "Secrets are isolated, rotated, and never copied from production."],
+        ["Migration proof", "proofGuard", 0.86, 7, "Schema and seed migrations run from a clean environment."],
+        ["Monitoring path", "supportGuard", 0.84, 6, "Logs, metrics, traces, and alerts reach accountable owners."],
+        ["Security smoke", "proofGuard", 0.86, 7, "Auth, isolation, headers, and abuse controls pass smoke tests."],
+        ["Rollback drill", "rollbackGuard", 0.84, 6, "A failed release is rolled back within the target window."],
+        ["Council sign-off", "ownerCommand", 0.84, 6, "Engineering, product, security, and operations sign off."],
+        ["Staging receipt", "guardClosure", 0.88, 8, "Signed staging receipt closes the council."],
       ],
     },
   );
@@ -27162,6 +27357,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentReadinessCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingIntegrationControlPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPersistentDataMigrationRehearsalPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuthenticationAndTenantIsolationGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendFoundationBlueprintPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotScaleAuthorizationCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCostToServeControlRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionCapacityGatePreview(model, autopilot)}",
@@ -36180,6 +36380,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotScaleAuthorizationCouncilPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "scale-authorization-council");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendFoundationBlueprintSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-backend-foundation-blueprint");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendFoundationBlueprint(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-backend-foundation-blueprint");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionBackendFoundationBlueprintPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-backend-foundation-blueprint");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuthenticationAndTenantIsolationGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "authentication-and-tenant-isolation-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAuthenticationAndTenantIsolationGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "authentication-and-tenant-isolation-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAuthenticationAndTenantIsolationGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "authentication-and-tenant-isolation-gate");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPersistentDataMigrationRehearsalSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "persistent-data-migration-rehearsal");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPersistentDataMigrationRehearsal(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "persistent-data-migration-rehearsal");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPersistentDataMigrationRehearsalPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "persistent-data-migration-rehearsal");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingIntegrationControlSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "live-billing-integration-control");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingIntegrationControl(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "live-billing-integration-control");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLiveBillingIntegrationControlPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "live-billing-integration-control");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentReadinessCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "staging-environment-readiness-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentReadinessCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "staging-environment-readiness-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotStagingEnvironmentReadinessCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "staging-environment-readiness-council");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -100990,9 +101245,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1100", "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Foundation Blueprint", "Define the private production backend across API boundaries, tenant storage, audit events, import jobs, secrets, deployment environments, rollback, and foundation receipt."],
-      ["v1101", "First Pilot Expansion Rollout Reuse Market Pilot Authentication and Tenant Isolation Gate", "Gate production access with identity provider, session policy, role mapping, tenant isolation, admin recovery, audit proof, owner, and approval receipt."],
-      ["v1102", "First Pilot Expansion Rollout Reuse Market Pilot Persistent Data Migration Rehearsal", "Rehearse customer data migration with schema mapping, validation, dry run, reconciliation, rollback, privacy proof, owner, and migration receipt."],
+      ["v1105", "First Pilot Expansion Rollout Reuse Market Pilot Production Observability Command Room", "Operationalize production logs, metrics, traces, alert policy, service objectives, incident ownership, escalation, and observability receipt."],
+      ["v1106", "First Pilot Expansion Rollout Reuse Market Pilot Customer Data Backup and Recovery Gate", "Prove encrypted backups, restore tests, retention policy, tenant recovery, integrity checks, recovery objectives, ownership, and signed recovery receipt."],
+      ["v1107", "First Pilot Expansion Rollout Reuse Market Pilot First Tenant Cutover Rehearsal", "Rehearse the first tenant cutover with readiness lock, data freeze, migration, access activation, billing handoff, monitoring, rollback, and cutover receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
