@@ -1,5 +1,125 @@
 # Changelog
 
+## v1084 - First Pilot Expansion Rollout Reuse Market Pilot First Paid Customer Activation Console
+
+### Changes made
+- Added First Paid Customer Activation Console to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1084.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1084.1` assets.
+- Passed in-app browser QA for Build Phase `v1084` markers, next queue, and Command `Build v1084` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1083 - First Pilot Expansion Rollout Reuse Market Pilot Production Security Evidence Locker
+
+### Changes made
+- Added Production Security Evidence Locker to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1083.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1084.1` assets.
+- Passed in-app browser QA for Build Phase `v1084` markers, next queue, and Command `Build v1084` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1082 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Readiness Gate
+
+### Changes made
+- Added Multi-Country Readiness Gate to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1082.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1084.1` assets.
+- Passed in-app browser QA for Build Phase `v1084` markers, next queue, and Command `Build v1084` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1081 - First Pilot Expansion Rollout Reuse Market Pilot Customer Migration Runbook Room
+
+### Changes made
+- Added Customer Migration Runbook Room to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1081.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1084.1` assets.
+- Passed in-app browser QA for Build Phase `v1084` markers, next queue, and Command `Build v1084` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1080 - First Pilot Expansion Rollout Reuse Market Pilot Launch Pricing Confidence Board
+
+### Changes made
+- Added Launch Pricing Confidence Board to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1080.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with `v1084.1` assets.
+- Passed in-app browser QA for Build Phase `v1084` markers, next queue, and Command `Build v1084` route.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
 ## v1079 - First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Assurance Console
 
 ### Changes made

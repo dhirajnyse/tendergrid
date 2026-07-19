@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1079";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Production Rollback Assurance Console";
+  const BUILD_VERSION = "v1084";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot First Paid Customer Activation Console";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1079.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1079.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1084.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1084.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -10762,6 +10762,201 @@
         ["Customer notice", "sponsorGuard", 0.8, 5, "Customer notice is prepared."],
         ["Rehearsal proof", "reviewGuard", 0.82, 5, "Rehearsal proof is attached."],
         ["Assurance receipt", "guardClosure", 0.84, 6, "Assurance receipt closes console."],
+      ],
+    },
+    {
+      key: "launch-pricing-confidence-board",
+      version: "v1080",
+      number: 1080,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Pricing Confidence Board",
+      shortLabel: "Launch Pricing Confidence Board",
+      phase: "first pilot expansion rollout reuse market pilot launch pricing confidence board",
+      track: "v1080 first pilot expansion rollout reuse market pilot launch pricing confidence board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-pricing-confidence-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-pricing-confidence-board",
+      idSuffix: "LAUNCH-PRICING-CONFIDENCE-BOARD",
+      scoreKey: "launchPricingConfidenceBoardScore",
+      decisionKey: "launchPricingConfidenceBoardDecision",
+      stateKey: "launchPricingConfidenceBoardState",
+      lineKey: "launchPricingConfidenceBoardLine",
+      primarySignal: "Pilot launch pricing confidence board",
+      primaryNote: "Locks launch pricing confidence with pilot price, discount rules, invoice terms, renewal trigger, refund path, partner margin, approval owner, and pricing receipt.",
+      summary: "Lock launch pricing confidence with pilot price, discount rules, invoice terms, renewal trigger, refund path, partner margin, owner, and receipt.",
+      trackSummary: "Rollback assurance now becomes launch pricing confidence across pilot price, discounts, invoice terms, renewal, refund, partner margin, owner, and receipt.",
+      stageSummary: "Launch pricing confidence now has pilot price, discount rules, invoice terms, renewal trigger, refund path, partner margin, owner, and receipt controls.",
+      openDecision: "Open pricing board",
+      guardedDecision: "Open guarded pricing",
+      holdDecision: "Hold pricing launch",
+      repairDecision: "Repair pricing proof",
+      nextOpen: "Open launch pricing confidence board and keep pilot price, discount rules, invoice terms, renewal trigger, refund path, partner margin, approval owner, and receipt together.",
+      nextGuarded: "Open guarded pricing while one price, discount, invoice, renewal, refund, partner, owner, or receipt lane stays watched.",
+      nextHold: "Hold pricing launch until invoice terms, refund path, and partner margin are clear.",
+      nextRepair: "Repair pricing proof before migration runbook expands.",
+      axes: [
+        ["Pilot price", "proofGuard", 0.84, 6, "Pilot price is approved."],
+        ["Discount rules", "reviewGuard", 0.82, 5, "Discount rules are bounded."],
+        ["Invoice terms", "proofGuard", 0.84, 6, "Invoice terms are ready."],
+        ["Renewal trigger", "sponsorGuard", 0.8, 5, "Renewal trigger is visible."],
+        ["Refund path", "rollbackGuard", 0.82, 5, "Refund path is controlled."],
+        ["Partner margin", "sponsorGuard", 0.8, 5, "Partner margin is named."],
+        ["Approval owner", "ownerCommand", 0.82, 5, "Approval owner is accountable."],
+        ["Pricing receipt", "guardClosure", 0.84, 6, "Pricing receipt closes board."],
+      ],
+    },
+    {
+      key: "customer-migration-runbook-room",
+      version: "v1081",
+      number: 1081,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Migration Runbook Room",
+      shortLabel: "Customer Migration Runbook Room",
+      phase: "first pilot expansion rollout reuse market pilot customer migration runbook room",
+      track: "v1081 first pilot expansion rollout reuse market pilot customer migration runbook room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-migration-runbook-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-migration-runbook-room",
+      idSuffix: "CUSTOMER-MIGRATION-RUNBOOK-ROOM",
+      scoreKey: "customerMigrationRunbookRoomScore",
+      decisionKey: "customerMigrationRunbookRoomDecision",
+      stateKey: "customerMigrationRunbookRoomState",
+      lineKey: "customerMigrationRunbookRoomLine",
+      primarySignal: "Pilot customer migration runbook room",
+      primaryNote: "Turns first customer migration into a repeatable runbook with source file, field mapping, validation proof, owner training, access cutover, support lane, rollback point, and migration receipt.",
+      summary: "Turn first customer migration into a runbook with source file, field mapping, validation proof, owner training, access cutover, support lane, rollback point, and receipt.",
+      trackSummary: "Pricing confidence now becomes migration runbook across source, mapping, validation, training, access, support, rollback, and receipt.",
+      stageSummary: "Customer migration runbook now has source, mapping, validation, training, access, support, rollback, and receipt controls.",
+      openDecision: "Open migration runbook",
+      guardedDecision: "Open guarded migration",
+      holdDecision: "Hold migration",
+      repairDecision: "Repair migration proof",
+      nextOpen: "Open customer migration runbook room and keep source file, field mapping, validation proof, owner training, access cutover, support lane, rollback point, and receipt together.",
+      nextGuarded: "Open guarded migration while one source, mapping, validation, training, access, support, rollback, or receipt lane stays watched.",
+      nextHold: "Hold migration until validation proof, access cutover, support lane, and rollback point are clear.",
+      nextRepair: "Repair migration proof before multi-country readiness expands.",
+      axes: [
+        ["Source file", "proofGuard", 0.82, 6, "Source file is controlled."],
+        ["Field mapping", "tenantGuard", 0.82, 6, "Field mapping is agreed."],
+        ["Validation proof", "proofGuard", 0.84, 6, "Validation proof is attached."],
+        ["Owner training", "reviewGuard", 0.8, 5, "Owner training is scheduled."],
+        ["Access cutover", "tenantGuard", 0.82, 5, "Access cutover is ready."],
+        ["Support lane", "supportGuard", 0.82, 5, "Support lane is named."],
+        ["Rollback point", "rollbackGuard", 0.84, 5, "Rollback point is verified."],
+        ["Migration receipt", "guardClosure", 0.84, 6, "Migration receipt closes room."],
+      ],
+    },
+    {
+      key: "multi-country-readiness-gate",
+      version: "v1082",
+      number: 1082,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Readiness Gate",
+      shortLabel: "Multi-Country Readiness Gate",
+      phase: "first pilot expansion rollout reuse market pilot multi-country readiness gate",
+      track: "v1082 first pilot expansion rollout reuse market pilot multi-country readiness gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-country-readiness-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-country-readiness-gate",
+      idSuffix: "MULTI-COUNTRY-READINESS-GATE",
+      scoreKey: "multiCountryReadinessGateScore",
+      decisionKey: "multiCountryReadinessGateDecision",
+      stateKey: "multiCountryReadinessGateState",
+      lineKey: "multiCountryReadinessGateLine",
+      primarySignal: "Pilot multi-country readiness gate",
+      primaryNote: "Prepares multi-country launch with region rules, currency rule, tax signal, support hours, data boundary, language cue, partner lane, and country readiness receipt.",
+      summary: "Prepare multi-country readiness with region rules, currency rule, tax signal, support hours, data boundary, language cue, partner lane, and receipt.",
+      trackSummary: "Migration runbook now becomes multi-country readiness across region, currency, tax, support, data boundary, language, partner, and receipt.",
+      stageSummary: "Multi-country readiness now has region, currency, tax, support-hours, data-boundary, language, partner, and receipt controls.",
+      openDecision: "Open country gate",
+      guardedDecision: "Open guarded country gate",
+      holdDecision: "Hold country launch",
+      repairDecision: "Repair country proof",
+      nextOpen: "Open multi-country readiness gate and keep region rules, currency rule, tax signal, support hours, data boundary, language cue, partner lane, and receipt together.",
+      nextGuarded: "Open guarded country readiness while one region, currency, tax, support, data, language, partner, or receipt lane stays watched.",
+      nextHold: "Hold country launch until data boundary, currency rule, tax signal, and support hours are clear.",
+      nextRepair: "Repair country readiness proof before security evidence expands.",
+      axes: [
+        ["Region rules", "tenantGuard", 0.82, 6, "Region rules are known."],
+        ["Currency rule", "proofGuard", 0.8, 5, "Currency rule is selected."],
+        ["Tax signal", "reviewGuard", 0.78, 5, "Tax signal is watched."],
+        ["Support hours", "supportGuard", 0.82, 5, "Support hours are named."],
+        ["Data boundary", "tenantGuard", 0.84, 6, "Data boundary is protected."],
+        ["Language cue", "reviewGuard", 0.78, 4, "Language cue is prepared."],
+        ["Partner lane", "sponsorGuard", 0.8, 5, "Partner lane is visible."],
+        ["Country receipt", "guardClosure", 0.84, 6, "Country receipt closes gate."],
+      ],
+    },
+    {
+      key: "production-security-evidence-locker",
+      version: "v1083",
+      number: 1083,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Security Evidence Locker",
+      shortLabel: "Production Security Evidence Locker",
+      phase: "first pilot expansion rollout reuse market pilot production security evidence locker",
+      track: "v1083 first pilot expansion rollout reuse market pilot production security evidence locker",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-security-evidence-locker",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-security-evidence-locker",
+      idSuffix: "PRODUCTION-SECURITY-EVIDENCE-LOCKER",
+      scoreKey: "productionSecurityEvidenceLockerScore",
+      decisionKey: "productionSecurityEvidenceLockerDecision",
+      stateKey: "productionSecurityEvidenceLockerState",
+      lineKey: "productionSecurityEvidenceLockerLine",
+      primarySignal: "Pilot production security evidence locker",
+      primaryNote: "Collects launch security evidence with questionnaire proof, access proof, data protection proof, audit proof, backup proof, incident proof, owner signoff, and security receipt.",
+      summary: "Collect production security evidence with questionnaire proof, access proof, data protection proof, audit proof, backup proof, incident proof, owner signoff, and receipt.",
+      trackSummary: "Multi-country readiness now becomes security evidence across questionnaire, access, data protection, audit, backup, incident, owner, and receipt.",
+      stageSummary: "Production security evidence now has questionnaire, access, data protection, audit, backup, incident, owner, and receipt controls.",
+      openDecision: "Open security locker",
+      guardedDecision: "Open guarded security",
+      holdDecision: "Hold paid activation",
+      repairDecision: "Repair security proof",
+      nextOpen: "Open production security evidence locker and keep questionnaire proof, access proof, data protection proof, audit proof, backup proof, incident proof, owner signoff, and receipt together.",
+      nextGuarded: "Open guarded security locker while one questionnaire, access, data, audit, backup, incident, owner, or receipt lane stays watched.",
+      nextHold: "Hold paid activation until data protection, access proof, backup proof, and incident proof are clear.",
+      nextRepair: "Repair security evidence before first paid customer activation expands.",
+      axes: [
+        ["Questionnaire proof", "proofGuard", 0.84, 6, "Security questionnaire is ready."],
+        ["Access proof", "tenantGuard", 0.84, 6, "Access proof is attached."],
+        ["Data protection", "tenantGuard", 0.84, 6, "Data protection proof is clear."],
+        ["Audit proof", "proofGuard", 0.82, 5, "Audit proof is available."],
+        ["Backup proof", "rollbackGuard", 0.82, 5, "Backup proof is visible."],
+        ["Incident proof", "supportGuard", 0.82, 5, "Incident proof is prepared."],
+        ["Owner signoff", "ownerCommand", 0.82, 5, "Owner signoff is accountable."],
+        ["Security receipt", "guardClosure", 0.84, 6, "Security receipt closes locker."],
+      ],
+    },
+    {
+      key: "first-paid-customer-activation-console",
+      version: "v1084",
+      number: 1084,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot First Paid Customer Activation Console",
+      shortLabel: "First Paid Customer Activation Console",
+      phase: "first pilot expansion rollout reuse market pilot first paid customer activation console",
+      track: "v1084 first pilot expansion rollout reuse market pilot first paid customer activation console",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-first-paid-customer-activation-console",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-first-paid-customer-activation-console",
+      idSuffix: "FIRST-PAID-CUSTOMER-ACTIVATION-CONSOLE",
+      scoreKey: "firstPaidCustomerActivationConsoleScore",
+      decisionKey: "firstPaidCustomerActivationConsoleDecision",
+      stateKey: "firstPaidCustomerActivationConsoleState",
+      lineKey: "firstPaidCustomerActivationConsoleLine",
+      primarySignal: "Pilot first paid customer activation console",
+      primaryNote: "Activates the first paid customer with payment proof, contract proof, onboarding proof, security proof, support proof, success owner, renewal date, and paid activation receipt.",
+      summary: "Activate first paid customer with payment proof, contract proof, onboarding proof, security proof, support proof, success owner, renewal date, and receipt.",
+      trackSummary: "Security evidence now becomes first paid customer activation across payment, contract, onboarding, security, support, success owner, renewal date, and receipt.",
+      stageSummary: "First paid customer activation now has payment, contract, onboarding, security, support, success owner, renewal date, and receipt controls.",
+      openDecision: "Open paid activation",
+      guardedDecision: "Open guarded activation",
+      holdDecision: "Hold paid activation",
+      repairDecision: "Repair paid proof",
+      nextOpen: "Open first paid customer activation console and keep payment proof, contract proof, onboarding proof, security proof, support proof, success owner, renewal date, and receipt together.",
+      nextGuarded: "Open guarded paid activation while one payment, contract, onboarding, security, support, success, renewal, or receipt lane stays watched.",
+      nextHold: "Hold paid activation until payment proof, contract proof, onboarding proof, and security proof are clear.",
+      nextRepair: "Repair paid customer activation proof before board launch authorization expands.",
+      axes: [
+        ["Payment proof", "proofGuard", 0.84, 6, "Payment proof is captured."],
+        ["Contract proof", "tenantGuard", 0.84, 6, "Contract proof is attached."],
+        ["Onboarding proof", "proofGuard", 0.84, 6, "Onboarding proof is ready."],
+        ["Security proof", "tenantGuard", 0.84, 6, "Security proof is accepted."],
+        ["Support proof", "supportGuard", 0.82, 5, "Support proof is named."],
+        ["Success owner", "ownerCommand", 0.82, 5, "Success owner is accountable."],
+        ["Renewal date", "reviewGuard", 0.8, 5, "Renewal date is visible."],
+        ["Paid receipt", "guardClosure", 0.84, 6, "Paid activation receipt closes console."],
       ],
     },
   );
@@ -26382,6 +26577,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPaidCustomerActivationConsolePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidenceLockerPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryReadinessGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerMigrationRunbookRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPricingConfidenceBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackAssuranceConsolePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerOnboardingProofRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchOperationsMemoryVaultPreview(model, autopilot)}",
@@ -35154,6 +35354,66 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionRollbackAssuranceConsolePreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "production-rollback-assurance-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPricingConfidenceBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-pricing-confidence-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPricingConfidenceBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-pricing-confidence-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPricingConfidenceBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-pricing-confidence-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerMigrationRunbookRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-migration-runbook-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerMigrationRunbookRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-migration-runbook-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerMigrationRunbookRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-migration-runbook-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryReadinessGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-country-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryReadinessGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-country-readiness-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiCountryReadinessGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-country-readiness-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidenceLockerSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-security-evidence-locker");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidenceLocker(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-security-evidence-locker");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSecurityEvidenceLockerPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-security-evidence-locker");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPaidCustomerActivationConsoleSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "first-paid-customer-activation-console");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPaidCustomerActivationConsole(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "first-paid-customer-activation-console");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotFirstPaidCustomerActivationConsolePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "first-paid-customer-activation-console");
   }
 
   function renderCommandReleaseRailPreview(model, autopilot) {
@@ -99965,9 +100225,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1080", "First Pilot Expansion Rollout Reuse Market Pilot Launch Pricing Confidence Board", "Lock launch pricing confidence with pilot price, discount rules, invoice terms, renewal trigger, refund path, partner margin, and approval receipt."],
-      ["v1081", "First Pilot Expansion Rollout Reuse Market Pilot Customer Migration Runbook Room", "Turn first customer migration into a repeatable runbook with import, mapping, validation, training, support, rollback, and success receipt."],
-      ["v1082", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Country Readiness Gate", "Prepare multi-country readiness with region rules, currency, compliance, support hours, data boundary, partner lane, and launch receipt."],
+      ["v1085", "First Pilot Expansion Rollout Reuse Market Pilot Board Launch Authorization Room", "Convert paid activation proof into a board-safe launch authorization with owner, risk, evidence, revenue, and approval receipt."],
+      ["v1086", "First Pilot Expansion Rollout Reuse Market Pilot Product Trust Center Draft", "Prepare a lightweight trust center draft with security answers, privacy boundaries, uptime posture, support promise, and customer-safe evidence."],
+      ["v1087", "First Pilot Expansion Rollout Reuse Market Pilot Founder Sales Motion Console", "Turn launch proof into a founder-led sales motion with target account, qualification, demo script, proof pack, close ask, and learning receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
