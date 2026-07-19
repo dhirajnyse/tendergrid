@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1124";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Closed-Loop Product Learning Council";
+  const BUILD_VERSION = "v1129";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Go/No-Go Council";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1124.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1124.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1129.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1129.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -12517,6 +12517,201 @@
         ["Product release handoff","launchMoment",0.9,9,"Approved learning enters design, build, test, documentation, support, rollout, telemetry, and rollback."],
         ["Customer feedback return","sponsorGuard",0.9,9,"Customers can see what changed, why, evidence limits, benefit, controls, corrections, and opt-out route."],
         ["Learning receipt","guardClosure",0.94,10,"Signed receipt records evidence, decision, experiment, outcome, customer return, owner, expiry, and next review."],
+      ],
+    },
+    {
+      key: "production-customer-portfolio-autopilot",
+      version: "v1125",
+      number: 1125,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Portfolio Autopilot",
+      shortLabel: "Production Customer Portfolio Autopilot",
+      phase: "production customer portfolio autopilot",
+      track: "v1125 production customer portfolio autopilot",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-customer-portfolio-autopilot",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-customer-portfolio-autopilot",
+      idSuffix: "PRODUCTION-CUSTOMER-PORTFOLIO-AUTOPILOT",
+      scoreKey: "productionCustomerPortfolioAutopilotScore",
+      decisionKey: "productionCustomerPortfolioAutopilotDecision",
+      stateKey: "productionCustomerPortfolioAutopilotState",
+      lineKey: "productionCustomerPortfolioAutopilotLine",
+      primarySignal: "Pilot production customer portfolio autopilot",
+      primaryNote: "Ranks portfolio actions across customer health, accepted value, service, commercial urgency, risk, owner capacity, human approval, execution, and outcome receipt.",
+      summary: "Prioritize portfolio actions across health, value, service, renewal, expansion, risk, owner capacity, human approval, and signed execution receipt.",
+      trackSummary: "Closed-loop learning now becomes a guarded portfolio autopilot that ranks the next best actions while people retain approval, capacity, exception, and rollback authority.",
+      stageSummary: "Production portfolio work now has one human-governed autopilot from signal intake through execution and outcome receipt.",
+      openDecision: "Authorize portfolio run",
+      guardedDecision: "Open guarded portfolio run",
+      holdDecision: "Hold portfolio automation",
+      repairDecision: "Repair execution proof",
+      nextOpen: "Authorize the portfolio run and keep signals, priority, value at risk, capacity, human approval, execution, feedback, and receipt together.",
+      nextGuarded: "Open a guarded run while one evidence, capacity, customer, risk, approval, execution, or outcome condition stays watched.",
+      nextHold: "Hold portfolio automation until ranking evidence, owner capacity, customer boundaries, human authority, and rollback are decision-ready.",
+      nextRepair: "Repair execution proof before recommendations trigger customer-facing work, commitments, changes, or escalation.",
+      axes: [
+        ["Portfolio signal intake","reviewGuard",0.92,9,"Health, value, service, commercial, risk, capacity, and customer signals have source, time, and confidence."],
+        ["Customer priority score","proofGuard",0.9,9,"Urgency, value, harm, confidence, dependency, customer impact, and strategic weight are explainable."],
+        ["Value-at-risk queue","proofGuard",0.9,9,"Accepted value, exposure, time sensitivity, confidence, caveats, and non-action cost remain visible."],
+        ["Capacity-aware assignment","ownerCommand",0.9,9,"Skills, workload, service limits, conflicts, availability, and escalation capacity shape assignment."],
+        ["Human approval gate","sponsorGuard",0.96,10,"Named authority can approve, edit, defer, reject, constrain, or stop every material action."],
+        ["Execution plan","launchMoment",0.9,9,"Action, owner, customer boundary, date, dependencies, evidence, communication, and rollback are explicit."],
+        ["Outcome feedback","rollbackGuard",0.92,9,"Completion, customer response, outcome, harm, exception, correction, and next learning return to the queue."],
+        ["Execution receipt","guardClosure",0.94,10,"Signed receipt records recommendation, approval, action, evidence, outcome, owner, time, and next review."],
+      ],
+    },
+    {
+      key: "multi-region-tenant-control-plane",
+      version: "v1126",
+      number: 1126,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Region Tenant Control Plane",
+      shortLabel: "Multi-Region Tenant Control Plane",
+      phase: "multi-region tenant control plane",
+      track: "v1126 multi-region tenant control plane",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-region-tenant-control-plane",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-region-tenant-control-plane",
+      idSuffix: "MULTI-REGION-TENANT-CONTROL-PLANE",
+      scoreKey: "multiRegionTenantControlPlaneScore",
+      decisionKey: "multiRegionTenantControlPlaneDecision",
+      stateKey: "multiRegionTenantControlPlaneState",
+      lineKey: "multiRegionTenantControlPlaneLine",
+      primarySignal: "Pilot multi-region tenant control plane",
+      primaryNote: "Governs tenant identity, regional routing, data residency, localized policy, billing jurisdiction, support routing, recovery, audit, and signed control receipt.",
+      summary: "Govern tenant identity, data residency, routing, policy, billing, support, recovery, audit, and signed regional control receipt.",
+      trackSummary: "Portfolio automation now faces a multi-region control plane where identity, routing, residency, policy, billing, support, recovery, and audit remain tenant-local and region-aware.",
+      stageSummary: "Multi-region tenancy now has one control plane for identity, data, policy, commercial routing, service continuity, and audit evidence.",
+      openDecision: "Authorize regional control",
+      guardedDecision: "Open guarded regional control",
+      holdDecision: "Hold regional tenancy",
+      repairDecision: "Repair control proof",
+      nextOpen: "Authorize regional control and keep tenant identity, routing, residency, policy, billing, support, recovery, audit, and receipt together.",
+      nextGuarded: "Open guarded regional control while one identity, routing, residency, policy, billing, support, recovery, or audit condition stays watched.",
+      nextHold: "Hold regional tenancy until every customer has one lawful region, isolated control path, service route, recovery plan, and audit trail.",
+      nextRepair: "Repair control-plane proof before tenant data, traffic, invoices, support, backups, or administration crosses a regional boundary.",
+      axes: [
+        ["Tenant identity","tenantGuard",0.96,10,"Tenant, company, user, role, region, environment, session, and administrative authority are unambiguous."],
+        ["Regional routing","launchMoment",0.92,9,"Traffic, APIs, jobs, files, events, exports, support, and failover route only to approved regions."],
+        ["Data residency","tenantGuard",0.96,10,"Primary data, replicas, backups, logs, caches, analytics, deletion, and recovery obey residency rules."],
+        ["Localized policy","reviewGuard",0.92,9,"Access, retention, consent, workflow, evidence, AI use, export, and deletion policies are region-specific."],
+        ["Billing jurisdiction","ownerCommand",0.9,9,"Entity, contract, currency, tax, invoice, payment, refund, collection, and reconciliation route correctly."],
+        ["Support routing","supportGuard",0.9,9,"Language, hours, channel, access, escalation, data visibility, partner, and SLA stay region-aware."],
+        ["Recovery and continuity","rollbackGuard",0.94,10,"Backup, restore, failover, incident, communication, legal notification, and return paths are rehearsed."],
+        ["Regional control receipt","guardClosure",0.94,10,"Signed receipt records tenant, region, controls, exceptions, owners, evidence, expiry, and authorization."],
+      ],
+    },
+    {
+      key: "outcome-based-commercial-model-board",
+      version: "v1127",
+      number: 1127,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Outcome-Based Commercial Model Board",
+      shortLabel: "Outcome-Based Commercial Model Board",
+      phase: "outcome-based commercial model board",
+      track: "v1127 outcome-based commercial model board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-outcome-based-commercial-model-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-outcome-based-commercial-model-board",
+      idSuffix: "OUTCOME-BASED-COMMERCIAL-MODEL-BOARD",
+      scoreKey: "outcomeBasedCommercialModelBoardScore",
+      decisionKey: "outcomeBasedCommercialModelBoardDecision",
+      stateKey: "outcomeBasedCommercialModelBoardState",
+      lineKey: "outcomeBasedCommercialModelBoardLine",
+      primarySignal: "Pilot outcome-based commercial model board",
+      primaryNote: "Tests outcome-linked commercials through accepted definitions, baselines, attribution, confidence, risk-sharing limits, disputes, reconciliation, and signed terms receipt.",
+      summary: "Test outcome-linked commercial models across baselines, attribution, confidence, risk sharing, caps, disputes, invoicing, and signed terms receipt.",
+      trackSummary: "Regional controls now support a commercial board where outcome definitions, attribution, evidence, risk sharing, protections, disputes, billing, and terms stay auditable.",
+      stageSummary: "Outcome-linked pricing now has one board that protects customers and the business through measurable definitions, boundaries, reconciliation, and receipt.",
+      openDecision: "Authorize outcome model",
+      guardedDecision: "Open guarded outcome model",
+      holdDecision: "Hold outcome pricing",
+      repairDecision: "Repair commercial proof",
+      nextOpen: "Authorize the outcome model and keep definitions, baseline, attribution, confidence, risk sharing, protections, disputes, billing, and receipt together.",
+      nextGuarded: "Open a guarded outcome model while one evidence, attribution, confidence, cap, dispute, reconciliation, or billing condition stays watched.",
+      nextHold: "Hold outcome pricing until both parties can measure the baseline, contribution, uncertainty, protections, dispute route, and invoice fairly.",
+      nextRepair: "Repair commercial proof before outcome claims affect price, credit, payment, renewal, expansion, or public reporting.",
+      axes: [
+        ["Outcome definition","sponsorGuard",0.94,10,"Customer and provider agree the result, population, period, source, method, exclusions, and acceptance."],
+        ["Baseline and attribution","proofGuard",0.94,10,"Starting point, counterfactual, external factors, contribution, lag, interaction, and caveats are explicit."],
+        ["Evidence confidence","reviewGuard",0.92,9,"Data quality, completeness, independence, method, uncertainty, sensitivity, and auditability are readable."],
+        ["Risk-sharing boundary","rollbackGuard",0.92,9,"Control, responsibility, dependencies, customer actions, provider actions, and force-majeure limits are fair."],
+        ["Caps and floors","ownerCommand",0.9,9,"Maximum, minimum, threshold, corridor, credit, clawback, expiry, and total exposure are controlled."],
+        ["Dispute route","supportGuard",0.9,9,"Notice, evidence exchange, correction, independent review, escalation, pause, and settlement steps are timed."],
+        ["Billing and reconciliation","launchMoment",0.9,9,"Measurement close, invoice, tax, currency, adjustment, approval, payment, and ledger reconciliation align."],
+        ["Commercial terms receipt","guardClosure",0.94,10,"Signed receipt records model, evidence, limits, obligations, disputes, billing, owners, and review date."],
+      ],
+    },
+    {
+      key: "ai-guidance-safety-and-trust-council",
+      version: "v1128",
+      number: 1128,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot AI Guidance Safety and Trust Council",
+      shortLabel: "AI Guidance Safety and Trust Council",
+      phase: "ai guidance safety and trust council",
+      track: "v1128 ai guidance safety and trust council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-ai-guidance-safety-and-trust-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-ai-guidance-safety-and-trust-council",
+      idSuffix: "AI-GUIDANCE-SAFETY-AND-TRUST-COUNCIL",
+      scoreKey: "aiGuidanceSafetyAndTrustCouncilScore",
+      decisionKey: "aiGuidanceSafetyAndTrustCouncilDecision",
+      stateKey: "aiGuidanceSafetyAndTrustCouncilState",
+      lineKey: "aiGuidanceSafetyAndTrustCouncilLine",
+      primarySignal: "Pilot AI guidance safety and trust council",
+      primaryNote: "Governs AI guidance through evidence grounding, explanation, uncertainty, tenant privacy, fairness, human authority, monitoring, rollback, incidents, and signed trust receipt.",
+      summary: "Govern AI guidance across evidence, explanation, uncertainty, privacy, fairness, human authority, monitoring, rollback, incidents, and signed trust receipt.",
+      trackSummary: "Outcome evidence now becomes a trust council where AI guidance must be grounded, explainable, uncertainty-aware, tenant-safe, fair, human-governed, monitored, and reversible.",
+      stageSummary: "AI guidance now has one safety and trust council from evidence grounding through human authority, monitoring, rollback, and receipt.",
+      openDecision: "Authorize AI guidance",
+      guardedDecision: "Open guarded AI guidance",
+      holdDecision: "Hold AI guidance",
+      repairDecision: "Repair trust proof",
+      nextOpen: "Authorize AI guidance and keep evidence, explanation, uncertainty, privacy, fairness, human authority, monitoring, rollback, incident, and receipt together.",
+      nextGuarded: "Open guarded AI guidance while one grounding, privacy, fairness, uncertainty, monitoring, human, rollback, or incident condition stays watched.",
+      nextHold: "Hold AI guidance until users can understand its evidence, limits, uncertainty, authority, monitoring, correction, and stop route.",
+      nextRepair: "Repair trust proof before guidance influences customer commitments, commercial decisions, staffing, access, risk, or automated execution.",
+      axes: [
+        ["Evidence grounding","proofGuard",0.96,10,"Guidance cites authorized current sources, distinguishes fact from inference, and exposes evidence gaps."],
+        ["Explanation and uncertainty","reviewGuard",0.94,10,"Reason, alternatives, confidence, assumptions, limits, missing data, and expected effect are readable."],
+        ["Tenant privacy","tenantGuard",0.98,10,"Prompts, retrieval, outputs, logs, memory, feedback, evaluations, and exports respect tenant and consent boundaries."],
+        ["Fairness and harm","sponsorGuard",0.94,10,"Affected groups, bias, exclusion, disparate effect, misuse, escalation, and mitigation are reviewed."],
+        ["Human authority","ownerCommand",0.98,10,"People can inspect, edit, approve, reject, defer, override, appeal, correct, and stop material guidance."],
+        ["Monitoring and drift","supportGuard",0.94,10,"Quality, grounding, latency, cost, privacy, fairness, outcomes, complaints, and drift are monitored."],
+        ["Rollback and incident","rollbackGuard",0.96,10,"Kill switch, version rollback, containment, correction, notification, evidence preservation, and review are rehearsed."],
+        ["Trust receipt","guardClosure",0.96,10,"Signed receipt records use case, model, evidence, controls, evaluation, authority, limits, owner, and expiry."],
+      ],
+    },
+    {
+      key: "public-launch-go-no-go-council",
+      version: "v1129",
+      number: 1129,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Go/No-Go Council",
+      shortLabel: "Public Launch Go/No-Go Council",
+      phase: "public launch go no go council",
+      track: "v1129 public launch go no go council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-go-no-go-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-public-launch-go-no-go-council",
+      idSuffix: "PUBLIC-LAUNCH-GO-NO-GO-COUNCIL",
+      scoreKey: "publicLaunchGoNoGoCouncilScore",
+      decisionKey: "publicLaunchGoNoGoCouncilDecision",
+      stateKey: "publicLaunchGoNoGoCouncilState",
+      lineKey: "publicLaunchGoNoGoCouncilLine",
+      primarySignal: "Pilot public launch go no go council",
+      primaryNote: "Combines product, security, privacy, reliability, recovery, billing, legal, support, success, trust, launch authority, and a signed go/no-go receipt.",
+      summary: "Decide public launch across product readiness, security, privacy, reliability, recovery, billing, legal, support, success, trust, authority, and signed receipt.",
+      trackSummary: "Portfolio automation, regional controls, commercial models, and AI trust now face one public-launch council with explicit authority, hard blockers, rollback, and signed decision proof.",
+      stageSummary: "Public launch now has one honest go/no-go council across product, protection, operations, commercial, customer, trust, authority, and receipt.",
+      openDecision: "Authorize public launch",
+      guardedDecision: "Open guarded public launch",
+      holdDecision: "Hold public launch",
+      repairDecision: "Repair launch proof",
+      nextOpen: "Authorize public launch and keep product, security, privacy, reliability, recovery, billing, legal, support, success, trust, authority, and receipt together.",
+      nextGuarded: "Open a guarded public launch while one contained, owned, reversible, customer-visible condition stays watched with an expiry date.",
+      nextHold: "Hold public launch until every hard blocker is closed, every promise is supportable, and rollback and incident authority are ready.",
+      nextRepair: "Repair launch proof before availability, safety, compliance, capability, pricing, support, or customer outcomes are claimed publicly.",
+      axes: [
+        ["Product readiness","launchMoment",0.94,10,"Critical workflows, accessibility, performance, compatibility, onboarding, documentation, and acceptance pass."],
+        ["Security and privacy","tenantGuard",0.98,10,"Identity, isolation, encryption, vulnerability, privacy, audit, deletion, consent, and incident controls pass."],
+        ["Reliability and recovery","rollbackGuard",0.96,10,"Observability, SLOs, alerts, backup, restore, rollback, failover, incident, and communication are rehearsed."],
+        ["Billing and legal","ownerCommand",0.94,10,"Pricing, contract, tax, invoice, payment, refund, terms, privacy, sector, and regional obligations pass."],
+        ["Support and success","supportGuard",0.94,10,"Coverage, channels, knowledge, escalation, onboarding, adoption, outcomes, renewal, and capacity are ready."],
+        ["Trust and transparency","proofGuard",0.96,10,"Capabilities, limits, evidence, AI use, data practices, status, corrections, complaints, and opt-outs are clear."],
+        ["Launch authority","sponsorGuard",0.98,10,"Named product, security, privacy, operations, finance, legal, support, and executive authorities sign."],
+        ["Go/no-go receipt","guardClosure",0.98,10,"Signed receipt records decision, blockers, exceptions, evidence, owners, dates, rollback, and next council."],
       ],
     },
   );
@@ -28137,6 +28332,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchGoNoGoCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotAiGuidanceSafetyAndTrustCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeBasedCommercialModelBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiRegionTenantControlPlanePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerPortfolioAutopilotPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotClosedLoopProductLearningCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalExpansionReadinessRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceNetworkGovernanceBoardPreview(model, autopilot)}",
@@ -33615,7 +33815,8 @@ const state = {
     const stage = buildCommandPilotRunwayStage(model, autopilot, stageKey);
     const tone = stage.score >= 84 ? "green" : stage.score >= 72 ? "blue" : "amber";
     const stateText = stage.state || stage.stageSummary || stage.summary || "Pilot runway proof stays indexed";
-    const copyText = stage.copyText || `${BRAND_NAME} ${stage.version} ${stage.label}: ${stateText}. Next: ${stage.nextAction || "Open Build Phase."}`;
+    const normalizedStateText = String(stateText).replace(/[.!?]+$/, "");
+    const copyText = stage.copyText || `${BRAND_NAME} ${stage.version} ${stage.label}: ${normalizedStateText}. Next: ${stage.nextAction || "Open Build Phase."}`;
     return `
       <section class="info-card command-pilot-runway-stage ${escapeHtml(stage.className)} tone-${escapeHtml(tone)}" aria-label="${escapeHtml(stage.label)}">
         <div class="info-head compact command-pilot-runway-stage-head">
@@ -33642,7 +33843,8 @@ const state = {
   function renderCommandPilotRunwayStageStrip(stage) {
     const tone = stage.score >= 84 ? "green" : stage.score >= 72 ? "blue" : "amber";
     const stateText = stage.state || stage.stageSummary || stage.summary || "Pilot runway proof stays indexed";
-    const copyText = stage.copyText || `${BRAND_NAME} ${stage.version} ${stage.label}: ${stateText}. Next: ${stage.nextAction || "Open Build Phase."}`;
+    const normalizedStateText = String(stateText).replace(/[.!?]+$/, "");
+    const copyText = stage.copyText || `${BRAND_NAME} ${stage.version} ${stage.label}: ${normalizedStateText}. Next: ${stage.nextAction || "Open Build Phase."}`;
     const signalCards = stage.signals
       .slice(1, 5)
       .map(([label, value, note, signalTone]) => `<article class="tone-${escapeHtml(signalTone)}"><span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong><small>${escapeHtml(note)}</small></article>`)
@@ -33652,7 +33854,7 @@ const state = {
         <div>
           <span>${escapeHtml(stage.version)} pilot runway</span>
           <strong>${escapeHtml(stage.decision)} / ${stage.score}%</strong>
-          <p>${escapeHtml(stateText)}. ${escapeHtml(stage.nextAction || "Open Build Phase for release proof.")}</p>
+          <p>${escapeHtml(normalizedStateText)}. ${escapeHtml(stage.nextAction || "Open Build Phase for release proof.")}</p>
         </div>
         <div class="command-pilot-runway-stage-strip-signals">${signalCards}</div>
         <button class="ghost-btn" type="button" data-action="${escapeHtml(stage.copyAction)}" data-copy-text="${escapeHtml(encodeURIComponent(copyText))}">Copy ${escapeHtml(stage.shortLabel.toLowerCase())}</button>
@@ -37455,6 +37657,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotClosedLoopProductLearningCouncilPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "closed-loop-product-learning-council");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerPortfolioAutopilotSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-customer-portfolio-autopilot");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerPortfolioAutopilot(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-customer-portfolio-autopilot");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerPortfolioAutopilotPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-customer-portfolio-autopilot");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiRegionTenantControlPlaneSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-region-tenant-control-plane");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiRegionTenantControlPlane(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-region-tenant-control-plane");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiRegionTenantControlPlanePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-region-tenant-control-plane");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeBasedCommercialModelBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "outcome-based-commercial-model-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeBasedCommercialModelBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "outcome-based-commercial-model-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotOutcomeBasedCommercialModelBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "outcome-based-commercial-model-board");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAiGuidanceSafetyAndTrustCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "ai-guidance-safety-and-trust-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotAiGuidanceSafetyAndTrustCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "ai-guidance-safety-and-trust-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotAiGuidanceSafetyAndTrustCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "ai-guidance-safety-and-trust-council");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchGoNoGoCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "public-launch-go-no-go-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchGoNoGoCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "public-launch-go-no-go-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPublicLaunchGoNoGoCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "public-launch-go-no-go-council");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -102265,9 +102522,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1125", "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Portfolio Autopilot", "Prioritize portfolio actions across health, value, service, renewal, expansion, risk, owner capacity, human approval, and signed execution receipt."],
-      ["v1126", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Region Tenant Control Plane", "Govern tenant identity, data residency, routing, policy, billing, support, recovery, audit, and signed regional control receipt."],
-      ["v1127", "First Pilot Expansion Rollout Reuse Market Pilot Outcome-Based Commercial Model Board", "Test outcome-linked commercial models across baselines, attribution, confidence, risk sharing, caps, disputes, invoicing, and signed terms receipt."],
+      ["v1130", "First Pilot Expansion Rollout Reuse Market Pilot Public Launch Operations Command", "Operate launch day across availability, traffic, incidents, support, customer communications, billing, authority, rollback, and signed launch receipt."],
+      ["v1131", "First Pilot Expansion Rollout Reuse Market Pilot First 100 Customers Capacity Board", "Govern early scale across demand, onboarding, service, security, success, infrastructure, economics, staffing, and signed capacity receipt."],
+      ["v1132", "First Pilot Expansion Rollout Reuse Market Pilot Global Compliance and Trust Passport", "Package regional controls across identity, data, security, privacy, AI, accessibility, evidence, audit, and signed trust passport."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),

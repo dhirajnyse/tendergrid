@@ -1,5 +1,119 @@
 # Changelog
 
+## v1129 - First Pilot Expansion Rollout Reuse Market Pilot Public Launch Go/No-Go Council
+
+### Changes made
+- Added Public Launch Go/No-Go Council as the next governed execution-and-launch room.
+- Added product readiness, security and privacy, reliability and recovery, billing and legal, support and success, trust and transparency, launch authority, go/no-go receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+- Normalized shared runway-summary punctuation so Command reads as a polished sentence instead of showing duplicated full stops.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed HTTP smoke for the root, JavaScript, and CSS assets at `http://127.0.0.1:4177/` with the `v1129.1` cache token.
+- Passed desktop and 390 px mobile browser QA for Build Phase and Command with v1127-v1129 rail continuity, v1130-v1132 queue continuity, normalized punctuation, no horizontal overflow, and no browser errors.
+- Passed the physical public-launch receipt copy test in 410 ms on desktop and 307 ms on mobile with visible confirmation.
+
+### Known risks
+- The council cannot authorize a real public launch until the production backend, live security and privacy controls, billing, support, legal review, and customer rehearsal exist outside this static demo.
+
+## v1128 - First Pilot Expansion Rollout Reuse Market Pilot AI Guidance Safety and Trust Council
+
+### Changes made
+- Added AI Guidance Safety and Trust Council as the next governed execution-and-launch room.
+- Added evidence grounding, explanation and uncertainty, tenant privacy, fairness and harm, human authority, monitoring and drift, rollback and incident, trust receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- AI guidance must remain non-autonomous until production evaluation, privacy, security, human approval, monitoring, incident, rollback, and regulatory controls are proven.
+
+## v1127 - First Pilot Expansion Rollout Reuse Market Pilot Outcome-Based Commercial Model Board
+
+### Changes made
+- Added Outcome-Based Commercial Model Board as the next governed execution-and-launch room.
+- Added outcome definition, baseline and attribution, evidence confidence, risk-sharing boundary, caps and floors, dispute route, billing and reconciliation, commercial terms receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Outcome-based commercials require qualified legal, finance, tax, accounting, measurement, and customer approval before they can govern real invoices or obligations.
+
+## v1126 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Region Tenant Control Plane
+
+### Changes made
+- Added Multi-Region Tenant Control Plane as the next governed execution-and-launch room.
+- Added tenant identity, regional routing, data residency, localized policy, billing jurisdiction, support routing, recovery and continuity, regional control receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The control plane is a blueprint until production regional infrastructure, residency enforcement, identity, billing, support, recovery, and audit evidence are proven.
+
+## v1125 - First Pilot Expansion Rollout Reuse Market Pilot Production Customer Portfolio Autopilot
+
+### Changes made
+- Added Production Customer Portfolio Autopilot as the next governed execution-and-launch room.
+- Added portfolio signal intake, customer priority score, value-at-risk queue, capacity-aware assignment, human approval gate, execution plan, outcome feedback, execution receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Portfolio autopilot remains advisory until live data, identity, approval, workflow, audit, capacity, outcome, and rollback controls are production-integrated.
+
 ## v1124 - First Pilot Expansion Rollout Reuse Market Pilot Closed-Loop Product Learning Council
 
 ### Changes made
