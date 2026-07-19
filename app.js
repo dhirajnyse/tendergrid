@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1119";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Repeatable Customer Lifecycle Council";
+  const BUILD_VERSION = "v1124";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Closed-Loop Product Learning Council";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1119.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1119.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1124.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1124.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -12322,6 +12322,201 @@
         ["Automation candidates","ownerCommand",0.86,7,"Only stable, observable, reversible, approved lifecycle steps enter the automation queue."],
         ["Control exceptions","rollbackGuard",0.9,9,"Customer-local, country, contract, security, service, and commercial exceptions remain visible and owned."],
         ["Scale authorization receipt","guardClosure",0.94,10,"Signed receipt records reusable scope, exclusions, economics, owners, cadence, evidence, and next gate."],
+      ],
+    },
+    {
+      key: "production-customer-portfolio-control-room",
+      version: "v1120",
+      number: 1120,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Portfolio Control Room",
+      shortLabel: "Production Customer Portfolio Control Room",
+      phase: "production customer portfolio control room",
+      track: "v1120 production customer portfolio control room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-production-customer-portfolio-control-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-production-customer-portfolio-control-room",
+      idSuffix: "PRODUCTION-CUSTOMER-PORTFOLIO-CONTROL-ROOM",
+      scoreKey: "productionCustomerPortfolioControlRoomScore",
+      decisionKey: "productionCustomerPortfolioControlRoomDecision",
+      stateKey: "productionCustomerPortfolioControlRoomState",
+      lineKey: "productionCustomerPortfolioControlRoomLine",
+      primarySignal: "Pilot production customer portfolio control room",
+      primaryNote: "Turns separate customer lifecycles into one portfolio view across health, accepted value, service, renewal, expansion, risk, owner capacity, and signed receipt.",
+      summary: "Operate multiple live customers across health, value, service, renewal, expansion, risk, owner load, and portfolio receipt.",
+      trackSummary: "The repeatable customer lifecycle now becomes a portfolio control room where customer health, value, service, renewal, expansion, risk, ownership, and receipt remain comparable without erasing local context.",
+      stageSummary: "Production customer operations now have one calm portfolio room for health, value, service, commercial movement, risks, ownership, and signed decisions.",
+      openDecision: "Open portfolio control",
+      guardedDecision: "Open guarded portfolio",
+      holdDecision: "Hold portfolio scale",
+      repairDecision: "Repair portfolio proof",
+      nextOpen: "Open portfolio control and keep customer health, value, service, renewal, expansion, risk, owner capacity, and receipt together.",
+      nextGuarded: "Open guarded portfolio control while one customer, service, commercial, capacity, evidence, or ownership condition stays watched.",
+      nextHold: "Hold portfolio scale until customer health, service capacity, commercial horizons, risk, and owner load are decision-ready.",
+      nextRepair: "Repair portfolio proof before cross-customer priorities or scale claims are represented as reliable.",
+      axes: [
+        ["Customer health","reviewGuard",0.9,9,"Adoption, sentiment, outcomes, service, risk, and sponsor posture are current for every customer."],
+        ["Accepted value","proofGuard",0.92,9,"Customer-approved outcomes, methods, caveats, dates, and evidence remain traceable."],
+        ["Service health","supportGuard",0.9,9,"Reliability, incidents, support, security, recovery, and commitments stay within promise."],
+        ["Renewal horizon","ownerCommand",0.88,8,"Term, notice, readiness, proposal, procurement, decision, signature, and activation dates are visible."],
+        ["Expansion horizon","launchMoment",0.86,7,"Qualified users, workflows, units, value cases, capacity, commercials, and sponsor path are visible."],
+        ["Portfolio risk","rollbackGuard",0.9,9,"Concentration, churn, service, security, delivery, commercial, and evidence risks have owners and mitigations."],
+        ["Owner capacity","tenantGuard",0.88,8,"Customer success, implementation, product, support, security, data, and commercial load is balanced."],
+        ["Portfolio receipt","guardClosure",0.92,9,"Signed receipt records priorities, exceptions, owners, dates, decisions, and next portfolio review."],
+      ],
+    },
+    {
+      key: "multi-tenant-service-capacity-gate",
+      version: "v1121",
+      number: 1121,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Service Capacity Gate",
+      shortLabel: "Multi-Tenant Service Capacity Gate",
+      phase: "multi-tenant service capacity gate",
+      track: "v1121 multi-tenant service capacity gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-service-capacity-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-multi-tenant-service-capacity-gate",
+      idSuffix: "MULTI-TENANT-SERVICE-CAPACITY-GATE",
+      scoreKey: "multiTenantServiceCapacityGateScore",
+      decisionKey: "multiTenantServiceCapacityGateDecision",
+      stateKey: "multiTenantServiceCapacityGateState",
+      lineKey: "multiTenantServiceCapacityGateLine",
+      primarySignal: "Pilot multi-tenant service capacity gate",
+      primaryNote: "Authorizes customer growth only when implementation, migration, reliability, support, security, success, staffing, economics, and signed capacity evidence agree.",
+      summary: "Authorize service scale across implementation, migration, reliability, support, security, success, staffing, economics, and signed capacity receipt.",
+      trackSummary: "Portfolio demand now faces a multi-tenant capacity gate that makes service, staffing, security, reliability, economics, and customer promises move together.",
+      stageSummary: "Multi-tenant service growth now has one evidence gate for delivery capacity, reliability, safety, staffing, economics, and receipt.",
+      openDecision: "Authorize service capacity",
+      guardedDecision: "Open guarded capacity",
+      holdDecision: "Hold service scale",
+      repairDecision: "Repair capacity proof",
+      nextOpen: "Authorize service capacity and keep implementation, migration, reliability, support, security, success, staffing, economics, and receipt together.",
+      nextGuarded: "Open guarded capacity while one staffing, reliability, migration, security, support, success, or economic condition stays watched.",
+      nextHold: "Hold service scale until promised demand fits evidenced people, platform, process, security, support, and economic capacity.",
+      nextRepair: "Repair capacity proof before onboarding dates, service levels, or portfolio growth are committed.",
+      axes: [
+        ["Implementation capacity","launchMoment",0.88,8,"Discovery, configuration, integration, training, acceptance, and launch slots match demand."],
+        ["Migration capacity","rollbackGuard",0.9,9,"Mapping, cleansing, rehearsal, reconciliation, rejection, rollback, and acceptance throughput is known."],
+        ["Reliability capacity","supportGuard",0.92,9,"Availability, performance, observability, incident, recovery, backup, and change capacity meet promises."],
+        ["Support capacity","supportGuard",0.9,9,"Coverage hours, channels, response, escalation, knowledge, language, and backlog capacity are sufficient."],
+        ["Security capacity","tenantGuard",0.94,10,"Identity, access, isolation, audit, vulnerability, incident, privacy, and evidence work can scale safely."],
+        ["Customer success capacity","sponsorGuard",0.88,8,"Onboarding, adoption, outcome review, sponsor rhythm, renewal, and expansion coverage is available."],
+        ["Staffing and economics","ownerCommand",0.9,9,"Roles, utilization, partners, unit cost, margin, contingency, and hiring triggers are decision-ready."],
+        ["Capacity receipt","guardClosure",0.92,9,"Signed receipt records demand, limits, assumptions, exceptions, owners, dates, and scale decision."],
+      ],
+    },
+    {
+      key: "customer-evidence-network-governance-board",
+      version: "v1122",
+      number: 1122,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Customer Evidence Network Governance Board",
+      shortLabel: "Customer Evidence Network Governance Board",
+      phase: "customer evidence network governance board",
+      track: "v1122 customer evidence network governance board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-customer-evidence-network-governance-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-customer-evidence-network-governance-board",
+      idSuffix: "CUSTOMER-EVIDENCE-NETWORK-GOVERNANCE-BOARD",
+      scoreKey: "customerEvidenceNetworkGovernanceBoardScore",
+      decisionKey: "customerEvidenceNetworkGovernanceBoardDecision",
+      stateKey: "customerEvidenceNetworkGovernanceBoardState",
+      lineKey: "customerEvidenceNetworkGovernanceBoardLine",
+      primarySignal: "Pilot customer evidence network governance board",
+      primaryNote: "Governs cross-customer learning through explicit consent, anonymization, tenant boundaries, claim portability, bias checks, regional rules, revocation, and signed evidence receipts.",
+      summary: "Govern cross-customer learning across consent, anonymity, tenant boundaries, claim portability, bias, regional rules, revocation, and signed evidence receipt.",
+      trackSummary: "Multi-tenant capacity now gains an evidence-network board that allows shared learning only when consent, anonymity, boundaries, portability, fairness, regional law, revocation, and receipts are explicit.",
+      stageSummary: "Cross-customer learning now has one governance board that protects consent, identity, tenant context, fairness, regional rules, and revocation.",
+      openDecision: "Authorize evidence network",
+      guardedDecision: "Open guarded evidence network",
+      holdDecision: "Hold network learning",
+      repairDecision: "Repair governance proof",
+      nextOpen: "Authorize the evidence network and keep consent, anonymization, tenant boundaries, portability, fairness, regional rules, revocation, and receipt together.",
+      nextGuarded: "Open a guarded evidence network while one consent, privacy, fairness, region, claim, or deletion condition stays watched.",
+      nextHold: "Hold network learning until every reused signal is lawful, consented, anonymous, tenant-safe, explainable, and revocable.",
+      nextRepair: "Repair governance proof before evidence influences another customer, model, benchmark, recommendation, or public claim.",
+      axes: [
+        ["Customer consent","sponsorGuard",0.94,10,"Authorized purpose, data class, reuse scope, recipients, duration, and withdrawal terms are explicit."],
+        ["Anonymization","proofGuard",0.94,10,"Direct, indirect, rare, linked, free-text, temporal, and re-identification risks are controlled and tested."],
+        ["Tenant boundary","tenantGuard",0.96,10,"Raw data, files, prompts, logs, exports, identifiers, and customer-local context never cross tenants."],
+        ["Claim portability","reviewGuard",0.9,9,"A finding carries source, context, method, confidence, caveats, date, and allowed-use boundary."],
+        ["Bias and fairness","proofGuard",0.9,9,"Coverage, representation, sampling, geography, role, industry, outcome, and harm differences are reviewed."],
+        ["Regional rules","ownerCommand",0.92,9,"Residency, privacy, labor, sector, contract, transfer, retention, and AI rules are region-specific."],
+        ["Revocation and deletion","rollbackGuard",0.94,10,"Consent withdrawal removes future use, derived access, cached copies, exports, and affected claims."],
+        ["Governance receipt","guardClosure",0.94,10,"Signed receipt records source class, lawful basis, use, controls, reviewers, expiry, and revocation route."],
+      ],
+    },
+    {
+      key: "regional-expansion-readiness-room",
+      version: "v1123",
+      number: 1123,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Regional Expansion Readiness Room",
+      shortLabel: "Regional Expansion Readiness Room",
+      phase: "regional expansion readiness room",
+      track: "v1123 regional expansion readiness room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-regional-expansion-readiness-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-regional-expansion-readiness-room",
+      idSuffix: "REGIONAL-EXPANSION-READINESS-ROOM",
+      scoreKey: "regionalExpansionReadinessRoomScore",
+      decisionKey: "regionalExpansionReadinessRoomDecision",
+      stateKey: "regionalExpansionReadinessRoomState",
+      lineKey: "regionalExpansionReadinessRoomLine",
+      primarySignal: "Pilot regional expansion readiness room",
+      primaryNote: "Tests regional launch readiness across demand, legal and tax posture, language, currency, privacy, support, partner route, ownership, and signed readiness receipt.",
+      summary: "Test regional expansion readiness across market demand, legal and tax, localization, currency, privacy, support, partner route, ownership, and signed receipt.",
+      trackSummary: "Governed evidence reuse now faces a regional readiness room where market demand, legal and tax, localization, currency, privacy, support, partners, and ownership remain locally honest.",
+      stageSummary: "Regional expansion now has one readiness room for demand, commercial and legal setup, localization, data, service coverage, partners, and receipt.",
+      openDecision: "Ready regional expansion",
+      guardedDecision: "Open guarded region",
+      holdDecision: "Hold regional launch",
+      repairDecision: "Repair regional proof",
+      nextOpen: "Ready regional expansion and keep demand, legal and tax, localization, currency, privacy, support, partner route, ownership, and receipt together.",
+      nextGuarded: "Open a guarded region while one market, legal, tax, language, billing, privacy, support, or partner condition stays watched.",
+      nextHold: "Hold regional launch until customer demand, local obligations, billing, data, service coverage, and accountable ownership are decision-ready.",
+      nextRepair: "Repair regional proof before pricing, availability, compliance, language, service, or launch timing is represented publicly.",
+      axes: [
+        ["Market demand","proofGuard",0.9,9,"Named buyers, problems, budget, competition, buying process, pilot path, and outcome value are evidenced."],
+        ["Legal and tax","ownerCommand",0.92,9,"Entity, contracting, tax, invoice, employment, sector, import, and consumer obligations are mapped."],
+        ["Language and localization","reviewGuard",0.88,8,"Interface, content, dates, numbers, names, accessibility, support, and legal language fit local use."],
+        ["Currency and billing","ownerCommand",0.9,9,"Currency, price display, tax, payment, refund, reconciliation, FX, and collection routes are controlled."],
+        ["Data and privacy","tenantGuard",0.94,10,"Residency, transfer, retention, consent, processors, deletion, breach, and audit requirements are met."],
+        ["Support coverage","supportGuard",0.9,9,"Timezone, language, channel, response, escalation, partners, holidays, and continuity coverage is credible."],
+        ["Partner route","sponsorGuard",0.86,7,"Direct, reseller, implementation, referral, support, data, and accountability boundaries are explicit."],
+        ["Regional readiness receipt","guardClosure",0.92,9,"Signed receipt records scope, local conditions, exceptions, owners, evidence, date, and launch decision."],
+      ],
+    },
+    {
+      key: "closed-loop-product-learning-council",
+      version: "v1124",
+      number: 1124,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Closed-Loop Product Learning Council",
+      shortLabel: "Closed-Loop Product Learning Council",
+      phase: "closed-loop product learning council",
+      track: "v1124 closed-loop product learning council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-closed-loop-product-learning-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-closed-loop-product-learning-council",
+      idSuffix: "CLOSED-LOOP-PRODUCT-LEARNING-COUNCIL",
+      scoreKey: "closedLoopProductLearningCouncilScore",
+      decisionKey: "closedLoopProductLearningCouncilDecision",
+      stateKey: "closedLoopProductLearningCouncilState",
+      lineKey: "closedLoopProductLearningCouncilLine",
+      primarySignal: "Pilot closed-loop product learning council",
+      primaryNote: "Connects governed observations to outcomes, tenant-safe learning, explicit hypotheses, reversible experiments, release decisions, customer feedback, and signed learning receipts.",
+      summary: "Govern closed-loop product learning across observation quality, outcome linkage, tenant-safe aggregation, hypotheses, experiments, release handoff, customer return, and signed receipt.",
+      trackSummary: "Regional and portfolio evidence now become a closed learning loop where observations lead to guarded experiments, product decisions, customer-visible outcomes, and accountable receipts.",
+      stageSummary: "Product learning now has one council that connects evidence, hypotheses, experiments, releases, customer outcomes, feedback return, and signed authorization.",
+      openDecision: "Authorize learning loop",
+      guardedDecision: "Open guarded learning",
+      holdDecision: "Hold learning reuse",
+      repairDecision: "Repair learning proof",
+      nextOpen: "Authorize the learning loop and keep observations, outcomes, tenant safety, hypotheses, experiments, releases, customer return, and receipt together.",
+      nextGuarded: "Open guarded learning while one consent, evidence, experiment, safety, outcome, release, or customer-feedback condition stays watched.",
+      nextHold: "Hold learning reuse until observations are trustworthy, outcomes linked, tenant boundaries safe, experiments reversible, and customer benefit reviewable.",
+      nextRepair: "Repair learning proof before guidance, automation, roadmap priority, benchmark, or cross-customer recommendation is widened.",
+      axes: [
+        ["Observation quality","reviewGuard",0.92,9,"Source, event, actor, context, timestamp, completeness, provenance, and uncertainty are readable."],
+        ["Outcome linkage","proofGuard",0.94,10,"Behavior changes connect to accepted customer outcomes with method, baseline, caveats, and confidence."],
+        ["Tenant-safe aggregation","tenantGuard",0.96,10,"Learning uses authorized aggregates without exposing identity, raw records, confidential context, or rare groups."],
+        ["Hypothesis decision","ownerCommand",0.9,9,"Problem, evidence, expected effect, affected users, owner, success test, and stop rule are explicit."],
+        ["Experiment guard","rollbackGuard",0.94,10,"Consent, eligibility, exposure, monitoring, fairness, rollback, escalation, and harm controls precede change."],
+        ["Product release handoff","launchMoment",0.9,9,"Approved learning enters design, build, test, documentation, support, rollout, telemetry, and rollback."],
+        ["Customer feedback return","sponsorGuard",0.9,9,"Customers can see what changed, why, evidence limits, benefit, controls, corrections, and opt-out route."],
+        ["Learning receipt","guardClosure",0.94,10,"Signed receipt records evidence, decision, experiment, outcome, customer return, owner, expiry, and next review."],
       ],
     },
   );
@@ -27942,6 +28137,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotClosedLoopProductLearningCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalExpansionReadinessRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceNetworkGovernanceBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantServiceCapacityGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerPortfolioControlRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotRepeatableCustomerLifecycleCouncilPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotSecondCustomerLaunchReadinessRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotReferenceCustomerApprovalGatePreview(model, autopilot)}",
@@ -37200,6 +37400,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRepeatableCustomerLifecycleCouncilPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "repeatable-customer-lifecycle-council");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerPortfolioControlRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "production-customer-portfolio-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerPortfolioControlRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "production-customer-portfolio-control-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionCustomerPortfolioControlRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "production-customer-portfolio-control-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantServiceCapacityGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "multi-tenant-service-capacity-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantServiceCapacityGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "multi-tenant-service-capacity-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotMultiTenantServiceCapacityGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "multi-tenant-service-capacity-gate");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceNetworkGovernanceBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "customer-evidence-network-governance-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceNetworkGovernanceBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "customer-evidence-network-governance-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCustomerEvidenceNetworkGovernanceBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "customer-evidence-network-governance-board");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalExpansionReadinessRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "regional-expansion-readiness-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalExpansionReadinessRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "regional-expansion-readiness-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotRegionalExpansionReadinessRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "regional-expansion-readiness-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotClosedLoopProductLearningCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "closed-loop-product-learning-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotClosedLoopProductLearningCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "closed-loop-product-learning-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotClosedLoopProductLearningCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "closed-loop-product-learning-council");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -102010,10 +102265,11 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1120", "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Portfolio Control Room", "Operate multiple live customers across health, value, service, renewal, expansion, risk, owner load, and portfolio receipt."],
-      ["v1121", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Service Capacity Gate", "Authorize service scale across implementation, migration, reliability, support, security, success, staffing, economics, and signed capacity receipt."],
-      ["v1122", "First Pilot Expansion Rollout Reuse Market Pilot Customer Evidence Network Governance Board", "Govern cross-customer learning across consent, anonymity, tenant boundaries, claim portability, bias, regional rules, revocation, and signed evidence receipt."],
-    ];const nextRunwayBuilds = [
+      ["v1125", "First Pilot Expansion Rollout Reuse Market Pilot Production Customer Portfolio Autopilot", "Prioritize portfolio actions across health, value, service, renewal, expansion, risk, owner capacity, human approval, and signed execution receipt."],
+      ["v1126", "First Pilot Expansion Rollout Reuse Market Pilot Multi-Region Tenant Control Plane", "Govern tenant identity, data residency, routing, policy, billing, support, recovery, audit, and signed regional control receipt."],
+      ["v1127", "First Pilot Expansion Rollout Reuse Market Pilot Outcome-Based Commercial Model Board", "Test outcome-linked commercial models across baselines, attribution, confidence, risk sharing, caps, disputes, invoicing, and signed terms receipt."],
+    ];
+    const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
       ...fallbackNextRunwayBuilds,
     ].filter(([version], index, queue) => getBuildNumber(version) > buildNumber && queue.findIndex(([candidate]) => candidate === version) === index).slice(0, 3);

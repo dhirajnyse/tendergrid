@@ -1,5 +1,118 @@
 # Changelog
 
+## v1124 - First Pilot Expansion Rollout Reuse Market Pilot Closed-Loop Product Learning Council
+
+### Changes made
+- Added Closed-Loop Product Learning Council as the next governed portfolio-and-learning room.
+- Added observation quality, outcome linkage, tenant-safe aggregation, hypothesis decision, experiment guard, product release handoff, customer feedback return, learning receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed `git diff --check` and HTTP smoke for the root, JavaScript, and CSS assets at `http://127.0.0.1:4177/` with the `v1124.1` cache token.
+- Passed in-app browser QA for Build Phase and Command at desktop and 390 px mobile widths with no horizontal overflow or console errors.
+- Passed physical learning-receipt copy tests in 467 ms on desktop and 499 ms on mobile with visible confirmation and no page unresponsiveness.
+
+### Known risks
+- Closed-loop learning remains a governance blueprint until production consent, telemetry, experimentation, model evaluation, release controls, and customer outcome feedback are integrated.
+
+## v1123 - First Pilot Expansion Rollout Reuse Market Pilot Regional Expansion Readiness Room
+
+### Changes made
+- Added Regional Expansion Readiness Room as the next governed portfolio-and-learning room.
+- Added market demand, legal and tax, language and localization, currency and billing, data and privacy, support coverage, partner route, regional readiness receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Regional readiness is not legal or tax clearance until qualified local advisors, production infrastructure, billing, support, contracts, and customer pilots validate it.
+
+## v1122 - First Pilot Expansion Rollout Reuse Market Pilot Customer Evidence Network Governance Board
+
+### Changes made
+- Added Customer Evidence Network Governance Board as the next governed portfolio-and-learning room.
+- Added customer consent, anonymization, tenant boundary, claim portability, bias and fairness, regional rules, revocation and deletion, governance receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- The evidence network must remain disabled for real customer data until legal basis, consent, anonymization testing, residency, deletion propagation, and audit controls are production-proven.
+
+## v1121 - First Pilot Expansion Rollout Reuse Market Pilot Multi-Tenant Service Capacity Gate
+
+### Changes made
+- Added Multi-Tenant Service Capacity Gate as the next governed portfolio-and-learning room.
+- Added implementation capacity, migration capacity, reliability capacity, support capacity, security capacity, customer success capacity, staffing and economics, capacity receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Capacity authorization is indicative until real demand forecasts, staffing, platform telemetry, service data, security workload, and unit economics are connected.
+
+## v1120 - First Pilot Expansion Rollout Reuse Market Pilot Production Customer Portfolio Control Room
+
+### Changes made
+- Added Production Customer Portfolio Control Room as the next governed portfolio-and-learning room.
+- Added customer health, accepted value, service health, renewal horizon, expansion horizon, portfolio risk, owner capacity, portfolio receipt, Command preview routing, copy action, Build Phase tracking, cache/version guards, axis-level static checks, and next-queue continuity.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Portfolio control remains a static management aid until live CRM, usage, service, billing, contract, support, risk, and owner-capacity data is integrated.
+
 ## v1119 - First Pilot Expansion Rollout Reuse Market Pilot Repeatable Customer Lifecycle Council
 
 ### Changes made
