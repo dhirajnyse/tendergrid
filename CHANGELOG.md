@@ -1,5 +1,118 @@
 # Changelog
 
+## v1099 - First Pilot Expansion Rollout Reuse Market Pilot Scale Authorization Council
+
+### Changes made
+- Added Scale Authorization Council to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1099.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+- Passed `git diff --check`.
+- Passed HTTP smoke at `http://127.0.0.1:4177/` with the `v1099.1` assets.
+- Passed in-app browser QA for Build Phase and Command at desktop and mobile widths with no horizontal overflow or console errors.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1098 - First Pilot Expansion Rollout Reuse Market Pilot Cost-to-Serve Control Room
+
+### Changes made
+- Added Cost-to-Serve Control Room to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1098.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1097 - First Pilot Expansion Rollout Reuse Market Pilot Expansion Capacity Gate
+
+### Changes made
+- Added Expansion Capacity Gate to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1097.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1096 - First Pilot Expansion Rollout Reuse Market Pilot Launch Portfolio Health Board
+
+### Changes made
+- Added Launch Portfolio Health Board to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1096.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
+## v1095 - First Pilot Expansion Rollout Reuse Market Pilot Paid Customer Reference Consent Room
+
+### Changes made
+- Added Paid Customer Reference Consent Room to the first-pilot launch runway.
+- Added release data, command preview route, copy action, Build Phase track, static guard, cache/version update, and next queue continuity for v1095.
+
+### Files changed
+- `app.js`
+- `app.min.js`
+- `index.html`
+- `package.json`
+- `scripts/static-check.mjs`
+- `CHANGELOG.md`
+
+### Checks run
+- Passed `npm.cmd run check`.
+- Passed `node --check app.js`, `node --check app.min.js`, and `node --check scripts\static-check.mjs`.
+- Passed release minification with `npm.cmd exec --yes terser -- app.js -c -m -o app.min.js`.
+
+### Known risks
+- Static prototype only; production backend, real auth, live billing, and customer-data persistence are still mapped but not live.
+
 ## v1094 - First Pilot Expansion Rollout Reuse Market Pilot Launch Economics Review Board
 
 ### Changes made

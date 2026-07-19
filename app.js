@@ -1,12 +1,12 @@
 (function () {
   const BRAND_NAME = "PursuitDesk";
   const BRAND_DOMAIN = "pursuitdesk.app";
-  const BUILD_VERSION = "v1094";
-  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Launch Economics Review Board";
+  const BUILD_VERSION = "v1099";
+  const BUILD_LABEL = "First Pilot Expansion Rollout Reuse Market Pilot Scale Authorization Council";
   const RECOVERY_BASELINE_SHA = "90899d7980749e37cdc6fafaab24a93498d6fa8e";
   const RECOVERY_BASELINE_LABEL = "Recover PursuitDesk v319 baseline";
-  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1094.1";
-  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1094.1";
+  const BRAND_MARK = "assets/pursuitdesk-mark.svg?v=1099.1";
+  const BRAND_LOGO_3D = "assets/pursuitdesk-logo-3d.svg?v=1099.1";
   const STORE_KEY = "pursuitDesk:data:v1";
   const SESSION_KEY = "pursuitDesk:session:v1";
   const ROOM_MEMORY_KEY = "pursuitDesk:roomMemory:v1";
@@ -11347,6 +11347,201 @@
         ["Expansion capacity", "rollbackGuard", 0.82, 5, "Capacity risk and fallback are visible."],
         ["Economics owner", "ownerCommand", 0.82, 5, "One economics owner is accountable."],
         ["Board receipt", "guardClosure", 0.84, 6, "Signed board receipt closes the review."],
+      ],
+    },
+    {
+      key: "paid-customer-reference-consent-room",
+      version: "v1095",
+      number: 1095,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Paid Customer Reference Consent Room",
+      shortLabel: "Paid Customer Reference Consent Room",
+      phase: "paid customer reference consent room",
+      track: "v1095 paid customer reference consent room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-paid-customer-reference-consent-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-paid-customer-reference-consent-room",
+      idSuffix: "PAID-CUSTOMER-REFERENCE-CONSENT-ROOM",
+      scoreKey: "paidCustomerReferenceConsentRoomScore",
+      decisionKey: "paidCustomerReferenceConsentRoomDecision",
+      stateKey: "paidCustomerReferenceConsentRoomState",
+      lineKey: "paidCustomerReferenceConsentRoomLine",
+      primarySignal: "Pilot paid customer reference consent room",
+      primaryNote: "Converts customer success into consented reference proof with approved story, privacy boundary, quote permission, evidence links, channel scope, expiry date, accountable owner, and consent receipt.",
+      summary: "Convert customer success into consented reference proof with approved story, privacy boundary, quote permission, evidence links, channel scope, expiry date, owner, and consent receipt.",
+      trackSummary: "Launch economics now become consented customer proof across story, privacy, quote permission, evidence, channels, expiry, ownership, and receipt.",
+      stageSummary: "Paid customer references now have story, privacy, quote, evidence, channel, expiry, owner, and consent-receipt controls.",
+      openDecision: "Open consented reference",
+      guardedDecision: "Open guarded reference",
+      holdDecision: "Hold reference use",
+      repairDecision: "Repair consent proof",
+      nextOpen: "Open the consented reference and keep approved story, privacy boundary, quote permission, evidence links, channel scope, expiry date, owner, and receipt together.",
+      nextGuarded: "Open a guarded reference while one story, privacy, quote, evidence, channel, expiry, owner, or receipt lane stays watched.",
+      nextHold: "Hold reference use until story approval, privacy boundary, quote permission, and channel scope are clear.",
+      nextRepair: "Repair reference consent before portfolio proof is widened.",
+      axes: [
+        ["Approved story", "sponsorGuard", 0.84, 6, "Customer story is approved."],
+        ["Privacy boundary", "tenantGuard", 0.84, 6, "Privacy boundary is explicit."],
+        ["Quote permission", "sponsorGuard", 0.82, 5, "Quote permission is recorded."],
+        ["Evidence links", "proofGuard", 0.84, 6, "Reference claims link to evidence."],
+        ["Channel scope", "reviewGuard", 0.82, 5, "Permitted channels are named."],
+        ["Expiry date", "reviewGuard", 0.8, 5, "Consent expiry date is visible."],
+        ["Reference owner", "ownerCommand", 0.82, 5, "One reference owner is accountable."],
+        ["Consent receipt", "guardClosure", 0.84, 6, "Consent receipt closes the room."],
+      ],
+    },
+    {
+      key: "launch-portfolio-health-board",
+      version: "v1096",
+      number: 1096,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Launch Portfolio Health Board",
+      shortLabel: "Launch Portfolio Health Board",
+      phase: "launch portfolio health board",
+      track: "v1096 launch portfolio health board",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-launch-portfolio-health-board",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-launch-portfolio-health-board",
+      idSuffix: "LAUNCH-PORTFOLIO-HEALTH-BOARD",
+      scoreKey: "launchPortfolioHealthBoardScore",
+      decisionKey: "launchPortfolioHealthBoardDecision",
+      stateKey: "launchPortfolioHealthBoardState",
+      lineKey: "launchPortfolioHealthBoardLine",
+      primarySignal: "Pilot launch portfolio health board",
+      primaryNote: "Compares live customer health across adoption, value, support, renewal, revenue, risk, owner load, and portfolio decision receipt.",
+      summary: "Compare live customer health across adoption, value, support, renewal, revenue, risk, owner load, and portfolio decision receipt.",
+      trackSummary: "Consented customer proof now becomes portfolio health across adoption, value, support, renewal, revenue, risk, owner load, and decision receipt.",
+      stageSummary: "Launch portfolio health now has adoption, value, support, renewal, revenue, risk, owner-load, and receipt controls.",
+      openDecision: "Open portfolio view",
+      guardedDecision: "Open guarded portfolio",
+      holdDecision: "Hold portfolio claims",
+      repairDecision: "Repair portfolio proof",
+      nextOpen: "Open the portfolio health board and keep adoption, value, support, renewal, revenue, risk, owner load, and decision receipt together.",
+      nextGuarded: "Open a guarded portfolio while one adoption, value, support, renewal, revenue, risk, owner, or receipt lane stays watched.",
+      nextHold: "Hold portfolio claims until adoption, value, support, and renewal evidence are clear.",
+      nextRepair: "Repair portfolio proof before expansion capacity is approved.",
+      axes: [
+        ["Adoption health", "reviewGuard", 0.82, 5, "Adoption is visible across customers."],
+        ["Value proof", "proofGuard", 0.84, 6, "Customer value evidence is comparable."],
+        ["Support health", "supportGuard", 0.82, 5, "Support posture is visible."],
+        ["Renewal outlook", "sponsorGuard", 0.82, 5, "Renewal outlook follows evidence."],
+        ["Revenue health", "sponsorGuard", 0.82, 5, "Revenue health is credible."],
+        ["Portfolio risk", "rollbackGuard", 0.82, 5, "Portfolio risk and fallback are visible."],
+        ["Owner load", "ownerCommand", 0.82, 5, "Owner concentration is accountable."],
+        ["Portfolio receipt", "guardClosure", 0.84, 6, "Portfolio receipt closes the board."],
+      ],
+    },
+    {
+      key: "expansion-capacity-gate",
+      version: "v1097",
+      number: 1097,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Expansion Capacity Gate",
+      shortLabel: "Expansion Capacity Gate",
+      phase: "expansion capacity gate",
+      track: "v1097 expansion capacity gate",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-capacity-gate",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-expansion-capacity-gate",
+      idSuffix: "EXPANSION-CAPACITY-GATE",
+      scoreKey: "expansionCapacityGateScore",
+      decisionKey: "expansionCapacityGateDecision",
+      stateKey: "expansionCapacityGateState",
+      lineKey: "expansionCapacityGateLine",
+      primarySignal: "Pilot expansion capacity gate",
+      primaryNote: "Gates expansion against sales capacity, onboarding capacity, support capacity, infrastructure posture, partner readiness, cash guard, accountable owner, and approval receipt.",
+      summary: "Gate expansion against sales capacity, onboarding capacity, support capacity, infrastructure posture, partner readiness, cash guard, owner, and approval receipt.",
+      trackSummary: "Portfolio health now becomes expansion capacity across sales, onboarding, support, infrastructure, partners, cash, ownership, and approval receipt.",
+      stageSummary: "Expansion capacity now has sales, onboarding, support, infrastructure, partner, cash, owner, and approval controls.",
+      openDecision: "Open expansion capacity",
+      guardedDecision: "Open guarded capacity",
+      holdDecision: "Hold expansion",
+      repairDecision: "Repair capacity proof",
+      nextOpen: "Open expansion capacity and keep sales, onboarding, support, infrastructure, partner, cash, owner, and approval receipt together.",
+      nextGuarded: "Open guarded capacity while one sales, onboarding, support, infrastructure, partner, cash, owner, or receipt lane stays watched.",
+      nextHold: "Hold expansion until sales, onboarding, support, and infrastructure capacity are clear.",
+      nextRepair: "Repair capacity proof before cost-to-serve becomes the expansion baseline.",
+      axes: [
+        ["Sales capacity", "sponsorGuard", 0.82, 5, "Sales capacity matches target demand."],
+        ["Onboarding capacity", "launchMoment", 0.82, 5, "Onboarding capacity is measurable."],
+        ["Support capacity", "supportGuard", 0.84, 6, "Support capacity protects response quality."],
+        ["Infrastructure posture", "tenantGuard", 0.82, 5, "Infrastructure posture is explicit."],
+        ["Partner readiness", "reviewGuard", 0.82, 5, "Partner readiness has proof."],
+        ["Cash guard", "rollbackGuard", 0.82, 5, "Cash guard and fallback are visible."],
+        ["Capacity owner", "ownerCommand", 0.82, 5, "One capacity owner is accountable."],
+        ["Approval receipt", "guardClosure", 0.84, 6, "Approval receipt closes the gate."],
+      ],
+    },
+    {
+      key: "cost-to-serve-control-room",
+      version: "v1098",
+      number: 1098,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Cost-to-Serve Control Room",
+      shortLabel: "Cost-to-Serve Control Room",
+      phase: "cost-to-serve control room",
+      track: "v1098 cost-to-serve control room",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-cost-to-serve-control-room",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-cost-to-serve-control-room",
+      idSuffix: "COST-TO-SERVE-CONTROL-ROOM",
+      scoreKey: "costToServeControlRoomScore",
+      decisionKey: "costToServeControlRoomDecision",
+      stateKey: "costToServeControlRoomState",
+      lineKey: "costToServeControlRoomLine",
+      primarySignal: "Pilot cost-to-serve control room",
+      primaryNote: "Tracks delivery economics across hosting cost, onboarding effort, support load, partner cost, gross margin, variance watch, accountable owner, and signed cost receipt.",
+      summary: "Track delivery economics across hosting cost, onboarding effort, support load, partner cost, gross margin, variance, owner, and signed cost receipt.",
+      trackSummary: "Expansion capacity now becomes cost-to-serve control across hosting, onboarding, support, partners, margin, variance, ownership, and receipt.",
+      stageSummary: "Cost to serve now has hosting, onboarding, support, partner, margin, variance, owner, and receipt controls.",
+      openDecision: "Open cost control",
+      guardedDecision: "Open guarded cost control",
+      holdDecision: "Hold cost claims",
+      repairDecision: "Repair cost proof",
+      nextOpen: "Open cost-to-serve control and keep hosting, onboarding, support, partner cost, gross margin, variance, owner, and signed receipt together.",
+      nextGuarded: "Open guarded cost control while one hosting, onboarding, support, partner, margin, variance, owner, or receipt lane stays watched.",
+      nextHold: "Hold cost claims until hosting, onboarding, support, and gross-margin inputs are clear.",
+      nextRepair: "Repair cost-to-serve proof before scale authorization is requested.",
+      axes: [
+        ["Hosting cost", "tenantGuard", 0.82, 5, "Hosting cost has a consistent basis."],
+        ["Onboarding effort", "launchMoment", 0.82, 5, "Onboarding effort is measurable."],
+        ["Support load", "supportGuard", 0.84, 6, "Support load is visible."],
+        ["Partner cost", "sponsorGuard", 0.82, 5, "Partner cost is governed."],
+        ["Gross margin", "proofGuard", 0.84, 6, "Gross margin uses approved inputs."],
+        ["Variance watch", "reviewGuard", 0.82, 5, "Cost variance has a review threshold."],
+        ["Cost owner", "ownerCommand", 0.82, 5, "One cost owner is accountable."],
+        ["Cost receipt", "guardClosure", 0.84, 6, "Signed cost receipt closes the room."],
+      ],
+    },
+    {
+      key: "scale-authorization-council",
+      version: "v1099",
+      number: 1099,
+      label: "First Pilot Expansion Rollout Reuse Market Pilot Scale Authorization Council",
+      shortLabel: "Scale Authorization Council",
+      phase: "scale authorization council",
+      track: "v1099 scale authorization council",
+      className: "command-first-pilot-expansion-rollout-reuse-market-pilot-scale-authorization-council",
+      copyAction: "copy-command-first-pilot-expansion-rollout-reuse-market-pilot-scale-authorization-council",
+      idSuffix: "SCALE-AUTHORIZATION-COUNCIL",
+      scoreKey: "scaleAuthorizationCouncilScore",
+      decisionKey: "scaleAuthorizationCouncilDecision",
+      stateKey: "scaleAuthorizationCouncilState",
+      lineKey: "scaleAuthorizationCouncilLine",
+      primarySignal: "Pilot scale authorization council",
+      primaryNote: "Combines portfolio health, capacity evidence, launch economics, customer trust, support readiness, rollback posture, executive ownership, and signed scale authorization receipt.",
+      summary: "Combine portfolio health, capacity evidence, economics, customer trust, support readiness, rollback posture, executive owner, and signed scale authorization receipt.",
+      trackSummary: "Cost-to-serve proof now becomes scale authorization across portfolio, capacity, economics, trust, support, rollback, ownership, and signed receipt.",
+      stageSummary: "Scale authorization now has portfolio, capacity, economics, trust, support, rollback, owner, and signed-receipt controls.",
+      openDecision: "Authorize controlled scale",
+      guardedDecision: "Authorize guarded scale",
+      holdDecision: "Hold scale expansion",
+      repairDecision: "Repair scale proof",
+      nextOpen: "Authorize controlled scale and keep portfolio, capacity, economics, trust, support, rollback, executive owner, and signed receipt together.",
+      nextGuarded: "Authorize guarded scale while one portfolio, capacity, economics, trust, support, rollback, owner, or receipt lane stays watched.",
+      nextHold: "Hold scale expansion until portfolio health, capacity, economics, and support readiness are clear.",
+      nextRepair: "Repair scale authorization proof before private backend foundation work begins.",
+      axes: [
+        ["Portfolio health", "reviewGuard", 0.84, 6, "Portfolio health supports the decision."],
+        ["Capacity evidence", "launchMoment", 0.82, 5, "Capacity evidence is current."],
+        ["Launch economics", "proofGuard", 0.84, 6, "Economics evidence is approved."],
+        ["Customer trust", "tenantGuard", 0.84, 6, "Customer trust boundaries are clear."],
+        ["Support readiness", "supportGuard", 0.84, 6, "Support readiness protects customers."],
+        ["Rollback posture", "rollbackGuard", 0.82, 5, "Rollback posture is rehearsed."],
+        ["Executive owner", "ownerCommand", 0.82, 5, "One executive owner is accountable."],
+        ["Scale receipt", "guardClosure", 0.84, 6, "Signed scale receipt closes the council."],
       ],
     },
   );
@@ -26967,6 +27162,11 @@ const state = {
   ];
 
   const COMMAND_RELEASE_RAIL_RENDER_PATHS = [
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotScaleAuthorizationCouncilPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotCostToServeControlRoomPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionCapacityGatePreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPortfolioHealthBoardPreview(model, autopilot)}",
+    "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotPaidCustomerReferenceConsentRoomPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchEconomicsReviewBoardPreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductTrustCenterPublicationGatePreview(model, autopilot)}",
     "${renderCommandFirstPilotExpansionRolloutReuseMarketPilotProductionSupportRhythmConsolePreview(model, autopilot)}",
@@ -35925,6 +36125,61 @@ const state = {
 
   function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchEconomicsReviewBoardPreview(model, autopilot) {
     return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-economics-review-board");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPaidCustomerReferenceConsentRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "paid-customer-reference-consent-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotPaidCustomerReferenceConsentRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "paid-customer-reference-consent-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotPaidCustomerReferenceConsentRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "paid-customer-reference-consent-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPortfolioHealthBoardSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "launch-portfolio-health-board");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPortfolioHealthBoard(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "launch-portfolio-health-board");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotLaunchPortfolioHealthBoardPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "launch-portfolio-health-board");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionCapacityGateSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "expansion-capacity-gate");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionCapacityGate(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "expansion-capacity-gate");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotExpansionCapacityGatePreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "expansion-capacity-gate");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCostToServeControlRoomSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "cost-to-serve-control-room");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotCostToServeControlRoom(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "cost-to-serve-control-room");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotCostToServeControlRoomPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "cost-to-serve-control-room");
+  }
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotScaleAuthorizationCouncilSummary(model, autopilot) {
+    return buildCommandPilotRunwayStageSummary(model, autopilot, "scale-authorization-council");
+  }
+
+  function buildCommandFirstPilotExpansionRolloutReuseMarketPilotScaleAuthorizationCouncil(model, autopilot) {
+    return buildCommandPilotRunwayStage(model, autopilot, "scale-authorization-council");
+  }
+
+  function renderCommandFirstPilotExpansionRolloutReuseMarketPilotScaleAuthorizationCouncilPreview(model, autopilot) {
+    return renderCommandPilotRunwayStagePreview(model, autopilot, "scale-authorization-council");
   }
   function renderCommandReleaseRailPreview(model, autopilot) {
     const railCount = COMMAND_RELEASE_RAIL_RENDER_PATHS.length;
@@ -100735,9 +100990,9 @@ const state = {
     const runwayTracks = activeRunwayReleases.slice().reverse().map((release) => [release.track, 100, release.trackSummary, "green"]);
     const runwayPhases = PILOT_REUSE_MARKET_RUNWAY_RELEASES.map((release, index) => [String(229 + index), release.phase, release.number < buildNumber ? "Done" : release.number === buildNumber ? "Active" : "Next", release.stageSummary]);
     const fallbackNextRunwayBuilds = [
-      ["v1095", "First Pilot Expansion Rollout Reuse Market Pilot Paid Customer Reference Consent Room", "Convert customer success into consented reference proof with approved story, privacy boundary, quote permission, evidence links, channel scope, expiry date, owner, and consent receipt."],
-      ["v1096", "First Pilot Expansion Rollout Reuse Market Pilot Launch Portfolio Health Board", "Compare live customer health across adoption, value, support, renewal, revenue, risk, owner load, and portfolio decision receipt."],
-      ["v1097", "First Pilot Expansion Rollout Reuse Market Pilot Expansion Capacity Gate", "Gate expansion against sales capacity, onboarding capacity, support capacity, infrastructure posture, partner readiness, cash guard, owner, and approval receipt."],
+      ["v1100", "First Pilot Expansion Rollout Reuse Market Pilot Production Backend Foundation Blueprint", "Define the private production backend across API boundaries, tenant storage, audit events, import jobs, secrets, deployment environments, rollback, and foundation receipt."],
+      ["v1101", "First Pilot Expansion Rollout Reuse Market Pilot Authentication and Tenant Isolation Gate", "Gate production access with identity provider, session policy, role mapping, tenant isolation, admin recovery, audit proof, owner, and approval receipt."],
+      ["v1102", "First Pilot Expansion Rollout Reuse Market Pilot Persistent Data Migration Rehearsal", "Rehearse customer data migration with schema mapping, validation, dry run, reconciliation, rollback, privacy proof, owner, and migration receipt."],
     ];
     const nextRunwayBuilds = [
       ...PILOT_REUSE_MARKET_RUNWAY_RELEASES.filter((release) => release.number > buildNumber).map((release) => [release.version, release.label, release.summary]),
